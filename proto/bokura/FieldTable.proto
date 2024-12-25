@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FieldTableBase {
+    int32 Id = 1463;
+    string Name = 439;
+    int64 SkillId = 1087;
+    vector2 Size = 1135;
+    int32 ModelId = 555;
+    int32 MinBody = 285;
+    int32 AttributeId = 1825;
+    string BeHitEffect = 8;
+    string BirthEffect = 1264;
+    string DeathEffect = 1887;
+    int_array Tags = 232;
+}
+
+message FieldTableMgr {
+    map<int32, message> datas = 1;
+}
+

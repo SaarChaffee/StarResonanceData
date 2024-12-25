@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_position_db.proto";
+
+message LastSceneDataDb {
+    uint32 sceneId = 1;
+    zproto.PositionDb pos = 2;
+    int32 sceneAreaId = 3;
+}
+

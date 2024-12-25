@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_match_status.proto";
+import "enum_e_match_type.proto";
+
+message EnterMatchNtfRequest {
+    int32 errCode = 1;
+    zproto.EMatchType matchType = 2;
+    zproto.EMatchStatus matchStatus = 3;
+}
+

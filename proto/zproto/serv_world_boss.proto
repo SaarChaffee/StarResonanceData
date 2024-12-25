@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_get_world_boss_info_reply.proto";
+import "stru_get_world_boss_info_request.proto";
+import "stru_world_boss_killed_reply.proto";
+import "stru_world_boss_killed_request.proto";
+
+message WorldBoss {
+    message GetWorldBossInfo_Ret {
+        uint32 ret_code = 1;
+        zproto.GetWorldBossInfoReply ret = 2;
+    }
+
+    message GetWorldBossInfo {
+        zproto.GetWorldBossInfoRequest vRequest = 1;
+    }
+
+    message WorldBossKilled_Ret {
+        uint32 ret_code = 1;
+        zproto.WorldBossKilledReply ret = 2;
+    }
+
+    message WorldBossKilled {
+        zproto.WorldBossKilledRequest vRequest = 1;
+    }
+
+}
+

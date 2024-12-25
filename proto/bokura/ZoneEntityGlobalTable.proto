@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ZoneEntityGlobalTableBase {
+    int32 UId = 2028;
+    number_array Position = 686;
+    float Rotation = 783;
+    string OptionData = 853;
+    number_array ZoneParam = 444;
+    int32 SourceType = 380;
+}
+
+message ZoneEntityGlobalTableMgr {
+    map<int32, message> datas = 1;
+}
+

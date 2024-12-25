@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetAlbumPhotosRequest {
+    int64 charId = 2;
+    uint32 albumId = 3;
+}
+

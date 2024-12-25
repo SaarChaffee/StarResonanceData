@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetWorldBossInfoRequest {
+    int32 uuid = 1;
+}
+

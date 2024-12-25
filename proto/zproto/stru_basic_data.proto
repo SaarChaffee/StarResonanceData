@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_body_size.proto";
+import "stru_dirty_mask.proto";
+
+message BasicData {
+    int64 charID = 1;
+    uint32 showId = 2;
+    string name = 3;
+    int32 gender = 4;
+    zproto.EBodySize bodySize = 5;
+    int32 level = 6;
+    int32 sceneId = 7;
+    repeated int32 personalState = 8;
+    int64 offlineTime = 9;
+    string sceneGuid = 10;
+    int64 createTime = 11;
+    uint32 curTalentPoolId = 12;
+    uint32 botAiId = 13;
+    int32 registerChannel = 14;
+    map<int32, message> dirty = 1000;
+}
+

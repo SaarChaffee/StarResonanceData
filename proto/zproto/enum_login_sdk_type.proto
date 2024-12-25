@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum LoginSdkType {
+    LoginSdkTypeNull = 0;
+    LoginSdkTypeIntl = 1;
+    LoginSdkTypeMSdk = 2;
+    LoginSdkTypeWeGame = 3;
+    LoginSdkTypeGLauncher = 4;
+}
+

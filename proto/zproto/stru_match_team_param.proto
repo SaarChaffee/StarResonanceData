@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message MatchTeamParam {
+    int32 targetId = 1;
+    int32 wantLeader = 2;
+}
+

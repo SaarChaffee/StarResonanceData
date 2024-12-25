@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_trial_road_room_target_award.proto";
+import "stru_trial_road_target_award.proto";
+import "stru_dirty_mask.proto";
+
+message TrialRoad {
+    repeated int32 passRoom = 1;
+    map<int32, message> roomTargetAward = 2;
+    zproto.TrialRoadTargetAward targetAward = 3;
+    map<int32, message> dirty = 1000;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PictureVerify {
+    uint32 size = 1;
+    int32 version = 2;
+    uint32 ReviewStartTime = 3;
+    map<int32, message> dirty = 1000;
+}
+

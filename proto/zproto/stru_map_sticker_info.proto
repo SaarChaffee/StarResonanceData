@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_map_sticker_task_info.proto";
+import "stru_dirty_mask.proto";
+
+message MapStickerInfo {
+    map<uint32, message> stickerMap = 1;
+    repeated uint32 finishMap = 2;
+    uint32 awardFlag = 3;
+    map<int32, message> dirty = 1000;
+}
+

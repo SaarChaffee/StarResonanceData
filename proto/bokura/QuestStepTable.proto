@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message QuestStepTableBase {
+    int32 QuestStepId = 481;
+    int_table StepParam = 562;
+    string LuaJump = 566;
+    int32 FailToStep = 1368;
+    int32 CompleteToStep = 1878;
+    int_array CompleteAllStep = 972;
+    int_table NpcTalkChange = 1023;
+    int_table QuestItems = 1419;
+    mlstring StepTips = 336;
+    int32 QuestClickJump = 1941;
+    int_array TimeLimitedStep = 944;
+    int32 StepTargetType = 1603;
+    string_table StepTargetCondition = 1291;
+    string_table StepTargetPos = 1340;
+    mlstring StepMainTitle = 1328;
+    mlstring_array StepTargetInfo = 491;
+    int32 DisableTransport = 758;
+    int32 SceneCheck = 302;
+    int32 VisualLayerCheck = 84;
+    bool HideTrackBar = 235;
+}
+
+message QuestStepTableMgr {
+    map<int32, message> datas = 1;
+}
+

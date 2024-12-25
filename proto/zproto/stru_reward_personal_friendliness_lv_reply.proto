@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message RewardPersonalFriendlinessLvReply {
+    int32 errCode = 2;
+    int32 friendId = 3;
+    int32 level = 4;
+}
+

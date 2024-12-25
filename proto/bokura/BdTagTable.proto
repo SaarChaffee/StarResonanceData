@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BdTagTableBase {
+    int32 Id = 1463;
+    mlstring TagName = 510;
+    mlstring TagString = 107;
+    int32 TagType = 847;
+    int32 ParentTag = 38;
+}
+
+message BdTagTableMgr {
+    map<int32, message> datas = 1;
+}
+

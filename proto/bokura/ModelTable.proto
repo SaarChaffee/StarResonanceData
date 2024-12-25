@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ModelTableBase {
+    int32 ModelID = 2011;
+    string ModelDesc = 1227;
+    int32 ModelType = 1034;
+    string Image = 958;
+    string Bust = 1934;
+    int32 ModelPrefabID = 5;
+    float ModelScale = 1070;
+    string_array Mount = 278;
+    number_table MountOffset = 1939;
+    number_table MountRot = 380;
+    number_table MountScale = 1962;
+    string WeaponIdleAnim = 102;
+    int32 GoType = 1223;
+    number_array GoData = 1790;
+    int_array BodyParts = 682;
+    vector3 RTPos = 808;
+    vector3 RTRot = 508;
+    float WeightFactor = 1330;
+    string_array StiffAirCurve = 812;
+    string_array StiffDownCurve = 775;
+    string_array StiffFallCurve = 989;
+    number_array StiffTime = 106;
+    float StiffStandTime = 1664;
+    float StiffDownTime = 1774;
+    int32 DeathActionTime = 1799;
+    float BreakEndAnimTime = 689;
+    string_array AudioBank = 1796;
+    bool IgnoreFarCull = 847;
+    int32 SizeType = 57;
+    int32 BasicFleshyType = 2041;
+    float WalkVelocity = 2105;
+    float RunVelocity = 1804;
+    float DashVelocity = 1551;
+    float MoveAnimSpeed = 334;
+    string ModelEffect = 1811;
+    bool IsMultipod = 1464;
+    float BeHitOffset = 391;
+    number_array ScaleParams = 1778;
+    string BeHitAddiAnimName = 1240;
+    number_table StateAdditiveHitWeight = 1556;
+    float BloodHudOffset = 189;
+}
+
+message ModelTableMgr {
+    map<int32, message> datas = 1;
+}
+

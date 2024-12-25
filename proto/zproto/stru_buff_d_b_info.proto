@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_buff_d_b_data.proto";
+import "stru_dirty_mask.proto";
+
+message BuffDBInfo {
+    uint32 maxID = 1;
+    map<uint32, message> allBuffDbData = 2;
+    map<int32, message> dirty = 1000;
+}
+

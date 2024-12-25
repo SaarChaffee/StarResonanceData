@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_shop_tab_info.proto";
+import "enum_shop_type.proto";
+
+message GetShopItemListReply {
+    zproto.EErrorCode errorCode = 2;
+    int32 errCode = 3;
+    zproto.ShopType shopType = 4;
+    map<int32, message> tabs = 5;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionRemoveItemRequest {
+    int32 removeType = 2;
+    int32 removeResult = 3;
+    int64 unionId = 4;
+    int32 code = 5;
+}
+

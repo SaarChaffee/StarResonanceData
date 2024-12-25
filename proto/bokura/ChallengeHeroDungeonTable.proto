@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ChallengeHeroDungeonTableBase {
+    int32 DungeonId = 1583;
+    int32 DungeonGroup = 473;
+    int32 StarLevel = 1264;
+    string LabelPic = 1513;
+    string Background = 343;
+    int32 ModelId = 555;
+    string EffectId = 1555;
+    int_array ExtraTarget = 1329;
+    int32 BaseRatio = 1148;
+    int_table Affix = 1436;
+    int_table SelectAffix = 1243;
+    int_table ScoreRank = 741;
+    int32 LimitTime = 348;
+    int_table ScoreAward = 1042;
+    int_array KeyReward = 1791;
+}
+
+message ChallengeHeroDungeonTableMgr {
+    map<int32, message> datas = 1;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message ReqLeaveUnionReply {
+    zproto.EErrorCode errorCode = 1;
+    int32 errCode = 2;
+}
+

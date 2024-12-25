@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message CharTeam {
+    int64 teamId = 1;
+    int64 leaderId = 2;
+    uint32 teamTargetId = 3;
+    uint32 teamNum = 4;
+    repeated int64 charIds = 5;
+    bool isMatching = 6;
+    int32 charTeamVersion = 7;
+    map<int32, message> dirty = 1000;
+}
+

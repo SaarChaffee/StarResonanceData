@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message DungeonsTableBase {
+    int32 Id = 1463;
+    mlstring Name = 439;
+    mlstring Content = 783;
+    int32 FunctionID = 850;
+    int32 PlayType = 199;
+    int32 SceneID = 751;
+    int_table Condition = 1634;
+    int_array LimitedNum = 1856;
+    int_array ItemConsume = 1717;
+    int_array DungeonsLimit = 949;
+    int32 KickTime = 1615;
+    int32 EndTime = 173;
+    int32 MonsterGS = 537;
+    int32 ShowResultHudType = 794;
+    vector3 ResultCurscenePos = 1488;
+    int_array ExploreConfig = 957;
+    int_table ExploreAward = 1402;
+    int32 HideQuest = 539;
+    int_table DungeonTarget = 614;
+    int_array FirstPassAward = 890;
+    int_array PassAward = 1175;
+    int32 CountLimit = 1222;
+    mlstring FailText = 954;
+    int32 DisableTransport = 758;
+    int32 ActiveStateTime = 813;
+    int32 ReadyStateTime = 369;
+    int32 PlayingStateTime = 550;
+    int32 SettlementStateTime = 737;
+    int32 ExitTransferType = 1080;
+    int_array Affix = 1436;
+    int32 AffixPool = 870;
+    bool AttrGrowRangeBuff = 683;
+    int32 DungeonsAttrGrowRange = 1802;
+}
+
+message DungeonsTableMgr {
+    map<int32, message> datas = 1;
+}
+

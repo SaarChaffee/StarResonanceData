@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_char_team.proto";
+
+message CardInfo {
+    int64 charId = 1;
+    string name = 2;
+    uint32 modelId = 3;
+    zproto.CharTeam teamInfo = 4;
+    bool isFriend = 5;
+    string unionName = 6;
+    uint64 unionId = 7;
+    int32 roleLevel = 8;
+    int32 gender = 9;
+    uint64 offlineTime = 10;
+}
+

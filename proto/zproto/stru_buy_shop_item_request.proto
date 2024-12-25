@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_shop_type.proto";
+
+message BuyShopItemRequest {
+    zproto.ShopType shopType = 1;
+    int32 tabId = 2;
+    int32 itemId = 3;
+    int32 buyCount = 4;
+}
+

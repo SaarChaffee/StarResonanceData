@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PersonalObjectInteractionParam {
+    int64 objUuid = 1;
+    int32 stateValue = 2;
+    int64 lastInteractionTime = 3;
+    map<int32, message> dirty = 1000;
+}
+

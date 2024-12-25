@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "enum_shop_type.proto";
+
+message BuyShopItemResult {
+    zproto.ShopType shopType = 1;
+    zproto.EErrorCode errorCode = 2;
+    int32 tabId = 3;
+    int32 itemId = 4;
+    int32 buyCount = 5;
+}
+

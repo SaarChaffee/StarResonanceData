@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message RecommendPlayData {
+    int64 startTimestamp = 1;
+    int64 endTimestamp = 2;
+    bool isOpen = 4;
+}
+

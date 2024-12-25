@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_quest_data.proto";
+import "stru_quest_history.proto";
+import "stru_world_quest_info.proto";
+import "stru_world_quest_list.proto";
+import "stru_dirty_mask.proto";
+
+message QuestDataList {
+    map<uint32, message> questMap = 1;
+    map<uint32, bool> finishQuest = 2;
+    uint32 trackingId = 3;
+    map<uint32, uint32> finishResetQuest = 4;
+    map<uint32, message> historyMap = 5;
+    int64 worldQuestTimeStamp = 6;
+    map<uint32, message> worldQuestInfo = 7;
+    map<uint32, uint32> allWorldQuestList = 8;
+    map<uint32, uint32> blueWorldQuestMap = 9;
+    map<int32, message> filterEventId = 10;
+    repeated uint32 acceptQuestList = 11;
+    repeated uint32 followWorldQuestList = 12;
+    map<uint32, uint32> trackOptionalQuest = 13;
+    map<uint32, uint32> finishResetQuestCount = 14;
+    map<uint32, bool> acceptQuestMap = 15;
+    map<int32, message> dirty = 1000;
+}
+

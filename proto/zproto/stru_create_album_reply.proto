@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_album_show.proto";
+
+message CreateAlbumReply {
+    int32 errCode = 2;
+    zproto.AlbumShow albumInfo = 3;
+}
+

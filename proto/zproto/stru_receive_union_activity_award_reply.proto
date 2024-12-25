@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReceiveUnionActivityAwardReply {
+    int32 errCode = 1;
+    repeated int32 receivedPointAwardIds = 2;
+}
+

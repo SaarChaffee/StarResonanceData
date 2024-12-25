@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyWarehouseNewJoinerRequest {
+    int64 joinCharId = 1;
+}
+

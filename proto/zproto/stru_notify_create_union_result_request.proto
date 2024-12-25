@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_info.proto";
+import "stru_user_summary_data.proto";
+
+message NotifyCreateUnionResultRequest {
+    zproto.EErrorCode errorCode = 2;
+    zproto.UnionInfo info = 3;
+    zproto.UserSummaryData presidentInfo = 4;
+    int64 nextJoinTime = 5;
+}
+

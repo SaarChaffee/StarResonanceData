@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message MailStateInfo {
+    uint32 mailState = 1;
+    uint32 mailConfigId = 2;
+}
+

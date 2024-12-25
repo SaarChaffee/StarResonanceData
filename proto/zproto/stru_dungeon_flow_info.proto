@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_dungeon_state.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonFlowInfo {
+    zproto.EDungeonState state = 1;
+    int32 activeTime = 2;
+    int32 readyTime = 3;
+    int32 playTime = 4;
+    int32 endTime = 5;
+    int32 settlementTime = 6;
+    int32 dungeonTimes = 7;
+    int32 result = 8;
+    map<int32, message> dirty = 1000;
+}
+

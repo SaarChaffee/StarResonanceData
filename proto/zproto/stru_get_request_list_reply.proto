@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_request_join_info.proto";
+
+message GetRequestListReply {
+    zproto.EErrorCode errorCode = 1;
+    int32 errCode = 2;
+    repeated zproto.RequestJoinInfo reqList = 3;
+}
+

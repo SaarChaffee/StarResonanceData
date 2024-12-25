@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message RecastEquipRequest {
+    uint64 uuid = 1;
+    uint64 consumeUuid = 2;
+}
+

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message CutsceneTextTableBase {
+    int32 Id = 1463;
+    mlstring SpeakerName = 956;
+    mlstring TextContent = 736;
+    int32 PlotCharactersId = 1282;
+    string VoiceEventName = 346;
+    string VoiceControlEvent = 1271;
+}
+
+message CutsceneTextTableMgr {
+    map<int32, message> datas = 1;
+}
+

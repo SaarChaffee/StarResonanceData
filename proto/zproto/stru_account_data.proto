@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_system_type.proto";
+import "stru_dirty_mask.proto";
+
+message AccountData {
+    string openId = 1;
+    int32 sdkType = 2;
+    string accountId = 3;
+    string accountUuid = 4;
+    zproto.SystemType os = 5;
+    map<int32, message> dirty = 1000;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message UseProfessionSkinInfo {
+    int32 professionId = 1;
+    int32 skinId = 2;
+}
+

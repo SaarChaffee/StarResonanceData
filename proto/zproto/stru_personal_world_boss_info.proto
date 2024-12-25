@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_common_award_info.proto";
+import "stru_dirty_mask.proto";
+
+message PersonalWorldBossInfo {
+    int32 score = 1;
+    map<int32, message> scoreAwardInfo = 2;
+    map<int32, message> bossAwardInfo = 3;
+    int32 uuid = 4;
+    map<int32, message> dirty = 1000;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message DungeonInfo {
+    int32 dungeonID = 1;
+    int32 completeCount = 2;
+    int32 awardFlg = 3;
+    int32 score = 4;
+    int32 passTime = 5;
+    map<int32, message> dirty = 1000;
+}
+

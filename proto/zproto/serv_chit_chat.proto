@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_create_private_chat_session_reply.proto";
+import "stru_create_private_chat_session_request.proto";
+import "stru_delete_private_chat_session_reply.proto";
+import "stru_delete_private_chat_session_request.proto";
+import "stru_get_chip_chat_records_reply.proto";
+import "stru_get_chip_chat_records_request.proto";
+import "stru_get_private_chat_targets_reply.proto";
+import "stru_get_private_chat_targets_request.proto";
+import "stru_get_world_chat_channel_id_reply.proto";
+import "stru_get_world_chat_channel_id_request.proto";
+import "stru_private_chat_block_list_reply.proto";
+import "stru_private_chat_block_list_request.proto";
+import "stru_private_chat_target_block_reply.proto";
+import "stru_private_chat_target_block_request.proto";
+import "stru_private_chat_target_top_reply.proto";
+import "stru_private_chat_target_top_request.proto";
+import "stru_query_chat_mute_reply.proto";
+import "stru_query_chat_mute_request.proto";
+import "stru_send_chit_chat_msg_reply.proto";
+import "stru_send_chit_chat_msg_request.proto";
+import "stru_set_private_chat_has_read_reply.proto";
+import "stru_set_private_chat_has_read_request.proto";
+import "stru_set_world_chat_channel_id_reply.proto";
+import "stru_set_world_chat_channel_id_request.proto";
+
+message ChitChat {
+    message SendChitChatMsg_Ret {
+        uint32 ret_code = 1;
+        zproto.SendChitChatMsgReply ret = 2;
+    }
+
+    message SendChitChatMsg {
+        zproto.SendChitChatMsgRequest vRequest = 1;
+    }
+
+    message GetChipChatRecords_Ret {
+        uint32 ret_code = 1;
+        zproto.GetChipChatRecordsReply ret = 2;
+    }
+
+    message GetChipChatRecords {
+        zproto.GetChipChatRecordsRequest vRequest = 1;
+    }
+
+    message GetPrivateChatTargets_Ret {
+        uint32 ret_code = 1;
+        zproto.GetPrivateChatTargetsReply ret = 2;
+    }
+
+    message GetPrivateChatTargets {
+        zproto.GetPrivateChatTargetsRequest vRequest = 1;
+    }
+
+    message CreatePrivateChatSession_Ret {
+        uint32 ret_code = 1;
+        zproto.CreatePrivateChatSessionReply ret = 2;
+    }
+
+    message CreatePrivateChatSession {
+        zproto.CreatePrivateChatSessionRequest vRequest = 1;
+    }
+
+    message DeletePrivateChatSession_Ret {
+        uint32 ret_code = 1;
+        zproto.DeletePrivateChatSessionReply ret = 2;
+    }
+
+    message DeletePrivateChatSession {
+        zproto.DeletePrivateChatSessionRequest vRequest = 1;
+    }
+
+    message SetPrivateChatHasRead_Ret {
+        uint32 ret_code = 1;
+        zproto.SetPrivateChatHasReadReply ret = 2;
+    }
+
+    message SetPrivateChatHasRead {
+        zproto.SetPrivateChatHasReadRequest vRequest = 1;
+    }
+
+    message PrivateChatTargetTop_Ret {
+        uint32 ret_code = 1;
+        zproto.PrivateChatTargetTopReply ret = 2;
+    }
+
+    message PrivateChatTargetTop {
+        zproto.PrivateChatTargetTopRequest vRequest = 1;
+    }
+
+    message PrivateChatTargetBlock_Ret {
+        uint32 ret_code = 1;
+        zproto.PrivateChatTargetBlockReply ret = 2;
+    }
+
+    message PrivateChatTargetBlock {
+        zproto.PrivateChatTargetBlockRequest vRequest = 1;
+    }
+
+    message PrivateChatBlockList_Ret {
+        uint32 ret_code = 1;
+        zproto.PrivateChatBlockListReply ret = 2;
+    }
+
+    message PrivateChatBlockList {
+        zproto.PrivateChatBlockListRequest vRequest = 1;
+    }
+
+    message SetWorldChatChannelId_Ret {
+        uint32 ret_code = 1;
+        zproto.SetWorldChatChannelIdReply ret = 2;
+    }
+
+    message SetWorldChatChannelId {
+        zproto.SetWorldChatChannelIdRequest vRequest = 1;
+    }
+
+    message GetWorldChatChannelId_Ret {
+        uint32 ret_code = 1;
+        zproto.GetWorldChatChannelIdReply ret = 2;
+    }
+
+    message GetWorldChatChannelId {
+        zproto.GetWorldChatChannelIdRequest vRequest = 1;
+    }
+
+    message QueryChatMute_Ret {
+        uint32 ret_code = 1;
+        zproto.QueryChatMuteReply ret = 2;
+    }
+
+    message QueryChatMute {
+        zproto.QueryChatMuteRequest vRequest = 1;
+    }
+
+}
+

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EmoteTableBase {
+    int32 Id = 1463;
+    int_array FaceDataId = 1991;
+    int32 EmoteType = 1948;
+    int32 Type = 673;
+    bool IsLoop = 109;
+    string Icon = 1153;
+    string IsShow = 822;
+    string_array Emote = 587;
+}
+
+message EmoteTableMgr {
+    map<int32, message> datas = 1;
+}
+

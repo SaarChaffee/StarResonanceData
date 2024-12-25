@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message SwitchInfo {
+    map<uint32, uint32> infoMap = 1;
+}
+

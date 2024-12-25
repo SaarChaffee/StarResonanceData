@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message CreateTeamRequest {
+    int64 charId = 2;
+    uint32 targetId = 3;
+    bool isAutoMatch = 4;
+    bool isShowInHall = 5;
+}
+

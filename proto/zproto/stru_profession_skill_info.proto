@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ProfessionSkillInfo {
+    int32 skillId = 1;
+    int32 level = 2;
+    repeated int32 replaceSkillIds = 3;
+    int32 remodelLevel = 4;
+    map<int32, message> dirty = 1000;
+}
+

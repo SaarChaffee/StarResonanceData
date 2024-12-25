@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message CollectionTableBase {
+    int32 Id = 1463;
+    mlstring CollectionName = 1602;
+    bool ShowHudName = 566;
+    string Remark = 1391;
+    int32 Type = 673;
+    int32 ModelId = 555;
+    int32 MapIcon = 39;
+    bool IsHighLight = 652;
+    int_table VisibleCondition = 1353;
+    int32 DropModel = 604;
+    int32 EntityAttributeID = 742;
+    int_array InteractCondition = 1696;
+    int32 PickRange = 1216;
+    int32 PickActionID = 1309;
+    string PickSound = 397;
+    int32 PickTime = 1807;
+    int32 BuffInPickTime = 1792;
+    int32 BuffAfterPick = 830;
+    bool IsRefresh = 1720;
+    string AIConfigPath = 1183;
+    string RunAwayAI = 727;
+    float AlertRange = 181;
+    int32 RunAwayTime = 1796;
+    string DieAction = 177;
+    string FeedbackAction = 221;
+    int_table InteractionTemplate = 1682;
+    string_array InteractionEvent = 1343;
+    int_table StatusInfo = 1979;
+    int_table StatusTransition = 109;
+    int32 DefaultState = 1528;
+    int_table ShowStatusInfo = 1473;
+    int_table ShowStatusTransition = 1771;
+}
+
+message CollectionTableMgr {
+    map<int32, message> datas = 1;
+}
+

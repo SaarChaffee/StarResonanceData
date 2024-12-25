@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PioneerInfo {
+    uint32 currentTotal = 1;
+    map<uint32, uint32> targets = 2;
+    map<int32, bool> awards = 3;
+    map<uint32, bool> enteredZones = 4;
+    uint32 id = 5;
+    map<int32, message> dirty = 1000;
+}
+

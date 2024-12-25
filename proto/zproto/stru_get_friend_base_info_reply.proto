@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_friend_base_info.proto";
+import "stru_friendliness.proto";
+import "stru_total_friendliness.proto";
+
+message GetFriendBaseInfoReply {
+    int32 errCode = 2;
+    zproto.FriendBaseInfo baseInfo = 3;
+    map<int64, message> friendlinessList = 5;
+    zproto.TotalFriendliness totalFriendliness = 6;
+}
+

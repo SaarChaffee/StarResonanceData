@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FaceTableBase {
+    int32 Id = 1463;
+    int32 Type = 673;
+    int32 Sex = 1062;
+    int_array Model = 421;
+    int32 SortId = 1586;
+    string Icon = 1153;
+    string Resource = 578;
+    int_table Unlock = 1666;
+    int32 Create = 1640;
+    int32 IsHide = 1851;
+    int32 Weight = 140;
+    int32 FaceShapeId = 345;
+    int32 Number = 1714;
+}
+
+message FaceTableMgr {
+    map<int32, message> datas = 1;
+}
+

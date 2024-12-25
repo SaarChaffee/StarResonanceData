@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_event_data.proto";
+import "stru_dirty_mask.proto";
+
+message CutSceneInfo {
+    int32 cutSceneId = 1;
+    uint32 flag = 2;
+    uint32 sceneId = 3;
+    zproto.EventData eventData = 4;
+    map<int32, message> dirty = 1000;
+}
+

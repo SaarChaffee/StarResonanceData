@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message MoveTmpPhotoToAlbumRequest {
+    int64 unionId = 1;
+    uint32 tmpPhotoId = 2;
+    uint32 albumId = 3;
+}
+

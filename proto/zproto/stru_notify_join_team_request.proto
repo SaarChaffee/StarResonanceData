@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_team_base_info.proto";
+import "stru_team_mem_data.proto";
+import "stru_team_mem_real_time_voice_info.proto";
+import "stru_user_detailed_data.proto";
+
+message NotifyJoinTeamRequest {
+    zproto.TeamBaseInfo baseInfo = 2;
+    repeated zproto.TeamMemData memberData = 3;
+    repeated zproto.UserDetailedData socialDatas = 4;
+    map<int64, message> memRealTimeVoiceInfos = 5;
+}
+

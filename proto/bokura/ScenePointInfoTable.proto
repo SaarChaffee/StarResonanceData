@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ScenePointInfoTableBase {
+    int32 UId = 2028;
+    int32 GroupId = 196;
+    number_array Position = 686;
+    float Rotation = 783;
+    number_array CamPosition = 1631;
+    float CamRotation = 422;
+    float RandomRadius = 2007;
+    int32 CameraId = 472;
+    float RandomInnerRadius = 843;
+}
+
+message ScenePointInfoTableMgr {
+    map<int32, message> datas = 1;
+}
+

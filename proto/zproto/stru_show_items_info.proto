@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message ShowItemsInfo {
+    int32 type = 1;
+    repeated zproto.Item items = 2;
+}
+

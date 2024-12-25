@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+message PersonalTagTableBase {
+    int32 Id = 1463;
+    string TagName = 510;
+    string TagIcon = 25;
+    int32 Type = 673;
+    int32 Sequence = 831;
+}
+
+message PersonalTagTableMgr {
+    map<int32, message> datas = 1;
+}
+

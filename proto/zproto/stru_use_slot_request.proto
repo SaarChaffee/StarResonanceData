@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_use_slot_type.proto";
+
+message UseSlotRequest {
+    int32 slotId = 1;
+    zproto.EUseSlotType useType = 2;
+    bytes extraData = 3;
+}
+

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message DummyEntityTableBase {
+    int32 UId = 2028;
+    int32 Id = 1463;
+    int32 GroupId = 196;
+    number_array Position = 686;
+    float Rotation = 783;
+    int32 RefreshMode = 1638;
+    bool RefreshAfterDied = 459;
+    bool ConstPointRefresh = 811;
+    float RefreshRangeMin = 1556;
+    float RefreshRangeMax = 1572;
+    bool MultiPointsRefresh = 1408;
+    number_array RefreshPoints = 1121;
+    float RefreshTimeMin = 514;
+    float RefreshTimeMax = 895;
+    int32 CampId = 261;
+    int32 Visible = 788;
+    int32 Usable = 1633;
+    int32 Shape = 1160;
+    number_array ZoneParam = 444;
+    int32 DataType = 682;
+    bool ExportVoxel = 328;
+    string VoxelPath = 434;
+    int32 SpaceLayerIndex = 1039;
+    string OptionData = 853;
+    bool ScaleEffect = 1832;
+    int32 EntMask = 1865;
+    bool InsightVisible = 1585;
+    bool IsSoftAirWall = 351;
+    bool IgnoreVisualLayer = 1863;
+    int_array LifeInfo = 412;
+    int32 VisualLayerId = 755;
+    int32 SourceType = 380;
+    int32 DefaultState = 1528;
+}
+
+message DummyEntityTableMgr {
+    map<int32, message> datas = 1;
+}
+

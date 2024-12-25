@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_change_avatar_reply.proto";
+import "stru_change_avatar_request.proto";
+import "stru_get_social_data_reply.proto";
+import "stru_get_social_data_request.proto";
+
+message Social {
+    message GetSocialData_Ret {
+        uint32 ret_code = 1;
+        zproto.GetSocialDataReply ret = 2;
+    }
+
+    message GetSocialData {
+        zproto.GetSocialDataRequest vRequest = 1;
+    }
+
+    message ChangeAvatar_Ret {
+        uint32 ret_code = 1;
+        zproto.ChangeAvatarReply ret = 2;
+    }
+
+    message ChangeAvatar {
+        zproto.ChangeAvatarRequest vRequest = 1;
+    }
+
+}
+

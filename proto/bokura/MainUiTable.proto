@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MainUiTableBase {
+    int32 Id = 1463;
+    string Comment = 11;
+    int_array MainIcon = 1283;
+}
+
+message MainUiTableMgr {
+    map<int32, message> datas = 1;
+}
+

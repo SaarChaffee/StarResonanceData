@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message DancerInfo {
+    int64 charId = 1;
+    int32 danceSecs = 2;
+    bool isDancing = 3;
+    bool hasDrawn = 4;
+    bool hasSend = 5;
+    map<int32, message> dirty = 1000;
+}
+

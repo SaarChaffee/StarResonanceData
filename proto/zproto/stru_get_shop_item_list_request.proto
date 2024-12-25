@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_shop_type.proto";
+
+message GetShopItemListRequest {
+    zproto.ShopType shopType = 2;
+}
+

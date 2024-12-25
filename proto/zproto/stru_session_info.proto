@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+message SessionInfo {
+    uint32 peerId = 1;
+    int64 charId = 2;
+    string accountId = 3;
+    uint64 traceId = 4;
+    string remoteIp = 5;
+    string agentGuid = 6;
+    bool isRobot = 7;
+}
+

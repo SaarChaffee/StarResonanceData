@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message TeamMemCallReply {
+    int32 errCode = 1;
+    int32 callStatus = 2;
+}
+

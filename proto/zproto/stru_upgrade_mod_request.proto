@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message UpgradeModRequest {
+    int64 modUuid = 1;
+    int32 partEffectConfigId = 2;
+}
+

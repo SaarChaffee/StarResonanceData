@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PhotoParamTableBase {
+    int32 Id = 1463;
+    mlstring Des = 266;
+    int32 PointId = 1791;
+    vector2 DistanceTake = 1624;
+    vector2 DistanceHint = 147;
+    vector2 Angle = 1093;
+    int_array TargetId = 1432;
+}
+
+message PhotoParamTableMgr {
+    map<int32, message> datas = 1;
+}
+

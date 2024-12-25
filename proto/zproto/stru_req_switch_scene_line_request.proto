@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReqSwitchSceneLineRequest {
+    uint32 lineId = 2;
+    int64 targetCharId = 3;
+}
+

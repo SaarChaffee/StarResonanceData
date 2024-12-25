@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_activity_target.proto";
+
+message UnionActivity {
+    int64 lastRefreshTime = 1;
+    map<int32, message> unionTargets = 2;
+    int64 nextAwardTime = 3;
+}
+

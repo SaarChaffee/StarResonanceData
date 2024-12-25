@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package zproto;
+
+message DeviceInfo {
+    string clientVersion = 1;
+    string systemSoftware = 2;
+    string systemHardware = 3;
+    string telecomOper = 4;
+    string network = 5;
+    int32 screenWidth = 6;
+    int32 screenHight = 7;
+    float density = 8;
+    string channel = 9;
+    string cpuHardware = 10;
+    int32 memory = 11;
+    string glRender = 12;
+    string gLVersion = 13;
+    string deviceId = 14;
+    string vClientIP = 15;
+    string vClientIPV6 = 16;
+    string ANDROID_OAID = 17;
+    string IOS_CAID = 18;
+    string platformUserTag = 19;
+    string MAC = 20;
+}
+

@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BuffTableBase {
+    int32 Id = 1463;
+    int32 Level = 1120;
+    string NameDesign = 1649;
+    string Note = 453;
+    mlstring Name = 439;
+    string Icon = 1153;
+    mlstring Desc = 1953;
+    int32 BuffType = 905;
+    int32 BuffPriority = 1108;
+    int32 TipsDescription = 516;
+    int32 Visible = 788;
+    int_array RepeatAddRule = 200;
+    number_table DestroyParam = 1532;
+    bool DeleteDead = 66;
+    bool DeleteOffline = 144;
+    bool DeleteChangeScene = 348;
+    bool DeleteChangeVisualLayer = 601;
+    bool DeleteWeaponChange = 1049;
+    int_array Tags = 232;
+    int_array SpecialAttr = 649;
+    int32 BuffAbilityType = 1839;
+    bool IsClientBuff = 1713;
+    string ShowHUDIcon = 125;
+    int32 HudSwitch = 92;
+}
+
+message BuffTableMgr {
+    map<int32, message> datas = 1;
+}
+

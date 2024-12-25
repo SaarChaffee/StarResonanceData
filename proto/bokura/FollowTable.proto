@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FollowTableBase {
+    int32 Id = 1463;
+    number_array ParaOffset = 82;
+    number_array ParaScaDouble = 258;
+    number_array ParaScaBase = 2047;
+    number_array ParaPreDis = 1023;
+    number_array ParaPreDouble = 98;
+    number_array ParaSPreBase = 105;
+    number_array ParaTimeTo = 112;
+    number_array ParaTimeBack = 1135;
+}
+
+message FollowTableMgr {
+    map<int32, message> datas = 1;
+}
+

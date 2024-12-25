@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message TeamDungeonCheckResult {
+    int32 dungeonId = 1;
+    map<int64, int32> checkResult = 2;
+}
+

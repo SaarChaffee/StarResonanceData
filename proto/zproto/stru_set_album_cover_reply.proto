@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_image_info.proto";
+
+message SetAlbumCoverReply {
+    int32 errCode = 2;
+    uint32 albumId = 3;
+    uint32 coverPhotoId = 4;
+    zproto.ImageInfo coverThumbnailInfo = 5;
+}
+

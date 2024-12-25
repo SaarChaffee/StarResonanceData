@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_char_info_db.proto";
+
+message SelectRunEditorCharReply {
+    int32 errCode = 1;
+    zproto.CharInfoDb charInfo = 2;
+}
+

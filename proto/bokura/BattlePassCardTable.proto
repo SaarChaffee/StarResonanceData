@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BattlePassCardTableBase {
+    int32 Id = 1463;
+    int32 BattlePassCardId = 635;
+    int32 SeasonLevel = 719;
+    int32 SeasonExp = 1230;
+    int_array FreeAward = 1375;
+    int_array PaidAward = 1100;
+    int32 KeyAward = 1219;
+}
+
+message BattlePassCardTableMgr {
+    map<int32, message> datas = 1;
+}
+

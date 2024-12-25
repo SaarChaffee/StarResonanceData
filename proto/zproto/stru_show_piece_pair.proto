@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_show_piece_type.proto";
+import "stru_dirty_mask.proto";
+
+message ShowPiecePair {
+    zproto.EShowPieceType pieceType = 1;
+    int32 pieceId = 2;
+    map<int32, message> dirty = 1000;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_team_member_fast_sync_data.proto";
+
+message TeamFastSyncData {
+    repeated zproto.TeamMemberFastSyncData teamMemberSyncDatas = 1;
+}
+

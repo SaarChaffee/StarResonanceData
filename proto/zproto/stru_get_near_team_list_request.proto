@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetNearTeamListRequest {
+    int64 mapId = 2;
+    bool isRefresh = 3;
+}
+

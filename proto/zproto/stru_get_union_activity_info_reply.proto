@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mem_union_activity.proto";
+import "stru_union_activity.proto";
+
+message GetUnionActivityInfoReply {
+    int32 errCode = 1;
+    zproto.UnionActivity unionActivity = 2;
+    zproto.MemUnionActivity selfActivity = 3;
+}
+

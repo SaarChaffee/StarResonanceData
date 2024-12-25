@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dancer_info.proto";
+import "stru_dirty_mask.proto";
+
+message DanceBall {
+    int32 danceId = 1;
+    int64 beginTime = 2;
+    int64 endTime = 3;
+    int32 randIndex = 4;
+    map<int64, message> dancers = 5;
+    int32 buffId = 6;
+    int32 npcId = 7;
+    int32 npcPosIndex = 8;
+    int32 sumDanceScore = 9;
+    bool hasNotifyNpc = 10;
+    map<int32, message> dirty = 1000;
+}
+

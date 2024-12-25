@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_award.proto";
+import "stru_dungeon_boss_rank.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonWorldBossSettlement {
+    int32 bossHpPercent = 1;
+    zproto.DungeonBossRank dungeonBossRank = 2;
+    map<int64, message> award = 3;
+    map<int64, message> bossRankAward = 4;
+    map<int64, message> lastHitAward = 5;
+    map<int32, message> dirty = 1000;
+}
+

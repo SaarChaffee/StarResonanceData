@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EGlobalConditionType {
+    GlobalConditionTypeNone = 0;
+    GlobalConditionTypeUserLevel = 1;
+    GlobalConditionTypeFinishQuest = 2;
+    GlobalConditionTypePlanCostTalentPoints = 3;
+    GlobalConditionTypeGs = 4;
+    GlobalConditionTypeItem = 5;
+    GlobalConditionTypeCompleteDungeon = 6;
+    GlobalConditionTypeDungeonScore = 7;
+    GlobalConditionTypeTimerRunning = 8;
+    GlobalConditionTypeTimerOpen = 9;
+    GlobalConditionTypeGsWillDelete = 11;
+    GlobalConditionTypeInSight = 12;
+    GlobalConditionTypeTimeHour = 13;
+    GlobalConditionTypeFunctionOpen = 14;
+    GlobalConditionTypeUnlockProfessionSkill = 17;
+    GlobalConditionTypePersonalObjectStatus = 18;
+    GlobalConditionSkillHit = 21;
+    GlobalConditionTypeMonsterDead = 22;
+    GlobalConditionTypeMonsterDeadGroup = 23;
+    GlobalConditionTypeSeasonBpLevel = 24;
+    GlobalConditionTypeCurSeasonRank = 25;
+    GlobalConditionTypeSeasonTimeRange = 26;
+    GlobalConditionTypeSeasonTimeOffset = 27;
+    GlobalConditionTypeQuestStepState = 28;
+    GlobalConditionTypeBeginTime = 29;
+    GlobalConditionTypeUnionBuildLevel = 30;
+    GlobalConditionUnionLevel = 35;
+    GlobalConditionUnionMoney = 36;
+    GlobalConditionDungeonPlayerLimit = 37;
+    GlobalConditionTalentTotalPoint = 38;
+    GlobalConditionWeatherTime = 39;
+    GlobalConditionTypeWeather = 40;
+    GlobalConditionTypePlayerState = 41;
+    GlobalConditionTypeGender = 42;
+    GlobalConditionTypeEquipWeapon = 43;
+    GlobalConditionTypeSkillLevel = 44;
+    GlobalConditionTypeOpenServer = 45;
+    GlobalConditionTypeWorldEventExist = 46;
+    GlobalConditionTypeBeReviveScene = 47;
+    GlobalConditionTypeNotScene = 48;
+    GlobalConditionTypeInScene = 49;
+    GlobalConditionTypeNotScenePlayType = 50;
+    GlobalConditionTypeInScenePlayType = 51;
+    GlobalConditionTypeHasDialog = 52;
+    GlobalConditionTypeRecommendPlay = 53;
+    GlobalConditionTypeFishLevel = 54;
+    GlobalConditionTypeIsRide = 55;
+    GlobalConditionTypeInHpRange = 56;
+}
+

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MallTableBase {
+    int32 Id = 1463;
+    int32 FunctionId = 149;
+    mlstring Name = 439;
+    string NameRemark = 1535;
+    int32 HasFatherType = 1360;
+    int32 MallType = 1688;
+    int_table RefreshIntervalType = 1604;
+    int_table WeightId = 2007;
+    int32 TimerId = 190;
+    int32 Sort = 1643;
+    int32 ShowCountDown = 1192;
+    int32 MallManualRefresh = 1340;
+    int_table RefreshCostItem = 1637;
+    string Icon = 1153;
+    int_array CurrencyDisplay = 1022;
+}
+
+message MallTableMgr {
+    map<int32, message> datas = 1;
+}
+

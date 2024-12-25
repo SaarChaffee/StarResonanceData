@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message SeasonBpAward {
+    int32 targetId = 1;
+    bool onekey = 2;
+}
+

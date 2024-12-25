@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+message MagicConfigTableBase {
+    int32 Id = 1463;
+    string Name = 439;
+    int32 Type = 673;
+    int32 RoleID = 100;
+    int32 WeaponID = 1694;
+    int32 ModelType = 1034;
+    string BeHitAct = 786;
+}
+
+message MagicConfigTableMgr {
+    map<int32, message> datas = 1;
+}
+

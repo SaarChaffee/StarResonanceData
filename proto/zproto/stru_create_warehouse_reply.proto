@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_warehouse_info.proto";
+
+message CreateWarehouseReply {
+    int32 errCode = 1;
+    zproto.WarehouseInfo warehouse = 2;
+}
+

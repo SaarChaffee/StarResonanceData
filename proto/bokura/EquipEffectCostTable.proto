@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EquipEffectCostTableBase {
+    int32 EffectType = 527;
+    mlstring EffectTypeName = 911;
+    int_table ItemCost = 452;
+}
+
+message EquipEffectCostTableMgr {
+    map<int32, message> datas = 1;
+}
+

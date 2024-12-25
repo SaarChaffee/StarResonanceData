@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_session_info.proto";
+import "enum_text_check_scene_type.proto";
+
+message TextCheckRequest {
+    zproto.SessionInfo session = 1;
+    zproto.TextCheckSceneType sceneType = 2;
+    repeated string str = 3;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_fashion_color_info.proto";
+import "stru_unlock_color_info.proto";
+import "stru_dirty_mask.proto";
+
+message FashionMgr {
+    map<int32, int32> wearInfo = 1;
+    map<int32, message> fashionDatas = 2;
+    map<int32, message> UnlockColor = 3;
+    map<int32, message> dirty = 1000;
+}
+

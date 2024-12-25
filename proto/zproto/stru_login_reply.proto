@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_account_info.proto";
+
+message LoginReply {
+    int32 errCode = 1;
+    zproto.AccountInfo accountInfo = 2;
+    int64 beginTime = 3;
+    string protocolVersion = 4;
+    string configVersion = 5;
+    string timeZone = 6;
+}
+

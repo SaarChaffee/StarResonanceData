@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message PlaceHolderFishItem {
+    int32 FishId = 1;
+    int32 Size = 2;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_exchange_sale_data_item_data.proto";
+
+message ExchangeSaleDataReply {
+    int32 errCode = 1;
+    repeated zproto.ExchangeSaleDataItemData items = 2;
+    uint32 minRate = 3;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_effect_buff.proto";
+
+message SetEffectBuffReply {
+    int32 errCode = 1;
+    zproto.UnionEffectBuff effectBuff = 2;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ChangeGroupNameRequest {
+    int32 groupId = 2;
+    string newName = 3;
+}
+

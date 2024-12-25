@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message TipsInfo {
+    int32 tipsType = 1;
+    int32 errCode = 2;
+    bytes tipsParams = 3;
+}
+

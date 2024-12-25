@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_exchange_price_item_data.proto";
+
+message ExchangeNoticeDetailReply {
+    int32 errCode = 1;
+    repeated zproto.ExchangePriceItemData items = 2;
+    int32 totalPage = 3;
+    int32 curPage = 4;
+}
+

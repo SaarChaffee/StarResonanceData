@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EntityAttributeTableBase {
+    int32 Id = 1463;
+    string Comment = 11;
+    int32 Season = 620;
+    int32 EquipLevel = 367;
+    int32 EquipLevelVariate = 152;
+    int32 MaxHp = 439;
+    int32 Attack = 1316;
+    int32 Defense = 1973;
+    int32 IgnoreDefense = 868;
+    int32 IgnoreDefensePCT = 860;
+    int32 FireDefense = 1414;
+    int32 WaterDefense = 1493;
+    int32 WoodDefense = 1403;
+    int32 ElectricityDefense = 2908;
+    int32 WindDefense = 1184;
+    int32 RockDefense = 1140;
+    int32 LightDefense = 265;
+    int32 DarkDefense = 1796;
+    int32 MaxStunned = 489;
+    int32 MaxExtinction = 1165;
+    int32 CritResist = 1225;
+    int_table MeterValue = 318;
+}
+
+message EntityAttributeTableMgr {
+    map<int32, message> datas = 1;
+}
+

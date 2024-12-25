@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+message EntityObjectLimitTableBase {
+    int32 Id = 1463;
+    int32 BaseObjectLimit = 1874;
+    int32 SummonObjectLimit = 1680;
+    int32 TimerLimit = 1970;
+    int32 SaveVarLimit = 1828;
+}
+
+message EntityObjectLimitTableMgr {
+    map<int32, message> datas = 1;
+}
+

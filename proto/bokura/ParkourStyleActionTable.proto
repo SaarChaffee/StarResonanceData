@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ParkourStyleActionTableBase {
+    int32 Id = 1463;
+    mlstring Name = 439;
+    int32 Level = 1120;
+    int32 EnergyValue = 946;
+    float WaitTime = 106;
+    int32 Dot = 849;
+}
+
+message ParkourStyleActionTableMgr {
+    map<int32, message> datas = 1;
+}
+

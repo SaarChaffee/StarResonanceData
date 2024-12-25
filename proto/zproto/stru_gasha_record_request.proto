@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message GashaRecordRequest {
+    uint32 poolId = 1;
+    uint32 startId = 2;
+    uint32 count = 3;
+}
+

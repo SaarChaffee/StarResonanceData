@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+message LevelNtf {
+    message DisplayBossUI {
+        bool isEnter = 1;
+        int64 bossUuid = 2;
+    }
+
+    message DisplayBossOutOverdriveUI {
+        bool isBreak = 1;
+        bool isWeak = 2;
+    }
+
+}
+

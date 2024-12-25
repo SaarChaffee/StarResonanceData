@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetFriendlinessRequest {
+    repeated int32 friendIds = 2;
+}
+

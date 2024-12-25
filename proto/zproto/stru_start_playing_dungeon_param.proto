@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message StartPlayingDungeonParam {
+    int64 charId = 1;
+    bool isUseKey = 2;
+}
+

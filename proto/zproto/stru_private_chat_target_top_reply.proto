@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message PrivateChatTargetTopReply {
+    int32 errCode = 2;
+    uint32 targetId = 3;
+    bool setTop = 4;
+}
+

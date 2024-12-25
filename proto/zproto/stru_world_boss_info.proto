@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message WorldBossInfo {
+    int32 bossStage = 1;
+    int32 bossKilledNum = 2;
+    int32 uuid = 3;
+}
+

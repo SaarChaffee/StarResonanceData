@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ChatStatusTableBase {
+    int32 Id = 1463;
+    mlstring StatusName = 1457;
+    string Res = 1275;
+    bool StatusSwitch = 2033;
+    int32 Sequence = 831;
+    int32 Priority = 1712;
+}
+
+message ChatStatusTableMgr {
+    map<int32, message> datas = 1;
+}
+

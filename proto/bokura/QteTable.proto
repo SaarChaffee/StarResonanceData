@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message QteTableBase {
+    int32 Id = 1463;
+    string name = 176;
+    int32 QTEType = 1505;
+    int32 UIType = 914;
+    float maxTime = 1798;
+    number_table timeQuantum = 900;
+    int_array triggerCount = 2;
+    number_table triggerTime = 451;
+    int_table playSkill = 1549;
+    int_table buffIdWhenSuccess = 1259;
+    int_array buffIdWhenFailure = 959;
+    int32 QTEShowSkillId = 1403;
+    number_table EventParams = 1429;
+    int32 functionId = 818;
+    int_array impactFunctionId = 1586;
+    int32 impactType = 357;
+}
+
+message QteTableMgr {
+    map<int32, message> datas = 1;
+}
+

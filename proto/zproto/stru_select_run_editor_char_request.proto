@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message SelectRunEditorCharRequest {
+    int64 charId = 2;
+    string accountId = 3;
+    string token = 4;
+}
+

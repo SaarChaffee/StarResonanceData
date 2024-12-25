@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message TeamDungeonKeyInfo {
+    int64 charId = 1;
+    int32 rollAwardCount = 2;
+    int32 keyAwardCount = 3;
+}
+

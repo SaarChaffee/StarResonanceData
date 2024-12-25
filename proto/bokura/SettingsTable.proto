@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SettingsTableBase {
+    int32 Id = 1463;
+    mlstring Name = 439;
+    int32 SystemId = 518;
+    int32 TypesId = 1912;
+    int32 OperateType = 1525;
+    string DescribeKey = 1288;
+    string Des = 266;
+    string Value = 616;
+    int32 DataStorage = 1251;
+    string Link = 105;
+}
+
+message SettingsTableMgr {
+    map<int32, message> datas = 1;
+}
+

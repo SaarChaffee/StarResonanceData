@@ -1,0 +1,216 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_picture_type.proto";
+import "stru_award_data.proto";
+import "stru_buy_shop_item_result.proto";
+import "stru_card_info.proto";
+import "stru_char_serialize.proto";
+import "stru_client_custom_event_params.proto";
+import "stru_debug_message_tip_info.proto";
+import "stru_driver_apply_ride_param.proto";
+import "stru_dungeon_sync_data.proto";
+import "stru_instruction_info.proto";
+import "stru_invite_apply_ride_param.proto";
+import "stru_notice_info.proto";
+import "stru_notify_function_params.proto";
+import "stru_notify_ride_is_agree_param.proto";
+import "stru_parkour_record.proto";
+import "stru_payment_result.proto";
+import "stru_show_items_info.proto";
+import "stru_start_playing_dungeon_param.proto";
+import "stru_switch_info.proto";
+import "stru_sync_invite_request.proto";
+import "stru_tips_info.proto";
+import "stru_unlock_cook_book_info.proto";
+import "stru_world_boss_rank_info_param.proto";
+
+message WorldNtf {
+    message SyncPioneerInfo {
+        uint32 targetId = 1;
+        uint32 targetNum = 2;
+    }
+
+    message SyncSwitchChange {
+        uint32 id = 1;
+        uint32 onOff = 2;
+    }
+
+    message SyncSwitchInfo {
+        zproto.SwitchInfo info = 1;
+    }
+
+    message SyncContainerData {
+        zproto.CharSerialize vData = 1;
+    }
+
+    message SyncDungeonData {
+        zproto.DungeonSyncData vData = 1;
+    }
+
+    message AwardNotify {
+        zproto.AwardData award = 1;
+    }
+
+    message CardInfoAck {
+        int64 charId = 1;
+        zproto.CardInfo info = 2;
+    }
+
+    message SyncSeason {
+        int32 vSeason = 1;
+    }
+
+    message UserAction {
+        int64 vCharId = 1;
+        int32 vActionId = 2;
+    }
+
+    message NotifyDisplayPlayHelp {
+        int32 vPlayHelpId = 1;
+    }
+
+    message NotifyApplicationInteraction {
+        int32 vOrigId = 1;
+        int32 vActionId = 2;
+    }
+
+    message NotifyIsAgree {
+        int32 vInviteeId = 1;
+        int32 vActionId = 2;
+        bool vIsAgree = 3;
+    }
+
+    message NotifyCancelAction {
+        int32 vCancelCharId = 1;
+    }
+
+    message NotifyUploadPictureResult {
+        bool success = 1;
+        zproto.EPictureType photoType = 2;
+        uint32 photoId = 3;
+        string photoName = 4;
+    }
+
+    message SyncInvite {
+        zproto.SyncInviteRequest vRequest = 1;
+    }
+
+    message NotifyRedDotChange {
+        int32 vRedDotId = 1;
+        int32 vValue = 2;
+    }
+
+    message ChangeNameResultNtf {
+        int32 vCode = 1;
+    }
+
+    message NotifyReviveUser {
+        int64 vActorUuid = 1;
+    }
+
+    message NotifyParkourRankInfo {
+        int32 vRankId = 1;
+    }
+
+    message NotifyParkourRecordInfo {
+        int32 result = 1;
+        zproto.ParkourRecord vRecord = 2;
+    }
+
+    message NotifyShowTips {
+        zproto.TipsInfo vTips = 1;
+    }
+
+    message NotifyNoticeInfo {
+        zproto.NoticeInfo vInfo = 1;
+    }
+
+    message NotifyInstructionInfo {
+        zproto.InstructionInfo vInfo = 1;
+    }
+
+    message NotifyClientKickOff {
+        int32 errorCode = 1;
+    }
+
+    message BuyShopItemResponse {
+        zproto.BuyShopItemResult vRequest = 1;
+    }
+
+    message PaymentResponse {
+        zproto.PaymentResult vRequest = 1;
+    }
+
+    message ExchangeCurrencyResponse {
+        int32 errorCode = 1;
+    }
+
+    message NotifyUnlockCookBook {
+        zproto.UnlockCookBookInfo vInfo = 1;
+    }
+
+    message NotifyCustomEvent {
+        zproto.ClientCustomEventParams eventParams = 1;
+    }
+
+    message NotifyStartPlayingDungeon {
+        zproto.StartPlayingDungeonParam vParam = 1;
+    }
+
+    message ChangeShowIdResultNtf {
+        int32 vCode = 1;
+    }
+
+    message NotifyShowItems {
+        zproto.ShowItemsInfo vInfo = 1;
+    }
+
+    message NotifySeasonActivationTargetInfo {
+        int32 vSeasonId = 1;
+        bool isRefresh = 2;
+    }
+
+    message NotifyTextCheckResult {
+        int32 errorCode = 1;
+    }
+
+    message NotifyDebugMessageTip {
+        zproto.DebugMessageTipInfo vInfo = 1;
+    }
+
+    message NotifyUserCloseFunction {
+        zproto.NotifyFunctionParams vParam = 1;
+    }
+
+    message NotifyServerCloseFunction {
+        zproto.NotifyFunctionParams vParam = 1;
+    }
+
+    message QteBegin {
+        uint32 qteId = 1;
+    }
+
+    message QuestAbort {
+        int32 questId = 1;
+    }
+
+    message WorldBossRankInfoNtf {
+        zproto.WorldBossRankInfoParam rankInfo = 1;
+    }
+
+    message NotifyDriverApplyRide {
+        zproto.DriverApplyRideParam param = 1;
+    }
+
+    message NotifyInviteApplyRide {
+        zproto.InviteApplyRideParam param = 1;
+    }
+
+    message NotifyRideIsAgree {
+        zproto.NotifyRideIsAgreeParam param = 1;
+    }
+
+}
+

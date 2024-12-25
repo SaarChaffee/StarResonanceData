@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message ProfileInfoDb {
+    int32 profileId = 1;
+    string profileUrl = 2;
+    string halfBodyUrl = 3;
+}
+

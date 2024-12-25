@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_exchange_record_item_data.proto";
+
+message ExchangeRecordReply {
+    int32 errCode = 1;
+    repeated zproto.ExchangeRecordItemData buyRecord = 2;
+    repeated zproto.ExchangeRecordItemData sellRecord = 3;
+}
+

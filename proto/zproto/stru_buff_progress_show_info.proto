@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message BuffProgressShowInfo {
+    bool isClose = 1;
+    int32 last = 2;
+    int32 value = 3;
+    float speed = 4;
+}
+

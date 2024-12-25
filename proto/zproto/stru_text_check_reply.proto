@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_session_info.proto";
+import "stru_text_check_data_result.proto";
+
+message TextCheckReply {
+    zproto.SessionInfo session = 1;
+    int32 errCode = 2;
+    zproto.EErrorCode errorCode = 3;
+    zproto.TextCheckDataResult checkDataResult = 4;
+}
+

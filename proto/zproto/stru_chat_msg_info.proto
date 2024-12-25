@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_chat_hypertext.proto";
+import "stru_chat_multi_lang_notice.proto";
+import "stru_chat_picture_emoji.proto";
+import "stru_chat_voice.proto";
+import "enum_chit_chat_msg_type.proto";
+
+message ChatMsgInfo {
+    zproto.ChitChatMsgType msgType = 1;
+    int64 targetId = 2;
+    string msgText = 3;
+    zproto.ChatMultiLangNotice multiLangNotice = 4;
+    zproto.ChatPictureEmoji pictureEmoji = 5;
+    zproto.ChatVoice voice = 6;
+    zproto.ChatHypertext chatHypertext = 7;
+}
+

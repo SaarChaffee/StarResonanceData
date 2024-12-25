@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_id_ip_image.proto";
+
+message IdIpPhoto {
+    uint32 photoId = 1;
+    repeated zproto.IdIpImage imageList = 2;
+}
+

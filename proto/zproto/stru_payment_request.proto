@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message PaymentRequest {
+    string orderGuid = 1;
+    int32 paymentId = 2;
+}
+

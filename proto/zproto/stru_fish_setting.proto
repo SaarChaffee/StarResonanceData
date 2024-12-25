@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_fish_record.proto";
+import "stru_dirty_mask.proto";
+
+message FishSetting {
+    int32 baitId = 2;
+    int32 experiences = 3;
+    int32 researchFishId = 4;
+    map<int32, message> fishRecords = 5;
+    map<uint64, int32> fishRodDurability = 6;
+    uint64 rodUuid = 7;
+    map<int32, bool> levelReward = 8;
+    map<int32, int64> zeroFishTimes = 9;
+    map<int32, message> dirty = 1000;
+}
+

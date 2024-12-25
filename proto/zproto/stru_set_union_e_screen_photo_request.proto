@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetUnionEScreenPhotoRequest {
+    int64 unionId = 1;
+    int32 eScreenId = 2;
+    repeated uint32 photoIdList = 4;
+}
+

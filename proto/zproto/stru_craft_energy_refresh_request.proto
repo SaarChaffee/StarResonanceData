@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_craft_energy_type.proto";
+
+message CraftEnergyRefreshRequest {
+    zproto.CraftEnergyType type = 1;
+}
+

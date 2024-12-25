@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ModelSpecialTableBase {
+    int32 ModelPrefabID = 5;
+    string ModelPrefabDesc = 1152;
+    string Skeleton = 1130;
+    string AnimTemplate = 1244;
+    string_array Weapon = 24;
+    bool UseHeadIK = 338;
+    int32 LookAtAngle = 910;
+    int32 LookAtSpeed = 275;
+    int32 LookAtDistance = 1940;
+}
+
+message ModelSpecialTableMgr {
+    map<int32, message> datas = 1;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_vec3.proto";
+
+message DelayHitTargetInfo {
+    int64 targetUuid = 1;
+    zproto.Vec3 hitPos = 2;
+    float delayTime = 3;
+}
+

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_assign_scene_params.proto";
+import "enum_e_match_status.proto";
+import "enum_e_match_type.proto";
+import "enum_e_team_activity_state.proto";
+import "stru_match_param_context.proto";
+import "stru_team_activity_dungeon_info.proto";
+import "stru_team_dungeon_key_info.proto";
+
+message TeamActivity {
+    uint32 activityId = 1;
+    zproto.ETeamActivityState state = 2;
+    int64 time = 3;
+    zproto.TeamActivityDungeonInfo dungeonInfo = 4;
+    repeated int64 agreeMem = 5;
+    repeated int64 checkMembers = 6;
+    int64 refuseId = 7;
+    zproto.AssignSceneParams assignSceneParams = 8;
+    map<int64, message> awardCountInfo = 9;
+    zproto.EMatchType matchType = 10;
+    zproto.EMatchStatus matchStatus = 11;
+    zproto.MatchParamContext matchParamContext = 12;
+}
+

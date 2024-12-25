@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message MovePhotoToAlbumRequest {
+    uint32 photoId = 2;
+    uint32 albumId = 3;
+}
+

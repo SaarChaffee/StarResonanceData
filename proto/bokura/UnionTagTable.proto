@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+message UnionTagTableBase {
+    int32 Id = 1463;
+    int32 Type = 673;
+    string ShowTagRoute = 379;
+    string Description = 75;
+    int32 ShowSort = 1506;
+    int32 IsHide = 1851;
+}
+
+message UnionTagTableMgr {
+    map<int32, message> datas = 1;
+}
+

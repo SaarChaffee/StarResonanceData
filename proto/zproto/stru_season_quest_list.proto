@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_season_quest_data.proto";
+import "stru_dirty_mask.proto";
+
+message SeasonQuestList {
+    map<uint32, message> seasonMap = 1;
+    int32 refreshWeek = 2;
+    int64 refreshTimeStamp = 3;
+    map<int32, message> dirty = 1000;
+}
+

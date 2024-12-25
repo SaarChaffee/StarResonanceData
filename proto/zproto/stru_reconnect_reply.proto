@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReconnectReply {
+    int32 errCode = 1;
+    string accountId = 2;
+    int64 charId = 3;
+}
+

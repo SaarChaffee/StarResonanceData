@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AITableBase {
+    int32 Id = 1463;
+    string Remarks = 803;
+    string NormalSubTree = 1572;
+    bool IsRecoverNormal = 1494;
+    bool IsPatrol = 643;
+    bool IsPlayAction = 1507;
+    int32 PlayActionProbability = 269;
+    int32 PlayActionMode = 497;
+    int_array PlayActionId = 947;
+    bool IsRandomMove = 1558;
+    int32 RandomMoveProbability = 1498;
+    float RandomMoveRadius = 761;
+    bool IsAlertNormalPatrol = 1515;
+    bool IsWalkingAround = 591;
+    string WayPointName = 620;
+    string AlertNormalPatrolPath = 1506;
+    bool IsAlertAction = 1551;
+    int_array AlertActionList = 354;
+    string NormalPlaySubTree = 1438;
+    string_array BattleActionIdArray = 1985;
+    int32 BattleActionReleaseProbability = 379;
+    bool IsPlayActionWhenIntoBattle = 1069;
+    bool IsPlayActionOnlyNormalIntoBattle = 1738;
+    int32 InBattleActionId = 1185;
+    int32 AlertInBattleActionId = 2032;
+    bool IsHaveBattleAction = 16;
+    int32 BattleSkillReleaseProbability = 1224;
+    int32 BattleSkillId = 326;
+    string NormalBattleSubTree = 244;
+    int32 SkillReleaseProbability = 218;
+    bool IsNotMove = 1006;
+    bool IsSkillReleaseClose = 1078;
+    bool IsReleaseSkillWhenIntoBattle = 932;
+    int32 NormalIntoBattleSkillId = 2000;
+    string BattleAlertSubTree = 390;
+    bool IsAlertMoveRequire = 2015;
+    int32 ChaseAndAlertMoveProbability = 1274;
+    bool IsChaseMonster = 415;
+    bool IsHaveBackSkill = 850;
+    int32 BackSkillId = 617;
+    bool IsNeedTranslationAlertMove = 270;
+    int32 AlertMoveProbability = 979;
+    float AlertSpeed = 1159;
+    float MinAlertDis = 607;
+    float MaxAlertDis = 500;
+    int32 MinAlertMoveTime = 430;
+    int32 MaxAlertMoveTime = 608;
+    int32 MinAlertBackTime = 1261;
+    int32 MaxAlertBackTime = 606;
+    string ToBattleActionJsonName = 106;
+    bool IsPlayVigilanceAction = 149;
+    string VigilanceActionJsonName = 1933;
+}
+
+message AITableMgr {
+    map<int32, message> datas = 1;
+}
+

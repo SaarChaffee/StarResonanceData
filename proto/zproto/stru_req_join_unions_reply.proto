@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_ret.proto";
+
+message ReqJoinUnionsReply {
+    int32 errCode = 2;
+    repeated zproto.UnionRet unionsRet = 3;
+    int64 nextJoinTime = 4;
+}
+

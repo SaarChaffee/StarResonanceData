@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AchievementEntryTableBase {
+    int32 Id = 1463;
+    int_array AchievementList = 1797;
+}
+
+message AchievementEntryTableMgr {
+    map<int32, message> datas = 1;
+}
+

@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SceneObjectTableBase {
+    int32 Id = 1463;
+    string Name = 439;
+    int32 ModelID = 2011;
+    int32 AttributeId = 1825;
+    bool ExportVoxel = 328;
+    string VoxelPath = 434;
+    int32 DefaultCamp = 1466;
+    bool IsShowHp = 36;
+    string SobjBeHit = 55;
+    string SobjBorn = 1868;
+    string SobjDeath = 756;
+    bool IsClimbable = 1889;
+    int32 SceneObjType = 1290;
+    int32 EndStateId = 1069;
+    string BornEffect = 1140;
+    string DeadEffect = 346;
+    bool IsUsePrefabLayer = 359;
+    int_table StatusInfo = 1979;
+    int_table StatusTransition = 109;
+    int32 DefaultState = 1528;
+    int_table InteractionTemplate = 1682;
+    string_array InteractionEvent = 1343;
+    int_table ShowStatusInfo = 1473;
+    int_table ShowStatusTransition = 1771;
+}
+
+message SceneObjectTableMgr {
+    map<int32, message> datas = 1;
+}
+

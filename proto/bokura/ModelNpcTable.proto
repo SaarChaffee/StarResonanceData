@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ModelNpcTableBase {
+    int32 ModelPrefabID = 5;
+    string ModelPrefabDesc = 1152;
+    int32 Sex = 1062;
+    int32 Model = 421;
+    vector3 Skin = 915;
+    string Skeleton = 1130;
+    string AnimTemplate = 1244;
+    vector3_array SkeletonColor = 493;
+    string EmoPrefix = 857;
+    string Head = 664;
+    string AnimHeadTemplate = 139;
+    vector3_array EyeColor = 1505;
+    string Hair = 574;
+    vector3_array HairColor = 1621;
+    string Headwear = 709;
+    vector3_array HeadwearColor = 763;
+    string Mask = 74;
+    vector3_array MaskColor = 1840;
+    string Back = 251;
+    vector3_array BackColor = 570;
+    string HandObject = 101;
+    vector3_array HandObjectColor = 646;
+    string WeaponL = 1310;
+    string WeaponR = 1690;
+    string WeaponIdleAnim = 102;
+}
+
+message ModelNpcTableMgr {
+    map<int32, message> datas = 1;
+}
+

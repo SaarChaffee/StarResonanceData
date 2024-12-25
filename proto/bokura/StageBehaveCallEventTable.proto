@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+message StageBehaveCallEventTableBase {
+    int32 Id = 1463;
+    int32 EventType = 1355;
+    string LuaEventName = 1421;
+    int32 CSharpEventId = 1806;
+    string Desc = 1953;
+}
+
+message StageBehaveCallEventTableMgr {
+    map<int32, message> datas = 1;
+}
+

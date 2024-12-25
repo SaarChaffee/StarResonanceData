@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_id_ip_photo.proto";
+
+message GetFuncPhotoListReply {
+    int32 errCode = 1;
+    repeated zproto.IdIpPhoto PhotoList = 2;
+}
+

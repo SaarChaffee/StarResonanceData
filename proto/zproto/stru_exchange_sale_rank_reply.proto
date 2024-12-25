@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_exchange_sale_rank_item_data.proto";
+
+message ExchangeSaleRankReply {
+    int32 errCode = 1;
+    repeated zproto.ExchangeSaleRankItemData items = 2;
+}
+

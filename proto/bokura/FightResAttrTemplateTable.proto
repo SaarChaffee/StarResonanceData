@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FightResAttrTemplateTableBase {
+    int64 Id = 1463;
+    int_array ResIDs = 924;
+    string desc = 483;
+    int_array IntParams = 1505;
+    int_table IntParams1 = 977;
+    int_table IntParams2 = 108;
+    string UIName = 597;
+    int32 BindElemental = 1555;
+    int_array BindSkillId = 1884;
+    float InnerRingFactor = 749;
+    string BattleResIcon = 1652;
+    int_array InnerColor = 1655;
+}
+
+message FightResAttrTemplateTableMgr {
+    map<int64, message> datas = 1;
+}
+

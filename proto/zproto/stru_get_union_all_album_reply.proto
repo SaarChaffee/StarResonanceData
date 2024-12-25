@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_album_show.proto";
+
+message GetUnionAllAlbumReply {
+    int32 errCode = 1;
+    repeated zproto.AlbumShow allAlbums = 2;
+}
+

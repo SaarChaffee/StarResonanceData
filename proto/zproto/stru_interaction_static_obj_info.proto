@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message InteractionStaticObjInfo {
+    int32 posId = 1;
+    bool isUseful = 2;
+}
+

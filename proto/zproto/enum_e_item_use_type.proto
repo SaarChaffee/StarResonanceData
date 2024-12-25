@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EItemUseType {
+    ItemUseNone = 0;
+    ItemUseBuff = 1;
+    ItemUseAward = 2;
+    ItemUseUnlockProfession = 3;
+    ItemUseTalentPoint = 4;
+    ItemUseCraftEnergyRecover = 5;
+    ItemUseEatFood = 6;
+    ItemUseOpenUI = 101;
+}
+

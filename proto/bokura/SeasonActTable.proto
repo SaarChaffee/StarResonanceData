@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SeasonActTableBase {
+    int32 Id = 1463;
+    int32 FunctionId = 149;
+    int32 SeasonId = 1669;
+    int32 Type = 673;
+    int32 Sort = 1643;
+    mlstring Name = 439;
+    string LabelPic = 1513;
+    string BackGroundPic = 1784;
+    mlstring ActDes = 1165;
+    mlstring OtherDes = 1266;
+    int32 PreviewAward = 1452;
+    int32 QuickJumpType = 506;
+    int_array QuickJumpParam = 1617;
+    mlstring UnlockDes = 1991;
+}
+
+message SeasonActTableMgr {
+    map<int32, message> datas = 1;
+}
+

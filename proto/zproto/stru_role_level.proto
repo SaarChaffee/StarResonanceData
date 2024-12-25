@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_level_proficiency.proto";
+import "stru_dirty_mask.proto";
+
+message RoleLevel {
+    int32 level = 1;
+    int64 curLevelExp = 2;
+    map<int32, bool> ReceivedLevelList = 3;
+    zproto.LevelProficiency proficiencyInfo = 4;
+    map<int32, message> dirty = 1000;
+}
+

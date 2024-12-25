@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message InvestigationsTableBase {
+    int32 Id = 1463;
+    mlstring InvestigationTheme = 906;
+    int_table UnlockCondition = 1014;
+    int_array InvestigationStep = 1383;
+    int_table CompletionConditions = 178;
+    mlstring ThemeIntroduction = 1677;
+    mlstring IockedTips = 1728;
+    string ThemePic = 1303;
+    int32 Guarantee = 1155;
+}
+
+message InvestigationsTableMgr {
+    map<int32, message> datas = 1;
+}
+

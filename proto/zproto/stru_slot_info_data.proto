@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message SlotInfoData {
+    int32 id = 1;
+    int32 skillId = 2;
+    bool isReplace = 3;
+    bool showEffect = 4;
+    int64 cd = 5;
+}
+

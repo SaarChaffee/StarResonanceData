@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_int_vec3.proto";
+import "stru_vec4.proto";
+import "stru_dirty_mask.proto";
+
+message Structure {
+    int64 uuid = 1;
+    int64 clientUuid = 2;
+    int32 itemId = 3;
+    int64 charId = 4;
+    zproto.IntVec3 position = 5;
+    zproto.Vec4 quaternion = 6;
+    zproto.IntVec3 color = 7;
+    map<int32, message> dirty = 1000;
+}
+

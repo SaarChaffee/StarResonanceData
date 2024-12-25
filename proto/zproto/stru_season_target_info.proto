@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message SeasonTargetInfo {
+    int32 targetId = 1;
+    int32 targetProgress = 2;
+    int32 awardState = 3;
+    map<int32, message> dirty = 1000;
+}
+

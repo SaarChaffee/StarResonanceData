@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ProfessionEffectLibTableBase {
+    int32 Id = 1463;
+    int32 EffectLibID = 672;
+    int32 EffectType = 527;
+    int32 EffectConfig = 110;
+    int_table ValueRange = 1881;
+    int_table RandomRange = 1236;
+}
+
+message ProfessionEffectLibTableMgr {
+    map<int32, message> datas = 1;
+}
+

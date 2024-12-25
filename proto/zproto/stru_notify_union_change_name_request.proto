@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_base_data.proto";
+
+message NotifyUnionChangeNameRequest {
+    zproto.EErrorCode errorCode = 2;
+    int64 passTimeMs = 3;
+    zproto.UnionBaseData data = 4;
+}
+

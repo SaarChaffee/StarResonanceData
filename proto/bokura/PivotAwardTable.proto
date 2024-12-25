@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PivotAwardTableBase {
+    int32 Id = 1463;
+    int_array AwardId = 1197;
+}
+
+message PivotAwardTableMgr {
+    map<int32, message> datas = 1;
+}
+

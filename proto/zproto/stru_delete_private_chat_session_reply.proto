@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message DeletePrivateChatSessionReply {
+    int32 errCode = 2;
+    uint32 targetId = 3;
+}
+

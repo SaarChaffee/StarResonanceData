@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message NeighbouringSceneTableBase {
+    int32 Id = 1463;
+    int_array NeighbouringScene = 854;
+    int_array Portal = 1218;
+}
+
+message NeighbouringSceneTableMgr {
+    map<int32, message> datas = 1;
+}
+

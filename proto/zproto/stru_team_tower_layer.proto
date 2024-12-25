@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message TeamTowerLayer {
+    int32 errCode = 1;
+    int32 enterClimbUpId = 2;
+    map<int64, int32> memIdMaxClimbId = 3;
+}
+

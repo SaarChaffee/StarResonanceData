@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+import "stru_scene_info.proto";
+
+message TeamActivityDungeonInfo {
+    zproto.SceneInfo sceneInfo = 1;
+    zproto.Item useItem = 2;
+}
+

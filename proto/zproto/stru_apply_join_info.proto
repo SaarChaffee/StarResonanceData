@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ApplyJoinInfo {
+    int64 charId = 1;
+    int64 requestTime = 2;
+}
+

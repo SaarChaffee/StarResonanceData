@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message ChangeAvatarReply {
+    int32 errCode = 2;
+    int32 avatarId = 3;
+    bool success = 4;
+}
+

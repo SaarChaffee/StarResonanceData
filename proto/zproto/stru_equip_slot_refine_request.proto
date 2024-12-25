@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message EquipSlotRefineRequest {
+    uint32 slotId = 1;
+    int32 itemConfigId = 2;
+    uint32 itemCount = 3;
+}
+

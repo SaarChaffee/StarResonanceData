@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ExchangeNoticeTakeItemRequest {
+    string uuid = 1;
+    uint32 configId = 2;
+}
+

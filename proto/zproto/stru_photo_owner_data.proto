@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PhotoOwnerData {
+    int64 uploadCharId = 1;
+    int64 expireTime = 2;
+    uint32 showId = 3;
+    string name = 4;
+    map<int32, message> dirty = 1000;
+}
+

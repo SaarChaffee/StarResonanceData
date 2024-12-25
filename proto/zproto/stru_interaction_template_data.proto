@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_interaction_template_action.proto";
+import "stru_interaction_static_obj_info.proto";
+
+message InteractionTemplateData {
+    zproto.EInteractionTemplateAction type = 1;
+    uint64 objectId = 2;
+    int32 templateId = 3;
+    zproto.InteractionStaticObjInfo staticObj = 4;
+}
+

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_album_right.proto";
+import "stru_image_info.proto";
+
+message AlbumShow {
+    uint32 albumId = 1;
+    string name = 2;
+    bool canAccess = 3;
+    zproto.EAlbumRight access = 4;
+    uint32 coverPhotoId = 5;
+    zproto.ImageInfo coverThumbnailInfo = 6;
+    repeated uint32 photoIds = 7;
+}
+

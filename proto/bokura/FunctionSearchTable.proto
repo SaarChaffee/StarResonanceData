@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FunctionSearchTableBase {
+    int32 Id = 1463;
+    int32 Sort = 1643;
+    int32 QuickJumpType = 506;
+    int_array QuickJumpParam = 1617;
+    int32 IsHide = 1851;
+}
+
+message FunctionSearchTableMgr {
+    map<int32, message> datas = 1;
+}
+

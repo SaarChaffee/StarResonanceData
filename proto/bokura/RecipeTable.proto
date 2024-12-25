@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message RecipeTableBase {
+    int32 Id = 1463;
+    mlstring Name = 439;
+    mlstring RecipeText = 932;
+    string RecipeIcon = 172;
+    int32 RecipeType = 1227;
+}
+
+message RecipeTableMgr {
+    map<int32, message> datas = 1;
+}
+

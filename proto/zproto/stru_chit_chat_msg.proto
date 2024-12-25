@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_basic_show_info.proto";
+import "stru_chat_msg_info.proto";
+
+message ChitChatMsg {
+    int64 msgId = 1;
+    zproto.BasicShowInfo sendCharInfo = 2;
+    int64 timestamp = 3;
+    zproto.ChatMsgInfo msgInfo = 4;
+}
+

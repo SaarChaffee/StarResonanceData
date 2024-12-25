@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message DeletePhotoReply {
+    int32 errCode = 2;
+    uint32 photoId = 3;
+    uint32 albumId = 4;
+}
+

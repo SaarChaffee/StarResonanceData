@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_char_info_db.proto";
+import "enum_e_error_code.proto";
+
+message AccountInfo {
+    string accountId = 1;
+    string openId = 2;
+    repeated zproto.CharInfoDb chars = 3;
+    zproto.EErrorCode errCode = 4;
+    string token = 5;
+    int64 restrictTime = 6;
+}
+

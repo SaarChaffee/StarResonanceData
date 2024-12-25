@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_show_team.proto";
+
+message GetTeamListReply {
+    int32 errCode = 1;
+    uint32 targetId = 2;
+    repeated zproto.ShowTeam teamList = 3;
+    bool isRefresh = 4;
+}
+

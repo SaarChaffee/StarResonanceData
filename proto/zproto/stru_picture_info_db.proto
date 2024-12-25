@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_picture_verify_db.proto";
+
+message PictureInfoDb {
+    string url = 1;
+    zproto.PictureVerifyDb verify = 2;
+}
+

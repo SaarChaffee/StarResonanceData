@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SeasonTaskTargetTableBase {
+    int32 Id = 1463;
+    int32 TargetType = 736;
+    int32 Num = 947;
+    int32 SceneId = 1506;
+    int_array Param = 1207;
+    mlstring Describe = 1195;
+}
+
+message SeasonTaskTargetTableMgr {
+    map<int32, message> datas = 1;
+}
+

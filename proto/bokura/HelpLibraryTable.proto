@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message HelpLibraryTableBase {
+    int32 sortId = 308;
+    int32 Id = 1463;
+    int32 Type = 673;
+    int32 TypeGroup = 887;
+    mlstring MainTitle = 132;
+    int32 HelpGroup = 556;
+    mlstring GroupName = 581;
+    mlstring Title = 695;
+    mlstring_array Content = 783;
+    string_array Res = 1275;
+    int32 Sequence = 831;
+    int32 DurationTime = 584;
+    int32 EventType = 1355;
+    string Param = 1207;
+    mlstring Button = 1927;
+    int32 FunctionId = 149;
+}
+
+message HelpLibraryTableMgr {
+    map<int32, message> datas = 1;
+}
+

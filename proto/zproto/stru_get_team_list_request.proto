@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetTeamListRequest {
+    uint32 targetId = 2;
+    bool isRefresh = 3;
+}
+

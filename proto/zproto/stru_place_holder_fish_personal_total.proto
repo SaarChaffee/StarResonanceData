@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+message PlaceHolderFishPersonalTotal {
+    int64 Total = 1;
+    int64 MythTotal = 2;
+    int32 SumFishType = 3;
+    int32 SumSeaLifeType = 4;
+    int32 SumTrashType = 5;
+    int32 MostFishId = 6;
+    int32 FavourZero = 7;
+    string userName = 8;
+    string unionName = 9;
+}
+

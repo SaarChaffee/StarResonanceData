@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_delay_hit_target_info.proto";
+
+message DelayHitInfo {
+    int32 effectId = 1;
+    int32 buffUuid = 2;
+    int32 eventId = 3;
+    float playTime = 4;
+    repeated zproto.DelayHitTargetInfo targetInfos = 5;
+}
+

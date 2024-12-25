@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+message TeamBaseInfo {
+    int64 teamId = 1;
+    uint32 targetId = 2;
+    int64 leaderId = 3;
+    string desc = 4;
+    bool autoMatch = 5;
+    bool hallShow = 6;
+    bool matching = 7;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyLeaveTeamRequest {
+    int64 charId = 2;
+    int32 leaveType = 3;
+}
+

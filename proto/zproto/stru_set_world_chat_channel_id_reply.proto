@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetWorldChatChannelIdReply {
+    int32 errCode = 2;
+    uint32 channelId = 3;
+    uint32 userNum = 4;
+    uint32 maxNum = 5;
+}
+

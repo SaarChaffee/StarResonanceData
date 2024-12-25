@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_activity_progress_info.proto";
+
+message ReqUnionActivityProgressInfoReply {
+    int32 errCode = 1;
+    zproto.UnionActivityProgressInfo progressInfo = 2;
+}
+

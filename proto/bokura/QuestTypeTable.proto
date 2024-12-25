@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+message QuestTypeTableBase {
+    int32 QuestTypeId = 562;
+    string QuestTypeName = 217;
+    int32 QuestTypeGroupID = 299;
+    string QuestTypeUI = 956;
+    bool ShowQuestUI = 873;
+    int32 ResetType = 1146;
+    bool ForcedTracking = 1221;
+    int32 AutoTracking = 1125;
+    bool QuestListHide = 1962;
+    int32 order = 1680;
+}
+
+message QuestTypeTableMgr {
+    map<int32, message> datas = 1;
+}
+

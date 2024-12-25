@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message ItemRecycle {
+    int32 recycleId = 1;
+    int64 itemUuid = 2;
+    int64 count = 3;
+}
+

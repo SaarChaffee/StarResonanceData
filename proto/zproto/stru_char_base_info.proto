@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+import "stru_char_team.proto";
+import "enum_e_body_size.proto";
+import "enum_e_gender.proto";
+import "stru_face_data.proto";
+import "stru_profile_info.proto";
+import "stru_user_union.proto";
+import "stru_dirty_mask.proto";
+
+message CharBaseInfo {
+    int64 charId = 1;
+    string accountId = 2;
+    uint32 showId = 3;
+    uint32 serverId = 4;
+    string name = 5;
+    zproto.EGender gender = 6;
+    bool isDeleted = 7;
+    bool isForbid = 8;
+    bool isMute = 9;
+    float x = 10;
+    float y = 11;
+    float Z = 12;
+    float dir = 13;
+    zproto.FaceData faceData = 14;
+    uint32 cardId = 15;
+    int64 createTime = 16;
+    int64 onlineTime = 17;
+    int64 offlineTime = 18;
+    zproto.ProfileInfo profileInfo = 19;
+    zproto.CharTeam teamInfo = 20;
+    uint64 CharState = 21;
+    zproto.EBodySize bodySize = 22;
+    zproto.UserUnion unionInfo = 23;
+    repeated int32 personalState = 24;
+    zproto.AvatarInfo avatarInfo = 25;
+    uint64 totalOnlineTime = 26;
+    string openId = 27;
+    int32 sdkType = 28;
+    int32 os = 29;
+    int32 initProfessionId = 31;
+    uint64 lastCalTotalTime = 32;
+    int32 areaId = 33;
+    map<int32, message> dirty = 1000;
+}
+

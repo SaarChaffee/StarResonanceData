@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EntityStandardAttrTableBase {
+    int32 Id = 1463;
+    int32 Season = 620;
+    int32 EquipLevel = 367;
+    int_table MaxHp = 439;
+    int_table Attack = 1316;
+    int32 BodyPartMaxHp = 482;
+}
+
+message EntityStandardAttrTableMgr {
+    map<int32, message> datas = 1;
+}
+

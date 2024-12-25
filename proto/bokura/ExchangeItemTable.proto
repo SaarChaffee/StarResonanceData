@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ExchangeItemTableBase {
+    int32 Id = 1463;
+    int32 ExchangeID = 194;
+    int32 GetItemId = 987;
+    int32 GetNum = 281;
+    string Name = 439;
+    int_table ConsumableID = 920;
+    string UnlockConditions = 613;
+    int32 RefreshType = 213;
+    int32 RefreshNum = 1376;
+    int32 SexLimit = 794;
+    int32 Sort = 1643;
+}
+
+message ExchangeItemTableMgr {
+    map<int32, message> datas = 1;
+}
+

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+message PlotCharactersTableBase {
+    int32 Id = 1463;
+    string PlotCharactersName = 988;
+    string PlotCharactersGender = 342;
+    string PlotCharactersAge = 1071;
+    string PlotCharactersContent = 1541;
+}
+
+message PlotCharactersTableMgr {
+    map<int32, message> datas = 1;
+}
+

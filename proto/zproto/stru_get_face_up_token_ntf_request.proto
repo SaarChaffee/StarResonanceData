@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_tmp_token_result.proto";
+
+message GetFaceUpTokenNtfRequest {
+    int32 errCode = 1;
+    zproto.TmpTokenResult result = 2;
+    string shortGuid = 3;
+}
+

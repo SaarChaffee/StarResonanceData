@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionDanceHistoryDb {
+    int64 danceEndTime = 1;
+    bool sentDanceAward = 2;
+    bool drawnDanceAward = 3;
+}
+

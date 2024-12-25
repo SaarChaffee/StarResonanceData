@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+import "enum_mail_state.proto";
+import "enum_mail_type.proto";
+import "stru_dirty_mask.proto";
+
+message MailBase {
+    int64 mailUuid = 1;
+    uint32 mailConfigId = 2;
+    int64 createTime = 3;
+    zproto.MailType mailType = 4;
+    int64 sendId = 5;
+    string sendName = 6;
+    string mailTitle = 7;
+    string mailBody = 8;
+    int64 timeoutMs = 9;
+    repeated zproto.Item appendix = 10;
+    zproto.MailState mailState = 11;
+    repeated string titlePrams = 12;
+    repeated string bodyPrams = 13;
+    int64 acceptId = 14;
+    uint32 importance = 15;
+    repeated uint32 awardIds = 16;
+    int64 RegisterBeforeTime = 17;
+    map<int32, message> dirty = 1000;
+}
+

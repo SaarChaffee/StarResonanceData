@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+message SeasonDailyTableBase {
+    int32 Id = 1463;
+    int32 Season = 620;
+    int32 Day = 1533;
+    int32 DailyEquipLevel = 1082;
+    int32 GrowRangeAdd = 1918;
+}
+
+message SeasonDailyTableMgr {
+    map<int32, message> datas = 1;
+}
+

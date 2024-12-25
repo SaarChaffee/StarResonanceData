@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package bokura;
+
+message ColorTagTableBase {
+    int32 Id = 1463;
+    string ColorTag = 1143;
+    string Color = 1995;
+}
+
+message ColorTagTableMgr {
+    map<int32, message> datas = 1;
+}
+

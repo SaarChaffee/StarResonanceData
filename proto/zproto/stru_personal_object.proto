@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_scene_personal_object.proto";
+import "stru_dirty_mask.proto";
+
+message PersonalObject {
+    map<int32, message> sceneObjData = 1;
+    map<int32, message> dirty = 1000;
+}
+

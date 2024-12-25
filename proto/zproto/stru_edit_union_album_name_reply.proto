@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message EditUnionAlbumNameReply {
+    int32 errCode = 1;
+    string name = 2;
+}
+

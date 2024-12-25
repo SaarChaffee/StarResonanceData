@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_apply_info.proto";
+
+message LeaderGetApplyListReply {
+    int32 errCode = 1;
+    repeated zproto.ApplyInfo apply = 2;
+}
+

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SeasonBPTaskTableBase {
+    int32 TargetId = 1432;
+    int32 MajorType = 1095;
+    int32 TargetGroup = 1238;
+    int32 Target = 1340;
+    int32 AwardId = 1197;
+    int32 ShowWeek = 1339;
+    string_array Condition = 1634;
+    int32 DailyTaskRandom = 859;
+    int32 QuickJumpType = 506;
+    int_array QuickJump = 75;
+    int32 Season = 620;
+    int32 PassAward = 1175;
+    string Desc = 1953;
+}
+
+message SeasonBPTaskTableMgr {
+    map<int32, message> datas = 1;
+}
+

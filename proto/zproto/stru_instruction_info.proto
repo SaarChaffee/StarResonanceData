@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+message InstructionInfo {
+    int32 type = 1;
+    string title = 2;
+    string msg = 3;
+    string url = 4;
+    string data = 5;
+    int32 logoutTime = 6;
+    string ruleName = 7;
+    string traceId = 8;
+}
+

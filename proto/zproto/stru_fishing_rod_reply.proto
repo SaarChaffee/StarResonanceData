@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message FishingRodReply {
+    int32 errCode = 1;
+    int32 fishId = 2;
+    int32 waitMills = 3;
+}
+

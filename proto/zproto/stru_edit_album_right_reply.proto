@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_album_right.proto";
+
+message EditAlbumRightReply {
+    int32 errCode = 2;
+    uint32 albumId = 3;
+    zproto.EAlbumRight access = 4;
+}
+

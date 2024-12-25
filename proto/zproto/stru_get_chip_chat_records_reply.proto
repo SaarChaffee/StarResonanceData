@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_chit_chat_msg.proto";
+
+message GetChipChatRecordsReply {
+    int32 errCode = 2;
+    bool isEnd = 3;
+    int64 maxReadMsgId = 4;
+    repeated zproto.ChitChatMsg multiMsgList = 5;
+}
+

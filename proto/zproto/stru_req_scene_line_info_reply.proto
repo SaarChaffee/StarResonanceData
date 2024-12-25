@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_scene_line_info.proto";
+
+message ReqSceneLineInfoReply {
+    int32 errCode = 1;
+    repeated zproto.SceneLineInfo lineInfos = 2;
+}
+

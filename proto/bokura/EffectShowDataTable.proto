@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EffectShowDataTableBase {
+    int64 Id = 1463;
+    float Start = 678;
+    float Duration = 544;
+    float End = 1415;
+    bool IsAttacker = 920;
+    int32 StateId = 308;
+    int32 GroupId = 196;
+    string FxPath = 1140;
+    string FxName = 1384;
+    string Attach = 1167;
+    string EndAttach = 1297;
+    float FadeoutTime = 44;
+    vector3 Scale = 1925;
+    vector3 Rotate = 1421;
+    vector3 Offset = 223;
+    bool BindBone = 519;
+    bool BindPosition = 112;
+    bool BreakClear = 1126;
+    bool IsTargetPos = 291;
+    bool BindTarget = 714;
+}
+
+message EffectShowDataTableMgr {
+    map<int64, message> datas = 1;
+}
+

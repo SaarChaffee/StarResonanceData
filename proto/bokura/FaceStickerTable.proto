@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FaceStickerTableBase {
+    int32 Id = 1463;
+    int_array DefaultColor = 1931;
+    int32 ColorId = 1137;
+    int32 Back = 251;
+    int32 Move = 1173;
+    int32 Rotate = 1421;
+    int32 Scale = 1925;
+    vector3 DefaultScale = 537;
+    vector2 DefaultPosition = 1451;
+    float DefaultRotate = 1670;
+}
+
+message FaceStickerTableMgr {
+    map<int32, message> datas = 1;
+}
+

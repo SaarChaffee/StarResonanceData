@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message DeleteFriendReply {
+    int32 errCode = 2;
+    int32 errorCode = 3;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyTeamEnterErrRequest {
+    int32 errorCode = 2;
+    int64 charId = 3;
+}
+

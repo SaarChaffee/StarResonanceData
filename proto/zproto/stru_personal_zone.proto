@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_action_info.proto";
+import "stru_editor_u_i_position.proto";
+import "stru_fashion_quality_collect_info.proto";
+import "stru_ride_quality_collect_info.proto";
+import "stru_dirty_mask.proto";
+
+message PersonalZone {
+    repeated int32 onlinePeriods = 2;
+    repeated int32 tags = 3;
+    map<int32, int32> medals = 5;
+    int32 themeId = 6;
+    int32 businessCardStyleId = 7;
+    int32 avatarFrameId = 8;
+    zproto.ActionInfo actionInfo = 9;
+    repeated zproto.EditorUIPosition uiPosition = 10;
+    int32 titleId = 11;
+    bool fashionRefreshFlag = 12;
+    int32 fashionCollectPoint = 13;
+    map<int32, message> fashionCollectQualityCount = 14;
+    repeated int32 photos = 15;
+    map<int32, int32> unlockTargetRecord = 16;
+    map<int32, bool> unlockGetRewardRecord = 17;
+    int32 rideCollectPoint = 18;
+    map<int32, message> rideCollectQualityCount = 19;
+    map<int32, message> dirty = 1000;
+}
+

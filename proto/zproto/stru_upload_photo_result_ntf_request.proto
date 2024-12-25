@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_photo_graph_show.proto";
+
+message UploadPhotoResultNtfRequest {
+    int32 errCode = 2;
+    zproto.PhotoGraphShow photoInfo = 3;
+    uint32 funcType = 4;
+}
+

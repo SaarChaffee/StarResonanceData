@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message InferenceStepTableBase {
+    int32 Id = 1463;
+    mlstring Question = 1705;
+    int_array Answer = 311;
+    mlstring QuestionBubble = 305;
+    int32 QuestionBubbleAction = 1495;
+    mlstring_array WrongBubble = 512;
+    int_array WrongBubbleAction = 1770;
+}
+
+message InferenceStepTableMgr {
+    map<int32, message> datas = 1;
+}
+

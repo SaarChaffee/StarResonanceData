@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_official.proto";
+
+message NotifyUnionOfficialChangeRequest {
+    zproto.UnionOfficial unionOfficial = 1;
+    int32 changeType = 2;
+}
+

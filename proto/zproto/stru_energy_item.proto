@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_energy_info.proto";
+import "stru_dirty_mask.proto";
+
+message EnergyItem {
+    uint32 energyLimit = 1;
+    uint32 extraEnergyLimit = 2;
+    map<uint32, message> energyInfo = 3;
+    map<int32, message> dirty = 1000;
+}
+

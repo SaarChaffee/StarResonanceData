@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message CounterInfo {
+    int32 id = 1;
+    int64 counter = 2;
+    map<int32, message> dirty = 1000;
+}
+

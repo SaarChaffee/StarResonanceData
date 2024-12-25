@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MapBookTableBase {
+    int32 Id = 1463;
+    int32 SceneId = 1506;
+    int32 SortId = 1586;
+    string Model = 421;
+    int32 AwardId = 1197;
+    int_array StickerId = 1275;
+}
+
+message MapBookTableMgr {
+    map<int32, message> datas = 1;
+}
+

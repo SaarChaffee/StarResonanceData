@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_not_claimed_reward.proto";
+import "stru_union_activity_target.proto";
+
+message MemUnionActivity {
+    int64 lastRefreshTime = 1;
+    map<int32, message> personalTargets = 2;
+    repeated int32 receivedPointAwardIds = 3;
+    repeated zproto.NotClaimedReward noClaimedActiveAwards = 4;
+}
+

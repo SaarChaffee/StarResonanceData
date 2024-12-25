@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_tmp_token_result.proto";
+
+message RetAvatarTokenRequest {
+    int32 errCode = 2;
+    zproto.TmpTokenResult result = 3;
+}
+

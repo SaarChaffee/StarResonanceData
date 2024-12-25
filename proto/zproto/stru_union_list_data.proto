@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_base_data.proto";
+import "stru_user_summary_data.proto";
+
+message UnionListData {
+    zproto.UnionBaseData baseInfo = 1;
+    bool isReq = 2;
+    zproto.UserSummaryData presidentInfo = 3;
+}
+

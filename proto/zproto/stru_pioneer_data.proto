@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_pioneer_info.proto";
+import "stru_dirty_mask.proto";
+
+message PioneerData {
+    map<uint32, message> infoMap = 1;
+    map<int32, message> dirty = 1000;
+}
+

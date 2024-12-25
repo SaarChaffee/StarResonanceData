@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ErrcodeTableBase {
+    int32 Id = 1463;
+    string Errcode = 1759;
+    mlstring Content = 783;
+    int32 MessageId = 1544;
+}
+
+message ErrcodeTableMgr {
+    map<int32, message> datas = 1;
+}
+

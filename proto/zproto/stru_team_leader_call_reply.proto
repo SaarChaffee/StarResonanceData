@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message TeamLeaderCallReply {
+    int32 errCode = 1;
+    repeated uint32 callMem = 2;
+}
+

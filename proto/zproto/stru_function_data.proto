@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message FunctionData {
+    map<int32, bool> unlockedMap = 1;
+    repeated int32 drawnFunctionIds = 2;
+    map<int32, message> dirty = 1000;
+}
+

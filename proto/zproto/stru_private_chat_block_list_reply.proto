@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message PrivateChatBlockListReply {
+    int32 errCode = 2;
+    repeated int64 blockIdList = 3;
+}
+

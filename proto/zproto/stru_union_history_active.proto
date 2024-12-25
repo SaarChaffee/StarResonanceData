@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message UnionHistoryActive {
+    int64 unionId = 1;
+    int64 activePoints = 2;
+    map<int32, message> dirty = 1000;
+}
+

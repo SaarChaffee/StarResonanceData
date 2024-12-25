@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package bokura;
+
+message FacialLibraryTableBase {
+    int32 Id = 1463;
+    string FacialName = 1569;
+    string Remark = 1391;
+    string FaceClip = 396;
+    string MouthClip = 327;
+    string EyeClip = 828;
+    string BrowClip = 631;
+    string NoseClip = 550;
+    string DFM_Brow = 711;
+    string DFM_Eye = 995;
+    string ADJ_Brow = 40;
+    string ADJ_Eye = 1045;
+    string ADJ_Nose = 855;
+    string ADJ_Mouth = 1501;
+    string ADJ_Face = 1054;
+    string PreviewPicture = 981;
+}
+
+message FacialLibraryTableMgr {
+    map<int32, message> datas = 1;
+}
+

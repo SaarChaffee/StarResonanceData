@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EquipTableBase {
+    int32 Id = 1463;
+    string Model = 421;
+    int32 SuitID = 641;
+    int32 SuitPartID = 795;
+    int32 EquipPart = 1740;
+    int32 EquipType = 1970;
+    int32 TypeAttrLibID = 183;
+    int32 StyleEffectLibID = 319;
+    int32 MaxDurability = 41;
+    int32 DurabilityInvalidType = 1202;
+    int32 FashionMId = 411;
+    int32 FashionFId = 1583;
+    int_table BonusGrowTimes = 1523;
+    int32 BasicGrowRange = 1306;
+}
+
+message EquipTableMgr {
+    map<int32, message> datas = 1;
+}
+

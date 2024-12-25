@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_hero_key_item_info.proto";
+import "stru_item.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonHeroKeyInfo {
+    int64 charId = 1;
+    repeated zproto.Item heroKeyItem = 2;
+    map<uint32, message> keyInfo = 3;
+    zproto.Item useItem = 4;
+    repeated zproto.Item heroKeyAwardItem = 5;
+    map<int32, message> dirty = 1000;
+}
+

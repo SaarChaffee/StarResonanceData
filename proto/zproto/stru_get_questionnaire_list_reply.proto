@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_questionnaire_info.proto";
+
+message GetQuestionnaireListReply {
+    zproto.EErrorCode errorCode = 1;
+    int32 errCode = 2;
+    repeated zproto.QuestionnaireInfo questionnaires = 3;
+}
+

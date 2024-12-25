@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_device_info.proto";
+
+message LoginRequest {
+    string openId = 2;
+    string token = 3;
+    int32 sdkType = 4;
+    int32 channelId = 5;
+    int32 os = 6;
+    int32 platformType = 7;
+    zproto.DeviceInfo deviceInfo = 8;
+    string clientVersion = 9;
+    string protocolVersion = 10;
+    string configVersion = 11;
+    int32 areaId = 12;
+}
+

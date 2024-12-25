@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_battle_pass.proto";
+import "stru_season_bp_quest_list.proto";
+import "stru_dirty_mask.proto";
+
+message SeasonCenterHistory {
+    zproto.BattlePass battlePass = 1;
+    zproto.SeasonBpQuestList bpQuestList = 2;
+    map<int32, message> dirty = 1000;
+}
+

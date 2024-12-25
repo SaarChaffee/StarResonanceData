@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message TransferTableBase {
+    int32 Id = 1463;
+    mlstring Name = 439;
+    int32 PivotId = 1300;
+    mlstring TransferDec = 1744;
+    int32 ScenePoint = 273;
+    int_array AwardId = 1197;
+    bool IsOn = 20;
+    int32 SceneTag = 131;
+}
+
+message TransferTableMgr {
+    map<int32, message> datas = 1;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_season_achievement.proto";
+import "stru_dirty_mask.proto";
+
+message SeasonAchievementList {
+    map<uint32, message> seasonAchievementList = 1;
+    map<int32, message> dirty = 1000;
+}
+

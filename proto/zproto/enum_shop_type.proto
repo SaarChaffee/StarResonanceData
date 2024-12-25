@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ShopType {
+    NormalShop = 0;
+    SeasonShop = 1;
+}
+

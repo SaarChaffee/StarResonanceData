@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message PersonalInfo {
+    string showingPicture = 1;
+    string signature = 2;
+    repeated int32 hobbyMark = 3;
+    repeated int32 timeMark = 4;
+}
+

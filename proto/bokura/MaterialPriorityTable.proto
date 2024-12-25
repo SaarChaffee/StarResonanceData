@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MaterialPriorityTableBase {
+    int32 Id = 1463;
+    string Name = 439;
+    string_array MaterialFilePath = 1380;
+    int32 MaterialPriority = 1183;
+    int32 MaterialType = 1428;
+}
+
+message MaterialPriorityTableMgr {
+    map<int32, message> datas = 1;
+}
+

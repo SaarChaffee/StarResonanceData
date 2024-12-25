@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReqUnionMemsListRequest {
+    int64 unionId = 2;
+}
+

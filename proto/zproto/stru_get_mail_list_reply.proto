@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mail_base.proto";
+
+message GetMailListReply {
+    map<int64, message> mailList = 2;
+    int32 size = 3;
+    int32 errCode = 4;
+}
+

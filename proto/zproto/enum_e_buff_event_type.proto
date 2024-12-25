@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EBuffEventType {
+    BuffEventUnknown = 0;
+    BuffEventAddTo = 1;
+    BuffEventRemove = 2;
+    BuffEventReplace = 3;
+    BuffEventTimer = 4;
+    BuffEventStackLayer = 5;
+    BuffEventRemoveLayer = 6;
+    BuffEventSpecialEffects = 10001;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message TeamActivityVoteResultRequest {
+    int32 retCode = 2;
+    int64 vCharId = 3;
+}
+

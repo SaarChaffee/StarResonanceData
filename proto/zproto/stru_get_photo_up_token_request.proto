@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_client_image.proto";
+import "enum_e_platform_func_type.proto";
+
+message GetPhotoUpTokenRequest {
+    uint32 photoId = 2;
+    string renderInfo = 3;
+    uint32 albumId = 4;
+    repeated zproto.ClientImage imagesInfo = 5;
+    string photoDesc = 6;
+    zproto.EPlatformFuncType funcType = 7;
+    int64 ownerId = 8;
+}
+

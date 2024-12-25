@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message UnionEventTableBase {
+    int32 Id = 1463;
+    mlstring Content = 783;
+}
+
+message UnionEventTableMgr {
+    map<int32, message> datas = 1;
+}
+

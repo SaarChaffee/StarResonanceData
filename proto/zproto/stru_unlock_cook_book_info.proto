@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnlockCookBookInfo {
+    repeated int32 bookList = 1;
+    map<int32, int32> foodList = 2;
+}
+

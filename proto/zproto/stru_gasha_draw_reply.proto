@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message GashaDrawReply {
+    int32 errorCode = 1;
+    repeated zproto.Item items = 2;
+}
+

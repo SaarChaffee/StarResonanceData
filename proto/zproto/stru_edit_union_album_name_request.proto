@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message EditUnionAlbumNameRequest {
+    int64 unionId = 1;
+    uint32 albumId = 2;
+    string name = 3;
+}
+

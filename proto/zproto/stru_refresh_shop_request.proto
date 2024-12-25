@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message RefreshShopRequest {
+    bool isSystemAuto = 1;
+    int32 shopId = 2;
+}
+

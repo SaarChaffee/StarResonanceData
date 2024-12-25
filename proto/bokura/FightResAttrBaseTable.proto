@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FightResAttrBaseTableBase {
+    int32 Id = 1463;
+    int_array ResIDs = 924;
+}
+
+message FightResAttrBaseTableMgr {
+    map<int32, message> datas = 1;
+}
+

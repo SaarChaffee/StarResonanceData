@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_match_ready_status.proto";
+
+message MatchPlayerInfo {
+    int64 charId = 1;
+    zproto.EMatchReadyStatus readyStatus = 2;
+    int32 professionId = 3;
+}
+

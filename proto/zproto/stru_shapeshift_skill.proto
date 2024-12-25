@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ShapeshiftSkill {
+    int32 index = 1;
+    int32 skillId = 2;
+}
+

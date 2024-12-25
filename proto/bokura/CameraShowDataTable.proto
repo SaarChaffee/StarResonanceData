@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message CameraShowDataTableBase {
+    int64 Id = 1463;
+    float Start = 678;
+    float Duration = 544;
+    float End = 1415;
+    bool IsAttacker = 920;
+    int32 StateId = 308;
+    int32 GroupId = 196;
+    int32 CameraEffectType = 566;
+    float Frequency = 892;
+    vector3 Amplitude = 244;
+    number_table FrequencyCurve = 158;
+    number_table AmplitudeCurve = 2024;
+    bool OnlyCaster = 492;
+    float MaxDistance = 474;
+    number_table DistanceCurve = 1874;
+    float Intensity = 881;
+    number_table IntensityCurve = 153;
+    float Threshold = 810;
+    bool IsRandom = 1573;
+    number_array ExtraParms = 202;
+}
+
+message CameraShowDataTableMgr {
+    map<int64, message> datas = 1;
+}
+

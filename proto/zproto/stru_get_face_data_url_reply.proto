@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetFaceDataUrlReply {
+    int32 errCode = 1;
+    string faceDataUrl = 2;
+}
+

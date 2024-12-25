@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_user_summary_data.proto";
+
+message NotifyInvitationRequest {
+    int64 teamid = 2;
+    uint32 targetId = 3;
+    uint32 teamNum = 4;
+    zproto.UserSummaryData inviteMemData = 5;
+}
+

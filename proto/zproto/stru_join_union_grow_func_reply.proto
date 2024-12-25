@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_crowd_fund.proto";
+
+message JoinUnionGrowFuncReply {
+    int32 errCode = 1;
+    zproto.UnionCrowdFund crowdFund = 2;
+}
+

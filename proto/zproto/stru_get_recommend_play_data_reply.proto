@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_recommend_play_data.proto";
+
+message GetRecommendPlayDataReply {
+    int32 errCode = 1;
+    map<int32, message> recommendPlayData = 2;
+}
+

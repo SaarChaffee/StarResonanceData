@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message DungeonHotKeyContext {
+    int64 charId = 1;
+    zproto.Item useItem = 2;
+}
+

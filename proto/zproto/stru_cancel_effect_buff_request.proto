@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message CancelEffectBuffRequest {
+    int64 unionId = 2;
+    int32 effectBuffPos = 3;
+}
+

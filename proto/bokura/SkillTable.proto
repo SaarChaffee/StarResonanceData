@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SkillTableBase {
+    int32 Id = 1463;
+    string NameDesign = 1649;
+    mlstring Desc = 1953;
+    mlstring Name = 439;
+    int_array SkillLevelGroup = 1371;
+    int_array EffectIDs = 209;
+    int32 SkillType = 1451;
+    bool FaceTarget = 497;
+    bool IsPreview = 283;
+    int32 TargetType = 736;
+    int32 SkillTargetRangeType = 434;
+    int32 SkillRangeType = 1631;
+    int32 SkillSelectPointType = 178;
+    int32 SkillHatedType = 1592;
+    int32 SkillDamType = 1417;
+    int32 SwitchSkillId = 990;
+    bool IsAoe = 236;
+    string Icon = 1153;
+    int32 NextSkillId = 993;
+    int32 SlotType = 517;
+    int32 LongPressReplaceSKillId = 1868;
+    float LongPressTime = 406;
+    float ComboTakeEffectTime = 1009;
+    bool CanPlayInSky = 1082;
+    int32 SkySkillId = 1405;
+    bool IsArmor = 150;
+    bool CantStiff = 1650;
+    bool CantStiffBack = 199;
+    bool CantStiffDown = 948;
+    bool CantStiffAir = 630;
+    int32 UnbreakSkillPriority = 1706;
+    int32 BreakSkillPriority = 223;
+    bool UseTotalDamageHud = 1346;
+    bool WeaponReturn = 1875;
+    float SkillRootShift = 278;
+    float CoolTimeType = 1658;
+    int_array NecessaryParts = 1107;
+    int_array ExcludeParts = 641;
+    string_array SkillAreaArray = 758;
+    number_table SwitchSkillInfo = 1655;
+    int64 EnergyChargeTime = 1141;
+    int32 MaxEnergyChargeNum = 296;
+    float ContinuesSkillDelayTime = 452;
+    int32 UseAddResValue = 713;
+    bool AtkSpeedSwitch = 766;
+    int32 SkillLookAtAngle = 1353;
+    int32 DefocusLookAtangle = 964;
+    bool IsFractureSkill = 744;
+    bool IsDangerSkill = 857;
+    bool IsPassiveDesc = 1460;
+    bool IsSearchEnemie = 1903;
+    string SearchEnemieFilterName = 1409;
+    bool RockerDir = 418;
+    int32 SkillUnbreakLevelAdditional = 113;
+    bool IsHideReplaceEffect = 883;
+    bool ChangeWpInSkill = 498;
+    bool IsTanlentContinuedBegin = 1862;
+    number_array UIWarningParam = 1110;
+    bool InheritMotionSpeed = 1917;
+}
+
+message SkillTableMgr {
+    map<int32, message> datas = 1;
+}
+

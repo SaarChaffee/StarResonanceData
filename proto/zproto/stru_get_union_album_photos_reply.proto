@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_photo_graph_show.proto";
+
+message GetUnionAlbumPhotosReply {
+    int32 errCode = 1;
+    repeated zproto.PhotoGraphShow photoGraphs = 2;
+}
+

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_image_info.proto";
+import "stru_photo_owner_data.proto";
+import "stru_dirty_mask.proto";
+
+message PhotoGraphShow {
+    uint32 photoId = 1;
+    repeated zproto.ImageInfo images = 2;
+    string renderInfo = 3;
+    string photoDesc = 4;
+    zproto.PhotoOwnerData ownerInfo = 5;
+    map<int32, message> dirty = 1000;
+}
+

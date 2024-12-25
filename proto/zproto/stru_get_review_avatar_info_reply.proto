@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+
+message GetReviewAvatarInfoReply {
+    int32 errCode = 2;
+    zproto.AvatarInfo avatarInfo = 3;
+}
+

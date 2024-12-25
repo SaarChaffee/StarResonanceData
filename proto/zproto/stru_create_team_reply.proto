@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_team_info.proto";
+import "stru_user_detailed_data.proto";
+
+message CreateTeamReply {
+    int32 errCode = 2;
+    zproto.TeamInfo teamInfo = 3;
+    zproto.UserDetailedData userDetailedData = 4;
+}
+

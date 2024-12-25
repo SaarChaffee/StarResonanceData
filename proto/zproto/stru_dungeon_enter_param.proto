@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+message DungeonEnterParam {
+    uint32 playType = 1;
+    uint32 dungeonId = 2;
+    uint32 roomId = 3;
+    repeated int32 affix = 4;
+    uint32 selectType = 5;
+    int64 heroKeyItemUuid = 6;
+}
+

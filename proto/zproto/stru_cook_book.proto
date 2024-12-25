@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message CookBook {
+    uint32 createTime = 1;
+    map<int32, message> dirty = 1000;
+}
+

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PlanetMemoryTableBase {
+    int32 RoomId = 108;
+    int32 DungeonId = 1583;
+    number_array RoomPos = 838;
+    int_array UnlockRoomId = 345;
+    int32 RoomType = 1966;
+    int_array LinkModel = 1139;
+    int_array Affix = 1436;
+    mlstring RoomName = 1873;
+    int32 GsLimit = 148;
+    int_array TargetMonster = 34;
+    int_array UnlockTime = 478;
+    int_array ExtraTarget = 1329;
+}
+
+message PlanetMemoryTableMgr {
+    map<int32, message> datas = 1;
+}
+

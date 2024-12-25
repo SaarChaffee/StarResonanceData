@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_affix_data.proto";
+import "stru_dungeon_community_info.proto";
+import "stru_dungeon_damage.proto";
+import "stru_dungeon_event.proto";
+import "stru_dungeon_flow_info.proto";
+import "stru_dungeon_hero_key_info.proto";
+import "stru_dungeon_homeland_info.proto";
+import "stru_dungeon_pioneer.proto";
+import "stru_dungeon_planet_memory_room.proto";
+import "stru_dungeon_player_list.proto";
+import "stru_dungeon_random_entity_config_id_info.proto";
+import "stru_dungeon_rank_list.proto";
+import "stru_dungeon_revive_info.proto";
+import "stru_dungeon_score.proto";
+import "stru_dungeon_settlement.proto";
+import "stru_dungeon_target.proto";
+import "stru_dungeon_timer_info.proto";
+import "stru_dungeon_title.proto";
+import "stru_dungeon_union_info.proto";
+import "stru_dungeon_var.proto";
+import "stru_dungeon_vote.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonSyncData {
+    int64 sceneUuid = 1;
+    zproto.DungeonFlowInfo flowInfo = 2;
+    zproto.DungeonTitle title = 3;
+    zproto.DungeonTarget target = 4;
+    zproto.DungeonDamage damage = 5;
+    zproto.DungeonVote vote = 6;
+    zproto.DungeonSettlement settlement = 7;
+    zproto.DungeonPioneer DungeonPioneer = 8;
+    zproto.DungeonPlanetMemoryRoom planetRoomInfo = 9;
+    zproto.DungeonVar dungeonVar = 10;
+    zproto.DungeonRankList dungeonRank = 11;
+    zproto.DungeonAffixData dungeonAffixData = 12;
+    zproto.DungeonEvent dungeonEvent = 13;
+    zproto.DungeonScore dungeonScore = 14;
+    zproto.DungeonTimerInfo timerInfo = 15;
+    zproto.DungeonHeroKeyInfo heroKey = 16;
+    zproto.DungeonCommunityInfo community = 17;
+    zproto.DungeonHomelandInfo homeland = 18;
+    zproto.DungeonUnionInfo dungeonUnionInfo = 19;
+    zproto.DungeonPlayerList dungeonPlayerList = 20;
+    zproto.DungeonReviveInfo reviveInfo = 21;
+    zproto.DungeonRandomEntityConfigIdInfo randomEntityConfigIdInfo = 22;
+    map<int32, message> dirty = 1000;
+}
+

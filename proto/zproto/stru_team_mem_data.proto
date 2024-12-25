@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message TeamMemData {
+    int64 charId = 1;
+    uint32 enterTime = 2;
+    int32 callStatus = 3;
+}
+

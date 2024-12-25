@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_equip_attr.proto";
+import "stru_equip_info.proto";
+import "stru_dirty_mask.proto";
+
+message EquipList {
+    map<int32, message> equipList = 1;
+    zproto.EquipAttr equipAttr = 2;
+    map<uint64, message> equipRecastInfo = 4;
+    map<int32, message> dirty = 1000;
+}
+

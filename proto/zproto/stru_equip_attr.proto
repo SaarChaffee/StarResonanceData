@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message EquipAttr {
+    map<uint32, uint32> baseAttrs = 4;
+    int32 perfectionValue = 7;
+    int32 recastCount = 8;
+    int32 totalRecastCount = 9;
+    map<int32, int32> basicAttr = 10;
+    map<int32, int32> advanceAttr = 11;
+    map<int32, int32> recastAttr = 12;
+    int32 perfectionLevel = 13;
+    map<int32, message> dirty = 1000;
+}
+

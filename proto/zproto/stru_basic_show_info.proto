@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_body_size.proto";
+
+message BasicShowInfo {
+    int64 charID = 1;
+    string name = 2;
+    int32 gender = 3;
+    zproto.EBodySize bodySize = 4;
+    int32 level = 5;
+    uint32 curTalentPoolId = 6;
+    uint32 unionHuntRandIdx = 7;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_questionnaire_status.proto";
+
+message QuestionnaireInfo {
+    int32 id = 1;
+    zproto.QuestionnaireStatus status = 2;
+    bool canAnswer = 3;
+}
+

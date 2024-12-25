@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PivotTableBase {
+    int32 Id = 1463;
+    mlstring Name = 439;
+    int32 MapID = 175;
+    mlstring AreaName = 1408;
+    int_array SettingOffNum = 162;
+    int_array CirculateAward = 1952;
+    string PivotPic = 274;
+    int32 PivotArea = 1354;
+    int32 CameraId = 472;
+}
+
+message PivotTableMgr {
+    map<int32, message> datas = 1;
+}
+

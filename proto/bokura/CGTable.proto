@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package bokura;
+
+message CGTableBase {
+    int32 Id = 1463;
+    string CGName = 1264;
+    string ResPath = 548;
+}
+
+message CGTableMgr {
+    map<int32, message> datas = 1;
+}
+

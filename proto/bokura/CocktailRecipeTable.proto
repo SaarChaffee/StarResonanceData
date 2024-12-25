@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message CocktailRecipeTableBase {
+    int32 Id = 1463;
+    mlstring Name = 439;
+    mlstring RecipeText = 932;
+    mlstring IntroductionText = 257;
+    int_table Recipe = 1710;
+    string Model = 421;
+    bool IsVisible = 1044;
+}
+
+message CocktailRecipeTableMgr {
+    map<int32, message> datas = 1;
+}
+

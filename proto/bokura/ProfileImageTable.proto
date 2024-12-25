@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ProfileImageTableBase {
+    int32 Id = 1463;
+    int32 Type = 673;
+    mlstring Name = 439;
+    mlstring UnlockDes = 1991;
+    string Image = 958;
+    int32 Unlock = 1666;
+}
+
+message ProfileImageTableMgr {
+    map<int32, message> datas = 1;
+}
+

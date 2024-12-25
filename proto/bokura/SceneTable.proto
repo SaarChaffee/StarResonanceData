@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SceneTableBase {
+    int32 Id = 1463;
+    mlstring Name = 439;
+    string Comment = 11;
+    int32 SceneType = 208;
+    int32 SceneSubType = 1706;
+    int32 ParentId = 1361;
+    bool IsShareParentSceneData = 1616;
+    int32 SceneResourceId = 1781;
+    string LoadingPng = 536;
+    string_array SceneUi = 708;
+    vector2 MapSize = 250;
+    string_array MapTexs = 1485;
+    int32 MapRowCount = 1058;
+    vector2_array MapTexSize = 82;
+    bool BigWorld = 1871;
+    string_array AudioBank = 1796;
+    int32 SceneEnterType = 132;
+    vector3_array BornPos = 1476;
+    int32 BornId = 824;
+    bool CanRevive = 224;
+    int32 ReviveType = 496;
+    int32 ReviveId = 869;
+    int_array ReviveTableId = 1420;
+    int32 CamConfig = 102;
+    string Bgm = 1107;
+    string LoadingBgm = 360;
+    string BattleBgm = 18;
+    string EnvironmentSound = 1322;
+    number_array CamPosition = 1631;
+    bool LuaScript = 1809;
+    float FallDis = 1769;
+    int32 Weather = 276;
+    int32 DayAndNight = 1682;
+    int32 CutsceneId = 1653;
+    int32 MainUi = 21;
+    bool CanChangeLayer = 1110;
+    number_table MaxLayer = 1414;
+    int_array PreloadCutscenes = 1546;
+    int_array PreloadEPFlows = 135;
+    int32 EPFlowId = 725;
+    int32 ShowMiniMap = 524;
+    int32 MiniMapRatio = 1608;
+    string SubScene = 568;
+}
+
+message SceneTableMgr {
+    map<int32, message> datas = 1;
+}
+

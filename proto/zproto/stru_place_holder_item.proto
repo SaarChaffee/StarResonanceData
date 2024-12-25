@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message PlaceHolderItem {
+    uint32 configId = 1;
+    zproto.Item ItemDetail = 2;
+}
+

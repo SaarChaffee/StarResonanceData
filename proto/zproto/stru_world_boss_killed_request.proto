@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_world_boss_killed_info.proto";
+
+message WorldBossKilledRequest {
+    zproto.WorldBossKilledInfo worldBossKilledInfo = 1;
+}
+

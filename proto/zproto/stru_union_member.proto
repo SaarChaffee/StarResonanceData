@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionMember {
+    int32 officialId = 1;
+    int64 memId = 2;
+    int64 joinTime = 3;
+    int64 weekActivePoints = 4;
+    int64 historyActivePoints = 5;
+}
+

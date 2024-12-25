@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message CreateUnionReply {
+    int32 errCode = 2;
+    int64 nextJoinTime = 3;
+}
+

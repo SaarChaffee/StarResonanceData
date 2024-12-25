@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+message ComposeTableBase {
+    int32 Id = 1463;
+    int32 SystemId = 518;
+    int32 Nums = 1546;
+    string Name = 439;
+    int32 SuccessfulProbability = 1228;
+    int32 ObtainID = 1071;
+    int32 ObtainNum = 1929;
+    string ObtainName = 1627;
+    int32 ConsumableTips = 901;
+}
+
+message ComposeTableMgr {
+    map<int32, message> datas = 1;
+}
+

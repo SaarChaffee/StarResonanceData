@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message TeamActivityResultRequest {
+    int64 vCharId = 2;
+    int32 errCode = 3;
+}
+

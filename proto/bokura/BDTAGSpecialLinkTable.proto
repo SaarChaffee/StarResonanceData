@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+message BDTAGSpecialLinkTableBase {
+    int32 Id = 1463;
+    string Note = 453;
+    int32 NoteType = 256;
+    int32 NodeId = 1205;
+    int32 TargetNodeType = 1957;
+    int32 TargetNodeID = 1587;
+}
+
+message BDTAGSpecialLinkTableMgr {
+    map<int32, message> datas = 1;
+}
+

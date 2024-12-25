@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message JumpTableBase {
+    int32 Id = 1463;
+    float DefaultSpeed = 925;
+    float OperateSpeed = 1762;
+    float ReOperateDefaultSpeed = 1065;
+    number_array WindDragCoefficient = 710;
+    float AmendedGravity = 912;
+    number_array JumpTime = 331;
+    number_array PrepareTime = 1970;
+    number_array JumpBreakTime = 625;
+    string MovePath = 394;
+    number_array ShaderBrightness = 198;
+    number_array ShaderLength = 437;
+    int_array ShaderIsBreath = 172;
+    number_array EnergyConsume = 2017;
+}
+
+message JumpTableMgr {
+    map<int32, message> datas = 1;
+}
+

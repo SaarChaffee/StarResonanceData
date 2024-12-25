@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetUnionAutoPassRequest {
+    int64 unionId = 2;
+    bool autoPass = 3;
+}
+

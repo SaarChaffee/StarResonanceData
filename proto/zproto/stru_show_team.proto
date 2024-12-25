@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_apply_time.proto";
+import "stru_team_mem_data.proto";
+import "stru_user_summary_data.proto";
+
+message ShowTeam {
+    int64 teamId = 1;
+    int64 leaderId = 2;
+    uint32 targetId = 3;
+    bool matching = 4;
+    string desc = 5;
+    repeated zproto.TeamMemData mems = 6;
+    uint64 setTargetTime = 7;
+    repeated zproto.ApplyTime applyTimeList = 8;
+    repeated zproto.UserSummaryData memSocialData = 9;
+}
+

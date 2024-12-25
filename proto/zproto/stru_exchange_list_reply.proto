@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_exchange_item_info.proto";
+
+message ExchangeListReply {
+    int32 errCode = 1;
+    repeated zproto.ExchangeItemInfo items = 2;
+}
+

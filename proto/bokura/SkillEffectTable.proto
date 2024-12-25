@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SkillEffectTableBase {
+    int32 Id = 1463;
+    int32 Level = 1120;
+    string Name = 439;
+    int32 SkillId = 1087;
+    float SkillDamageDistance = 1280;
+    number_array EffectRange = 1488;
+    number_array AiReleaseSkillRange = 2036;
+    int_array CoolTimeOnBattleStart = 1082;
+    int32 UseRandomCoolTime = 682;
+    number_array RandomPVECoolTime = 1917;
+    int_array Tags = 232;
+    int_table BuffTags = 106;
+    int_table HitTags = 1006;
+    int_table EntityTags = 427;
+    mlstring_table SkillAttrDes = 1260;
+    float MaxHorizontalMotionDis = 142;
+    float STRange = 1244;
+    float STAngle = 29;
+    float STSphereRange = 1049;
+    bool IsInBattleState = 901;
+    bool TakeWeaponInSkill = 539;
+    bool NeedScaleCamera = 225;
+    int_array SkillLearnBuffs = 363;
+}
+
+message SkillEffectTableMgr {
+    map<int32, message> datas = 1;
+}
+

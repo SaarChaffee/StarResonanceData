@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_invite_user_data.proto";
+
+message TeamInviteUserReply {
+    int32 errCode = 1;
+    repeated zproto.InviteUserData users = 2;
+}
+

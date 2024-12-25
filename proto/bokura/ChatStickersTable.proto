@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+message ChatStickersTableBase {
+    int32 Id = 1463;
+    int32 Type = 673;
+    int32 GroupId = 196;
+    string Res = 1275;
+    int32 UnlockItem = 702;
+}
+
+message ChatStickersTableMgr {
+    map<int32, message> datas = 1;
+}
+

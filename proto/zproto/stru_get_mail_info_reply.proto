@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mail_base.proto";
+
+message GetMailInfoReply {
+    int32 errCode = 2;
+    zproto.MailBase mail = 3;
+}
+

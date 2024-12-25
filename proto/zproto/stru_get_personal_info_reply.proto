@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_personal_info.proto";
+
+message GetPersonalInfoReply {
+    int32 errCode = 2;
+    zproto.PersonalInfo info = 3;
+}
+

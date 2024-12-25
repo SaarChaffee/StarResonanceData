@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+message TmpTokenResult {
+    int32 errorCode = 1;
+    string tmpSecretId = 2;
+    string tmpSecretKey = 3;
+    string tmpToken = 4;
+    int64 expiredTime = 5;
+    string region = 6;
+    string bucket = 7;
+    string objectKey = 8;
+    uint32 pictureId = 9;
+    int32 version = 10;
+}
+

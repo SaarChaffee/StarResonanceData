@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message TalentPoolTableBase {
+    int32 Id = 1463;
+    string Des = 266;
+    string SectIcon = 606;
+    int32 MainTalentId = 187;
+    int_array SecondaryTalent = 1064;
+    int_array PassiveTalent = 1570;
+    int_table TalentPosition = 1593;
+    int_array RecommendTalent = 1992;
+    mlstring SchoolDes = 926;
+    mlstring RecommendDimension = 852;
+    mlstring SchoolIcon = 1576;
+    mlstring PlayerSchoolIcon = 1946;
+    int_array FantasySolutionList = 1523;
+    int32 StrategyPage = 158;
+}
+
+message TalentPoolTableMgr {
+    map<int32, message> datas = 1;
+}
+

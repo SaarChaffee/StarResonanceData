@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_social_data.proto";
+
+message GetSocialDataReply {
+    int32 errCode = 2;
+    int64 mask = 3;
+    zproto.SocialData data = 4;
+}
+

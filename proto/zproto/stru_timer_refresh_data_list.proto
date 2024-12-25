@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_timer_refresh_list.proto";
+import "stru_dirty_mask.proto";
+
+message TimerRefreshDataList {
+    map<uint32, message> refreshDataList = 1;
+    map<int32, message> dirty = 1000;
+}
+

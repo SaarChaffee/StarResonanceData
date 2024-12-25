@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mark_info.proto";
+import "stru_dirty_mask.proto";
+
+message MarkData {
+    int32 id = 1;
+    map<int64, message> markInfoMap = 2;
+    map<int32, message> dirty = 1000;
+}
+

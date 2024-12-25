@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SetKeyboardContrastTableBase {
+    int32 Id = 1463;
+    mlstring Keyboard = 1132;
+    int32 ShowType = 1131;
+    string ImageWay = 1135;
+}
+
+message SetKeyboardContrastTableMgr {
+    map<int32, message> datas = 1;
+}
+

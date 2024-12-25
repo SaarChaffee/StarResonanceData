@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetDetailedDataInfoRequest {
+    int64 targetCharId = 1;
+}
+

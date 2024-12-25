@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_medal_hole.proto";
+import "stru_medal_node.proto";
+import "stru_dirty_mask.proto";
+
+message SeasonMedalInfo {
+    uint32 seasonId = 1;
+    map<uint32, message> normalHoleInfos = 2;
+    zproto.MedalHole coreHoleInfo = 3;
+    map<uint32, message> coreHoleNodeInfos = 4;
+    map<int32, message> dirty = 1000;
+}
+

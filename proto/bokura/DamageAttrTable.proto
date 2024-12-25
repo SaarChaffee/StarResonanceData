@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message DamageAttrTableBase {
+    int64 Id = 1463;
+    int32 Level = 1120;
+    string Name = 439;
+    int32 DamageType = 1478;
+    int32 TypeEnum = 445;
+    string DamageScript = 1550;
+    int_array PVEDamageRadio = 612;
+    int_array PVEFixedParameter = 438;
+    int32 PVELoopTime = 664;
+    int_array PVEStunnedDamage = 1016;
+    int32 PVEExtinctionDamage = 1078;
+    int_array PartDamageRadio = 1042;
+    int_table AbnormalDamage = 1810;
+    int32 DamageProperty = 1278;
+    int32 PartDamageType = 453;
+    number_array DamageWeight = 1615;
+    int_array Tags = 232;
+    bool BehitLightIsOpen = 1780;
+}
+
+message DamageAttrTableMgr {
+    map<int64, message> datas = 1;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_investigate_data.proto";
+import "stru_dirty_mask.proto";
+
+message InvestigateList {
+    map<uint32, message> investigateMap = 1;
+    map<uint32, bool> compInvestigateMap = 2;
+    repeated uint32 compReasoningMap = 3;
+    map<int32, message> dirty = 1000;
+}
+

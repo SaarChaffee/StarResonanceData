@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EEntitySourceType {
+    EntitySourceServer = 0;
+    EntitySourceClient = 1;
+    EntitySourceUser = 2;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_char_base_info_db.proto";
+import "enum_e_error_code.proto";
+import "stru_scene_info_db.proto";
+
+message CharInfoDb {
+    zproto.CharBaseInfoDb baseInfo = 1;
+    zproto.SceneInfoDb sceneInfo = 2;
+    zproto.EErrorCode errCode = 3;
+}
+

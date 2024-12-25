@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ChangeQueueTableBase {
+    int32 Id = 1463;
+    int32 Sort = 1643;
+    int_table Consumable = 426;
+    string ConsumableName = 1685;
+    int_table ExchangeGoods = 1101;
+    string ExchangeName = 1470;
+    int_table Condition = 1634;
+    int_array WaitTime = 106;
+}
+
+message ChangeQueueTableMgr {
+    map<int32, message> datas = 1;
+}
+

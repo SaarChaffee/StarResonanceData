@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "enum_shop_type.proto";
+
+message GetShopItemCanBuyReply {
+    zproto.EErrorCode errorCode = 2;
+    int32 errCode = 3;
+    zproto.ShopType shopType = 4;
+    int32 itemId = 5;
+    bool canBuy = 6;
+}
+

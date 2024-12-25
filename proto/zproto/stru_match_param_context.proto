@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_match_mode.proto";
+import "stru_match_team_param.proto";
+import "stru_match_world_boss_param.proto";
+
+message MatchParamContext {
+    zproto.EMatchMode matchMode = 1;
+    zproto.MatchTeamParam matchTeamParam = 2;
+    zproto.MatchWorldBossParam matchWorldBossParam = 3;
+    string matchToken = 4;
+    int64 teamId = 5;
+}
+

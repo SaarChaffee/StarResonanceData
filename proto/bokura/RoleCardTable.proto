@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message RoleCardTableBase {
+    int32 Id = 1463;
+    string FunctionId = 149;
+    mlstring Name = 439;
+    string System = 1444;
+    string Show = 183;
+    string Sort = 1643;
+    string Check = 1274;
+    string Icon = 1153;
+}
+
+message RoleCardTableMgr {
+    map<int32, message> datas = 1;
+}
+

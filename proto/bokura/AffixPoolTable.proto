@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AffixPoolTableBase {
+    int32 Id = 1463;
+    string Name = 439;
+    string Description = 75;
+    int_table Affix = 1436;
+    int32 AffixQuantity = 1469;
+    int_table EffectTypeLimit = 1532;
+    int_table TargetTypeLimit = 1783;
+}
+
+message AffixPoolTableMgr {
+    map<int32, message> datas = 1;
+}
+

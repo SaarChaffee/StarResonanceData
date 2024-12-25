@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionCrowdFund {
+    int64 fundBeginTime = 1;
+    map<int32, int64> fundPosCharId = 2;
+    int64 buildEndTime = 3;
+    bool buildingFinished = 4;
+    bool fundHasBegin = 5;
+}
+

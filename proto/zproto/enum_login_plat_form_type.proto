@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum LoginPlatFormType {
+    InnerPlatForm = 0;
+    TencentPlatForm = 1;
+    IntlPlatForm = 2;
+}
+

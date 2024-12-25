@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_building.proto";
+
+message UpgradeUnionBuildingReply {
+    int32 errCode = 1;
+    zproto.UnionBuilding upgradeBuildInfo = 2;
+}
+

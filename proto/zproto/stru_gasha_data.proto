@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_gasha_guarantee_info.proto";
+import "stru_gasha_info.proto";
+import "stru_dirty_mask.proto";
+
+message GashaData {
+    map<uint32, message> gashaInfos = 1;
+    map<uint32, message> gashaGuaranteeInfos = 2;
+    map<int32, message> dirty = 1000;
+}
+

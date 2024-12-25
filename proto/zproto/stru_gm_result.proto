@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GmResult {
+    bool success = 1;
+    string failReason = 2;
+}
+

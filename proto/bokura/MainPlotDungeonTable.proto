@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package bokura;
+
+message MainPlotDungeonTableBase {
+    int32 DungeonId = 1583;
+    string Background = 343;
+    int32 RedDotIndex = 371;
+}
+
+message MainPlotDungeonTableMgr {
+    map<int32, message> datas = 1;
+}
+

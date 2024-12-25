@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_assign_scene_source_type.proto";
+import "stru_enter_scene_params.proto";
+import "enum_e_scene_assign_type.proto";
+import "stru_login_scene_params.proto";
+import "stru_scene_init_params.proto";
+
+message AssignSceneParams {
+    int32 sceneId = 1;
+    int64 creatorCharId = 2;
+    zproto.ESceneAssignType assignType = 3;
+    zproto.SceneInitParams initParam = 4;
+    zproto.EnterSceneParams enterParam = 5;
+    zproto.LoginSceneParams loginParam = 6;
+    zproto.EAssignSceneSourceType sourceType = 7;
+}
+

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message NpcEntityGlobalTableBase {
+    int32 UId = 2028;
+    int32 Id = 1463;
+    number_array Position = 686;
+    int32 SourceType = 380;
+}
+
+message NpcEntityGlobalTableMgr {
+    map<int32, message> datas = 1;
+}
+

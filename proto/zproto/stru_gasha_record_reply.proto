@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_gasha_record.proto";
+
+message GashaRecordReply {
+    int32 errCode = 1;
+    zproto.GashaRecord gashaRecordDatas = 2;
+    uint32 startId = 3;
+    uint32 count = 4;
+    uint32 totalCount = 5;
+}
+

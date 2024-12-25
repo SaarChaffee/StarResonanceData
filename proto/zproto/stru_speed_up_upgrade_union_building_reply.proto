@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_building.proto";
+
+message SpeedUpUpgradeUnionBuildingReply {
+    int32 errCode = 1;
+    zproto.UnionBuilding upgradeBuildInfo = 2;
+    int32 selfSpeedTimes = 3;
+}
+

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MapStickerTargetTableBase {
+    int32 Id = 1463;
+    int32 TargetType = 736;
+    int_array Param = 1207;
+    int32 Num = 947;
+    int32 SceneId = 1506;
+    string Des = 266;
+}
+
+message MapStickerTargetTableMgr {
+    map<int32, message> datas = 1;
+}
+

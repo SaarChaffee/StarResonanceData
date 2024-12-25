@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+
+message UnionActivityRankInfo {
+    int64 charId = 1;
+    string charName = 2;
+    zproto.AvatarInfo avatarInfo = 3;
+    int32 rankIdx = 4;
+    int32 value = 5;
+}
+

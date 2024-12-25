@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message DayAndNightTableBase {
+    int32 Id = 1463;
+    int32 CycleTime = 1534;
+    vector2_array Stage = 1636;
+}
+
+message DayAndNightTableMgr {
+    map<int32, message> datas = 1;
+}
+

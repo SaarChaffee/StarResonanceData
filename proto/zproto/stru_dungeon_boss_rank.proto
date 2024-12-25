@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_rank_data.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonBossRank {
+    map<int32, message> bossRank = 1;
+    map<int32, message> dirty = 1000;
+}
+

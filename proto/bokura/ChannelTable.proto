@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ChannelTableBase {
+    int32 Id = 1463;
+    int32 Type = 673;
+    mlstring ChannelName = 1563;
+    string ChannelStyle = 884;
+    int32 FunctionId = 149;
+    int_array SubFunctionId = 800;
+    int32 Sort = 1643;
+    string_array ChannelFunc = 794;
+}
+
+message ChannelTableMgr {
+    map<int32, message> datas = 1;
+}
+

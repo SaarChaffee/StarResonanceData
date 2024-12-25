@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ZoneTableBase {
+    int32 Id = 1463;
+    string Name = 439;
+    int32 ModelID = 2011;
+    string EffectPath = 1536;
+    int_table StatusInfo = 1979;
+    int_table StatusTransition = 109;
+    int32 DefaultState = 1528;
+    int_table InteractionTemplate = 1682;
+    string_array InteractionEvent = 1343;
+    int_table ShowStatusInfo = 1473;
+    int_table ShowStatusTransition = 1771;
+}
+
+message ZoneTableMgr {
+    map<int32, message> datas = 1;
+}
+

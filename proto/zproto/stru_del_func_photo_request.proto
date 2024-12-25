@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_platform_func_type.proto";
+
+message DelFuncPhotoRequest {
+    zproto.EPlatformFuncType funcType = 1;
+    int64 ownerId = 2;
+    uint32 photoId = 3;
+}
+

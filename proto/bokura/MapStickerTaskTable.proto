@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MapStickerTaskTableBase {
+    int32 Id = 1463;
+    int_array TargetId = 1432;
+    mlstring Title = 695;
+    mlstring Des = 266;
+    int32 TargetNum = 982;
+}
+
+message MapStickerTaskTableMgr {
+    map<int32, message> datas = 1;
+}
+

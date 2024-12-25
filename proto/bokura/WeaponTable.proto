@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message WeaponTableBase {
+    int32 Id = 1463;
+    mlstring Name = 439;
+    string Icon = 1153;
+    mlstring Story = 1313;
+    mlstring Intro = 740;
+    int_array Talent = 877;
+    int32 Element = 547;
+    int_table WeaponBrokeExtraItem = 1327;
+    int_table WeaponStarExtraItem = 1248;
+    int_table WeaponSkillExtraItem = 130;
+    bool IsClose = 8;
+    int_array CommonSkillIds = 76;
+    bool HasSecondary = 3361;
+    int32 ModelId = 555;
+    int_array WeaponModelId = 173;
+    int32 TimelineId = 1094;
+    number_table ModelPos = 1121;
+    number_table ModelRot = 325;
+    string_array Model = 421;
+    string AnimTemplate = 1244;
+    string_table Mount = 278;
+    number_table MountOffset = 1939;
+    number_table MountRot = 380;
+    string_table WeaponIdle = 292;
+    int_array SkillIds = 1496;
+    int_array AcquiredSkillIds = 1670;
+    int_table WearedSkillIds = 1713;
+    string_table SkillIdsVideo = 539;
+    int_table SpecialSkillIds = 1882;
+    int32 SkySkillId = 1405;
+    int32 FightResTemplateId = 1816;
+    int32 WhackSkillId = 1072;
+    float WhackTakeEffectTime = 565;
+    int32 PassiveSkillId = 1740;
+    float SpacingDistance = 1847;
+    string_array ChangeWeaponAction = 1612;
+    float STRange = 3292;
+    float STAngle = 29;
+    float STSphereRange = 1049;
+    float STDistanceWeight = 2046;
+    float STAngleWeight = 1702;
+    float STCloseDistanceThreshold = 1642;
+    float STCancelRange = 385;
+    float STCheckEndTime = 2326;
+    float SupTargetEffectRange = 1325;
+    float LockCancelRange = 756;
+    float FocusCancelRange = 1330;
+    float FocusCheckEndTime = 25;
+    int32 BattleRushMaxChargeCount = 135;
+    float BattleRushChargeTime = 916;
+    number_array DodgeStartTime = 448;
+    float DodgeCountDown = 990;
+    int32 RushSkillId = 1296;
+    float RushBreakTime = 743;
+    number_array RushAnimTime = 18;
+    int_array RushPerformanceBuff = 1966;
+    int_array DodgeClientBuff = 1720;
+    string_array RushCurve = 1293;
+    bool TakeWeaponInBattle = 812;
+    int32 BasicHitTag = 1958;
+    int_array Tags = 232;
+    int_array FightbackSkillIds = 864;
+    int32 PassiveId = 834;
+    float DodgeInvincibleTime = 998;
+    int_table EffectSwitch = 424;
+    int_array BattleRushOriginEnergyCost = 1130;
+    int32 Create = 1640;
+    int32 Factor = 828;
+    int32 ObtainTips = 1301;
+    int32 Index = 1400;
+}
+
+message WeaponTableMgr {
+    map<int32, message> datas = 1;
+}
+

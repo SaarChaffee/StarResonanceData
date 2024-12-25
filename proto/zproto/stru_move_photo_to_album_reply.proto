@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message MovePhotoToAlbumReply {
+    int32 errCode = 2;
+    uint32 photoId = 3;
+    uint32 prevAlbumId = 4;
+    uint32 curAlbumId = 5;
+}
+

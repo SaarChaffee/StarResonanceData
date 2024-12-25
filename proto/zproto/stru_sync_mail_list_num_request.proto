@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message SyncMailListNumRequest {
+    int32 normalNum = 2;
+    int32 importantNum = 3;
+    repeated int64 normalUnReadList = 4;
+    repeated int64 importantUnReadList = 5;
+}
+

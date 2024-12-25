@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_notify_kick_out_off_request.proto";
+
+message WorldLoginNtf {
+    message NotifyKickOutOff {
+        zproto.NotifyKickOutOffRequest vRequest = 1;
+    }
+
+}
+
