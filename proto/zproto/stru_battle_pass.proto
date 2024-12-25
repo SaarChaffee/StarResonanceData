@@ -14,7 +14,7 @@ message BattlePass {
     bool isUnlock = 6;
     bool buyNormalPas = 7;
     bool buyPrimePass = 8;
-    map<int32, message> award = 9;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.BattlePassAwardInfo> award = 9;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -10,6 +10,6 @@ message GashaGuaranteeInfo {
     uint32 guaranteeY = 3;
     int32 residueGuaranteeTimeX = 4;
     int32 residueGuaranteeTimeY = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

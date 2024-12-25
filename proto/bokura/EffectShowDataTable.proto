@@ -28,6 +28,6 @@ message EffectShowDataTableBase {
 }
 
 message EffectShowDataTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.EffectShowDataTableBase> datas = 1;
 }
 

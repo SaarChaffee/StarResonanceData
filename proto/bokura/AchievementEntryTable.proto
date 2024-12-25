@@ -10,6 +10,6 @@ message AchievementEntryTableBase {
 }
 
 message AchievementEntryTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.AchievementEntryTableBase> datas = 1;
 }
 

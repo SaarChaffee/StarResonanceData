@@ -9,8 +9,8 @@ message SeasonActivation {
     int32 seasonId = 1;
     int32 activationPoint = 2;
     int32 refreshTime = 3;
-    map<int32, message> activationTargets = 4;
+    map<int32, .zproto.SeasonActivationTarget> activationTargets = 4;
     map<uint32, int32> stageRewardStatus = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

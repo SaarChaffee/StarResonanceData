@@ -48,6 +48,6 @@ message DungeonSyncData {
     zproto.DungeonPlayerList dungeonPlayerList = 20;
     zproto.DungeonReviveInfo reviveInfo = 21;
     zproto.DungeonRandomEntityConfigIdInfo randomEntityConfigIdInfo = 22;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

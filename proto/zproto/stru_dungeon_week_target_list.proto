@@ -6,8 +6,8 @@ import "stru_dungeon_target_progress.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonWeekTargetList {
-    map<int32, message> weekTarget = 1;
+    map<int32, .zproto.DungeonTargetProgress> weekTarget = 1;
     uint32 refreshTime = 2;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

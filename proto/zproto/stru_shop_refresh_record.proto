@@ -7,6 +7,6 @@ import "stru_dirty_mask.proto";
 message ShopRefreshRecord {
     int32 shopId = 1;
     repeated uint64 timestamp = 2;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

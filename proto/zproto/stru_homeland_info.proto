@@ -7,7 +7,7 @@ import "stru_dirty_mask.proto";
 
 message HomelandInfo {
     uint32 incrementId = 1;
-    map<int64, message> structures = 2;
-    map<int32, message> dirty = 1000;
+    map<int64, .zproto.Structure> structures = 2;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

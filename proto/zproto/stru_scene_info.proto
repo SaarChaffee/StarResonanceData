@@ -16,6 +16,6 @@ message SceneInfo {
     uint32 oldSceneSubType = 7;
     uint32 sceneSubType = 8;
     zproto.TransferInfo transferInfo = 9;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

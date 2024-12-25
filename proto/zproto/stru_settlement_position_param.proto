@@ -5,6 +5,6 @@ package zproto;
 import "stru_settlement_position.proto";
 
 message SettlementPositionParam {
-    map<uint32, message> vUserPos = 1;
+    map<uint32, .zproto.SettlementPosition> vUserPos = 1;
 }
 

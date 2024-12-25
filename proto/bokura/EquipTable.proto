@@ -22,6 +22,6 @@ message EquipTableBase {
 }
 
 message EquipTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.EquipTableBase> datas = 1;
 }
 

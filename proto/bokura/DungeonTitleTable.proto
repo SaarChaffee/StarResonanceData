@@ -12,6 +12,6 @@ message DungeonTitleTableBase {
 }
 
 message DungeonTitleTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.DungeonTitleTableBase> datas = 1;
 }
 

@@ -8,11 +8,11 @@ import "stru_dungeon_week_target_list.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonList {
-    map<int32, message> completeDungeon = 1;
+    map<int32, .zproto.DungeonInfo> completeDungeon = 1;
     uint32 resetTime = 2;
     uint32 normalDungeonPassCount = 3;
     zproto.DungeonEnterLimit dungeonEnterLimit = 4;
     zproto.DungeonWeekTargetList weekTarget = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

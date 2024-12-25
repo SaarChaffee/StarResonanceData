@@ -6,7 +6,7 @@ import "stru_dungeon_title_list.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonTitle {
-    map<int64, message> titleList = 1;
-    map<int32, message> dirty = 1000;
+    map<int64, .zproto.DungeonTitleList> titleList = 1;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

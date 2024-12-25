@@ -23,6 +23,6 @@ message QuestTableBase {
 }
 
 message QuestTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.QuestTableBase> datas = 1;
 }
 

@@ -60,6 +60,6 @@ message AITableBase {
 }
 
 message AITableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.AITableBase> datas = 1;
 }
 

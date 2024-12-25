@@ -22,6 +22,6 @@ message BasicAttrEffectTableBase {
 }
 
 message BasicAttrEffectTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.BasicAttrEffectTableBase> datas = 1;
 }
 

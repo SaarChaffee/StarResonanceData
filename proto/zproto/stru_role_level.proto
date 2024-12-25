@@ -10,6 +10,6 @@ message RoleLevel {
     int64 curLevelExp = 2;
     map<int32, bool> ReceivedLevelList = 3;
     zproto.LevelProficiency proficiencyInfo = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

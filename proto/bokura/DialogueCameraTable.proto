@@ -13,6 +13,6 @@ message DialogueCameraTableBase {
 }
 
 message DialogueCameraTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.DialogueCameraTableBase> datas = 1;
 }
 

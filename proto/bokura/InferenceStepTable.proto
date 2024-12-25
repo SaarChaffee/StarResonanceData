@@ -15,6 +15,6 @@ message InferenceStepTableBase {
 }
 
 message InferenceStepTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.InferenceStepTableBase> datas = 1;
 }
 

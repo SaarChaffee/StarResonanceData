@@ -17,6 +17,6 @@ message TrapTableBase {
 }
 
 message TrapTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.TrapTableBase> datas = 1;
 }
 

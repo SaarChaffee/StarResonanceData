@@ -14,6 +14,6 @@ message Structure {
     zproto.IntVec3 position = 5;
     zproto.Vec4 quaternion = 6;
     zproto.IntVec3 color = 7;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

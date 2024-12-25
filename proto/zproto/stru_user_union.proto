@@ -21,6 +21,6 @@ message UserUnion {
     uint64 leaveTime = 11;
     zproto.UnionDanceHistory danceRecord = 13;
     zproto.UserUnionHuntInfo userUnionHuntInfo = 14;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

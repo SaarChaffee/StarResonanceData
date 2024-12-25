@@ -8,6 +8,6 @@ message MedalHole {
     uint32 holeId = 1;
     uint32 holeLevel = 2;
     uint32 curExp = 3;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

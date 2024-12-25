@@ -57,6 +57,6 @@ message MonsterTableBase {
 }
 
 message MonsterTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.MonsterTableBase> datas = 1;
 }
 

@@ -21,6 +21,6 @@ message MessageTableBase {
 }
 
 message MessageTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.MessageTableBase> datas = 1;
 }
 

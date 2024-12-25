@@ -12,6 +12,6 @@ message CharTeam {
     repeated int64 charIds = 5;
     bool isMatching = 6;
     int32 charTeamVersion = 7;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

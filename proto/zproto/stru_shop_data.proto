@@ -6,7 +6,7 @@ import "stru_shop_refresh_record.proto";
 import "stru_dirty_mask.proto";
 
 message ShopData {
-    map<int32, message> refreshList = 1;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.ShopRefreshRecord> refreshList = 1;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -6,7 +6,7 @@ import "stru_parkour_record.proto";
 import "stru_dirty_mask.proto";
 
 message ParkourRecordList {
-    map<uint32, message> recordList = 1;
-    map<int32, message> dirty = 1000;
+    map<uint32, .zproto.ParkourRecord> recordList = 1;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

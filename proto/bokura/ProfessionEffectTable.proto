@@ -21,6 +21,6 @@ message ProfessionEffectTableBase {
 }
 
 message ProfessionEffectTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ProfessionEffectTableBase> datas = 1;
 }
 

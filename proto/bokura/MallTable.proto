@@ -23,6 +23,6 @@ message MallTableBase {
 }
 
 message MallTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.MallTableBase> datas = 1;
 }
 

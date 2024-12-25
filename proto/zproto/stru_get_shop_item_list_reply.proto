@@ -10,6 +10,6 @@ message GetShopItemListReply {
     zproto.EErrorCode errorCode = 2;
     int32 errCode = 3;
     zproto.ShopType shopType = 4;
-    map<int32, message> tabs = 5;
+    map<int32, .zproto.ShopTabInfo> tabs = 5;
 }
 

@@ -7,8 +7,8 @@ import "stru_dungeon_target_award.proto";
 import "stru_dirty_mask.proto";
 
 message ChallengeDungeonInfo {
-    map<int32, message> dungeonInfo = 1;
-    map<int32, message> dungeonTargetAward = 2;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DungeonInfo> dungeonInfo = 1;
+    map<int32, .zproto.DungeonTargetAward> dungeonTargetAward = 2;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -11,6 +11,6 @@ message NotifyJoinTeamRequest {
     zproto.TeamBaseInfo baseInfo = 2;
     repeated zproto.TeamMemData memberData = 3;
     repeated zproto.UserDetailedData socialDatas = 4;
-    map<int64, message> memRealTimeVoiceInfos = 5;
+    map<int64, .zproto.TeamMemRealTimeVoiceInfo> memRealTimeVoiceInfos = 5;
 }
 

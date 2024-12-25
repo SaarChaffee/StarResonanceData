@@ -14,6 +14,6 @@ message DungeonFlowInfo {
     int32 settlementTime = 6;
     int32 dungeonTimes = 7;
     int32 result = 8;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

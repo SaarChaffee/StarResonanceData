@@ -12,6 +12,6 @@ message ProfessionSignLevelTableBase {
 }
 
 message ProfessionSignLevelTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ProfessionSignLevelTableBase> datas = 1;
 }
 

@@ -21,6 +21,6 @@ message WeaponStarTableBase {
 }
 
 message WeaponStarTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.WeaponStarTableBase> datas = 1;
 }
 

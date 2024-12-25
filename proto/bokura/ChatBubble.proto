@@ -11,6 +11,6 @@ message ChatBubbleBase {
 }
 
 message ChatBubbleMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ChatBubbleBase> datas = 1;
 }
 

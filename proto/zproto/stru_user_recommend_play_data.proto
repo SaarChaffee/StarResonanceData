@@ -6,6 +6,6 @@ import "stru_dirty_mask.proto";
 
 message UserRecommendPlayData {
     map<int32, int64> playMail = 1;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -29,6 +29,6 @@ message FashionTableBase {
 }
 
 message FashionTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.FashionTableBase> datas = 1;
 }
 

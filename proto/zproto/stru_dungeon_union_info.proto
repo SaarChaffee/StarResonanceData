@@ -9,9 +9,9 @@ import "stru_dirty_mask.proto";
 
 message DungeonUnionInfo {
     int64 unionId = 1;
-    map<int32, message> unionBuildings = 2;
-    map<int32, message> eScreenInfos = 3;
+    map<int32, .zproto.UnionBuilding> unionBuildings = 2;
+    map<int32, .zproto.UnionEScreenInfo> eScreenInfos = 3;
     zproto.DanceBall danceBall = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

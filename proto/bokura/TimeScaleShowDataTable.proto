@@ -14,6 +14,6 @@ message TimeScaleShowDataTableBase {
 }
 
 message TimeScaleShowDataTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.TimeScaleShowDataTableBase> datas = 1;
 }
 

@@ -32,6 +32,6 @@ message BuffTableBase {
 }
 
 message BuffTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.BuffTableBase> datas = 1;
 }
 

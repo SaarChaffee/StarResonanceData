@@ -25,6 +25,6 @@ message MaterialShowDataTableBase {
 }
 
 message MaterialShowDataTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.MaterialShowDataTableBase> datas = 1;
 }
 

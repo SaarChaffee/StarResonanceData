@@ -12,6 +12,6 @@ message UnionTagTableBase {
 }
 
 message UnionTagTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.UnionTagTableBase> datas = 1;
 }
 

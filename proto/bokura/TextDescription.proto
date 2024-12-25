@@ -12,6 +12,6 @@ message TextDescriptionBase {
 }
 
 message TextDescriptionMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.TextDescriptionBase> datas = 1;
 }
 

@@ -7,6 +7,6 @@ import "stru_dirty_mask.proto";
 
 message EquipData {
     repeated zproto.EquipNine equipInfos = 1;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

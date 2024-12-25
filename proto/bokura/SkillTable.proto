@@ -67,6 +67,6 @@ message SkillTableBase {
 }
 
 message SkillTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.SkillTableBase> datas = 1;
 }
 

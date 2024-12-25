@@ -6,10 +6,10 @@ import "stru_world_event_data.proto";
 import "stru_dirty_mask.proto";
 
 message WorldEventMap {
-    map<uint32, message> eventMap = 1;
+    map<uint32, .zproto.worldEventData> eventMap = 1;
     int32 acceptCount = 2;
     int64 lastUpdateTime = 3;
     int64 refreshTime = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

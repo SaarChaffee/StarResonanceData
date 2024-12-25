@@ -15,6 +15,6 @@ message ModTableBase {
 }
 
 message ModTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ModTableBase> datas = 1;
 }
 

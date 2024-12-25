@@ -23,6 +23,6 @@ message ChallengeHeroDungeonTableBase {
 }
 
 message ChallengeHeroDungeonTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ChallengeHeroDungeonTableBase> datas = 1;
 }
 

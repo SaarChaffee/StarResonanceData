@@ -6,9 +6,9 @@ import "stru_mark_data.proto";
 import "stru_dirty_mask.proto";
 
 message MapData {
-    map<int32, message> markDataMap = 1;
+    map<int32, .zproto.MarkData> markDataMap = 1;
     map<int32, bool> aresMap = 2;
     int32 markUuid = 3;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

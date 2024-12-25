@@ -5,6 +5,6 @@ package zproto;
 import "stru_int_vec3.proto";
 
 message ColorData {
-    map<int32, message> colorDict = 1;
+    map<int32, .zproto.IntVec3> colorDict = 1;
 }
 

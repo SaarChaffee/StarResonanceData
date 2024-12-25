@@ -18,6 +18,6 @@ message SeasonNodeTableBase {
 }
 
 message SeasonNodeTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.SeasonNodeTableBase> datas = 1;
 }
 

@@ -6,7 +6,7 @@ import "stru_exchange_info.proto";
 import "stru_dirty_mask.proto";
 
 message ExchangeItem {
-    map<int32, message> exchangeInfo = 1;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.ExchangeInfo> exchangeInfo = 1;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

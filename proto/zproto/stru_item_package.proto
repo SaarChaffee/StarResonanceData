@@ -6,11 +6,11 @@ import "stru_package.proto";
 import "stru_dirty_mask.proto";
 
 message ItemPackage {
-    map<int32, message> packages = 1;
+    map<int32, .zproto.Package> packages = 1;
     map<int32, int32> unlockItems = 2;
     int32 quickBar = 3;
     int32 itemUuid = 4;
     map<int32, int64> useGroupCd = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

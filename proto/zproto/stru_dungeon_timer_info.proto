@@ -15,6 +15,6 @@ message DungeonTimerInfo {
     int32 index = 5;
     int32 changeTime = 6;
     zproto.EDungeonTimerEffectType effectType = 7;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

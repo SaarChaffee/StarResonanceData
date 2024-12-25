@@ -11,6 +11,6 @@ message CounterTableBase {
 }
 
 message CounterTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.CounterTableBase> datas = 1;
 }
 

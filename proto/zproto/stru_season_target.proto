@@ -6,7 +6,7 @@ import "stru_season_target_info.proto";
 import "stru_dirty_mask.proto";
 
 message SeasonTarget {
-    map<int32, message> targetInfo = 1;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.SeasonTargetInfo> targetInfo = 1;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -5,6 +5,6 @@ package zproto;
 import "stru_camera_scheme_info.proto";
 
 message cameraSchemeCache {
-    map<string, message> cameraSchemeDict = 1;
+    map<string, .zproto.cameraSchemeInfo> cameraSchemeDict = 1;
 }
 

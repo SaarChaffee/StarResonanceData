@@ -8,6 +8,6 @@ message WorldEventAwardTableBase {
 }
 
 message WorldEventAwardTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.WorldEventAwardTableBase> datas = 1;
 }
 

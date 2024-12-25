@@ -9,7 +9,7 @@ import "stru_total_friendliness.proto";
 message GetFriendBaseInfoReply {
     int32 errCode = 2;
     zproto.FriendBaseInfo baseInfo = 3;
-    map<int64, message> friendlinessList = 5;
+    map<int64, .zproto.Friendliness> friendlinessList = 5;
     zproto.TotalFriendliness totalFriendliness = 6;
 }
 

@@ -12,6 +12,6 @@ message PlayNameTableBase {
 }
 
 message PlayNameTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.PlayNameTableBase> datas = 1;
 }
 

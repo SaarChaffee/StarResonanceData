@@ -6,7 +6,7 @@ import "stru_fish_record.proto";
 import "stru_dirty_mask.proto";
 
 message FishSocialData {
-    map<int32, message> fishRecords = 1;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.FishRecord> fishRecords = 1;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

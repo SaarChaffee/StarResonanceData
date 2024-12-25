@@ -19,6 +19,6 @@ message PaymentTableBase {
 }
 
 message PaymentTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.PaymentTableBase> datas = 1;
 }
 

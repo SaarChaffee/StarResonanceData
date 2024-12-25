@@ -9,6 +9,6 @@ message MonsterExploreInfo {
     map<int32, int32> targetNum = 2;
     uint32 awardFlag = 3;
     bool isFlag = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

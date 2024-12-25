@@ -10,12 +10,12 @@ message DanceBall {
     int64 beginTime = 2;
     int64 endTime = 3;
     int32 randIndex = 4;
-    map<int64, message> dancers = 5;
+    map<int64, .zproto.DancerInfo> dancers = 5;
     int32 buffId = 6;
     int32 npcId = 7;
     int32 npcPosIndex = 8;
     int32 sumDanceScore = 9;
     bool hasNotifyNpc = 10;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

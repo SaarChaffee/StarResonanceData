@@ -12,6 +12,6 @@ message ScaleSampleTableBase {
 }
 
 message ScaleSampleTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.ScaleSampleTableBase> datas = 1;
 }
 

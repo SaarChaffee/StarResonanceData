@@ -11,6 +11,6 @@ message SkillLevelTableBase {
 }
 
 message SkillLevelTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.SkillLevelTableBase> datas = 1;
 }
 

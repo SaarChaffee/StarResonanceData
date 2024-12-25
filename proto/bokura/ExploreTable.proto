@@ -13,6 +13,6 @@ message ExploreTableBase {
 }
 
 message ExploreTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ExploreTableBase> datas = 1;
 }
 

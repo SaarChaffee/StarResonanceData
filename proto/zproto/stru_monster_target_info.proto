@@ -11,6 +11,6 @@ message MonsterTargetInfo {
     int32 targetType = 3;
     int32 targetNum = 4;
     zproto.MonsterTargetAward awardFlag = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -5,6 +5,6 @@ package zproto;
 import "stru_union_official.proto";
 
 message NotifyOfficialLimitUpdateRequest {
-    map<int32, message> officials = 2;
+    map<int32, .zproto.UnionOfficial> officials = 2;
 }
 

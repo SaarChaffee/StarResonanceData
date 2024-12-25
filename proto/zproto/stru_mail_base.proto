@@ -25,6 +25,6 @@ message MailBase {
     uint32 importance = 15;
     repeated uint32 awardIds = 16;
     int64 RegisterBeforeTime = 17;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

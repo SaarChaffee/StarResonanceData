@@ -13,7 +13,7 @@ message GetTeamInfoReply {
     zproto.TeamBaseInfo baseInfo = 3;
     repeated zproto.TeamMemData memberData = 4;
     zproto.TeamActivity teamActivity = 5;
-    map<int64, message> memRealTimeVoiceInfos = 6;
+    map<int64, .zproto.TeamMemRealTimeVoiceInfo> memRealTimeVoiceInfos = 6;
     repeated zproto.UserDetailedData memSocialData = 7;
     map<int64, int32> memVoiceId = 8;
 }

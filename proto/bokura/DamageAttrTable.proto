@@ -26,6 +26,6 @@ message DamageAttrTableBase {
 }
 
 message DamageAttrTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.DamageAttrTableBase> datas = 1;
 }
 

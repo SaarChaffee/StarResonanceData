@@ -7,7 +7,7 @@ import "stru_dirty_mask.proto";
 
 message FashionColorInfo {
     int32 id = 1;
-    map<int32, message> colors = 2;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.IntVec3> colors = 2;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

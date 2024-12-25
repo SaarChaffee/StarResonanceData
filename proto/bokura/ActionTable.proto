@@ -13,6 +13,6 @@ message ActionTableBase {
 }
 
 message ActionTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ActionTableBase> datas = 1;
 }
 

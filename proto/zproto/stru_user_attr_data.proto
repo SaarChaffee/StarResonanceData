@@ -9,6 +9,6 @@ message UserAttrData {
     uint32 maxHp = 2;
     int32 state = 3;
     int64 fightPoint = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

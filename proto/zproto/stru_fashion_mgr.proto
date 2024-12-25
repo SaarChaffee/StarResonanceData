@@ -8,8 +8,8 @@ import "stru_dirty_mask.proto";
 
 message FashionMgr {
     map<int32, int32> wearInfo = 1;
-    map<int32, message> fashionDatas = 2;
-    map<int32, message> UnlockColor = 3;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.FashionColorInfo> fashionDatas = 2;
+    map<int32, .zproto.UnlockColorInfo> UnlockColor = 3;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

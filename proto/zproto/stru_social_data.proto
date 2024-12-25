@@ -41,6 +41,6 @@ message SocialData {
     zproto.WarehouseData warehouse = 17;
     zproto.SeasonRankData seasonRank = 18;
     zproto.FishSocialData fishData = 19;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

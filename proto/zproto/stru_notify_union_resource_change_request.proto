@@ -5,7 +5,7 @@ package zproto;
 import "stru_union_resource.proto";
 
 message NotifyUnionResourceChangeRequest {
-    map<int32, message> changeResourceLib = 2;
+    map<int32, .zproto.UnionResource> changeResourceLib = 2;
     uint32 donorMemId = 3;
 }
 

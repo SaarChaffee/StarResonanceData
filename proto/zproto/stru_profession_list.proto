@@ -11,12 +11,12 @@ import "stru_dirty_mask.proto";
 message ProfessionList {
     int32 curProfessionId = 1;
     repeated int32 curAssistProfessions = 3;
-    map<int32, message> professionList = 4;
-    map<int32, message> skinList = 6;
-    map<int32, message> aoyiSkillInfoMap = 7;
+    map<int32, .zproto.ProfessionInfo> professionList = 4;
+    map<int32, .zproto.ProfessionSkinInfo> skinList = 6;
+    map<int32, .zproto.ProfessionSkillInfo> aoyiSkillInfoMap = 7;
     uint32 totalTalentPoints = 8;
     uint32 totalTalentResetCount = 9;
-    map<int32, message> talentList = 10;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.ProfessionTalentInfo> talentList = 10;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

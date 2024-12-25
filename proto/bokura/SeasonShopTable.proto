@@ -17,6 +17,6 @@ message SeasonShopTableBase {
 }
 
 message SeasonShopTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.SeasonShopTableBase> datas = 1;
 }
 

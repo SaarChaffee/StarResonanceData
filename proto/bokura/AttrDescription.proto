@@ -10,6 +10,6 @@ message AttrDescriptionBase {
 }
 
 message AttrDescriptionMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.AttrDescriptionBase> datas = 1;
 }
 

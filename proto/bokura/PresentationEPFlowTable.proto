@@ -21,6 +21,6 @@ message PresentationEPFlowTableBase {
 }
 
 message PresentationEPFlowTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.PresentationEPFlowTableBase> datas = 1;
 }
 

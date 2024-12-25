@@ -15,6 +15,6 @@ message AudioShowDataTableBase {
 }
 
 message AudioShowDataTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.AudioShowDataTableBase> datas = 1;
 }
 

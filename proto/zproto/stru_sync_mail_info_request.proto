@@ -5,6 +5,6 @@ package zproto;
 import "stru_mail_state_info.proto";
 
 message SyncMailInfoRequest {
-    map<int64, message> mails = 2;
+    map<int64, .zproto.MailStateInfo> mails = 2;
 }
 

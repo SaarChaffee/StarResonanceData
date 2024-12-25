@@ -7,6 +7,6 @@ import "stru_dirty_mask.proto";
 message ProfessionSkinInfo {
     int32 UseSkinId = 1;
     repeated int32 activeSkinList = 2;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

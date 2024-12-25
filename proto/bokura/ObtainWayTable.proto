@@ -10,6 +10,6 @@ message ObtainWayTableBase {
 }
 
 message ObtainWayTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ObtainWayTableBase> datas = 1;
 }
 

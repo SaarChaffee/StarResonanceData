@@ -7,6 +7,6 @@ import "stru_match_player_info.proto";
 
 message MatchReadyStatusNtfRequest {
     zproto.EMatchType matchType = 1;
-    map<int64, message> matchPlayerInfo = 2;
+    map<int64, .zproto.MatchPlayerInfo> matchPlayerInfo = 2;
 }
 

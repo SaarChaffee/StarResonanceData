@@ -11,6 +11,6 @@ message StageBehaveCallEventTableBase {
 }
 
 message StageBehaveCallEventTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.StageBehaveCallEventTableBase> datas = 1;
 }
 

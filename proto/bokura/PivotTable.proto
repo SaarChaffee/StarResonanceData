@@ -17,6 +17,6 @@ message PivotTableBase {
 }
 
 message PivotTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.PivotTableBase> datas = 1;
 }
 

@@ -5,6 +5,6 @@ package zproto;
 import "stru_temp_photo_cache_info.proto";
 
 message tempPhotoCache {
-    map<string, message> tempPhotoCacheDict = 1;
+    map<string, .zproto.tempPhotoCacheInfo> tempPhotoCacheDict = 1;
 }
 

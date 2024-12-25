@@ -19,7 +19,7 @@ message TeamActivity {
     repeated int64 checkMembers = 6;
     int64 refuseId = 7;
     zproto.AssignSceneParams assignSceneParams = 8;
-    map<int64, message> awardCountInfo = 9;
+    map<int64, .zproto.TeamDungeonKeyInfo> awardCountInfo = 9;
     zproto.EMatchType matchType = 10;
     zproto.EMatchStatus matchStatus = 11;
     zproto.MatchParamContext matchParamContext = 12;

@@ -7,6 +7,6 @@ import "stru_personal_data.proto";
 message GetSuggestionListReply {
     int32 errCode = 2;
     int32 errorCode = 3;
-    map<int32, message> suggestionList = 4;
+    map<int32, .zproto.PersonalData> suggestionList = 4;
 }
 

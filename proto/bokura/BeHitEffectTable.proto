@@ -13,6 +13,6 @@ message BeHitEffectTableBase {
 }
 
 message BeHitEffectTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.BeHitEffectTableBase> datas = 1;
 }
 

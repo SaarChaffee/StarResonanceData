@@ -7,8 +7,8 @@ import "stru_ride_data.proto";
 import "stru_dirty_mask.proto";
 
 message RideList {
-    map<int32, message> rides = 1;
+    map<int32, .zproto.RideData> rides = 1;
     zproto.ERidePropertyType type = 2;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

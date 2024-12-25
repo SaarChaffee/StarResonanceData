@@ -9,6 +9,6 @@ message MainPlotDungeonTableBase {
 }
 
 message MainPlotDungeonTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.MainPlotDungeonTableBase> datas = 1;
 }
 

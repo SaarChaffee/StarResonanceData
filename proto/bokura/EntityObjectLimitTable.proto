@@ -11,6 +11,6 @@ message EntityObjectLimitTableBase {
 }
 
 message EntityObjectLimitTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.EntityObjectLimitTableBase> datas = 1;
 }
 

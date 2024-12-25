@@ -17,6 +17,6 @@ message ScenePointInfoTableBase {
 }
 
 message ScenePointInfoTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ScenePointInfoTableBase> datas = 1;
 }
 

@@ -14,6 +14,6 @@ message ChatStatusTableBase {
 }
 
 message ChatStatusTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ChatStatusTableBase> datas = 1;
 }
 

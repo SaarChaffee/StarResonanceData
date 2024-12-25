@@ -11,6 +11,6 @@ message ConsumeTypeTableBase {
 }
 
 message ConsumeTypeTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ConsumeTypeTableBase> datas = 1;
 }
 

@@ -9,6 +9,6 @@ message ModInfo {
     repeated int32 partIds = 1;
     repeated zproto.ModPartUpgradeRecord upgradeRecords = 2;
     int32 successRate = 3;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

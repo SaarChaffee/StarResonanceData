@@ -12,6 +12,6 @@ message ImageInfo {
     string cosUrl = 4;
     string extraInfo = 5;
     uint32 reviewStartTime = 6;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

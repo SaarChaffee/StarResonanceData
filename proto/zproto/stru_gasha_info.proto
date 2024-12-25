@@ -8,6 +8,6 @@ message GashaInfo {
     uint32 id = 1;
     uint32 drawCount = 4;
     int64 refreshTime = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

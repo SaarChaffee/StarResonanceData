@@ -11,6 +11,6 @@ message InteractionInfo {
     int32 inviteeId = 4;
     bool isOriginator = 5;
     int32 interactionType = 6;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

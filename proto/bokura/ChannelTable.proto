@@ -16,6 +16,6 @@ message ChannelTableBase {
 }
 
 message ChannelTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ChannelTableBase> datas = 1;
 }
 

@@ -16,6 +16,6 @@ message ItemPackageTableBase {
 }
 
 message ItemPackageTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ItemPackageTableBase> datas = 1;
 }
 

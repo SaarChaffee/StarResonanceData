@@ -7,6 +7,6 @@ import "stru_dirty_mask.proto";
 message Resonance {
     map<uint32, uint64> resonances = 1;
     repeated uint32 installed = 2;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

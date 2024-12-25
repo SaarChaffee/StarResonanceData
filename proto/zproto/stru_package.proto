@@ -9,8 +9,8 @@ message Package {
     int32 type = 1;
     int32 maxCapacity = 2;
     map<int32, int64> itemCd = 3;
-    map<int64, message> items = 4;
+    map<int64, .zproto.Item> items = 4;
     int64 publicCd = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

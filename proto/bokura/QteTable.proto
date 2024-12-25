@@ -24,6 +24,6 @@ message QteTableBase {
 }
 
 message QteTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.QteTableBase> datas = 1;
 }
 

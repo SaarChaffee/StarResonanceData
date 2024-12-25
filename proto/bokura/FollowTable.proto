@@ -17,6 +17,6 @@ message FollowTableBase {
 }
 
 message FollowTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.FollowTableBase> datas = 1;
 }
 

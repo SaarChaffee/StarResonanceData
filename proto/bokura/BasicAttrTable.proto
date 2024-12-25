@@ -21,6 +21,6 @@ message BasicAttrTableBase {
 }
 
 message BasicAttrTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.BasicAttrTableBase> datas = 1;
 }
 

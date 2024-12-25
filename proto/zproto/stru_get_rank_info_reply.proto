@@ -6,6 +6,6 @@ import "stru_fish_rank_list.proto";
 
 message GetRankInfoReply {
     int32 errCode = 1;
-    map<int32, message> records = 2;
+    map<int32, .zproto.FishRankList> records = 2;
 }
 

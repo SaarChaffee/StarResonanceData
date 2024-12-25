@@ -23,6 +23,6 @@ message SeasonRankTableBase {
 }
 
 message SeasonRankTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.SeasonRankTableBase> datas = 1;
 }
 

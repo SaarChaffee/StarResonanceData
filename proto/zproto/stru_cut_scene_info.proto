@@ -10,6 +10,6 @@ message CutSceneInfo {
     uint32 flag = 2;
     uint32 sceneId = 3;
     zproto.EventData eventData = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

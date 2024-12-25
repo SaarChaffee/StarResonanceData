@@ -12,6 +12,6 @@ message RotationSampleTableBase {
 }
 
 message RotationSampleTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.RotationSampleTableBase> datas = 1;
 }
 

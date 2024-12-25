@@ -23,6 +23,6 @@ message ItemFunctionTableBase {
 }
 
 message ItemFunctionTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ItemFunctionTableBase> datas = 1;
 }
 

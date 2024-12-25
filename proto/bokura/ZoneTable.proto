@@ -19,6 +19,6 @@ message ZoneTableBase {
 }
 
 message ZoneTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ZoneTableBase> datas = 1;
 }
 

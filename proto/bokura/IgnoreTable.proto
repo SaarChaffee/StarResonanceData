@@ -10,6 +10,6 @@ message IgnoreTableBase {
 }
 
 message IgnoreTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.IgnoreTableBase> datas = 1;
 }
 

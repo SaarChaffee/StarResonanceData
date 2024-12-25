@@ -17,6 +17,6 @@ message EventShowDataTableBase {
 }
 
 message EventShowDataTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.EventShowDataTableBase> datas = 1;
 }
 

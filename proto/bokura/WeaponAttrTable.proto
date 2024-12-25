@@ -13,6 +13,6 @@ message WeaponAttrTableBase {
 }
 
 message WeaponAttrTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.WeaponAttrTableBase> datas = 1;
 }
 

@@ -6,7 +6,7 @@ import "stru_personal_object_interaction_param.proto";
 import "stru_dirty_mask.proto";
 
 message ScenePersonalObject {
-    map<int64, message> personalObjData = 1;
-    map<int32, message> dirty = 1000;
+    map<int64, .zproto.PersonalObjectInteractionParam> personalObjData = 1;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

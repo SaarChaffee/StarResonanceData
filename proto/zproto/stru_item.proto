@@ -25,8 +25,8 @@ message Item {
     int64 coolDownExpireTime = 12;
     zproto.ModNewAttr modNewAttr = 13;
     zproto.AffixData affixData = 14;
-    map<int32, message> extendAttr = 15;
+    map<int32, .zproto.ItemExtendData> extendAttr = 15;
     int32 rewardId = 16;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

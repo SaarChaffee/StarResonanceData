@@ -10,6 +10,6 @@ message ShopItemInfo {
     int64 startTime = 2;
     int64 endTime = 3;
     zproto.ShopLimitBuyType limitBuyType = 4;
-    map<int32, message> buyCount = 5;
+    map<int32, .zproto.ShopItemBuyLimit> buyCount = 5;
 }
 

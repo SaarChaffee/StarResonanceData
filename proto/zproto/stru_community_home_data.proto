@@ -8,6 +8,6 @@ message CommunityHomeData {
     int32 sceneId = 1;
     int64 communityId = 2;
     int32 fieldId = 3;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

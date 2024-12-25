@@ -15,6 +15,6 @@ message MonsterExploreTableBase {
 }
 
 message MonsterExploreTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.MonsterExploreTableBase> datas = 1;
 }
 

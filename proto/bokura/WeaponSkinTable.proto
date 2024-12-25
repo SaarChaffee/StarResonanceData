@@ -17,6 +17,6 @@ message WeaponSkinTableBase {
 }
 
 message WeaponSkinTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.WeaponSkinTableBase> datas = 1;
 }
 

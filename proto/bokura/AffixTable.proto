@@ -20,6 +20,6 @@ message AffixTableBase {
 }
 
 message AffixTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.AffixTableBase> datas = 1;
 }
 

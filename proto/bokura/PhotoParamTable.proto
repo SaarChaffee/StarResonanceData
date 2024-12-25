@@ -15,6 +15,6 @@ message PhotoParamTableBase {
 }
 
 message PhotoParamTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.PhotoParamTableBase> datas = 1;
 }
 

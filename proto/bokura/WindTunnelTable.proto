@@ -9,6 +9,6 @@ message WindTunnelTableBase {
 }
 
 message WindTunnelTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.WindTunnelTableBase> datas = 1;
 }
 

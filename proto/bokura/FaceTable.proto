@@ -21,6 +21,6 @@ message FaceTableBase {
 }
 
 message FaceTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.FaceTableBase> datas = 1;
 }
 

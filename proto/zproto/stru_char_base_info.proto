@@ -44,6 +44,6 @@ message CharBaseInfo {
     int32 initProfessionId = 31;
     uint64 lastCalTotalTime = 32;
     int32 areaId = 33;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -11,6 +11,6 @@ message AccountData {
     string accountId = 3;
     string accountUuid = 4;
     zproto.SystemType os = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -21,6 +21,6 @@ message TargetTableBase {
 }
 
 message TargetTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.TargetTableBase> datas = 1;
 }
 

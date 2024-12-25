@@ -15,6 +15,6 @@ message CookRecipeTableBase {
 }
 
 message CookRecipeTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.CookRecipeTableBase> datas = 1;
 }
 

@@ -9,6 +9,6 @@ message ModAttrInfo {
     int32 id = 2;
     int32 value = 3;
     map<uint32, string> effectParameter = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

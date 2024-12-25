@@ -8,8 +8,8 @@ import "stru_dirty_mask.proto";
 
 message TrialRoad {
     repeated int32 passRoom = 1;
-    map<int32, message> roomTargetAward = 2;
+    map<int32, .zproto.TrialRoadRoomTargetAward> roomTargetAward = 2;
     zproto.TrialRoadTargetAward targetAward = 3;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

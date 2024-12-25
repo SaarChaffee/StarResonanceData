@@ -11,6 +11,6 @@ message ConditionTableBase {
 }
 
 message ConditionTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ConditionTableBase> datas = 1;
 }
 

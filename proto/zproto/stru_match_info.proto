@@ -12,7 +12,7 @@ message MatchInfo {
     zproto.EMatchStatus matchStatus = 2;
     int64 matchTime = 3;
     zproto.MatchParamContext matchParamContext = 4;
-    map<int64, message> matchPlayerInfo = 5;
+    map<int64, .zproto.MatchPlayerInfo> matchPlayerInfo = 5;
     string matchToken = 6;
     int64 matchReadyTime = 7;
 }

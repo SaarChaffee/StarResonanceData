@@ -15,6 +15,6 @@ message MonsterFightAreaTableBase {
 }
 
 message MonsterFightAreaTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.MonsterFightAreaTableBase> datas = 1;
 }
 

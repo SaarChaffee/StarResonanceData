@@ -7,9 +7,9 @@ import "stru_equip_info.proto";
 import "stru_dirty_mask.proto";
 
 message EquipList {
-    map<int32, message> equipList = 1;
+    map<int32, .zproto.EquipInfo> equipList = 1;
     zproto.EquipAttr equipAttr = 2;
-    map<uint64, message> equipRecastInfo = 4;
-    map<int32, message> dirty = 1000;
+    map<uint64, .zproto.EquipAttr> equipRecastInfo = 4;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

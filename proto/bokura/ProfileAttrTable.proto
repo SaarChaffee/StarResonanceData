@@ -13,6 +13,6 @@ message ProfileAttrTableBase {
 }
 
 message ProfileAttrTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ProfileAttrTableBase> datas = 1;
 }
 

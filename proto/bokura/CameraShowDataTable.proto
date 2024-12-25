@@ -28,6 +28,6 @@ message CameraShowDataTableBase {
 }
 
 message CameraShowDataTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.CameraShowDataTableBase> datas = 1;
 }
 

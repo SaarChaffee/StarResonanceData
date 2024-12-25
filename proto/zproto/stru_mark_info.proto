@@ -11,6 +11,6 @@ message MarkInfo {
     string content = 3;
     uint32 iconId = 4;
     zproto.MarkPosition position = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

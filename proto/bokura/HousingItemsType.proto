@@ -9,6 +9,6 @@ message HousingItemsTypeBase {
 }
 
 message HousingItemsTypeMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.HousingItemsTypeBase> datas = 1;
 }
 

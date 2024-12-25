@@ -21,6 +21,6 @@ message SeasonBPTaskTableBase {
 }
 
 message SeasonBPTaskTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.SeasonBPTaskTableBase> datas = 1;
 }
 

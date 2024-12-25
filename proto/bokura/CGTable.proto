@@ -9,6 +9,6 @@ message CGTableBase {
 }
 
 message CGTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.CGTableBase> datas = 1;
 }
 

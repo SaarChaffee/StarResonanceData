@@ -13,6 +13,6 @@ message MagicConfigTableBase {
 }
 
 message MagicConfigTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.MagicConfigTableBase> datas = 1;
 }
 

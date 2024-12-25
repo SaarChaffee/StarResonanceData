@@ -11,6 +11,6 @@ message PlotCharactersTableBase {
 }
 
 message PlotCharactersTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.PlotCharactersTableBase> datas = 1;
 }
 

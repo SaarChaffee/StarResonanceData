@@ -6,7 +6,7 @@ import "stru_trial_road_target_progress.proto";
 import "stru_dirty_mask.proto";
 
 message TrialRoadTargetAward {
-    map<int32, message> targetProgress = 1;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.TrialRoadTargetProgress> targetProgress = 1;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

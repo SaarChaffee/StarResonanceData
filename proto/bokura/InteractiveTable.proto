@@ -24,6 +24,6 @@ message InteractiveTableBase {
 }
 
 message InteractiveTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.InteractiveTableBase> datas = 1;
 }
 

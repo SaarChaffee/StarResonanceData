@@ -8,6 +8,6 @@ message SeasonQuestData {
     uint32 id = 1;
     int32 targetNum = 2;
     int32 award = 3;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -11,6 +11,6 @@ message ItemTypeSearchTableBase {
 }
 
 message ItemTypeSearchTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ItemTypeSearchTableBase> datas = 1;
 }
 

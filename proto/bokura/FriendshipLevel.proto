@@ -15,6 +15,6 @@ message FriendshipLevelBase {
 }
 
 message FriendshipLevelMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.FriendshipLevelBase> datas = 1;
 }
 

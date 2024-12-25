@@ -14,6 +14,6 @@ message QuestData {
     int64 stepLimitTime = 6;
     zproto.EQuestStepStatus stepStatus = 7;
     uint32 addLimitTime = 8;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

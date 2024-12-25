@@ -15,6 +15,6 @@ message VisualLayerBase {
 }
 
 message VisualLayerMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.VisualLayerBase> datas = 1;
 }
 

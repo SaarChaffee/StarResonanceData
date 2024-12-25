@@ -43,6 +43,6 @@ message CollectionEntityTableBase {
 }
 
 message CollectionEntityTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.CollectionEntityTableBase> datas = 1;
 }
 

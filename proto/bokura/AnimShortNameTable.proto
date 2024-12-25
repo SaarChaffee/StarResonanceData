@@ -9,6 +9,6 @@ message AnimShortNameTableBase {
 }
 
 message AnimShortNameTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.AnimShortNameTableBase> datas = 1;
 }
 

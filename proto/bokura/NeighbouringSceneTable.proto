@@ -11,6 +11,6 @@ message NeighbouringSceneTableBase {
 }
 
 message NeighbouringSceneTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.NeighbouringSceneTableBase> datas = 1;
 }
 

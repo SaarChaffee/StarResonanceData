@@ -24,6 +24,6 @@ message HelpLibraryTableBase {
 }
 
 message HelpLibraryTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.HelpLibraryTableBase> datas = 1;
 }
 

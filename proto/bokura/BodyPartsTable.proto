@@ -28,6 +28,6 @@ message BodyPartsTableBase {
 }
 
 message BodyPartsTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.BodyPartsTableBase> datas = 1;
 }
 

@@ -29,6 +29,6 @@ message CutsceneTableBase {
 }
 
 message CutsceneTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.CutsceneTableBase> datas = 1;
 }
 

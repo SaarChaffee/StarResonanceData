@@ -15,6 +15,6 @@ message BattlePassCardTableBase {
 }
 
 message BattlePassCardTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.BattlePassCardTableBase> datas = 1;
 }
 

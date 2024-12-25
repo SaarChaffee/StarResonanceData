@@ -12,6 +12,6 @@ message PhotoGraphShow {
     string renderInfo = 3;
     string photoDesc = 4;
     zproto.PhotoOwnerData ownerInfo = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -6,6 +6,6 @@ import "stru_union_resource.proto";
 
 message GetUnionResourceLibReply {
     int32 errCode = 1;
-    map<int32, message> unionResourceLib = 2;
+    map<int32, .zproto.UnionResource> unionResourceLib = 2;
 }
 

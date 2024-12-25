@@ -10,6 +10,6 @@ message ExchangeData {
     int32 curExchangeCount = 3;
     int64 expireTime = 4;
     int64 lastRefreshTime = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -20,6 +20,6 @@ message FightResAttrTemplateTableBase {
 }
 
 message FightResAttrTemplateTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.FightResAttrTemplateTableBase> datas = 1;
 }
 

@@ -9,6 +9,6 @@ message FightResAttrTableBase {
 }
 
 message FightResAttrTableMgr {
-    map<int64, message> datas = 1;
+    map<int64, .bokura.FightResAttrTableBase> datas = 1;
 }
 

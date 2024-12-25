@@ -48,6 +48,6 @@ message ZoneEntityTableBase {
 }
 
 message ZoneEntityTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ZoneEntityTableBase> datas = 1;
 }
 

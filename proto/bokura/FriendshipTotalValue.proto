@@ -13,6 +13,6 @@ message FriendshipTotalValueBase {
 }
 
 message FriendshipTotalValueMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.FriendshipTotalValueBase> datas = 1;
 }
 

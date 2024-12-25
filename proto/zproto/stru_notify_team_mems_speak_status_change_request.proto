@@ -5,6 +5,6 @@ package zproto;
 import "enum_e_speak_status.proto";
 
 message NotifyTeamMemsSpeakStatusChangeRequest {
-    map<int64, enum> memSpeakStatus = 2;
+    map<int64, .zproto.ESpeakStatus> memSpeakStatus = 2;
 }
 

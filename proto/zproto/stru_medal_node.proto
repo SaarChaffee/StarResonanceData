@@ -9,6 +9,6 @@ message MedalNode {
     uint32 nodeLevel = 2;
     bool choose = 3;
     int32 slot = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

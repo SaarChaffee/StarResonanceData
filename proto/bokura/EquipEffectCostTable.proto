@@ -11,6 +11,6 @@ message EquipEffectCostTableBase {
 }
 
 message EquipEffectCostTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.EquipEffectCostTableBase> datas = 1;
 }
 

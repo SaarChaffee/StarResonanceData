@@ -13,6 +13,6 @@ message SceneObjectEntityGlobalTableBase {
 }
 
 message SceneObjectEntityGlobalTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.SceneObjectEntityGlobalTableBase> datas = 1;
 }
 

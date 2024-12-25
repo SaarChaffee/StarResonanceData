@@ -8,7 +8,7 @@ import "stru_dirty_mask.proto";
 message EnergyItem {
     uint32 energyLimit = 1;
     uint32 extraEnergyLimit = 2;
-    map<uint32, message> energyInfo = 3;
-    map<int32, message> dirty = 1000;
+    map<uint32, .zproto.EnergyInfo> energyInfo = 3;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

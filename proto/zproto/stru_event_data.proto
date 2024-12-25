@@ -10,6 +10,6 @@ message EventData {
     repeated int64 longParams = 3;
     repeated float floatParams = 4;
     repeated string strParams = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

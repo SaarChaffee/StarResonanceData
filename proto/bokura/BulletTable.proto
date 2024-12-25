@@ -23,6 +23,6 @@ message BulletTableBase {
 }
 
 message BulletTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.BulletTableBase> datas = 1;
 }
 

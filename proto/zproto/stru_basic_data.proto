@@ -20,6 +20,6 @@ message BasicData {
     uint32 curTalentPoolId = 12;
     uint32 botAiId = 13;
     int32 registerChannel = 14;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

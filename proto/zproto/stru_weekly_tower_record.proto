@@ -9,6 +9,6 @@ message WeeklyTowerRecord {
     int32 maxClimbUpId = 2;
     repeated int32 awardClimbUpIds = 3;
     int32 ruleId = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

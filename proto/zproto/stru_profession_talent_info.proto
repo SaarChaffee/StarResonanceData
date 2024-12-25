@@ -8,6 +8,6 @@ message ProfessionTalentInfo {
     uint32 usedTalentPoints = 1;
     repeated uint32 talentNodeIds = 2;
     int32 talentStageCfgId = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

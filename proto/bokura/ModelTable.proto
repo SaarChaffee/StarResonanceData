@@ -49,6 +49,6 @@ message ModelTableBase {
 }
 
 message ModelTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ModelTableBase> datas = 1;
 }
 

@@ -15,6 +15,6 @@ message MainIconTableBase {
 }
 
 message MainIconTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.MainIconTableBase> datas = 1;
 }
 

@@ -7,7 +7,7 @@ import "stru_dirty_mask.proto";
 
 message MarkData {
     int32 id = 1;
-    map<int64, message> markInfoMap = 2;
-    map<int32, message> dirty = 1000;
+    map<int64, .zproto.MarkInfo> markInfoMap = 2;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -8,6 +8,6 @@ import "stru_dirty_mask.proto";
 message UnionEScreenInfo {
     int32 eScreenId = 1;
     repeated zproto.PhotoGraphShow photoGraphs = 2;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

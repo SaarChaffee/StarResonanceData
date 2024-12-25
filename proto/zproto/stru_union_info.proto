@@ -10,7 +10,7 @@ import "stru_union_official.proto";
 message UnionInfo {
     zproto.UnionBaseData baseInfo = 1;
     repeated zproto.UnionEvent unionEvents = 3;
-    map<int32, message> officials = 4;
+    map<int32, .zproto.UnionOfficial> officials = 4;
     bool autoPass = 5;
     int64 createTime = 6;
     int64 changeNameTime = 7;

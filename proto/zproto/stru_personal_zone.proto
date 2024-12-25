@@ -20,12 +20,12 @@ message PersonalZone {
     int32 titleId = 11;
     bool fashionRefreshFlag = 12;
     int32 fashionCollectPoint = 13;
-    map<int32, message> fashionCollectQualityCount = 14;
+    map<int32, .zproto.FashionQualityCollectInfo> fashionCollectQualityCount = 14;
     repeated int32 photos = 15;
     map<int32, int32> unlockTargetRecord = 16;
     map<int32, bool> unlockGetRewardRecord = 17;
     int32 rideCollectPoint = 18;
-    map<int32, message> rideCollectQualityCount = 19;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.RideQualityCollectInfo> rideCollectQualityCount = 19;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

@@ -10,6 +10,6 @@ message ModAttr {
     int32 type = 2;
     int32 level = 3;
     repeated zproto.ModAttrInfo modAttrInfo = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

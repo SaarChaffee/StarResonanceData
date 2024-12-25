@@ -23,6 +23,6 @@ message ModelWpNpcTableBase {
 }
 
 message ModelWpNpcTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.ModelWpNpcTableBase> datas = 1;
 }
 

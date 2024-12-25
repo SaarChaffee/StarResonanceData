@@ -9,6 +9,6 @@ import "stru_dirty_mask.proto";
 message SeasonCenterHistory {
     zproto.BattlePass battlePass = 1;
     zproto.SeasonBpQuestList bpQuestList = 2;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

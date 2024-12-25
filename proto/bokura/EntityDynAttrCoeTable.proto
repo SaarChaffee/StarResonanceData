@@ -7,6 +7,6 @@ message EntityDynAttrCoeTableBase {
 }
 
 message EntityDynAttrCoeTableMgr {
-    map<int32, message> datas = 1;
+    map<int32, .bokura.EntityDynAttrCoeTableBase> datas = 1;
 }
 

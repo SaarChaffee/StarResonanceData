@@ -6,7 +6,7 @@ import "stru_union_activity_target.proto";
 
 message UnionActivity {
     int64 lastRefreshTime = 1;
-    map<int32, message> unionTargets = 2;
+    map<int32, .zproto.UnionActivityTarget> unionTargets = 2;
     int64 nextAwardTime = 3;
 }
 

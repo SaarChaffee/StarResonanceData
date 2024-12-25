@@ -10,6 +10,6 @@ message DancerInfo {
     bool isDancing = 3;
     bool hasDrawn = 4;
     bool hasSend = 5;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

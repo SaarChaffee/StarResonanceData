@@ -9,6 +9,6 @@ message PhotoOwnerData {
     int64 expireTime = 2;
     uint32 showId = 3;
     string name = 4;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 

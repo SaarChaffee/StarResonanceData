@@ -11,6 +11,6 @@ message FishRecord {
     int64 millisecond = 4;
     int32 research = 5;
     uint32 count = 6;
-    map<int32, message> dirty = 1000;
+    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
 
