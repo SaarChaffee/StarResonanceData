@@ -1,3 +1,4 @@
+local SettlementNodeIndex = Panda.ZGame.SettlementNodeIndex
 local playCallFunc = function(cutId, tab, teamMembers, showCount)
   local teamEntData = {}
   Z.UITimelineDisplay:Play(cutId)
@@ -10,15 +11,17 @@ local playCallFunc = function(cutId, tab, teamMembers, showCount)
         if not value.isAi then
           count = count + 1
           local data = {}
-          data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(showCount - 1, count - 1)
-          data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(showCount - 1, count - 1)
+          local nodeCountType = SettlementNodeIndex.IntToEnum(showCount - 2)
+          data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(nodeCountType, count - 1)
+          data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(nodeCountType, count - 1)
           teamEntData[value.charId] = data
         end
       end
     else
       local data = {}
-      data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(0, 0)
-      data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(0, 0)
+      local indexType = SettlementNodeIndex.IntToEnum(0)
+      data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(indexType, 0)
+      data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(indexType, 0)
       teamEntData[Z.EntityMgr.PlayerEnt.EntId] = data
     end
   end
@@ -36,12 +39,9 @@ local playCallFunc = function(cutId, tab, teamMembers, showCount)
   end
   local dungeonData = Z.DataMgr.Get("hero_dungeon_main_data")
   dungeonData.TeamDisplayData = ret
-  local teamData = Z.DataMgr.Get("team_data")
-  Z.CoroUtil.create_coro_xpcall(function()
-    local proxy = require("zproxy.world_proxy")
-    proxy.ReportSettlementPosition(ret, teamData.CancelSource:CreateToken())
-  end)()
   Z.TimerMgr:StartTimer(function()
+    Z.UIMgr:DeActiveAll(false, "hero_dungeon_key")
+    Z.UIMgr:OpenView(Z.ConstValue.MainViewName)
     Z.UIMgr:OpenView("hero_dungeon_copy_window")
   end, 1, 1)
 end
@@ -65,13 +65,13 @@ local playTimeLine = function()
     end, function()
     end)
   else
+    Z.UIMgr:DeActiveAll(false, "hero_dungeon_key")
+    Z.UIMgr:OpenView(Z.ConstValue.MainViewName)
     Z.UIMgr:OpenView("hero_dungeon_copy_window")
   end
 end
 local openHeroView = function()
-  if Z.UIMgr:IsActive("camerasys") then
-    Z.UIMgr:CloseView("camerasys")
-  end
+  Z.UIMgr:GotoMainView()
   playTimeLine()
 end
 local openOriginalHeroView = function()
@@ -94,7 +94,6 @@ local onContinueExplore = function(token)
     local proxy = require("zproxy.world_proxy")
     proxy.LeaveScene(token)
   end)()
-  Z.DataMgr.Get("planetmemory_data"):SetPlanetMemoryIsContinue(true)
 end
 local playAction = function()
   local actionData = Z.Global.VictoryAction
@@ -103,7 +102,10 @@ local playAction = function()
 end
 local quitDungeon = function(cancelToken)
   local proxy = require("zproxy.world_proxy")
-  local visualLayerId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrVisualLayerUid")).Value
+  local visualLayerId = 0
+  if Z.EntityMgr.PlayerEnt then
+    visualLayerId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrVisualLayerUid")).Value
+  end
   if 0 < visualLayerId then
     proxy.ExitVisualLayer()
   else
@@ -136,6 +138,13 @@ local openSettlementFailWindow = function()
   Z.UIMgr:GotoMainView()
   Z.UIMgr:OpenView("trialroad_battle_failure_window")
 end
+local openMasterDungeonFailWindow = function()
+  if Z.UIMgr:IsActive("master_dungeon_failure_window") then
+    return
+  end
+  Z.UIMgr:GotoMainView()
+  Z.UIMgr:OpenView("master_dungeon_failure_window")
+end
 local ret = {
   OpenHeroView = openHeroView,
   CloseHeroView = closeHeroView,
@@ -145,6 +154,7 @@ local ret = {
   OpenOriginalHeroView = openOriginalHeroView,
   CloseOriginalHeroView = closeOriginalHeroView,
   QuitDungeon = quitDungeon,
-  BeginDungeonSettle = beginDungeonSettle
+  BeginDungeonSettle = beginDungeonSettle,
+  OpenMasterDungeonFailWindow = openMasterDungeonFailWindow
 }
 return ret

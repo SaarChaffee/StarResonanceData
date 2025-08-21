@@ -24,7 +24,7 @@ function Mod_intensify_popupView:OnActive()
     self.modVM_.EnterModView(nil, self.gotoEffectId_)
   end)
   self.gotoEffectId_ = self.viewData.effectId
-  ModGlossaryItemTplItem.RefreshTpl(self.uiBinder.mod_glossary_item_tpl, self.viewData.effectId, self.viewData.lv)
+  ModGlossaryItemTplItem.RefreshTpl(self.uiBinder.mod_glossary_item_tpl, self.viewData.effectId)
   local config = self.modData_:GetEffectTableConfig(self.viewData.effectId, self.viewData.lv)
   local name = ""
   if config then

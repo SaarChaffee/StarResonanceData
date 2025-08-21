@@ -14,8 +14,6 @@ message MapStickerTableBase {
     int_array TaskId = 71;
     int32 AwardId = 1197;
 }
-
 message MapStickerTableMgr {
-    map<int32, .bokura.MapStickerTableBase> datas = 1;
+    repeated bokura.MapStickerTableMgr.DatasEntry datas = 1;
 }
-

@@ -5,7 +5,5 @@ package zproto;
 import "stru_shop_item_info.proto";
 
 message ShopTabInfo {
-    int32 tabId = 1;
-    repeated zproto.ShopItemInfo items = 2;
+    repeated zproto.ShopItemInfo items = 1;
 }
-

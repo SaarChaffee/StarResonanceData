@@ -11,8 +11,6 @@ message MapStickerTaskTableBase {
     mlstring Des = 266;
     int32 TargetNum = 982;
 }
-
 message MapStickerTaskTableMgr {
-    map<int32, .bokura.MapStickerTaskTableBase> datas = 1;
+    repeated bokura.MapStickerTaskTableMgr.DatasEntry datas = 1;
 }
-

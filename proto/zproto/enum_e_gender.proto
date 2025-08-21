@@ -7,4 +7,3 @@ enum EGender {
     GenderMale = 1;
     GenderFemale = 2;
 }
-

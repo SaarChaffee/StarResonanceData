@@ -7,6 +7,8 @@ local unionTagItem = require("ui.component.union.union_tag_item")
 local unionBuffitem = require("ui.component.union.union_buff_item")
 local playerProtraitMgr = require("ui.component.role_info.common_player_portrait_item_mgr")
 local Union_homepage_subView = class("Union_homepage_subView", super)
+local reportDefine = require("ui.model.report_define")
+local unionSDKGroup = require("ui.component.union.union_sdk_group")
 local MAX_BUFF_COUNT = Z.ConstValue.UnionConstValue.MAX_BUFF_COUNT
 
 function Union_homepage_subView:ctor()
@@ -15,13 +17,17 @@ function Union_homepage_subView:ctor()
   self.unionVM_ = Z.VMMgr.GetVM("union")
   self.helpsysVM_ = Z.VMMgr.GetVM("helpsys")
   self.unionData_ = Z.DataMgr.Get("union_data")
+  self.reportVm_ = Z.VMMgr.GetVM("report")
 end
 
 function Union_homepage_subView:initData()
   self.buffItemDict_ = {}
+  self.accountData_ = Z.DataMgr.Get("account_data")
+  self.serverData_ = Z.DataMgr.Get("server_data")
 end
 
 function Union_homepage_subView:initComponent()
+  self:startAnimatedShow()
   self.unionTagItem_ = unionTagItem.new()
   self.unionTagItem_:Init(E.UnionTagItemType.Normal, self, self.uiBinder.trans_tag_time, self.uiBinder.trans_tag_activity)
   self.Logo_ = unionLogoItem.new()
@@ -66,6 +72,14 @@ function Union_homepage_subView:initComponent()
   self:AddClick(self.uiBinder.btn_exp_icon, function()
     self:onExpIconBtnClick()
   end)
+  self:AddClick(self.uiBinder.btn_report, function()
+    self:onReportBtnClick()
+  end)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_report, self.reportVm_.IsReportOpen(true))
+end
+
+function Union_homepage_subView:startAnimatedShow()
+  self.uiBinder.anim_main:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Union_homepage_subView:onSettingBtnClick()
@@ -95,6 +109,11 @@ function Union_homepage_subView:onUnionReturnBtnClick()
 end
 
 function Union_homepage_subView:onAlbumBtnClick()
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.UnionPhotoSet)
+  if not isOn then
+    return
+  end
   Z.UIMgr:OpenView("album_main", E.AlbumOpenSource.Union)
 end
 
@@ -112,6 +131,10 @@ end
 
 function Union_homepage_subView:onExpIconBtnClick()
   self:openItemTips(self.uiBinder.btn_exp_icon.transform, E.UnionResourceId.Exp)
+end
+
+function Union_homepage_subView:onReportBtnClick()
+  self.reportVm_.OpenReportPop(reportDefine.ReportScene.UnionInfo, self.unionData_.UnionInfo.baseInfo.Name, self.unionData_.UnionInfo.baseInfo.Id)
 end
 
 function Union_homepage_subView:RefreshInfo(unionInfo)
@@ -145,11 +168,12 @@ function Union_homepage_subView:RefreshInfo(unionInfo)
   local presidentInfo = self.unionVM_:GetUnionMemberData(unionInfo.baseInfo.presidentId)
   if presidentInfo and presidentInfo.socialData then
     self.uiBinder.lab_president_name.text = presidentInfo.socialData.basicData.name
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(presidentInfo.socialData.basicData.isNewbie))
     self:refreshHeadUI(presidentInfo)
   end
   self:refreshBuffItem()
-  local isShowPhotoAblumBtn = self.unionVM_:CheckPlayerPower(E.UnionPowerDef.SetCover)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_photo_album, isShowPhotoAblumBtn)
+  local isShowPhotoAlbumBtn = self.unionVM_:CheckPlayerPower(E.UnionPowerDef.SetCover)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_photo_album, isShowPhotoAlbumBtn)
   self:getUnionPhoto(unionInfo)
   self:refreshUnlockState()
   Z.RedPointMgr.LoadRedDotItem(E.RedType.UnionSceneUnlockBtnRed, self, self.uiBinder.btn_crowdfunding.transform)
@@ -191,7 +215,7 @@ function Union_homepage_subView:onTimerUpdate(state, leftTime)
   local t = leftTime - nowTime
   local time = leftTime - nowTime
   if 0 <= time then
-    self.uiBinder.lab_left_time.text = str .. Z.TimeTools.FormatToDHMS(t)
+    self.uiBinder.lab_left_time.text = str .. Z.TimeFormatTools.FormatToDHMS(t)
   else
     self.timerMgr:StopTimer(self.timer_)
     self.timer_ = nil
@@ -216,7 +240,7 @@ function Union_homepage_subView:refreshHeadUI(presidentInfo)
       local idCardVM = Z.VMMgr.GetVM("idcard")
       idCardVM.AsyncGetCardData(presidentInfo.socialData.basicData.charID, self.cancelSource:CreateToken())
     end)()
-  end)
+  end, self.cancelSource:CreateToken())
 end
 
 function Union_homepage_subView:openItemTips(trans, itemId)
@@ -273,6 +297,7 @@ function Union_homepage_subView:OnActive()
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self:initData()
   self:initComponent()
+  self:initSDKGroup()
   self:BindEvents()
 end
 
@@ -285,6 +310,7 @@ function Union_homepage_subView:OnDeActive()
   self.unionTagItem_ = nil
   self.Logo_:UnInit()
   self.Logo_ = nil
+  self:unInitSDKGroup()
   self:UnBindEvents()
   self:unInitBuffItem()
   self:clearUnionRedDot()
@@ -308,6 +334,7 @@ function Union_homepage_subView:UnBindEvents()
 end
 
 function Union_homepage_subView:OnRefresh()
+  self:RefreshInfo(self.unionData_.UnionInfo)
   Z.CoroUtil.create_coro_xpcall(function()
     local unionId = self.unionVM_:GetPlayerUnionId()
     self.unionVM_:AsyncReqUnionInfo(unionId, self.cancelSource:CreateToken())
@@ -328,7 +355,7 @@ function Union_homepage_subView:getUnionPhoto(unionInfo)
     self.uiBinder.rimg_photo:SetImage(Z.ConstValue.UnionRes.DefaultPhotoCover)
     return
   end
-  album_main_vm.AsyncGetHttpAlbumPhoto(photoData.cosUrl, E.PictureType.ECameraRender, E.NativeTextureCallToken.album_loop_item, self.onPhotoCallBack, self)
+  album_main_vm.AsyncGetHttpAlbumPhoto(photoData.cosUrl, E.PictureType.ECameraRender, E.NativeTextureCallToken.album_loop_item, self.cancelSource, self.onPhotoCallBack, self)
 end
 
 function Union_homepage_subView:onPhotoCallBack(photoId)
@@ -342,6 +369,18 @@ end
 
 function Union_homepage_subView:clearUnionRedDot()
   Z.RedPointMgr.RemoveNodeItem(E.RedType.UnionSceneUnlockBtnRed)
+end
+
+function Union_homepage_subView:initSDKGroup()
+  self.unionSDKGroup_ = unionSDKGroup.new()
+  self.unionSDKGroup_:Init(self)
+end
+
+function Union_homepage_subView:unInitSDKGroup()
+  if self.unionSDKGroup_ then
+    self.unionSDKGroup_:UnInit()
+    self.unionSDKGroup_ = nil
+  end
 end
 
 return Union_homepage_subView

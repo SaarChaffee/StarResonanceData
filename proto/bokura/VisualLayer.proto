@@ -13,8 +13,6 @@ message VisualLayerBase {
     string Bgm = 1107;
     int_array BlackMask = 911;
 }
-
 message VisualLayerMgr {
-    map<int32, .bokura.VisualLayerBase> datas = 1;
+    repeated bokura.VisualLayerMgr.DatasEntry datas = 1;
 }
-

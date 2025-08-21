@@ -9,5 +9,5 @@ message TextCheckRequest {
     zproto.SessionInfo session = 1;
     zproto.TextCheckSceneType sceneType = 2;
     repeated string str = 3;
+    repeated zproto.TextCheckRequest.ParameEntry parame = 4;
 }
-

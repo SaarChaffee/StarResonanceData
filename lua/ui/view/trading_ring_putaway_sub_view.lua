@@ -1,14 +1,12 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Trading_ring_putaway_subView = class("Trading_ring_putaway_subView", super)
-local loopListView = require("ui.component.loop_grid_view")
+local loopGridView = require("ui.component.loop_grid_view")
 local TradeSellItem = require("ui.component.trade.trade_sell_item")
+local LoopListView = require("ui.component.loop_list_view")
+local ShelvesItem = require("ui.component.trade.shelves_item")
 local keyPad = require("ui.view.cont_num_keyboard_view")
-local EExchangeWithDrawType = {
-  ExchangeWithDrawTypeNone = 0,
-  ExchangeWithDrawTypePart = 1,
-  ExchangeWithDrawTypeAll = 2
-}
+local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
 local item = require("common.item_binder")
 
 function Trading_ring_putaway_subView:ctor(parent)
@@ -29,10 +27,12 @@ function Trading_ring_putaway_subView:OnActive()
   self.tradeData_ = Z.DataMgr.Get("trade_data")
   self.itemsData_ = Z.DataMgr.Get("items_data")
   self.itemSortFactoryVm_ = Z.VMMgr.GetVM("item_sort_factory")
-  self.itemSellTimer_ = {}
+  self.monthlyRewardCardVm_ = Z.VMMgr.GetVM("monthly_reward_card")
+  self.monthlyCardData_ = Z.DataMgr.Get("monthly_reward_card_data")
   self.itemBinders_ = {}
+  self.tradeCount_ = 0
   self:AddAsyncClick(self.uiBinder.btn_shelf, function()
-    if #self.tradeData_.ExchangeSellItemList >= self.tradeData_.InitialStallNum then
+    if #self.tradeData_.ExchangeSellItemList >= self.tradeCount_ then
       Z.TipsVM.ShowTips(6455)
       return
     end
@@ -43,13 +43,15 @@ function Trading_ring_putaway_subView:OnActive()
       if itemSellrow.Publicity == 1 then
         local onConfirm = function()
           self.tradeVm_:AsyncExchangePutItem(self.selectItemUuid_, math.floor(num), math.floor(step) * itemSellrow.EachPercentage, true, self.cancelSource:CreateToken())
-          Z.DialogViewDataMgr:CloseDialogView()
         end
         Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("StallPublicityDialogTips"), onConfirm, nil, E.DlgPreferencesType.Login, E.DlgPreferencesKeyType.StallPublicityDialogTips)
       else
+        if self.monthlyRewardCardVm_:GetIsBuyCurrentMonthCard() then
+          self.tradeVm_:AsyncExchangePutItem(self.selectItemUuid_, math.floor(num), math.floor(step) * itemSellrow.EachPercentage, false, self.cancelSource:CreateToken())
+          return
+        end
         local onConfirm = function()
           self.tradeVm_:AsyncExchangePutItem(self.selectItemUuid_, math.floor(num), math.floor(step) * itemSellrow.EachPercentage, false, self.cancelSource:CreateToken())
-          Z.DialogViewDataMgr:CloseDialogView()
         end
         Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("StallDialogTips"), onConfirm, nil, E.DlgPreferencesType.Login, E.DlgPreferencesKeyType.StallNormalDialogTips)
       end
@@ -59,10 +61,10 @@ function Trading_ring_putaway_subView:OnActive()
     local success = self.tradeVm_:AsyncExchangeWithdraw(self.cancelSource:CreateToken())
     if success then
       Z.RedPointMgr.AsyncCancelRedDot(E.RedType.TradeItemSell)
-      Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TradeItemSell, 0)
+      Z.RedPointMgr.UpdateNodeCount(E.RedType.TradeItemSell, 0)
       if not self.tradeVm_:CheckAnySellItemTimeOut() then
         Z.RedPointMgr.AsyncCancelRedDot(E.RedType.TradeItemTimeout)
-        Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TradeItemTimeout, 0)
+        Z.RedPointMgr.UpdateNodeCount(E.RedType.TradeItemTimeout, 0)
       end
     end
   end)
@@ -101,6 +103,9 @@ function Trading_ring_putaway_subView:OnActive()
   self:AddAsyncClick(self.uiBinder.binder_num_module_tpl_2.btn_max, function()
     self.uiBinder.binder_num_module_tpl_2.slider_temp.value = self.uiBinder.binder_num_module_tpl_2.slider_temp.maxValue
   end)
+  self:AddAsyncClick(self.uiBinder.btn_privilege_arrow, function()
+    Z.VMMgr.GetVM("gotofunc").GoToFunc(E.ShopFuncID.MonthlyCard)
+  end)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_bg, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_shelf, true)
   local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.tradeData_.DefaultItem)
@@ -118,6 +123,7 @@ function Trading_ring_putaway_subView:OnActive()
   end)()
   Z.RedPointMgr.LoadRedDotItem(E.RedType.TradeItemSell, self, self.uiBinder.btn_one_click_extraction.transform)
   self:BindEvent()
+  self:refreshShelfMonthlyCardTips()
 end
 
 function Trading_ring_putaway_subView:InputNum(num)
@@ -174,16 +180,16 @@ function Trading_ring_putaway_subView:refreshLoop()
     end
     self.uiBinder.Ref:SetVisible(self.uiBinder.scrollview_item, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty_left, false)
-    if self.loopListView_ == nil then
+    if self.loopItemView_ == nil then
       local path = "com_item_long_1"
       if Z.IsPCUI then
         path = "com_item_long_2_8"
       end
-      self.loopListView_ = loopListView.new(self, self.uiBinder.scrollview_item, TradeSellItem, path)
-      self.loopListView_:Init(data)
+      self.loopItemView_ = loopGridView.new(self, self.uiBinder.scrollview_item, TradeSellItem, path)
+      self.loopItemView_:Init(data)
     else
-      self.loopListView_:ClearAllSelect()
-      self.loopListView_:RefreshListView(data)
+      self.loopItemView_:ClearAllSelect()
+      self.loopItemView_:RefreshListView(data)
     end
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.scrollview_item, false)
@@ -191,123 +197,60 @@ function Trading_ring_putaway_subView:refreshLoop()
   end
   self:closeShelves()
   if selectIndex then
-    self.loopListView_:MovePanelToItemIndex(selectIndex)
-    self.loopListView_:SetSelected(selectIndex)
+    self.loopItemView_:MovePanelToItemIndex(selectIndex)
+    self.loopItemView_:SetSelected(selectIndex)
   end
   self.viewData.itemUuid = nil
 end
 
 function Trading_ring_putaway_subView:refreshShelvesInfo()
-  local itemSellBinder = {
-    [1] = self.uiBinder.binder_trading_ring_shelf_item_1,
-    [2] = self.uiBinder.binder_trading_ring_shelf_item_2,
-    [3] = self.uiBinder.binder_trading_ring_shelf_item_3,
-    [4] = self.uiBinder.binder_trading_ring_shelf_item_4,
-    [5] = self.uiBinder.binder_trading_ring_shelf_item_5,
-    [6] = self.uiBinder.binder_trading_ring_shelf_item_6
-  }
-  local lastIndex = true
-  for index, value in ipairs(itemSellBinder) do
-    local data = self.tradeData_.ExchangeSellItemList[index]
-    if data == nil then
-      value.Ref:SetVisible(value.node_has_item, false)
-      value.Ref:SetVisible(value.node_click_shelf, false)
-      value.Ref:SetVisible(value.node_idle, true)
-      value.Ref:SetVisible(value.img_select, false)
-      value.Ref:SetVisible(value.reddot, false)
-      if lastIndex then
-        value.Ref:SetVisible(value.node_idle, false)
-        value.Ref:SetVisible(value.node_click_shelf, true)
-        value.Ref:SetVisible(value.img_select, true)
-        lastIndex = false
-      end
+  local data = {}
+  local index = 1
+  local isSelect = false
+  self.tradeCount_ = self.tradeData_.InitialStallNum
+  if self.monthlyRewardCardVm_:GetIsBuyCurrentMonthCard() then
+    self.tradeCount_ = self.tradeCount_ + Z.StallRuleConfig.MonthCardSaleStallNum
+  end
+  for i = 1, self.tradeCount_, 2 do
+    data[index] = {}
+    local isEmpty = self.tradeData_.ExchangeSellItemList[i] == nil
+    if isEmpty then
+      data[index][1] = {
+        isSelect = isEmpty and not isSelect,
+        data = {}
+      }
+      isSelect = true
     else
-      value.Ref:SetVisible(value.node_has_item, true)
-      value.Ref:SetVisible(value.node_click_shelf, false)
-      value.Ref:SetVisible(value.node_idle, false)
-      value.Ref:SetVisible(value.img_select, false)
-      do
-        local itemClass = self.itemBinders_[index]
-        if itemClass == nil then
-          itemClass = item.new(self)
-          self.itemBinders_[index] = itemClass
-          itemClass:Init({
-            uiBinder = value.binder_item
-          })
-        end
-        local itemData = {}
-        itemData.configId = data.itemInfo.configId
-        itemData.labType = E.ItemLabType.Num
-        itemData.lab = data.itemInfo.count
-        itemData.isSquareItem = true
-        itemData.itemInfo = data.itemInfo
-        itemClass:RefreshByData(itemData)
-        local itemSellrow = Z.TableMgr.GetTable("StallDetailTableMgr").GetRow(data.itemInfo.configId)
-        local sellRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(data.itemInfo.configId)
-        if sellRow then
-          value.lab_name.text = sellRow.Name
-        end
-        if itemSellrow then
-          local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(itemSellrow.Currency)
-          if itemRow then
-            value.rimg_sell_icon:SetImage(self.itemVm_.GetItemIcon(itemSellrow.Currency))
-          end
-        end
-        value.lab_sell_num.text = data.price
-        if data.state == E.EExchangeItemState.ExchangeItemStatePublic then
-          value.Ref:SetVisible(value.lab_publicity, true)
-          value.Ref:SetVisible(value.img_time_bg, false)
-        else
-          value.Ref:SetVisible(value.lab_publicity, false)
-          if data.WithdrawType == EExchangeWithDrawType.ExchangeWithDrawTypeAll then
-            value.Ref:SetVisible(value.img_time_bg, false)
-          else
-            value.Ref:SetVisible(value.img_time_bg, true)
-            self:refreshSellItemCountDown(index, value, data.endTime)
-          end
-        end
-        value.Ref:SetVisible(value.btn_shelf, data.WithdrawType ~= EExchangeWithDrawType.ExchangeWithDrawTypeAll)
-        value.Ref:SetVisible(value.img_no_shelf, data.WithdrawType == EExchangeWithDrawType.ExchangeWithDrawTypeAll)
-        value.Ref:SetVisible(value.img_can_sell, data.WithdrawType == EExchangeWithDrawType.ExchangeWithDrawTypeAll)
-        value.Ref:SetVisible(value.img_can_partially, data.WithdrawType == EExchangeWithDrawType.ExchangeWithDrawTypePart)
-        value.Ref:SetVisible(value.reddot, data.endTime < Z.TimeTools.Now() / 1000)
-        self:AddAsyncClick(value.click_bg, function()
-        end)
-        self:AddAsyncClick(value.btn_shelf, function()
-          local success = self.tradeVm_:AsyncExchangeTakeItem(data.uuid, data.itemInfo.configId, self.cancelSource:CreateToken())
-          if success and not self.tradeVm_:CheckAnySellItemTimeOut() then
-            Z.RedPointMgr.AsyncCancelRedDot(E.RedType.TradeItemTimeout)
-            Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TradeItemTimeout, 0)
-          end
-        end)
-      end
+      data[index][1] = {
+        isSelect = false,
+        data = self.tradeData_.ExchangeSellItemList[i]
+      }
     end
+    local isEmpty = self.tradeData_.ExchangeSellItemList[i + 1] == nil
+    if isEmpty then
+      data[index][2] = {
+        isSelect = isEmpty and not isSelect,
+        data = {}
+      }
+      isSelect = true
+    else
+      data[index][2] = {
+        isSelect = false,
+        data = self.tradeData_.ExchangeSellItemList[i + 1]
+      }
+    end
+    index = index + 1
   end
-end
-
-function Trading_ring_putaway_subView:refreshSellItemCountDown(index, uiBinder, endTime)
-  if self.itemSellTimer_[index] then
-    self.timerMgr:StopTimer(self.itemSellTimer_[index])
-    self.itemSellTimer_[index] = nil
-  end
-  local now = Z.TimeTools.Now() / 1000
-  if endTime < now then
-    uiBinder.Ref:SetVisible(uiBinder.lab_timeout, true)
-    uiBinder.Ref:SetVisible(uiBinder.lab_time, false)
+  if self.loopShelvesView_ == nil then
+    local path = "trading_ring_shelf_item_list_tpl"
+    if Z.IsPCUI then
+      path = "trading_ring_shelf_item_list_tpl_pc"
+    end
+    self.loopShelvesView_ = LoopListView.new(self, self.uiBinder.scrollview_shelf, ShelvesItem, path)
+    self.loopShelvesView_:Init(data)
   else
-    uiBinder.Ref:SetVisible(uiBinder.lab_timeout, false)
-    uiBinder.Ref:SetVisible(uiBinder.lab_time, true)
-    local delta = math.floor(endTime - now)
-    uiBinder.lab_time.text = Z.TimeTools.S2HMSFormat(delta)
-    self.itemSellTimer_[index] = self.timerMgr:StartTimer(function()
-      delta = delta - 1
-      uiBinder.lab_time.text = Z.TimeTools.S2HMSFormat(delta)
-      if delta <= 0 then
-        uiBinder.Ref:SetVisible(uiBinder.lab_timeout, true)
-        uiBinder.Ref:SetVisible(uiBinder.lab_time, false)
-        uiBinder.Ref:SetVisible(uiBinder.reddot, true)
-      end
-    end, 1, delta + 1)
+    self.loopShelvesView_:ClearAllSelect()
+    self.loopShelvesView_:RefreshListView(data)
   end
 end
 
@@ -342,7 +285,9 @@ end
 function Trading_ring_putaway_subView:onClickSellItem(configId, itemUuid)
   self.selectItemId_ = configId
   self.selectItemUuid_ = itemUuid
-  self:putOnShelves()
+  Z.CoroUtil.create_coro_xpcall(function()
+    self:putOnShelves()
+  end)()
 end
 
 function Trading_ring_putaway_subView:closeShelves()
@@ -351,12 +296,18 @@ function Trading_ring_putaway_subView:closeShelves()
   self.isPutOnType_ = false
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_bg, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_shelf, true)
-  if self.loopListView_ then
-    self.loopListView_:ClearAllSelect()
+  if self.loopItemView_ then
+    self.loopItemView_:ClearAllSelect()
   end
 end
 
 function Trading_ring_putaway_subView:putOnShelves()
+  local _, price = self.tradeVm_:AsyncExchangeLowestPrice(self.selectItemId_, self.cancelSource:CreateToken())
+  if price == 0 then
+    self.uiBinder.lab_cur_sell_lowest_price.text = Lang("no_sell_items_yet")
+  else
+    self.uiBinder.lab_cur_sell_lowest_price.text = Lang("cur_sell_lowest_price") .. price
+  end
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_bg, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_shelf, false)
   local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.selectItemId_)
@@ -422,7 +373,7 @@ function Trading_ring_putaway_subView:putOnShelves()
     self.uiBinder.binder_num_module_tpl_2.slider_temp.maxValue = 0
     nowRecommendedPrice = itemSellrow.Maximum
   elseif nowMinPrice >= itemSellrow.Minimum then
-    self.uiBinder.binder_num_module_tpl_2.slider_temp.minValue = (itemSellrow.MinPercentage - 100) / itemSellrow.EachPercentage
+    self.uiBinder.binder_num_module_tpl_2.slider_temp.minValue = -itemSellrow.MinPercentage / itemSellrow.EachPercentage
   else
     local step = (itemSellrow.Minimum - nowRecommendedPrice) / (nowRecommendedPrice * itemSellrow.EachPercentage / 100)
     self.uiBinder.binder_num_module_tpl_2.slider_temp.minValue = step
@@ -460,25 +411,35 @@ function Trading_ring_putaway_subView:refreshPrice()
   if itemSellrow == nil then
     return
   end
+  local hasMonthlyCard = self.monthlyRewardCardVm_:GetIsBuyCurrentMonthCard()
   local totalPrice = self.unitPrice_ * self.uiBinder.binder_num_module_tpl_1.slider_temp.value
-  local deposit = math.ceil(totalPrice * (itemSellrow.DepositPercentage / 100))
-  if deposit > self.tradeData_.MaxDeposit then
-    deposit = self.tradeData_.MaxDeposit
-  end
-  if deposit < self.tradeData_.MinDeposit then
-    deposit = self.tradeData_.MinDeposit
-  end
-  local servicePrice = math.ceil(totalPrice * (itemSellrow.TaxPercentage / 100))
+  local deposit, servicePrice = self.tradeVm_:GetCosts(totalPrice, itemSellrow.TaxPercentage, itemSellrow.DepositPercentage)
   local income = math.floor(totalPrice - servicePrice)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_service_charge_num, not hasMonthlyCard)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.layout_lab_service, hasMonthlyCard)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_deposit_num, not hasMonthlyCard)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.layout_lab_deposit, hasMonthlyCard)
+  if hasMonthlyCard then
+    local newDeposit, newServicePrice = self.tradeVm_:GetCosts(totalPrice, itemSellrow.MonthCardTaxPercentage, itemSellrow.MonthCardDepositPercentage, true)
+    income = math.floor(totalPrice - newServicePrice)
+    self.uiBinder.lab_service_charge_num_new.text = newServicePrice
+    self.uiBinder.lab_deposit_num_new.text = newDeposit
+  end
   self.uiBinder.lab_service_charge_num.text = servicePrice
   self.uiBinder.lab_deposit_num.text = deposit
+  self.uiBinder.lab_deposit_num_ori.text = deposit
+  self.uiBinder.lab_service_charge_num_ori.text = servicePrice
   self.uiBinder.lab_income_num.text = income
 end
 
 function Trading_ring_putaway_subView:OnDeActive()
-  if self.loopListView_ then
-    self.loopListView_:UnInit()
-    self.loopListView_ = nil
+  if self.loopItemView_ then
+    self.loopItemView_:UnInit()
+    self.loopItemView_ = nil
+  end
+  if self.loopShelvesView_ then
+    self.loopShelvesView_:UnInit()
+    self.loopShelvesView_ = nil
   end
   if self.keypad_ then
     self.keypad_:DeActive()
@@ -486,10 +447,6 @@ function Trading_ring_putaway_subView:OnDeActive()
   self.keypad_ = nil
   self.selectItemId_ = nil
   self.selectShelvesUnit_ = nil
-  for index, value in pairs(self.itemSellTimer_) do
-    self.timerMgr:StopTimer(value)
-  end
-  self.itemSellTimer_ = {}
   if self.tipsId_ then
     Z.TipsVM.CloseItemTipsView(self.tipsId_)
   end
@@ -499,6 +456,36 @@ function Trading_ring_putaway_subView:OnDeActive()
 end
 
 function Trading_ring_putaway_subView:OnRefresh()
+end
+
+function Trading_ring_putaway_subView:refreshShelfMonthlyCardTips()
+  local monthCardPrivilegeDesTableRow = self.monthlyRewardCardVm_:MonthCardPrivilegeDesTableRow(E.MonthCardPrivilegeLabType.TradingRing)
+  if not gotoFuncVM.FuncIsOn(E.FunctionID.MonthlyCard, true) or monthCardPrivilegeDesTableRow.IsHide then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_privilege, false)
+    return
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_privilege, true)
+  local hasMonthlyCard = self.monthlyRewardCardVm_:GetIsBuyCurrentMonthCard()
+  local monthlyCardKey = self.monthlyRewardCardVm_:GetActiveMonthlyCardKey()
+  if monthlyCardKey == 0 then
+    monthlyCardKey = self.monthlyRewardCardVm_:GetCurrentMonthlyCardKey()
+  end
+  local monthlyCardData = self.monthlyCardData_:GetCardInfo(monthlyCardKey)
+  if not monthlyCardData then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_privilege, false)
+    return
+  end
+  local labPrivilegeTitle = hasMonthlyCard and Lang("MonthlyCardPrivilegesIsOn") or Lang("MonthlyCardPrivileges")
+  self.uiBinder.lab_privilege_title.text = labPrivilegeTitle
+  if monthlyCardData then
+    self.uiBinder.rimg_privilege_card:SetImage(monthlyCardData.ItemConfig.Icon)
+  else
+    hasMonthlyCard = false
+  end
+  if monthCardPrivilegeDesTableRow then
+    self.uiBinder.lab_privilege_content.text = monthCardPrivilegeDesTableRow.PrivilegeDes
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_privilege_arrow, not hasMonthlyCard)
 end
 
 return Trading_ring_putaway_subView

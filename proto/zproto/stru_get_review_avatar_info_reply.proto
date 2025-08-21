@@ -3,9 +3,9 @@ syntax = "proto3";
 package zproto;
 
 import "stru_avatar_info.proto";
+import "enum_e_error_code.proto";
 
 message GetReviewAvatarInfoReply {
-    int32 errCode = 2;
     zproto.AvatarInfo avatarInfo = 3;
+    zproto.EErrorCode errCode = 4;
 }
-

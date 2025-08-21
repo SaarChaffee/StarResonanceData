@@ -1,0 +1,272 @@
+{
+  "10101": {
+    "Id": 10101,
+    "TitleName": "",
+    "TitleOrder": 1,
+    "PhaseName": "",
+    "PhaseOrder": 1,
+    "Unlock": 10001,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep01_01"
+  },
+  "10102": {
+    "Id": 10102,
+    "TitleName": "",
+    "TitleOrder": 1,
+    "PhaseName": "",
+    "PhaseOrder": 2,
+    "Unlock": 10092,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep01_02"
+  },
+  "10103": {
+    "Id": 10103,
+    "TitleName": "",
+    "TitleOrder": 1,
+    "PhaseName": "",
+    "PhaseOrder": 3,
+    "Unlock": 10089,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep01_05"
+  },
+  "10104": {
+    "Id": 10104,
+    "TitleName": "",
+    "TitleOrder": 1,
+    "PhaseName": "",
+    "PhaseOrder": 4,
+    "Unlock": 10088,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep01_06"
+  },
+  "10105": {
+    "Id": 10105,
+    "TitleName": "",
+    "TitleOrder": 1,
+    "PhaseName": "",
+    "PhaseOrder": 5,
+    "Unlock": 10097,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep01_07"
+  },
+  "10106": {
+    "Id": 10106,
+    "TitleName": "",
+    "TitleOrder": 1,
+    "PhaseName": "",
+    "PhaseOrder": 6,
+    "Unlock": 10010,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep01_03"
+  },
+  "10107": {
+    "Id": 10107,
+    "TitleName": "",
+    "TitleOrder": 1,
+    "PhaseName": "",
+    "PhaseOrder": 7,
+    "Unlock": 10011,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep01_04"
+  },
+  "10108": {
+    "Id": 10108,
+    "TitleName": "",
+    "TitleOrder": 1,
+    "PhaseName": "",
+    "PhaseOrder": 8,
+    "Unlock": 10012,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep01_08"
+  },
+  "10201": {
+    "Id": 10201,
+    "TitleName": "",
+    "TitleOrder": 2,
+    "PhaseName": "",
+    "PhaseOrder": 1,
+    "Unlock": 10202,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep02_01"
+  },
+  "10202": {
+    "Id": 10202,
+    "TitleName": "",
+    "TitleOrder": 2,
+    "PhaseName": "",
+    "PhaseOrder": 2,
+    "Unlock": 10205,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep02_05"
+  },
+  "10203": {
+    "Id": 10203,
+    "TitleName": "",
+    "TitleOrder": 2,
+    "PhaseName": "",
+    "PhaseOrder": 3,
+    "Unlock": 10211,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep02_07"
+  },
+  "10204": {
+    "Id": 10204,
+    "TitleName": "",
+    "TitleOrder": 2,
+    "PhaseName": "",
+    "PhaseOrder": 4,
+    "Unlock": 10213,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep02_06"
+  },
+  "10205": {
+    "Id": 10205,
+    "TitleName": "",
+    "TitleOrder": 2,
+    "PhaseName": "",
+    "PhaseOrder": 5,
+    "Unlock": 10215,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep02_08"
+  },
+  "10301": {
+    "Id": 10301,
+    "TitleName": "",
+    "TitleOrder": 3,
+    "PhaseName": "",
+    "PhaseOrder": 1,
+    "Unlock": 10300,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep03_04"
+  },
+  "10302": {
+    "Id": 10302,
+    "TitleName": "",
+    "TitleOrder": 3,
+    "PhaseName": "",
+    "PhaseOrder": 2,
+    "Unlock": 10303,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep03_01"
+  },
+  "10303": {
+    "Id": 10303,
+    "TitleName": "",
+    "TitleOrder": 3,
+    "PhaseName": "",
+    "PhaseOrder": 3,
+    "Unlock": 10304,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep03_02"
+  },
+  "10304": {
+    "Id": 10304,
+    "TitleName": "",
+    "TitleOrder": 3,
+    "PhaseName": "",
+    "PhaseOrder": 4,
+    "Unlock": 10308,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep03_06"
+  },
+  "10305": {
+    "Id": 10305,
+    "TitleName": "",
+    "TitleOrder": 3,
+    "PhaseName": "",
+    "PhaseOrder": 5,
+    "Unlock": 10311,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep03_03"
+  },
+  "10306": {
+    "Id": 10306,
+    "TitleName": "",
+    "TitleOrder": 3,
+    "PhaseName": "",
+    "PhaseOrder": 6,
+    "Unlock": 10313,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep03_05"
+  },
+  "10401": {
+    "Id": 10401,
+    "TitleName": "",
+    "TitleOrder": 4,
+    "PhaseName": "",
+    "PhaseOrder": 1,
+    "Unlock": 10401,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep04_01"
+  },
+  "10402": {
+    "Id": 10402,
+    "TitleName": "",
+    "TitleOrder": 4,
+    "PhaseName": "",
+    "PhaseOrder": 2,
+    "Unlock": 10402,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep04_02"
+  },
+  "10403": {
+    "Id": 10403,
+    "TitleName": "",
+    "TitleOrder": 4,
+    "PhaseName": "",
+    "PhaseOrder": 3,
+    "Unlock": 10403,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep04_03"
+  },
+  "10404": {
+    "Id": 10404,
+    "TitleName": "",
+    "TitleOrder": 4,
+    "PhaseName": "",
+    "PhaseOrder": 4,
+    "Unlock": 10404,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep04_04"
+  },
+  "10501": {
+    "Id": 10501,
+    "TitleName": "",
+    "TitleOrder": 5,
+    "PhaseName": "",
+    "PhaseOrder": 1,
+    "Unlock": 10503,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep05_01"
+  },
+  "10502": {
+    "Id": 10502,
+    "TitleName": "",
+    "TitleOrder": 5,
+    "PhaseName": "",
+    "PhaseOrder": 2,
+    "Unlock": 10506,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep05_03"
+  },
+  "10503": {
+    "Id": 10503,
+    "TitleName": "",
+    "TitleOrder": 5,
+    "PhaseName": "",
+    "PhaseOrder": 3,
+    "Unlock": 10510,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep05_04"
+  },
+  "10504": {
+    "Id": 10504,
+    "TitleName": "",
+    "TitleOrder": 5,
+    "PhaseName": "",
+    "PhaseOrder": 4,
+    "Unlock": 10513,
+    "TaskInfo": "",
+    "TitlePic": "ui/textures/taskinfo_ep/taskinfo_ep05_05"
+  }
+}

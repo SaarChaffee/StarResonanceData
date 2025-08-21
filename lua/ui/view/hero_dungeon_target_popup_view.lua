@@ -139,8 +139,8 @@ function Hero_dungeon_target_popupView:OnRefresh()
 end
 
 function Hero_dungeon_target_popupView:refreshResetTime()
-  local restSecond, starTime = Z.TimeTools.GetTimeLeftInSpecifiedTime(Z.Global.ChallengeHeroDungeonFreshTimer)
-  local restTime = Z.TimeTools.FormatToDHM(starTime)
+  local restSecond, starTime = Z.TimeTools.GetLeftTimeByTimerId(Z.Global.ChallengeHeroDungeonFreshTimer)
+  local restTime = Z.TimeFormatTools.FormatToDHMS(starTime)
   self.uiBinder.lab_time.text = Lang("HeroTargetPopupTime", {val = restTime})
 end
 

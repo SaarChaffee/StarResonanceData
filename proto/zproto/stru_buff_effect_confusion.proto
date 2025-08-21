@@ -8,4 +8,3 @@ message BuffEffectConfusion {
     zproto.EBuffEffectConfusionType type = 1;
     float randRadius = 2;
 }
-

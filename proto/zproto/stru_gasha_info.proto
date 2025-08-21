@@ -8,6 +8,9 @@ message GashaInfo {
     uint32 id = 1;
     uint32 drawCount = 4;
     int64 refreshTime = 5;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    uint32 wishId = 8;
+    uint32 wishValue = 9;
+    uint32 wishFinishCount = 10;
+    int64 wishResetTime = 11;
+    uint32 wishLimit = 12;
 }
-

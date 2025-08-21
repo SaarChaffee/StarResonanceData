@@ -19,8 +19,6 @@ message ProfessionEffectTableBase {
     int32 ProLibID = 586;
     bool IfClose = 838;
 }
-
 message ProfessionEffectTableMgr {
-    map<int32, .bokura.ProfessionEffectTableBase> datas = 1;
+    repeated bokura.ProfessionEffectTableMgr.DatasEntry datas = 1;
 }
-

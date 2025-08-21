@@ -8,4 +8,3 @@ message BuffEffectTeleportBelt {
     bool isImpactHover = 3;
     bool isUseWeightFactor = 4;
 }
-

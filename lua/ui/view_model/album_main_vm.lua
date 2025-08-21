@@ -1,7 +1,13 @@
 local worldProxy = require("zproxy.world_proxy")
+local cjson = require("cjson")
 local logPbError = function(ret)
   if ret and ret.errCode and ret.errCode ~= 0 then
     Z.TipsVM.ShowTips(ret.errCode)
+  end
+end
+local logErrCode = function(errCode)
+  if errCode and errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
   end
 end
 local dispatchEvent = function(eventName, ret)
@@ -249,7 +255,11 @@ local showPhotoUploadResultTip = function()
   if albumMainData.CurrentUploadSourceType == E.PlatformFuncType.UnionPhoto then
     messageId = 1000569
   end
-  Z.TipsVM.ShowTips(messageId, showNum)
+  if successNum == 0 and errorNum == 0 then
+    Z.TipsVM.ShowTips(1000050)
+  else
+    Z.TipsVM.ShowTips(messageId, showNum)
+  end
 end
 local asynHttpCacheToAlbumPhoto = function(httpPath, photoType)
   local asyncCall = Z.CoroUtil.async_to_sync(Z.LuaBridge.ReadPhotoToHttp)
@@ -262,12 +272,26 @@ local asynHttpCacheToAlbumPhoto = function(httpPath, photoType)
   local cachePath = Z.CameraFrameCtrl:SaveToCacheAlbum(photoType, photoId, true)
   return cachePath, photoId
 end
-local asyncGetHttpAlbumPhoto = function(httpPath, photoType, callToken, callback, obj)
+local asynHttpCachePhoto = function(url)
+  local asyncCall = Z.CoroUtil.async_to_sync(Z.LuaBridge.ReadPhotoToHttp)
+  local cancelSource = Z.CancelSource.Rent()
+  local photoId = asyncCall(cancelSource:CreateToken(), url)
+  cancelSource:Recycle()
+  if photoId == -1 then
+    return
+  end
+  return photoId
+end
+local asyncGetHttpAlbumPhoto = function(httpPath, photoType, tag, cancelSource, callback, obj)
   local isExit, localPath = httpCheckAlbumPhoto(httpPath)
   if isExit then
     if callback ~= nil then
-      local systemPhotoId = Z.CameraFrameCtrl:ReadTextureToSystemAlbum(localPath, callToken)
+      local systemPhotoId = Z.CameraFrameCtrl:ReadTextureToSystemAlbum(localPath, tag)
       if systemPhotoId == 0 then
+        return
+      end
+      if cancelSource == nil then
+        Z.LuaBridge.ReleaseScreenShot(systemPhotoId)
         return
       end
       callback(obj, systemPhotoId)
@@ -276,7 +300,7 @@ local asyncGetHttpAlbumPhoto = function(httpPath, photoType, callToken, callback
     Z.CoroUtil.create_coro_xpcall(function()
       local cachePath, systemPhotoId = asynHttpCacheToAlbumPhoto(httpPath, photoType)
       addHttpCacheAlbumPhoto(httpPath, cachePath)
-      if callback == nil then
+      if callback == nil or cancelSource == nil then
         Z.LuaBridge.ReleaseScreenShot(systemPhotoId)
       else
         callback(obj, systemPhotoId)
@@ -407,6 +431,12 @@ local asyncGetAlbumPhotos = function(albumId, token)
   logPbError(ret)
   return parsingPhotoData(ret, albumId)
 end
+local checkIsAllUploadError = function()
+  local albumMainData = Z.DataMgr.Get("album_main_data")
+  local targetNum = albumMainData.AlbumUploadCountTable.targetNum
+  local errorNum = albumMainData.AlbumUploadCountTable.errorNum
+  return errorNum == targetNum
+end
 local upLoadResultFunc = function(request, token)
   Z.CoroUtil.create_coro_xpcall(function()
     local photographProxy = require("zproxy.photograph_proxy")
@@ -416,10 +446,16 @@ local upLoadResultFunc = function(request, token)
 end
 local upLoadPhotograph = function(token)
   logPbError(token)
+  local albumMainData = Z.DataMgr.Get("album_main_data")
+  local albumVm = Z.VMMgr.GetVM("album_main")
   if token == nil or token.errCode ~= 0 then
+    albumVm.AlbumUpLoadErrorCollection(E.CameraUpLoadErrorType.CommonError, nil)
+    if checkIsAllUploadError() then
+      albumMainData:ResetUploadCount()
+      albumVm.AlbumUpLoadEnd()
+    end
     return
   end
-  local albumMainData = Z.DataMgr.Get("album_main_data")
   albumMainData.CurrentUploadPhotoCount = albumMainData.CurrentUploadPhotoCount + 1
   if albumMainData.CurrentUploadPhotoCount == albumMainData.TargetUploadPhotoCount then
     dispatchEvent(Z.ConstValue.Album.GetUploadPhotographTokenSuccess, token)
@@ -429,8 +465,13 @@ local upLoadPhotograph = function(token)
   local cosKeys = token.cosKeys
   if result and cosKeys and next(cosKeys) then
     for k, v in pairs(cosKeys) do
-      local cosXml = Z.CosXmlRequest.Rent()
-      cosXml:InitCosXml(result.tmpSecretId, result.tmpSecretKey, result.region, result.tmpToken, result.expiredTime, function(isSuccess)
+      local file = io.open(v.extraInfo, "rb")
+      if not file then
+        return nil
+      end
+      local content = file:read("*a")
+      file:close()
+      local func = function(isSuccess)
         if isSuccess then
           local ownerId = Z.ContainerMgr.CharSerialize.charBase.charId or 0
           if token.funcType == E.PlatformFuncType.UnionPhoto then
@@ -453,18 +494,17 @@ local upLoadPhotograph = function(token)
           }
           upLoadResultFunc(request, albumMainData.CancelSource:CreateToken())
         end
-        cosXml:Recycle()
-      end)
-      cosXml.Bucket = result.bucket
-      cosXml.SaveKey = v.cosKey
-      local file = io.open(v.extraInfo, "rb")
-      if not file then
-        cosXml:Recycle()
-        return nil
       end
-      local content = file:read("*a")
-      file:close()
-      Z.CosMgr.Instance:TransferUpLoadByte(cosXml, content)
+      local uploadParm = Z.UploadParm.New()
+      uploadParm.TmpSecretId = result.tmpSecretId
+      uploadParm.TmpSecretKey = result.tmpSecretKey
+      uploadParm.Region = result.region
+      uploadParm.TmpToken = result.tmpToken
+      uploadParm.ExpireTime = result.expiredTime
+      uploadParm.CallBackFunc = func
+      uploadParm.Bucket = result.bucket
+      uploadParm.SaveKey = v.cosKey
+      Z.UploadMgr:UploadPicture(Z.UploadPlatform.Cos, uploadParm, content)
     end
   end
 end
@@ -505,6 +545,18 @@ local initUploadData = function(photoUploadData)
     extraInfo = photoUploadData.thumbnailData.extraInfo
   }
   table.insert(imageInfoList, thumbnailImageData)
+  local textVal = ""
+  if photoUploadData.renderInfo then
+    local renderInfo = cjson.decode(photoUploadData.renderInfo)
+    if renderInfo and renderInfo.decorateData and next(renderInfo.decorateData) then
+      for k, v in pairs(renderInfo.decorateData) do
+        if v.textValue then
+          textVal = v.textValue
+          break
+        end
+      end
+    end
+  end
   local requestData = {
     photoId = photoUploadData.photoId,
     renderInfo = photoUploadData.renderInfo,
@@ -512,7 +564,8 @@ local initUploadData = function(photoUploadData)
     imagesInfo = imageInfoList,
     photoDesc = photoUploadData.photoDesc,
     funcType = photoUploadData.funcType,
-    ownerId = photoUploadData.ownerId
+    ownerId = photoUploadData.ownerId,
+    text = textVal
   }
   return requestData
 end
@@ -768,9 +821,9 @@ local asyncSetUnionCoverPhoto = function(token)
     unionId = unionId,
     photoId = albumMainData.SelectedUnionAlbumPhoto.id
   }
-  local ret = worldProxy.SetUnionCoverPhoto(requestData, token)
-  logPbError(ret)
-  return ret
+  local errCode = worldProxy.SetUnionCoverPhoto(requestData, token)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncSetUnionAlbumCover = function(albumId, photoId, token)
   local unionVM = Z.VMMgr.GetVM("union")
@@ -784,9 +837,9 @@ local asyncSetUnionAlbumCover = function(albumId, photoId, token)
     photoId = photoId,
     albumId = albumId
   }
-  local ret = worldProxy.SetUnionAlbumCover(requestData, token)
-  logPbError(ret)
-  return parsingPhotoData(ret, albumId)
+  local errCode = worldProxy.SetUnionAlbumCover(requestData, token)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncCreateUnionAlbum = function(name, access, token, callback)
   local unionVM = Z.VMMgr.GetVM("union")
@@ -819,10 +872,10 @@ local asyncMovePhotoToUnionAlbum = function(photoId, albumId, token)
     photoId = photoId,
     albumId = albumId
   }
-  local ret = worldProxy.MovePhotoToUnionAlbum(requestData, token)
-  logPbError(ret)
-  dispatchEvent(Z.ConstValue.Album.CloudAlbumPhotosDataUpdate, ret)
-  return ret
+  local errCode = worldProxy.MovePhotoToUnionAlbum(requestData, token)
+  logErrCode(errCode)
+  dispatchEvent(Z.ConstValue.Album.CloudAlbumPhotosDataUpdate, errCode)
+  return errCode
 end
 local asyncDeleteUnionPhoto = function(photoId, token)
   local unionVM = Z.VMMgr.GetVM("union")
@@ -832,9 +885,9 @@ local asyncDeleteUnionPhoto = function(photoId, token)
     return
   end
   local requestData = {unionId = unionId, photoId = photoId}
-  local ret = worldProxy.DeleteUnionPhoto(requestData, token)
-  logPbError(ret)
-  return parsingPhotoData(ret)
+  local errCode = worldProxy.DeleteUnionPhoto(requestData, token)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncDeleteUnionAlbum = function(albumId, token)
   local unionVM = Z.VMMgr.GetVM("union")
@@ -843,9 +896,9 @@ local asyncDeleteUnionAlbum = function(albumId, token)
     return
   end
   local requestData = {unionId = unionId, albumId = albumId}
-  local ret = worldProxy.DeleteUnionAlbum(requestData, token)
-  logPbError(ret)
-  return parsingPhotoData(ret, albumId)
+  local errCode = worldProxy.DeleteUnionAlbum(requestData, token)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncMoveTmpPhotoToAlbum = function(photoId, albumId, token)
   local unionVM = Z.VMMgr.GetVM("union")
@@ -859,9 +912,9 @@ local asyncMoveTmpPhotoToAlbum = function(photoId, albumId, token)
     tmpPhotoId = photoId,
     albumId = albumId
   }
-  local ret = worldProxy.MoveTmpPhotoToAlbum(requestData, token)
-  logPbError(ret)
-  return ret
+  local errCode = worldProxy.MoveTmpPhotoToAlbum(requestData, token)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncDeleteUnionTmpPhoto = function(photoId, token)
   local unionVM = Z.VMMgr.GetVM("union")
@@ -871,9 +924,9 @@ local asyncDeleteUnionTmpPhoto = function(photoId, token)
     return
   end
   local requestData = {unionId = unionId, photoId = photoId}
-  local ret = worldProxy.DeleteUnionTmpPhoto(requestData, token)
-  logPbError(ret)
-  return ret
+  local errCode = worldProxy.DeleteUnionTmpPhoto(requestData, token)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncEditUnionAlbumName = function(albumId, name, token)
   local unionVM = Z.VMMgr.GetVM("union")
@@ -1006,6 +1059,7 @@ local ret = {
   AsyncSetAlbumCover = asyncSetAlbumCover,
   AlbumUpLoadSliderValue = albumUpLoadSliderValue,
   AsynHttpCacheToAlbumPhoto = asynHttpCacheToAlbumPhoto,
+  AsynHttpCachePhoto = asynHttpCachePhoto,
   AlbumUpLoadStart = albumUpLoadStart,
   AlbumUpLoadEnd = albumUpLoadEnd,
   AlbumUpLoadOverTimeEnd = albumUpLoadOverTimeEnd,

@@ -13,5 +13,5 @@ enum EBehitType {
     BehitStiffAction = 7;
     BehitStiffThrowMove = 8;
     BehitStiffThrowEnd = 9;
+    BehitStiffBackBlocked = 10;
 }
-

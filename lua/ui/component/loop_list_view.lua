@@ -1,11 +1,15 @@
 local LoopListView = class("LoopListView")
 
-function LoopListView:ctor(view, loopListView, loopListItem, prefabName)
+function LoopListView:ctor(view, loopListView, loopListItem, prefabName, isHavePCItem)
   self.IsInit = false
   self.UIView = view
   self.LoopListView = loopListView
   self.loopListItem_ = loopListItem
-  self.prefabName_ = prefabName
+  if Z.IsPCUI and isHavePCItem then
+    self.prefabName_ = string.zconcat(prefabName, "_pc")
+  else
+    self.prefabName_ = prefabName
+  end
   
   function self.getItemClassFunc(data)
     return self.loopListItem_
@@ -53,8 +57,8 @@ function LoopListView:RefreshListView(dataList, resetPos)
   self.LoopListView:RefreshAllShownItem()
 end
 
-function LoopListView:ClearAllSelect()
-  self.LoopListView:ClearAllSelect()
+function LoopListView:ClearAllSelect(ignoreCallback)
+  self.LoopListView:ClearAllSelect(ignoreCallback)
 end
 
 function LoopListView:RefreshAllShownItem()
@@ -164,8 +168,28 @@ function LoopListView:SetIsCenter(isCenter)
   self.LoopListView.IsCenter = isCenter
 end
 
+function LoopListView:SetSnapFinishCallback(callback)
+  self.LoopListView.mOnSnapItemFinished = callback
+end
+
+function LoopListView:SetBeginDragAction(callback)
+  self.LoopListView.mOnBeginDragAction = callback
+end
+
+function LoopListView:SetEndDragAction(callback)
+  self.LoopListView.mOnEndDragAction = callback
+end
+
 function LoopListView:OnItemSizeChanged(index)
   self.LoopListView:OnItemSizeChanged(index - 1)
+end
+
+function LoopListView:UpDateByIndex(index, data)
+  for k, v in pairs(self.itemDict_) do
+    if v.Index == index then
+      v:UpdateData(data)
+    end
+  end
 end
 
 return LoopListView

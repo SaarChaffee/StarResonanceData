@@ -16,4 +16,3 @@ enum ELogicTag {
     LogicTagBuff = 1004;
     LogicTagDebuff = 1005;
 }
-

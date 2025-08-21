@@ -32,8 +32,6 @@ function PlayerCtrlTmpMgr:InitTemplates()
     common_layout = {
       E.SlotName.ExtraSlot_1,
       E.SlotName.ExtraSlot_2,
-      E.SlotName.ResonanceSkillSlot_left,
-      E.SlotName.ResonanceSkillSlot_right,
       E.SlotName.Interactive
     }
   }
@@ -62,8 +60,9 @@ function PlayerCtrlTmpMgr:InitTemplates()
       [E.SlotName.ResonanceSkillSlot_right] = skillSlot
     },
     [E.PlayerCtrlBtnTmpType.FlowGlide] = {
-      [E.SlotName.SkillSlot_1] = flowSwitchBtn,
+      [E.SlotName.ExtraSlot_1] = dashBtn,
       [E.SlotName.ExtraSlot_2] = jumpCtrlBtn,
+      [E.SlotName.ExtraSlot_3] = flowSwitchBtn,
       [E.SlotName.ResonanceSkillSlot_left] = skillSlot,
       [E.SlotName.ResonanceSkillSlot_right] = skillSlot
     },
@@ -126,44 +125,24 @@ function PlayerCtrlTmpMgr:InitTemplates()
         [E.SlotName.SkillSlot_7] = skillSlot,
         [E.SlotName.SkillSlot_8] = skillSlot,
         [E.SlotName.SkillSlot_9] = skillSlot,
-        [E.SlotName.SkillSlot_10] = skillSlot,
-        [E.SlotName.ExtraSlot_1] = dashBtn,
-        [E.SlotName.ExtraSlot_2] = jumpCtrlBtn,
-        [E.SlotName.ResonanceSkillSlot_left] = flowCtrlBtn,
-        [E.SlotName.ResonanceSkillSlot_right] = flowCtrlBtn
-      },
-      [E.PlayerCtrlBtnTmpType.Climb] = {
-        [E.SlotName.SkillSlot_1] = ClimbRushCtrlBtn,
-        [E.SlotName.ExtraSlot_2] = jumpCtrlBtn
+        [E.SlotName.SkillSlot_10] = skillSlot
       },
       [E.PlayerCtrlBtnTmpType.FlowGlide] = {
         [E.SlotName.SkillSlot_1] = flowSwitchBtn,
-        [E.SlotName.ResonanceSkillSlot_left] = skillSlot,
-        [E.SlotName.ResonanceSkillSlot_right] = skillSlot
+        [E.SlotName.SkillSlot_2] = skillSlot,
+        [E.SlotName.SkillSlot_3] = skillSlot,
+        [E.SlotName.SkillSlot_4] = skillSlot,
+        [E.SlotName.SkillSlot_5] = skillSlot,
+        [E.SlotName.SkillSlot_6] = skillSlot,
+        [E.SlotName.SkillSlot_7] = skillSlot,
+        [E.SlotName.SkillSlot_8] = skillSlot,
+        [E.SlotName.SkillSlot_9] = skillSlot,
+        [E.SlotName.SkillSlot_10] = skillSlot
       },
       [E.PlayerCtrlBtnTmpType.MulAction] = {
         [E.SlotName.CancelMulAction] = multActionBtn
       },
-      [E.PlayerCtrlBtnTmpType.Swim] = {
-        [E.SlotName.SkillSlot_1] = skillSlot,
-        [E.SlotName.ResonanceSkillSlot_left] = skillSlot,
-        [E.SlotName.ResonanceSkillSlot_right] = skillSlot
-      },
-      [E.PlayerCtrlBtnTmpType.Interactive] = {
-        [E.SlotName.Interactive] = staticObjBtn
-      },
-      [E.PlayerCtrlBtnTmpType.ClimbRun] = {
-        [E.SlotName.SkillSlot_1] = skillSlot,
-        [E.SlotName.ResonanceSkillSlot_left] = skillSlot,
-        [E.SlotName.ResonanceSkillSlot_right] = skillSlot
-      },
-      [E.PlayerCtrlBtnTmpType.TunnelFly] = {
-        [E.SlotName.SkillSlot_1] = skillSlot,
-        [E.SlotName.ResonanceSkillSlot_left] = flowCtrlBtn,
-        [E.SlotName.ResonanceSkillSlot_right] = flowCtrlBtn
-      },
       [E.PlayerCtrlBtnTmpType.Vehicles] = {
-        [E.SlotName.SkillSlot_1] = skillSlot,
         [E.SlotName.SkillSlot_2] = skillSlot,
         [E.SlotName.SkillSlot_3] = skillSlot,
         [E.SlotName.SkillSlot_4] = skillSlot,
@@ -172,27 +151,9 @@ function PlayerCtrlTmpMgr:InitTemplates()
         [E.SlotName.SkillSlot_7] = skillSlot,
         [E.SlotName.SkillSlot_8] = skillSlot,
         [E.SlotName.SkillSlot_9] = skillSlot,
-        [E.SlotName.SkillSlot_10] = skillSlot,
-        [E.SlotName.VehicleSkillsSlot_1] = skillSlot,
-        [E.SlotName.ExtraSlot_1] = dashBtn,
-        [E.SlotName.ExtraSlot_2] = jumpCtrlBtn
+        [E.SlotName.SkillSlot_10] = skillSlot
       },
-      [E.PlayerCtrlBtnTmpType.VehiclePassenger] = {
-        [E.SlotName.SkillSlot_1] = skillSlot,
-        [E.SlotName.SkillSlot_2] = skillSlot,
-        [E.SlotName.SkillSlot_3] = skillSlot,
-        [E.SlotName.SkillSlot_4] = skillSlot,
-        [E.SlotName.SkillSlot_5] = skillSlot,
-        [E.SlotName.SkillSlot_6] = skillSlot,
-        [E.SlotName.SkillSlot_7] = skillSlot,
-        [E.SlotName.SkillSlot_8] = skillSlot,
-        [E.SlotName.SkillSlot_9] = skillSlot,
-        [E.SlotName.SkillSlot_10] = skillSlot,
-        [E.SlotName.ExtraSlot_1] = dashBtn,
-        [E.SlotName.ExtraSlot_2] = jumpCtrlBtn,
-        [E.SlotName.ResonanceSkillSlot_left] = flowCtrlBtn,
-        [E.SlotName.ResonanceSkillSlot_right] = flowCtrlBtn
-      }
+      [E.PlayerCtrlBtnTmpType.VehiclePassenger] = {}
     }
   end
 end
@@ -208,13 +169,17 @@ function PlayerCtrlTmpMgr:CreateTmpCtrlBtns(tmpType)
     return
   end
   if not self.PlayerCtrlBtnTemplates or not self.PlayerCtrlBtnTemplates[tmpType] then
-    return
+    if Z.IsPCUI then
+      tmpType = E.PlayerCtrlBtnTmpType.Default
+    else
+      return
+    end
   end
   self.currentTmpType_ = tmpType
   for slotName, factor in pairs(self.PlayerCtrlBtnTemplates[tmpType]) do
     if not self.slotUIUnitCache_[slotName] then
       self.slotUIUnitCache_[slotName] = factor.new(slotName, self.view_, self)
-      self.slotUIUnitCache_[slotName]:Create(self.view_.panel[slotName])
+      self.slotUIUnitCache_[slotName]:Create(self.view_.uiBinder.button_pos_group[slotName])
     end
   end
 end
@@ -256,6 +221,9 @@ function PlayerCtrlTmpMgr:GetSlotBtnByType(slotType)
 end
 
 function PlayerCtrlTmpMgr:AddSlotToTmp(bitValue, slotType, slotId, isSaveCache)
+  if Z.IsPCUI then
+    return
+  end
   local btnClass = self:GetSlotBtnByType(slotType)
   if not btnClass then
     return
@@ -269,7 +237,7 @@ function PlayerCtrlTmpMgr:AddSlotToTmp(bitValue, slotType, slotId, isSaveCache)
     self.slotUIUnitCache_[slotKey] = nil
   end
   self.slotUIUnitCache_[slotKey] = btnClass.new(slotKey, self.view_)
-  self.slotUIUnitCache_[slotKey]:Create(self.view_.panel[slotKey])
+  self.slotUIUnitCache_[slotKey]:Create(self.view_.uiBinder.button_pos_group[slotKey])
   for _, index in pairs(E.PlayerCtrlBtnTmpType) do
     if Z.BitAND(tonumber(bitValue), tonumber(index)) > 0 then
       if self.slotReplaceCache_[index] == nil then
@@ -284,6 +252,9 @@ function PlayerCtrlTmpMgr:AddSlotToTmp(bitValue, slotType, slotId, isSaveCache)
 end
 
 function PlayerCtrlTmpMgr:RemoveSlotToTmp(bitValue, slotId, isGetCache)
+  if Z.IsPCUI then
+    return
+  end
   local slotKey = tostring(slotId)
   if isGetCache == nil then
     isGetCache = true
@@ -294,7 +265,7 @@ function PlayerCtrlTmpMgr:RemoveSlotToTmp(bitValue, slotId, isGetCache)
   end
   if isGetCache and self.slotReplaceCache_[self.currentTmpType_] and self.slotReplaceCache_[self.currentTmpType_][slotKey] then
     self.slotUIUnitCache_[slotKey] = self.slotReplaceCache_[self.currentTmpType_][slotKey].new(slotKey, self.view_)
-    self.slotUIUnitCache_[slotKey]:Create(self.view_.panel[slotKey])
+    self.slotUIUnitCache_[slotKey]:Create(self.view_.uiBinder.button_pos_group[slotKey])
   end
   for _, index in pairs(E.PlayerCtrlBtnTmpType) do
     if Z.BitAND(tonumber(bitValue), tonumber(index)) > 0 then
@@ -309,8 +280,8 @@ function PlayerCtrlTmpMgr:RemoveSlotToTmp(bitValue, slotId, isGetCache)
 end
 
 function PlayerCtrlTmpMgr:SetLayoutElementIgnore(slotId, flag)
-  if self.view_.panel[slotId] then
-    local le = self.view_.panel[slotId].layoutElement
+  if self.view_.uiBinder.button_pos_group[slotId] then
+    local le = self.view_.uiBinder.button_pos_group[slotId].layoutElement
     if le then
       le:SetIgnoreLayout(flag)
     end

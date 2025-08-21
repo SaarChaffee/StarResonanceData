@@ -17,6 +17,7 @@ function QuestData:Init()
   self.canAcceptQuestByQuestId_ = {}
   local rows = Z.TableMgr.GetTable("QuestTableMgr").GetDatas()
   local flowType = Z.PbEnum("EQuestAcceptType", "QuestAcceptTypeFlow")
+  self.QuestGroupTypeInfos = nil
   for _, row in pairs(rows) do
     local acceptParams = row.AccpetType
     if acceptParams[1] == flowType then
@@ -41,6 +42,7 @@ function QuestData:UnInit()
 end
 
 function QuestData:Clear()
+  self.QuestGroupTypeInfos = nil
   self.IsLoginFinish = false
   self.QuestMgrStage = E.QuestMgrStage.UnInitEnd
   self.IsAutoTrackMainQuest = true
@@ -60,6 +62,7 @@ function QuestData:Clear()
   self.followTrackQuest_ = 0
   self.goalTrackDataDict_ = {}
   self.questTimeLimitMessageIdDict_ = {}
+  self.needRevertQuestStepDict_ = {}
   if self.guideGoalEffectIdDict_ then
     self:ClearGoalEffect()
   end
@@ -86,6 +89,18 @@ function QuestData:GetAllQuestDict()
   return ret
 end
 
+function QuestData:GetStepConfigByQuestId(questId)
+  local quest = self:GetQuestByQuestId(questId)
+  if not quest then
+    return nil
+  end
+  local stepId = quest.stepId
+  if stepId == nil or stepId == 0 then
+    return nil
+  end
+  return self:GetStepConfigByStepId(stepId)
+end
+
 function QuestData:GetStepConfigByStepId(stepId)
   local questId = stepId // 1000
   if self.stepConfigCache_[questId] and self.stepConfigCache_[questId][stepId] then
@@ -105,7 +120,7 @@ function QuestData:GetStepConfigByStepId(stepId)
     logError("{0}-{1} \230\178\161\230\156\137\232\191\153\228\184\170\230\181\129\229\155\190\232\138\130\231\130\185\229\149\138\239\188\159", questId, stepId)
     return nil
   end
-  local config = QuestStepConfig.new(stepNode.stepRes)
+  local config = QuestStepConfig.new(stepNode.stepRes, questId)
   if not self.stepConfigCache_[questId] then
     self.stepConfigCache_[questId] = {}
   end
@@ -186,6 +201,29 @@ function QuestData:ClearAllQuestStep()
   self.stepDict_ = {}
 end
 
+function QuestData:AddNeedRevertQuestStepId(questId, stepId)
+  if not self.needRevertQuestStepDict_[questId] then
+    self.needRevertQuestStepDict_[questId] = {}
+  end
+  if not table.zcontains(self.needRevertQuestStepDict_[questId], stepId) then
+    table.insert(self.needRevertQuestStepDict_[questId], stepId)
+  end
+end
+
+function QuestData:RemoveNeedRevertQuestStepIds(questId)
+  if self.needRevertQuestStepDict_[questId] then
+    self.needRevertQuestStepDict_[questId] = nil
+  end
+end
+
+function QuestData:ClearNeedRevertQuestStepIds()
+  self.needRevertQuestStepDict_ = {}
+end
+
+function QuestData:GetNeedRevertQuestStepIds(questId)
+  return self.needRevertQuestStepDict_[questId]
+end
+
 function QuestData:GetQuestTrackingId()
   if self.QuestMgrStage < E.QuestMgrStage.LoadEnd then
     return 0
@@ -233,6 +271,7 @@ function QuestData:SetTrackOptionalId(index, questId)
     return
   end
   self.trackOptionalIdList_[index] = questId or 0
+  Z.EventMgr:Dispatch(Z.ConstValue.Quest.TrackOptionChange, index, questId)
 end
 
 function QuestData:IsInForceTrack()
@@ -413,6 +452,14 @@ end
 
 function QuestData:GetQuestTimeLimitMessageId(questId)
   return self.questTimeLimitMessageIdDict_[questId]
+end
+
+function QuestData:GetQuestTypeGroupInfos()
+  return self.QuestGroupTypeInfos
+end
+
+function QuestData:SetQuestTypeGroupInfos(value)
+  self.QuestGroupTypeInfos = value
 end
 
 return QuestData

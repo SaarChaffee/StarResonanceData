@@ -75,6 +75,21 @@ local checkBuffAllowance = function(funcId)
   end
   return true
 end
+local checkBuffAllowanceRecursive = function(funcId)
+  local functionRow = Z.TableMgr.GetRow("FunctionTableMgr", funcId)
+  if functionRow == nil then
+    return false
+  end
+  if not checkBuffAllowance(funcId) then
+    return false
+  end
+  local parentFuncId = functionRow.ParentId
+  if parentFuncId == 0 then
+    return true
+  else
+    return checkBuffAllowance(parentFuncId)
+  end
+end
 local checkFuncCanUse = function(funcId, bIgnoreTip)
   local isOpen = funcIsOn(funcId, bIgnoreTip)
   if not isOpen then
@@ -87,7 +102,7 @@ local checkFuncCanUse = function(funcId, bIgnoreTip)
     end
     return false
   end
-  local isBuffAllowed = checkBuffAllowance(funcId)
+  local isBuffAllowed = checkBuffAllowanceRecursive(funcId)
   if not isBuffAllowed then
     if not bIgnoreTip then
       Z.TipsVM.ShowTipsLang(100123)
@@ -95,7 +110,7 @@ local checkFuncCanUse = function(funcId, bIgnoreTip)
     return false
   end
   local deadVM = Z.VMMgr.GetVM("dead")
-  if funcId ~= E.FunctionID.MainChat and deadVM.CheckPlayerIsDead() then
+  if funcId ~= E.FunctionID.MainChat and funcId ~= E.FunctionID.ExitDungeon and deadVM.CheckPlayerIsDead() then
     if not bIgnoreTip then
       Z.TipsVM.ShowTipsLang(100126)
     end
@@ -111,6 +126,10 @@ local goToFunc = function(id, ...)
   if funcSwitchInfo_ == nil then
     return false
   end
+  local talkVM = Z.VMMgr.GetVM("talk")
+  if talkVM.IsTalking() then
+    logError("[gotoFunc] Talking")
+  end
   local funcName_, param_ = getFuncParam(funcSwitchInfo_)
   for _, v in ipairs({
     ...
@@ -118,7 +137,7 @@ local goToFunc = function(id, ...)
     table.insert(param_, v)
   end
   if not funcName_ then
-    logError("not funcName_")
+    logError("the FunctionOrder field is empty in the FunctionTable, id = " .. id)
     return false
   end
   if funcName_ == "OpenUI" then
@@ -128,9 +147,23 @@ local goToFunc = function(id, ...)
   end
   return true
 end
+local traceOrSwitchFunc = function(id, ignoreTrace, ...)
+  if not checkFuncCanUse(id, false) then
+    return false
+  end
+  local functionSearchTableRow = Z.TableMgr.GetRow("FunctionSearchTableMgr", id, true)
+  if not ignoreTrace and functionSearchTableRow and functionSearchTableRow.QuickJumpType > 0 and 0 < #functionSearchTableRow.QuickJumpParam then
+    local quickjumpVm = Z.VMMgr.GetVM("quick_jump")
+    quickjumpVm.DoJumpByConfigParam(functionSearchTableRow.QuickJumpType, functionSearchTableRow.QuickJumpParam)
+    return true
+  else
+    return goToFunc(id, ...)
+  end
+end
 local ret = {
   GoToFunc = goToFunc,
   FuncIsOn = funcIsOn,
-  CheckFuncCanUse = checkFuncCanUse
+  CheckFuncCanUse = checkFuncCanUse,
+  TraceOrSwitchFunc = traceOrSwitchFunc
 }
 return ret

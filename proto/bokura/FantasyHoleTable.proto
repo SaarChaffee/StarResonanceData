@@ -12,8 +12,6 @@ message FantasyHoleTableBase {
     int_table UnlockConsume = 1645;
     int32 Fantasytype = 36;
 }
-
 message FantasyHoleTableMgr {
-    map<int32, .bokura.FantasyHoleTableBase> datas = 1;
+    repeated bokura.FantasyHoleTableMgr.DatasEntry datas = 1;
 }
-

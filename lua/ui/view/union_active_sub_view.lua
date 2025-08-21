@@ -49,6 +49,7 @@ function Union_active_subView:initData()
 end
 
 function Union_active_subView:initComponent()
+  self:startAnimatedShow()
   self.uiBinder.lab_time_desc.text = Z.TimeTools.GetTimeDescByTimerId(self.refreshTimerId_)
   self.uiBinder.sliced_image.fillAmount = 0
   local itemsVM = Z.VMMgr.GetVM("items")
@@ -88,6 +89,10 @@ function Union_active_subView:getTotalActiveList()
     end
   end)
   return totalList
+end
+
+function Union_active_subView:startAnimatedShow()
+  self.uiBinder.anim_main:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Union_active_subView:asyncLoadAwardItem()
@@ -168,7 +173,7 @@ function Union_active_subView:refreshSingleAward(itemInfo, isInit)
         }
         Z.UIMgr:OpenView("tips_item_reward_popup", viewData)
         if isCanGetTemp and not self.isEnoughGetTime_ then
-          local timeDesc = Z.TimeTools.FormatToHMS(self.rewardTimeLimit_)
+          local timeDesc = Z.TimeFormatTools.FormatToDHMS(self.rewardTimeLimit_)
           Z.TipsVM.ShowTips(1000553, {time = timeDesc})
         elseif not isReachedTemp and not isHadGetTemp then
           Z.TipsVM.ShowTips(1000554)

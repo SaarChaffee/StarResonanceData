@@ -84,6 +84,11 @@ local mergeDataFuncs = {
   [4] = function(container, buffer, watcherList)
     container.worldBossSettlement:MergeData(buffer, watcherList)
     container.Watcher:MarkDirty("worldBossSettlement", {})
+  end,
+  [5] = function(container, buffer, watcherList)
+    local last = container.__data__.masterModeScore
+    container.__data__.masterModeScore = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("masterModeScore", last)
   end
 }
 local setForbidenMt = function(t)
@@ -124,6 +129,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.worldBossSettlement then
     container.__data__.worldBossSettlement = {}
+  end
+  if not pbData.masterModeScore then
+    container.__data__.masterModeScore = 0
   end
   setForbidenMt(container)
   container.award.__data__ = {}
@@ -256,6 +264,11 @@ local getContainerElem = function(container)
       data = container.worldBossSettlement:GetContainerElem()
     }
   end
+  ret.masterModeScore = {
+    fieldId = 5,
+    dataType = 0,
+    data = container.masterModeScore
+  }
   return ret
 end
 local new = function()

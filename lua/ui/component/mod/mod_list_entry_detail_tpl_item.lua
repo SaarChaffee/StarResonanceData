@@ -29,7 +29,7 @@ function ModListEntryDetailTplItem:OnRefresh(data)
   else
     level, nextSuccessTimes = self.modVm_.GetEffectLevelAndNextLevelSuccessTimes(data.id, data.curValue)
   end
-  modGlossaryItemTplItem.RefreshTpl(self.uiBinder.node_glossary_item_tpl, data.id, level)
+  modGlossaryItemTplItem.RefreshTpl(self.uiBinder.node_glossary_item_tpl, data.id)
   if level == 0 then
     self.uiBinder.Ref:SetVisible(self.uiBinder.lab_upgrade_on_1, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.lab_upgrade_on_2, true)
@@ -40,8 +40,15 @@ function ModListEntryDetailTplItem:OnRefresh(data)
     local text = self.modVm_.ParseModEffectDesc(data.id, 1)
     self.uiBinder.lab_upgrade_on_2.text = text
     self.uiBinder.lab_upgrade_off_2.text = text
-    local size = self.uiBinder.lab_upgrade_on_2:GetPreferredValues(text, 540, 26)
-    self.uiBinder.Trans:SetHeight(70 + size.y)
+    if Z.IsPCUI then
+      local size = self.uiBinder.lab_upgrade_on_2:GetPreferredValues(text, 400, 26)
+      local height = math.max(95, 54 + size.y)
+      self.uiBinder.Trans:SetHeight(height)
+    else
+      local size = self.uiBinder.lab_upgrade_on_2:GetPreferredValues(text, 540, 26)
+      local height = math.max(112, 70 + size.y)
+      self.uiBinder.Trans:SetHeight(height)
+    end
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.lab_upgrade_on_1, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.lab_upgrade_on_2, false)
@@ -52,8 +59,15 @@ function ModListEntryDetailTplItem:OnRefresh(data)
     local text = self.modVm_.ParseModEffectDesc(data.id, level)
     self.uiBinder.lab_upgrade_on_1.text = text
     self.uiBinder.lab_upgrade_off_1.text = text
-    local size = self.uiBinder.lab_upgrade_on_1:GetPreferredValues(text, 540, 26)
-    self.uiBinder.Trans:SetHeight(70 + size.y)
+    if Z.IsPCUI then
+      local size = self.uiBinder.lab_upgrade_on_1:GetPreferredValues(text, 400, 26)
+      local height = math.max(95, 54 + size.y)
+      self.uiBinder.Trans:SetHeight(height)
+    else
+      local size = self.uiBinder.lab_upgrade_on_1:GetPreferredValues(text, 540, 26)
+      local height = math.max(112, 70 + size.y)
+      self.uiBinder.Trans:SetHeight(height)
+    end
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_on, data.isSelect)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_off, not data.isSelect)

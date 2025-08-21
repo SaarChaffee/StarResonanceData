@@ -6,9 +6,8 @@ import "stru_application_info.proto";
 import "stru_social_info.proto";
 
 message FriendBaseInfo {
-    map<int64, .zproto.SocialInfo> friendList = 1;
-    map<int32, string> groupIdList = 3;
+    repeated zproto.FriendBaseInfo.FriendListEntry friendList = 1;
+    repeated zproto.FriendBaseInfo.GroupIdListEntry groupIdList = 3;
     repeated zproto.ApplicationInfo applicationList = 4;
     repeated int32 groupSort = 5;
 }
-

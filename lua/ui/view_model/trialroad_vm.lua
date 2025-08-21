@@ -1,3 +1,5 @@
+local SettlementNodeIndex = Panda.ZGame.SettlementNodeIndex
+local entChar = Z.PbEnum("EEntityType", "EntChar")
 local openView = function()
   local trialroadData = Z.DataMgr.Get("trialroad_data")
   trialroadData:InitTrialRoadRoomDict()
@@ -57,15 +59,15 @@ local reqestGetTargetReward = function(roomId, targetId, token)
   request.roomId = roomId
   request.targetId = targetId
   local worldProxy_ = require("zproxy.world_proxy")
-  local ret = worldProxy_.GetRoomAward(request, token)
-  if ret == 0 then
+  local errCode = worldProxy_.GetRoomAward(request, token)
+  if errCode == 0 then
     refreshRoomTargetState(roomId)
     Z.EventMgr:Dispatch(Z.ConstValue.TrialRoad.RefreshRoomTarget)
     local trialRoadRed_ = require("rednode.trialroad_red")
     trialRoadRed_.RefreshTrialRoadRoomTargetItemRed(roomId)
     return true
   else
-    Z.TipsVM.ShowTips(ret.errCode)
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
 end
@@ -73,13 +75,13 @@ local reqestGetTrialTargetReward = function(targetId, token)
   local request = {}
   request.targetId = targetId
   local worldProxy_ = require("zproxy.world_proxy")
-  local ret = worldProxy_.GetTrialRoadAward(request, token)
-  if ret == 0 then
+  local errCode = worldProxy_.GetTrialRoadAward(request, token)
+  if errCode == 0 then
     Z.EventMgr:Dispatch(Z.ConstValue.TrialRoad.RefreshTrialRoadTarget)
     local trialRoadRed_ = require("rednode.trialroad_red")
     trialRoadRed_.RefreshTrialRoadGradeTargetItemRed()
   else
-    Z.TipsVM.ShowTips(ret.errCode)
+    Z.TipsVM.ShowTips(errCode)
   end
 end
 local refreshRoomRestOpenTime = function(roomData)
@@ -127,16 +129,27 @@ end
 local closeGradePopup = function()
   Z.UIMgr:CloseView("trialroad_grade_popup")
 end
+local openResultsView = function()
+  Z.UIMgr:GotoMainView()
+  Z.UIMgr:OpenView("trialroad_closing_window")
+end
 local playCallFunc = function(cutId, tab)
+  local entityVM = Z.VMMgr.GetVM("entity")
   local teamEntData = {}
   Z.UITimelineDisplay:Play(cutId)
   Z.UITimelineDisplay:SetGoPosByCutsceneId(cutId, Vector3.New(tab.ResultCurscenePos.X, tab.ResultCurscenePos.Y, tab.ResultCurscenePos.Z))
   local isPlay = Z.SettlementCutMgr:GetSettlementIsPlayByCutId(cutId)
   if isPlay then
     local data = {}
-    data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(0, 0)
-    data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(0, 0)
+    local indexType = SettlementNodeIndex.IntToEnum(0)
+    data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(indexType, 0)
+    data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(indexType, 0)
     teamEntData[Z.EntityMgr.PlayerEnt.EntId] = data
+    local uuid = entityVM.EntIdToUuid(Z.ContainerMgr.CharSerialize.charId, entChar)
+    local entity = Z.EntityMgr:GetEntity(uuid)
+    if entity then
+      entity.Model:SetLuaAttr(Z.ModelAttr.EModelAnimIKClose, true)
+    end
   end
   local ret = {}
   ret.vUserPos = {}
@@ -155,7 +168,7 @@ local playCallFunc = function(cutId, tab)
     local proxy = require("zproxy.world_proxy")
     proxy.ReportSettlementPosition(ret, teamData.CancelSource:CreateToken())
   end)()
-  Z.UIMgr:OpenView("trialroad_closing_window")
+  openResultsView()
 end
 local playTimeLine = function()
   local dungeonId = Z.StageMgr.GetCurrentDungeonId()
@@ -168,8 +181,7 @@ local playTimeLine = function()
     end, function()
     end)
   else
-    Z.UIMgr:GotoMainView()
-    Z.UIMgr:OpenView("trialroad_closing_window")
+    openResultsView()
   end
 end
 local openSettlementSuccessWindow = function()
@@ -216,6 +228,9 @@ local returnTrialRoadUI = function()
 end
 local leaveDuplicate = function()
   Z.CoroUtil.create_coro_xpcall(function()
+    if not Z.EntityMgr.PlayerEnt then
+      return
+    end
     local trialroadData = Z.DataMgr.Get("trialroad_data")
     local proxy = require("zproxy.world_proxy")
     local visualLayerId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrVisualLayerUid")).Value
@@ -234,6 +249,35 @@ local refreshTrialRoadRed = function(roomId)
 end
 local closeTrialRoadFailureView = function()
   Z.UIMgr:CloseView("trialroad_battle_failure_window")
+end
+local openMonsterTips = function(monsterData, gs, trans)
+  local monsterTipsData = {}
+  for _, monsterId in pairs(monsterData) do
+    local data = {}
+    data.monsterId = monsterId
+    local monsterCfgData = Z.TableMgr.GetTable("MonsterTableMgr").GetRow(monsterId)
+    if monsterCfgData then
+      data.monsterName = monsterCfgData.Name
+    end
+    local modelCfg = Z.TableMgr.GetTable("ModelTableMgr").GetRow(monsterCfgData.ModelID)
+    if modelCfg then
+      data.monsterImgPath = modelCfg.Image
+    end
+    local param = {
+      val = tostring(gs)
+    }
+    data.monsterGs = Lang("GSEqual", param)
+    table.insert(monsterTipsData, data)
+  end
+  local viewData = {
+    rect = trans,
+    monsterDataArray = monsterTipsData,
+    isRightFirst = false
+  }
+  Z.UIMgr:OpenView("tips_monsters", viewData)
+end
+local closeMonsterTips = function()
+  Z.UIMgr:CloseView("tips_monsters")
 end
 local ret = {
   OpenView = openView,
@@ -259,6 +303,8 @@ local ret = {
   GotoNextLevel = gotoNextLevel,
   ReChallengeLevel = reChallengeLevel,
   ReturnTrialRoadUI = returnTrialRoadUI,
-  LeaveDuplicate = leaveDuplicate
+  LeaveDuplicate = leaveDuplicate,
+  OpenMonsterTips = openMonsterTips,
+  CloseMonsterTips = closeMonsterTips
 }
 return ret

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message FashionBenefitCollectionHistory {
+    int32 fashionId = 1;
+    int64 time = 2;
+    int32 type = 3;
+    int32 parameter = 4;
+}

@@ -8,6 +8,4 @@ message DungeonTargetData {
     int32 targetId = 1;
     int32 nums = 2;
     int32 complete = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

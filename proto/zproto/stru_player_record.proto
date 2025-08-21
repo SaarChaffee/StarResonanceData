@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_player_record_info.proto";
+import "stru_dirty_mask.proto";
+
+message PlayerRecord {
+    repeated zproto.PlayerRecord.PlayerRecordInfosEntry playerRecordInfos = 1;
+}

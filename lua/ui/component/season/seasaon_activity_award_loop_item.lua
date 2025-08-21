@@ -20,6 +20,7 @@ function UnionHuntRewardItem:OnRefresh(awardData_)
   itemData.isShowReceive = awardData_.beGet ~= nil and awardData_.beGet
   itemData.isSquareItem = true
   itemData.PrevDropType = awardData_.PrevDropType
+  itemData.isShowAssistFight = awardData_.isShowAssistFight
   self.itemClass_:Init(itemData)
 end
 

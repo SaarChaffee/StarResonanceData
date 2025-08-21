@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetArkJsonWithTencentRequest {
+    string selefOpenId = 1;
+    string selefToken = 2;
+}

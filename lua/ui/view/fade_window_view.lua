@@ -3,7 +3,7 @@ local super = require("ui.ui_view_base")
 local Fade_windowView = class("Fade_windowView", super)
 
 function Fade_windowView:ctor()
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "fade_window")
 end
 
@@ -12,17 +12,21 @@ function Fade_windowView:onFadeIn(data)
     self.timerMgr:StopTimer(self.timeOutTimer)
     self.timeOutTimer = nil
   end
-  self.panel.anim.TweenContainer:Pause()
+  self.uiBinder.comp_tween_main:Pause()
   Z.LuaBridge.SetBackgroundLoadingPriority(true)
-  self.panel.anim.Ref.CanvasGroup.alpha = 0
+  self.uiBinder.canvas_group_main.alpha = 0
+  local openAnimType = Z.DOTweenAnimType.Open
+  if data and data.OpenAnimType then
+    openAnimType = data.OpenAnimType
+  end
   if data and data.IsInstant then
-    self.panel.anim.TweenContainer:Rewind(Z.DOTweenAnimType.Open)
-    self.panel.anim.TweenContainer:Complete(Z.DOTweenAnimType.Open)
+    self.uiBinder.comp_tween_main:Rewind(openAnimType)
+    self.uiBinder.comp_tween_main:Complete(openAnimType)
     self:onFadeInEnd(data)
   else
     Z.CoroUtil.create_coro_xpcall(function()
-      local coro = Z.CoroUtil.async_to_sync(self.panel.anim.TweenContainer.CoroPlay)
-      coro(self.panel.anim.TweenContainer, Z.DOTweenAnimType.Open)
+      local coro = Z.CoroUtil.async_to_sync(self.uiBinder.comp_tween_main.CoroPlay)
+      coro(self.uiBinder.comp_tween_main, openAnimType)
       self:onFadeInEnd(data)
     end, function(err)
       if err == ZUtil.ZCancelSource.CancelException then
@@ -56,23 +60,27 @@ function Fade_windowView:onFadeOut(data)
     self.timerMgr:StopTimer(self.timeOutTimer)
     self.timeOutTimer = nil
   end
-  self.panel.anim.TweenContainer:Pause()
+  self.uiBinder.comp_tween_main:Pause()
   Z.LuaBridge.SetBackgroundLoadingPriority(false)
+  local closeAnimType = Z.DOTweenAnimType.Close
+  if data and data.CloseAnimType then
+    closeAnimType = data.CloseAnimType
+  end
   if data and data.IsInstant then
-    self.panel.anim.TweenContainer:Rewind(Z.DOTweenAnimType.Close)
-    self.panel.anim.TweenContainer:Complete(Z.DOTweenAnimType.Close)
+    self.uiBinder.comp_tween_main:Rewind(closeAnimType)
+    self.uiBinder.comp_tween_main:Complete(closeAnimType)
     self:onFadeOutEnd(data)
   else
     Z.CoroUtil.create_coro_xpcall(function()
-      local coro = Z.CoroUtil.async_to_sync(self.panel.anim.TweenContainer.CoroPlay)
-      coro(self.panel.anim.TweenContainer, Z.DOTweenAnimType.Close)
+      local coro = Z.CoroUtil.async_to_sync(self.uiBinder.comp_tween_main.CoroPlay)
+      coro(self.uiBinder.comp_tween_main, closeAnimType)
       self:onFadeOutEnd(data)
     end)()
   end
 end
 
 function Fade_windowView:onFadeOutEnd(data)
-  self.panel.anim.Ref.CanvasGroup.alpha = 0
+  self.uiBinder.canvas_group_main.alpha = 0
   if data ~= nil and data.EndCallback ~= nil then
     data.EndCallback()
   end
@@ -81,10 +89,12 @@ end
 
 function Fade_windowView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
+  Z.InputMgr:EnableInput(false, Panda.ZGame.EInputMgrEableSource.FadeWindow)
   self:bindEvents()
 end
 
 function Fade_windowView:OnDeActive()
+  Z.InputMgr:EnableInput(true, Panda.ZGame.EInputMgrEableSource.FadeWindow)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   Z.LuaBridge.SetBackgroundLoadingPriority(false)
 end
@@ -97,7 +107,7 @@ function Fade_windowView:OnRefresh()
   else
     color = Color.New(0, 0, 0, 1)
   end
-  self.panel.img.Img:SetColor(color)
+  self.uiBinder.img_main:SetColor(color)
   if fadeArgs and fadeArgs.IsOpen then
     self:onFadeIn(fadeArgs)
   else

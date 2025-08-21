@@ -17,6 +17,7 @@ function Parkour_time_prepare_tplView:Init(go, name)
   self.img_red:SetVisible(false)
   self.img_green:SetVisible(false)
   self.timerMgr = Z.TimerMgr.new()
+  self.realTime_ = 0
   self:onPlayAnim()
   self:SetData()
 end
@@ -27,52 +28,62 @@ function Parkour_time_prepare_tplView:DeActive()
   self:onCloseAnim()
 end
 
-function Parkour_time_prepare_tplView:CountDownFunc(timeNumber, startTime, timingDirection, addTime, addTimeUiType, limitTime, timeFinishFunc, timeCallFunc, timeLimitFunc, isShowZeroSecond)
-  local detailTime = timeNumber
-  if timeNumber <= 0 or not startTime then
+function Parkour_time_prepare_tplView:CountDownFunc(timeInfo)
+  local endTime = timeInfo.timeNumber
+  if timeInfo.timeNumber <= 0 or not timeInfo.startTime then
     return
   end
-  if isShowZeroSecond then
-    detailTime = timeNumber - 1000
+  if timeInfo.isShowZeroSecond then
+    endTime = timeInfo.timeNumber - 1000
   end
-  local realT = math.floor((detailTime - Z.ServerTime:GetServerTime()) / 1000)
-  local showTimeString = realT
-  if timingDirection == E.DungeonTimerDirection.DungeonTimerDirectionUp then
-    showTimeString = math.floor((Z.ServerTime:GetServerTime() - startTime * 1000) / 1000)
+  self:clearTimer()
+  self.realTime_ = math.floor((endTime - Z.ServerTime:GetServerTime()) / 1000)
+  local showTimeString = self.realTime_
+  if timeInfo.timingDirection == E.DungeonTimerDirection.DungeonTimerDirectionUp then
+    showTimeString = math.floor((Z.ServerTime:GetServerTime() - timeInfo.startTime * 1000) / 1000)
   end
-  self.lab_num_enter.TMPLab.text = Z.TimeTools.S2MSFormat(showTimeString)
+  local time = Z.TimeFormatTools.FormatToDHMS(showTimeString, true, true)
+  if timeInfo.outLookType == E.DungeonTimerTimerLookType.EDungeonTimerTimerLookTypeRed then
+    time = Z.RichTextHelper.ApplyStyleTag(time, E.TextStyleTag.TipsRed)
+  end
+  self.lab_num_enter.TMPLab.text = time
   local isFirst = true
-  if self.timer then
-    self.isCalledFinsishFunc = true
-    self.timer:Stop()
+  if 0 < timeInfo.pauseTime then
+    return
   end
-  self:showAddTimeUI(addTime, addTimeUiType)
+  self:showAddTimeUI(timeInfo.addTime, timeInfo.addTimeUiType)
   self.isCalledFinsishFunc = false
+  local t = self.realTime_
   self.timer = self.timerMgr:StartTimer(function()
-    local t = 0
-    if timingDirection == E.DungeonTimerDirection.DungeonTimerDirectionUp then
-      t = math.floor((Z.ServerTime:GetServerTime() - startTime * 1000) / 1000)
+    if timeInfo.timingDirection == E.DungeonTimerDirection.DungeonTimerDirectionUp then
+      t = t + 1
     else
-      t = math.floor((detailTime - Z.ServerTime:GetServerTime()) / 1000)
+      t = t - 1
     end
-    self.lab_num_enter.TMPLab.text = Z.TimeTools.S2MSFormat(t)
-    if limitTime ~= nil and t <= limitTime and isFirst then
+    if t < 0 then
+      t = 0
+    end
+    local curTime = Z.TimeFormatTools.FormatToDHMS(t, true, true)
+    if timeInfo.outLookType == E.DungeonTimerTimerLookType.EDungeonTimerTimerLookTypeRed then
+      curTime = Z.RichTextHelper.ApplyStyleTag(curTime, E.TextStyleTag.TipsRed)
+    end
+    self.lab_num_enter.TMPLab.text = curTime
+    if timeInfo.limitTime ~= nil and t <= timeInfo.limitTime and isFirst then
       isFirst = false
-      self:SetNodeColor(true)
-      if timeLimitFunc then
-        self.timeLimitFunc()
+      if timeInfo.timeLimitFunc then
+        timeInfo.timeLimitFunc()
       end
     end
-    if timeCallFunc then
-      timeCallFunc()
+    if timeInfo.timeCallFunc then
+      timeInfo.timeCallFunc()
     end
-  end, 1, realT, true, function()
+  end, 1, self.realTime_, true, function()
     if self.isCalledFinsishFunc == false then
       self.unit.Ref:SetVisible(false)
       self.isCalledFinsishFunc = true
     end
-    if timeFinishFunc then
-      timeFinishFunc()
+    if timeInfo.timeFinishFunc then
+      timeInfo.timeFinishFunc()
     end
   end)
 end
@@ -110,6 +121,14 @@ end
 function Parkour_time_prepare_tplView:onCloseAnim()
   self.unit.img_frame.TweenContainer:Rewind(Z.DOTweenAnimType.Close)
   self.unit.img_frame.TweenContainer:Restart(Z.DOTweenAnimType.Close)
+end
+
+function Parkour_time_prepare_tplView:clearTimer()
+  if self.timer then
+    self.isCalledFinsishFunc = true
+    self.timer:Stop()
+  end
+  self.realTime_ = 0
 end
 
 return Parkour_time_prepare_tplView

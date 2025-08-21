@@ -4,6 +4,5 @@ package zproto;
 
 message ApprovalRequestRequest {
     int64 unionId = 2;
-    map<int64, bool> vApprovalList = 3;
+    repeated zproto.ApprovalRequestRequest.VApprovalListEntry vApprovalList = 3;
 }
-

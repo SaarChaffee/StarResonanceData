@@ -1,0 +1,1481 @@
+{
+  "1001": {
+    "Id": 1001,
+    "DictionaryType": 1,
+    "Episode": 1001,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [],
+    "IsHide": false
+  },
+  "1002": {
+    "Id": 1002,
+    "DictionaryType": 3,
+    "Episode": 1002,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [],
+    "IsHide": false
+  },
+  "1003": {
+    "Id": 1003,
+    "DictionaryType": 2,
+    "Episode": 1003,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10092
+    ],
+    "IsHide": false
+  },
+  "1004": {
+    "Id": 1004,
+    "DictionaryType": 3,
+    "Episode": 1004,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10092
+    ],
+    "IsHide": false
+  },
+  "1005": {
+    "Id": 1005,
+    "DictionaryType": 3,
+    "Episode": 1005,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [],
+    "IsHide": false
+  },
+  "1006": {
+    "Id": 1006,
+    "DictionaryType": 1,
+    "Episode": 1006,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10092
+    ],
+    "IsHide": false
+  },
+  "1007": {
+    "Id": 1007,
+    "DictionaryType": 3,
+    "Episode": 1007,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10092
+    ],
+    "IsHide": false
+  },
+  "1008": {
+    "Id": 1008,
+    "DictionaryType": 2,
+    "Episode": 1008,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10009
+    ],
+    "IsHide": false
+  },
+  "1009": {
+    "Id": 1009,
+    "DictionaryType": 2,
+    "Episode": 1009,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10089
+    ],
+    "IsHide": false
+  },
+  "1010": {
+    "Id": 1010,
+    "DictionaryType": 3,
+    "Episode": 1010,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10095
+    ],
+    "IsHide": false
+  },
+  "1011": {
+    "Id": 1011,
+    "DictionaryType": 3,
+    "Episode": 1011,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10090
+    ],
+    "IsHide": false
+  },
+  "1012": {
+    "Id": 1012,
+    "DictionaryType": 1,
+    "Episode": 1012,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10090
+    ],
+    "IsHide": false
+  },
+  "1013": {
+    "Id": 1013,
+    "DictionaryType": 2,
+    "Episode": 1013,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10090
+    ],
+    "IsHide": false
+  },
+  "1014": {
+    "Id": 1014,
+    "DictionaryType": 3,
+    "Episode": 1014,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10003
+    ],
+    "IsHide": false
+  },
+  "1015": {
+    "Id": 1015,
+    "DictionaryType": 3,
+    "Episode": 1015,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10003
+    ],
+    "IsHide": false
+  },
+  "1016": {
+    "Id": 1016,
+    "DictionaryType": 1,
+    "Episode": 1016,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10097
+    ],
+    "IsHide": false
+  },
+  "1017": {
+    "Id": 1017,
+    "DictionaryType": 2,
+    "Episode": 1017,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10097
+    ],
+    "IsHide": false
+  },
+  "1018": {
+    "Id": 1018,
+    "DictionaryType": 1,
+    "Episode": 1018,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10010
+    ],
+    "IsHide": false
+  },
+  "1019": {
+    "Id": 1019,
+    "DictionaryType": 2,
+    "Episode": 1019,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10010
+    ],
+    "IsHide": false
+  },
+  "1020": {
+    "Id": 1020,
+    "DictionaryType": 2,
+    "Episode": 1020,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10011
+    ],
+    "IsHide": false
+  },
+  "1021": {
+    "Id": 1021,
+    "DictionaryType": 1,
+    "Episode": 1021,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10202
+    ],
+    "IsHide": false
+  },
+  "1022": {
+    "Id": 1022,
+    "DictionaryType": 2,
+    "Episode": 1022,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10012
+    ],
+    "IsHide": false
+  },
+  "1023": {
+    "Id": 1023,
+    "DictionaryType": 1,
+    "Episode": 1023,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10202
+    ],
+    "IsHide": false
+  },
+  "1024": {
+    "Id": 1024,
+    "DictionaryType": 3,
+    "Episode": 1024,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10202
+    ],
+    "IsHide": false
+  },
+  "1025": {
+    "Id": 1025,
+    "DictionaryType": 1,
+    "Episode": 1025,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10202
+    ],
+    "IsHide": false
+  },
+  "1026": {
+    "Id": 1026,
+    "DictionaryType": 3,
+    "Episode": 1026,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10202
+    ],
+    "IsHide": false
+  },
+  "1027": {
+    "Id": 1027,
+    "DictionaryType": 2,
+    "Episode": 1027,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10202
+    ],
+    "IsHide": false
+  },
+  "1028": {
+    "Id": 1028,
+    "DictionaryType": 1,
+    "Episode": 1028,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10202
+    ],
+    "IsHide": false
+  },
+  "1029": {
+    "Id": 1029,
+    "DictionaryType": 3,
+    "Episode": 1029,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10202
+    ],
+    "IsHide": false
+  },
+  "1030": {
+    "Id": 1030,
+    "DictionaryType": 2,
+    "Episode": 1030,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10205
+    ],
+    "IsHide": false
+  },
+  "1031": {
+    "Id": 1031,
+    "DictionaryType": 2,
+    "Episode": 1031,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10206
+    ],
+    "IsHide": false
+  },
+  "1032": {
+    "Id": 1032,
+    "DictionaryType": 2,
+    "Episode": 1032,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10211
+    ],
+    "IsHide": false
+  },
+  "1033": {
+    "Id": 1033,
+    "DictionaryType": 3,
+    "Episode": 1033,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10211
+    ],
+    "IsHide": false
+  },
+  "1034": {
+    "Id": 1034,
+    "DictionaryType": 1,
+    "Episode": 1034,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10211
+    ],
+    "IsHide": false
+  },
+  "1035": {
+    "Id": 1035,
+    "DictionaryType": 1,
+    "Episode": 1035,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10211
+    ],
+    "IsHide": false
+  },
+  "1036": {
+    "Id": 1036,
+    "DictionaryType": 3,
+    "Episode": 1036,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10214
+    ],
+    "IsHide": false
+  },
+  "1037": {
+    "Id": 1037,
+    "DictionaryType": 1,
+    "Episode": 1037,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10215
+    ],
+    "IsHide": false
+  },
+  "1038": {
+    "Id": 1038,
+    "DictionaryType": 2,
+    "Episode": 1038,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10300
+    ],
+    "IsHide": false
+  },
+  "1039": {
+    "Id": 1039,
+    "DictionaryType": 3,
+    "Episode": 1039,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10303
+    ],
+    "IsHide": false
+  },
+  "1040": {
+    "Id": 1040,
+    "DictionaryType": 3,
+    "Episode": 1040,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10304
+    ],
+    "IsHide": false
+  },
+  "1041": {
+    "Id": 1041,
+    "DictionaryType": 3,
+    "Episode": 1041,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10304
+    ],
+    "IsHide": false
+  },
+  "1042": {
+    "Id": 1042,
+    "DictionaryType": 3,
+    "Episode": 1042,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10304
+    ],
+    "IsHide": false
+  },
+  "1043": {
+    "Id": 1043,
+    "DictionaryType": 3,
+    "Episode": 1043,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10506
+    ],
+    "IsHide": false
+  },
+  "1044": {
+    "Id": 1044,
+    "DictionaryType": 1,
+    "Episode": 1044,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10513
+    ],
+    "IsHide": false
+  },
+  "1045": {
+    "Id": 1045,
+    "DictionaryType": 3,
+    "Episode": 1045,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10303
+    ],
+    "IsHide": false
+  },
+  "1046": {
+    "Id": 1046,
+    "DictionaryType": 3,
+    "Episode": 1046,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10401
+    ],
+    "IsHide": false
+  },
+  "1047": {
+    "Id": 1047,
+    "DictionaryType": 3,
+    "Episode": 1047,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10401
+    ],
+    "IsHide": false
+  },
+  "1048": {
+    "Id": 1048,
+    "DictionaryType": 1,
+    "Episode": 1048,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10401
+    ],
+    "IsHide": false
+  },
+  "1049": {
+    "Id": 1049,
+    "DictionaryType": 4,
+    "Episode": 1049,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10401
+    ],
+    "IsHide": false
+  },
+  "1050": {
+    "Id": 1050,
+    "DictionaryType": 4,
+    "Episode": 1050,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10401
+    ],
+    "IsHide": false
+  },
+  "1051": {
+    "Id": 1051,
+    "DictionaryType": 3,
+    "Episode": 1051,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10401
+    ],
+    "IsHide": false
+  },
+  "1052": {
+    "Id": 1052,
+    "DictionaryType": 1,
+    "Episode": 1052,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10402
+    ],
+    "IsHide": false
+  },
+  "1053": {
+    "Id": 1053,
+    "DictionaryType": 3,
+    "Episode": 1053,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10402
+    ],
+    "IsHide": false
+  },
+  "1054": {
+    "Id": 1054,
+    "DictionaryType": 3,
+    "Episode": 1054,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10402
+    ],
+    "IsHide": false
+  },
+  "1055": {
+    "Id": 1055,
+    "DictionaryType": 1,
+    "Episode": 1055,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10402
+    ],
+    "IsHide": false
+  },
+  "1056": {
+    "Id": 1056,
+    "DictionaryType": 1,
+    "Episode": 1056,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10402
+    ],
+    "IsHide": false
+  },
+  "1057": {
+    "Id": 1057,
+    "DictionaryType": 1,
+    "Episode": 1057,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10402
+    ],
+    "IsHide": false
+  },
+  "1058": {
+    "Id": 1058,
+    "DictionaryType": 3,
+    "Episode": 1058,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10403
+    ],
+    "IsHide": false
+  },
+  "1059": {
+    "Id": 1059,
+    "DictionaryType": 3,
+    "Episode": 1059,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10404
+    ],
+    "IsHide": false
+  },
+  "1060": {
+    "Id": 1060,
+    "DictionaryType": 3,
+    "Episode": 1060,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10501
+    ],
+    "IsHide": false
+  },
+  "1061": {
+    "Id": 1061,
+    "DictionaryType": 2,
+    "Episode": 1061,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10505
+    ],
+    "IsHide": false
+  },
+  "1062": {
+    "Id": 1062,
+    "DictionaryType": 1,
+    "Episode": 1062,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10506
+    ],
+    "IsHide": false
+  },
+  "1063": {
+    "Id": 1063,
+    "DictionaryType": 3,
+    "Episode": 1063,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10510
+    ],
+    "IsHide": false
+  },
+  "1064": {
+    "Id": 1064,
+    "DictionaryType": 3,
+    "Episode": 1064,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10511
+    ],
+    "IsHide": false
+  },
+  "1065": {
+    "Id": 1065,
+    "DictionaryType": 2,
+    "Episode": 1065,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10511
+    ],
+    "IsHide": false
+  },
+  "1066": {
+    "Id": 1066,
+    "DictionaryType": 1,
+    "Episode": 1066,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10513
+    ],
+    "IsHide": false
+  },
+  "1067": {
+    "Id": 1067,
+    "DictionaryType": 4,
+    "Episode": 1067,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10513
+    ],
+    "IsHide": false
+  },
+  "1068": {
+    "Id": 1068,
+    "DictionaryType": 2,
+    "Episode": 1068,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      10513
+    ],
+    "IsHide": false
+  },
+  "1069": {
+    "Id": 1069,
+    "DictionaryType": 3,
+    "Episode": 1069,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30118
+    ],
+    "IsHide": false
+  },
+  "1070": {
+    "Id": 1070,
+    "DictionaryType": 3,
+    "Episode": 1070,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30125
+    ],
+    "IsHide": false
+  },
+  "1071": {
+    "Id": 1071,
+    "DictionaryType": 3,
+    "Episode": 1071,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30132
+    ],
+    "IsHide": false
+  },
+  "1072": {
+    "Id": 1072,
+    "DictionaryType": 1,
+    "Episode": 1072,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30121
+    ],
+    "IsHide": false
+  },
+  "1073": {
+    "Id": 1073,
+    "DictionaryType": 3,
+    "Episode": 1073,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30136
+    ],
+    "IsHide": false
+  },
+  "1074": {
+    "Id": 1074,
+    "DictionaryType": 3,
+    "Episode": 1074,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      31071
+    ],
+    "IsHide": false
+  },
+  "1075": {
+    "Id": 1075,
+    "DictionaryType": 2,
+    "Episode": 1075,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30124
+    ],
+    "IsHide": false
+  },
+  "1076": {
+    "Id": 1076,
+    "DictionaryType": 1,
+    "Episode": 1076,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30137
+    ],
+    "IsHide": false
+  },
+  "1077": {
+    "Id": 1077,
+    "DictionaryType": 3,
+    "Episode": 1077,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30401
+    ],
+    "IsHide": false
+  },
+  "1078": {
+    "Id": 1078,
+    "DictionaryType": 1,
+    "Episode": 1078,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30401
+    ],
+    "IsHide": false
+  },
+  "1079": {
+    "Id": 1079,
+    "DictionaryType": 2,
+    "Episode": 1079,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30413
+    ],
+    "IsHide": false
+  },
+  "1080": {
+    "Id": 1080,
+    "DictionaryType": 1,
+    "Episode": 1080,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30106
+    ],
+    "IsHide": false
+  },
+  "1081": {
+    "Id": 1081,
+    "DictionaryType": 3,
+    "Episode": 1081,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30507
+    ],
+    "IsHide": false
+  },
+  "1082": {
+    "Id": 1082,
+    "DictionaryType": 1,
+    "Episode": 1082,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30211
+    ],
+    "IsHide": false
+  },
+  "1083": {
+    "Id": 1083,
+    "DictionaryType": 3,
+    "Episode": 1083,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30127
+    ],
+    "IsHide": false
+  },
+  "1084": {
+    "Id": 1084,
+    "DictionaryType": 3,
+    "Episode": 1084,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30313
+    ],
+    "IsHide": false
+  },
+  "1085": {
+    "Id": 1085,
+    "DictionaryType": 3,
+    "Episode": 1085,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30300
+    ],
+    "IsHide": false
+  },
+  "1086": {
+    "Id": 1086,
+    "DictionaryType": 3,
+    "Episode": 1086,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30300
+    ],
+    "IsHide": false
+  },
+  "1087": {
+    "Id": 1087,
+    "DictionaryType": 3,
+    "Episode": 1087,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30301
+    ],
+    "IsHide": false
+  },
+  "1088": {
+    "Id": 1088,
+    "DictionaryType": 3,
+    "Episode": 1088,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30601
+    ],
+    "IsHide": false
+  },
+  "1089": {
+    "Id": 1089,
+    "DictionaryType": 1,
+    "Episode": 1089,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30139
+    ],
+    "IsHide": false
+  },
+  "1090": {
+    "Id": 1090,
+    "DictionaryType": 1,
+    "Episode": 1090,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30500
+    ],
+    "IsHide": false
+  },
+  "1091": {
+    "Id": 1091,
+    "DictionaryType": 1,
+    "Episode": 1091,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30500
+    ],
+    "IsHide": false
+  },
+  "1092": {
+    "Id": 1092,
+    "DictionaryType": 3,
+    "Episode": 1092,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30510
+    ],
+    "IsHide": false
+  },
+  "1093": {
+    "Id": 1093,
+    "DictionaryType": 1,
+    "Episode": 1093,
+    "Name": "",
+    "DictionaryDes": "",
+    "DictionaryFigure": "",
+    "TargetType": 115,
+    "Num": 1,
+    "SceneId": 0,
+    "Param": [
+      -2,
+      30123
+    ],
+    "IsHide": false
+  }
+}

@@ -99,11 +99,18 @@ function SettingKeyLoopItem:onKeyStartListerner(container, slotIdx)
       local ret = self.keyVM_.IsPresetKey(data)
       return ret
     end, function(conflictActionIds)
-      self.parentView_.ConflictActionIds = conflictActionIds
-      local ret = self.keyVM_.HandleKeyConflict()
+      if self.parentView_ ~= nil then
+        self.parentView_.ConflictActionIds = conflictActionIds
+        local ret = self.keyVM_.HandleKeyConflict(conflictActionIds)
+      else
+        logError("SettingKeyLoopItem:onKeyStartListerner parentView_ is nil")
+      end
     end, function(actionElementMap)
       self:onInputMappedOverCallback(actionElementMap)
     end, function()
+      if self.parentView_ == nil then
+        return
+      end
       self.parentView_.ConflictActionIds = nil
       self:refreshKeyboardElements()
     end)

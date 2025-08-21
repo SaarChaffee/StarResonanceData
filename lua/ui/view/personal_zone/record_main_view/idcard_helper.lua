@@ -19,14 +19,6 @@ end
 function IDCardHelper:SetIDCardBg(path, playerPath, color)
   self.container_.idcard_popup.rimg_bg:SetImage(path)
   self.container_.idcard_popup.rimg_player_bg:SetImage(playerPath)
-  self.container_.idcard_popup.img_left:SetColorByHex(color)
-  self.container_.idcard_popup.img_right:SetColorByHex(color)
-  self.container_.idcard_popup.img_armband_bg_1:SetColorByHex(color)
-  self.container_.idcard_popup.img_armband_bg_2:SetColorByHex(color)
-  self.container_.idcard_popup.img_lv_num_bg:SetColorByHex(color)
-  self.container_.idcard_popup.img_diamond_gs:SetColorByHex(color)
-  self.container_.idcard_popup.img_diamond_uniom:SetColorByHex(color)
-  self.container_.idcard_popup.img_diamond_team:SetColorByHex(color)
 end
 
 function IDCardHelper:RefreshSelf()
@@ -38,6 +30,10 @@ function IDCardHelper:setSelfIDCardImg()
   Z.CoroUtil.create_coro_xpcall(function()
     self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.rimg_idcard_figure, false)
     self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_idcard_figure, false)
+    if Z.EntityMgr.PlayerEnt == nil then
+      logError("PlayerEnt is nil")
+      return
+    end
     local textureData = self.vm_.GetGetReviewAvatarInfo(Z.EntityMgr.PlayerEnt.EntId, self.view_.cancelSource:CreateToken())
     if textureData and textureData.auditing == E.EPictureReviewType.EPictureReviewed then
       self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_idcard_figure, false)
@@ -73,7 +69,10 @@ function IDCardHelper:setSelfPlayerInfo()
   local playerVM = Z.VMMgr.GetVM("player")
   if playerVM:IsNamed() then
     playerName = Z.ContainerMgr.CharSerialize.charBase.name
+  else
+    playerName = Lang("EmptyRoleName")
   end
+  self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrIsNewbie")).Value))
   self.container_.idcard_popup.lab_name.text = playerName
   self.container_.idcard_popup.lab_uid.text = Lang("UID") .. Z.ContainerMgr.CharSerialize.charBase.showId
   local titleId = self.personalZoneVM_.GetCurProfileImageId(DEFINE.ProfileImageType.Title)
@@ -84,30 +83,22 @@ function IDCardHelper:setSelfPlayerInfo()
     self.container_.idcard_popup.lab_gs.text = string.format("%s\239\188\154%s", Lang("PersonalzoneTitle"), Lang("None"))
   end
   local lv = Z.ContainerMgr.CharSerialize.roleLevel.level or 1
-  self.container_.idcard_popup.lab_lv_num.text = lv
+  self.container_.idcard_popup.lab_lv.text = Lang("RoleLevel", {val = lv})
   local unionName = self.unionVm_:GetPlayerUnionName()
   self.container_.idcard_popup.lab_union.text = string.format("%s\239\188\154%s", Lang("Union"), unionName == "" and Lang("None") or unionName)
   local professionId = self.weaponVm_.GetCurWeapon()
   local professionSystemTableBase = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
   if professionSystemTableBase then
-    self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_icon_talent_bg, true)
-    self.container_.idcard_popup.img_icon_talent:SetImage(professionSystemTableBase.Icon)
+    self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_icon_profession_bg, true)
+    self.container_.idcard_popup.img_icon_profession:SetImage(professionSystemTableBase.Icon)
   else
-    self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_icon_talent_bg, false)
+    self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_icon_profession_bg, false)
   end
   local idCardId = self.personalZoneVM_.GetCurProfileImageId(DEFINE.ProfileImageType.Card)
   local config = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(idCardId)
   if config then
-    self.container_.idcard_popup.rimg_bg:SetImage(config.Image2)
-    self.container_.idcard_popup.rimg_player_bg:SetImage(config.ImagePlayer)
-    self.container_.idcard_popup.img_left:SetColorByHex(config.Color)
-    self.container_.idcard_popup.img_right:SetColorByHex(config.Color)
-    self.container_.idcard_popup.img_armband_bg_1:SetColorByHex(config.Color)
-    self.container_.idcard_popup.img_armband_bg_2:SetColorByHex(config.Color)
-    self.container_.idcard_popup.img_lv_num_bg:SetColorByHex(config.Color)
-    self.container_.idcard_popup.img_diamond_gs:SetColorByHex(config.Color)
-    self.container_.idcard_popup.img_diamond_uniom:SetColorByHex(config.Color)
-    self.container_.idcard_popup.img_diamond_team:SetColorByHex(config.Color)
+    self.container_.idcard_popup.rimg_bg:SetImage(Z.ConstValue.PersonalZone.PersonalCardBg .. config.Image)
+    self.container_.idcard_popup.rimg_player_bg:SetImage(Z.ConstValue.PersonalZone.PersonalBg .. config.Image)
   end
   local seasonData = Z.DataMgr.Get("season_title_data")
   local seasonTitleId = seasonData:GetCurRankInfo().curRanKStar
@@ -115,6 +106,45 @@ function IDCardHelper:setSelfPlayerInfo()
     local seasonRankConfig = Z.TableMgr.GetTable("SeasonRankTableMgr").GetRow(seasonTitleId)
     if seasonRankConfig then
       self.container_.idcard_popup.img_armband_icon:SetImage(seasonRankConfig.IconBig)
+    end
+  end
+  local heroDungeonMain = Z.VMMgr.GetVM("hero_dungeon_main")
+  if heroDungeonMain.CheckAnyMasterDungeonOpen() then
+    local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+    local score = heroDungeonMain.GetPlayerSeasonMasterDungeonScore(seasonId)
+    local scoreText = heroDungeonMain.GetPlayerSeasonMasterDungeonTotalScoreWithColor(score)
+    local master_dungeon_score_text = Lang("MaterDungeonScore") .. scoreText
+    if Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.isShow then
+      master_dungeon_score_text = Lang("MaterDungeonScore") .. Lang("Hidden")
+    end
+    self.container_.idcard_popup.lab_score.text = master_dungeon_score_text
+  else
+    self.container_.idcard_popup.lab_score.text = Lang("MaterDungeonScore") .. Lang("noYet")
+  end
+  local medals = {}
+  local medalCount = 0
+  if Z.ContainerMgr.CharSerialize.personalZone and Z.ContainerMgr.CharSerialize.personalZone.medals then
+    for i = 1, Z.Global.PersonalMedalLimit * Z.Global.PersonalzoneMedalRow[1] * Z.Global.PersonalzoneMedalRow[2] do
+      if Z.ContainerMgr.CharSerialize.personalZone.medals[i] ~= nil and Z.ContainerMgr.CharSerialize.personalZone.medals[i] ~= 0 then
+        medalCount = medalCount + 1
+        medals[medalCount] = Z.ContainerMgr.CharSerialize.personalZone.medals[i]
+        if medalCount == Z.Global.IdCardShowMedalCount then
+          break
+        end
+      end
+    end
+  end
+  local mgr = Z.TableMgr.GetTable("MedalTableMgr")
+  for i = 1, Z.Global.IdCardShowMedalCount do
+    local img = self.container_.idcard_popup.node_badge["rimg_badge_" .. i]
+    if medals[i] == nil then
+      self.container_.idcard_popup.node_badge.Ref:SetVisible(img, false)
+    else
+      self.container_.idcard_popup.node_badge.Ref:SetVisible(img, true)
+      local config = mgr.GetRow(medals[i])
+      if config then
+        img:SetImage(config.Image)
+      end
     end
   end
 end

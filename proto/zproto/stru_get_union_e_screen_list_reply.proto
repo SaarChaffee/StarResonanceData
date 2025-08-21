@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_union_e_screen_info.proto";
 
 message GetUnionEScreenListReply {
-    int32 errCode = 1;
-    repeated zproto.UnionEScreenInfo eScreenList = 2;
-    int32 curSetTimes = 3;
-    int32 maxSetTimes = 4;
+    repeated zproto.UnionEScreenInfo eScreenList = 1;
+    int32 curSetTimes = 2;
+    int32 maxSetTimes = 3;
+    zproto.EErrorCode errCode = 4;
 }
-

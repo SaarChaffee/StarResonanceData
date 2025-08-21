@@ -4,14 +4,10 @@ local Tips_unlock_conditionView = class("Tips_unlock_conditionView", super)
 
 function Tips_unlock_conditionView:ctor()
   self.uiBinder = nil
-  self.anim_name_ = Z.IsPCUI and "anim_rolelevel_attribute_tpl_open_2_pc" or "anim_rolelevel_attribute_tpl_open_2"
-  if Z.IsPCUI then
-    Z.UIConfig.tips_unlock_condition.PrefabPath = "tips/tips_unlock_condition_pc"
-  else
-    Z.UIConfig.tips_unlock_condition.PrefabPath = "tips/tips_unlock_condition"
-  end
-  super.ctor(self, "tips_unlock_condition")
+  super.ctor(self, "tips_unlock_condition", "tips/tips_unlock_condition", true)
+  self.anim_name_ = Z.IsPCUI and "anim_rolelevel_attribute_tpl_open_pc" or "anim_rolelevel_attribute_tpl_open"
   self.isShow_ = false
+  self.commonVM_ = Z.VMMgr.GetVM("common")
 end
 
 function Tips_unlock_conditionView:OnActive()
@@ -25,11 +21,11 @@ function Tips_unlock_conditionView:OnDeActive()
     end
     Z.EventMgr:Dispatch(Z.ConstValue.ShowMainFeatureUnLockEffect, data.functionId)
   end
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_eff_root)
   if self.timerId_ then
     self.timerMgr:StopTimer(self.timerId_)
     self.timerId_ = nil
   end
-  self.uiBinder.eff_root:SetEffectGoVisible(false)
 end
 
 function Tips_unlock_conditionView:OnRefresh()
@@ -45,16 +41,14 @@ function Tips_unlock_conditionView:OnRefresh()
     return
   end
   self.isShow_ = true
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff_root)
   self.uiBinder.img_icon:SetImage(table.Icon)
   Z.AudioMgr:Play("UI_Event_ItemGet_S")
   self.uiBinder.lab_condition.text = table.Name
-  self.uiBinder.anim:PlayOnce(self.anim_name_)
-  if self.timerId_ then
-    self.timerMgr:StopTimer(self.timerId_)
-  end
-  self.timerId_ = self.timerMgr:StartTimer(function()
+  local token = self.cancelSource:CreateToken()
+  self.commonVM_.CommonPlayAnim(self.uiBinder.anim, self.anim_name_, token, function()
     Z.UIMgr:CloseView(self.viewConfigKey)
-  end, 1.5)
+  end)
 end
 
 function Tips_unlock_conditionView:Close()

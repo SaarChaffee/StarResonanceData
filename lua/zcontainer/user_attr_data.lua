@@ -1,15 +1,5 @@
 local br = require("sync.blob_reader")
 local mergeDataFuncs = {
-  [1] = function(container, buffer, watcherList)
-    local last = container.__data__.hp
-    container.__data__.hp = br.ReadUInt32(buffer)
-    container.Watcher:MarkDirty("hp", last)
-  end,
-  [2] = function(container, buffer, watcherList)
-    local last = container.__data__.maxHp
-    container.__data__.maxHp = br.ReadUInt32(buffer)
-    container.Watcher:MarkDirty("maxHp", last)
-  end,
   [3] = function(container, buffer, watcherList)
     local last = container.__data__.state
     container.__data__.state = br.ReadInt32(buffer)
@@ -48,12 +38,6 @@ local resetData = function(container, pbData)
     return
   end
   container.__data__ = pbData
-  if not pbData.hp then
-    container.__data__.hp = 0
-  end
-  if not pbData.maxHp then
-    container.__data__.maxHp = 0
-  end
   if not pbData.state then
     container.__data__.state = 0
   end
@@ -99,16 +83,6 @@ local getContainerElem = function(container)
     return nil
   end
   local ret = {}
-  ret.hp = {
-    fieldId = 1,
-    dataType = 0,
-    data = container.hp
-  }
-  ret.maxHp = {
-    fieldId = 2,
-    dataType = 0,
-    data = container.maxHp
-  }
   ret.state = {
     fieldId = 3,
     dataType = 0,

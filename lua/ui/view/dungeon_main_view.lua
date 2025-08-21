@@ -3,7 +3,7 @@ local super = require("ui.ui_view_base")
 local Dungeon_mainView = class("Dungeon_mainView", super)
 local dataMgr = require("ui.model.data_manager")
 local data = Z.DataMgr.Get("dungeon_data")
-local itemClass = require("common.item")
+local itemClass = require("common.item_binder")
 local awardPreviewVm = Z.VMMgr.GetVM("awardpreview")
 
 function Dungeon_mainView:ctor()
@@ -191,37 +191,30 @@ function Dungeon_mainView:setChestItemData(itemList)
       local imgOffDot = self.dungeonChestItems_[index].img_off_dot
       local imgOnTreasure = self.dungeonChestItems_[index].img_on_treasure
       local imgOffTreasure = self.dungeonChestItems_[index].img_off_treasure
-      if E.ChestStateTpe.NotOpen == chestStateTpe then
-        item.Ref:SetVisible(imgOffTreasure, false)
-        item.Ref:SetVisible(imgOnTreasure, true)
-        item.Ref:SetVisible(imgOffDot, true)
-        item.Ref:SetVisible(imgOnDot, false)
-        item.Ref:SetVisible(item.img_light, false)
-      elseif E.ChestStateTpe.AlreadyOpen == chestStateTpe then
-        item.Ref:SetVisible(imgOffTreasure, true)
-        item.Ref:SetVisible(imgOnTreasure, false)
-        item.Ref:SetVisible(imgOffDot, false)
-        item.Ref:SetVisible(imgOnDot, true)
-        item.Ref:SetVisible(item.img_light, false)
-      elseif E.ChestStateTpe.CanOpen == chestStateTpe then
-        item.Ref:SetVisible(imgOffTreasure, false)
-        item.Ref:SetVisible(imgOnTreasure, true)
-        item.Ref:SetVisible(imgOffDot, false)
-        item.Ref:SetVisible(imgOnDot, true)
-        item.Ref:SetVisible(item.img_light, true)
-      end
+      local isAlreadyOpen = E.ChestStateTpe.AlreadyOpen == chestStateTpe
+      local isNotOpen = E.ChestStateTpe.NotOpen == chestStateTpe
+      local isCanOpen = E.ChestStateTpe.CanOpen == chestStateTpe
+      item.Ref:SetVisible(item.img_light, isCanOpen)
+      item.Ref:SetVisible(item.img_red, isCanOpen)
+      item.Ref:SetVisible(imgOffDot, isNotOpen)
+      item.Ref:SetVisible(imgOnDot, not isNotOpen)
+      item.Ref:SetVisible(imgOffTreasure, isAlreadyOpen)
+      item.Ref:SetVisible(imgOnTreasure, not isAlreadyOpen)
       self.dungeonChestItems_[index].btn_treasure:AddListener(function()
         if chestStateTpe == E.ChestStateTpe.CanOpen then
           Z.CoroUtil.create_coro_xpcall(function()
             local dungeonInfo = {}
             dungeonInfo.dungeonID = self.dungeonId_
-            Z.VMMgr.GetVM("ui_enterdungeonscene").AsyncSendPioneerAward(dungeonInfo, data.rewardId, self.cancelSource)
-            item.Ref:SetVisible(imgOffTreasure, true)
-            item.Ref:SetVisible(imgOnTreasure, false)
-            item.Ref:SetVisible(imgOffDot, false)
-            item.Ref:SetVisible(imgOnDot, true)
-            item.Ref:SetVisible(item.img_light, false)
-            chestStateTpe = E.ChestStateTpe.AlreadyOpen
+            local isOpen = Z.VMMgr.GetVM("ui_enterdungeonscene").AsyncSendPioneerAward(dungeonInfo, data.rewardId, self.cancelSource)
+            if isOpen then
+              item.Ref:SetVisible(imgOffTreasure, true)
+              item.Ref:SetVisible(imgOnTreasure, false)
+              item.Ref:SetVisible(imgOffDot, false)
+              item.Ref:SetVisible(imgOnDot, true)
+              item.Ref:SetVisible(item.img_light, false)
+              item.Ref:SetVisible(item.img_red, false)
+              chestStateTpe = E.ChestStateTpe.AlreadyOpen
+            end
           end)()
         elseif chestStateTpe == E.ChestStateTpe.NotOpen then
           local awardList = Z.VMMgr.GetVM("awardpreview").GetAllAwardPreListByIds(data.rewardId)
@@ -275,7 +268,7 @@ function Dungeon_mainView:setFirstPassRewardItem(value)
         self.rewardUnits_[name] = item
         self.itemClassTab_[name] = itemClass.new(self)
         local itemData = {
-          unit = item,
+          uiBinder = item,
           configId = data.awardId,
           isSquareItem = true,
           PrevDropType = data.PrevDropType,

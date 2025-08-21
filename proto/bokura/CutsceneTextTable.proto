@@ -12,8 +12,6 @@ message CutsceneTextTableBase {
     string VoiceEventName = 346;
     string VoiceControlEvent = 1271;
 }
-
 message CutsceneTextTableMgr {
-    map<int32, .bokura.CutsceneTextTableBase> datas = 1;
+    repeated bokura.CutsceneTextTableMgr.DatasEntry datas = 1;
 }
-

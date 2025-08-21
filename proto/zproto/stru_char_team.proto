@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package zproto;
 
+import "stru_team_mem_data.proto";
 import "stru_dirty_mask.proto";
 
 message CharTeam {
@@ -12,6 +13,5 @@ message CharTeam {
     repeated int64 charIds = 5;
     bool isMatching = 6;
     int32 charTeamVersion = 7;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.CharTeam.TeamMemberDataEntry teamMemberData = 8;
 }
-

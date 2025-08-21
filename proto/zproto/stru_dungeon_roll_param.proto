@@ -6,4 +6,3 @@ message DungeonRollParam {
     int32 index = 1;
     bool giveUp = 2;
 }
-

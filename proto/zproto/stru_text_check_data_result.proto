@@ -10,4 +10,3 @@ message TextCheckDataResult {
     string errMsg = 2;
     repeated zproto.TextCheckItemResult itemResults = 3;
 }
-

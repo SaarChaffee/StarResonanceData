@@ -6,8 +6,6 @@ import "enum_e_error_code.proto";
 import "stru_union_list_data.proto";
 
 message SearchUnionListReply {
-    int32 errCode = 1;
-    zproto.EErrorCode errorCode = 2;
-    repeated zproto.UnionListData unionList = 3;
+    repeated zproto.UnionListData unionList = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

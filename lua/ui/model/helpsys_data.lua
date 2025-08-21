@@ -233,7 +233,7 @@ function HelpsysData:UnlockHelpsys(guideId)
         local tabRedName = E.RedType.HelpsysTabRed .. "group" .. row.HelpGroup
         Z.RedPointMgr.AddChildNodeData(E.RedType.HelpsysRed, E.RedType.HelpsysTabRed, tabRedName)
         Z.RedPointMgr.AddChildNodeData(tabRedName, E.RedType.HelpsysItemRed, E.RedType.HelpsysItemRed .. heplId)
-        Z.RedPointMgr.RefreshServerNodeCount(E.RedType.HelpsysItemRed .. heplId, 1)
+        Z.RedPointMgr.UpdateNodeCount(E.RedType.HelpsysItemRed .. heplId, 1)
         for k, v in ipairs(self.mulDatas_) do
           if v.HelpGroup == row.HelpGroup then
             table.insert(v.DataList, row)

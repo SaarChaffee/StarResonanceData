@@ -9,11 +9,9 @@ message FishSetting {
     int32 baitId = 2;
     int32 experiences = 3;
     int32 researchFishId = 4;
-    map<int32, .zproto.FishRecord> fishRecords = 5;
-    map<uint64, int32> fishRodDurability = 6;
+    repeated zproto.FishSetting.FishRecordsEntry fishRecords = 5;
+    repeated zproto.FishSetting.FishRodDurabilityEntry fishRodDurability = 6;
     uint64 rodUuid = 7;
-    map<int32, bool> levelReward = 8;
-    map<int32, int64> zeroFishTimes = 9;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.FishSetting.LevelRewardEntry levelReward = 8;
+    repeated zproto.FishSetting.ZeroFishTimesEntry zeroFishTimes = 9;
 }
-

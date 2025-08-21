@@ -43,7 +43,7 @@ function Camera_menu_container_textView:OnActive()
       Z.TipsVM.ShowTipsLang(1000000)
       return
     end
-    self:openTextInput(self.cameraData.ActiveItem.lab_input.TMPLab.text, E.CameraTextViewType.Revise, "ModifyText")
+    self:openTextInput(self.cameraData.ActiveItem.lab_input.text, E.CameraTextViewType.Revise, "ModifyText")
   end)
   self:initSlider()
   self.colorItems_ = {}
@@ -55,12 +55,13 @@ function Camera_menu_container_textView:OnActive()
     if not self.cameraData.ActiveItem then
       return
     end
-    self.cameraData.ActiveItem.lab_input.TMPLab.color = self.cameraData.ColorPaletteColor
+    self.cameraData.ActiveItem.lab_input.color = self.cameraData.ColorPaletteColor
   end)
   self.colorPalette_:SetColorResetCB(function()
     self.colorPalette_:ResetSelectHSVWithoutNotify()
   end)
   self.colorPalette_:SetResetBtn(true)
+  self:bindEvents()
 end
 
 function Camera_menu_container_textView:openTextInput(textVale, operationType, titleTextKey)
@@ -84,7 +85,7 @@ function Camera_menu_container_textView:setInputTextData(txt, operationType)
   valueData.value = txt
   valueData.type = operationType
   valueData.viewType = self.viewType_
-  if not valueData.value or string.zlen(#valueData.value) <= 0 then
+  if not valueData.value or string.zlenNormalize(#valueData.value) <= 0 then
     Z.TipsVM.ShowTipsLang(1000012)
     return
   end
@@ -105,7 +106,7 @@ function Camera_menu_container_textView:initSlider()
       return
     end
     self.panel.cont_slider_size.lab_num.TMPLab.text = cfs
-    self.cameraData.ActiveItem.lab_input.TMPLab.fontSize = cfs
+    self.cameraData.ActiveItem.lab_input.fontSize = cfs
     if not self.addViewData_ then
       return
     end
@@ -122,7 +123,7 @@ function Camera_menu_container_textView:OnDeActive()
   Z.EventMgr:Remove(Z.ConstValue.Camera.TextViewChange, self.camerasysTextViewChange, self)
 end
 
-function Camera_menu_container_textView:BindEvents()
+function Camera_menu_container_textView:bindEvents()
   Z.EventMgr:Add(Z.ConstValue.Camera.DecorateLayerDown, self.camerasysDecorateLayerDown, self)
   Z.EventMgr:Add(Z.ConstValue.Camera.DecorateNumberUpdate, self.setNumber, self)
   Z.EventMgr:Add(Z.ConstValue.Camera.TextViewChange, self.camerasysTextViewChange, self)
@@ -143,7 +144,7 @@ function Camera_menu_container_textView:setNumber()
   self.panel.lab_current.TMPLab.text = self.addViewData_:GetDecoreateNum()
   self.panel.lab_max.TMPLab.text = string.format("/%s", self.cameraData:GetDecoreateMaxNum())
   if self.cameraData.ActiveItem then
-    local th, ts, tv = Color.RGBToHSV(self.cameraData.ActiveItem.lab_input.TMPLab.color)
+    local th, ts, tv = Color.RGBToHSV(self.cameraData.ActiveItem.lab_input.color)
     self.colorPalette_:SetServerColor({
       h = th,
       s = ts,

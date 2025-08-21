@@ -61,6 +61,7 @@ function Investigation_clue_windowView:onInitComp()
   self.clueModel_ = nil
   self.clueModelTalkRoot_ = nil
   self.clueModelTalkLab_ = nil
+  self.curModelNode_ = nil
 end
 
 function Investigation_clue_windowView:onInitData()
@@ -83,7 +84,7 @@ function Investigation_clue_windowView:onInitData()
     self.showType_ = E.InvestigationViewType.EClue
     self.investigationMainData_:RefreshStepIndex()
     self:refreshShowInfo(false, false)
-    Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvnet, string.zconcat(E.SteerGuideEventType.Investigation, "=", 1))
+    Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvent, string.zconcat(E.SteerGuideEventType.Investigation, "=", 1))
   end)
   self:AddAsyncClick(self.uiBinder.btn_review, function()
     self.showType_ = E.InvestigationViewType.EClue
@@ -121,6 +122,7 @@ function Investigation_clue_windowView:onInitData()
   self:initPlayerModelBubble()
   self.uiBinder.anim:PlayOnce(animatorStart)
   self.uiBinder.Ref:SetVisible(self.uiBinder.anim_empty, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_line, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_event, true)
 end
 
@@ -167,10 +169,12 @@ function Investigation_clue_windowView:refreshInvestigationList(isFirst)
     end
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_empty, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.anim_empty, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_line, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_right, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_event, true)
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.anim_empty, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_line, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_empty, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_right, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_event, false)
@@ -211,7 +215,7 @@ function Investigation_clue_windowView:refreshInvestigationRightImg(isLock, isCo
   if isComplete then
     self.uiBinder.anim_tween:Restart(Z.DOTweenAnimType.Tween_6)
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_frame, isFrame)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_frame, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_unlock, isUnlock)
   if unlockImg and unlockImg ~= "" then
     self.uiBinder.rimg_unlock:SetImage(unlockImg)
@@ -266,6 +270,8 @@ function Investigation_clue_windowView:refreshClueView(isUpdateData, isChangeSte
     return
   end
   self.uiBinder.lab_clue_title.text = investigationsTableRow.InvestigationTheme
+  self.isHidePlayerModel = investigationsTableRow.IsHidePlayerModel
+  self.uiBinder.Ref:SetVisible(self.curModelNode_, not self.isHidePlayerModel)
   self:refreshClueList(investigationStepData.ClueList)
   local unlockClueId = 0
   local isAllClueUnlock = true
@@ -342,7 +348,6 @@ function Investigation_clue_windowView:quickReasoningClick()
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("QuickReasoning"), function()
       self.isShowAnim_ = true
       self:asyncQuickReasoningAllClue()
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   end)
 end
@@ -670,6 +675,7 @@ function Investigation_clue_windowView:initPlayerModelBubble()
     local isSizeOk = i == modelSize
     self.uiBinder.Ref:SetVisible(self.uiBinder[string.zconcat("node_model_talk", i)], isSizeOk)
     if isSizeOk then
+      self.curModelNode_ = self.uiBinder[string.zconcat("node_model_talk", i)]
       self.clueModel_ = self.uiBinder[string.zconcat("clue_model", i)]
       self.clueModelTalkRoot_ = self.uiBinder[string.zconcat("group_talk", i)]
       self.clueModelTalkLab_ = self.uiBinder[string.zconcat("lab_talk", i)]
@@ -681,6 +687,15 @@ function Investigation_clue_windowView:initPlayerModelBubble()
     local socialVM = Z.VMMgr.GetVM("social")
     local socialData = socialVM.AsyncGetSocialData(0, charId, self.cancelSource:CreateToken())
     self.model_ = Z.ModelManager:GenModelByLuaSocialData(socialData)
+    local clipName = ""
+    if Z.ContainerMgr.CharSerialize.charBase.gender ~= Z.PbEnum("EGender", "GenderMale") then
+      clipName = "as_m_base_idle"
+    else
+      clipName = "as_f_base_idle"
+    end
+    self.model_:SetLuaAttr(Z.ModelAttr.EModelAnimOverrideByName, Z.AnimBaseData.Rent(clipName, Panda.ZAnim.EAnimBase.EIdle))
+    self.model_:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
+    self.model_:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
     if self.model_ then
       self.clueModel_:SetModel(self.model_)
     end
@@ -775,14 +790,14 @@ function Investigation_clue_windowView:checkShowTips()
   end
   if self.tipsList_[1].Bubble and self.tipsList_[1].Bubble ~= "" then
     self:setShowTipsContext(self.tipsList_[1].Bubble)
-    self.uiBinder.Ref:SetVisible(self.clueModelTalkRoot_, true)
+    self.uiBinder.Ref:SetVisible(self.clueModelTalkRoot_, not self.isHidePlayerModel)
   end
   if self.tipsList_[1].Action and 0 < self.tipsList_[1].Action then
     local actionId = tonumber(self.tipsList_[1].Action)
     local actionRow = Z.TableMgr.GetTable("ActionTableMgr").GetRow(actionId)
     if self.model_ and actionRow then
       local actionData = Z.AnimBaseData.Rent(actionRow.ActionEffect)
-      self.model_:SetLuaAttr(Z.ModelAttr.EModelAnimBase, actionData)
+      self.model_:SetLuaAnimBase(actionData)
     end
   end
 end

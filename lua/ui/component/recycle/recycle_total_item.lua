@@ -9,15 +9,6 @@ function RecycleLoopTotalItem:OnInit()
   self.itemBinder_:Init({
     uiBinder = self.uiBinder
   })
-  self.uiBinder.btn_minus:AddListener(function()
-    local curData = self:GetCurData()
-    if curData == nil then
-      return
-    end
-    self.parent.UIView:OnTotalItemReduce(curData)
-    self:RefreshRecycleCount()
-    self:CheckCloseTips()
-  end)
 end
 
 function RecycleLoopTotalItem:OnRefresh(data)
@@ -29,8 +20,8 @@ function RecycleLoopTotalItem:OnRefresh(data)
     isBind = true
   }
   self.itemBinder_:RefreshByData(itemData)
-  local isSelected = self.recycleData_:GetTempRecycleItemSelect(data.itemUuid)
-  self.itemBinder_:SetSelected(isSelected)
+  local isSelected = self.IsSelected
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_more_selected, isSelected)
   self:RefreshRecycleCount()
 end
 
@@ -39,15 +30,36 @@ function RecycleLoopTotalItem:OnUnInit()
   self.itemBinder_ = nil
 end
 
-function RecycleLoopTotalItem:OnPointerClick()
-  local curData = self:GetCurData()
-  if curData == nil then
-    return
+function RecycleLoopTotalItem:OnSelected(isSelected, isClick)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_more_selected, isSelected)
+  if isSelected then
+    local columnCount = self.recycleData_:GetTempRecycleColumnCount()
+    if columnCount >= Z.Global.RecycleItemMax then
+      Z.TipsVM.ShowTips(800001)
+      self.parent:UnSelectIndex(self.Index)
+      return
+    end
+    local curData = self:GetCurData()
+    if curData == nil then
+      return
+    end
+    self:RefreshRecycleCount()
+    if isClick then
+      self.parent.UIView:OnTotalItemClick(self.Index, self.uiBinder.rimg_icon.transform, curData)
+      Z.AudioMgr:Play("sys_general_frame")
+    end
+  else
+    local curData = self:GetCurData()
+    if curData == nil then
+      return
+    end
+    self.parent.UIView:OnTotalItemClear(curData)
+    self:RefreshRecycleCount()
+    self:CheckCloseTips()
   end
-  self.parent.UIView:OnTotalItemAdd(curData)
-  self:RefreshRecycleCount()
-  self.parent.UIView:OnTotalItemClick(self.Index, self.uiBinder.rimg_icon.transform, curData)
-  Z.AudioMgr:Play("sys_general_frame")
+end
+
+function RecycleLoopTotalItem:OnPointerClick()
 end
 
 function RecycleLoopTotalItem:RefreshRecycleCount()
@@ -57,17 +69,15 @@ function RecycleLoopTotalItem:RefreshRecycleCount()
   end
   local itemInfo = self.itemsVM_.GetItemInfobyItemId(curData.itemUuid, curData.configId)
   local haveCount = itemInfo and itemInfo.count or 0
-  local selectCount = self.recycleData_:GetTempRecycleCount(curData)
+  local selectCount = self.recycleData_:GetTempRecycleCount(curData, self.parent.UIView.curRecycleRow_.SystemId)
   if selectCount <= 0 then
     self.itemBinder_:SetLab(haveCount)
     self:SetRecycleItemSelect(false)
   else
-    local selectCountStr = Z.RichTextHelper.ApplyStyleTag(selectCount, E.TextStyleTag.Orange)
-    local countStr = string.zconcat(selectCountStr, "/", haveCount)
+    local countStr = string.zconcat(math.floor(selectCount), "/", haveCount)
     self.itemBinder_:SetLab(countStr)
     self:SetRecycleItemSelect(true)
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_minus, 0 < selectCount)
 end
 
 function RecycleLoopTotalItem:SetRecycleItemSelect(isSelect)

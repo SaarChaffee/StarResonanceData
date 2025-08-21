@@ -6,4 +6,3 @@ message ActiveProfessionTalentRequest {
     int32 professionId = 1;
     repeated int32 talentNodeIds = 3;
 }
-

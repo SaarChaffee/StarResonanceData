@@ -19,8 +19,7 @@ function Menu_eyebrowView:OnActive()
   self:refreshSlider()
   self:InitSliderFunc(self.uiBinder.node_angle.slider_sens, function(value)
     self.uiBinder.node_angle.lab_value.text = string.format("%d", math.floor(value + 0.5))
-    value = self:CheckValueRang(value, Z.ModelAttr.EModelAnimHeadPinchBrowAngle)
-    self.faceVM_.SetFaceOptionByAttrType(Z.ModelAttr.EModelAnimHeadPinchBrowAngle, (value + 10) / 20)
+    self:SetFaceAttrValueByShowValue(value, Z.ModelAttr.EModelAnimHeadPinchBrowAngle)
   end, Z.ModelAttr.EModelAnimHeadPinchBrowAngle, self.angleSlider_)
 end
 
@@ -29,9 +28,7 @@ function Menu_eyebrowView:OnColorChange(hsv)
 end
 
 function Menu_eyebrowView:refreshSlider()
-  local value = self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelAnimHeadPinchBrowAngle) * 2 - 1
-  value = self:GetValueInRang(value, Z.ModelAttr.EModelAnimHeadPinchBrowAngle)
-  self:InitSlider(self.uiBinder.node_angle, value)
+  self:InitSlider(self.uiBinder.node_angle, Z.ModelAttr.EModelAnimHeadPinchBrowAngle)
 end
 
 function Menu_eyebrowView:refreshFaceMenuView()

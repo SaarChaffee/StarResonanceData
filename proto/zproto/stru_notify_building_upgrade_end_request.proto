@@ -6,4 +6,3 @@ message NotifyBuildingUpgradeEndRequest {
     int32 buildingId = 2;
     int32 buildLevel = 3;
 }
-

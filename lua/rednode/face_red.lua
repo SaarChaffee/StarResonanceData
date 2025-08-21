@@ -26,7 +26,7 @@ function FaceRed.InitFaceUnlockCostData()
   FaceUnlockCostData = {}
   local faceTableData = Z.TableMgr.GetTable("FaceTableMgr").GetDatas()
   for faceId, info in pairs(faceTableData) do
-    if #info.Unlock > 0 and FaceRed.IsShowFaceRedType(info.Type) and not FaceRed.checkFaceIsUnlock(faceId) then
+    if #info.Unlock > 0 and FaceRed.IsShowFaceRedType(info.Type) and not FaceRed.checkFaceIsUnlock(faceId) and FaceRed.checkIsCanUse(info) then
       if not FaceUnlockCostData[info.Type] then
         FaceUnlockCostData[info.Type] = {}
       end
@@ -42,6 +42,32 @@ function FaceRed.InitFaceUnlockCostData()
   Z.RedPointMgr.RefreshRedNodeState(E.RedType.FaceEditor)
 end
 
+function FaceRed.checkFaceIsUnlock(faceId)
+  return Z.ContainerMgr.CharSerialize.roleFace.unlockItemMap[faceId]
+end
+
+function FaceRed.checkIsCanUse(faceTableRow)
+  if faceTableRow.IsHide == 1 then
+    return false
+  end
+  local faceData = Z.DataMgr.Get("face_data")
+  if faceTableRow.Sex ~= faceData:GetPlayerGender() and faceTableRow.Sex ~= 0 then
+    return false
+  end
+  if 0 < faceTableRow.FaceShapeId then
+    local faceShapeId = faceData:GetFaceOptionValue(Z.PbEnum("EFaceDataType", "FaceShapeID"))
+    if faceShapeId ~= faceTableRow.FaceShapeId then
+      return false
+    end
+  end
+  for _, bodySize in pairs(faceTableRow.Model) do
+    if bodySize == 0 or bodySize == faceData:GetPlayerBodySize() then
+      return true
+    end
+  end
+  return false
+end
+
 function FaceRed.UpdateFaceUnlockCostData(faceId)
   local faceRow = Z.TableMgr.GetTable("FaceTableMgr").GetRow(faceId, true)
   if faceRow and FaceUnlockCostData[faceRow.Type] then
@@ -53,10 +79,6 @@ function FaceRed.UpdateFaceUnlockCostData(faceId)
       end
     end
   end
-end
-
-function FaceRed.checkFaceIsUnlock(faceId)
-  return Z.ContainerMgr.CharSerialize.roleFace.unlockItemMap[faceId]
 end
 
 function FaceRed.CheckFaceCanUnlock(unlock)
@@ -87,20 +109,24 @@ function FaceRed.addFaceRed(type, faceId)
   elseif type == Z.PbEnum("EFaceDataType", "DullHairID") then
     Z.RedPointMgr.AddChildNodeData(E.RedType.FaceEditorHairCustomDull, E.RedType.FaceEditorHairCustomDull, redNodeName)
   end
-  Z.RedPointMgr.RefreshServerNodeCount(redNodeName, 1)
+  Z.RedPointMgr.UpdateNodeCount(redNodeName, 1)
 end
 
 function FaceRed.removeFaceRed(type, faceId)
   local redNodeName = string.zconcat("FaceUnlockRed", faceId)
-  Z.RedPointMgr.RefreshServerNodeCount(redNodeName, 0)
+  Z.RedPointMgr.UpdateNodeCount(redNodeName, 0)
   if type == Z.PbEnum("EFaceDataType", "HairID") then
     Z.RedPointMgr.RemoveChildNodeData(E.RedType.FaceEditorHairWhole, redNodeName)
+    Z.RedPointMgr.RefreshRedNodeState(E.RedType.FaceEditorHairWhole)
   elseif type == Z.PbEnum("EFaceDataType", "FrontHairID") then
     Z.RedPointMgr.RemoveChildNodeData(E.RedType.FaceEditorHairCustomFront, redNodeName)
+    Z.RedPointMgr.RefreshRedNodeState(E.RedType.FaceEditorHairCustomFront)
   elseif type == Z.PbEnum("EFaceDataType", "BackHairID") then
     Z.RedPointMgr.RemoveChildNodeData(E.RedType.FaceEditorHairCustomBack, redNodeName)
+    Z.RedPointMgr.RefreshRedNodeState(E.RedType.FaceEditorHairCustomBack)
   elseif type == Z.PbEnum("EFaceDataType", "DullHairID") then
     Z.RedPointMgr.RemoveChildNodeData(E.RedType.FaceEditorHairCustomDull, redNodeName)
+    Z.RedPointMgr.RefreshRedNodeState(E.RedType.FaceEditorHairCustomDull)
   end
 end
 

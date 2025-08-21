@@ -6,6 +6,7 @@ local dummyTab = Z.TableMgr.GetTable("DummyTableMgr").GetDatas()
 local buffData = Z.TableMgr.GetTable("BuffTableMgr").GetDatas()
 local EDamageTypeHeal = Z.PbEnum("EDamageType", "Heal")
 local dmgData = Z.DataMgr.Get("damage_data")
+local dpsData = Z.DataMgr.Get("dps_data")
 local EntChar = Z.PbEnum("EEntityType", "EntChar")
 local openDamageView = function()
   Z.UIMgr:OpenView("dmg_control")
@@ -334,6 +335,123 @@ local selectPart = function(sign)
     end
   end
   dmgData:SetShowDmgData(tab)
+end
+local getdataByCharId = function(charId, type)
+  local entityVM = Z.VMMgr.GetVM("entity")
+  local uuid = entityVM.EntIdToUuid(charId, EntChar)
+  local skillData = {}
+  local allHit = 0
+  local time = 0
+  for index, value in ipairs(dmgData.DamageDatas) do
+    if value.attUuid == uuid and value.patrUuid == 0 and (type == nil and value.hitType ~= EDamageTypeHeal or type == value.hitType) then
+      for _, dmgWeaponData in ipairs(value.data) do
+        for _, dmgSkillData in ipairs(dmgWeaponData.data) do
+          local hit = dmgSkillData.Hit
+          if type == EDamageTypeHeal then
+            hit = dmgSkillData.actualValue
+          end
+          if hit ~= 0 then
+            local damageId = dpsData.RecountTableMap[dmgSkillData.damageId]
+            if damageId == nil and Z.GameContext.IsEditor then
+              damageId = dmgSkillData.damageId
+            end
+            if damageId then
+              allHit = allHit + hit
+              if skillData[damageId] == nil then
+                skillData[damageId] = {damageId = damageId, hit = hit}
+              else
+                skillData[damageId].hit = skillData[damageId].hit + hit - dmgSkillData.overHit
+              end
+            end
+          end
+        end
+        time = time + dmgWeaponData.time
+      end
+    end
+  end
+  return {
+    skillData = skillData,
+    allHit = allHit,
+    time = time,
+    charId = charId
+  }
+end
+local getTeamDamageDataByType = function(type)
+  local tab = {}
+  local teamVm = Z.VMMgr.GetVM("team")
+  local members = teamVm.GetTeamMemData()
+  if table.zcount(members) > 0 then
+    for index, member in ipairs(members) do
+      local data = getdataByCharId(member.charId, type)
+      if data.allHit ~= 0 then
+        tab[#tab + 1] = data
+      end
+    end
+  else
+    local data = getdataByCharId(Z.ContainerMgr.CharSerialize.charId, type)
+    if data.allHit ~= 0 then
+      tab[1] = data
+    end
+  end
+  return tab
+end
+local getMemberTakeDmg = function(charId)
+  local entityVM = Z.VMMgr.GetVM("entity")
+  local skillData = {}
+  local allHit = 0
+  local time = 0
+  local uuid = entityVM.EntIdToUuid(charId, EntChar)
+  for index, value in ipairs(dmgData.DamageDatas) do
+    if value.byAttUuid == uuid and value.patrUuid == 0 and value.hitType ~= EDamageTypeHeal then
+      for _, dmgWeaponData in ipairs(value.data) do
+        for _, dmgSkillData in ipairs(dmgWeaponData.data) do
+          local damageId = dpsData.RecountTableMap[dmgSkillData.damageId]
+          if dmgSkillData.Hit ~= 0 then
+            if damageId == nil and Z.GameContext.IsEditor then
+              damageId = dmgSkillData.damageId
+            end
+            if damageId then
+              allHit = allHit + dmgSkillData.Hit - dmgSkillData.overHit
+              if skillData[damageId] == nil then
+                skillData[damageId] = {
+                  damageId = damageId,
+                  hit = dmgSkillData.Hit - dmgSkillData.overHit
+                }
+              else
+                skillData[damageId].hit = skillData[damageId].hit + dmgSkillData.Hit - dmgSkillData.overHit
+              end
+            end
+          end
+        end
+        time = time + dmgWeaponData.time
+      end
+    end
+  end
+  return {
+    skillData = skillData,
+    allHit = allHit,
+    time = time,
+    charId = charId
+  }
+end
+local getTeamTakeDmg = function()
+  local tab = {}
+  local teamVm = Z.VMMgr.GetVM("team")
+  local members = teamVm.GetTeamMemData()
+  if table.zcount(members) > 0 then
+    for index, member in ipairs(members) do
+      local data = getMemberTakeDmg(member.charId)
+      if data.allHit ~= 0 then
+        tab[#tab + 1] = data
+      end
+    end
+  else
+    local data = getMemberTakeDmg(Z.ContainerMgr.CharSerialize.charId)
+    if data.allHit ~= 0 then
+      tab[1] = data
+    end
+  end
+  return tab
 end
 local selectBody = function(type)
   local entityVM = Z.VMMgr.GetVM("entity")
@@ -1078,7 +1196,7 @@ local getEnitityShieldTab = function(uuid)
   dmgData:SetShieldTab(tonumber(uuid), tab)
   dmgData:SetShieldStatisticsData(tonumber(uuid), tab)
 end
-local setGamadeData = function(datas, count)
+local setDamageData = function(datas, count)
   local entity = Z.EntityMgr:GetEntity(datas.attUuid)
   if entity then
     local weaponId = entity:GetLuaAttr(Z.PbAttrEnum("AttrProfessionId")).Value
@@ -1095,7 +1213,7 @@ local ret = {
   GetDamageData = getDamageData,
   CloseDamageView = closeDamageView,
   OpenDamageView = openDamageView,
-  SetGamadeData = setGamadeData,
+  SetDamageData = setDamageData,
   GetPartData = getPartData,
   RefrehBodyData = refrehBodyData,
   SortMonsterTab = sortMonsterTab,
@@ -1121,6 +1239,8 @@ local ret = {
   GetDummyTabByUuid = getDummyTabByUuid,
   DimFindData = dimFindData,
   SetNearMosterTab = setNearMosterTab,
-  GetEnitityShieldTab = getEnitityShieldTab
+  GetEnitityShieldTab = getEnitityShieldTab,
+  GetTeamTakeDmg = getTeamTakeDmg,
+  GetTeamDamageDataByType = getTeamDamageDataByType
 }
 return ret

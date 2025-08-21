@@ -19,8 +19,6 @@ message SeasonBPTaskTableBase {
     int32 PassAward = 1175;
     string Desc = 1953;
 }
-
 message SeasonBPTaskTableMgr {
-    map<int32, .bokura.SeasonBPTaskTableBase> datas = 1;
+    repeated bokura.SeasonBPTaskTableMgr.DatasEntry datas = 1;
 }
-

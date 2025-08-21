@@ -6,14 +6,6 @@ local Fashion_face_windowView = class("Fashion_face_windowView", super)
 function Fashion_face_windowView:ctor()
   self.uiBinder = nil
   uibase.ctor(self, "fashion_face_window")
-  self.styleView_ = require("ui/view/fashion_style_select_view").new(self)
-  self.dyeingView_ = require("ui/view/fashion_dyeing_view").new(self)
-  self.settingView_ = require("ui/view/fashion_setting_sub_view").new(self)
-  self.fashionVM_ = Z.VMMgr.GetVM("fashion")
-  self.fashionData_ = Z.DataMgr.Get("fashion_data")
-  self.faceVM_ = Z.VMMgr.GetVM("face")
-  self.faceData_ = Z.DataMgr.Get("face_data")
-  self.actionVM_ = Z.VMMgr.GetVM("action")
 end
 
 function Fashion_face_windowView:OnActive()
@@ -27,18 +19,8 @@ function Fashion_face_windowView:OnActive()
   if self.playerModel_ then
     self.playerModel_:SetLuaAttr(Z.LocalAttr.EWearSetting, settingStr)
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_return_btn, true)
-  self:AddClick(self.uiBinder.btn_return_face, function()
-    self.fashionVM_.CloseFashionFaceView()
-  end)
-  self:AddClick(self.uiBinder.btn_return_fashion, function()
-    self:OpenStyleView()
-  end)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_total_collection, false)
-end
-
-function Fashion_face_windowView:OnDeActive()
-  super.OnDeActive(self)
+  self.uiBinder.node_schedule.Ref.UIComp:SetVisible(false)
+  self:refreshCustomBtn(false)
 end
 
 function Fashion_face_windowView:initPlayerModel()
@@ -57,25 +39,23 @@ function Fashion_face_windowView:clearModel()
 end
 
 function Fashion_face_windowView:OnInputBack()
-  self.fashionVM_.CloseFashionFaceView()
+  if self.isOpenStyle_ then
+    self.fashionVM_.CloseFashionFaceView()
+  else
+    self:OpenStyleView()
+  end
 end
 
 function Fashion_face_windowView:OpenDyeingView(fashionId, area)
-  self:updateSaveBtnState(fashionId)
-  self.styleView_:DeActive()
-  self.dyeingView_:Active({
+  self:showSubView(self.dyeingView_, {
     fashionId = fashionId,
     area = area,
     isPreview = true
-  }, self.uiBinder.node_viewport)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_return_btn, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_return_fashion, true)
+  })
 end
 
-function Fashion_face_windowView:onOpenStyleView()
-  super.onOpenStyleView()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_return_btn, true)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_return_fashion, false)
+function Fashion_face_windowView:OpenStyleView()
+  super.OpenStyleView(self, true)
 end
 
 return Fashion_face_windowView

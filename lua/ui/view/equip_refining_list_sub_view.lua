@@ -4,7 +4,7 @@ local Equip_refining_list_subView = class("Equip_refining_list_subView", super)
 
 function Equip_refining_list_subView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "equip_refining_list_sub", "equip/equip_refining_list_sub", UI.ECacheLv.None)
+  super.ctor(self, "equip_refining_list_sub", "equip/equip_refining_list_sub", UI.ECacheLv.None, true)
   self.refineVm_ = Z.VMMgr.GetVM("equip_refine")
 end
 
@@ -40,13 +40,19 @@ function Equip_refining_list_subView:initEquipPartTabUi()
         v.Ref:SetVisible(v.node_unlock, isUnlock)
         v.Ref:SetVisible(v.img_lock, not isUnlock)
         local colorA = isUnlock and 255 or 128
-        v.img_icon_off:SetColor(Color.New(0.5686274509803921, 0.5686274509803921, 0.5607843137254902, colorA / 255))
+        v.img_icon_off:SetColor(Color.New(0.8549019607843137, 0.8549019607843137, 0.8549019607843137, colorA / 255))
         local refineLevel = 0
         if Z.ContainerMgr.CharSerialize.equip.equipList[k] then
           refineLevel = Z.ContainerMgr.CharSerialize.equip.equipList[k].equipSlotRefineLevel or 0
         end
+        local labSize
+        if Z.IsPCUI then
+          labSize = 22
+        else
+          labSize = 30
+        end
         local str = Lang("EquipRefineLevle", {
-          val = Z.RichTextHelper.ApplySizeTag(refineLevel, 30)
+          val = Z.RichTextHelper.ApplySizeTag(refineLevel, labSize)
         })
         v.lab_refining_level_off.text = str
         v.lab_refining_level_on.text = str

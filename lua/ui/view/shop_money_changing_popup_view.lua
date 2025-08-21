@@ -5,12 +5,12 @@ local ExchangePerMaxLimit = Z.Global.ExchangePerMaxLimit
 local MoneyOverflowLimit = Z.Global.MoneyOverflowLimit
 local itemClass = require("common.item_binder")
 local numMod = require("ui.view.cont_num_module_tpl_view")
+local currency_item_list = require("ui.component.currency.currency_item_list")
 
 function Shop_money_changing_popupView:ctor()
   self.uiBinder = nil
   super.ctor(self, "shop_money_changing_popup")
   self.numMod_ = numMod.new(self)
-  self.currencyVm_ = Z.VMMgr.GetVM("currency")
   self.shopVm_ = Z.VMMgr.GetVM("shop")
   self.itemsVm_ = Z.VMMgr.GetVM("items")
 end
@@ -70,10 +70,11 @@ function Shop_money_changing_popupView:refreshData(data)
   if data then
     self:init(data.data)
   end
-  self.currencyVm_.OpenCurrencyView({
+  self.currencyItemList_ = currency_item_list.new()
+  self.currencyItemList_:Init(self.uiBinder.currency_info, {
     self.exchangeConfigId_,
     self.beExchangeConfigId_
-  }, self.uiBinder.Trans, self)
+  })
   if self.numMod_ then
     local hasCount = self.itemsVm_.GetItemTotalCount(self.viewData.data[1][1])
     self.numMod_:ReSetValue(1, self.maxExchangeNum_, Mathf.Floor(hasCount / self.viewData.data[1][2]), function(num)
@@ -147,7 +148,10 @@ function Shop_money_changing_popupView:InputNum(num)
 end
 
 function Shop_money_changing_popupView:OnDeActive()
-  self.currencyVm_.CloseCurrencyView(self)
+  if self.currencyItemList_ then
+    self.currencyItemList_:UnInit()
+    self.currencyItemList_ = nil
+  end
   self.numMod_:DeActive()
   self.exchangeConfigId_ = nil
   self.beExchangeConfigId_ = nil

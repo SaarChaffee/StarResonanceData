@@ -42,6 +42,44 @@ local mergeDataFuncs = {
     local last = container.__data__.type
     container.__data__.type = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("type", last)
+  end,
+  [3] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local v = require("zcontainer.ride_skin_container").New()
+      v:MergeData(buffer, watcherList)
+      container.skinData.__data__[dk] = v
+      container.Watcher:MarkMapDirty("skinData", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.skinData.__data__[dk]
+      container.skinData.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("skinData", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local last = container.skinData.__data__[dk]
+      if last == nil then
+        logWarning("last is nil: " .. dk)
+        last = require("zcontainer.ride_skin_container").New()
+        container.skinData.__data__[dk] = last
+      end
+      last:MergeData(buffer, watcherList)
+      container.Watcher:MarkMapDirty("skinData", dk, {})
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -77,6 +115,9 @@ local resetData = function(container, pbData)
   if not pbData.type then
     container.__data__.type = 0
   end
+  if not pbData.skinData then
+    container.__data__.skinData = {}
+  end
   setForbidenMt(container)
   container.rides.__data__ = {}
   setForbidenMt(container.rides)
@@ -85,6 +126,13 @@ local resetData = function(container, pbData)
     container.rides[k]:ResetData(v)
   end
   container.__data__.rides = nil
+  container.skinData.__data__ = {}
+  setForbidenMt(container.skinData)
+  for k, v in pairs(pbData.skinData) do
+    container.skinData.__data__[k] = require("zcontainer.ride_skin_container").New()
+    container.skinData[k]:ResetData(v)
+  end
+  container.__data__.skinData = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -157,6 +205,35 @@ local getContainerElem = function(container)
     dataType = 0,
     data = container.type
   }
+  if container.skinData ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.skinData) do
+      if repeatedItem == nil then
+        data[key] = {
+          fieldId = 3,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[key] = {
+          fieldId = 3,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
+    end
+    ret.skinData = {
+      fieldId = 3,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.skinData = {
+      fieldId = 3,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -167,11 +244,15 @@ local new = function()
     GetContainerElem = getContainerElem,
     rides = {
       __data__ = {}
+    },
+    skinData = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.rides)
+  setForbidenMt(ret.skinData)
   return ret
 end
 return {New = new}

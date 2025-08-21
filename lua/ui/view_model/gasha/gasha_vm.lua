@@ -15,7 +15,7 @@ function gashaVM.OpenGashaView(gashaId)
   if gashaPool == nil then
     return
   end
-  local openGashas_ = gashaVM.GetOpenGashas()
+  local openGashas_ = gashaVM.GetShowOpenGashas(0)
   if openGashas_ and #openGashas_ == 0 then
     Z.TipsVM.ShowTips(1382001)
     return
@@ -27,7 +27,16 @@ function gashaVM.OpenGashaView(gashaId)
   Z.UIMgr:OpenView("gasha_window", {gashaId = gashaId})
 end
 
-function gashaVM.CloseGashaView(gashaId)
+function gashaVM.OpenSpecialGashaView(type)
+  local openGashas_ = gashaVM.GetShowOpenGashas(type)
+  if openGashas_ and #openGashas_ == 0 then
+    Z.TipsVM.ShowTips(1382001)
+    return
+  end
+  Z.UIMgr:OpenView("gasha_window", {type = type})
+end
+
+function gashaVM.CloseGashaView()
   Z.UIMgr:CloseView("gasha_window")
 end
 
@@ -39,8 +48,13 @@ function gashaVM.CloseGashaDetailView()
   Z.UIMgr:CloseView("gasha_detail_window")
 end
 
-function gashaVM.OpenGashaHighQualityDetailView(gashaId, item)
-  Z.UIMgr:OpenView("gasha_highqualitydetail_window", {gashaId = gashaId, item = item})
+function gashaVM.OpenGashaHighQualityDetailView(gashaId, item, replaceItem)
+  local hasReplace = replaceItem ~= nil
+  Z.UIMgr:OpenView("gasha_highqualitydetail_window", {
+    gashaId = gashaId,
+    item = item,
+    hasReplace = hasReplace
+  })
 end
 
 function gashaVM.CloseGashaHighQualityDetailView()
@@ -54,7 +68,8 @@ function gashaVM.OpenGashaRecordView(gashaId, cancelToken)
       return
     end
     Z.UIMgr:OpenView("gasha_record_window", {
-      gashaShareId = gashaPoolTableRow_.ShareGuarantee
+      gashaShareId = gashaPoolTableRow_.ShareGuarantee,
+      openType = gashaPoolTableRow_.openType
     })
   end, function(err)
     logError(err)
@@ -65,12 +80,26 @@ function gashaVM.CloseGashaRecordView()
   Z.UIMgr:CloseView("gasha_record_window")
 end
 
-function gashaVM.OpenGashaResultView(gashaId, items)
-  Z.UIMgr:OpenView("gasha_result_window", {gashaId = gashaId, items = items})
+function gashaVM.OpenGashaResultView(gashaId, items, replaceItems)
+  Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.GashaResult, "gasha_result_window", function()
+    local gashaView = Z.UIMgr:GetView("gasha_window")
+    if gashaView then
+      gashaView:Hide()
+    end
+    Z.UIMgr:OpenView("gasha_result_window", {
+      gashaId = gashaId,
+      items = items,
+      replaceItems = replaceItems
+    })
+  end, nil, false, nil, true)
 end
 
 function gashaVM.CloseGashaResultView()
   Z.UIMgr:CloseView("gasha_result_window")
+  local gashaView = Z.UIMgr:GetView("gasha_window")
+  if gashaView then
+    gashaView:Show()
+  end
 end
 
 function gashaVM.GetGashaTodayAttempt(gashaId)
@@ -145,9 +174,14 @@ function gashaVM.GetGashaDetail(gashaId)
   local awardVm = Z.VMMgr.GetVM("awardpreview")
   local awardPackageGroup = {}
   for index, value in ipairs(gashaPool.AwardPackageGroup) do
-    local awards = awardVm.GetAllAwardPreListByIds(value)
+    local awards = awardVm.GetAllAwardPreListByIds(value, true)
     local name = gashaPool.QualityTitle[index]
-    table.insert(awardPackageGroup, 1, {name = name, awards = awards})
+    local probabilityDesc = gashaPool.GashaProbabilityDesc[index]
+    table.insert(awardPackageGroup, 1, {
+      name = name,
+      awards = awards,
+      probabilityDesc = probabilityDesc
+    })
   end
   gashaDetailData.awardPackageGroup = awardPackageGroup
   return gashaDetailData
@@ -173,22 +207,19 @@ function gashaVM.CheckGashaCost(gashaId, count)
 end
 
 function gashaVM.ValidateDrawConditions(gashaId, count)
-  local isEnough, costId = gashaVM.CheckGashaCost(gashaId, count)
-  if not isEnough then
-    local itemTableRow = Z.TableMgr.GetRow("ItemTableMgr", costId)
-    Z.TipsVM.ShowTips(100010, {
-      item = {
-        name = itemTableRow.Name
-      }
-    })
-    return false
-  end
   local row = Z.TableMgr.GetRow("GashaPoolTableMgr", gashaId)
   if row == nil then
     return false
   end
-  if gashaVM.GetGashaTodayAttempt(gashaId) >= row.Limit then
-    gashaVM.HandleError(7022)
+  if row.Limit == gashaVM.GetGashaTodayAttempt(gashaId) then
+    Z.TipsVM.ShowTipsLang(1382004)
+    return false
+  end
+  if count > row.Limit - gashaVM.GetGashaTodayAttempt(gashaId) then
+    local param = {
+      val = row.Limit - gashaVM.GetGashaTodayAttempt(gashaId)
+    }
+    Z.TipsVM.ShowTipsLang(1382003, param)
     return false
   end
   return true
@@ -238,6 +269,14 @@ function gashaVM.StopGashaCutScene(gashaId)
   Z.UITimelineDisplay:Stop()
 end
 
+function gashaVM.CloseGashaVideoView()
+  Z.UIMgr:CloseView("gasha_video_window")
+end
+
+function gashaVM.OpenGashaVideoView(gashaID)
+  Z.UIMgr:OpenView("gasha_video_window", {gashaID = gashaID})
+end
+
 function gashaVM.GetOpenGashas()
   local gashas = Z.TableMgr.GetTable("GashaPoolTableMgr").GetDatas()
   local openGashas = {}
@@ -252,8 +291,41 @@ function gashaVM.GetOpenGashas()
   return openGashas
 end
 
+function gashaVM.GetShowOpenGashas(openType)
+  local gashas = Z.TableMgr.GetTable("GashaPoolTableMgr").GetDatas()
+  local bindGashas = {}
+  local openGashas = {}
+  local gashaType = 0
+  if openType ~= nil then
+    gashaType = tonumber(openType)
+  end
+  for _, value in pairs(gashas) do
+    if gashaVM.CheckGashaOpen(value) and not bindGashas[value.Bind[1]] and value.openType == gashaType then
+      bindGashas[value.Bind[1]] = value
+      table.insert(openGashas, value)
+    end
+  end
+  table.sort(openGashas, function(a, b)
+    return a.Sort < b.Sort
+  end)
+  return openGashas
+end
+
+function gashaVM.GetBindGashaPool(bindType, isBind)
+  local gashas = Z.TableMgr.GetTable("GashaPoolTableMgr").GetDatas()
+  for _, value in pairs(gashas) do
+    if value.Bind[1] == bindType and value.Bind[2] == 1 == isBind then
+      return value
+    end
+  end
+  return nil
+end
+
 function gashaVM.CheckGashaOpen(gashaPoolTableRow)
   if gashaPoolTableRow.Work == 0 then
+    return false
+  end
+  if gashaPoolTableRow.FunctionId and gashaPoolTableRow.FunctionId ~= 0 and not Z.VMMgr.GetVM("gotofunc").CheckFuncCanUse(gashaPoolTableRow.FunctionId, true) then
     return false
   end
   local gashaTimeID = gashaPoolTableRow.TimerId
@@ -269,11 +341,95 @@ function gashaVM.RegisteFuncShow()
 end
 
 function gashaVM.ShowFuncIcon()
-  local openGashas_ = gashaVM.GetOpenGashas()
+  local openGashas_ = gashaVM.GetShowOpenGashas(0)
   if openGashas_ and 0 < #openGashas_ then
     return true
   end
   return false
+end
+
+function gashaVM.OpenSelectPrayView(gashaPoolTableRow)
+  if not gashaVM.CheckGashaOpen(gashaPoolTableRow) then
+    return
+  end
+  Z.UIMgr:OpenView("gasha_illusion_popup", {gashaPoolTableRow = gashaPoolTableRow})
+end
+
+function gashaVM.GetGashaPoolWishId(poolId)
+  local gashaInfosEntry = Z.ContainerMgr.CharSerialize.gashaData.gashaInfos
+  if gashaInfosEntry == nil then
+    return 0
+  end
+  local gashaInfo = gashaInfosEntry[poolId]
+  if gashaInfo == nil then
+    return 0
+  end
+  return gashaInfo.wishId
+end
+
+function gashaVM.GetGashaPoolWishValue(poolId)
+  local gashaInfosEntry = Z.ContainerMgr.CharSerialize.gashaData.gashaInfos
+  if gashaInfosEntry == nil then
+    return 0
+  end
+  local gashaInfo = gashaInfosEntry[poolId]
+  if gashaInfo == nil then
+    return 0
+  end
+  return gashaInfo.wishValue
+end
+
+function gashaVM.GetGashaPoolWishFinishCount(poolId)
+  local gashaInfosEntry = Z.ContainerMgr.CharSerialize.gashaData.gashaInfos
+  if gashaInfosEntry == nil then
+    return 0
+  end
+  local gashaInfo = gashaInfosEntry[poolId]
+  if gashaInfo == nil then
+    return 0
+  end
+  return gashaInfo.wishFinishCount
+end
+
+function gashaVM.GetGashaPoolWishLimit(poolId)
+  local gashaInfosEntry = Z.ContainerMgr.CharSerialize.gashaData.gashaInfos
+  if gashaInfosEntry == nil then
+    return 0
+  end
+  local gashaInfo = gashaInfosEntry[poolId]
+  if gashaInfo == nil then
+    return 0
+  end
+  return gashaInfo.wishLimit
+end
+
+function gashaVM.CheckCanGashaWish(poolId)
+  local wishFinishCount = gashaVM.GetGashaPoolWishFinishCount(poolId)
+  local gashaPoolRow = Z.TableMgr.GetTable("GashaPoolTableMgr").GetRow(poolId)
+  if gashaPoolRow == nil then
+    return false
+  end
+  if wishFinishCount >= gashaVM.GetGashaPoolWishLimit(poolId) then
+    local time = Z.TimeTools.GetLeftTimeByTimerId(gashaPoolRow.WishLimitTime)
+    Z.TipsVM.ShowTips(1382005, {
+      val = Z.TimeFormatTools.FormatToDHMS(time)
+    })
+    return false
+  end
+  return true
+end
+
+function gashaVM.AsyncGashaWishSelection(poolId, wishId, cancelSource)
+  local worldProxy = require("zproxy.world_proxy")
+  local req = {}
+  req.poolId = poolId
+  req.wishId = wishId
+  local ret = worldProxy.GashaWishSelection(req, cancelSource)
+  if ret ~= nil and ret ~= 0 then
+    gashaVM.HandleError(ret)
+    return false
+  end
+  return true
 end
 
 return gashaVM

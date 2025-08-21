@@ -10,8 +10,6 @@ message ActionSampleTableBase {
     number_table MotionInfo = 264;
     bool HasMotion = 1733;
 }
-
 message ActionSampleTableMgr {
-    map<int64, .bokura.ActionSampleTableBase> datas = 1;
+    repeated bokura.ActionSampleTableMgr.DatasEntry datas = 1;
 }
-

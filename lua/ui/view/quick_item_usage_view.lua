@@ -1,24 +1,13 @@
 local UI = Z.UI
 local super = require("ui.ui_view_base")
 local Quick_item_usageView = class("Quick_item_usageView", super)
-local keyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 local item = require("common.item_binder")
-local itemPCScale = 0.7
 
 function Quick_item_usageView:ctor()
   self.uiBinder = nil
-  if Z.IsPCUI then
-    Z.UIConfig.quick_item_usage.PrefabPath = "quick_item_usage/quick_item_usage_window_pc"
-  else
-    Z.UIConfig.quick_item_usage.PrefabPath = "quick_item_usage/quick_item_usage_window"
-  end
   super.ctor(self, "quick_item_usage")
-  
-  function self.onInputAction_(inputActionEventData)
-    Z.CoroUtil.create_coro_xpcall(function()
-      self:useItem()
-    end)()
-  end
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function Quick_item_usageView:OnActive()
@@ -34,24 +23,13 @@ function Quick_item_usageView:OnActive()
     self:closeCurItem()
   end)
   self:refreshKeyBoard()
-  self:registerInputActions()
   self:bindEvent()
 end
 
 function Quick_item_usageView:initWidget()
-  self.pc_nodeTrans = self.uiBinder.node_pc
-  self.default_nodeTrans = self.uiBinder.node_default
   self.itemContainer_ = self.uiBinder.cont_item
   self.useBtn_ = self.uiBinder.btn_use
   self.closeBtn_ = self.uiBinder.btn_close
-  self.imgBgTrans_ = self.uiBinder.img_bg
-  self.main_icon_key_ = self.uiBinder.main_icon_key
-  if Z.IsPCUI then
-    self.imgBgTrans_:SetParent(self.pc_nodeTrans)
-  else
-    self.imgBgTrans_:SetParent(self.default_nodeTrans)
-  end
-  self.imgBgTrans_:SetLocalPos(0, 0, 0)
 end
 
 function Quick_item_usageView:bindEvent()
@@ -63,11 +41,11 @@ function Quick_item_usageView:onCutscentHideUI(isActive)
 end
 
 function Quick_item_usageView:OnDeActive()
-  self:unRegisterInputActions()
   self.itemClass_:UnInit()
   self.itemClass_ = nil
-  self.curShowConfigId_ = nil
+  self.curItemInfo_ = nil
   self.quickItemUsageData_:Clear()
+  self.inputKeyDescComp_:UnInit()
 end
 
 function Quick_item_usageView:OnRefresh()
@@ -75,18 +53,25 @@ function Quick_item_usageView:OnRefresh()
     self.quickItemUsageVm_.CloseQuickUseView()
     return
   end
-  local configId = self.quickItemUsageData_:PeekItemQuickQueue()
-  self.curShowConfigId_ = configId
+  self.curItemInfo_ = self.quickItemUsageData_:PeekItemQuickQueue()
   self:refreshUI()
 end
 
 function Quick_item_usageView:refreshUI()
-  local totalCount = self.itemVm_.GetItemTotalCount(self.curShowConfigId_)
+  local itemRow = Z.TableMgr.GetRow("ItemTableMgr", self.curItemInfo_.configId)
+  if itemRow == nil then
+    return
+  end
+  local itemInfo = self.itemVm_.GetItemInfobyItemId(self.curItemInfo_.uuid, self.curItemInfo_.configId)
+  if itemInfo == nil then
+    return
+  end
+  local totalCount = itemInfo.count
   if totalCount < 1 then
     self:closeCurItem()
   end
   local itemData = {}
-  itemData.configId = self.curShowConfigId_
+  itemData.configId = self.curItemInfo_.configId
   itemData.uiBinder = self.itemContainer_
   itemData.isClickOpenTips = true
   itemData.isHideGS = true
@@ -94,42 +79,42 @@ function Quick_item_usageView:refreshUI()
   itemData.labType = E.ItemLabType.Num
   itemData.lab = totalCount
   itemData.isSquareItem = true
-  if Z.IsPCUI then
-    itemData.sizeX = itemPCScale
-    itemData.sizeY = itemPCScale
-  end
   self.itemClass_:Init(itemData)
+  if Z.IsPCUI then
+    self.uiBinder.lab_show.text = itemRow.Name
+  end
 end
 
 function Quick_item_usageView:useItem()
   if not self.IsVisible then
     return
   end
-  self.quickItemUsageVm_.AsyncUseItem(self.curShowConfigId_, self.cancelSource:CreateToken())
+  self.quickItemUsageVm_.AsyncUseItem(self.curItemInfo_.configId, self.cancelSource:CreateToken(), self.curItemInfo_.uuid)
   self:closeCurItem()
 end
 
 function Quick_item_usageView:closeCurItem()
-  self.quickItemUsageData_:DeItemQuickQueue(self.curShowConfigId_)
-  self.curShowConfigId_ = nil
+  self.quickItemUsageData_:DeItemQuickQueue(self.curItemInfo_.configId, self.curItemInfo_.uuid)
+  self.curItemInfo_ = nil
   self:OnRefresh()
-end
-
-function Quick_item_usageView:registerInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.QuickItemUsage)
-end
-
-function Quick_item_usageView:unRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.QuickItemUsage)
 end
 
 function Quick_item_usageView:refreshKeyBoard()
   if not Z.IsPCUI then
-    self.main_icon_key_.Ref.UIComp:SetVisible(false)
     return
   end
-  self.main_icon_key_.Ref.UIComp:SetVisible(true)
-  keyIconHelper.InitKeyIcon(self, self.main_icon_key_, 117)
+  self.inputKeyDescComp_:Init(117, self.uiBinder.main_icon_key)
+end
+
+function Quick_item_usageView:OnTriggerInputAction(inputActionEventData)
+  if inputActionEventData.actionId == Z.RewiredActionsConst.QuickItemUsage then
+    if not Z.PlayerInputController:IsGamepadComboValidForAction(inputActionEventData) then
+      return
+    end
+    Z.CoroUtil.create_coro_xpcall(function()
+      self:useItem()
+    end)()
+  end
 end
 
 return Quick_item_usageView

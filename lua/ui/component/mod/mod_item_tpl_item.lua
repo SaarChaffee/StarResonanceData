@@ -4,7 +4,7 @@ local item = require("common.item_binder")
 
 function ModItemTplItem.RefreshTpl(uibinder, slotId, itemClass, view)
   local modVM = Z.VMMgr.GetVM("mod")
-  local unlock, level = modVM.CheckSlotIsUnlock(slotId)
+  local unlock, condType, condValue, unlockDesc, progress = modVM.CheckSlotIsUnlock(slotId)
   if unlock then
     uibinder.Ref:SetVisible(uibinder.img_normal, true)
     uibinder.Ref:SetVisible(uibinder.img_lock, false)
@@ -38,7 +38,13 @@ function ModItemTplItem.RefreshTpl(uibinder, slotId, itemClass, view)
     uibinder.Ref:SetVisible(uibinder.img_normal, false)
     uibinder.Ref:SetVisible(uibinder.img_lock, true)
     uibinder.Ref:SetVisible(uibinder.img_num, false)
-    uibinder.lab_lv.text = Lang("Grade", {val = level})
+    if condType == E.ConditionType.Level then
+      uibinder.lab_lv.text = Lang("Grade", {val = condValue})
+    elseif condType == E.ConditionType.TimeInterval then
+      uibinder.lab_lv.text = Z.TimeFormatTools.FormatToDHMS(progress)
+    else
+      uibinder.lab_lv.text = unlockDesc
+    end
   end
 end
 

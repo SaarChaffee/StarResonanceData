@@ -27,8 +27,6 @@ message CutsceneTableBase {
     number_array PlayerSyncPos = 865;
     float PlayerSyncRotation = 572;
 }
-
 message CutsceneTableMgr {
-    map<int32, .bokura.CutsceneTableBase> datas = 1;
+    repeated bokura.CutsceneTableMgr.DatasEntry datas = 1;
 }
-

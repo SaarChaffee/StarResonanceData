@@ -20,6 +20,7 @@ function Proficiency:OnLanguageChange()
 end
 
 function Proficiency:InitProficiency()
+  self.CurNotSerActiveLevelDic = {}
   self.NowSelectProficiencyTab = {}
   self.ProficiencyActivationTab = {}
   for key, value in pairs(Z.ContainerMgr.CharSerialize.roleLevel.proficiencyInfo.usingProficiencyMap) do

@@ -13,4 +13,3 @@ message ExchangeRecordItemData {
     zproto.EExchangePreItemResult preResult = 5;
     zproto.Item itemInfo = 6;
 }
-

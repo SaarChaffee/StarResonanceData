@@ -2,9 +2,14 @@ local UIBase = class("UIBase")
 local UI = Z.UI
 local UICompBindLua = UICompBindLua
 local UIBinderToLua = UIBinderToLua
+local xpcall = xpcall
 
-function UIBase:ctor(viewConfigKey, assetPath, cacheLv)
-  self.assetPath = assetPath
+function UIBase:ctor(viewConfigKey, assetPath, cacheLv, isHavePCUI)
+  if Z.IsPCUI and isHavePCUI then
+    self.assetPath = string.zconcat(assetPath, "_pc")
+  else
+    self.assetPath = assetPath
+  end
   self.viewConfigKey = viewConfigKey
   self.cacheLv = cacheLv
   self.goObj = nil
@@ -23,18 +28,25 @@ function UIBase:ctor(viewConfigKey, assetPath, cacheLv)
   self.IsVisible = false
   self.IsResponseInput = true
   self.baseViewBinder = nil
-  self.listenersCompDict_ = {}
+  self.inputActionDatas = {}
+  self.listenersCompDict = {}
+  
+  function self.OnInputActionTrigger_(inputActionEventData)
+    self:triggerInputAction(inputActionEventData)
+  end
 end
 
 function UIBase:Active(viewData, parentTrans, baseViewBinder)
+  self:SetUIMaskState(true)
   self:createCancelSource()
   self:SetViewData(viewData)
   self:SetBaseView(baseViewBinder)
   if self.IsActive then
     if self.IsLoaded then
+      self:SetUIMaskState(false)
       self:SetAsLastSibling()
       self:Show()
-      self:OnRefresh()
+      self:CallLifeCycleFunc(self.OnRefresh)
     else
     end
   else
@@ -45,6 +57,7 @@ function UIBase:Active(viewData, parentTrans, baseViewBinder)
 end
 
 function UIBase:DeActive()
+  self:SetUIMaskState(false)
   self:clearCancelSource()
   if not self.IsActive then
     return
@@ -53,10 +66,11 @@ function UIBase:DeActive()
   if not self.IsLoaded then
     return
   end
+  self:UnRegisterInputActions(self.inputActionDatas)
   self.timerMgr:Clear()
   self:SetVisible(false)
-  self:OnHide()
-  self:OnDeActive()
+  self:CallLifeCycleFunc(self.OnHide)
+  self:CallLifeCycleFunc(self.OnDeActive)
   self:UnBindAllWatchers()
   self:UnBindAllEvents()
   self:ClearCompListeners()
@@ -66,7 +80,7 @@ function UIBase:DeActive()
 end
 
 function UIBase:Destory()
-  self:OnDestory()
+  self:CallLifeCycleFunc(self.OnDestory)
 end
 
 function UIBase:checkSceneMaskCreate()
@@ -124,11 +138,14 @@ function UIBase:LoadFinish()
     self.panel = UICompBindLua(self.goObj)
     self.panel:Init()
   end
+  self:SetUIMaskState(false)
   self:SetTransParent(self.parentTrans, self.baseViewBinder)
   self:SetVisible(true)
-  self:OnActive()
-  self:OnShow()
-  self:OnRefresh()
+  self:CallLifeCycleFunc(self.OnActive)
+  self:CallLifeCycleFunc(self.OnShow)
+  self:CallLifeCycleFunc(self.OnRefresh)
+  self:registerConfigInputActions()
+  Z.EventMgr:Dispatch(Z.ConstValue.UILoadFinish, self.viewConfigKey)
 end
 
 function UIBase:UnLoad()
@@ -144,6 +161,7 @@ function UIBase:UnLoad()
   end
   self:checkSceneMaskRelease()
   self.IsLoaded = false
+  Z.EventMgr:Dispatch(Z.ConstValue.UIUnLoad, self.viewConfigKey)
 end
 
 function UIBase:createCancelSource()
@@ -182,9 +200,52 @@ end
 local onCoroEventErr = function(err)
   logError("[UIBase:CoroEvent] Coro event failed with err : {0}", err)
 end
+local onLifeCycleFuncErr = function(err)
+  logError("[UIBase:CallLifeCycleFunc] Call lifecycle function with err : {0}", err)
+end
 
 function UIBase:needCached()
   return self.cacheLv ~= UI.ECacheLv.None
+end
+
+function UIBase:CallLifeCycleFunc(func, ...)
+  xpcall(func, onLifeCycleFuncErr, self, ...)
+end
+
+function UIBase:registerConfigInputActions()
+  local inputActionDatas = Z.UIInputActionConfig[self.viewConfigKey]
+  if inputActionDatas == nil then
+    return
+  end
+  self:UnRegisterInputActions(self.inputActionDatas)
+  self:RegisterInputActions(inputActionDatas)
+end
+
+function UIBase:checkViewLayerVisible()
+  return true
+end
+
+function UIBase:triggerInputAction(inputActionEventData)
+  if not self.IsResponseInput then
+    return
+  end
+  if not self:checkViewLayerVisible() then
+    return
+  end
+  if self:checkTriggerOnInputBack(inputActionEventData) then
+    self:OnInputBack()
+    return
+  end
+  self:OnTriggerInputAction(inputActionEventData)
+end
+
+function UIBase:checkTriggerOnInputBack(inputActionEventData)
+  for _, value in ipairs(self.inputActionDatas) do
+    if value.ActionId == inputActionEventData.actionId and value.TriggerType == E.InputTriggerViewActionType.CloseView then
+      return true
+    end
+  end
+  return false
 end
 
 function UIBase:SetViewData(viewData)
@@ -254,6 +315,7 @@ function UIBase:AsyncLoadUiUnit(unitAssetPath, uiUnitName, parent, canceltoken)
   if canceltoken == nil then
     canceltoken = self.cancelSource:CreateToken()
   end
+  self:RemoveUiUnit(uiUnitName)
   self.cancelTokens[uiUnitName] = canceltoken
   local go = asyncCall(unitAssetPath, canceltoken)
   if go == nil then
@@ -333,7 +395,7 @@ function UIBase:Show()
     return
   end
   self:SetVisible(true)
-  self:OnShow()
+  self:CallLifeCycleFunc(self.OnShow)
   Z.EventMgr:Dispatch(Z.ConstValue.UIShow, self.viewConfigKey, true)
 end
 
@@ -342,7 +404,7 @@ function UIBase:Hide()
     return
   end
   self:SetVisible(false)
-  self:OnHide()
+  self:CallLifeCycleFunc(self.OnHide)
   Z.EventMgr:Dispatch(Z.ConstValue.UIHide, self.viewConfigKey, false)
 end
 
@@ -379,11 +441,28 @@ function UIBase:SetAsFirstSibling()
   end
 end
 
+function UIBase:SetSiblingIndex(index)
+  local trans
+  if self.uiBinder and self.uiBinder.Trans then
+    trans = self.uiBinder.Trans
+  elseif self.panel and self.panel.Trans then
+    trans = self.panel.Trans
+  end
+  if trans then
+    local childCount = trans.childCount
+    if index < 0 or index >= childCount then
+      logError("SetSiblingIndex param error, index={0}, childCount={1}", index, childCount)
+      return
+    end
+    trans:SetSiblingIndex(index)
+  end
+end
+
 function UIBase:MarkListenerComp(component, isNeedClear)
   if component == nil then
     return
   end
-  self.listenersCompDict_[component] = isNeedClear
+  self.listenersCompDict[component] = isNeedClear
 end
 
 function UIBase:ClearAllUnits()
@@ -419,12 +498,44 @@ function UIBase:UnBindAllEvents()
 end
 
 function UIBase:ClearCompListeners()
-  for comp, isNeedClear in pairs(self.listenersCompDict_) do
+  for comp, isNeedClear in pairs(self.listenersCompDict) do
     if isNeedClear and comp ~= nil and comp.RemoveAllListeners then
       comp:RemoveAllListeners()
     end
   end
-  self.listenersCompDict_ = {}
+  self.listenersCompDict = {}
+end
+
+function UIBase:RegisterInputActions(inputActionDatas)
+  if inputActionDatas == nil or #inputActionDatas < 1 then
+    return
+  end
+  for _, value in ipairs(inputActionDatas) do
+    table.insert(self.inputActionDatas, value)
+    if value.Params == nil then
+      Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.OnInputActionTrigger_, value.InputActionEventType, value.ActionId)
+    elseif #value.Params == 1 then
+      if type(value.Params[1]) == "number" then
+        Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.OnInputActionTrigger_, value.InputActionEventType, value.ActionId, value.Params[1])
+      end
+    elseif #value.Params == 2 and type(value.Params[1]) == "number" and type(value.Params[2]) == "number" then
+      Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.OnInputActionTrigger_, value.InputActionEventType, value.ActionId, value.Params[1], value.Params[2])
+    end
+  end
+end
+
+function UIBase:UnRegisterInputActions(inputActionDatas)
+  if inputActionDatas == nil or #inputActionDatas < 1 then
+    return
+  end
+  local datas = table.zclone(inputActionDatas)
+  for _, value in ipairs(datas) do
+    table.zremoveByValue(self.inputActionDatas, value)
+    Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.OnInputActionTrigger_, value.InputActionEventType, value.ActionId)
+  end
+end
+
+function UIBase:SetUIMaskState(state)
 end
 
 function UIBase:SetTransParent(parentTran)
@@ -457,6 +568,12 @@ function UIBase:OnShow()
 end
 
 function UIBase:OnHide()
+end
+
+function UIBase:OnInputBack()
+end
+
+function UIBase:OnTriggerInputAction(inputActionEventData)
 end
 
 return UIBase

@@ -1,10 +1,10 @@
-local super = require("ui.component.loopscrollrectitem")
+local super = require("ui.component.loop_grid_view_item")
 local item = require("common.item_binder")
 local DialogLoopItem = class("DialogLoopItem", super)
 
 function DialogLoopItem:OnInit()
   self.showItemId_ = 0
-  self.itemClass_ = item.new(self.parent.uiView)
+  self.itemClass_ = item.new(self.parent.UIView)
   self.itemsVM_ = Z.VMMgr.GetVM("items")
   self.itemClass_:Init({
     uiBinder = self.uiBinder
@@ -14,9 +14,8 @@ end
 function DialogLoopItem:OnReset()
 end
 
-function DialogLoopItem:Refresh()
-  local index = self.component.Index + 1
-  self.data_ = self.parent:GetDataByIndex(index)
+function DialogLoopItem:OnRefresh(data)
+  self.data_ = data
   if self.data_ == nil then
     return
   end
@@ -28,7 +27,12 @@ function DialogLoopItem:Refresh()
       lab = self.data_.ItemNum,
       isShowReceive = self.data_.received,
       PrevDropType = self.data_.PrevDropType,
-      isSquareItem = true
+      isSquareItem = true,
+      itemInfo = self.data_.ItemInfo,
+      isOpenSource = self.data_.IsOpenSource,
+      goToCallFunc = function()
+        Z.UIMgr:CloseView("dialog")
+      end
     }
     itemData.labType = self.data_.LabType or E.ItemLabType.Num
     if self.data_.LabType == E.ItemLabType.Expend then

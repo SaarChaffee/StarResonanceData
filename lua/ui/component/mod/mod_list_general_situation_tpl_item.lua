@@ -34,7 +34,7 @@ function ModListGeneralSituationTplItem:OnRefresh(data)
   else
     level, nextSuccessTimes = self.modVm_.GetEffectLevelAndNextLevelSuccessTimes(data.id, data.curValue)
   end
-  modGlossaryItemTplItem.RefreshTpl(self.uiBinder.node_glossary_item_tpl, data.id, level)
+  modGlossaryItemTplItem.RefreshTpl(self.uiBinder.node_glossary_item_tpl, data.id)
   self.effectConfig_ = self.modData_:GetEffectTableConfig(data.id, level)
   self.uiBinder.node_on.Ref.UIComp:SetVisible(data.isSelect)
   self.uiBinder.node_off.Ref.UIComp:SetVisible(not data.isSelect)

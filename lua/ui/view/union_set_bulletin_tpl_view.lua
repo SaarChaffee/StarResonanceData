@@ -32,9 +32,9 @@ end
 
 function Union_set_bulletin_tplView:onInputContentChanged()
   local content = self.uiBinder.input_content.text
-  local length = string.zlen(content)
+  local length = string.zlenNormalize(content)
   if length > self.charMaxLimit_ then
-    self.uiBinder.input_content.text = string.zcut(content, self.charMaxLimit_)
+    self.uiBinder.input_content.text = string.zcutNormalize(content, self.charMaxLimit_)
   else
     self.uiBinder.lab_digit.text = string.zconcat(length, "/", self.charMaxLimit_)
   end
@@ -43,7 +43,7 @@ function Union_set_bulletin_tplView:onInputContentChanged()
 end
 
 function Union_set_bulletin_tplView:checkVaild()
-  local strLen = string.zlen(self.uiBinder.input_content.text)
+  local strLen = string.zlenNormalize(self.uiBinder.input_content.text)
   if strLen < self.charMinLimit_ or strLen > self.charMaxLimit_ then
     Z.TipsVM.ShowTipsLang(1000515)
     return false

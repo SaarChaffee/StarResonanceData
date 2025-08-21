@@ -1,4 +1,15 @@
 local ChatMsgHelper = {}
+local iconPathRoot = "ui/atlas/mainui/chat/"
+local iconPath = {
+  [E.ChatChannelType.EChannelWorld] = "chat_world",
+  [E.ChatChannelType.EChannelScene] = "chat_world",
+  [E.ChatChannelType.EChannelTeam] = "chat_teammate",
+  [E.ChatChannelType.EChannelUnion] = "chat_association",
+  [E.ChatChannelType.EChannelPrivate] = {
+    [1] = "chat_private_chat",
+    [2] = "chat_friend"
+  }
+}
 
 function ChatMsgHelper.GetChatHyperlink(chatMsgData)
   local chatHyperlinkId
@@ -76,11 +87,33 @@ function ChatMsgHelper.GetTargetCharId(chatMsgData)
   end
 end
 
+function ChatMsgHelper.GetPrivateChatTargetId(chatMsgData)
+  if chatMsgData.ChannelId ~= E.ChatChannelType.EChannelPrivate then
+    return
+  end
+  local targetId
+  if chatMsgData.ChitChatMsg and chatMsgData.ChitChatMsg.msgInfo then
+    targetId = chatMsgData.ChitChatMsg.msgInfo.targetId
+  end
+  if targetId == Z.ContainerMgr.CharSerialize.charBase.charId and chatMsgData.ChitChatMsg and chatMsgData.ChitChatMsg.sendCharInfo then
+    targetId = chatMsgData.ChitChatMsg.sendCharInfo.charID
+  end
+  return targetId
+end
+
 function ChatMsgHelper.GetPlayerName(chatMsgData)
   if chatMsgData.ChitChatMsg and chatMsgData.ChitChatMsg.sendCharInfo then
     return chatMsgData.ChitChatMsg.sendCharInfo.name
   else
     return ""
+  end
+end
+
+function ChatMsgHelper.GetPlayerIsNewbie(chatMsgData)
+  if chatMsgData.ChitChatMsg and chatMsgData.ChitChatMsg.sendCharInfo then
+    return chatMsgData.ChitChatMsg.sendCharInfo.isNewbie
+  else
+    return false
   end
 end
 
@@ -94,8 +127,11 @@ end
 
 function ChatMsgHelper.GetMsg(chatMsgData)
   if chatMsgData.ChitChatMsg then
-    if chatMsgData.ChitChatMsg.msgInfo then
-      return chatMsgData.ChitChatMsg.msgInfo.msgText
+    if chatMsgData.ChitChatMsg.msgInfo and chatMsgData.ChitChatMsg.msgInfo.msgText then
+      if not chatMsgData.ChitChatMsgMsgInfoMsgText then
+        chatMsgData.ChitChatMsgMsgInfoMsgText = Z.RichTextHelper.RemoveTagsOtherThanEmojis(chatMsgData.ChitChatMsg.msgInfo.msgText)
+      end
+      return chatMsgData.ChitChatMsgMsgInfoMsgText
     else
       return ""
     end
@@ -106,11 +142,35 @@ function ChatMsgHelper.GetMsg(chatMsgData)
 end
 
 function ChatMsgHelper.GetEmojiConfigId(chatMsgData)
+  if not chatMsgData then
+    return 0
+  end
   if chatMsgData.ChitChatMsg and chatMsgData.ChitChatMsg.msgInfo and chatMsgData.ChitChatMsg.msgInfo.pictureEmoji and chatMsgData.ChitChatMsg.msgInfo.pictureEmoji.configId then
     return chatMsgData.ChitChatMsg.msgInfo.pictureEmoji.configId
   else
     return 0
   end
+end
+
+function ChatMsgHelper.GetEmojiRow(chatMsgData)
+  local configId = ChatMsgHelper.GetEmojiConfigId(chatMsgData)
+  if not configId then
+    return
+  end
+  local row = Z.TableMgr.GetTable("ChatStickersTableMgr").GetRow(configId, true)
+  return row
+end
+
+function ChatMsgHelper.GetEmojiText(chatMsgData)
+  local configId = ChatMsgHelper.GetEmojiConfigId(chatMsgData)
+  if not configId then
+    return ""
+  end
+  local row = Z.TableMgr.GetTable("ChatStickersTableMgr").GetRow(configId, true)
+  if not row then
+    return ""
+  end
+  return row.Text
 end
 
 function ChatMsgHelper.GetIsSelfMessage(chatMsgData)
@@ -205,6 +265,65 @@ end
 
 function ChatMsgHelper.GetUnionBuild(chatMsgData)
   return chatMsgData.UnionBuild
+end
+
+function ChatMsgHelper.GetMainChatBubbleIcon(chatMsgData)
+  local iconName
+  if chatMsgData.ChannelId == E.ChatChannelType.EChannelPrivate then
+    local charId = ChatMsgHelper.GetCharId(chatMsgData)
+    local friendMainData = Z.DataMgr.Get("friend_main_data")
+    if friendMainData:IsFriendByCharId(charId) then
+      iconName = iconPath[chatMsgData.ChannelId][2]
+    else
+      iconName = iconPath[chatMsgData.ChannelId][1]
+    end
+  else
+    iconName = iconPath[chatMsgData.ChannelId]
+  end
+  iconName = iconName or iconPath[E.ChatChannelType.EChannelWorld]
+  return string.zconcat(iconPathRoot, iconName)
+end
+
+function ChatMsgHelper.GetChatChannelIconByChannelId(channelId)
+  local iconName = ""
+  if channelId == E.ChatChannelType.EChannelPrivate then
+    iconName = iconPath[channelId][1]
+  else
+    iconName = iconPath[channelId]
+  end
+  return string.zconcat(iconPathRoot, iconName)
+end
+
+function ChatMsgHelper.CheckChatMsgCanShow(chatMsgData)
+  local channelId = ChatMsgHelper.GetChannelId(chatMsgData)
+  if channelId == E.ChatChannelType.ESystem then
+    return true
+  end
+  local msgType = ChatMsgHelper.GetMsgType(chatMsgData)
+  if msgType == E.ChitChatMsgType.EChatMsgTextNotice or msgType == E.ChitChatMsgType.EChatMsgMultiLangNotice or msgType == E.ChitChatMsgType.EChatMsgHypertext then
+    return true
+  end
+  local senderId = ChatMsgHelper.GetCharId(chatMsgData)
+  if senderId == Z.ContainerMgr.CharSerialize.charId then
+    return true
+  end
+  local charId = ChatMsgHelper.GetPrivateChatTargetId(chatMsgData)
+  local chatMainData = Z.DataMgr.Get("chat_main_data")
+  if chatMainData:IsInBlack(charId) then
+    return false
+  end
+  local settingData = Z.DataMgr.Get("chat_setting_data")
+  local limit = settingData:GetMessageLevel(channelId)
+  if not limit then
+    return true
+  end
+  local level = ChatMsgHelper.GetSenderLevel(chatMsgData)
+  local messageLevelLimit = math.modf(limit)
+  if messageLevelLimit and level and level < messageLevelLimit then
+    return false
+  else
+    return true
+  end
 end
 
 return ChatMsgHelper

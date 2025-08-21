@@ -20,11 +20,11 @@ function LoopListViewItem:Init(parent, zLoopListViewItem)
   self.loopListViewItem.OnRecycleEvent:AddListener(function(go, eventData)
     self:OnRecycle()
   end)
-  self:OnInit()
+  xpcall(self.OnInit, self.ErrorHandle, self)
 end
 
 function LoopListViewItem:UnInit()
-  self:OnUnInit()
+  xpcall(self.OnUnInit, self.ErrorHandle, self)
   self.parent = nil
   self.loopListView = nil
   self.loopListViewItem:ClearItemData()
@@ -35,16 +35,12 @@ function LoopListViewItem:UnInit()
 end
 
 function LoopListViewItem:Refresh(data)
-  self:OnRefresh(data)
-end
-
-local onCoroEventErr = function(err)
-  logError("coro event failed with err : {0}", err)
+  xpcall(self.OnRefresh, self.ErrorHandle, self, data)
 end
 
 function LoopListViewItem:AddAsyncListener(subject, func, onErr, onCancel)
   if onErr == nil then
-    onErr = onCoroEventErr
+    onErr = self.ErrorHandle
   end
   if subject == nil or subject.AddListener == nil then
     logError("AddAsyncListener fail, subject == nil or subject.AddListener == nil")
@@ -81,6 +77,14 @@ end
 function LoopListViewItem:OnPointerClick(go, eventData)
 end
 
+function LoopListViewItem:OnNodeStateChange(func)
+  self.loopListViewItem.OnNodeStateChange = func
+end
+
+function LoopListViewItem.ErrorHandle(msg)
+  logError("[LoopListViewItem] Error : " .. msg)
+end
+
 function LoopListViewItem:GetCurData()
   return self.parent.DataList[self.Index]
 end
@@ -88,6 +92,9 @@ end
 function LoopListViewItem:SetCanSelect(isCanSelect)
   self.loopListViewItem.CanSelected = isCanSelect
   self.IsSelected = self.loopListViewItem.IsSelected
+end
+
+function LoopListViewItem:UpdateData(data)
 end
 
 return LoopListViewItem

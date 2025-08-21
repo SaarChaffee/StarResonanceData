@@ -10,4 +10,3 @@ message ClientImage {
     uint32 size = 3;
     string extraInfo = 4;
 }
-

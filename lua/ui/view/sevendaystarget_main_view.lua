@@ -20,39 +20,27 @@ function Sevendaystarget_mainView:ctor()
   
   self.colorWhite_ = Color.New(1, 1, 1, 1)
   self.colorBlack_ = Color.New(0, 0, 0, 1)
-  self.taskFontSizeDict_ = {
-    {10, 50},
-    {100, 46},
-    {1000, 40},
-    {10000, 34},
-    {100000, 28}
-  }
 end
 
 function Sevendaystarget_mainView:OnActive()
-  self:RegisterInputActions()
-  self.funcPreview_ = funcPreview.new()
+  Z.AudioMgr:Play("UI_Event_GeneralPopup")
+  self.funcPreview_ = funcPreview.new(self)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:onStartAnimShow()
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff_loop)
-  self.showType_ = E.SevenDayFuncType.TitlePage
-  if self.viewData then
-    if self.viewData.showType then
-      self.showType_ = self.viewData.showType
-      self.viewData.showType = nil
-    end
-    if self.viewData.previewFuncId then
-      self.previewFuncId_ = self.viewData.previewFuncId
-      self.viewData.previewFuncId = nil
-    end
-  end
   self.endTime_ = self.vm.GetDayEndTime()
   self.timerMgr:StartTimer(function()
     self:refreshByDay()
   end, self.endTime_, 1)
   self.tasks_ = self.vm.GetTaskList()
-  Z.EventMgr:Add(Z.ConstValue.SeasonWeekData, self.onDataChanged, self)
-  self.vm.AddTaskDataChangedListener()
+  
+  function self.onDataChanged_()
+    self.tasks_ = self.vm.GetTaskList()
+    self:refreshUI()
+    sevendaysRed_.RefreshOrInitSevenDaysTargetRed(self.tasks_)
+  end
+  
+  Z.ContainerMgr.CharSerialize.seasonQuestList.Watcher:RegWatcher(self.onDataChanged_)
   self.curSelectDay_ = 0
   self.titlePageList_ = {
     self.uiBinder.node_page.sevendaystarget_day_01_tpl,
@@ -74,6 +62,7 @@ function Sevendaystarget_mainView:OnActive()
   self.initManualTab_ = false
   self:bindClickEvent()
   self:initLoopListView()
+  self.uiBinder.rimg_lab:SetImage("ui/textures/sevendaystarget/sevendaystarget_01")
 end
 
 function Sevendaystarget_mainView:resetPageItemBinder()
@@ -124,10 +113,13 @@ function Sevendaystarget_mainView:bindClickEvent()
     self.showType_ = E.SevenDayFuncType.TitlePage
     self.vm.CloseSevenDayWindow()
   end)
+  self:AddClick(self.uiBinder.btn_helpsys, function()
+    Z.VMMgr.GetVM("helpsys").OpenMulHelpSysView(100)
+  end)
 end
 
 function Sevendaystarget_mainView:OnDeActive()
-  self:UnRegisterInputActions()
+  Z.AudioMgr:Play("UI_Menu_QuickInstruction_Close")
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   self.titlePageList_ = nil
   self:resetPageItemBinder()
@@ -140,8 +132,7 @@ function Sevendaystarget_mainView:OnDeActive()
   self.titlePageItemList_ = nil
   self.manualAwardItemBinderList = nil
   self.manualAwardItemBinderUIList = nil
-  Z.EventMgr:Remove(Z.ConstValue.SeasonWeekData, self.onDataChanged, self)
-  self.vm.RemoveTaskDataChangedListener()
+  Z.ContainerMgr.CharSerialize.seasonQuestList.Watcher:UnregWatcher(self.onDataChanged_)
   self:unInitLoopListView()
   self.funcPreview_:DeActive()
 end
@@ -152,10 +143,45 @@ function Sevendaystarget_mainView:OnRefresh()
     self.curSelectDay_ = self.viewData.selectDay_
     self.viewData.selectDay_ = nil
   end
-  local pageFuncOpen = self.switchVm_.CheckFuncSwitch(E.FunctionID.SevendayTargetTitlePage)
-  local manualFuncOpen = self.switchVm_.CheckFuncSwitch(E.FunctionID.SevendayTargetManual)
+  local defaultType = E.SevenDayFuncType.TitlePage
+  if self.viewData then
+    if self.viewData.showType then
+      defaultType = self.viewData.showType
+      self.viewData.showType = nil
+    end
+    if self.viewData.previewFuncId then
+      defaultType = E.SevenDayFuncType.FuncPreview
+      self.previewFuncId_ = self.viewData.previewFuncId
+      self.viewData.previewFuncId = nil
+    end
+  end
+  local isSevenDayShow = self.vm.CheckHasSevenDayShow()
+  local pageFuncOpen = self.switchVm_.CheckFuncSwitch(E.FunctionID.SevendayTargetTitlePage) and isSevenDayShow
+  local manualFuncOpen = self.switchVm_.CheckFuncSwitch(E.FunctionID.SevendayTargetManual) and isSevenDayShow
+  local funcPreviewFuncOpen = self.switchVm_.CheckFuncSwitch(E.FunctionID.FunctionPreview)
+  local conditionDict = {
+    [E.SevenDayFuncType.TitlePage] = pageFuncOpen,
+    [E.SevenDayFuncType.Manual] = manualFuncOpen,
+    [E.SevenDayFuncType.FuncPreview] = funcPreviewFuncOpen
+  }
+  if conditionDict[defaultType] then
+    self.showType_ = defaultType
+  else
+    for i, v in ipairs(conditionDict) do
+      if v then
+        self.showType_ = i
+        break
+      end
+    end
+  end
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab_page_trans, pageFuncOpen)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab_handbook_trans, manualFuncOpen)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.tab_gameplay_preview_trans, funcPreviewFuncOpen)
+  if isSevenDayShow then
+    self.uiBinder.lab_name.text = Lang("Sevendaystarget")
+  else
+    self.uiBinder.lab_name.text = Lang("GameplayPreview")
+  end
   local toggleGroup = self.uiBinder.tab_handbook_tog.group
   self.uiBinder.tab_handbook_tog.group = nil
   self.uiBinder.tab_page_tog.group = nil
@@ -196,9 +222,9 @@ end
 
 function Sevendaystarget_mainView:refreshPageTip()
   local restSecond = ""
-  local timerConfig = Z.TableMgr.GetTable("TimerTableMgr").GetRow(Z.Global.LoginTips)
-  if timerConfig and #timerConfig.offset > 0 then
-    restSecond = Z.TimeTools.S2HMFormat(timerConfig.offset[1])
+  local timerInfo = Z.DIServiceMgr.ZCfgTimerService:GetZCfgTimerItem(Z.Global.LoginTips)
+  if timerInfo ~= nil and timerInfo.Offset.count > 0 then
+    restSecond = Z.TimeFormatTools.FormatToDHMS(timerInfo.Offset[0])
   end
   if restSecond and restSecond ~= "" then
     self.uiBinder.node_page.Ref:SetVisible(self.uiBinder.node_page.lab_tips, true)
@@ -456,15 +482,15 @@ function Sevendaystarget_mainView:getSelectIndex(dataList)
   return startSelect, startSelectLeft
 end
 
-function Sevendaystarget_mainView:OnClickManualItem(cfg, showVertical)
+function Sevendaystarget_mainView:OnClickManualItem(cfg, showVertical, isClick)
   for _, v in pairs(self.loopListView_.itemDict_) do
     v:RefreshSelect(false, nil)
   end
   self.selectManualCfg = cfg
-  self:refreshManualRightInfoUI(showVertical)
+  self:refreshManualRightInfoUI(showVertical, isClick)
 end
 
-function Sevendaystarget_mainView:refreshManualRightInfoUI(showVertical)
+function Sevendaystarget_mainView:refreshManualRightInfoUI(showVertical, isClick)
   if self.selectManualCfg then
     if self.tasks_[self.curSelectDay_] == nil then
       return
@@ -500,7 +526,7 @@ function Sevendaystarget_mainView:refreshManualRightInfoUI(showVertical)
           self.uiBinder.node_handbook.rimg_figure_vertical:SetImage(self.selectManualCfg.PicVer)
           self.uiBinder.node_handbook.rimg_figure_grey_vertical:SetImage(self.selectManualCfg.PicVer)
         end
-        self:onAnimCardShow(taskinfo_.award == self.vm.AwardState.hasGet, showVertical)
+        self:onAnimCardShow(taskinfo_.award == self.vm.AwardState.hasGet, showVertical, isClick)
         self:setTaskProgressText(taskinfo_.targetNum, targetInfo_.Num)
         self.uiBinder.node_handbook.lan_content_01.text = Z.Placeholder.Placeholder(targetInfo_.Describe, {
           val = targetInfo_.Num
@@ -555,21 +581,8 @@ function Sevendaystarget_mainView:setTaskProgressText(targetNum, Num)
   if Num < targetNum then
     targetNumShow = Num
   end
-  local fontSize_ = self:getTaskProgressProgress(targetNumShow)
-  self.uiBinder.node_handbook.lab_figure_01.fontSize = fontSize_
-  fontSize_ = self:getTaskProgressProgress(Num)
-  self.uiBinder.node_handbook.lab_figure_02.fontSize = fontSize_
   self.uiBinder.node_handbook.lab_figure_01.text = targetNumShow
   self.uiBinder.node_handbook.lab_figure_02.text = Num
-end
-
-function Sevendaystarget_mainView:getTaskProgressProgress(count)
-  for _, v in ipairs(self.taskFontSizeDict_) do
-    if count < v[1] then
-      return v[2]
-    end
-  end
-  return self.taskFontSizeDict_[#self.taskFontSizeDict_][2]
 end
 
 function Sevendaystarget_mainView:refreshTitlePageUI()
@@ -656,17 +669,10 @@ function Sevendaystarget_mainView:refreshByDay()
     self:refreshUI()
   end
   self.timerMgr:Clear()
-  self.endTime_ = self.vm.GetWeekEndTime() + 1
+  self.endTime_ = self.vm.GetDayEndTime()
   self.timerMgr:StartTimer(function()
     self:refreshByDay()
   end, self.endTime_, 1)
-end
-
-function Sevendaystarget_mainView:onDataChanged()
-  self.tasks_ = self.vm.GetTaskList()
-  self:refreshUI()
-  self.endTime_ = self.vm.GetWeekEndTime() + 1
-  sevendaysRed_.RefreshOrInitSevenDaysTargetRed(self.tasks_)
 end
 
 function Sevendaystarget_mainView:changeDay(day)
@@ -676,14 +682,6 @@ function Sevendaystarget_mainView:changeDay(day)
   self.selectManualCfg = nil
   self.curSelectDay_ = day
   self:refreshManualUI()
-end
-
-function Sevendaystarget_mainView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.NoviceManual)
-end
-
-function Sevendaystarget_mainView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.NoviceManual)
 end
 
 function Sevendaystarget_mainView:GetCacheData()
@@ -702,7 +700,10 @@ function Sevendaystarget_mainView:onStarthandbookClickAnimShow()
   self.uiBinder.node_handbook.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
-function Sevendaystarget_mainView:onAnimCardShow(isget, showV)
+function Sevendaystarget_mainView:onAnimCardShow(isget, showV, isClick)
+  if isClick then
+    self.uiBinder.node_handbook.anim:Pause()
+  end
   local animationType
   if isget then
     animationType = not showV and Z.DOTweenAnimType.Tween_0 or Z.DOTweenAnimType.Tween_2

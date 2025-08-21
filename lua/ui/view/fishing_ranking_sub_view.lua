@@ -8,16 +8,23 @@ local playerPortraitHgr = require("ui.component.role_info.common_player_portrait
 
 function Fishing_ranking_subView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "fishing_ranking_sub", "fishing/fishing_ranking_sub", UI.ECacheLv.None)
+  if Z.IsPCUI then
+    super.ctor(self, "fishing_ranking_sub", "fishing/fishing_ranking_sub_pc", UI.ECacheLv.None)
+  else
+    super.ctor(self, "fishing_ranking_sub", "fishing/fishing_ranking_sub", UI.ECacheLv.None)
+  end
   self.fishingData_ = Z.DataMgr.Get("fishing_data")
   self.fishingVM_ = Z.VMMgr.GetVM("fishing")
   self.showWorld_ = true
   self.selectFishId_ = nil
   self.unionVM_ = Z.VMMgr.GetVM("union")
+  self.sdkVM_ = Z.VMMgr.GetVM("sdk")
+  self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
 end
 
 function Fishing_ranking_subView:OnActive()
   self.uiBinder.Trans:SetSizeDelta(0, 0)
+  self:onStartAnimShow()
   self:initLoopListView()
   self.uiBinder.tog_world:AddListener(function(ison)
     if ison then
@@ -32,15 +39,31 @@ function Fishing_ranking_subView:OnActive()
   self:AddClick(self.uiBinder.btn_union, function()
     self.unionVM_:OpenUnionMainView()
   end)
+  self:AddAsyncClick(self.uiBinder.node_normal.btn_wechatprivilege, function()
+    self.sdkVM_.PrivilegeBtnClick(Z.EntityMgr.PlayerEnt.EntId)
+  end)
+  self:AddAsyncClick(self.uiBinder.node_normal.btn_qqprivilege, function()
+    self.sdkVM_.PrivilegeBtnClick()
+  end)
+  self:AddAsyncClick(self.uiBinder.node_lv.btn_wechatprivilege, function()
+    self.sdkVM_.PrivilegeBtnClick(Z.EntityMgr.PlayerEnt.EntId)
+  end)
+  self:AddAsyncClick(self.uiBinder.node_lv.btn_qqprivilege, function()
+    self.sdkVM_.PrivilegeBtnClick()
+  end)
+  self:AddClick(self.uiBinder.btn_ranking, function()
+    self.fishingVM_.OpenRankingAwardPopup(self.selectFishId_, self.showWorld_)
+  end)
   self.selectArea_ = self.viewData.areaId
-  self.reGetData_ = true
+  self.rankInfo_ = {}
   Z.EventMgr:Add(Z.ConstValue.UnionActionEvt.JoinUnion, self.onJoinUnion, self)
   Z.EventMgr:Add(Z.ConstValue.UnionActionEvt.LeaveUnion, self.onLeaveUnion, self)
 end
 
 function Fishing_ranking_subView:OnDeActive()
   self:unInitLoopListView()
-  self.rankDict_ = nil
+  self.rankInfo_ = {}
+  self.selectFishId_ = nil
 end
 
 function Fishing_ranking_subView:OnRefresh()
@@ -61,63 +84,97 @@ function Fishing_ranking_subView:resetTog()
 end
 
 function Fishing_ranking_subView:onJoinUnion()
-  self.reGetData_ = true
   self:OnRefresh()
 end
 
 function Fishing_ranking_subView:onLeaveUnion()
-  self.reGetData_ = true
   self:OnRefresh()
 end
 
 function Fishing_ranking_subView:initLoopListView()
-  self.loopListFish_ = loopListView.new(self, self.uiBinder.loop_list_fish, fishingRankingFishLoopItem, "fishing_ranking_list_tpl")
+  if Z.IsPCUI then
+    self.loopListFish_ = loopListView.new(self, self.uiBinder.loop_list_fish, fishingRankingFishLoopItem, "fishing_ranking_list_tpl_pc")
+  else
+    self.loopListFish_ = loopListView.new(self, self.uiBinder.loop_list_fish, fishingRankingFishLoopItem, "fishing_ranking_list_tpl")
+  end
   self.loopListFish_:Init({})
-  self.loopListPlayer_ = loopListView.new(self, self.uiBinder.loop_list_player, fishingRankingLoopItem, "fishing_ranking_synthesis_list_tpl")
+  if Z.IsPCUI then
+    self.loopListPlayer_ = loopListView.new(self, self.uiBinder.loop_list_player, fishingRankingLoopItem, "fishing_ranking_synthesis_list_tpl_pc")
+  else
+    self.loopListPlayer_ = loopListView.new(self, self.uiBinder.loop_list_player, fishingRankingLoopItem, "fishing_ranking_synthesis_list_tpl")
+  end
   self.loopListPlayer_:Init({})
 end
 
 function Fishing_ranking_subView:refreshLoopListView()
-  if self.reGetData_ then
-    self:reGetRankData()
+  if self.rankInfo_[self.selectArea_] == nil or self.rankInfo_[self.selectArea_].TopInfo == nil then
+    self:getRankTopInfo()
   else
     self:refreshUI()
   end
 end
 
-function Fishing_ranking_subView:reGetRankData()
+function Fishing_ranking_subView:getRankTopInfo()
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_synthesis, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, false)
   Z.CoroUtil.create_coro_xpcall(function()
-    self.fishingVM_.GetFishingRankData(true, self.cancelSource:CreateToken())
-    self.reGetData_ = false
+    self.rankInfo_[self.selectArea_] = {}
+    self.rankInfo_[self.selectArea_].TopInfo = self.fishingVM_.AsyncGetFishingRankTop(self.selectArea_, self.cancelSource:CreateToken())
     self:refreshUI()
   end)()
 end
 
 function Fishing_ranking_subView:refreshUI()
-  local dataList_ = {}
-  local rankDict = self.fishingData_:GetRankListByArea(self.selectArea_)
-  local haveData_ = rankDict and table.zcount(rankDict) > 0
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_synthesis, haveData_)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, not haveData_)
-  if haveData_ then
-    for k, v in pairs(rankDict) do
-      local data_ = {
-        fishId = k,
-        rankData = v.worldRank[1]
-      }
-      table.insert(dataList_, data_)
+  if self.rankInfo_[self.selectArea_] == nil or self.rankInfo_[self.selectArea_].TopInfo == nil then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_synthesis, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, true)
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_synthesis, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, false)
+    local fishingTableMgr = Z.TableMgr.GetTable("FishingTableMgr")
+    local dataList = {}
+    local dataListIndex = 0
+    for k, v in pairs(self.rankInfo_[self.selectArea_].TopInfo) do
+      local config = fishingTableMgr.GetRow(k)
+      if v.playerData ~= nil and config and config.Type ~= E.FishingFishType.Halobios then
+        local data = {fishId = k, rankData = v}
+        dataListIndex = dataListIndex + 1
+        dataList[dataListIndex] = data
+      end
     end
-    self.loopListFish_:RefreshListView(dataList_)
-    self.loopListFish_:ClearAllSelect()
-    self.loopListFish_:SetSelected(1)
+    if 0 < dataListIndex then
+      self.loopListFish_:RefreshListView(dataList)
+      self.loopListFish_:ClearAllSelect()
+      self.loopListFish_:SetSelected(1)
+    else
+      self.uiBinder.Ref:SetVisible(self.uiBinder.node_synthesis, false)
+      self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, true)
+    end
   end
 end
 
 function Fishing_ranking_subView:switchRightUnionRank()
-  local haveUnion_ = self.unionVM_:GetPlayerUnionId() ~= 0
   self.showWorld_ = false
+  if self.selectFishId_ ~= nil and (self.rankInfo_[self.selectArea_][self.selectFishId_] == nil or self.rankInfo_[self.selectArea_][self.selectFishId_].UnionRankList == nil) then
+    Z.CoroUtil.create_coro_xpcall(function()
+      local rankInfo = self.rankInfo_[self.selectArea_][self.selectFishId_]
+      if rankInfo == nil then
+        rankInfo = {}
+      end
+      rankInfo.UnionRankList = self.fishingVM_.AsyncGetFishingRankData(self.selectFishId_, E.FishingRankType.Union, self.cancelSource:CreateToken())
+      if rankInfo.UnionRankList and rankInfo.UnionRankList.rankList then
+        self.fishingData_:SortRankList(rankInfo.UnionRankList.rankList)
+      end
+      self.rankInfo_[self.selectArea_][self.selectFishId_] = rankInfo
+      self:switchUnionRefresh()
+    end)()
+  else
+    self:switchUnionRefresh()
+  end
+end
+
+function Fishing_ranking_subView:switchUnionRefresh()
+  local haveUnion_ = self.unionVM_:GetPlayerUnionId() ~= 0
   if haveUnion_ then
     self:refreshRightRankListUI()
     self:refreshRightPlayerUI()
@@ -132,9 +189,12 @@ function Fishing_ranking_subView:refreshUnionUI()
   local haveUnion_ = self.unionVM_:GetPlayerUnionId() ~= 0
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_union, not self.showWorld_ and not haveUnion_)
   if self.selectFishId_ and not self.showWorld_ and haveUnion_ then
-    local rankList = self.fishingData_:GetRankListByAreaAndFish(self.selectArea_, self.selectFishId_, false)
-    local isEmpty = rankList == nil or table.zcount(rankList) == 0
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty_union, isEmpty)
+    local rankInfo = self.rankInfo_[self.selectArea_][self.selectFishId_]
+    if rankInfo == nil or rankInfo.UnionRankList == nil or table.zcount(rankInfo.UnionRankList) == 0 then
+      self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty_union, true)
+    else
+      self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty_union, false)
+    end
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty_union, false)
   end
@@ -142,9 +202,26 @@ end
 
 function Fishing_ranking_subView:switchRightWorldRank()
   self.showWorld_ = true
-  self:refreshRightRankListUI()
-  self:refreshRightPlayerUI()
-  self:refreshUnionUI()
+  if self.selectFishId_ ~= nil and (self.rankInfo_[self.selectArea_][self.selectFishId_] == nil or self.rankInfo_[self.selectArea_][self.selectFishId_].WorldRankList == nil) then
+    Z.CoroUtil.create_coro_xpcall(function()
+      local rankInfo = self.rankInfo_[self.selectArea_][self.selectFishId_]
+      if rankInfo == nil then
+        rankInfo = {}
+      end
+      rankInfo.WorldRankList = self.fishingVM_.AsyncGetFishingRankData(self.selectFishId_, E.FishingRankType.World, self.cancelSource:CreateToken())
+      if rankInfo.WorldRankList and rankInfo.WorldRankList.rankList then
+        self.fishingData_:SortRankList(rankInfo.WorldRankList.rankList)
+      end
+      self.rankInfo_[self.selectArea_][self.selectFishId_] = rankInfo
+      self:refreshRightRankListUI()
+      self:refreshRightPlayerUI()
+      self:refreshUnionUI()
+    end)()
+  else
+    self:refreshRightRankListUI()
+    self:refreshRightPlayerUI()
+    self:refreshUnionUI()
+  end
 end
 
 function Fishing_ranking_subView:unInitLoopListView()
@@ -156,7 +233,40 @@ end
 
 function Fishing_ranking_subView:OnClickRankItem(fishId)
   self.selectFishId_ = fishId
-  self:refreshRightUI()
+  local fishingRankAwardTableRow = Z.TableMgr.GetTable("FishingRankAwardTableMgr").GetRow(self.selectFishId_, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_ranking, fishingRankAwardTableRow ~= nil)
+  local rankInfo = self.rankInfo_[self.selectArea_][self.selectFishId_]
+  if self.showWorld_ then
+    if rankInfo == nil or rankInfo.WorldRankList == nil then
+      Z.CoroUtil.create_coro_xpcall(function()
+        if rankInfo == nil then
+          rankInfo = {}
+        end
+        rankInfo.WorldRankList = self.fishingVM_.AsyncGetFishingRankData(self.selectFishId_, E.FishingRankType.World, self.cancelSource:CreateToken())
+        if rankInfo.WorldRankList and rankInfo.WorldRankList.rankList then
+          self.fishingData_:SortRankList(rankInfo.WorldRankList.rankList)
+        end
+        self.rankInfo_[self.selectArea_][self.selectFishId_] = rankInfo
+        self:refreshRightUI()
+      end)()
+    else
+      self:refreshRightUI()
+    end
+  elseif rankInfo == nil or rankInfo.UnionRankList == nil then
+    Z.CoroUtil.create_coro_xpcall(function()
+      if rankInfo == nil then
+        rankInfo = {}
+      end
+      rankInfo.UnionRankList = self.fishingVM_.AsyncGetFishingRankData(self.selectFishId_, E.FishingRankType.Union, self.cancelSource:CreateToken())
+      if rankInfo.UnionRankList and rankInfo.UnionRankList.rankList then
+        self.fishingData_:SortRankList(rankInfo.UnionRankList.rankList)
+      end
+      self.rankInfo_[self.selectArea_][self.selectFishId_] = rankInfo
+      self:refreshRightUI()
+    end)()
+  else
+    self:refreshRightUI()
+  end
 end
 
 function Fishing_ranking_subView:refreshRightUI()
@@ -171,48 +281,109 @@ function Fishing_ranking_subView:refreshRightRankListUI()
   if self.selectFishId_ == nil then
     return
   end
-  local rankList_ = self.fishingData_:GetRankListByAreaAndFish(self.selectArea_, self.selectFishId_, self.showWorld_)
-  if rankList_ == nil then
+  local rankList = {}
+  local rankInfo = self.rankInfo_[self.selectArea_][self.selectFishId_]
+  if self.showWorld_ then
+    if rankInfo.WorldRankList and rankInfo.WorldRankList.rankList then
+      rankList = rankInfo.WorldRankList.rankList
+    end
+  elseif rankInfo.UnionRankList and rankInfo.UnionRankList.rankList then
+    rankList = rankInfo.UnionRankList.rankList
+  end
+  if rankList == nil then
+    self.loopListPlayer_:RefreshListView({})
     return
   end
-  local dataList_ = {}
-  for rank_, rankInfo_ in pairs(rankList_) do
-    local data_ = {rank = rank_, rankData = rankInfo_}
-    table.insert(dataList_, data_)
+  local dataList = {}
+  for rank, rankInfo in pairs(rankList) do
+    local data_ = {rank = rank, rankData = rankInfo}
+    table.insert(dataList, data_)
   end
-  self.loopListPlayer_:RefreshListView(dataList_)
+  self.loopListPlayer_:RefreshListView(dataList)
 end
 
 function Fishing_ranking_subView:refreshRightPlayerUI()
   if self.selectFishId_ == nil then
+    self.uiBinder.node_player.Ref.UIComp:SetVisible(false)
     return
   end
-  local playerData_, rank_, isTop_ = self.fishingData_:GetPlayerRankByAreaAndFish(self.selectArea_, self.selectFishId_, self.showWorld_)
-  self.uiBinder.node_player.Ref.UIComp:SetVisible(playerData_ ~= nil)
-  if playerData_ == nil then
+  local playerData
+  local rankList = {}
+  local rankInfo = self.rankInfo_[self.selectArea_][self.selectFishId_]
+  if self.showWorld_ then
+    if rankInfo and rankInfo.WorldRankList then
+      playerData = rankInfo.WorldRankList.selfInfo
+      rankList = rankInfo.WorldRankList.rankList
+    end
+  elseif rankInfo and rankInfo.UnionRankList then
+    playerData = rankInfo.UnionRankList.selfInfo
+    rankList = rankInfo.UnionRankList.rankList
+  end
+  if playerData == nil or playerData.millisecond == 0 and playerData.size == 0 then
+    self.uiBinder.node_player.Ref.UIComp:SetVisible(false)
     return
   end
-  playerPortraitHgr.InsertNewPortraitBySocialData(self.uiBinder.node_player.com_head_46_item, playerData_.playerData, nil)
-  self.uiBinder.node_lv.Ref.UIComp:SetVisible(isTop_)
-  self.uiBinder.node_normal.Ref.UIComp:SetVisible(not isTop_)
+  self.uiBinder.node_player.Ref.UIComp:SetVisible(true)
+  playerPortraitHgr.InsertNewPortraitBySocialData(self.uiBinder.node_player.com_head_46_item, playerData.playerData, nil, self.cancelSource:CreateToken())
+  local rank, isTop = self:getSelfInRank(playerData, rankList)
+  self.uiBinder.node_lv.Ref.UIComp:SetVisible(isTop)
+  self.uiBinder.node_normal.Ref.UIComp:SetVisible(not isTop)
   local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
   local canUseChat = gotoFuncVM.CheckFuncCanUse(E.FunctionID.MainChat, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_share, canUseChat and self.showWorld_)
   self.uiBinder.btn_share:RemoveAllListeners()
   self:AddClick(self.uiBinder.btn_share, function()
-    self.fishingVM_.ShareRankToChat(self.selectFishId_, rank_, playerData_.size / 100)
+    self.fishingVM_.ShareRankToChat(self.selectFishId_, rank, playerData.size / 100)
   end)
-  self.uiBinder.node_lv.Ref:SetVisible(self.uiBinder.node_lv.img_bg, isTop_)
-  if isTop_ then
-    self.uiBinder.node_lv.img_bg:SetImage(self.fishingData_.RankPathDict[rank_])
-    self.uiBinder.node_lv.lab_size.text = string.format(Lang("FishingSettlementLengthUnit"), playerData_.size / 100)
-    self.uiBinder.node_lv.lab_name.text = playerData_.playerData.basicData.name
-    self.uiBinder.node_lv.lab_digit.text = rank_
+  self.uiBinder.node_lv.Ref:SetVisible(self.uiBinder.node_lv.img_bg, isTop)
+  if isTop then
+    self.uiBinder.node_lv.img_bg:SetImage(self.fishingData_.RankPathDict[rank])
+    self.uiBinder.node_lv.lab_size.text = string.format(Lang("FishingSettlementLengthUnit"), playerData.size / 100)
+    self.uiBinder.node_lv.lab_name.text = playerData.playerData.basicData.name
+    self.uiBinder.node_lv.lab_digit.text = rank
+    self.uiBinder.node_lv.Ref:SetVisible(self.uiBinder.node_lv.btn_wechatprivilege, false)
+    self.uiBinder.node_lv.Ref:SetVisible(self.uiBinder.node_lv.btn_qqprivilege, false)
+    local accountData = Z.DataMgr.Get("account_data")
+    if accountData.LoginType == E.LoginType.QQ then
+      self.uiBinder.node_lv.Ref:SetVisible(self.uiBinder.node_lv.btn_qqprivilege, self.sdkVM_.IsShowPrivilege())
+    elseif accountData.LoginType == E.LoginType.WeChat then
+      self.uiBinder.node_lv.Ref:SetVisible(self.uiBinder.node_lv.btn_wechatprivilege, self.sdkVM_.IsShowPrivilege())
+    end
+    self.uiBinder.node_lv.Ref:SetVisible(self.uiBinder.node_lv.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(playerData.playerData.basicData.isNewbie))
   else
-    self.uiBinder.node_normal.lab_size.text = string.format(Lang("FishingSettlementLengthUnit"), playerData_.size / 100)
-    self.uiBinder.node_normal.lab_name.text = playerData_.playerData.basicData.name
-    self.uiBinder.node_normal.lab_digit.text = rank_
+    self.uiBinder.node_normal.lab_size.text = string.format(Lang("FishingSettlementLengthUnit"), playerData.size / 100)
+    self.uiBinder.node_normal.lab_name.text = playerData.playerData.basicData.name
+    self.uiBinder.node_normal.lab_digit.text = rank
+    self.uiBinder.node_normal.Ref:SetVisible(self.uiBinder.node_normal.btn_wechatprivilege, false)
+    self.uiBinder.node_normal.Ref:SetVisible(self.uiBinder.node_normal.node_qqprivilege, false)
+    local accountData = Z.DataMgr.Get("account_data")
+    if accountData.LoginType == E.LoginType.QQ then
+      self.uiBinder.node_normal.Ref:SetVisible(self.uiBinder.node_normal.node_qqprivilege, self.sdkVM_.IsShowPrivilege())
+    elseif accountData.LoginType == E.LoginType.WeChat then
+      self.uiBinder.node_normal.Ref:SetVisible(self.uiBinder.node_normal.btn_wechatprivilege, self.sdkVM_.IsShowPrivilege())
+    end
+    self.uiBinder.node_normal.Ref:SetVisible(self.uiBinder.node_normal.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(playerData.playerData.basicData.isNewbie))
   end
+end
+
+function Fishing_ranking_subView:getSelfInRank(selfPlayerData, rankList)
+  local rankStr = Z.Global.FishTopN .. "+"
+  local isTop = false
+  if #rankList == 0 then
+    return
+  end
+  for index, v in ipairs(rankList) do
+    if v.playerData.basicData.charID == selfPlayerData.playerData.basicData.charID then
+      rankStr = index
+      isTop = index <= 3
+      break
+    end
+  end
+  return rankStr, isTop
+end
+
+function Fishing_ranking_subView:onStartAnimShow()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Fishing_ranking_subView

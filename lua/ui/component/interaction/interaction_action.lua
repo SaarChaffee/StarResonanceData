@@ -1,4 +1,3 @@
-local InteractionAction = class("InteractionAction")
 local actionData = Z.DataMgr.Get("action_data")
 local uuidToEntId = function(uuid)
   local entityVm = Z.VMMgr.GetVM("entity")
@@ -35,6 +34,12 @@ local NpcTalkFlow = function(uuid, param, token)
   local data = {npcId = attrId, uuid = uuid}
   local talkVm = Z.VMMgr.GetVM("talk")
   talkVm.BeginNpcTalkFlow(data, token)
+end
+local NpcTalkFlowAbort = function(uuid, param, token)
+  logGreen("NpcTalkFlowAbort,uuid={0}", uuid)
+end
+local NpcTalkFlowEnd = function(uuid, param, token)
+  logGreen("NpcTalkFlowEnd,uuid={0}", uuid)
 end
 local OptionSelect = function(uuid, param, token)
   local str = param[1]
@@ -95,8 +100,16 @@ local HeroChallengeDungeon = function(uuid, param, token)
   end
 end
 local CookFunc = function(uuid, param, token)
-  local cookVm = Z.VMMgr.GetVM("cook")
-  cookVm.OpenCookView(param[1])
+  if tonumber(param[1]) == E.ELifeProfession.Cook then
+    local cookVm = Z.VMMgr.GetVM("cook")
+    cookVm.OpenCookView(param[2])
+  elseif tonumber(param[1]) == E.ELifeProfession.Chemistry then
+    local chemistryVm = Z.VMMgr.GetVM("chemistry")
+    chemistryVm.OpenChemistryMainView(param[2], tonumber(param[3]) == 1)
+  else
+    local lifeProfessionVm = Z.VMMgr.GetVM("life_profession")
+    lifeProfessionVm.OpenCastMainView(tonumber(param[1]), param[2], tonumber(param[3]) == 1)
+  end
 end
 local VMFuction = function(uuid, param, token)
   local vm = Z.VMMgr.GetVM(param[2])
@@ -107,18 +120,7 @@ local VMFuction = function(uuid, param, token)
   if not vmFunc then
     return false
   end
-  vmFunc(uuid, token)
-end
-local Revive = function(uuid, param, token)
-  local deadVM = Z.VMMgr.GetVM("dead")
-  local reviveIdList = deadVM.GetCurReviveIdList()
-  for i, v in ipairs(reviveIdList) do
-    local reviveRow = Z.TableMgr.GetRow("ReviveTableMgr", v)
-    if reviveRow and reviveRow.Type == E.ReviveType.BeRevived then
-      deadVM.AsyncReviveOtherUser(uuid, reviveRow.Id, token)
-      return
-    end
-  end
+  vmFunc(uuid, token, param)
 end
 local Tips = function(uuid, param, token)
   Z.TipsVM.ShowTipsLang(tonumber(param[1]))
@@ -156,10 +158,8 @@ local WindTornado = function(uuid, param)
   Panda.ZGame.ZMoveDataMgr.WindTornadoAttachVelocity(Z.EntityMgr.PlayerUuid, uuid, k1, k2, k3)
 end
 local DanceTogether = function(uuid, param)
-  local interactionCfgId = param[3]
   local actionId = tonumber(param[2][1])
-  local actionDuration = actionData:GetDurationLoopTime(actionId, E.ExpressionType.Action)
-  Z.ZAnimActionPlayMgr:PlayAction(actionId, false, Z.ServerTime:GetDanceNormalizedTime(actionDuration))
+  Z.ZAnimActionPlayMgr:PlayAction(actionId, true, 0, -1, false, 0, true)
 end
 local WindZoneEnd = function(uuid, param)
   local sourceType = Panda.ZGame.EAttachVelocitySource.WindZone:ToInt()
@@ -236,8 +236,44 @@ local UnionWarDanceEnd = function(uuid, param, token)
   local unionWarDanceData_ = Z.DataMgr.Get("union_wardance_data")
   unionWarDanceData_:SetIsInDanceArea(false)
 end
+local HomeFarmEnd = function(uuid, param, token)
+  local houseVm = Z.VMMgr.GetVM("house")
+  houseVm.CloseHousePlayFarmMainView(uuid, param[2])
+  houseVm.CloseHousePlayFarmTipsView(uuid, param[2])
+end
+local EnterHomeFarm = function(uuid, param, token)
+  local houseVm = Z.VMMgr.GetVM("house")
+  houseVm.OpenHousePlayFarmMainView(uuid, param[2], param[1])
+end
 local EnterAutoFlow = function(uuid, param)
   Panda.ZGame.ZMoveDataMgr.StartAutoFlow()
+end
+local EnterBubble = function(uuid, param, token)
+  local bubbleData = Z.DataMgr.Get("bubble_data")
+  local bubbleId = tonumber(param[1])
+  local actTableRow = Z.TableMgr.GetTable("BubbleActTableMgr").GetRow(bubbleId, true)
+  if not actTableRow then
+    return
+  end
+  if not Z.VMMgr.GetVM("gotofunc").CheckFuncCanUse(actTableRow.FunctionId, true) then
+    return
+  end
+  bubbleData:SetCurBubbleId(bubbleId)
+  Z.EventMgr:Dispatch(Z.ConstValue.Bubble.CurrentIdChanged)
+end
+local BubbleEnd = function(uuid, param, token)
+  local bubbleId = tonumber(param[1])
+  local bubbleData = Z.DataMgr.Get("bubble_data")
+  bubbleData:SetCurBubbleId(0)
+  bubbleData:SetDisplayedBubbleView(false)
+  local worldProxy = require("zproxy.world_proxy")
+  Z.CoroUtil.create_coro_xpcall(function()
+    local request = {bubbleActId = bubbleId}
+    local cancelSource = Z.CancelSource.Rent()
+    worldProxy.EndBubbleAct(request, cancelSource:CreateToken())
+    cancelSource:Recycle()
+  end)()
+  Z.EventMgr:Dispatch(Z.ConstValue.Bubble.CurrentIdChanged)
 end
 local InteractionActionDic = {
   [Z.PbEnum("EInteractionAction", "EInteractionActionNpcTalk")] = NpcTalk,
@@ -248,7 +284,6 @@ local InteractionActionDic = {
   [Z.PbEnum("EInteractionAction", "EInteractionActionOptionSelect")] = OptionSelect,
   [Z.PbEnum("EInteractionAction", "EInteractionActionHeroNormalDungeon")] = HeroNormalDungeon,
   [Z.PbEnum("EInteractionAction", "EInteractionActionHeroChallengeDungeon")] = HeroChallengeDungeon,
-  [Z.PbEnum("EInteractionAction", "EInteractionActionRevive")] = Revive,
   [Z.PbEnum("EInteractionAction", "EInteractionActionVMFuction")] = VMFuction,
   [Z.PbEnum("EInteractionAction", "EInteractionActionTips")] = Tips,
   [Z.PbEnum("EInteractionAction", "EInteractionActionOpenUI")] = OpenUI,
@@ -266,13 +301,24 @@ local InteractionActionDic = {
   [Z.PbEnum("EInteractionAction", "EInteractionActionDoNoThing")] = DoNoThing,
   [Z.PbEnum("EInteractionAction", "EInteractionActionCookFunc")] = CookFunc,
   [Z.PbEnum("EInteractionAction", "EInteractionActionUnionWarDance")] = UnionWarDance,
-  [Z.PbEnum("EInteractionAction", "EInteractionActionEnterAutoFlow")] = EnterAutoFlow
+  [Z.PbEnum("EInteractionAction", "EInteractionActionEnterAutoFlow")] = EnterAutoFlow,
+  [Z.PbEnum("EInteractionAction", "EInteractionActionHomeFarm")] = EnterHomeFarm,
+  [Z.PbEnum("EInteractionAction", "EInteractionActionBubbleActStart")] = EnterBubble,
+  [Z.PbEnum("EInteractionAction", "EInteractionActionBubbleActEnd")] = BubbleEnd
 }
 local InteractionEndTriggerActionDic = {
   [Z.PbEnum("EInteractionAction", "EInteractionActionWindZone")] = WindZoneEnd,
   [Z.PbEnum("EInteractionAction", "EInteractionActionWindRing")] = WindRingEnd,
   [Z.PbEnum("EInteractionAction", "EInteractionActionWindTornado")] = WindTornadoEnd,
-  [Z.PbEnum("EInteractionAction", "EInteractionActionUnionWarDance")] = UnionWarDanceEnd
+  [Z.PbEnum("EInteractionAction", "EInteractionActionUnionWarDance")] = UnionWarDanceEnd,
+  [Z.PbEnum("EInteractionAction", "EInteractionActionHomeFarm")] = HomeFarmEnd,
+  [Z.PbEnum("EInteractionAction", "EInteractionActionBubbleActStart")] = BubbleEnd
+}
+local InteractionAborActionDic = {
+  [Z.PbEnum("EInteractionAction", "EInteractionActionNpcTalkFlow")] = NpcTalkFlowAbort
+}
+local InteractionEndActionDic = {
+  [Z.PbEnum("EInteractionAction", "EInteractionActionNpcTalkFlow")] = NpcTalkFlowEnd
 }
 local InteractionActionBackDic = {}
 local parseParam = function(interactionCfgId, templateId, actionType, actionParam, interConfig)
@@ -290,6 +336,8 @@ local parseParam = function(interactionCfgId, templateId, actionType, actionPara
       actionParam,
       interactionCfgId
     }
+  elseif actionType == Z.PbEnum("EInteractionAction", "EInteractionActionHomeFarm") or actionType == Z.PbEnum("EInteractionAction", "EInteractionActionHomeFarm") then
+    param = {actionParam, interactionCfgId}
   else
     param = actionParam
   end
@@ -329,7 +377,33 @@ local doInteractionEndTriggerAction = function(uuid, interactionCfgId, templateI
   local param = parseParam(interactionCfgId, templateId, data.Action, data.Param, interConfig)
   local doFunc = InteractionEndTriggerActionDic[data.Action]
   if doFunc then
+    logGreen("Do Interaction Action End Trigger: uuid={0}, interactionCfgId={1},templateId={2}, actiontype={3}, scene={4}, entType={5}, entId={6}, param={7}", uuid, interactionCfgId, templateId, data.Action, Z.StageMgr.GetCurrentSceneId(), uuidToEntType(uuid), uuidToEntId(uuid), table.ztostring(param))
+    doFunc(uuid, param, token)
+  end
+end
+local doInteractionActionAbort = function(uuid, interactionCfgId, templateId, data, cancelSource)
+  local interConfig = Z.TableMgr.GetTable("InteractiveTableMgr").GetRow(templateId)
+  local token = ZUtil.ZCancelSource.NeverCancelToken
+  if cancelSource ~= nil then
+    token = cancelSource:CreateToken()
+  end
+  local param = parseParam(interactionCfgId, templateId, data.Action, data.Param, interConfig)
+  local doFunc = InteractionAborActionDic[data.Action]
+  if doFunc then
     logGreen("Do Interaction Action abort: uuid={0}, interactionCfgId={1},templateId={2}, actiontype={3}, scene={4}, entType={5}, entId={6}, param={7}", uuid, interactionCfgId, templateId, data.Action, Z.StageMgr.GetCurrentSceneId(), uuidToEntType(uuid), uuidToEntId(uuid), table.ztostring(param))
+    doFunc(uuid, param, token)
+  end
+end
+local doInteractionActionEnd = function(uuid, interactionCfgId, templateId, data, cancelSource)
+  local interConfig = Z.TableMgr.GetTable("InteractiveTableMgr").GetRow(templateId)
+  local token = ZUtil.ZCancelSource.NeverCancelToken
+  if cancelSource ~= nil then
+    token = cancelSource:CreateToken()
+  end
+  local param = parseParam(interactionCfgId, templateId, data.Action, data.Param, interConfig)
+  local doFunc = InteractionEndActionDic[data.Action]
+  if doFunc then
+    logGreen("Do Interaction Action End: uuid={0}, interactionCfgId={1},templateId={2}, actiontype={3}, scene={4}, entType={5}, entId={6}, param={7}", uuid, interactionCfgId, templateId, data.Action, Z.StageMgr.GetCurrentSceneId(), uuidToEntType(uuid), uuidToEntId(uuid), table.ztostring(param))
     doFunc(uuid, param, token)
   end
 end
@@ -347,6 +421,8 @@ end
 local ret = {
   DoInteractionAction = doInteractionAction,
   DoInteractionEndTriggerAction = doInteractionEndTriggerAction,
-  DoInteractionActionBack = doInteractionActionBack
+  DoInteractionActionBack = doInteractionActionBack,
+  DoInteractionActionAbort = doInteractionActionAbort,
+  DoInteractionActionEnd = doInteractionActionEnd
 }
 return ret

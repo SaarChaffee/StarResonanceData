@@ -14,8 +14,6 @@ message ProfessionSignTableBase {
     int_array EffectId = 1555;
     string_table Effectkey = 1761;
 }
-
 message ProfessionSignTableMgr {
-    map<int32, .bokura.ProfessionSignTableBase> datas = 1;
+    repeated bokura.ProfessionSignTableMgr.DatasEntry datas = 1;
 }
-

@@ -21,8 +21,6 @@ message MallTableBase {
     string Icon = 1153;
     int_array CurrencyDisplay = 1022;
 }
-
 message MallTableMgr {
-    map<int32, .bokura.MallTableBase> datas = 1;
+    repeated bokura.MallTableMgr.DatasEntry datas = 1;
 }
-

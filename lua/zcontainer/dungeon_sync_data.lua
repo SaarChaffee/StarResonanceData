@@ -66,28 +66,37 @@ local mergeDataFuncs = {
     container.Watcher:MarkDirty("heroKey", {})
   end,
   [17] = function(container, buffer, watcherList)
-    container.community:MergeData(buffer, watcherList)
-    container.Watcher:MarkDirty("community", {})
-  end,
-  [18] = function(container, buffer, watcherList)
-    container.homeland:MergeData(buffer, watcherList)
-    container.Watcher:MarkDirty("homeland", {})
-  end,
-  [19] = function(container, buffer, watcherList)
     container.dungeonUnionInfo:MergeData(buffer, watcherList)
     container.Watcher:MarkDirty("dungeonUnionInfo", {})
   end,
-  [20] = function(container, buffer, watcherList)
+  [18] = function(container, buffer, watcherList)
     container.dungeonPlayerList:MergeData(buffer, watcherList)
     container.Watcher:MarkDirty("dungeonPlayerList", {})
   end,
-  [21] = function(container, buffer, watcherList)
+  [19] = function(container, buffer, watcherList)
     container.reviveInfo:MergeData(buffer, watcherList)
     container.Watcher:MarkDirty("reviveInfo", {})
   end,
-  [22] = function(container, buffer, watcherList)
+  [20] = function(container, buffer, watcherList)
     container.randomEntityConfigIdInfo:MergeData(buffer, watcherList)
     container.Watcher:MarkDirty("randomEntityConfigIdInfo", {})
+  end,
+  [21] = function(container, buffer, watcherList)
+    container.dungeonSceneInfo:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("dungeonSceneInfo", {})
+  end,
+  [22] = function(container, buffer, watcherList)
+    container.dungeonVarAll:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("dungeonVarAll", {})
+  end,
+  [23] = function(container, buffer, watcherList)
+    container.dungeonRaidInfo:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("dungeonRaidInfo", {})
+  end,
+  [24] = function(container, buffer, watcherList)
+    local last = container.__data__.errCode
+    container.__data__.errCode = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("errCode", last)
   end
 }
 local setForbidenMt = function(t)
@@ -165,12 +174,6 @@ local resetData = function(container, pbData)
   if not pbData.heroKey then
     container.__data__.heroKey = {}
   end
-  if not pbData.community then
-    container.__data__.community = {}
-  end
-  if not pbData.homeland then
-    container.__data__.homeland = {}
-  end
   if not pbData.dungeonUnionInfo then
     container.__data__.dungeonUnionInfo = {}
   end
@@ -182,6 +185,18 @@ local resetData = function(container, pbData)
   end
   if not pbData.randomEntityConfigIdInfo then
     container.__data__.randomEntityConfigIdInfo = {}
+  end
+  if not pbData.dungeonSceneInfo then
+    container.__data__.dungeonSceneInfo = {}
+  end
+  if not pbData.dungeonVarAll then
+    container.__data__.dungeonVarAll = {}
+  end
+  if not pbData.dungeonRaidInfo then
+    container.__data__.dungeonRaidInfo = {}
+  end
+  if not pbData.errCode then
+    container.__data__.errCode = 0
   end
   setForbidenMt(container)
   container.flowInfo:ResetData(pbData.flowInfo)
@@ -214,10 +229,6 @@ local resetData = function(container, pbData)
   container.__data__.timerInfo = nil
   container.heroKey:ResetData(pbData.heroKey)
   container.__data__.heroKey = nil
-  container.community:ResetData(pbData.community)
-  container.__data__.community = nil
-  container.homeland:ResetData(pbData.homeland)
-  container.__data__.homeland = nil
   container.dungeonUnionInfo:ResetData(pbData.dungeonUnionInfo)
   container.__data__.dungeonUnionInfo = nil
   container.dungeonPlayerList:ResetData(pbData.dungeonPlayerList)
@@ -226,6 +237,12 @@ local resetData = function(container, pbData)
   container.__data__.reviveInfo = nil
   container.randomEntityConfigIdInfo:ResetData(pbData.randomEntityConfigIdInfo)
   container.__data__.randomEntityConfigIdInfo = nil
+  container.dungeonSceneInfo:ResetData(pbData.dungeonSceneInfo)
+  container.__data__.dungeonSceneInfo = nil
+  container.dungeonVarAll:ResetData(pbData.dungeonVarAll)
+  container.__data__.dungeonVarAll = nil
+  container.dungeonRaidInfo:ResetData(pbData.dungeonRaidInfo)
+  container.__data__.dungeonRaidInfo = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -464,84 +481,102 @@ local getContainerElem = function(container)
       data = container.heroKey:GetContainerElem()
     }
   end
-  if container.community == nil then
-    ret.community = {
-      fieldId = 17,
-      dataType = 1,
-      data = nil
-    }
-  else
-    ret.community = {
-      fieldId = 17,
-      dataType = 1,
-      data = container.community:GetContainerElem()
-    }
-  end
-  if container.homeland == nil then
-    ret.homeland = {
-      fieldId = 18,
-      dataType = 1,
-      data = nil
-    }
-  else
-    ret.homeland = {
-      fieldId = 18,
-      dataType = 1,
-      data = container.homeland:GetContainerElem()
-    }
-  end
   if container.dungeonUnionInfo == nil then
     ret.dungeonUnionInfo = {
-      fieldId = 19,
+      fieldId = 17,
       dataType = 1,
       data = nil
     }
   else
     ret.dungeonUnionInfo = {
-      fieldId = 19,
+      fieldId = 17,
       dataType = 1,
       data = container.dungeonUnionInfo:GetContainerElem()
     }
   end
   if container.dungeonPlayerList == nil then
     ret.dungeonPlayerList = {
-      fieldId = 20,
+      fieldId = 18,
       dataType = 1,
       data = nil
     }
   else
     ret.dungeonPlayerList = {
-      fieldId = 20,
+      fieldId = 18,
       dataType = 1,
       data = container.dungeonPlayerList:GetContainerElem()
     }
   end
   if container.reviveInfo == nil then
     ret.reviveInfo = {
-      fieldId = 21,
+      fieldId = 19,
       dataType = 1,
       data = nil
     }
   else
     ret.reviveInfo = {
-      fieldId = 21,
+      fieldId = 19,
       dataType = 1,
       data = container.reviveInfo:GetContainerElem()
     }
   end
   if container.randomEntityConfigIdInfo == nil then
     ret.randomEntityConfigIdInfo = {
-      fieldId = 22,
+      fieldId = 20,
       dataType = 1,
       data = nil
     }
   else
     ret.randomEntityConfigIdInfo = {
-      fieldId = 22,
+      fieldId = 20,
       dataType = 1,
       data = container.randomEntityConfigIdInfo:GetContainerElem()
     }
   end
+  if container.dungeonSceneInfo == nil then
+    ret.dungeonSceneInfo = {
+      fieldId = 21,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.dungeonSceneInfo = {
+      fieldId = 21,
+      dataType = 1,
+      data = container.dungeonSceneInfo:GetContainerElem()
+    }
+  end
+  if container.dungeonVarAll == nil then
+    ret.dungeonVarAll = {
+      fieldId = 22,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.dungeonVarAll = {
+      fieldId = 22,
+      dataType = 1,
+      data = container.dungeonVarAll:GetContainerElem()
+    }
+  end
+  if container.dungeonRaidInfo == nil then
+    ret.dungeonRaidInfo = {
+      fieldId = 23,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.dungeonRaidInfo = {
+      fieldId = 23,
+      dataType = 1,
+      data = container.dungeonRaidInfo:GetContainerElem()
+    }
+  end
+  ret.errCode = {
+    fieldId = 24,
+    dataType = 0,
+    data = container.errCode
+  }
   return ret
 end
 local new = function()
@@ -565,12 +600,13 @@ local new = function()
     dungeonScore = require("zcontainer.dungeon_score").New(),
     timerInfo = require("zcontainer.dungeon_timer_info").New(),
     heroKey = require("zcontainer.dungeon_hero_key_info").New(),
-    community = require("zcontainer.dungeon_community_info").New(),
-    homeland = require("zcontainer.dungeon_homeland_info").New(),
     dungeonUnionInfo = require("zcontainer.dungeon_union_info").New(),
     dungeonPlayerList = require("zcontainer.dungeon_player_list").New(),
     reviveInfo = require("zcontainer.dungeon_revive_info").New(),
-    randomEntityConfigIdInfo = require("zcontainer.dungeon_random_entity_config_id_info").New()
+    randomEntityConfigIdInfo = require("zcontainer.dungeon_random_entity_config_id_info").New(),
+    dungeonSceneInfo = require("zcontainer.dungeon_scene_info").New(),
+    dungeonVarAll = require("zcontainer.dungeon_var_all").New(),
+    dungeonRaidInfo = require("zcontainer.dungeon_raid_info").New()
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)

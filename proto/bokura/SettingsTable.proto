@@ -16,8 +16,6 @@ message SettingsTableBase {
     int32 DataStorage = 1251;
     string Link = 105;
 }
-
 message SettingsTableMgr {
-    map<int32, .bokura.SettingsTableBase> datas = 1;
+    repeated bokura.SettingsTableMgr.DatasEntry datas = 1;
 }
-

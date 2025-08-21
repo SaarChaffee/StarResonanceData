@@ -8,7 +8,7 @@ local rankingPath = {
 }
 
 function Parkour_tooltip_single_windowView:ctor()
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "parkour_tooltip_single_window", "parkour/parkour_tooltip_single_window", UI.ECacheLv.None)
   self.rankingPrefab = nil
   self.viewData = nil
@@ -16,21 +16,16 @@ function Parkour_tooltip_single_windowView:ctor()
 end
 
 function Parkour_tooltip_single_windowView:OnActive()
-  self.panel.Ref:SetOffSetMin(0, 0)
-  self.panel.Ref:SetOffSetMax(0, 0)
+  self.uiBinder.Trans:SetOffsetMin(0, 0)
+  self.uiBinder.Trans:SetOffsetMax(0, 0)
   self.endAudioIsPlaying = false
-  self:InitUI()
   self:BindEvents()
-end
-
-function Parkour_tooltip_single_windowView:InitUI()
-  self.rankingZwidget = self.panel.node_rangking
-  self.countdown_audioZwidget = self.panel.group_audio.countdown_audio
 end
 
 function Parkour_tooltip_single_windowView:ClearAll()
   self.timerMgr:Clear()
   if self.rankingPrefab then
+    self.rankingPrefab.lab_time.ParkourTime:EndTime()
     self.rankingPrefab:DeActive()
     self:RemoveUiUnit(self.rankingPrefab.name)
     self.rankingPrefab = nil
@@ -64,19 +59,19 @@ function Parkour_tooltip_single_windowView:onTimeLimitQuestEnd()
   end
   local delayTime = 0
   local stepStatus = quest.stepStatus
-  self.panel.group_audio.countdown_audio.Audio:Stop()
+  self.uiBinder.countdown_audio:Stop()
   local questData = Z.DataMgr.Get("quest_data")
   local messageIds = questData:GetQuestTimeLimitMessageId(quest.id)
   if stepStatus then
     self:StopAudio()
     self:ClearAll()
     if stepStatus == Z.PbEnum("EQuestStepStatus", "QuestStepFail") then
-      self.panel.group_audio.fail_audio.Audio:Play()
+      self.uiBinder.fail_audio:Play()
       Z.TipsVM.ShowTipsLang(messageIds.failMessageId)
       self.endAudioIsPlaying = true
     end
     if stepStatus == Z.PbEnum("EQuestStepStatus", "QuestStepFinish") then
-      self.panel.group_audio.success_audio.Audio:Play()
+      self.uiBinder.success_audio:Play()
       Z.TipsVM.ShowTipsLang(messageIds.succeedMessageId)
       self.endAudioIsPlaying = true
     end
@@ -93,7 +88,7 @@ function Parkour_tooltip_single_windowView:onTimeLimitQuestGoing(quest)
     return
   end
   local stepStatus = quest.stepStatus
-  self.panel.group_audio.countdown_audio.Audio:Stop()
+  self.uiBinder.countdown_audio:Stop()
   if stepStatus then
     self:StopAudio()
     if stepStatus == Z.PbEnum("EQuestStepStatus", "QuestStepGoing") then
@@ -103,7 +98,7 @@ function Parkour_tooltip_single_windowView:onTimeLimitQuestGoing(quest)
 end
 
 function Parkour_tooltip_single_windowView:StopAudio()
-  self.countdown_audioZwidget.Audio:Stop()
+  self.uiBinder.countdown_audio:Stop()
 end
 
 function Parkour_tooltip_single_windowView:OnRefresh()
@@ -134,7 +129,7 @@ function Parkour_tooltip_single_windowView:TimeLimitQuestStart()
   end
   if self.rankingPrefab then
     self.rankingPrefab.node_time:SetVisible(true)
-    self.panel.group_audio.begin_audio.Audio:Play()
+    self.uiBinder.begin_audio:Play()
     self:SetCountDown()
   end
 end
@@ -145,37 +140,23 @@ function Parkour_tooltip_single_windowView:SetCountDown(addLimitTime)
     self:CloseParkourSingleView()
     return
   end
-  if quest.stepLimitTime <= 0 then
+  if quest.stepLimitTime <= 0 or not self.rankingPrefab then
     return
   end
-  local endTime = quest.stepLimitTime * 1000
   local timeLimitNumber = Z.Global.TimeLimitQuestAlert
-  local limitFunc = function()
-    self:PlayCountDown()
+  local nowTime = math.floor(Z.ServerTime:GetServerTime() / 1000)
+  local t = quest.stepLimitTime - nowTime
+  if t <= 0 then
+    self.rankingPrefab.lab_time.ParkourTime:EndTime()
+    return
   end
-  local finshFunc = function()
-    if self.timerMgr then
-      self.timerMgr:StopTimer(self.autioPlayTime_)
-    end
-  end
-  self.rankingPrefab:CountDownFunc(endTime, tonumber(timeLimitNumber), addLimitTime, nil, nil, nil, finshFunc, nil, limitFunc)
-end
-
-function Parkour_tooltip_single_windowView:PlayCountDown()
-  local time = 0
-  self.autioPlayTime_ = self.timerMgr:StartTimer(function()
-    time = time + 0.05
-    if 1 <= time then
-      time = 0
-      self.countdown_audioZwidget.Audio:Play()
-    end
-  end, 0.05, -1)
+  self.rankingPrefab.lab_time.ParkourTime:StartTime(quest.stepLimitTime, tonumber(timeLimitNumber), self.uiBinder.countdown_audio)
 end
 
 function Parkour_tooltip_single_windowView:InitSubView()
   local compName = "parkour_time_prepare_tpl_view"
   local index = Z.GameContext.IsPC and 1 or 2
-  local uiUnit_ = self:AsyncLoadUiUnit(rankingPath[index], compName, self.rankingZwidget.Trans, self.cancelSource:CreateToken())
+  local uiUnit_ = self:AsyncLoadUiUnit(rankingPath[index], compName, self.uiBinder.trans_rangking, self.cancelSource:CreateToken())
   self.rankingPrefab = rankingView.new()
   self.rankingPrefab:Init(uiUnit_.Go, compName)
   self.rankingPrefab:SetRankingNodeIsOpen(false)

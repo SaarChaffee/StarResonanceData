@@ -19,8 +19,6 @@ message PresentationEPFlowTableBase {
     bool IsModelDialogue = 1706;
     int_array BlackMask = 911;
 }
-
 message PresentationEPFlowTableMgr {
-    map<int32, .bokura.PresentationEPFlowTableBase> datas = 1;
+    repeated bokura.PresentationEPFlowTableMgr.DatasEntry datas = 1;
 }
-

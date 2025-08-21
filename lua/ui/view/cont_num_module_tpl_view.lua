@@ -162,7 +162,7 @@ function Cont_num_module_tplView:add()
 end
 
 function Cont_num_module_tplView:reduce()
-  self:InputNum(self.curNum_ - 1, nil, true)
+  self:InputNum(self.curNum_ - 1)
 end
 
 function Cont_num_module_tplView:onMax()
@@ -200,32 +200,19 @@ function Cont_num_module_tplView:updateNumData()
   end
 end
 
-function Cont_num_module_tplView:InputNum(num, tipId, force)
-  self.curNum_ = num
-  if num < self.min_ then
-    self.curNum_ = self.min_
-  end
-  if num < 1 then
-    self.curNum_ = 1
-  end
-  if num > self.max_ then
-    if not force then
-      if tipId then
-        Z.VMMgr.GetVM("all_tips").OpenMessageView({
-          configId = self.viewData.tipId
-        })
-      elseif self.viewData.tipId then
-        Z.VMMgr.GetVM("all_tips").OpenMessageView({
-          configId = self.viewData.tipId
-        })
-      else
-        Z.VMMgr.GetVM("all_tips").OpenMessageView({configId = 1000721})
-      end
-      self.curNum_ = self.max_
+function Cont_num_module_tplView:InputNum(num)
+  if num > self.max_ or self.max_ == 0 then
+    if self.viewData.tipId then
+      Z.VMMgr.GetVM("all_tips").OpenMessageView({
+        configId = self.viewData.tipId
+      })
     else
-      self.curNum_ = num
+      Z.VMMgr.GetVM("all_tips").OpenMessageView({configId = 1000721})
     end
   end
+  num = math.max(num, self.min_)
+  num = math.min(num, self.max_)
+  self.curNum_ = num
   self:updateNumData()
 end
 

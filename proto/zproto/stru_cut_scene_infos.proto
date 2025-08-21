@@ -6,9 +6,7 @@ import "stru_cut_scene_info.proto";
 import "stru_dirty_mask.proto";
 
 message CutSceneInfos {
-    map<int32, .zproto.CutSceneInfo> cutSceneInfos = 1;
-    map<int32, bool> finishedCutScenes = 2;
-    map<int64, bool> finishedInfos = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.CutSceneInfos.CutSceneInfosEntry cutSceneInfos = 1;
+    repeated zproto.CutSceneInfos.FinishedCutScenesEntry finishedCutScenes = 2;
+    repeated zproto.CutSceneInfos.FinishedInfosEntry finishedInfos = 3;
 }
-

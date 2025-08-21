@@ -16,7 +16,7 @@ function Mgr.GetUuid()
   return Mgr.IdCount
 end
 
-function Mgr.Create(qteId, view, panel)
+function Mgr.Create(qteId, view, uiBinder)
   local qteRow = Z.TableMgr.GetTable("QteTableMgr").GetRow(qteId)
   if qteRow == nil then
     logError("can not find config in QteTable")
@@ -33,15 +33,15 @@ function Mgr.Create(qteId, view, panel)
   local CLASS_PATH = "ui.component.qte."
   logGreen(qteId)
   if qteId == 1 then
-    qteUI = require(CLASS_PATH .. "qte_weapon_sf").new(qteId, view, panel)
+    qteUI = require(CLASS_PATH .. "qte_weapon_sf").new(qteId, view, uiBinder)
   elseif qteId == 2 then
-    qteUI = require(CLASS_PATH .. "qte_weapon_tdl").new(qteId, view, panel)
+    qteUI = require(CLASS_PATH .. "qte_weapon_tdl").new(qteId, view, uiBinder)
   elseif qteId == 3 then
-    qteUI = require(CLASS_PATH .. "qte_weapon_tdl").new(qteId, view, panel)
+    qteUI = require(CLASS_PATH .. "qte_weapon_tdl").new(qteId, view, uiBinder)
   elseif qteId == 4 or qteId == 5 or qteId == 6 then
-    qteUI = require(CLASS_PATH .. "qte_parkour_jump").new(qteId, view, panel)
+    qteUI = require(CLASS_PATH .. "qte_parkour_jump").new(qteId, view, uiBinder)
   elseif qteId == 7 then
-    qteUI = require(CLASS_PATH .. "qte_parkour_shadow_dash").new(qteId, view, panel)
+    qteUI = require(CLASS_PATH .. "qte_parkour_shadow_dash").new(qteId, view, uiBinder)
   else
     logError("weaponType not find processFunc is nil")
   end

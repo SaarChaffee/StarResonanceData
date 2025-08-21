@@ -6,4 +6,3 @@ message ExchangeNoticeBuyItemRequest {
     string uuid = 2;
     int32 configId = 3;
 }
-

@@ -8,8 +8,6 @@ message AchievementEntryTableBase {
     int32 Id = 1463;
     int_array AchievementList = 1797;
 }
-
 message AchievementEntryTableMgr {
-    map<int32, .bokura.AchievementEntryTableBase> datas = 1;
+    repeated bokura.AchievementEntryTableMgr.DatasEntry datas = 1;
 }
-

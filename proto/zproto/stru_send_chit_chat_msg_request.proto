@@ -9,5 +9,5 @@ message SendChitChatMsgRequest {
     zproto.ChitChatChannelType channelType = 2;
     uint32 sameRate = 3;
     zproto.ChatMsgInfo msgInfo = 4;
+    bool sendToMe = 5;
 }
-

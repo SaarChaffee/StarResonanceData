@@ -10,4 +10,3 @@ message GmCmd {
     zproto.EGmParsingType parsingType = 3;
     string parameter = 4;
 }
-

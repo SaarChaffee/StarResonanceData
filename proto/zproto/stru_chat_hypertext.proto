@@ -8,4 +8,3 @@ message ChatHypertext {
     uint32 configId = 1;
     repeated zproto.PlaceHolder hypertextContents = 2;
 }
-

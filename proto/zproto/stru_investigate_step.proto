@@ -7,7 +7,5 @@ import "stru_dirty_mask.proto";
 
 message InvestigateStep {
     repeated int32 clues = 1;
-    map<int32, .zproto.AnswerList> reasoningMap = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.InvestigateStep.ReasoningMapEntry reasoningMap = 2;
 }
-

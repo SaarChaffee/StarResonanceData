@@ -7,9 +7,7 @@ import "stru_union_member.proto";
 import "stru_user_summary_data.proto";
 
 message ReqUnionMemsListReply {
-    zproto.EErrorCode errorCode = 1;
-    int32 errCode = 2;
-    repeated zproto.UnionMember memList = 3;
-    repeated zproto.UserSummaryData memSocialList = 4;
+    repeated zproto.UnionMember memList = 1;
+    repeated zproto.UserSummaryData memSocialList = 2;
+    zproto.EErrorCode errCode = 3;
 }
-

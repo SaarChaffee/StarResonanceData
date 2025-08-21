@@ -6,10 +6,9 @@ import "stru_monster_hunt_target.proto";
 import "stru_dirty_mask.proto";
 
 message MonsterHuntInfo {
-    map<int32, .zproto.MonsterHuntTarget> monsterHuntList = 1;
+    repeated zproto.MonsterHuntInfo.MonsterHuntListEntry monsterHuntList = 1;
     int32 curLevel = 2;
     int32 curExp = 3;
-    map<int32, int32> levelAwardFlag = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.MonsterHuntInfo.LevelAwardFlagEntry levelAwardFlag = 4;
+    repeated zproto.MonsterHuntInfo.MonsterHuntRefrshTimeEntry monsterHuntRefrshTime = 6;
 }
-

@@ -11,8 +11,6 @@ function Mod_item_popupView:ctor()
 end
 
 function Mod_item_popupView:OnActive()
-  self.uiBinder.Trans.parent = self.viewData.parent
-  self.uiBinder.adapt_pos:UpdatePosition(self.viewData.parent, true, false, true)
   self:AddClick(self.uiBinder.btn_close, function()
     Z.UIMgr:CloseView("mod_item_popup")
   end)
@@ -24,24 +22,30 @@ function Mod_item_popupView:OnActive()
     config = self.modData_:GetEffectTableConfig(self.viewData.effectId, 0)
   end
   if config then
-    ModGlossaryItemTplItem.RefreshTpl(self.uiBinder.mod_glossary_item_tpl, self.viewData.effectId, config.Level)
-    self.uiBinder.lab_name.text = config.EffectName
-    self.uiBinder.lab_lv.text = Lang("LvFormatSymbol", {
-      val = config.Level
-    })
-    local allEffectConfigs = self.modData_:GetEffectTableConfigList(self.viewData.effectId)
-    local val = {}
-    local tempIndex = 0
-    for index, effectConfig in ipairs(allEffectConfigs) do
-      local level = index - 1
-      if 0 < level then
-        tempIndex = tempIndex + 1
-        val[tempIndex] = self.modVM_.ParseModEffectDesc(self.viewData.effectId, level)
-        tempIndex = tempIndex + 1
-        val[tempIndex] = effectConfig.EnhancementNum
+    Z.CoroUtil.create_coro_xpcall(function()
+      ModGlossaryItemTplItem.RefreshTpl(self.uiBinder.mod_glossary_item_tpl, self.viewData.effectId)
+      self.uiBinder.lab_name.text = config.EffectName
+      self.uiBinder.lab_lv.text = Lang("LvFormatSymbol", {
+        val = config.Level
+      })
+      local allEffectConfigs = self.modData_:GetEffectTableConfigList(self.viewData.effectId)
+      local val = {}
+      local tempIndex = 0
+      for index, effectConfig in ipairs(allEffectConfigs) do
+        local level = index - 1
+        if 0 < level then
+          tempIndex = tempIndex + 1
+          val[tempIndex] = self.modVM_.ParseModEffectDesc(self.viewData.effectId, level)
+          tempIndex = tempIndex + 1
+          val[tempIndex] = effectConfig.EnhancementNum
+        end
       end
-    end
-    self.uiBinder.lab_info_content_2.text = Z.Placeholder.Placeholder(config.EffectOverview, {val = val})
+      self.uiBinder.lab_info_content_2.text = Z.Placeholder.Placeholder(config.EffectOverview, {val = val})
+      self.uiBinder.layout_rebuilder:ForceRebuildLayoutImmediate()
+      local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
+      coro(1, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
+      self.uiBinder.adapt_pos:UpdatePosition(self.viewData.parent, true, false, true)
+    end)()
   end
 end
 

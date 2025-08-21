@@ -1,11 +1,10 @@
+local togglePath = "ui/prefabs/map/map_toggle_mark"
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Map_custom_subView = class("Map_custom_subView", super)
-local SWITCH_PATH = "ui/prefabs/map/map_tog_icon_tpl"
-local SWITCH_UNIT_NAME = "MapFlagSwitch"
 
 function Map_custom_subView:ctor(parent)
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "map_custom_sub", "map/map_custom_sub", UI.ECacheLv.None)
   self.parent_ = parent
   self.mapVM_ = Z.VMMgr.GetVM("map")
@@ -13,173 +12,212 @@ function Map_custom_subView:ctor(parent)
 end
 
 function Map_custom_subView:OnActive()
+  self.uiBinder.Trans:SetOffsetMin(0, 0)
+  self.uiBinder.Trans:SetOffsetMax(0, 0)
   self:startAnimatedShow()
-  self.panel.Ref:SetSize(0, 0)
+  self.count_ = 0
+  self.maxCount_ = Z.Global.SceneTagMaxNum
+  self.isChange_ = false
   self.closeByBtn_ = false
-  self.isMiniMapSettingChange_ = false
-  self:AddClick(self.panel.cont_content.cont_map_bg.cont_btn_return.btn.Btn, function()
+  self.markInfo_ = {}
+  self:AddClick(self.uiBinder.btn_close, function()
     self.closeByBtn_ = true
-    self.parent_:CloseRightSubview()
+    self.parent_:CloseRightSubView()
   end)
-  self.modifiableFlagTypeList_ = {}
-  self.mainSwitchCont_ = self.panel.cont_content.layout_setting_group1.cont_tog_icon_tpl.cont_switch
-  self:initSwitch()
-  self.mapSetTogGroup = self.panel.cont_content.layout_setting_group2.layout_map_setting3.togs_group.TogGroup
-  self.lockTogGroup = self.panel.cont_content.layout_setting_group2.layout_map_setting4.layout_group.TogGroup
-  self.ratio1 = self.panel.cont_content.layout_setting_group2.layout_map_setting3.cont_ratio_setting
-  self.ratio2 = self.panel.cont_content.layout_setting_group2.layout_map_setting3.cont_ratio_setting2
-  self.ratio3 = self.panel.cont_content.layout_setting_group2.layout_map_setting3.cont_ratio_setting3
-  self.lock1 = self.panel.cont_content.layout_setting_group2.layout_map_setting4.cont_com_toggle.tog_item
-  self.lock2 = self.panel.cont_content.layout_setting_group2.layout_map_setting4.cont_com_toggle02.tog_item
-  self.ratio1.tog_scale.Tog.group = self.mapSetTogGroup
-  self.ratio2.tog_scale.Tog.group = self.mapSetTogGroup
-  self.ratio3.tog_scale.Tog.group = self.mapSetTogGroup
-  self.lock1.Tog.group = self.lockTogGroup
-  self.lock2.Tog.group = self.lockTogGroup
-  self:initToggle()
-  self.ratio1.tog_scale.Tog:AddListener(function(isOn)
-    if isOn then
-      self.mapData_:SetShowProportion(E.ShowProportionType.Low)
-      self.isMiniMapSettingChange_ = true
-      self.ratio1.anim.TweenContainer:Restart(Z.DOTweenAnimType.Open)
-    else
-      self.ratio1.anim.TweenContainer:Restart(Z.DOTweenAnimType.Close)
+  self:AddClick(self.uiBinder.btn_add, function()
+    self:onAddBtnClick()
+  end)
+  self:AddClick(self.uiBinder.btn_delete, function()
+    self.isChange_ = false
+    self:onDelBtnClick()
+  end)
+  self:AddClick(self.uiBinder.btn_trace, function()
+    self:onTraceBtnClick()
+  end)
+  self:AddClick(self.uiBinder.btn_cancel_trace, function()
+    self:onNotTraceBtnClick()
+  end)
+  self.uiBinder.input_remark:AddListener(function(str)
+    local contentMaxCount = Z.Global.SceneTagContentLenMax
+    if contentMaxCount < string.zlenNormalize(str) then
+      Z.TipsVM.ShowTipsLang(100001)
+      local msg = string.zcutNormalize(str, contentMaxCount)
+      self.uiBinder.input_remark.text = msg
     end
   end)
-  self.ratio2.tog_scale.Tog:AddListener(function(isOn)
-    if isOn then
-      self.mapData_:SetShowProportion(E.ShowProportionType.Middle)
-      self.isMiniMapSettingChange_ = true
-      self.ratio2.anim.TweenContainer:Restart(Z.DOTweenAnimType.Open)
-    else
-      self.ratio2.anim.TweenContainer:Restart(Z.DOTweenAnimType.Close)
+  self.uiBinder.input_remark:AddEndEditListener(function(string)
+    if not self.viewData.isCreate then
+      self.isChange_ = true
     end
   end)
-  self.ratio3.tog_scale.Tog:AddListener(function(isOn)
-    if isOn then
-      self.mapData_:SetShowProportion(E.ShowProportionType.High)
-      self.isMiniMapSettingChange_ = true
-      self.ratio3.anim.TweenContainer:Restart(Z.DOTweenAnimType.Open)
-    else
-      self.ratio3.anim.TweenContainer:Restart(Z.DOTweenAnimType.Close)
+  self.uiBinder.input_title:AddEndEditListener(function(string)
+    if not self.viewData.isCreate then
+      self.isChange_ = true
     end
   end)
-  self.lock1.Tog:AddListener(function(isOn)
-    if isOn then
-      self.mapData_:SetViewFocus(E.ViewFocusType.focusDir)
-      self.isMiniMapSettingChange_ = true
-    end
-  end)
-  self.lock2.Tog:AddListener(function(isOn)
-    if isOn then
-      self.mapData_:SetViewFocus(E.ViewFocusType.focusPlayer)
-      self.isMiniMapSettingChange_ = true
+  self.uiBinder.input_title:AddListener(function(str)
+    local titleMaxCount = Z.Global.SceneTagTitleLenMax
+    if titleMaxCount < string.zlenNormalize(str) then
+      Z.TipsVM.ShowTipsLang(100001)
+      local msg = string.zcutNormalize(str, titleMaxCount)
+      self.uiBinder.input_title.text = msg
     end
   end)
 end
 
-function Map_custom_subView:initToggle()
-  local proportion = self.mapData_:GetShowProportion()
-  if proportion == E.ShowProportionType.High then
-    self.ratio3.tog_scale.Tog.isOn = true
-    self.ratio3.anim.TweenContainer:Restart(Z.DOTweenAnimType.Open)
-  elseif proportion == E.ShowProportionType.Middle then
-    self.ratio2.tog_scale.Tog.isOn = true
-    self.ratio2.anim.TweenContainer:Restart(Z.DOTweenAnimType.Open)
-  elseif proportion == E.ShowProportionType.Low then
-    self.ratio1.tog_scale.Tog.isOn = true
-    self.ratio1.anim.TweenContainer:Restart(Z.DOTweenAnimType.Open)
+function Map_custom_subView:sendMapflagChange()
+  Z.CoroUtil.create_coro_xpcall(function()
+    local markInfo = {}
+    if not self.viewData.isCreate then
+      markInfo.tagId = self.viewData.flagData.MarkInfo.tagId
+      markInfo.position = Vector2.New(self.viewData.flagData.MarkInfo.position.x, self.viewData.flagData.MarkInfo.position.y)
+      markInfo.iconId = self.markInfo_.iconId
+    else
+      markInfo = self.markInfo_
+    end
+    markInfo.title = self.uiBinder.input_title.text
+    markInfo.content = self.uiBinder.input_remark.text
+    self.mapVM_.AsyncSendSetMapMark(self.viewData.sceneId, markInfo, self.mapData_.CancelSource:CreateToken())
+  end)()
+end
+
+function Map_custom_subView:onDelBtnClick()
+  local tagId = self.viewData.flagData.MarkInfo.tagId
+  local sceneId = self.viewData.sceneId
+  Z.CoroUtil.create_coro_xpcall(function()
+    self.parent_:DelCustomFlagById(tagId)
+    self.mapVM_.AsyncSendDelMapMark(sceneId, tagId, self.mapData_.CancelSource:CreateToken())
+  end)()
+end
+
+function Map_custom_subView:onTraceBtnClick()
+  self.mapVM_.SetMapTraceByFlagData(E.GoalGuideSource.CustomMapFlag, self.parent_:GetCurSceneId(), self.viewData.flagData)
+  self.parent_:CloseRightSubView()
+end
+
+function Map_custom_subView:onNotTraceBtnClick()
+  self.mapVM_.ClearFlagDataTrackSource(self.parent_:GetCurSceneId(), self.viewData.flagData)
+  self.parent_:CloseRightSubView()
+end
+
+function Map_custom_subView:onAddBtnClick()
+  Z.CoroUtil.create_coro_xpcall(function()
+    self:sendMapflagChange()
+    if self.count_ >= self.maxCount_ then
+      Z.TipsVM.ShowTipsLang(121001)
+    end
+    self.parent_:CloseRightSubView()
+  end)()
+end
+
+function Map_custom_subView:startAnimatedHide()
+end
+
+function Map_custom_subView:OnDeActive()
+  if self.isChange_ then
+    self:sendMapflagChange()
   end
-  local focus = self.mapData_:GetViewFocus()
-  if focus == E.ViewFocusType.focusDir then
-    self.lock1.Tog.isOn = true
-    self.lock2.Tog.isOn = false
+  self:ClearAllUnits()
+  self.parent_:DelCustomFlag()
+end
+
+function Map_custom_subView:OnRefresh()
+  self.isChange_ = false
+  if Z.ContainerMgr.CharSerialize.mapData.markDataMap[self.viewData.sceneId] then
+    local map = Z.ContainerMgr.CharSerialize.mapData.markDataMap[self.viewData.sceneId].markInfoMap
+    self.count_ = table.zcount(map)
   else
-    self.lock1.Tog.isOn = false
-    self.lock2.Tog.isOn = true
+    self.count_ = 0
   end
+  self:onCompRefresh()
+  local sceneRow = Z.TableMgr.GetTable("SceneTableMgr").GetRow(self.viewData.sceneId)
+  if sceneRow then
+    self.uiBinder.lab_scene_name.text = sceneRow.Name
+  end
+  local dataList = {}
+  local tagRow
+  tagRow = Z.TableMgr.GetTable("SceneTagTableMgr").GetRow(E.MapFlagTypeId.CustomTag1)
+  if tagRow then
+    table.insert(dataList, tagRow)
+  end
+  tagRow = Z.TableMgr.GetTable("SceneTagTableMgr").GetRow(E.MapFlagTypeId.CustomTag2)
+  if tagRow then
+    table.insert(dataList, tagRow)
+  end
+  Z.CoroUtil.create_coro_xpcall(function()
+    local targetUnit, targetRow
+    for k, tagRow in ipairs(dataList) do
+      local unit = self:AsyncLoadUiUnit(togglePath, "tog_btn" .. k, self.uiBinder.trans_tog_parent)
+      unit.img_icon:SetImage(tagRow.Icon1)
+      unit.tog_btn.isOn = false
+      unit.tog_btn.group = self.uiBinder.tog_group_item
+      unit.tog_btn:AddListener(function(isOn)
+        self:onTogValueChange(isOn, tagRow)
+      end)
+      if self.viewData.isCreate and tagRow.Id == dataList[1].Id then
+        targetUnit = unit
+        targetRow = tagRow
+      elseif not self.viewData.isCreate and tagRow.Id == self.viewData.flagData.MarkInfo.iconId then
+        targetUnit = unit
+        targetRow = tagRow
+      end
+      self:MarkListenerComp(unit.tog_btn, true)
+    end
+    if targetUnit and targetRow then
+      if targetUnit.tog_btn.isOn then
+        self:onTogValueChange(true, targetRow)
+      else
+        targetUnit.tog_btn.isOn = true
+      end
+    end
+  end)()
+end
+
+function Map_custom_subView:onTogValueChange(isOn, tagRow)
+  self.markInfo_ = {}
+  if isOn then
+    if not self.viewData.isCreate then
+      self.markInfo_.tagId = self.viewData.flagData.MarkInfo.tagId
+      self.markInfo_.position = Vector2.New(self.viewData.flagData.MarkInfo.position.x, self.viewData.flagData.MarkInfo.position.y)
+      self.isChange_ = true
+    else
+      self.markInfo_.tagId = 0
+      self.markInfo_.position = self.viewData.position
+    end
+    self.markInfo_.iconId = tagRow.Id
+    self.parent_:CustomFlagIconChange(tagRow.Icon1, self.markInfo_.tagId)
+  end
+end
+
+function Map_custom_subView:onCompRefresh()
+  if self.viewData.isCreate then
+    self.uiBinder.input_title.text = ""
+    self.uiBinder.input_remark.text = ""
+    self:SetUIVisible(self.uiBinder.btn_add, true)
+    self:SetUIVisible(self.uiBinder.btn_delete, false)
+    self:SetUIVisible(self.uiBinder.btn_trace, false)
+    self:SetUIVisible(self.uiBinder.btn_cancel_trace, false)
+  else
+    self.uiBinder.input_title.text = self.viewData.flagData.MarkInfo.title
+    self.uiBinder.input_remark.text = self.viewData.flagData.MarkInfo.content
+    self:SetUIVisible(self.uiBinder.btn_add, false)
+    self:SetUIVisible(self.uiBinder.btn_delete, true)
+    local isTracking = self.mapVM_.CheckIsTracingFlagBySrcAndFlagData(E.GoalGuideSource.CustomMapFlag, self.parent_:GetCurSceneId(), self.viewData.flagData)
+    self:SetUIVisible(self.uiBinder.btn_trace, not isTracking)
+    self:SetUIVisible(self.uiBinder.btn_cancel_trace, isTracking)
+  end
+  self.uiBinder.lab_quantity.text = self.count_ .. "/" .. self.maxCount_
 end
 
 function Map_custom_subView:startAnimatedShow()
-  self.panel.anim.TweenContainer:Restart(Z.DOTweenAnimType.Open)
+  self.uiBinder.comp_dotween:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Map_custom_subView:startAnimatedHide()
   if self.closeByBtn_ then
-    local coro = Z.CoroUtil.async_to_sync(self.panel.anim.TweenContainer.CoroPlay)
-    coro(self.panel.anim.TweenContainer, Z.DOTweenAnimType.Close)
+    local coro = Z.CoroUtil.async_to_sync(self.uiBinder.comp_dotween.CoroPlay)
+    coro(self.uiBinder.comp_dotween, Z.DOTweenAnimType.Close)
   end
-end
-
-function Map_custom_subView:OnDeActive()
-  self.ratio1.anim.TweenContainer:Restart(Z.DOTweenAnimType.Close)
-  self.ratio2.anim.TweenContainer:Restart(Z.DOTweenAnimType.Close)
-  self.ratio3.anim.TweenContainer:Restart(Z.DOTweenAnimType.Close)
-  self.modifiableFlagTypeList_ = nil
-  if self.isMiniMapSettingChange_ then
-    Z.EventMgr:Dispatch(Z.ConstValue.MiniMapSettingChange)
-    self.isMiniMapSettingChange_ = false
-  end
-end
-
-function Map_custom_subView:initSwitch()
-  self.modifiableFlagTypeList_ = {}
-  Z.CoroUtil.create_coro_xpcall(function()
-    for typeId, row in pairs(Z.TableMgr.GetTable("SceneTagTableMgr").GetDatas()) do
-      if row.Show == 1 then
-        table.insert(self.modifiableFlagTypeList_, typeId)
-        self:createSingleSwitch(row)
-      end
-    end
-    self.panel.cont_content.layout_content.ZLayout:ForceRebuildLayoutImmediate()
-  end)()
-  self:refreshMainSwitchIsOnWithoutNotify()
-  self.mainSwitchCont_.switch.Switch:AddListener(function(isOn)
-    for _, typeId in ipairs(self.modifiableFlagTypeList_) do
-      self.mapData_:SetMapFlagVisibleSettingByTypeId(typeId, isOn)
-      Z.EventMgr:Dispatch(Z.ConstValue.MapSettingChange, typeId)
-      local switchUnit = self.units[SWITCH_UNIT_NAME .. typeId]
-      if switchUnit then
-        switchUnit.cont_switch.switch.Switch:SetIsOnWithoutNotify(isOn)
-      end
-    end
-  end)
-end
-
-function Map_custom_subView:refreshMainSwitchIsOnWithoutNotify()
-  local count = 0
-  for _, typeId in ipairs(self.modifiableFlagTypeList_) do
-    local isShow = self.mapData_:GetMapFlagVisibleSettingByTypeId(typeId)
-    if isShow then
-      count = count + 1
-    end
-  end
-  local isAllShow = count == #self.modifiableFlagTypeList_
-  self.mainSwitchCont_.switch.Switch:SetIsOnWithoutNotify(isAllShow)
-end
-
-function Map_custom_subView:createSingleSwitch(tagRow)
-  local typeId = tagRow.Id
-  local parent
-  if typeId == E.MapFlagTypeId.CustomTag1 or typeId == E.MapFlagTypeId.CustomTag2 or typeId == E.MapFlagTypeId.CustomTag3 then
-    parent = self.panel.cont_content.layout_setting_group1.layout_map_setting2.layout_group.Trans
-  else
-    parent = self.panel.cont_content.layout_setting_group1.layout_map_setting.layout_group.Trans
-  end
-  local unit = self:AsyncLoadUiUnit(SWITCH_PATH, SWITCH_UNIT_NAME .. typeId, parent)
-  if not unit then
-    return
-  end
-  unit.img_icon.Img:SetImage(tagRow.Icon1)
-  local isShow = self.mapData_:GetMapFlagVisibleSettingByTypeId(typeId)
-  unit.cont_switch.img_status_normal.Ref:SetVisible(not isShow)
-  unit.cont_switch.img_status_active.Ref:SetVisible(isShow)
-  unit.cont_switch.switch.Switch.IsOn = isShow
-  unit.cont_switch.switch.Switch:AddListener(function(isOn)
-    self.mapData_:SetMapFlagVisibleSettingByTypeId(typeId, isOn)
-    Z.EventMgr:Dispatch(Z.ConstValue.MapSettingChange, typeId)
-    self:refreshMainSwitchIsOnWithoutNotify()
-  end)
 end
 
 return Map_custom_subView

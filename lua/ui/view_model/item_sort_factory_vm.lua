@@ -23,14 +23,6 @@ local backpackItemstSort = function(left, right)
   if rightItemData == nil then
     return false
   end
-  local now = Z.TimeTools.Now() / 1000
-  local leftIsCool = now < leftData.coolDownExpireTime
-  local rightIsCool = now < rightData.coolDownExpireTime
-  if leftIsCool and not rightIsCool then
-    return false
-  elseif not leftIsCool and rightIsCool then
-    return true
-  end
   local itemTypeTableMgr = Z.TableMgr.GetTable("ItemTypeTableMgr")
   local leftType = itemTypeTableMgr.GetRow(leftItemData.Type)
   local rightType = itemTypeTableMgr.GetRow(rightItemData.Type)
@@ -47,18 +39,31 @@ local backpackItemstSort = function(left, right)
   elseif leftItemData.SortID > rightItemData.SortID then
     return false
   end
-  if leftData.quality > rightData.quality then
+  if leftItemData.Quality > rightItemData.Quality then
     return true
-  elseif leftData.quality < rightData.quality then
+  elseif leftItemData.Quality < rightItemData.Quality then
+    return false
+  end
+  if leftData.configId < rightData.configId then
+    return true
+  elseif leftData.configId > rightData.configId then
+    return false
+  end
+  if leftData.bindFlag == 1 and rightData.bindFlag == 1 then
+    if leftData.coolDownExpireTime < rightData.coolDownExpireTime then
+      return true
+    elseif leftData.coolDownExpireTime > rightData.coolDownExpireTime then
+      return false
+    end
+  elseif leftData.bindFlag == 1 and rightData.bindFlag == 0 then
+    return true
+  elseif leftData.bindFlag == 0 and rightData.bindFlag == 1 then
     return false
   end
   if leftData.count > rightData.count then
     return true
   elseif leftData.count < rightData.count then
     return false
-  end
-  if leftData.configId < rightData.configId then
-    return true
   end
   return false
 end
@@ -121,6 +126,9 @@ local sortEquipItems = function(left, right, sortType, isAscending, qualityAscen
   local itemsVm = Z.VMMgr.GetVM("items")
   local leftData = itemsVm.GetItemInfobyItemId(left.itemUuid, left.configId)
   local rightData = itemsVm.GetItemInfobyItemId(right.itemUuid, right.configId)
+  if leftData == nil or rightData == nil then
+    return false
+  end
   local itemsTableMgr = Z.TableMgr.GetTable("ItemTableMgr")
   local leftItemData = itemsTableMgr.GetRow(leftData.configId)
   local rightItemData = itemsTableMgr.GetRow(rightData.configId)
@@ -150,23 +158,25 @@ local sortEquipItems = function(left, right, sortType, isAscending, qualityAscen
       end
     end
   end
-  if (sortType == E.EquipItemSortType.Quality or sortType == E.EquipItemSortType.GS) and leftEquipData and rightEquipData then
+  local leftIsUnlock = Z.ConditionHelper.CheckCondition(leftEquipData.WearCondition)
+  local rightIsUnlock = Z.ConditionHelper.CheckCondition(rightEquipData.WearCondition)
+  if leftIsUnlock and not rightIsUnlock then
+    return true
+  elseif not leftIsUnlock and rightIsUnlock then
+    return false
+  end
+  if sortType == E.EquipItemSortType.Quality then
+    if leftItemData.Quality > rightItemData.Quality then
+      return not isAscending
+    elseif leftItemData.Quality < rightItemData.Quality then
+      return isAscending
+    end
+  end
+  if sortType == E.EquipItemSortType.GS and leftEquipData and rightEquipData then
     if leftEquipData.EquipGs > rightEquipData.EquipGs then
       return not isAscending
     elseif leftEquipData.EquipGs < rightEquipData.EquipGs then
       return isAscending
-    end
-  end
-  if sortType == E.EquipItemSortType.QualityAndGS and leftEquipData and rightEquipData then
-    if leftData.quality > rightData.quality then
-      return not qualityAscending
-    elseif leftData.quality < rightData.quality then
-      return qualityAscending
-    end
-    if leftEquipData.EquipGs > rightEquipData.EquipGs then
-      return not gsAscending
-    elseif leftEquipData.EquipGs < rightEquipData.EquipGs then
-      return gsAscending
     end
   end
   if leftEquipInfo and rightEquipInfo then
@@ -185,7 +195,7 @@ local sortEquipItems = function(left, right, sortType, isAscending, qualityAscen
   local leftType = itemTypeTableMgr.GetRow(leftItemData.Type)
   local rightType = itemTypeTableMgr.GetRow(rightItemData.Type)
   if leftType == nil or rightType == nil then
-    return
+    return false
   end
   if leftType.SortId < rightType.SortId then
     return true
@@ -197,16 +207,20 @@ local sortEquipItems = function(left, right, sortType, isAscending, qualityAscen
   elseif leftItemData.SortID > rightItemData.SortID then
     return false
   end
-  if leftData.quality > rightData.quality then
+  if leftItemData.Quality > rightItemData.Quality then
     return true
-  elseif leftData.quality < rightData.quality then
+  elseif leftItemData.Quality < rightItemData.Quality then
     return false
   end
   if leftData.count > rightData.count then
     return true
+  elseif leftData.count < rightData.count then
+    return false
   end
   if leftData.configId < rightData.configId then
     return true
+  elseif leftData.configId > rightData.configId then
+    return false
   end
   return false
 end
@@ -249,9 +263,9 @@ local sortResonanceItems = function(left, right, sortType, isAscending)
   local leftItemData = itemsTableMgr.GetRow(leftData.configId)
   local rightItemData = itemsTableMgr.GetRow(rightData.configId)
   if sortType == E.ResonanceItemSortType.Quality then
-    if leftData.quality > rightData.quality then
+    if leftItemData.Quality > rightItemData.Quality then
       return isAscending
-    elseif leftData.quality < rightData.quality then
+    elseif leftItemData.Quality < rightItemData.Quality then
       return not isAscending
     end
   end
@@ -259,7 +273,7 @@ local sortResonanceItems = function(left, right, sortType, isAscending)
   local leftType = itemTypeTableMgr.GetRow(leftItemData.Type)
   local rightType = itemTypeTableMgr.GetRow(rightItemData.Type)
   if leftType == nil or rightType == nil then
-    return
+    return false
   end
   if leftType.SortId < rightType.SortId then
     return true
@@ -271,16 +285,20 @@ local sortResonanceItems = function(left, right, sortType, isAscending)
   elseif leftItemData.SortID > rightItemData.SortID then
     return false
   end
-  if leftData.quality > rightData.quality then
+  if leftItemData.Quality > rightItemData.Quality then
     return true
-  elseif leftData.quality < rightData.quality then
+  elseif leftItemData.Quality < rightItemData.Quality then
     return false
   end
   if leftData.count > rightData.count then
     return true
+  elseif leftData.count < rightData.count then
+    return false
   end
   if leftData.configId < rightData.configId then
     return true
+  elseif leftData.configId > rightData.configId then
+    return false
   end
   return false
 end
@@ -290,13 +308,13 @@ end
 local resonanceItemsDownSortByQuality = function(left, right)
   return sortResonanceItems(left, right, E.ResonanceItemSortType.Quality, false)
 end
-local getResonanceItemsSortFunc = function(equipSortType, isAscending)
-  if not equipSortType then
+local getResonanceItemsSortFunc = function(data)
+  if not data then
     return backpackItemstSort
   end
-  if equipSortType == E.ResonanceItemSortType.Quality and isAscending then
+  if data.sortType == E.ResonanceItemSortType.Quality and data.isAscending then
     return resonanceItemsUpSortByQuality
-  elseif equipSortType == E.ResonanceItemSortType.Quality and not isAscending then
+  elseif data.sortType == E.ResonanceItemSortType.Quality and not data.isAscending then
     return resonanceItemsDownSortByQuality
   end
   return backpackItemstSort
@@ -408,9 +426,9 @@ local tradeSellItemstSort = function(left, right)
   elseif leftItemData.SortID > rightItemData.SortID then
     return false
   end
-  if leftData.quality > rightData.quality then
+  if leftItemData.Quality > rightItemData.Quality then
     return true
-  elseif leftData.quality < rightData.quality then
+  elseif leftItemData.Quality < rightItemData.Quality then
     return false
   end
   if leftData.count > rightData.count then
@@ -420,6 +438,8 @@ local tradeSellItemstSort = function(left, right)
   end
   if leftData.configId < rightData.configId then
     return true
+  elseif leftData.configId > rightData.configId then
+    return false
   end
   return false
 end
@@ -430,9 +450,11 @@ local sortRecycleItems = function(left, right, sortType, isAscending)
   local leftHaveCount = itemsVm.GetItemTotalCount(left.configId)
   local rightHaveCount = itemsVm.GetItemTotalCount(right.configId)
   if sortType == E.RecycleItemSortType.Quality then
-    if leftData.quality > rightData.quality then
+    local leftItemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(left.configId)
+    local rightItemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(right.configId)
+    if leftItemConfig.Quality > rightItemConfig.Quality then
       return isAscending
-    elseif leftData.quality < rightData.quality then
+    elseif leftItemConfig.Quality < rightItemConfig.Quality then
       return not isAscending
     elseif leftData.configId == rightData.configId then
       return leftHaveCount > rightHaveCount
@@ -472,6 +494,110 @@ local getRecycleItemsSortFunc = function(recycleSortType, isAscending)
     return recycleItemsDownSortByCount
   end
 end
+local sortRecycleHomeItems = function(left, right, sortType, isAscending)
+  local charId = Z.ContainerMgr.CharSerialize.charId
+  local leftData = left.ownerToStackMap[charId]
+  local rightData = right.ownerToStackMap[charId]
+  if not leftData or not rightData then
+    return false
+  end
+  local leftRow = Z.TableMgr.GetRow("ItemTableMgr", left.ConfigId)
+  local rightRow = Z.TableMgr.GetRow("ItemTableMgr", right.ConfigId)
+  if not leftRow or not rightRow then
+    return false
+  end
+  local leftHaveCount = leftData.count
+  local rightHaveCount = rightData.count
+  if sortType == E.RecycleItemSortType.Quality then
+    if leftRow.Quality > rightRow.Quality then
+      return isAscending
+    elseif leftRow.Quality < rightRow.Quality then
+      return not isAscending
+    elseif leftRow.Id == rightRow.Id then
+      return leftHaveCount > rightHaveCount
+    else
+      return leftRow.Id < rightRow.Id
+    end
+  elseif sortType == E.RecycleItemSortType.Count then
+    if leftHaveCount > rightHaveCount then
+      return isAscending
+    elseif leftHaveCount < rightHaveCount then
+      return not isAscending
+    else
+      return leftData.configId < rightData.configId
+    end
+  end
+end
+local recycleHomeItemsUpSortByQuality = function(left, right)
+  return sortRecycleHomeItems(left, right, E.RecycleItemSortType.Quality, true)
+end
+local recycleHomeItemsDownSortByQuality = function(left, right)
+  return sortRecycleHomeItems(left, right, E.RecycleItemSortType.Quality, false)
+end
+local recycleHomeItemsUpSortByCount = function(left, right)
+  return sortRecycleHomeItems(left, right, E.RecycleItemSortType.Count, true)
+end
+local recycleHomeItemsDownSortByCount = function(left, right)
+  return sortRecycleHomeItems(left, right, E.RecycleItemSortType.Count, false)
+end
+local getRecycleHomeItemsSortFunc = function(recycleSortType, isAscending)
+  if recycleSortType == E.RecycleItemSortType.Quality and isAscending then
+    return recycleHomeItemsUpSortByQuality
+  elseif recycleSortType == E.RecycleItemSortType.Quality and not isAscending then
+    return recycleHomeItemsDownSortByQuality
+  elseif recycleSortType == E.RecycleItemSortType.Count and isAscending then
+    return recycleHomeItemsUpSortByCount
+  elseif recycleSortType == E.RecycleItemSortType.Count and not isAscending then
+    return recycleHomeItemsDownSortByCount
+  end
+end
+local furnitureItemSort = function(left, right, isAscending)
+  if isAscending == nil then
+    isAscending = false
+  end
+  local itemsTableMgr = Z.TableMgr.GetTable("ItemTableMgr")
+  local leftItemData = itemsTableMgr.GetRow(left.configId)
+  local rightItemData = itemsTableMgr.GetRow(right.configId)
+  if leftItemData == nil then
+    return isAscending
+  end
+  if rightItemData == nil then
+    return isAscending
+  end
+  local itemTypeTableMgr = Z.TableMgr.GetTable("ItemTypeTableMgr")
+  local leftType = itemTypeTableMgr.GetRow(leftItemData.Type)
+  local rightType = itemTypeTableMgr.GetRow(rightItemData.Type)
+  if leftType == nil or rightType == nil then
+    return isAscending
+  end
+  if leftItemData.Quality > rightItemData.Quality then
+    return not isAscending
+  elseif leftItemData.Quality < rightItemData.Quality then
+    return isAscending
+  end
+  if leftType.SortId < rightType.SortId then
+    return not isAscending
+  elseif leftType.SortId > rightType.SortId then
+    return isAscending
+  end
+  if leftItemData.SortID < rightItemData.SortID then
+    return not isAscending
+  elseif leftItemData.SortID > rightItemData.SortID then
+    return isAscending
+  end
+  if leftItemData.Id < rightItemData.Id then
+    return not isAscending
+  elseif leftItemData.Id > rightItemData.Id then
+    return false
+  end
+  return false
+end
+local furnitureItemUpSort = function(left, right)
+  return furnitureItemSort(left, right, true)
+end
+local furnitureItemDownSort = function(left, right)
+  return furnitureItemSort(left, right, false)
+end
 local getItemSortFunc = function(packageType, data)
   if packageType == E.BackPackItemPackageType.Item then
     return backpackItemstSort
@@ -494,7 +620,17 @@ local getItemSortFunc = function(packageType, data)
       return getResonanceItemsSortFunc(data)
     end
   elseif packageType == E.BackPackItemPackageType.RecycleItem then
-    return getRecycleItemsSortFunc(data.recycleSortType, data.isAscending)
+    if data.functionId == E.FunctionID.HomeFlowerRecycle then
+      return getRecycleHomeItemsSortFunc(data.recycleSortType, data.isAscending)
+    else
+      return getRecycleItemsSortFunc(data.recycleSortType, data.isAscending)
+    end
+  elseif packageType == E.BackPackItemPackageType.FurnitureItem then
+    if data.isAscending then
+      return furnitureItemUpSort
+    else
+      return furnitureItemDownSort
+    end
   end
 end
 local getSortData = function(packageType)
@@ -511,6 +647,11 @@ local getSortData = function(packageType)
     local data = {}
     data.sortType = E.EquipItemSortType.Quality
     data.isUp = true
+    return data
+  elseif packageType == E.BackPackItemPackageType.ResonanceSkill then
+    local data = {}
+    data.sortType = E.ResonanceItemSortType.Quality
+    data.isAscending = true
     return data
   end
 end

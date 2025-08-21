@@ -39,8 +39,6 @@ message DungeonsTableBase {
     bool AttrGrowRangeBuff = 683;
     int32 DungeonsAttrGrowRange = 1802;
 }
-
 message DungeonsTableMgr {
-    map<int32, .bokura.DungeonsTableBase> datas = 1;
+    repeated bokura.DungeonsTableMgr.DatasEntry datas = 1;
 }
-

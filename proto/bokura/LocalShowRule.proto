@@ -12,8 +12,6 @@ message LocalShowRuleBase {
     string HMS = 602;
     string HM = 310;
 }
-
 message LocalShowRuleMgr {
-    map<int32, .bokura.LocalShowRuleBase> datas = 1;
+    repeated bokura.LocalShowRuleMgr.DatasEntry datas = 1;
 }
-

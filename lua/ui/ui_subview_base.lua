@@ -1,8 +1,8 @@
 local super = require("ui.ui_base")
 local UISubViewBase = class("UISubViewBase", super)
 
-function UISubViewBase:ctor(viewConfigKey, assetPath, cacheLv)
-  super.ctor(self, viewConfigKey, assetPath, cacheLv)
+function UISubViewBase:ctor(viewConfigKey, assetPath, cacheLv, isHavePCUI)
+  super.ctor(self, viewConfigKey, assetPath, cacheLv, isHavePCUI)
 end
 
 function UISubViewBase:SetTransParent(parentTran, baseViewBinder)
@@ -11,10 +11,13 @@ function UISubViewBase:SetTransParent(parentTran, baseViewBinder)
   end
   Z.UIRoot:ResetSubViewTrans(self.goObj, parentTran)
   if self.uiBinder then
-    if baseViewBinder then
-      self.uiBinder.Ref.UIComp.UIDepth:RegisterToParentDepthByTransfrom(baseViewBinder.Trans)
-    else
-      self.uiBinder.Ref.UIComp.UIDepth:RegisterToParentDepthByTransfrom(parentTran)
+    local uiDepth = self.uiBinder.Ref.UIComp:GetUIDepth()
+    if uiDepth then
+      if baseViewBinder then
+        uiDepth:RegisterToParentDepthByTransfrom(baseViewBinder.Trans)
+      else
+        uiDepth:RegisterToParentDepthByTransfrom(parentTran)
+      end
     end
   elseif self.panel then
     self.panel.Ref.ZUIDepth:RegisterToParentDepthByTransfrom(self.parentTrans)
@@ -23,11 +26,18 @@ end
 
 function UISubViewBase:UnLoad()
   if self.uiBinder then
-    self.uiBinder.Ref.UIComp.UIDepth:UnRegisterFromParentDepth()
+    local uiDepth = self.uiBinder.Ref.UIComp:GetUIDepth()
+    if uiDepth then
+      uiDepth:UnRegisterFromParentDepth()
+    end
   elseif self.panel then
     self.panel.Ref.ZUIDepth:UnRegisterFromParentDepth()
   end
   super.UnLoad(self)
+end
+
+function UISubViewBase:checkViewLayerVisible()
+  return true
 end
 
 return UISubViewBase

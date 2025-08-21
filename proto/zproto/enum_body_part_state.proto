@@ -7,4 +7,3 @@ enum BodyPartState {
     BodyPartStateInjury = 1;
     BodyPartStateDead = 2;
 }
-

@@ -2,12 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
-import "stru_notify_kick_out_off_request.proto";
+import "stru_notify_instruction_info_request.proto";
 
 message WorldLoginNtf {
-    message NotifyKickOutOff {
-        zproto.NotifyKickOutOffRequest vRequest = 1;
+    message NotifyInstructionInfo {
+        zproto.NotifyInstructionInfoRequest vInfo = 1;
     }
-
 }
-

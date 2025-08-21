@@ -1,6 +1,8 @@
+local MultActionVM = {}
 local multActionData = Z.DataMgr.Get("multaction_data")
 local worldProxy = require("zproxy.world_proxy")
-local getOtherId = function()
+
+function MultActionVM.getOtherId()
   if multActionData.BeInviteId == 0 then
     return multActionData.SelectInviteId
   end
@@ -9,14 +11,24 @@ local getOtherId = function()
   end
   return 0
 end
-local cancelAction = function(tipsId)
+
+function MultActionVM.cancelAction(tipsId)
   multActionData.SelectInviteId = 0
   multActionData.BeInviteId = 0
   multActionData.ActionType = E.MultActionType.Null
   Z.PlayerInputController:PlayMultAction(false)
   Z.MultActionMgr:EndAction()
 end
-local notifyIsAgree = function(vInviteeId, vActionId, vIsAgree)
+
+function MultActionVM.checkStageType()
+  local currentStageType = Z.StageMgr.GetCurrentStageType()
+  if currentStageType == Z.EStageType.City or currentStageType == Z.EStageType.Wild or currentStageType == Z.EStageType.CommunityDungeon or currentStageType == Z.EStageType.HomelandDungeon or currentStageType == Z.EStageType.UnionDungeon then
+    return true
+  end
+  return false
+end
+
+function MultActionVM.NotifyIsAgree(vInviteeId, vActionId, vIsAgree)
   Z.GlobalTimerMgr:StopTimer(E.GlobalTimerTag.MultActionInvite)
   if vIsAgree then
     multActionData.ActionType = E.MultActionType.ActionIng
@@ -32,7 +44,8 @@ local notifyIsAgree = function(vInviteeId, vActionId, vIsAgree)
     Z.TipsVM.ShowTipsLang(1000020)
   end
 end
-local getCheckCode = function(id)
+
+function MultActionVM.getCheckCode(id)
   local charId = id
   if id == nil or id == 0 then
     id = multActionData.SelectInviteId
@@ -40,22 +53,25 @@ local getCheckCode = function(id)
   local checkCode = Z.MultActionMgr:GetCheckCode(charId)
   return checkCode
 end
-local asyncCheckandSendInvite = function(charId, actionid, cancelkToken)
-  if not Z.StatusSwitchMgr:CheckSwitchEnable(Z.EStatusSwitch.StatusHoldHand) then
+
+function MultActionVM.asyncCheckandSendInvite(charId, actionId, cancelToken)
+  if not Z.StatusSwitchMgr:TrySwitchToState(Z.EStatusSwitch.StatusHoldHand) then
     return
   end
-  local checkCode = getCheckCode(charId)
+  local checkCode = MultActionVM.getCheckCode(charId)
   if checkCode == 0 then
     Z.IgnoreMgr:SetInputIgnore(4294967295, true, Panda.ZGame.EIgnoreMaskSource.EUIMultiAction)
     multActionData.ActionType = E.MultActionType.ActionInvite
-    local ret = worldProxy.ApplicationInteraction(charId, actionid, cancelkToken)
+    local ret = worldProxy.ApplicationInteraction(charId, actionId, cancelToken)
     if ret == 0 then
       local ent = Z.EntityMgr:GetEntity(Z.PbEnum("EEntityType", "EntChar"), charId)
-      local name = ent:GetLuaAttr(Z.PbAttrEnum("AttrName")).Value
-      local param = {
-        player = {name = name}
-      }
-      Z.TipsVM.ShowTipsLang(1000021, param)
+      if ent then
+        local name = ent:GetLuaAttr(Z.PbAttrEnum("AttrName")).Value
+        local param = {
+          player = {name = name}
+        }
+        Z.TipsVM.ShowTipsLang(1000021, param)
+      end
     else
       Z.IgnoreMgr:SetInputIgnore(4294967295, false, Panda.ZGame.EIgnoreMaskSource.EUIMultiAction)
       multActionData.ActionType = E.MultActionType.Null
@@ -67,92 +83,126 @@ local asyncCheckandSendInvite = function(charId, actionid, cancelkToken)
     Z.TipsVM.ShowTipsLang(1000042)
   end
 end
-local setInviteId = function(charId)
+
+function MultActionVM.PlayMultAction(actionId, cancelSource)
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
+  if not MultActionVM.checkStageType() then
+    Z.TipsVM.ShowTipsLang(1000051)
+    return
+  end
+  if Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EMultiActionState).Value == 0 then
+    Z.CoroUtil.create_coro_xpcall(function()
+      if multActionData.SelectInviteId ~= 0 then
+        MultActionVM.asyncCheckandSendInvite(multActionData.SelectInviteId, actionId, cancelSource:CreateToken())
+      else
+        Z.TipsVM.ShowTipsLang(1000022)
+      end
+    end)()
+  else
+    Z.TipsVM.ShowTipsLang(1000023)
+  end
+end
+
+function MultActionVM.SetInviteId(charId)
   if multActionData.ActionType == E.MultActionType.ActionIng then
     return
   end
   multActionData.SelectInviteId = charId
   Z.EventMgr:Dispatch(Z.ConstValue.Expression.RefreshMultiAction)
 end
-local resetInviteId = function()
+
+function MultActionVM.ResetInviteId()
   if multActionData.ActionType ~= E.MultActionType.Null then
     return
   end
   multActionData.SelectInviteId = 0
   Z.EventMgr:Dispatch(Z.ConstValue.Expression.RefreshMultiAction)
 end
-local asyncCheckandReplyInvite = function(vOrigId, vActionId, vIsAgree, cancelkToken)
-  local stateID = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
+
+function MultActionVM.asyncCheckandReplyInvite(vOrigId, vActionId, vIsAgree, cancelToken)
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return false
+  end
+  if not MultActionVM.checkStageType() then
+    return false
+  end
+  local stateID = Z.EntityMgr.PlayerEnt:GetLuaAttrState()
   if Z.PbEnum("EActorState", "ActorStateDefault") ~= stateID and Z.PbEnum("EActorState", "ActorStateAction") ~= stateID then
     Z.TipsVM.ShowTipsLang(1000023)
     return false
   end
-  if not Z.StatusSwitchMgr:CheckSwitchEnable(Z.EStatusSwitch.StatusHoldHand) then
+  if not Z.StatusSwitchMgr:TrySwitchToState(Z.EStatusSwitch.StatusHoldHand) then
     Z.TipsVM.ShowTipsLang(1000023)
     return false
   end
   local ent = Z.EntityMgr:GetEntity(Z.PbEnum("EEntityType", "EntChar"), vOrigId)
-  local entStateID = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
+  local entStateID = Z.EntityMgr.PlayerEnt:GetLuaAttrState()
   if vIsAgree and ent ~= nil and Z.PbEnum("EActorState", "ActorStateDefault") == entStateID then
     Z.PlayerInputController:PlayMultAction(true)
     multActionData.BeInviteId = vOrigId
     multActionData.ActionType = E.MultActionType.ActionIng
-    local ret = worldProxy.ReplyApplicationResult(vOrigId, vActionId, vIsAgree, cancelkToken)
+    local ret = worldProxy.ReplyApplicationResult(vOrigId, vActionId, vIsAgree, cancelToken)
     if ret ~= 0 then
-      cancelAction()
+      MultActionVM.cancelAction()
       Z.TipsVM.ShowTips(ret)
     end
   else
-    cancelAction()
-    local ret = worldProxy.ReplyApplicationResult(vOrigId, vActionId, vIsAgree, cancelkToken)
+    MultActionVM.cancelAction()
+    local ret = worldProxy.ReplyApplicationResult(vOrigId, vActionId, vIsAgree, cancelToken)
     Z.TipsVM.ShowTips(ret)
   end
   return true
 end
-local applyMultAcionTipsCall = function(callData, flag, cancelSource)
-  asyncCheckandReplyInvite(callData.vOrigId, callData.vActionId, flag, cancelSource:CreateToken())
+
+function MultActionVM.applyMultActionTipsCall(callData, flag, cancelSource)
+  MultActionVM.asyncCheckandReplyInvite(callData.vOrigId, callData.vActionId, flag, cancelSource:CreateToken())
 end
-local applyMultAcionTips = function(vOrigId, vActionId)
+
+function MultActionVM.applyMultActionTips(vOrigId, vActionId)
   local info = {
     charId = vOrigId,
     tipsType = E.InvitationTipsType.MultActionInvite,
     content = Lang("EmoteInvitationTitle"),
     cd = Z.Global.EmoteMPInvitationTime,
-    func = applyMultAcionTipsCall,
-    path = GetLoadAssetPath(Z.ConstValue.ActionTipsInviteTpl),
+    func = MultActionVM.applyMultActionTipsCall,
     funcParam = {vOrigId = vOrigId, vActionId = vActionId}
   }
   Z.EventMgr:Dispatch(Z.ConstValue.InvitationRefreshTips, info)
 end
-local notifyInvite = function(vOrigId, vActionId)
+
+function MultActionVM.NotifyInvite(vOrigId, vActionId)
+  if not MultActionVM.checkStageType() then
+    return
+  end
+  local chatSettingVm = Z.VMMgr.GetVM("chat_setting")
+  if not chatSettingVm.CheckApplyType(E.ESocialApplyType.EInteractiveApply, vOrigId) then
+    return
+  end
   Z.MultActionMgr:SetBeInviteId(vOrigId, vActionId)
-  applyMultAcionTips(vOrigId, vActionId)
+  MultActionVM.applyMultActionTips(vOrigId, vActionId)
 end
-local notVaildMultAction = function(vOrigId, vActionId)
+
+function MultActionVM.NotVaildMultAction(vOrigId, vActionId)
   Z.CoroUtil.create_coro_xpcall(function()
-    local unitName = E.InvitationTipsType.MultActionInvite .. "_" .. vOrigId
+    local unitName = string.zconcat(E.InvitationTipsType.MultActionInvite, "_", vOrigId, "_", Lang("EmoteInvitationTitle"))
     Z.EventMgr:Dispatch(Z.ConstValue.InvitationClearTipsUnit, unitName)
     local cancelSource = Z.CancelSource.Rent()
-    asyncCheckandReplyInvite(vOrigId, vActionId, false, cancelSource:CreateToken())
+    MultActionVM.asyncCheckandReplyInvite(vOrigId, vActionId, false, cancelSource:CreateToken())
     cancelSource:Recycle()
     Z.MultActionMgr:RemoveBeInviteId(vOrigId)
   end)()
 end
-local asyncCancelAction = function(cancelToken)
+
+function MultActionVM.AsyncCancelAction(cancelToken)
   worldProxy.CancelAction(cancelToken)
 end
-local notifyCancelAction = function(vCancelCharId)
-  cancelAction()
+
+function MultActionVM.NotifyCancelAction(vCancelCharId)
+  MultActionVM.cancelAction()
 end
-local ret = {
-  AsyncCheckandSendInvite = asyncCheckandSendInvite,
-  NotifyIsAgree = notifyIsAgree,
-  SetInviteId = setInviteId,
-  ResetInviteId = resetInviteId,
-  AsyncCheckandReplyInvite = asyncCheckandReplyInvite,
-  NotifyInvite = notifyInvite,
-  NotVaildMultAction = notVaildMultAction,
-  AsyncCancelAction = asyncCancelAction,
-  NotifyCancelAction = notifyCancelAction
-}
-return ret
+
+return MultActionVM

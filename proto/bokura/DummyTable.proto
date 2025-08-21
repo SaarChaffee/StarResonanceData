@@ -20,8 +20,6 @@ message DummyTableBase {
     string DeadAudio = 535;
     int_array Tags = 232;
 }
-
 message DummyTableMgr {
-    map<int32, .bokura.DummyTableBase> datas = 1;
+    repeated bokura.DummyTableMgr.DatasEntry datas = 1;
 }
-

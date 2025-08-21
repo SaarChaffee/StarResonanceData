@@ -27,6 +27,12 @@ function SkillLabelTableMgr:GetDatas()
   return super.GetDatas(self)
 end
 
+function SkillLabelTableMgr:ClearCache()
+  local mgr = require("utility.table_manager")
+  self.__rows = {}
+  setmetatable(self.__rows, mgr.table_manager_mt)
+end
+
 local wrapper
 return {
   __init = function(ptr, fields)
@@ -37,5 +43,8 @@ return {
   end,
   GetDatas = function()
     return wrapper:GetDatas()
+  end,
+  ClearCache = function()
+    wrapper:ClearCache()
   end
 }

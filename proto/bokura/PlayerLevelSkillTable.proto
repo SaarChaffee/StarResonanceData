@@ -11,8 +11,6 @@ message PlayerLevelSkillTableBase {
     int32 Style = 1874;
     int_table LockItem = 1936;
 }
-
 message PlayerLevelSkillTableMgr {
-    map<int32, .bokura.PlayerLevelSkillTableBase> datas = 1;
+    repeated bokura.PlayerLevelSkillTableMgr.DatasEntry datas = 1;
 }
-

@@ -1,13 +1,19 @@
 local itemSourceVm = {}
 
-function itemSourceVm.SetPanelItemSource(rootPanel, configId, tipsId, sourceData, isResident, goToCallFunc)
+function itemSourceVm.SetPanelItemSource(rootPanel, configId, tipsId, sourceData, isResident, goToCallFunc, isPcPath)
   local itemPackagePath = GetLoadAssetPath("ObtainWayPackageUnit")
   if itemPackagePath == "" or itemPackagePath == nil then
     return
   end
+  if isPcPath then
+    itemPackagePath = string.zconcat(itemPackagePath, "_pc")
+  end
   local itemPath = GetLoadAssetPath("ObtainWayUnit")
   if itemPath == "" or itemPath == nil then
     return
+  end
+  if isPcPath then
+    itemPath = string.zconcat(itemPath, "_pc")
   end
   local itemSourceTab = sourceData or itemSourceVm.GetItemSource(configId)
   local itemSourcePackages = {}
@@ -38,7 +44,7 @@ function itemSourceVm.SetPanelItemSource(rootPanel, configId, tipsId, sourceData
         rootPanel:AddAsyncClick(unit.img_bg, function()
           local quickItemUsageVm_ = Z.VMMgr.GetVM("quick_item_usage")
           quickItemUsageVm_.AsyncUseItem(packageConfigId, cancelSource:CreateToken())
-          if rootPanel.viewData.isIgnoreItemClick then
+          if rootPanel.viewData.isIgnoreItemClick == true or rootPanel.viewData.isIgnoreItemClick == nil then
             Z.TipsVM.CloseAllNoResidentTips()
           end
           if goToCallFunc then
@@ -47,6 +53,8 @@ function itemSourceVm.SetPanelItemSource(rootPanel, configId, tipsId, sourceData
           cancelSource:Recycle()
         end)
       end
+    else
+      rootPanel:RemoveUiUnit("botain_item" .. index)
     end
   end
   for index, functionSearchData in ipairs(itemSourceTab) do
@@ -54,7 +62,22 @@ function itemSourceVm.SetPanelItemSource(rootPanel, configId, tipsId, sourceData
       local unit = rootPanel:AsyncLoadUiUnit(itemPath, "botain_item" .. index, rootPanel.uiBinder.node_Source.transform, rootPanel.cancelSource:CreateToken())
       if unit then
         if functionSearchData.icon ~= "" then
+          unit.Ref:SetVisible(unit.img_icon, true)
+          unit.Ref:SetVisible(unit.img_icon_normal, false)
+          unit.Ref:SetVisible(unit.rimg_icon, false)
           unit.img_icon:SetImage(functionSearchData.icon)
+        end
+        if functionSearchData.normalIcon then
+          unit.Ref:SetVisible(unit.img_icon, false)
+          unit.Ref:SetVisible(unit.img_icon_normal, true)
+          unit.Ref:SetVisible(unit.rimg_icon, false)
+          unit.img_icon_normal:SetImage(functionSearchData.normalIcon)
+        end
+        if functionSearchData.image then
+          unit.Ref:SetVisible(unit.img_icon, false)
+          unit.Ref:SetVisible(unit.img_icon_normal, false)
+          unit.Ref:SetVisible(unit.rimg_icon, true)
+          unit.rimg_icon:SetImage(functionSearchData.image)
         end
         unit.lab_gameplay.text = functionSearchData.name
         unit.lab_level_open.text = ""
@@ -110,11 +133,10 @@ function itemSourceVm.JumpToSource(itemSourceData)
     local trackType = functionSearchCfgData.QuickJumpParam[1]
     jumpParam.nearTraceTargetType = trackType
     if trackType == E.NearTraceTargetType.Npc then
-      jumpParam.funcId = itemSourceData.functionId
+      jumpParam.funcId = functionSearchCfgData.QuickJumpParam[2]
     else
       jumpParam.tagId = functionSearchCfgData.QuickJumpParam[2]
     end
-    jumpParam.nearTraceTargetType = trackType
     jumpParam.goalGuideSource = E.GoalGuideSource.GetItem
   elseif quickJumpType == E.QuickJumpType.TraceSceneTarget and #functionSearchCfgData.QuickJumpParam == 3 then
     jumpParam.sceneId = functionSearchCfgData.QuickJumpParam[1]
@@ -181,6 +203,12 @@ function itemSourceVm.GetSourceByFunctionId(functionId)
     if functionCfgData then
       t.icon = functionCfgData.Icon
       t.name = functionCfgData.Name
+      if functionSearchCfgData.ParentName == 1 then
+        local parentFunctionCfgData = Z.TableMgr.GetTable("FunctionTableMgr").GetRow(functionCfgData.ParentId)
+        if parentFunctionCfgData then
+          t.name = string.zconcat(parentFunctionCfgData.Name, "-", functionCfgData.Name)
+        end
+      end
     end
     return t
   end
@@ -190,6 +218,7 @@ function itemSourceVm.GetItemSourceByWayDatas(wayDatas, configId)
   local tb = {}
   for _, value in pairs(wayDatas) do
     local functionSearchCfgData = Z.TableMgr.GetTable("FunctionSearchTableMgr").GetRow(value[1], true)
+    local funcVM = Z.VMMgr.GetVM("gotofunc")
     if functionSearchCfgData then
       if functionSearchCfgData.IsHide == 0 then
         local t = {}
@@ -199,8 +228,14 @@ function itemSourceVm.GetItemSourceByWayDatas(wayDatas, configId)
         if functionCfgData then
           t.icon = functionCfgData.Icon
           t.name = functionCfgData.Name
+          if functionSearchCfgData.ParentName == 1 then
+            local parentFunctionCfgData = Z.TableMgr.GetTable("FunctionTableMgr").GetRow(functionCfgData.ParentId)
+            if parentFunctionCfgData then
+              t.name = string.zconcat(parentFunctionCfgData.Name, "-", functionCfgData.Name)
+            end
+          end
         end
-        if functionSearchCfgData.Id == E.FunctionID.Trade then
+        if functionSearchCfgData.Id == E.FunctionID.Trade or #value <= 1 then
           t.param = configId
         end
         if 1 < #value then
@@ -223,6 +258,45 @@ function itemSourceVm.GetItemSourceByWayDatas(wayDatas, configId)
               local modelCfgData = Z.TableMgr.GetTable("ModelTableMgr").GetRow(monsterCfgData.ModelID)
               if modelCfgData then
                 t.icon = modelCfgData.Image
+              end
+            end
+          elseif functionSearchCfgData.Id == E.FunctionID.ExploreMonster or functionSearchCfgData.Id == E.FunctionID.ExploreMonsterElite or functionSearchCfgData.Id == E.FunctionID.ExploreMonsterBoss then
+            local monsterHuntListTableRow = Z.TableMgr.GetTable("MonsterHuntListTableMgr").GetRow(value[2])
+            if monsterHuntListTableRow then
+              local monsterTableRow = Z.TableMgr.GetTable("MonsterTableMgr").GetRow(monsterHuntListTableRow.MonsterId)
+              if monsterTableRow then
+                if functionCfgData then
+                  t.name = string.zconcat(functionCfgData.Name, "-", monsterTableRow.Name)
+                end
+                local modelCfg = Z.TableMgr.GetTable("ModelTableMgr").GetRow(monsterTableRow.ModelID)
+                if modelCfg then
+                  t.normalIcon = modelCfg.Image
+                  t.icon = modelCfg.Image
+                end
+              end
+            end
+          elseif functionSearchCfgData.Id == E.FunctionID.LifeProfessionPlant or functionSearchCfgData.Id == E.FunctionID.LifeProfessionMine or functionSearchCfgData.Id == E.FunctionID.LifeProfessionStone then
+            t.param = {
+              value[2],
+              configId
+            }
+            local lifeCollectListTableRow = Z.TableMgr.GetTable("LifeCollectListTableMgr").GetRow(value[2])
+            if lifeCollectListTableRow then
+              local lifeProfessionTableRow = Z.TableMgr.GetTable("LifeProfessionTableMgr").GetRow(lifeCollectListTableRow.LifeProId)
+              if lifeProfessionTableRow then
+                t.name = string.zconcat(lifeProfessionTableRow.Name, "-", lifeCollectListTableRow.Name)
+              end
+            end
+          elseif functionSearchCfgData.Id == E.FunctionID.LifeProfessionCook or functionSearchCfgData.Id == E.FunctionID.LifeProfessionChemistry or functionSearchCfgData.Id == E.FunctionID.LifeProfessionCast or functionSearchCfgData.Id == E.FunctionID.LifeProfessionJinXie or functionSearchCfgData.Id == E.FunctionID.LifeProfessionMaterial then
+            t.param = {
+              value[2],
+              configId
+            }
+            local lifeProductionListTableRow = Z.TableMgr.GetTable("LifeProductionListTableMgr").GetRow(value[2])
+            if lifeProductionListTableRow then
+              local lifeProfessionTableRow = Z.TableMgr.GetTable("LifeProfessionTableMgr").GetRow(lifeProductionListTableRow.LifeProId)
+              if lifeProfessionTableRow then
+                t.name = string.zconcat(lifeProfessionTableRow.Name, "-", lifeProductionListTableRow.Name)
               end
             end
           end

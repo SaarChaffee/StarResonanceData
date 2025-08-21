@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message Materials {
-    map<int32, int64> materialsMap = 1;
+    repeated zproto.Materials.MaterialsMapEntry materialsMap = 1;
 }
-

@@ -18,6 +18,4 @@ message BuffDBData {
     int32 createSceneId = 11;
     repeated string customParamsKey = 12;
     repeated int32 customParams = 13;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

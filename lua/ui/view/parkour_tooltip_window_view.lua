@@ -6,7 +6,7 @@ local globalTable = Z.TableMgr.GetTable("GlobalWorldEventTableMgr")
 local endStatePath = "ui/prefabs/parkour/parkour_end_state_tpl"
 
 function Parkour_tooltip_windowView:ctor()
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "parkour_tooltip_window")
   self.componentArray_ = {
     timePreparePrefab = nil,
@@ -26,27 +26,17 @@ function Parkour_tooltip_windowView:OnActive()
 end
 
 function Parkour_tooltip_windowView:InitUI()
-  self.timeMatchingZwidget = self.panel.node_time_matching
-  self.timePrepareZwidget = self.panel.node_time_prepare
-  self.endStateZwidget = self.panel.node_end_state
-  self.rankingZwidget = self.panel.node_rangking
-  self.countDownZwidget = self.panel.node_count_down
-  self.btnBacktracking = self.panel.btn_Backtracking
-  self.tipsLabelZwidget = self.panel.lab_content
-  self.tipsZwidget = self.panel.node_tips
-  self.btnTipsMask = self.panel.btn_mask
-  self.backTrackingZwidget = self.panel.node_backTracking_tips
-  self.tipsLabelZwidget.TMPLab.text = Lang("Multiparkour_TurnOnVolume")
-  self:AddClick(self.btnTipsMask.Btn, function()
-    self.backTrackingZwidget:SetVisible(false)
+  self.uiBinder.lab_content.text = Lang("Multiparkour_TurnOnVolume")
+  self:AddClick(self.uiBinder.btn_mask, function()
+    self:SetUIVisible(self.uiBinder.node_back_tracking_tips, false)
     self.isShowBackTips_ = true
   end)
-  self:AddAsyncClick(self.btnBacktracking.Btn, function()
+  self:AddAsyncClick(self.uiBinder.btn_back_tracking, function()
     self.parkourtips_vm.SetUserOptionSelect(self.cancelSource)
   end)
-  self.backTrackingZwidget:SetVisible(false)
-  self.btnTipsMask:SetVisible(false)
-  self.btnBacktracking:SetVisible(false)
+  self:SetUIVisible(self.uiBinder.node_back_tracking_tips, false)
+  self:SetUIVisible(self.uiBinder.btn_mask, false)
+  self:SetUIVisible(self.uiBinder.btn_back_tracking, false)
 end
 
 function Parkour_tooltip_windowView:ClearAll()
@@ -88,6 +78,7 @@ end
 
 function Parkour_tooltip_windowView:UnBindEvents()
   Z.EventMgr:Remove(Z.ConstValue.ParkourActionEvt.NotifyResultRecord, self.RefreshResultRecord, self)
+  Z.EventMgr:Remove(Z.ConstValue.SceneActionEvent.EnterScene, self.CloseParkourTipsWindow, self)
 end
 
 function Parkour_tooltip_windowView:OnRefresh()
@@ -133,7 +124,7 @@ function Parkour_tooltip_windowView:RefreshResultRecord(result, vRecord)
   if not self.componentArray_.endStatePrefab then
     Z.CoroUtil.create_coro_xpcall(function()
       local name = "parkour_end_state_tpl_view"
-      local uiUnit_ = self:AsyncLoadUiUnit(endStatePath, name, self.endStateZwidget.Trans, self.cancelSource:CreateToken())
+      local uiUnit_ = self:AsyncLoadUiUnit(endStatePath, name, self.uiBinder.node_end_state, self.cancelSource:CreateToken())
       self.componentArray_.endStatePrefab = endStateView.new()
       local worldEventCfg
       if globalTable then
@@ -156,7 +147,7 @@ function Parkour_tooltip_windowView:GetCalculatedTime()
     return
   end
   local nowTime = math.floor(Z.ServerTime:GetServerTime() / 1000)
-  local detalTime = 0
+  local deltaTime = 0
   local duration = 0
   local dungeonId = Z.StageMgr.GetCurrentDungeonId()
   if dungeonId == 0 then
@@ -166,30 +157,27 @@ function Parkour_tooltip_windowView:GetCalculatedTime()
   if not cfgData then
     return 0
   end
-  if cfgData.SceneID == sceneId then
-    return
-  end
   duration = cfgData.SettlementStateTime
   if nowTime > self.parkourData.WorldEventDungeonData.DungeonInfo.settlementTime then
-    detalTime = nowTime - self.parkourData.WorldEventDungeonData.DungeonInfo.settlementTime
+    deltaTime = nowTime - self.parkourData.WorldEventDungeonData.DungeonInfo.settlementTime
   end
-  local timeNumber = duration - detalTime
+  local timeNumber = duration - deltaTime
   return timeNumber
 end
 
 function Parkour_tooltip_windowView:CreateUiUnit(path, name, trans)
-  local uiUnit_ = self:AsyncLoadUiUnit(path, name, trans, self.cancelSource:CreateToken())
-  return uiUnit_
+  local uiUnit = self:AsyncLoadUiUnit(path, name, trans, self.cancelSource:CreateToken())
+  return uiUnit
 end
 
 function Parkour_tooltip_windowView:ShowViewUI()
-  self.tipsZwidget:SetVisible(false)
+  self:SetUIVisible(self.uiBinder.node_tips, false)
   local flowInfo = Z.ContainerMgr.DungeonSyncData.flowInfo
   if not flowInfo.state then
     return
   end
   if flowInfo.state == E.DungeonState.DungeonStateActive then
-    self.tipsZwidget:SetVisible(true)
+    self:SetUIVisible(self.uiBinder.node_tips, true)
   end
 end
 

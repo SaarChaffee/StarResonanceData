@@ -9,4 +9,3 @@ message ExchangeNoticeDetailRequest {
     repeated zproto.ExchangeFilter filter = 2;
     int32 page = 4;
 }
-

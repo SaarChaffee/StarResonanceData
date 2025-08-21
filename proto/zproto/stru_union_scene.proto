@@ -8,4 +8,3 @@ message UnionScene {
     int64 unionId = 1;
     zproto.UnionEnterScene enterType = 2;
 }
-

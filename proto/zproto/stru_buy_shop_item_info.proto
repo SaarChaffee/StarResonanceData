@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message BuyShopItemInfo {
+    int32 buyNum = 2;
+    repeated zproto.BuyShopItemInfo.CouponInfoEntry couponInfo = 3;
+}

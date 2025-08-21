@@ -6,4 +6,3 @@ message MonsterAwardParam {
     int32 monsterId = 1;
     int32 stageId = 2;
 }
-

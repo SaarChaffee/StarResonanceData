@@ -37,19 +37,10 @@ function Hero_dungeon_affix_item_tplView:initBinders()
 end
 
 function Hero_dungeon_affix_item_tplView:initBaseData()
-  local teamActivity = self.viewData
-  local useItem
-  if teamActivity.dungeonInfo then
-    useItem = teamActivity.dungeonInfo.useItem
-  end
-  local hasUseKey = useItem and useItem.uuid > 0
-  local dungeonId = teamActivity.assignSceneParams.sceneId
   local affixList
   local dataList = {}
-  local dungeon_data = Z.DataMgr.Get("dungeon_data")
-  local dungeonAffix = dungeon_data:GetDungeonAffixDic(dungeonId)
-  if dungeonAffix and dungeonAffix.affixes then
-    affixList = dungeonAffix.affixes
+  if self.viewData and self.viewData.dungeonAffix then
+    affixList = self.viewData.dungeonAffix
     for _, value in ipairs(affixList) do
       local d = {}
       d.isKey = false
@@ -57,11 +48,11 @@ function Hero_dungeon_affix_item_tplView:initBaseData()
       dataList[#dataList + 1] = d
     end
   end
-  if hasUseKey then
-    affixList = useItem.affixData.affixIds
+  if self.viewData and self.viewData.keyAffix then
+    affixList = self.viewData.keyAffix
     for _, value in ipairs(affixList) do
       local d = {}
-      d.isKey = true
+      d.isKey = false
       d.affixId = value
       dataList[#dataList + 1] = d
     end

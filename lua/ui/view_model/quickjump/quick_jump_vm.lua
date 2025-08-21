@@ -28,6 +28,13 @@ function quickJumpVm.DoJumpByConfigParam(jumpType, jumpParam, extraParams)
   elseif jumpType == E.QuickJumpType.Message then
     param.messageId = jumpParam[1]
   elseif jumpType == E.QuickJumpType.TraceNearestTarget then
+    local traceType = jumpParam[1]
+    param.nearTraceTargetType = traceType
+    if traceType == E.NearTraceTargetType.Npc then
+      param.funcId = jumpParam[2]
+    else
+      param.tagId = jumpParam[2]
+    end
   elseif jumpType == E.QuickJumpType.GoUnionTarget then
     param.jumpUnionType = jumpParam[1]
   end
@@ -154,7 +161,6 @@ end
 function quickJumpVm.functionJump(jumpParam)
   local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
   local funcId = jumpParam.funcId
-  local param
   if type(jumpParam.otherParam) == "table" then
     gotoFuncVM.GoToFunc(funcId, table.unpack(jumpParam.otherParam))
   else
@@ -190,7 +196,15 @@ function quickJumpVm.trackNearNpcByFuncId(jumpParam)
     return
   end
   local npcId = Z.EntityTabManager.GetNpcIdByFunctionId(jumpParam.funcId)
+  if npcId == nil then
+    logError("No NPC found for functionId: " .. jumpParam.funcId .. "  \232\175\183\230\137\190\231\173\150\229\136\146\231\161\174\232\174\164!!!")
+    return
+  end
   local sceneId, npcEntityData = Z.EntityTabManager.GetNpcEntityDataByNpcId(npcId)
+  if npcEntityData == nil then
+    logError("No NPC found for functionId: " .. jumpParam.funcId .. " NpcId:" .. npcId .. "  \232\175\183\230\137\190\231\173\150\229\136\146\231\161\174\232\174\164!!!")
+    return
+  end
   local uId = npcEntityData.UId % Z.ConstValue.GlobalLevelIdOffset
   quickJumpVm.updateTrackingData(uId, sceneId, Z.GoalPosType.Npc, jumpParam.goalGuideSource, jumpParam)
 end
@@ -200,6 +214,10 @@ function quickJumpVm.trackNearZoneByTagId(jumpParam)
     return
   end
   local sceneId, zoneEntityData = Z.EntityTabManager.GetZoneEntityDataBySceneTagId(jumpParam.tagId)
+  if zoneEntityData == nil then
+    logError("No Zone found for tagId: " .. jumpParam.tagId .. "  \232\175\183\230\137\190\231\173\150\229\136\146\231\161\174\232\174\164!!!")
+    return
+  end
   local uId = zoneEntityData.UId % Z.ConstValue.GlobalLevelIdOffset
   quickJumpVm.updateTrackingData(uId, sceneId, Z.GoalPosType.Zone, jumpParam.goalGuideSource, jumpParam)
 end
@@ -209,15 +227,20 @@ function quickJumpVm.trackNearSceneObjByTagId(jumpParam)
     return
   end
   local sceneId, sceneEntityData = Z.EntityTabManager.GetSceneEntityDataBySceneTagId(jumpParam.tagId)
+  if sceneEntityData == nil then
+    logError("No SceneObject found for tagId: " .. jumpParam.tagId .. "  \232\175\183\230\137\190\231\173\150\229\136\146\231\161\174\232\174\164!!!")
+    return
+  end
   local uId = sceneEntityData.UId % Z.ConstValue.GlobalLevelIdOffset
   quickJumpVm.updateTrackingData(uId, sceneId, Z.GoalPosType.SceneObject, jumpParam.goalGuideSource, jumpParam)
 end
 
-function quickJumpVm.updateTrackingData(uId, sceneId, goalType, goalGuideSource, jumpParam)
-  if uId == nil then
+function quickJumpVm.updateTrackingData(uid, sceneId, goalType, goalGuideSource, jumpParam)
+  if uid == nil then
     return
   end
   local mapData = Z.DataMgr.Get("map_data")
+  local mapVM = Z.VMMgr.GetVM("map")
   local dynamicName
   local autoTrack = true
   local isShowRedInfo = false
@@ -228,21 +251,26 @@ function quickJumpVm.updateTrackingData(uId, sceneId, goalType, goalGuideSource,
     end
     isShowRedInfo = jumpParam.extraParams.isShowRedInfo
   end
-  mapData:SaveDynamicTraceParam(goalGuideSource, goalType, uId, {Name = dynamicName})
+  mapData:SaveDynamicTraceParam(goalGuideSource, goalType, uid, {Name = dynamicName})
   local miniMapVM = Z.VMMgr.GetVM("minimap")
-  if not miniMapVM.ChecekSceneID(sceneId) then
+  if not miniMapVM.CheckSceneID(sceneId) then
     return
   end
-  local mapVm = Z.VMMgr.GetVM("map")
   if autoTrack then
-    mapVm.SetTraceEntity(goalGuideSource, sceneId, uId, goalType, false)
+    mapVM.SetTraceEntity(goalGuideSource, sceneId, uid, goalType, false)
   end
-  local globalCfg, flagDataId = mapVm.GetGlobalInfo(sceneId, goalType, uId)
-  if globalCfg == nil or flagDataId == nil then
-    return
+  if goalType == Z.GoalPosType.Collection then
+    local collectionPosInfo = mapData:GetCollectionPosInfo(uid, sceneId)
+    if collectionPosInfo and 0 < #collectionPosInfo then
+      mapVM.SetAutoSelect(collectionPosInfo[1].Id)
+    end
+  else
+    local _, flagDataId = mapVM.GetGlobalInfo(sceneId, goalType, uid)
+    if flagDataId then
+      mapVM.SetAutoSelect(flagDataId)
+    end
   end
-  mapVm.SetAutoSelect(flagDataId)
-  mapVm.SetIsShowRedInfo(isShowRedInfo)
+  mapVM.SetIsShowRedInfo(isShowRedInfo)
   local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
   gotoFuncVM.GoToFunc(E.FunctionID.Map, sceneId)
 end
@@ -259,7 +287,8 @@ quickJumpVm.trackFuncs_ = {
   [E.TrackType.Npc] = quickJumpVm.trackNpc,
   [E.TrackType.Monster] = quickJumpVm.trackEntityById,
   [E.TrackType.Zone] = quickJumpVm.trackEntityById,
-  [E.TrackType.SceneObject] = quickJumpVm.trackEntityById
+  [E.TrackType.SceneObject] = quickJumpVm.trackEntityById,
+  [E.TrackType.Collection] = quickJumpVm.trackEntityById
 }
 quickJumpVm.nearTraceFuncs_ = {
   [E.NearTraceTargetType.Npc] = quickJumpVm.trackNearNpcByFuncId,

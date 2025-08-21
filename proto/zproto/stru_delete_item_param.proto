@@ -6,4 +6,3 @@ message DeleteItemParam {
     int64 itemUuid = 1;
     int64 count = 2;
 }
-

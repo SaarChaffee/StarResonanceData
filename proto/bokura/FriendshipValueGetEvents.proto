@@ -10,8 +10,6 @@ message FriendshipValueGetEventsBase {
     int32 OnceValue = 1018;
     int32 DayMaxValue = 1875;
 }
-
 message FriendshipValueGetEventsMgr {
-    map<int32, .bokura.FriendshipValueGetEventsBase> datas = 1;
+    repeated bokura.FriendshipValueGetEventsMgr.DatasEntry datas = 1;
 }
-

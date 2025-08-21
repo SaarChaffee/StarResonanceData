@@ -1,0 +1,203 @@
+{
+  "1001": {
+    "Id": 1001,
+    "InvestigationTheme": "",
+    "UnlockCondition": [
+      [
+        2,
+        20043,
+        20043001
+      ]
+    ],
+    "InvestigationStep": [
+      10011,
+      10012
+    ],
+    "CompletionConditions": [],
+    "ThemeIntroduction": "",
+    "IockedTips": "",
+    "ThemePic": "ui/textures/investigation/investigation_survey_ok",
+    "Guarantee": 3,
+    "IsHidePlayerModel": false
+  },
+  "1002": {
+    "Id": 1002,
+    "InvestigationTheme": "",
+    "UnlockCondition": [
+      [
+        1,
+        99999
+      ]
+    ],
+    "InvestigationStep": [
+      10011,
+      10012
+    ],
+    "CompletionConditions": [],
+    "ThemeIntroduction": "",
+    "IockedTips": "",
+    "ThemePic": "ui/textures/investigation/investigation_survey_ok",
+    "Guarantee": 5,
+    "IsHidePlayerModel": false
+  },
+  "1003": {
+    "Id": 1003,
+    "InvestigationTheme": "",
+    "UnlockCondition": [
+      [
+        2,
+        185210,
+        185210043
+      ]
+    ],
+    "InvestigationStep": [
+      10031
+    ],
+    "CompletionConditions": [],
+    "ThemeIntroduction": "",
+    "IockedTips": "",
+    "ThemePic": "ui/textures/investigation/investigation_clue02",
+    "Guarantee": 3,
+    "IsHidePlayerModel": false
+  },
+  "1004": {
+    "Id": 1004,
+    "InvestigationTheme": "",
+    "UnlockCondition": [
+      [
+        2,
+        10211,
+        10211051
+      ]
+    ],
+    "InvestigationStep": [
+      10041
+    ],
+    "CompletionConditions": [],
+    "ThemeIntroduction": "",
+    "IockedTips": "",
+    "ThemePic": "ui/textures/investigation/investigation_clue01",
+    "Guarantee": 3,
+    "IsHidePlayerModel": false
+  },
+  "1005": {
+    "Id": 1005,
+    "InvestigationTheme": "",
+    "UnlockCondition": [
+      [
+        2,
+        30122,
+        30122012
+      ]
+    ],
+    "InvestigationStep": [
+      10051
+    ],
+    "CompletionConditions": [],
+    "ThemeIntroduction": "",
+    "IockedTips": "",
+    "ThemePic": "ui/textures/investigation/investigation_common_bg",
+    "Guarantee": 3,
+    "IsHidePlayerModel": false
+  },
+  "1006": {
+    "Id": 1006,
+    "InvestigationTheme": "",
+    "UnlockCondition": [
+      [
+        2,
+        185220,
+        185220016
+      ]
+    ],
+    "InvestigationStep": [
+      10061
+    ],
+    "CompletionConditions": [],
+    "ThemeIntroduction": "",
+    "IockedTips": "",
+    "ThemePic": "ui/textures/investigation/investigation_common_bg",
+    "Guarantee": 3,
+    "IsHidePlayerModel": true
+  },
+  "3001": {
+    "Id": 3001,
+    "InvestigationTheme": "",
+    "UnlockCondition": [
+      [
+        2,
+        30205,
+        30205005
+      ]
+    ],
+    "InvestigationStep": [
+      30011
+    ],
+    "CompletionConditions": [],
+    "ThemeIntroduction": "",
+    "IockedTips": "",
+    "ThemePic": "ui/textures/investigation/investigation_common_bg",
+    "Guarantee": 3,
+    "IsHidePlayerModel": false
+  },
+  "2020": {
+    "Id": 2020,
+    "InvestigationTheme": "",
+    "UnlockCondition": [
+      [
+        2,
+        20020,
+        20020005
+      ]
+    ],
+    "InvestigationStep": [
+      20020
+    ],
+    "CompletionConditions": [],
+    "ThemeIntroduction": "",
+    "IockedTips": "",
+    "ThemePic": "ui/textures/investigation/investigation_common_bg",
+    "Guarantee": 3,
+    "IsHidePlayerModel": false
+  },
+  "3002": {
+    "Id": 3002,
+    "InvestigationTheme": "",
+    "UnlockCondition": [
+      [
+        2,
+        30301,
+        30301017
+      ]
+    ],
+    "InvestigationStep": [
+      30021
+    ],
+    "CompletionConditions": [],
+    "ThemeIntroduction": "",
+    "IockedTips": "",
+    "ThemePic": "ui/textures/investigation/investigation_common_bg",
+    "Guarantee": 3,
+    "IsHidePlayerModel": false
+  },
+  "4001": {
+    "Id": 4001,
+    "InvestigationTheme": "",
+    "UnlockCondition": [
+      [
+        2,
+        185402,
+        185402002
+      ]
+    ],
+    "InvestigationStep": [
+      40011
+    ],
+    "CompletionConditions": [],
+    "ThemeIntroduction": "",
+    "IockedTips": "",
+    "ThemePic": "ui/textures/investigation/investigation_common_bg",
+    "Guarantee": 3,
+    "IsHidePlayerModel": false
+  }
+}

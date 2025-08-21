@@ -12,8 +12,6 @@ message ResolveTableBase {
     int32 FunctionId = 149;
     int32 Limit = 640;
 }
-
 message ResolveTableMgr {
-    map<int32, .bokura.ResolveTableBase> datas = 1;
+    repeated bokura.ResolveTableMgr.DatasEntry datas = 1;
 }
-

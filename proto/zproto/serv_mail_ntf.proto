@@ -10,14 +10,10 @@ message MailNtf {
     message SyncMailInfo {
         zproto.SyncMailInfoRequest request = 1;
     }
-
     message SyncMailListNum {
         zproto.SyncMailListNumRequest request = 1;
     }
-
     message SyncNewMail {
         zproto.SyncNewMailRequest request = 1;
     }
-
 }
-

@@ -7,8 +7,6 @@ message SeasonCenterTableBase {
     string NameRemark = 1535;
     int32 Sort = 1643;
 }
-
 message SeasonCenterTableMgr {
-    map<int32, .bokura.SeasonCenterTableBase> datas = 1;
+    repeated bokura.SeasonCenterTableMgr.DatasEntry datas = 1;
 }
-

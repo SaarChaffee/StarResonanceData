@@ -14,4 +14,3 @@ message tempPhotoCacheInfo {
     uint32 height = 9;
     uint32 width = 10;
 }
-

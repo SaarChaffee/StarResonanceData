@@ -7,4 +7,3 @@ import "stru_device_info.proto";
 message ExitGameRequest {
     zproto.DeviceInfo deviceInfo = 1;
 }
-

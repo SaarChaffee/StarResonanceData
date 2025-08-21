@@ -8,4 +8,3 @@ enum MailType {
     MailTypeWorld = 2;
     MailTypeMax = 3;
 }
-

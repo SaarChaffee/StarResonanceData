@@ -2,7 +2,7 @@ local UI = Z.UI
 local super = require("ui.ui_view_base")
 local DialogView = class("DialogView", super)
 local dialog_loop_item = require("ui.component.dialog.dialog_loop_item")
-local loopScrollRect = require("ui/component/loopscrollrect")
+local loopGridView = require("ui/component/loop_grid_view")
 local CENTE_COUNT = 5
 
 function DialogView:ctor()
@@ -11,23 +11,46 @@ function DialogView:ctor()
   super.ctor(self, "dialog")
   self.defaultTitle = Lang("DialogDefaultTitle")
   self.defaultDesc = ""
+  self.isWaitingNet_ = false
   
   function self.onConfirmFunc_()
+    if self.isWaitingNet_ then
+      Z.TipsVM.ShowTips(1001500)
+      return
+    end
     self:setPreferences()
     if self.viewData.onConfirm then
-      self.viewData.onConfirm(self.cancelSource:CreateToken())
-    else
-      Z.DialogViewDataMgr:CloseDialogView()
+      self.isWaitingNet_ = true
+      xpcall(function()
+        self.viewData.onConfirm(self.cancelSource:CreateToken())
+      end, function(err)
+        if err ~= ZUtil.ZCancelSource.CancelException then
+          logError("DialogView Confirm error : " .. tostring(err))
+        end
+      end)
     end
+    self.isWaitingNet_ = false
+    Z.DialogViewDataMgr:CloseDialogView()
   end
   
   function self.onCancelFunc_()
+    if self.isWaitingNet_ then
+      Z.TipsVM.ShowTips(1001500)
+      return
+    end
     self:setPreferences()
     if self.viewData.onCancel then
-      self.viewData.onCancel(self.cancelSource:CreateToken())
-    else
-      Z.DialogViewDataMgr:CloseDialogView()
+      self.isWaitingNet_ = true
+      xpcall(function()
+        self.viewData.onCancel(self.cancelSource:CreateToken())
+      end, function(err)
+        if err ~= ZUtil.ZCancelSource.CancelException then
+          logError("DialogView Cancel error : " .. tostring(err))
+        end
+      end)
     end
+    self.isWaitingNet_ = false
+    Z.DialogViewDataMgr:CloseDialogView()
   end
 end
 
@@ -43,13 +66,13 @@ function DialogView:initUiBinders()
   self.lab_notice_ = self.uiBinder.lab_notice
   self.toggleNode_ = self.uiBinder.com_toggle
   self.nodeLoop_ = self.uiBinder.node_loop
-  self.itemCount_ = self.uiBinder.item_content
   self.SceneMask_:SetSceneMaskByKey(self.SceneMaskKey)
 end
 
 function DialogView:OnActive()
   self:initUiBinders()
-  self.itemScrollRect_ = loopScrollRect.new(self.loopscroll_reward_list_, self, dialog_loop_item)
+  self.itemScrollRect_ = loopGridView.new(self, self.loopscroll_reward_list_, dialog_loop_item, "com_item_square_1_8")
+  self.itemScrollRect_:Init({})
   self.uiBinder.Ref:SetVisible(self.toggleNode_, false)
 end
 
@@ -57,23 +80,20 @@ function DialogView:OnRefresh()
   self.defaultLabOK = Lang("BtnOK")
   self.defaultLabYes = Lang("BtnYes")
   self.defaultLabNo = Lang("BtnNo")
+  self.isWaitingNet_ = false
   if self.viewData and self.viewData.dlgType then
     self.uiLayer = UI.ELayer.UILayerTop
     self.uiType = UI.EType.Standalone
-    if self.viewData.type == E.EDialogViewDataType.System then
-      self.uiLayer = UI.ELayer.UILayerSystemTip
-      self.uiType = UI.EType.Permanent
-      Z.UIRoot:SetLayerTrans(self.goObj, UI.ELayer.UILayerSystemTip)
-      self:UpdateDepth()
-    end
     if self.viewData.labTitle then
       self.titleLab_.text = self.viewData.labTitle
     else
       self.titleLab_.text = self.defaultTitle
     end
     if self.viewData.labDesc then
+      self.uiBinder.Ref:SetVisible(self.contentLab_, true)
       self.contentLab_.text = string.gsub(self.viewData.labDesc, "<br>", "\n")
     else
+      self.uiBinder.Ref:SetVisible(self.contentLab_, false)
       self.contentLab_.text = self.defaultDesc
     end
     local textAnchor = self.viewData.textAnchor or TMPro.TextAlignmentOptions.Center
@@ -94,27 +114,33 @@ function DialogView:OnRefresh()
     elseif self.viewData.dlgType == E.DlgType.CountdownYes then
       cancelBtnContent = self.viewData.labNo or self.defaultLabNo
       local confirmBtnContentTemp_ = self.viewData.labYes or self.defaultLabYes
-      confirmBtnContent = confirmBtnContentTemp_ .. "(" .. Z.TimeTools.FormatToDHMS(self.viewData.countdown, true) .. ")"
+      confirmBtnContent = confirmBtnContentTemp_ .. "(" .. Z.TimeFormatTools.FormatToDHMS(self.viewData.countdown, true) .. ")"
       local countDownCanClick = self.viewData.countDownCanClick and self.viewData.countDownCanClick or false
       self:setConfirmBtnInteractable(countDownCanClick)
       local count_ = self.viewData.countdown - 1
       self.seasonTimer_ = self.timerMgr:StartTimer(function()
-        self:setConfirmBtnContent(confirmBtnContentTemp_ .. "(" .. Z.TimeTools.FormatToDHMS(count_, true) .. ")")
+        self:setConfirmBtnContent(confirmBtnContentTemp_ .. "(" .. Z.TimeFormatTools.FormatToDHMS(count_, true) .. ")")
         count_ = count_ - 1
+        if count_ < 0 and self.viewData and self.viewData.countDownConfirmFunc then
+          Z.CoroUtil.create_coro_xpcall(function()
+            self.viewData.countDownConfirmFunc()
+            Z.DialogViewDataMgr:CloseDialogView()
+          end)()
+        end
       end, 1, self.viewData.countdown, nil, function()
         self:setConfirmBtnInteractable(true)
         self:setConfirmBtnContent(confirmBtnContentTemp_)
       end)
     elseif self.viewData.dlgType == E.DlgType.CountdownNo then
       local cancelBtnContentTemp_ = self.viewData.labNo or self.defaultLabNo
-      cancelBtnContent = cancelBtnContentTemp_ .. "(" .. Z.TimeTools.FormatToDHMS(self.viewData.countdown, true) .. ")"
+      cancelBtnContent = cancelBtnContentTemp_ .. "(" .. Z.TimeFormatTools.FormatToDHMS(self.viewData.countdown, true) .. ")"
       confirmBtnContent = self.viewData.labYes or self.defaultLabYes
       local countDownCanClick = self.viewData.countDownCanClick and self.viewData.countDownCanClick or false
       self:setCancelBtnInteractable(countDownCanClick)
       local count_ = self.viewData.countdown - 1
       self.seasonTimer_ = self.timerMgr:StartTimer(function()
         count_ = count_ - 1
-        self:setCancelBtnContent(cancelBtnContentTemp_ .. "(" .. Z.TimeTools.FormatToDHMS(count_, true) .. ")")
+        self:setCancelBtnContent(cancelBtnContentTemp_ .. "(" .. Z.TimeFormatTools.FormatToDHMS(count_, true) .. ")")
       end, 1, self.viewData.countdown, nil, function()
         self:setCancelBtnInteractable(true)
         self:setCancelBtnContent(cancelBtnContentTemp_)
@@ -128,6 +154,7 @@ function DialogView:OnRefresh()
     self:refreshItemList()
   else
     logError("DialogView viewData or viewData.dlgType is nil")
+    self.uiBinder.Ref:SetVisible(self.contentLab_, false)
     self.contentLab_.text = self.defaultDesc
     self.confirmBinder_.Ref.UIComp:SetVisible(true)
     self.cancelBinder_.Ref.UIComp:SetVisible(false)
@@ -193,12 +220,12 @@ function DialogView:refreshItemList()
     self.uiBinder.Ref:SetVisible(self.nodeLoop_, false)
   else
     self.uiBinder.Ref:SetVisible(self.nodeLoop_, true)
-    self.itemScrollRect_:SetData(self.viewData.itemList)
     if #self.viewData.itemList > CENTE_COUNT then
-      self.itemCount_:SetPivot(0, 1)
+      self.itemScrollRect_:SetIsCenter(false)
     else
-      self.itemCount_:SetPivot(0.5, 1)
+      self.itemScrollRect_:SetIsCenter(true)
     end
+    self.itemScrollRect_:RefreshListView(self.viewData.itemList)
   end
 end
 
@@ -207,7 +234,8 @@ function DialogView:OnDeActive()
   if self.seasonTimer_ then
     self.timerMgr.StopTimer(self.seasonTimer_)
   end
-  self.itemScrollRect_:ClearCells()
+  self.itemScrollRect_:UnInit()
+  self.itemScrollRect_ = nil
 end
 
 function DialogView:OnInputBack()
@@ -221,6 +249,20 @@ function DialogView:OnInputBack()
         self.onCancelFunc_()
       end)()
     end
+  end
+end
+
+function DialogView:OnTriggerInputAction(inputActionEventData)
+  if not Z.PlayerInputController:IsGamepadComboValidForAction(inputActionEventData) then
+    return
+  end
+  if inputActionEventData.actionId == Z.RewiredActionsConst.Cancel then
+    self:OnInputBack()
+  end
+  if inputActionEventData.actionId == Z.RewiredActionsConst.Confirm then
+    Z.CoroUtil.create_coro_xpcall(function()
+      self.onConfirmFunc_()
+    end)()
   end
 end
 

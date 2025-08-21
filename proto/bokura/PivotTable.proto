@@ -15,8 +15,6 @@ message PivotTableBase {
     int32 PivotArea = 1354;
     int32 CameraId = 472;
 }
-
 message PivotTableMgr {
-    map<int32, .bokura.PivotTableBase> datas = 1;
+    repeated bokura.PivotTableMgr.DatasEntry datas = 1;
 }
-

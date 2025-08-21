@@ -5,4 +5,3 @@ package zproto;
 message TeamInviteUserRequest {
     int32 type = 2;
 }
-

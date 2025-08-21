@@ -20,6 +20,9 @@ function SwitchData:OnReconnect()
 end
 
 function SwitchData:Clear()
+  self.SwitchFunctionIdDic = {}
+  self.ServerCloseFunctionIdDic = {}
+  self.UserCloseFunctionIdDic = {}
   super.Clear(self)
 end
 
@@ -27,6 +30,9 @@ function SwitchData:UnInit()
   super.UnInit(self)
   self.allFunctionArr_ = nil
   self.mainFunctionDic_ = nil
+  self.SwitchFunctionIdDic = {}
+  self.ServerCloseFunctionIdDic = {}
+  self.UserCloseFunctionIdDic = {}
   Z.EventMgr:Remove(Z.ConstValue.LanguageChange, self.onLanguageChange, self)
 end
 
@@ -74,7 +80,12 @@ function SwitchData:IsMainFunction(id)
   if not self.allFunctionArr_ or not self.mainFunctionDic_ then
     self:initData()
   end
-  return self.mainFunctionDic_[id] and self.mainFunctionDic_[id].SystemPlace == 5 or false
+  local row = self.mainFunctionDic_[id]
+  if row and (table.zcontains(row.SystemPlace, E.MainUIPlaceType.Esc) or table.zcontains(row.SystemPlace, E.MainUIPlaceType.EscRight)) then
+    return true
+  else
+    return false
+  end
 end
 
 function SwitchData:initData()

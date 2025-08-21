@@ -28,19 +28,10 @@ function Mod_term_recommend_popupView:OnActive()
   self:AddClick(self.uiBinder.btn_close, function()
     Z.UIMgr:CloseView(self.ViewConfigKey)
   end)
-  self:AddClick(self.uiBinder.btn_arrow, function()
-    self.isShowList_ = not self.isShowList_
-    self.uiBinder.Ref:SetVisible(self.uiBinder.layout_profession, self.isShowList_)
-  end)
   self:AddClick(self.uiBinder.btn_recommend, function()
     if self.showTalentStage_ then
       for _, recommendModEffect in ipairs(self.showTalentStage_.RecommendModEffectId) do
         self.SelectEffectId[recommendModEffect] = recommendModEffect
-      end
-    end
-    for _, value in ipairs(self.effects_) do
-      if self.SelectEffectId[value.Id] then
-        value.isOn = true
       end
     end
     self.itemsModGridView_:RefreshListView(self.effects_, true)
@@ -57,43 +48,40 @@ function Mod_term_recommend_popupView:OnActive()
   self.uiBinder.tog_2:AddListener(function()
     self:changeTalentBdType(1)
   end, true)
+  self.uiBinder.dpd:AddListener(function(index)
+    if #self.modTermPoolIds_ > 0 and index + 1 <= #self.modTermPoolIds_ then
+      local professionId = self.modTermPoolIds_[index + 1]
+      self:changeProfessionId(professionId)
+    end
+  end, true)
   self.itemsModGridView_ = loopGridView.new(self, self.uiBinder.loop_item, modRecommendTplItem, "mod_recommend_tpl")
   self.itemsModGridView_:Init({})
   self.SelectEffectId = {}
+  self.modTermPoolNames_ = {}
+  self.modTermPoolIds_ = {}
   self.professionId_ = nil
   self.showTalentStage_ = nil
-  self.isShowList_ = false
-  self.uiBinder.Ref:SetVisible(self.uiBinder.layout_profession, self.isShowList_)
   self.effects_ = {}
   local allEffects = self.modData_:GetAllEffectList()
-  for effectId, _ in pairs(allEffects) do
-    table.insert(self.effects_, {
-      Id = effectId,
-      recommend = false,
-      isOn = self.SelectEffectId[effectId] ~= nil and true or false
-    })
-  end
-  Z.CoroUtil.create_coro_xpcall(function()
-    local path = self.uiBinder.uiprefab_cache:GetString("item")
-    local mgr = Z.TableMgr.GetTable("ProfessionSystemTableMgr")
-    for i = 1, #self.professionConfigs_ do
-      local professionId = self.professionConfigs_[i]
-      local unit = self:AsyncLoadUiUnit(path, "profession" .. professionId, self.uiBinder.layout_profession)
-      if unit then
-        unit.btn_tough:RemoveAllListeners()
-        unit.btn_tough:AddListener(function()
-          self:changeProfessionId(professionId)
-        end, true)
-        do
-          local config = mgr.GetRow(professionId)
-          if config then
-            unit.lab_sort.text = config.Name
-          end
-        end
-      end
+  for effectId, configs in pairs(allEffects) do
+    if configs[1] ~= nil and not configs[1].IsShowShield then
+      table.insert(self.effects_, {Id = effectId, recommend = false})
     end
-  end)()
+  end
+  self:onGetAllName()
   self:changeProfessionId(self.weaponVM_.GetCurWeapon())
+end
+
+function Mod_term_recommend_popupView:onGetAllName()
+  local mgr = Z.TableMgr.GetTable("ProfessionSystemTableMgr")
+  for i = 1, #self.professionConfigs_ do
+    local professionId = self.professionConfigs_[i]
+    local config = mgr.GetRow(professionId)
+    if config then
+      table.insert(self.modTermPoolNames_, config.Name)
+      table.insert(self.modTermPoolIds_, professionId)
+    end
+  end
 end
 
 function Mod_term_recommend_popupView:OnDeActive()
@@ -107,6 +95,24 @@ function Mod_term_recommend_popupView:OnDeActive()
 end
 
 function Mod_term_recommend_popupView:OnRefresh()
+  if #self.modTermPoolIds_ > 0 then
+    local curIndex = self:getCurrentIndex()
+    self:refreshDropDown(curIndex)
+  end
+end
+
+function Mod_term_recommend_popupView:refreshDropDown(indexKey)
+  self.uiBinder.dpd:ClearOptions()
+  self.uiBinder.dpd:AddOptions(self.modTermPoolNames_)
+  self.uiBinder.dpd.value = indexKey
+end
+
+function Mod_term_recommend_popupView:getCurrentIndex()
+  for k, v in pairs(self.modTermPoolIds_) do
+    if v == self.professionId_ then
+      return k - 1
+    end
+  end
 end
 
 function Mod_term_recommend_popupView:changeProfessionId(id)
@@ -116,6 +122,7 @@ function Mod_term_recommend_popupView:changeProfessionId(id)
   self.professionId_ = id
   self.talentStageConfigs_ = self.talentSkillData_:GetTalentStageConfigs(id, TalentSkillDefine.TalentTreeMaxStage - 1)
   local name = ""
+  local nameConnect
   local professionConfig = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(id)
   if professionConfig then
     name = professionConfig.Name
@@ -137,26 +144,18 @@ function Mod_term_recommend_popupView:changeProfessionId(id)
       self.uiBinder.lab_tog_title_2.text = self.talentStageConfigs_[1].Name[2]
       self:changeTalentBdType(0)
     end
-    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_name, true)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_name_nocur, false)
-    self.uiBinder.lab_name.text = name .. Lang("FilterCurrent")
-    self.uiBinder.lab_name_nocur.text = ""
+    nameConnect = Lang("FilterCurrent")
   else
     self.uiBinder.lab_tog_title_1.text = self.talentStageConfigs_[0].Name[2]
     self.uiBinder.lab_tog_title_2.text = self.talentStageConfigs_[1].Name[2]
     self:changeTalentBdType(0)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_name, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_name_nocur, true)
-    self.uiBinder.lab_name.text = ""
-    self.uiBinder.lab_name_nocur.text = name .. Lang("FilterNotCurProfression")
+    nameConnect = Lang("FilterNotCurProfression")
   end
+  self.uiBinder.lab_name.text = name .. nameConnect
 end
 
 function Mod_term_recommend_popupView:changeTalentBdType(bdType)
   self.SelectEffectId = {}
-  for _, value in pairs(self.effects_) do
-    value.isOn = false
-  end
   self.uiBinder.tog_1:SetIsOnWithoutCallBack(bdType == 0)
   self.uiBinder.tog_2:SetIsOnWithoutCallBack(bdType == 1)
   self:changeTalentStageId(self.talentStageConfigs_[bdType])

@@ -69,6 +69,9 @@ function TalentSkillService:OnLogout()
   end
 end
 
+function TalentSkillService:OnSyncAllContainerData()
+end
+
 function TalentSkillService:onTimerInited()
   self.timeInited_ = true
   if self.needCheckRed then
@@ -104,14 +107,14 @@ function TalentSkillService:checkRedDot()
   local talentSkillVM = Z.VMMgr.GetVM("talent_skill")
   local talentTreeRed = talentSkillVM.CheckTalentTreeRed()
   if talentSkillVM.CheckRed() or talentTreeRed then
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TalentTab, 1)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.TalentTab, 1)
   else
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TalentTab, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.TalentTab, 0)
   end
   if talentTreeRed then
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TalentTree, 1)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.TalentTree, 1)
   else
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TalentTree, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.TalentTree, 0)
   end
   Z.EventMgr:Dispatch(Z.ConstValue.TalentSkill.TalentWeaponChange)
 end

@@ -12,19 +12,23 @@ function Login_affiche_popupView:ctor()
 end
 
 function Login_affiche_popupView:OnActive()
-  self.uiBinder.scenemask:SetSceneMaskByKey(self.SceneMaskKey)
   self.curNoticeType_ = nil
+  self:onStartAnimShow()
   self:AddClick(self.uiBinder.btn_close, function()
     Z.UIMgr:CloseView("login_affiche_popup")
   end)
   self.uiBinder.tog_item:AddListener(function(isOn)
     if isOn then
       self:switchNoticeType(E.NoticeType.Event)
+      self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+      self.uiBinder.eff_tab_1:SetEffectGoVisible(true)
     end
   end)
   self.uiBinder.tog_system:AddListener(function(isOn)
     if isOn then
       self:switchNoticeType(E.NoticeType.System)
+      self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+      self.uiBinder.eff_tab_2:SetEffectGoVisible(true)
     end
   end)
   self.list_ = loopListView.new(self, self.uiBinder.loop_item, affiche_frame_item, "login_tog_tpl")
@@ -38,6 +42,9 @@ function Login_affiche_popupView:OnDeActive()
     self.list_:UnInit()
     self.list_ = nil
   end
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.eff_main)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.eff_tab_1)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.eff_tab_2)
 end
 
 function Login_affiche_popupView:BindEvents()
@@ -54,6 +61,12 @@ function Login_affiche_popupView:OnRefresh()
   else
     self.uiBinder.tog_system.isOn = true
   end
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.eff_main)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.eff_tab_1)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.eff_tab_2)
+  self.uiBinder.eff_main:SetEffectGoVisible(true)
+  self.uiBinder.eff_tab_1:SetEffectGoVisible(true)
+  self.uiBinder.eff_tab_2:SetEffectGoVisible(true)
 end
 
 function Login_affiche_popupView:switchNoticeType(noticeType)
@@ -64,12 +77,12 @@ function Login_affiche_popupView:switchNoticeType(noticeType)
   self:refreshInfo()
 end
 
-function Login_affiche_popupView:refreshInfo()
+function Login_affiche_popupView:refreshInfo(showAnim)
   self:showAfficheList()
-  self:showAffiche()
+  self:showAffiche(showAnim)
 end
 
-function Login_affiche_popupView:showAffiche()
+function Login_affiche_popupView:showAffiche(showAnim)
   local afficheDataItem = self.afficheData_:GetShowAfficheData(self.curNoticeType_)
   if afficheDataItem == nil then
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty_new, true)
@@ -97,6 +110,9 @@ function Login_affiche_popupView:showAffiche()
       end)
     end
   end
+  if showAnim then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
+  end
 end
 
 function Login_affiche_popupView:adjustImageHeight()
@@ -112,6 +128,10 @@ function Login_affiche_popupView:showAfficheList()
   self.uiBinder.Ref:SetVisible(self.uiBinder.empty_item, #datas == 0)
   self.uiBinder.Ref:SetVisible(self.uiBinder.loop_item, #datas ~= 0)
   self.list_:RefreshListView(datas)
+end
+
+function Login_affiche_popupView:onStartAnimShow()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Login_affiche_popupView

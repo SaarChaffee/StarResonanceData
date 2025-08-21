@@ -11,8 +11,6 @@ message LipAnimationTableBase {
     string VowelI = 1593;
     string VowelU = 587;
 }
-
 message LipAnimationTableMgr {
-    map<int32, .bokura.LipAnimationTableBase> datas = 1;
+    repeated bokura.LipAnimationTableMgr.DatasEntry datas = 1;
 }
-

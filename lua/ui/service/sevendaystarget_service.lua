@@ -9,18 +9,22 @@ end
 
 function SevendaysTargetService:OnLogin()
   function self.refreshOrInitSevenDaysTargetRed_(container, dirtyKeys)
-    local vm = Z.VMMgr.GetVM("season_quest_sub")
-    
-    local sevendays_red_ = require("rednode.sevendays_target_red")
-    local tasks_ = vm.GetTaskList(true)
-    sevendays_red_.RefreshOrInitSevenDaysTargetRed(tasks_)
+    self:refreshTasksAndRedPoints()
   end
   
   Z.ContainerMgr.CharSerialize.seasonQuestList.Watcher:RegWatcher(self.refreshOrInitSevenDaysTargetRed_)
   
-  function self.onFuncDataChange_()
+  function self.onFuncDataChange_(funcTable)
     local funcPreviewData = Z.DataMgr.Get("function_preview_data")
     funcPreviewData:refreshStateDict()
+    if funcTable ~= nil then
+      for funcId, isOpen in pairs(funcTable) do
+        if (funcId == E.FunctionID.SeasonHandbook or funcId == E.FunctionID.SevendayTargetTitlePage or funcId == E.FunctionID.SevendayTargetManual) and isOpen then
+          self:refreshTasksAndRedPoints()
+          break
+        end
+      end
+    end
   end
   
   Z.EventMgr:Add(Z.ConstValue.SwitchFunctionChange, self.onFuncDataChange_)
@@ -36,6 +40,13 @@ function SevendaysTargetService:OnLogout()
 end
 
 function SevendaysTargetService:OnEnterScene(sceneId)
+end
+
+function SevendaysTargetService:refreshTasksAndRedPoints()
+  local vm = Z.VMMgr.GetVM("season_quest_sub")
+  local sevendays_red_ = require("rednode.sevendays_target_red")
+  local tasks_ = vm.GetTaskList(true)
+  sevendays_red_.RefreshOrInitSevenDaysTargetRed(tasks_)
 end
 
 return SevendaysTargetService

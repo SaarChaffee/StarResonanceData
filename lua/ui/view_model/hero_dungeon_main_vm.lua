@@ -1,6 +1,7 @@
 local itemTableMgr_ = Z.TableMgr.GetTable("ItemTableMgr")
 local heroData = Z.DataMgr.Get("hero_dungeon_main_data")
 local enterdungeonsceneVm = Z.VMMgr.GetVM("ui_enterdungeonscene")
+local MasterChallenDungeonTableMap = require("table.MasterChallenDungeonTableMap")
 local openHeroView = function()
   local funcVM = Z.VMMgr.GetVM("gotofunc")
   if funcVM.CheckFuncCanUse(E.FunctionID.HeroDungeon) then
@@ -46,6 +47,12 @@ local openKeyPopupView = function(viewData)
 end
 local closeKeyPopupView = function()
   Z.UIMgr:CloseView("hero_dungeon_key_tips")
+end
+local openBeginReadyView = function()
+  Z.UIMgr:OpenView("hero_dungeon_begin_ready_tpl")
+end
+local closeBeginReadyView = function()
+  Z.UIMgr:CloseView("hero_dungeon_begin_ready_tpl")
 end
 local getChallengeHeroDungeonTarget = function(dungeonId)
   local targetList = {}
@@ -96,8 +103,8 @@ local getChallengeHeroDungeonProbability = function(dungeonId)
   end
   return buffId, buffCount, maxBuffCount, clothItemId, upItemId
 end
-local asyncStartEnterDungeon = function(dungeonId, affix, cancelSource, selectType, heroKeyItemUuid)
-  local ret = enterdungeonsceneVm.AsyncCreateLevel(heroData.FunctionId, dungeonId, cancelSource:CreateToken(), affix, nil, selectType, heroKeyItemUuid)
+local asyncStartEnterDungeon = function(dungeonId, affix, cancelSource, selectType, heroKeyItemUuid, masterModeDiff)
+  local ret = enterdungeonsceneVm.AsyncCreateLevel(heroData.FunctionId, dungeonId, cancelSource:CreateToken(), affix, nil, selectType, heroKeyItemUuid, masterModeDiff)
   if not heroData.IsHaveAward and ret == 0 then
     if heroData.IsChellange then
       Z.TipsVM.ShowTipsLang(130011)
@@ -106,8 +113,8 @@ local asyncStartEnterDungeon = function(dungeonId, affix, cancelSource, selectTy
     end
   end
 end
-local asyncStartEnterDungeonByToken = function(dungeonId, affix, cancelToken)
-  local ret = enterdungeonsceneVm.AsyncCreateLevel(heroData.FunctionId, dungeonId, cancelToken, affix)
+local asyncStartEnterDungeonByToken = function(dungeonId, affix, cancelToken, masterModeDiff)
+  local ret = enterdungeonsceneVm.AsyncCreateLevel(heroData.FunctionId, dungeonId, cancelToken, affix, masterModeDiff)
   return ret
 end
 local getItemShowData = function(configId)
@@ -120,6 +127,9 @@ local getNowAwardCount = function()
     nomarlPassCount = nomarlPassCount + Z.ContainerMgr.CharSerialize.dungeonList.normalDungeonPassCount
   end
   return heroData:GetNormalHeroAwardCount() - nomarlPassCount
+end
+local checkDungeonIsComplete = function(dungeonId)
+  return Z.ContainerMgr.CharSerialize.dungeonList.completeDungeon[dungeonId] ~= nil
 end
 local dungeonPeopleCount = function(dungeonId)
   local data = Z.DataMgr.Get("hero_dungeon_main_data")
@@ -137,11 +147,19 @@ local dungeonPeopleCount = function(dungeonId)
     end
   end
 end
-local setRecommendFightValue = function(dungeonId)
+local setRecommendFightValue = function(dungeonId, diff)
   local data = Z.DataMgr.Get("hero_dungeon_main_data")
-  local tabData = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
-  if tabData then
-    data:SetRecommendFightValue(tabData.RecommendFightValue)
+  if diff and 0 < diff then
+    local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[dungeonId][diff]
+    local tabData = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+    if tabData then
+      data:SetRecommendFightValue(tabData.RecommendFightValue)
+    end
+  else
+    local tabData = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
+    if tabData then
+      data:SetRecommendFightValue(tabData.RecommendFightValue)
+    end
   end
 end
 local isHeroDungeonNormalScene = function()
@@ -159,6 +177,16 @@ local isHeroChallengeDungeonScene = function()
   if 0 < curDungeonId then
     local cfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(curDungeonId)
     if cfg and cfg.PlayType == E.DungeonType.HeroChallengeDungeon then
+      return true
+    end
+  end
+  return false
+end
+local isMasterChallengeDungeonScene = function()
+  local curDungeonId = Z.StageMgr.GetCurrentDungeonId()
+  if 0 < curDungeonId then
+    local cfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(curDungeonId)
+    if cfg and cfg.PlayType == E.DungeonType.MasterChallengeDungeon then
       return true
     end
   end
@@ -185,8 +213,7 @@ local isUnlockDungeonId = function(dungeonId)
       if v[1] == E.DungeonCondition.DungeonScoreConditionalLimitations and (not data.dungeonInfo[v[2]] or data.dungeonInfo[v[2]].score < v[3]) then
         local param = {}
         param.val = v[3]
-        local des
-        Z.TipsVM.GetMessageContent(130013, param)
+        local des = Z.TipsVM.GetMessageContent(130013, param)
         return false, v[1], des
       end
       if v[1] == E.DungeonCondition.SeasonTimeOffset or v[1] == E.DungeonCondition.TimeIntervalConditionalLimitations then
@@ -228,12 +255,13 @@ local getAffix = function(dungonId)
   end
   return list
 end
-local reqExtremeSpaceAffix = function(dungonId)
+local reqExtremeSpaceAffix = function(dungonId, diff)
   Z.CoroUtil.create_coro_xpcall(function()
     local data = Z.DataMgr.Get("hero_dungeon_main_data")
     local worldProxy = require("zproxy.world_proxy")
     local param = {}
     param.dungeonId = dungonId
+    param.diff = diff
     local ret = worldProxy.GetChallengeDungeonAffix(param, data.CancelSource:CreateToken())
     local list = {}
     for _, v in ipairs(ret.affix) do
@@ -242,13 +270,17 @@ local reqExtremeSpaceAffix = function(dungonId)
     table.sort(list, function(a, b)
       return a < b
     end)
-    data.ExtremeSpaceAffixDict_[dungonId] = list
+    if data.ExtremeSpaceAffixDict_[dungonId] == nil then
+      data.ExtremeSpaceAffixDict_[dungonId] = {}
+    end
+    data.ExtremeSpaceAffixDict_[dungonId][diff] = list
     Z.EventMgr:Dispatch(Z.ConstValue.HeroDungeonAffixChange)
   end)()
 end
-local getExtremeSpaceAffix = function(dungonId)
+local getExtremeSpaceAffix = function(dungonId, diff)
+  diff = diff or 1
   local data = Z.DataMgr.Get("hero_dungeon_main_data")
-  return data.ExtremeSpaceAffixDict_[dungonId]
+  return data.ExtremeSpaceAffixDict_[dungonId][diff]
 end
 local getAffixValue = function(dungonId, affixList)
   local data = Z.DataMgr.Get("hero_dungeon_main_data")
@@ -366,7 +398,7 @@ local getRedCount = function(dungeonId)
 end
 local refreshRed = function(dungeonId)
   local count = getRedCount(dungeonId)
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.HeroDungeonReward, count)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.HeroDungeonReward, count)
   Z.EventMgr:Dispatch(Z.ConstValue.Recommendedplay.DungeonRed, dungeonId, 0 < count)
 end
 local isRegularAffix = function(affix, affixId)
@@ -376,6 +408,12 @@ local isRegularAffix = function(affix, affixId)
     end
   end
   return false
+end
+local getCurMasterChallengeDungeonId = function()
+  local dungeonId = Z.StageMgr.GetCurrentDungeonId()
+  local diff = Z.ContainerMgr.DungeonSyncData.dungeonSceneInfo.difficulty
+  local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[dungeonId][diff]
+  return masterChallenDungeonId
 end
 local getDungeonTimerData = function(timerType)
   local timerData = {}
@@ -389,14 +427,20 @@ local getDungeonTimerData = function(timerType)
       local dungeoncfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
       if dungeoncfg and heroDungeonCfgData then
         timerData.startTime = startTime
-        local dungeonTime = Z.ContainerMgr.DungeonSyncData.timerInfo.dungeonTimes
-        timerData.endTime = startTime + dungeonTime
-        local firstEnter = heroDungeonCfgData.LimitTime == dungeonTime
+        local timerInfo = Z.ContainerMgr.DungeonSyncData.timerInfo
+        timerData.endTime = startTime + timerInfo.dungeonTimes
+        if timerInfo.direction == E.DungeonTimerDirection.DungeonTimerDirectionDown then
+          timerData.endTime = timerData.endTime + timerInfo.pauseTotalTime
+        end
+        local firstEnter = heroDungeonCfgData.LimitTime == timerInfo.dungeonTimes
         timerData.showType = E.DungeonTimeShowType.time
         timerData.isShowScore = false
-        timerData.timeType = E.DungeonTimerDirection.DungeonTimerDirectionDown
+        timerData.timeType = Z.ContainerMgr.DungeonSyncData.timerInfo.direction
         timerData.showDead = dungeoncfg.DeathReleaseTime > 0
-        timerData.timeLab = Lang("RemainTime")
+        timerData.timeLab = Lang("DungeonShowTime")
+        timerData.lookType = Z.ContainerMgr.DungeonSyncData.timerInfo.outLookType
+        timerData.pauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTime
+        timerData.totalPauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTotalTime
         if herdDungeonData.DunegonEndTime ~= timerData.endTime and not firstEnter then
           timerData.changeTimeNumber = -1 * dungeoncfg.DeathReleaseTime
           herdDungeonData.DunegonEndTime = timerData.endTime
@@ -410,8 +454,47 @@ local getDungeonTimerData = function(timerType)
       timerData.endTime = startTime + heroDungeonCfgData.LimitTime
       timerData.showType = E.DungeonTimeShowType.time
       timerData.isShowScore = true
-      timerData.timeType = E.DungeonTimerDirection.DungeonTimerDirectionUp
-      timerData.timeLab = Lang("PointTime")
+      timerData.timeType = Z.ContainerMgr.DungeonSyncData.timerInfo.direction
+      timerData.lookType = Z.ContainerMgr.DungeonSyncData.timerInfo.outLookType
+      timerData.timeLab = Lang("DungeonShowTime")
+      timerData.pauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTime
+      timerData.totalPauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTotalTime
+    end
+    if isMasterChallengeDungeonScene() and heroDungeonCfgData then
+      local direction = Z.ContainerMgr.DungeonSyncData.timerInfo.direction
+      local diff = Z.ContainerMgr.DungeonSyncData.dungeonSceneInfo.difficulty
+      local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[dungeonId][diff]
+      local masterChallengeDungeonRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId, true)
+      local startTime = Z.ContainerMgr.DungeonSyncData.flowInfo.playTime
+      local pauseTotalTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTotalTime
+      timerData.startTime = startTime
+      timerData.endTime = startTime + Z.ContainerMgr.DungeonSyncData.timerInfo.dungeonTimes
+      if direction == E.DungeonTimerDirection.DungeonTimerDirectionDown then
+        timerData.endTime = timerData.endTime + pauseTotalTime
+      end
+      timerData.showType = E.DungeonTimeShowType.time
+      timerData.isShowScore = false
+      if masterChallengeDungeonRow then
+        timerData.showDead = masterChallengeDungeonRow.DeathReleaseTime > 0
+        timerData.timeLab = Lang("DungeonShowTime")
+      end
+      local changeTimeNumber = Z.ContainerMgr.DungeonSyncData.timerInfo.changeTime
+      if changeTimeNumber ~= 0 then
+        timerData.changeTimeNumber = math.abs(changeTimeNumber)
+        herdDungeonData.DunegonEndTime = timerData.endTime
+      end
+      if herdDungeonData.DunegonEndTime == 0 then
+        timerData.isShowStartAnim = true
+      end
+      if herdDungeonData.DunegonEndTime ~= timerData.endTime then
+        herdDungeonData.DunegonEndTime = timerData.endTime
+      end
+      timerData.changeTimeType = E.DungeonTimerEffectType.EDungeonTimerEffectTypeAdd
+      timerData.timeType = direction
+      timerData.lookType = Z.ContainerMgr.DungeonSyncData.timerInfo.outLookType
+      timerData.timeLab = Lang("DungeonShowTime")
+      timerData.pauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTime
+      timerData.totalPauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTotalTime
     end
   end
   return timerData
@@ -490,18 +573,242 @@ local getHeroChallengePlayingTime = function(dungeonId)
   end
   return time
 end
+local isInDungeonMultiaAward = function()
+  local res = Z.EntityMgr.PlayerEnt:GetTempAttrByType(E.TempAttrEffectType.TempAttrHeroDungeonMultiaAward, E.ETempAttrType.TempAttrGlobal, 0)
+  return res ~= 0
+end
+local asyncCheckAndUseMultiaItem = function(cancelToken)
+  local name = ""
+  local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(E.DungeonMultiAwardItemId)
+  if itemRow then
+    name = itemRow.Name
+  end
+  if isInDungeonMultiaAward() then
+    local param = {
+      item = {name = name}
+    }
+    Z.TipsVM.ShowTipsLang(1004108, param)
+  else
+    local itemsVM = Z.VMMgr.GetVM("items")
+    local param = {
+      item = {name = name}
+    }
+    if itemsVM.GetItemTotalCount(E.DungeonMultiAwardItemId) <= 0 then
+      Z.TipsVM.ShowTipsLang(1004107, param)
+    else
+      local useItemParam = itemsVM.AssembleUseItemParam(E.DungeonMultiAwardItemId, nil, 1)
+      itemsVM.AsyncUseItemByUuid(useItemParam, cancelToken)
+    end
+  end
+end
+local getDeadreduceTime = function()
+  local curDungeonId = Z.StageMgr.GetCurrentDungeonId()
+  local deadreduceTime = 0
+  if curDungeonId <= 0 then
+    return deadreduceTime
+  end
+  local cfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(curDungeonId)
+  if not cfg then
+    return deadreduceTime
+  end
+  if cfg.PlayType == E.DungeonType.HeroChallengeDungeon then
+    return cfg.DeathReleaseTime
+  end
+  if cfg.PlayType == E.DungeonType.MasterChallengeDungeon then
+    local diff = Z.ContainerMgr.DungeonSyncData.dungeonSceneInfo.difficulty
+    local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[curDungeonId][diff]
+    local masterChallengeDungeonRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+    if not masterChallengeDungeonRow then
+      return deadreduceTime
+    end
+    return masterChallengeDungeonRow.DeathReleaseTime
+  end
+  return deadreduceTime
+end
+local openMaseterScoreView = function(isShowSceneMask)
+  Z.UIMgr:OpenView("hero_dungeon_master_popup", isShowSceneMask)
+end
+local closeMaseterScoreView = function()
+  Z.UIMgr:CloseView("hero_dungeon_master_popup")
+end
+local checkAnyMasterDungeonOpen = function()
+  for dungeonID, _ in pairs(MasterChallenDungeonTableMap.DungeonId) do
+    if isUnlockDungeonId(dungeonID) then
+      return true
+    end
+  end
+  return false
+end
+local getHeroDungeonTypeName = function(dungeonId, diff)
+  local dungeonTypeName = ""
+  local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[dungeonId][diff]
+  local masterChallengeDungeonRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+  if masterChallengeDungeonRow then
+    dungeonTypeName = masterChallengeDungeonRow.DungeonTypeName
+  end
+  return dungeonTypeName
+end
+local getPlayerSeasonMasterDungeonScore = function(seasonId)
+  local data = Z.DataMgr.Get("hero_dungeon_main_data")
+  local scoreData = data:GetMasterDungeonScore(seasonId)
+  local score = 0
+  for _, value in pairs(scoreData) do
+    score = score + value.score
+  end
+  return score
+end
+local getPlayerSeasonMasterDungeonScoreWithColor = function(score)
+  score = score or 0
+  local color
+  local level = 1
+  for _, value in ipairs(Z.GlobalDungeon.MasterSingleDungeonScoreLevel) do
+    if score >= value[1] then
+      level = value[2]
+    end
+  end
+  for _, value in ipairs(Z.GlobalDungeon.MasterScoreLevelColor) do
+    if level == tonumber(value[1]) then
+      color = value[2]
+    end
+  end
+  return string.format("<color=%s>%s</color>", color, score)
+end
+local getPlayerSeasonMasterDungeonTotalScoreWithColor = function(score)
+  score = score or 0
+  local color
+  local level = 1
+  for _, value in ipairs(Z.GlobalDungeon.MasterTotolDungeonScoreLevel) do
+    if score >= value[1] then
+      level = value[2]
+    end
+  end
+  for _, value in ipairs(Z.GlobalDungeon.MasterScoreLevelColor) do
+    if level == tonumber(value[1]) then
+      color = value[2]
+    end
+  end
+  return string.format("<color=%s>%s</color>", color, score)
+end
+local checkGetSeasonScoreAwrard = function(index)
+  local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+  local seasonMasterDungeonInfo = Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.masterModeDungeonInfo[seasonId]
+  if seasonMasterDungeonInfo and seasonMasterDungeonInfo.seasonAwards then
+    return seasonMasterDungeonInfo.seasonAwards[index - 1] == 1
+  end
+  return false
+end
+local checkMasterDungeonScoreNewRecord = function(dungeonId)
+  local data = Z.DataMgr.Get("hero_dungeon_main_data")
+  local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+  local lastMaxScore = getPlayerSeasonMasterDungeonScore(seasonId)
+  data:UpdateMasterDungeonScore(dungeonId)
+  local newMaxScore = getPlayerSeasonMasterDungeonScore(seasonId)
+  if lastMaxScore >= newMaxScore then
+    return false, 0
+  end
+  return true, newMaxScore - lastMaxScore
+end
+local getDungeonDiffScore = function(dungeonId, diff)
+  local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+  local seasonMasterDungeonInfo = Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.masterModeDungeonInfo[seasonId]
+  if seasonMasterDungeonInfo and seasonMasterDungeonInfo.masterModeDiffInfo and seasonMasterDungeonInfo.masterModeDiffInfo[dungeonId] then
+    local dungeonInfo = seasonMasterDungeonInfo.masterModeDiffInfo[dungeonId].dungeonInfo[diff]
+    if dungeonInfo then
+      return dungeonInfo.score
+    end
+  end
+  return 0
+end
+local getMasterDungeonIsComplete = function(dungeonId, diff)
+  local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+  local seasonMasterDungeonInfo = Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.masterModeDungeonInfo[seasonId]
+  if seasonMasterDungeonInfo and seasonMasterDungeonInfo.masterModeDiffInfo and seasonMasterDungeonInfo.masterModeDiffInfo[dungeonId] then
+    local dungeonInfo = seasonMasterDungeonInfo.masterModeDiffInfo[dungeonId].dungeonInfo[diff]
+    if dungeonInfo then
+      return dungeonInfo.completeCount > 0
+    end
+  end
+  return false
+end
+local getMasterDungeonFasterTime = function(dungeonId)
+  local time = 0
+  local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+  local seasonMasterDungeonInfo = Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.masterModeDungeonInfo[seasonId]
+  if seasonMasterDungeonInfo and seasonMasterDungeonInfo.masterModeDiffInfo and seasonMasterDungeonInfo.masterModeDiffInfo[dungeonId] then
+    for diff, dungenData in pairs(seasonMasterDungeonInfo.masterModeDiffInfo[dungeonId].dungeonInfo) do
+      if time == 0 then
+        time = dungenData.passTime
+      end
+      if time > dungenData.passTime then
+        time = dungenData.passTime
+      end
+    end
+  end
+  return time
+end
+local getMasterDungeonMaxDiff = function(dungeonID)
+  local maxDiff = 0
+  local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+  if Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.masterModeDungeonInfo[seasonId] == nil then
+    return maxDiff
+  end
+  local seasonMasterDungeonInfo = Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.masterModeDungeonInfo[seasonId].masterModeDiffInfo
+  if seasonMasterDungeonInfo and seasonMasterDungeonInfo[dungeonID] then
+    for diff, _ in pairs(seasonMasterDungeonInfo[dungeonID].dungeonInfo) do
+      if diff > maxDiff then
+        maxDiff = diff
+      end
+    end
+  end
+  return maxDiff
+end
+local getDungeonScoreMax = function(dungonId)
+  local maxScore = 0
+  for _, value in pairs(MasterChallenDungeonTableMap.DungeonId[dungonId]) do
+    local masterChallengeDungeonRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(value)
+    if masterChallengeDungeonRow and #masterChallengeDungeonRow.Score ~= 0 and maxScore < masterChallengeDungeonRow.Score[1][4] then
+      maxScore = masterChallengeDungeonRow.Score[1][4]
+    end
+  end
+  return maxScore
+end
+local asyncGetMasterModeAward = function(index, cancelToken)
+  local proxy = require("zproxy.world_proxy")
+  local request = {}
+  request.index = index
+  local ret = proxy.GetMasterModeAward(request, cancelToken)
+  if ret and ret ~= 0 then
+    Z.TipsVM.ShowTips(ret)
+    return false
+  end
+  return true
+end
+local asyncSetShowMasterModeScore = function(isShow, cancelToken)
+  local proxy = require("zproxy.world_proxy")
+  local request = {}
+  request.isShow = isShow
+  local ret = proxy.SetShowMasterModeScore(request, cancelToken)
+  if ret and ret ~= 0 then
+    Z.TipsVM.ShowTips(ret)
+    return false
+  end
+  Z.EventMgr:Dispatch(Z.ConstValue.MasterScoreShowRefresh, isShow)
+  return true
+end
 local ret = {
   OpenHeroView = openHeroView,
   OpenAffixPopupView = openAffixPopupView,
   OpenScorePopupView = openScorePopupView,
   OpenDungeonOpenView = openDungeonOpenView,
   OpenTargetPopupView = openTargetPopupView,
+  OpenBeginReadyView = openBeginReadyView,
   CloseHeroView = closeHeroView,
   CloseAffixPopupView = closeAffixPopupView,
   CloseScorePopupView = closeScorePopupView,
   CloseDungeonOpenView = closeDungeonOpenView,
   CloseHeroInstabilityView = closeHeroInstabilityView,
   CloseTargetPopupView = closeTargetPopupView,
+  CloseBeginReadyView = closeBeginReadyView,
   AsyncStartPlayingDungeon = asyncStartPlayingDungeon,
   AsyncDungeonRoll = asyncDungeonRoll,
   AsyncGetDungeonWeekTargetAward = asyncGetDungeonWeekTargetAward,
@@ -543,6 +850,28 @@ local ret = {
   CloseProbabilityPopup = closeProbabilityPopup,
   SetProbabilityCountUI = setProbabilityCountUI,
   CheckProbabilityHaveGet = checkProbabilityHaveGet,
-  GetHeroChallengePlayingTime = getHeroChallengePlayingTime
+  GetHeroChallengePlayingTime = getHeroChallengePlayingTime,
+  IsInDungeonMultiaAward = isInDungeonMultiaAward,
+  AsyncCheckAndUseMultiaItem = asyncCheckAndUseMultiaItem,
+  GetHeroDungeonTypeName = getHeroDungeonTypeName,
+  GetPlayerSeasonMasterDungeonScore = getPlayerSeasonMasterDungeonScore,
+  CheckAnyMasterDungeonOpen = checkAnyMasterDungeonOpen,
+  GetPlayerSeasonMasterDungeonScoreWithColor = getPlayerSeasonMasterDungeonScoreWithColor,
+  GetPlayerSeasonMasterDungeonTotalScoreWithColor = getPlayerSeasonMasterDungeonTotalScoreWithColor,
+  OpenMaseterScoreView = openMaseterScoreView,
+  CloseMaseterScoreView = closeMaseterScoreView,
+  CheckGetSeasonScoreAwrard = checkGetSeasonScoreAwrard,
+  IsMasterChallengeDungeonScene = isMasterChallengeDungeonScene,
+  GetMasterDungeonMaxDiff = getMasterDungeonMaxDiff,
+  CheckMasterDungeonScoreNewRecord = checkMasterDungeonScoreNewRecord,
+  GetDungeonScoreMax = getDungeonScoreMax,
+  GetMasterDungeonFasterTime = getMasterDungeonFasterTime,
+  GetDungeonDiffScore = getDungeonDiffScore,
+  AsyncGetMasterModeAward = asyncGetMasterModeAward,
+  AsyncSetShowMasterModeScore = asyncSetShowMasterModeScore,
+  CheckDungeonIsComplete = checkDungeonIsComplete,
+  GetMasterDungeonIsComplete = getMasterDungeonIsComplete,
+  GetCurMasterChallengeDungeonId = getCurMasterChallengeDungeonId,
+  GetDeadreduceTime = getDeadreduceTime
 }
 return ret

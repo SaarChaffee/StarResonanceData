@@ -44,10 +44,7 @@ function SocialProxy.GetSocialData(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Social.GetSocialData_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(901134105, 1, cJson.encode(pbRet), retData, true)
@@ -88,10 +85,7 @@ function SocialProxy.ChangeAvatar(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Social.ChangeAvatar_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(901134105, 3, cJson.encode(pbRet), retData, true)

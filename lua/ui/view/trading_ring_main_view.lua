@@ -7,6 +7,7 @@ local tradeNoticeView = require("ui.view.trading_ring_publicity_sub_view")
 local tradeRecordView = require("ui.view.trading_ring_buy_sell_sub_view")
 local tradeConsignmentRecordView = require("ui.view.trading_ring_consignment_record_sub_view")
 local tradeConsignmentView = require("ui.view.trading_ring_consignment_sub_view")
+local currency_item_list = require("ui.component.currency.currency_item_list")
 local subViewType = {
   Buy = 1,
   Notice = 2,
@@ -25,9 +26,12 @@ function Trading_ring_mainView:ctor()
 end
 
 function Trading_ring_mainView:OnActive()
+  Z.AudioMgr:Play("UI_Event_TradingRingEnter")
   self.tradeVm_ = Z.VMMgr.GetVM("trade")
   self.tradeData_ = Z.DataMgr.Get("trade_data")
+  self.funcVm_ = Z.VMMgr.GetVM("gotofunc")
   self.subTogs_ = {}
+  self:onStartAnimShow()
   self:AddAsyncClick(self.uiBinder.btn_close, function()
     self.tradeVm_.CloseTradeMainView()
   end)
@@ -91,6 +95,12 @@ function Trading_ring_mainView:OnActive()
     [subViewType.Record] = self.uiBinder.binder_trading_record,
     [subViewType.Consignment] = self.uiBinder.binder_consignment
   }
+  self.mainTogFunctionId_ = {
+    [subViewType.Buy] = E.FunctionID.TradeBuy,
+    [subViewType.Notice] = E.FunctionID.TradePublicNotice,
+    [subViewType.Sell] = E.FunctionID.TradeSell,
+    [subViewType.Consignment] = E.FunctionID.TradeConsignment
+  }
   self.loadFinish_ = false
   Z.CoroUtil.create_coro_xpcall(function()
     self:firstOpenPage()
@@ -101,14 +111,8 @@ function Trading_ring_mainView:OnActive()
     self.loadFinish_ = true
     self:openFirstPage()
   end)()
-  local currencyVm = Z.VMMgr.GetVM("currency")
-  currencyVm.OpenCurrencyView(Z.SystemItem.DefaultCurrencyDisplay, self.uiBinder.Trans, self)
-  
-  function self.onInputAction_(inputActionEventData)
-    self:OnInputBack()
-  end
-  
-  self:RegisterInputActions()
+  self.currencyItemList_ = currency_item_list.new()
+  self.currencyItemList_:Init(self.uiBinder.currency_info, Z.SystemItem.DefaultCurrencyDisplay)
 end
 
 function Trading_ring_mainView:openFirstPage()
@@ -131,11 +135,14 @@ function Trading_ring_mainView:openFirstPage()
         end
       end
     end
-    self:onselectMainTog(self.uiBinder.binder_buy, subViewType.Buy, subIndex)
+    self:onselectMainTog(self.uiBinder.binder_buy, subViewType.Buy, subIndex, true)
     return
   end
+  local isFuncOn = self.funcVm_.CheckFuncCanUse(E.FunctionID.TradeConsignment, true)
   if self.viewData.type then
-    self:onselectMainTog(self.mainTogUiBinders_[self.viewData.type], self.viewData.type)
+    if self.viewData.type ~= subViewType.Consignment or isFuncOn then
+      self:onselectMainTog(self.mainTogUiBinders_[self.viewData.type], self.viewData.type)
+    end
     return
   end
   if self.hasSellInfo_ then
@@ -166,10 +173,14 @@ function Trading_ring_mainView:initFunction()
 end
 
 function Trading_ring_mainView:initTog()
-  for _, value in ipairs(self.mainTogUiBinders_) do
+  for type, value in ipairs(self.mainTogUiBinders_) do
     value.Ref:SetVisible(value.node_twe_tog, false)
     value.node_tog.Ref:SetVisible(value.node_tog.node_on, false)
     value.node_tog.Ref:SetVisible(value.node_tog.node_off, true)
+    if self.mainTogFunctionId_[type] then
+      local isFuncOn = self.funcVm_.CheckFuncCanUse(self.mainTogFunctionId_[type], true)
+      value.Ref.UIComp:SetVisible(isFuncOn)
+    end
   end
   local tog = self.uiBinder.binder_trading_record.trading_tog_consignment
   tog.Ref:SetVisible(tog.node_on, false)
@@ -218,6 +229,7 @@ function Trading_ring_mainView:onChangeSubView(type, subIndex)
     itemUuid = self.viewData.itemUuid
   }
   self.selectView_:Active(viewData, parent)
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
   self.viewData.configId = nil
   self.viewData.itemUuid = nil
 end
@@ -235,8 +247,10 @@ end
 
 function Trading_ring_mainView:OnDeActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
-  local currencyVm = Z.VMMgr.GetVM("currency")
-  currencyVm.CloseCurrencyView(self)
+  if self.currencyItemList_ then
+    self.currencyItemList_:UnInit()
+    self.currencyItemList_ = nil
+  end
   if self.selectView_ then
     self.selectView_:DeActive()
   end
@@ -246,7 +260,6 @@ function Trading_ring_mainView:OnDeActive()
   self.hasSellInfo_ = false
   self.defaultBuyTog_ = nil
   self.defaultSellTog_ = nil
-  self:UnRegisterInputActions()
   self:unLoadRedDotItem()
 end
 
@@ -258,17 +271,9 @@ function Trading_ring_mainView:generateSubTog(type)
       if type == subViewType.Notice then
         if value.IsAnnounce == 1 then
           table.insert(mainTypeData, value)
-          if self.subIndexToCategoryType[type] == nil then
-            self.subIndexToCategoryType[type] = {}
-          end
-          table.insert(self.subIndexToCategoryType[type], value.ID)
         end
       else
         table.insert(mainTypeData, value)
-        if self.subIndexToCategoryType[type] == nil then
-          self.subIndexToCategoryType[type] = {}
-        end
-        table.insert(self.subIndexToCategoryType[type], value.ID)
       end
     end
   end
@@ -279,6 +284,21 @@ function Trading_ring_mainView:generateSubTog(type)
       return a.Sort < b.Sort
     end
   end)
+  for _, value in ipairs(mainTypeData) do
+    if type == subViewType.Notice then
+      if value.IsAnnounce == 1 then
+        if self.subIndexToCategoryType[type] == nil then
+          self.subIndexToCategoryType[type] = {}
+        end
+        table.insert(self.subIndexToCategoryType[type], value.ID)
+      end
+    else
+      if self.subIndexToCategoryType[type] == nil then
+        self.subIndexToCategoryType[type] = {}
+      end
+      table.insert(self.subIndexToCategoryType[type], value.ID)
+    end
+  end
   if type == subViewType.Notice then
     table.insert(self.subIndexToCategoryType[type], 1, 0)
     table.insert(mainTypeData, 1, {})
@@ -293,6 +313,7 @@ function Trading_ring_mainView:generateSubTog(type)
   local root = self.mainTogUiBinders_[type].node_twe_tog
   for index, value in ipairs(mainTypeData) do
     local tog = self:AsyncLoadUiUnit(path, type .. "_tog_" .. index, root)
+    tog.Ref.UIComp:SetVisible(true)
     if type == subViewType.Buy and index == 1 then
       self.defaultBuyTog_ = tog
     end
@@ -303,13 +324,19 @@ function Trading_ring_mainView:generateSubTog(type)
       tog.lab_on_content.text = value.Name
       tog.lab_off_content.text = value.Name
     elseif type == subViewType.Buy then
+      local isFuncOn = self.funcVm_.CheckFuncCanUse(E.FunctionID.TradeBuyFocus, true)
+      tog.Ref.UIComp:SetVisible(isFuncOn)
       tog.lab_on_content.text = Lang("attention")
       tog.lab_off_content.text = Lang("attention")
     elseif type == subViewType.Notice then
       if index == 1 then
+        local isFuncOn = self.funcVm_.CheckFuncCanUse(E.FunctionID.TradePublicNoticeFocus, true)
+        tog.Ref.UIComp:SetVisible(isFuncOn)
         tog.lab_on_content.text = Lang("attention")
         tog.lab_off_content.text = Lang("attention")
       else
+        local isFuncOn = self.funcVm_.CheckFuncCanUse(E.FunctionID.TradePreorder, true)
+        tog.Ref.UIComp:SetVisible(isFuncOn)
         tog.lab_on_content.text = Lang("already_prebuy")
         tog.lab_off_content.text = Lang("already_prebuy")
       end
@@ -324,8 +351,15 @@ function Trading_ring_mainView:generateSubTog(type)
   end
 end
 
-function Trading_ring_mainView:onselectMainTog(tog, type, subIndex)
-  if self.selectMainTog_ == tog then
+function Trading_ring_mainView:onselectMainTog(tog, type, subIndex, force)
+  local subTog
+  if subIndex == nil then
+    subIndex = 1
+  end
+  if self.subTogs_[type] then
+    subTog = self.subTogs_[type][subIndex]
+  end
+  if not force and self.selectMainTog_ == tog and subTog then
     self.isMainTogIsOpen_ = not self.isMainTogIsOpen_
     self.selectMainTog_.Ref:SetVisible(self.selectMainTog_.node_twe_tog, self.isMainTogIsOpen_)
     self.selectMainTog_.node_tog.Ref:SetVisible(self.selectMainTog_.node_tog.node_on, self.isMainTogIsOpen_)
@@ -342,14 +376,10 @@ function Trading_ring_mainView:onselectMainTog(tog, type, subIndex)
   self.selectMainTog_.Ref:SetVisible(self.selectMainTog_.node_twe_tog, true)
   self.selectMainTog_.node_tog.Ref:SetVisible(self.selectMainTog_.node_tog.node_on, true)
   self.selectMainTog_.node_tog.Ref:SetVisible(self.selectMainTog_.node_tog.node_off, false)
-  local tog
-  if subIndex == nil then
-    subIndex = 1
+  if not Z.IsPCUI then
+    self.selectMainTog_.node_tog.anim:Restart(Z.DOTweenAnimType.Open)
   end
-  if self.subTogs_[type] then
-    tog = self.subTogs_[type][subIndex]
-  end
-  self:onselectSubTog(type, subIndex, tog)
+  self:onselectSubTog(type, subIndex, subTog)
 end
 
 function Trading_ring_mainView:onselectSubTog(type, subIndex, tog)
@@ -362,15 +392,10 @@ function Trading_ring_mainView:onselectSubTog(type, subIndex, tog)
     self.selectSubTog_.Ref:SetVisible(self.selectSubTog_.node_on, true)
     self.selectSubTog_.Ref:SetVisible(self.selectSubTog_.node_off, false)
   end
+  if not Z.IsPCUI and self.selectSubTog_ then
+    self.selectSubTog_.anim:Restart(Z.DOTweenAnimType.Open)
+  end
   self:onChangeSubView(type, subIndex)
-end
-
-function Trading_ring_mainView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Trade_Center)
-end
-
-function Trading_ring_mainView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Trade_Center)
 end
 
 function Trading_ring_mainView:OnRefresh()
@@ -386,6 +411,10 @@ end
 function Trading_ring_mainView:unLoadRedDotItem()
   Z.RedPointMgr.RemoveNodeItem(E.RedType.TradeSellType, self)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.TradeItemPreBuy, self)
+end
+
+function Trading_ring_mainView:onStartAnimShow()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Trading_ring_mainView

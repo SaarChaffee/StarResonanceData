@@ -1,7 +1,7 @@
 local UI = Z.UI
 local super = require("ui.ui_view_base")
 local Union_hunt_enter_into_mainView = class("Union_hunt_enter_into_mainView", super)
-local loopGridView = require("ui.component.loop_grid_view")
+local loopListView = require("ui.component.loop_list_view")
 local huntRewardItem = require("ui.component.union.union_hunt_reward_item")
 local huntScheduleItem = require("ui.component.union.union_schedule_item")
 local difficulty = {normal = 1, hard = 2}
@@ -39,7 +39,6 @@ function Union_hunt_enter_into_mainView:OnDeActive()
 end
 
 function Union_hunt_enter_into_mainView:OnRefresh()
-  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Union_hunt_enter_into_mainView:GetCacheData()
@@ -96,7 +95,6 @@ end
 
 function Union_hunt_enter_into_mainView:initBtnFunc()
   self:AddClick(self.btn_close_, function()
-    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Close)
     self.unionVM_:CloseHuntEnterView()
   end)
   self:AddClick(self.btnRank_, function()
@@ -177,7 +175,7 @@ end
 
 function Union_hunt_enter_into_mainView:initLoopView()
   self.loopInit_ = false
-  self.loopRewardView_ = loopGridView.new(self, self.loopscroll_award_, huntRewardItem, "com_item_square_8")
+  self.loopRewardView_ = loopListView.new(self, self.loopscroll_award_, huntRewardItem, "com_item_square_8")
 end
 
 function Union_hunt_enter_into_mainView:refreshRightInfo()
@@ -248,6 +246,10 @@ function Union_hunt_enter_into_mainView:loadAwardUnit()
   local awards = self.unionVM_:GetUnionHuntAwardData()
   local rootTrans = self.node_progress_root
   self.maxNum_ = 0
+  for _, value in ipairs(awards) do
+    local scoreNum = value[1]
+    self.maxNum_ = math.max(self.maxNum_, scoreNum)
+  end
   local awardCount_ = #awards
   local lineWidth_, lineHeight_ = 0, 0
   lineWidth_, lineHeight_ = self.node_progress_root:GetSize(lineWidth_, lineHeight_)
@@ -267,10 +269,9 @@ function Union_hunt_enter_into_mainView:loadAwardUnit()
       local itemData = {scoreNum = scoreNum, awardID = awardId}
       self.itemClassTab_[k]:Init(self, item, itemData)
     end
-    local posX = k * offsetNum_
+    local posX = lineWidth_ * (scoreNum / self.maxNum_)
     local posY = 0
     self.itemClassTab_[k]:SetRootPos(posX, posY)
-    self.maxNum_ = math.max(self.maxNum_, scoreNum)
   end
 end
 
@@ -295,7 +296,7 @@ function Union_hunt_enter_into_mainView:RefreshUnionHuntAwardList()
   end
   if count == table.zcount(awardList) then
     Z.RedPointMgr.AsyncCancelRedDot(E.RedType.UnionHuntPorgress)
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.UnionHuntPorgress, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.UnionHuntPorgress, 0)
   end
   local isRed = Z.RedPointMgr.GetRedState(E.RedType.UnionHuntTab)
   Z.EventMgr:Dispatch(Z.ConstValue.Recommendedplay.FunctionRed, E.UnionFuncId.Hunt, isRed)

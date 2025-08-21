@@ -2,13 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
-import "stru_team_fast_sync_data.proto";
-import "stru_user_detailed_data.proto";
+import "stru_team_member_fast_sync_data.proto";
+import "stru_team_mem_data.proto";
 
 message NoticeUpdateTeamMemberInfoRequest {
-    zproto.UserDetailedData socialData = 2;
-    int64 charId = 3;
-    int32 syncType = 4;
-    zproto.TeamFastSyncData teamFastSyncData = 6;
+    repeated zproto.TeamMemberFastSyncData teamMemberSyncDatas = 5;
+    repeated zproto.TeamMemData teamMemberSocialDatas = 6;
 }
-

@@ -8,6 +8,4 @@ message GrpcCharactorNtf {
     message GetFaceUpTokenNtf {
         zproto.GetFaceUpTokenNtfRequest vRequest = 1;
     }
-
 }
-

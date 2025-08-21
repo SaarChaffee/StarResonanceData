@@ -47,6 +47,7 @@ function Union_set_subView:initData()
 end
 
 function Union_set_subView:initComponent()
+  self:startAnimatedShow()
   self:AddAsyncClick(self.uiBinder.btn_switch_upgrade, function()
     self:onSwitchBtnClick(E.UnionPowerDef.UpgradeBuilding)
   end)
@@ -88,6 +89,10 @@ function Union_set_subView:unInitBuffItem()
     item:UnInit()
   end
   self.buffItemDict_ = nil
+end
+
+function Union_set_subView:startAnimatedShow()
+  self.uiBinder.anim_main:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Union_set_subView:initLoopListView()
@@ -148,7 +153,7 @@ function Union_set_subView:RefreshSelectBuildInfo(buildId)
   self.uiBinder.Ref:SetVisible(self.uiBinder.trans_buff_effect, isBuffEffect)
   local unlock = self.unionVM_:GetUnionSceneIsUnlock()
   self:SetUIVisible(self.uiBinder.lab_unlock, unlock == false)
-  self:SetUIVisible(self.uiBinder.node_btn, unlock)
+  self:SetUIVisible(self.uiBinder.node_btn, unlock and not isMaxLv)
   if not isMaxLv then
     local isUpgrading = self.unionVM_:CheckBuildIsUpgrading(buildId)
     if isUpgrading then
@@ -329,7 +334,7 @@ end
 
 function Union_set_subView:onTimerUpdate(startTime, currentTime, endTime)
   local timeStr = Lang("UnionBuildTime", {
-    time = Z.TimeTools.S2HMSFormat(endTime - currentTime)
+    time = Z.TimeFormatTools.FormatToDHMS(endTime - currentTime, true)
   })
   local progress = (currentTime - startTime) / (endTime - startTime)
   self.uiBinder.lab_upgrade_time.text = timeStr

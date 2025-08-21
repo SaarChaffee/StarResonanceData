@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PlayerRecordSingle {
+    int32 Id = 1;
+    int32 TotalCount = 2;
+    int64 CycleCount = 3;
+    int64 CycleTime = 4;
+}

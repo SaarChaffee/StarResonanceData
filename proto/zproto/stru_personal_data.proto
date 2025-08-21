@@ -10,4 +10,3 @@ message PersonalData {
     zproto.PersonalInfo info = 2;
     zproto.UserSummaryData socialData = 3;
 }
-

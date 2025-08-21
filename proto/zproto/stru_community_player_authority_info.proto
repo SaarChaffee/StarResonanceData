@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityPlayerAuthorityInfo {
+    repeated zproto.CommunityPlayerAuthorityInfo.AuthorityEntry authority = 1;
+}

@@ -12,5 +12,7 @@ enum EEntitySortType {
     EntitySortType_HpValue = 7;
     EntitySortType_HpRate = 8;
     EntitySortType_TeamActor = 9;
+    EntitySortType_ProfessionRange = 10;
+    EEntitySortType_Attribute = 11;
+    EntitySortType_RandWeight = 12;
 }
-

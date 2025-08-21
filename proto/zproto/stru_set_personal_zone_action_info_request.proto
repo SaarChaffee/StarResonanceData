@@ -7,4 +7,3 @@ import "stru_action_info.proto";
 message SetPersonalZoneActionInfoRequest {
     zproto.ActionInfo actionInfo = 1;
 }
-

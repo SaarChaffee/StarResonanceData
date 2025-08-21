@@ -29,14 +29,25 @@ function Trialroad_monster_affix_tipsView:OnActive()
   end)
   self.uiBinder.presscheck:StartCheck()
   self.showMonster = false
-  self.monsterListView_ = loopListView.new(self, self.uiBinder.loop_item, trialroad_monster_loop_item, "trialroad_monster_tips_tpl")
+  local itemPath = Z.IsPCUI and "trialroad_monster_tips_tpl_pc" or "trialroad_monster_tips_tpl"
+  self.monsterListView_ = loopListView.new(self, self.uiBinder.loop_item, trialroad_monster_loop_item, itemPath)
   self.monsterListView_:Init({})
+  if self.viewData.AutoClose then
+    self.closeTimer_ = self.timerMgr:StartTimer(function()
+      local dungeonVm_ = Z.VMMgr.GetVM("dungeon")
+      dungeonVm_.CloseMonsterAndAffixTip()
+    end, 5, 1)
+  end
 end
 
 function Trialroad_monster_affix_tipsView:OnDeActive()
   self.monsterListView_:UnInit()
   self.monsterListView_ = nil
   self:ClearAllUnits()
+  if self.closeTimer_ then
+    self.closeTimer_:Stop()
+    self.closeTimer_ = nil
+  end
 end
 
 function Trialroad_monster_affix_tipsView:refreshMonster()
@@ -49,9 +60,10 @@ end
 
 function Trialroad_monster_affix_tipsView:refreshAffix()
   if self.haveAffix_ then
+    local path = Z.IsPCUI and GetLoadAssetPath("DungeonAffixTplPC") or GetLoadAssetPath("DungeonAffixTpl")
     Z.CoroUtil.create_coro_xpcall(function()
       for k, v in pairs(self.viewData.affixList) do
-        local unit = self:AsyncLoadUiUnit(GetLoadAssetPath("DungenonAffixtpl"), k, self.uiBinder.layout_content)
+        local unit = self:AsyncLoadUiUnit(path, k, self.uiBinder.layout_content)
         unit.dungeon_affix_tpl.text = v
       end
     end)()

@@ -5,4 +5,3 @@ package zproto;
 message BatchSearchUnionListRequest {
     repeated int64 unionIdList = 2;
 }
-

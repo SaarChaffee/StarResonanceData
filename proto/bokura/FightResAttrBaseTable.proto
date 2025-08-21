@@ -8,8 +8,6 @@ message FightResAttrBaseTableBase {
     int32 Id = 1463;
     int_array ResIDs = 924;
 }
-
 message FightResAttrBaseTableMgr {
-    map<int32, .bokura.FightResAttrBaseTableBase> datas = 1;
+    repeated bokura.FightResAttrBaseTableMgr.DatasEntry datas = 1;
 }
-

@@ -1,0 +1,297 @@
+{
+  "10011": {
+    "Id": 10011,
+    "Clue": [],
+    "InferenceStep": [
+      100111,
+      100112
+    ],
+    "Conclusion": "",
+    "ConclusionTips": "",
+    "ConclusionBubble": "",
+    "ConclusionAction": 9026,
+    "IockedBubble": [
+      619488680
+    ],
+    "IockedBubbleAction": [
+      9019
+    ],
+    "ReviewBubble": [
+      235090507
+    ],
+    "ReviewBubbleAction": [
+      9047
+    ],
+    "QuickReasoning": false
+  },
+  "10012": {
+    "Id": 10012,
+    "Clue": [
+      100121,
+      100122,
+      100123
+    ],
+    "InferenceStep": [
+      100121,
+      100122,
+      100123
+    ],
+    "Conclusion": "",
+    "ConclusionTips": "",
+    "ConclusionBubble": "",
+    "ConclusionAction": 9033,
+    "IockedBubble": [
+      619489769
+    ],
+    "IockedBubbleAction": [
+      9019
+    ],
+    "ReviewBubble": [
+      235091596
+    ],
+    "ReviewBubbleAction": [
+      9047
+    ],
+    "QuickReasoning": true
+  },
+  "10031": {
+    "Id": 10031,
+    "Clue": [
+      100311,
+      100312,
+      100313
+    ],
+    "InferenceStep": [
+      100311,
+      100312,
+      100313
+    ],
+    "Conclusion": "",
+    "ConclusionTips": "",
+    "ConclusionBubble": "",
+    "ConclusionAction": 9033,
+    "IockedBubble": [
+      619560554
+    ],
+    "IockedBubbleAction": [
+      9019
+    ],
+    "ReviewBubble": [
+      235162381
+    ],
+    "ReviewBubbleAction": [
+      9047
+    ],
+    "QuickReasoning": true
+  },
+  "10041": {
+    "Id": 10041,
+    "Clue": [
+      100411,
+      100412,
+      100413
+    ],
+    "InferenceStep": [
+      100411,
+      100412,
+      100413
+    ],
+    "Conclusion": "",
+    "ConclusionTips": "",
+    "ConclusionBubble": "",
+    "ConclusionAction": 9033,
+    "IockedBubble": [
+      619596491
+    ],
+    "IockedBubbleAction": [
+      9019
+    ],
+    "ReviewBubble": [
+      235198318
+    ],
+    "ReviewBubbleAction": [
+      9047
+    ],
+    "QuickReasoning": true
+  },
+  "10051": {
+    "Id": 10051,
+    "Clue": [
+      100511,
+      100512,
+      100513
+    ],
+    "InferenceStep": [
+      100511,
+      100512,
+      100513
+    ],
+    "Conclusion": "",
+    "ConclusionTips": "",
+    "ConclusionBubble": "",
+    "ConclusionAction": 9033,
+    "IockedBubble": [
+      619632428
+    ],
+    "IockedBubbleAction": [
+      9019
+    ],
+    "ReviewBubble": [
+      235234255
+    ],
+    "ReviewBubbleAction": [
+      9047
+    ],
+    "QuickReasoning": true
+  },
+  "10061": {
+    "Id": 10061,
+    "Clue": [
+      100611,
+      100612,
+      100613
+    ],
+    "InferenceStep": [
+      100611,
+      100612,
+      100613
+    ],
+    "Conclusion": "",
+    "ConclusionTips": "",
+    "ConclusionBubble": "",
+    "ConclusionAction": 9033,
+    "IockedBubble": [
+      619668365
+    ],
+    "IockedBubbleAction": [
+      9019
+    ],
+    "ReviewBubble": [
+      235270192
+    ],
+    "ReviewBubbleAction": [
+      9047
+    ],
+    "QuickReasoning": true
+  },
+  "30011": {
+    "Id": 30011,
+    "Clue": [
+      300111,
+      300112,
+      300113
+    ],
+    "InferenceStep": [
+      300111,
+      300112,
+      300113
+    ],
+    "Conclusion": "",
+    "ConclusionTips": "",
+    "ConclusionBubble": "",
+    "ConclusionAction": 9033,
+    "IockedBubble": [
+      1054940970
+    ],
+    "IockedBubbleAction": [
+      9019
+    ],
+    "ReviewBubble": [
+      670542797
+    ],
+    "ReviewBubbleAction": [
+      9047
+    ],
+    "QuickReasoning": true
+  },
+  "20020": {
+    "Id": 20020,
+    "Clue": [
+      200201,
+      200202,
+      200203
+    ],
+    "InferenceStep": [
+      200201,
+      200202,
+      200203
+    ],
+    "Conclusion": "",
+    "ConclusionTips": "",
+    "ConclusionBubble": "",
+    "ConclusionAction": 9033,
+    "IockedBubble": [
+      1910991497
+    ],
+    "IockedBubbleAction": [
+      9019
+    ],
+    "ReviewBubble": [
+      1526593324
+    ],
+    "ReviewBubbleAction": [
+      9047
+    ],
+    "QuickReasoning": true
+  },
+  "30021": {
+    "Id": 30021,
+    "Clue": [
+      300211,
+      300212,
+      300213
+    ],
+    "InferenceStep": [
+      300211,
+      300212,
+      300213
+    ],
+    "Conclusion": "",
+    "ConclusionTips": "",
+    "ConclusionBubble": "",
+    "ConclusionAction": 9033,
+    "IockedBubble": [
+      1054976907
+    ],
+    "IockedBubbleAction": [
+      9019
+    ],
+    "ReviewBubble": [
+      670578734
+    ],
+    "ReviewBubbleAction": [
+      9047
+    ],
+    "QuickReasoning": true
+  },
+  "40011": {
+    "Id": 40011,
+    "Clue": [
+      400111,
+      400112,
+      400113
+    ],
+    "InferenceStep": [
+      400111,
+      400112,
+      400113
+    ],
+    "Conclusion": "",
+    "ConclusionTips": "",
+    "ConclusionBubble": "",
+    "ConclusionAction": 9033,
+    "IockedBubble": [
+      198925291
+    ],
+    "IockedBubbleAction": [
+      9019
+    ],
+    "ReviewBubble": [
+      1962010766
+    ],
+    "ReviewBubbleAction": [
+      9047
+    ],
+    "QuickReasoning": true
+  }
+}

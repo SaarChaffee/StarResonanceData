@@ -10,6 +10,7 @@ function Personalzone_badge_subView:ctor(parent)
   super.ctor(self, "personalzone_badge_sub", "personalzone/personalzone_badge_sub", UI.ECacheLv.None)
   self.personalZoneVM_ = Z.VMMgr.GetVM("personal_zone")
   self.personalZoneData_ = Z.DataMgr.Get("personal_zone_data")
+  self.itemsVM_ = Z.VMMgr.GetVM("items")
 end
 
 function Personalzone_badge_subView:OnActive()
@@ -29,11 +30,11 @@ function Personalzone_badge_subView:OnActive()
   self.medalHistoryLoopRect_:Init(data)
   self:AddAsyncClick(self.uiBinder.btn_editor, function()
     local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
-    local isPersonalzoneMedal = gotoFuncVM.CheckFuncCanUse(E.FunctionID.PersonalzoneMedal)
+    local isPersonalzoneMedal = gotoFuncVM.CheckFuncCanUse(E.FunctionID.Personalzone)
     if not isPersonalzoneMedal then
       return
     end
-    Z.UIMgr:OpenView("personal_zone_medal_edit_main")
+    self.personalZoneVM_.OpenPersonalZoneEditor(DEFINE.IdCardEditorType.Badge)
   end)
   self:AddAsyncClick(self.uiBinder.btn_use.btn, function()
     if not self.personalZoneVM_.HasMedal(self.selectMedalId_) then
@@ -86,13 +87,28 @@ end
 function Personalzone_badge_subView:refreshMedalClassify()
   self.uiBinder.Ref:SetVisible(self.uiBinder.loopscroll_season, self.selectMedalClassify_ == E.PersonalZoneMedalShowType.Season)
   self.uiBinder.Ref:SetVisible(self.uiBinder.loopscroll_history, self.selectMedalClassify_ == E.PersonalZoneMedalShowType.History)
-  self.configs_ = self.personalZoneVM_.GetMedalConfig(self.selectMedalClassify_, true)
-  if self.configs_ then
+  local configs = self.personalZoneVM_.GetMedalConfig(self.selectMedalClassify_, true)
+  if configs then
+    self.configs_ = {}
+    for _, v in ipairs(configs) do
+      if v.NotUnlock and v.NotUnlock == 1 then
+        local itemsCount = self.itemsVM_.GetItemTotalCount(v.Id)
+        if itemsCount and 0 < itemsCount then
+          table.insert(self.configs_, v)
+        end
+      else
+        table.insert(self.configs_, v)
+      end
+    end
     table.sort(self.configs_, function(a, b)
       local hasA = self.personalZoneVM_.HasMedal(a.Id) and 0 or 1
       local hasB = self.personalZoneVM_.HasMedal(b.Id) and 0 or 1
       if hasA == hasB then
-        return a.Id < b.Id
+        if a.Sort == b.Sort then
+          return a.Id < b.Id
+        else
+          return a.Sort < b.Sort
+        end
       else
         return hasA < hasB
       end
@@ -138,10 +154,7 @@ function Personalzone_badge_subView:refreshInfo()
   self.uiBinder.img_icon03:SetImage(config.Image)
   self.uiBinder.lab_title.text = config.Name
   if self.personalZoneVM_.HasMedal(self.selectMedalId_) then
-    local itemVM = Z.VMMgr.GetVM("items")
-    self.uiBinder.lab_time.text = Lang("GetTime", {
-      val = itemVM.GetSingleItemCreateTime(E.BackPackItemPackageType.Personalzone, self.selectMedalId_)
-    })
+    self.uiBinder.lab_time.text = ""
     self.uiBinder.btn_use.Ref.UIComp:SetVisible(false)
   else
     self.uiBinder.btn_use.Ref.UIComp:SetVisible(true)

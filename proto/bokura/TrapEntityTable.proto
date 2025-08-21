@@ -32,8 +32,6 @@ message TrapEntityTableBase {
     int32 SourceType = 380;
     int32 DefaultState = 1528;
 }
-
 message TrapEntityTableMgr {
-    map<int32, .bokura.TrapEntityTableBase> datas = 1;
+    repeated bokura.TrapEntityTableMgr.DatasEntry datas = 1;
 }
-

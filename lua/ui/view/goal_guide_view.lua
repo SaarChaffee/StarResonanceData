@@ -53,7 +53,7 @@ function GoalGuideView:initFlagUnitsBySource(src)
   self.flagUnitNameDict_[src] = {}
   Z.CoroUtil.create_coro_xpcall(function()
     for idx, info in ipairs(goalList) do
-      if info.IsShowTrackFalgUI then
+      if info.IsShowTrackFlagUI then
         local name = src * 100 + info.Uid .. tostring(info.PosType)
         table.insert(self.flagUnitNameDict_[src], name)
         local unit = self:AsyncLoadUiUnit(GUIDE_FLAG_PATH, name, self.uiBinder.Trans)
@@ -88,8 +88,8 @@ function GoalGuideView:refreshQuestGuideIcon(isHideEffect)
     return
   end
   local nameList = table.zclone(self.flagUnitNameDict_[E.GoalGuideSource.Quest])
-  local questDetailVM = Z.VMMgr.GetVM("questdetail")
-  local path = questDetailVM.GetStateIconByQuestId(self.questData_:GetQuestTrackingId())
+  local questIconVM = Z.VMMgr.GetVM("quest_icon")
+  local path = questIconVM.GetStateIconByQuestId(self.questData_:GetQuestTrackingId())
   if path and path ~= "" then
     for _, name in ipairs(nameList) do
       local unit = self.units[name]

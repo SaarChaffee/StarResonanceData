@@ -7,4 +7,3 @@ import "stru_face_upload_data.proto";
 message GetFaceDataUrlRequest {
     zproto.FaceUploadData faceData = 1;
 }
-

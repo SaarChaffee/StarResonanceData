@@ -16,7 +16,8 @@ E.FishingStage = {
   EndSuccess = 9,
   EndRodBreak = 10,
   EndBuoyDive = 11,
-  Quit = 12
+  Quit = 12,
+  QTEEnd = 13
 }
 E.FishingBtnIconType = {
   HookingUp = 1,
@@ -50,6 +51,7 @@ E.FishingFishType = {
   Halobios = 5,
   Legend = 99
 }
+E.FishingRankType = {World = 0, Union = 1}
 local FishingData = class("FishingData", super)
 
 function FishingData:ctor()
@@ -158,15 +160,15 @@ function FishingData:updateFishingAttr()
   local researchBaseAttr_, researchAddAttr_, fishingRodAttr_
   if self.TargetFish.FishInfo.IfResearch == 1 and #self.TargetFish.FishInfo.FishingTemplateId > 0 then
     local researchLevel_ = self.FishRecordDict[self.TargetFish.FishInfo.FishId].ResearchLevel
-    if 0 < researchLevel_ then
-      local temp_ = Z.TableMgr.GetTable("FishingTemplateTableMgr").GetRow(self.TargetFish.FishInfo.FishingTemplateId[researchLevel_])
+    if 1 < researchLevel_ then
+      local temp_ = Z.TableMgr.GetTable("FishingTemplateTableMgr").GetRow(self.TargetFish.FishInfo.FishingTemplateId[researchLevel_ - 1])
       researchBaseAttr_ = self:fishAttrTemplateFilter(temp_)
     end
   end
   if self.QTEData.UseResearchFish and self.QTEData.UseResearchFish ~= 0 then
     local fishCfg_ = Z.TableMgr.GetTable("FishingTableMgr").GetRow(self.QTEData.UseResearchFish)
     local researchLevel_ = self.FishRecordDict[self.QTEData.UseResearchFish].ResearchLevel
-    local temp_ = Z.TableMgr.GetTable("FishingTemplateTableMgr").GetRow(fishCfg_.FishingTemplateId[researchLevel_])
+    local temp_ = Z.TableMgr.GetTable("FishingTemplateTableMgr").GetRow(fishCfg_.FishingTemplateId[researchLevel_ - 1])
     researchAddAttr_ = self:fishAttrTemplateFilter(temp_)
   end
   if self.FishingRod and self.FishingRod ~= 0 then
@@ -240,7 +242,6 @@ function FishingData:UnInit()
   self.CancelSource:Recycle()
   self.timerMgr:Clear()
   self.timerMgr = nil
-  self.RankDict = {}
   self.PeripheralData = {}
   self.FishRecordDict = {}
   self.QTEData = {}
@@ -402,25 +403,7 @@ function FishingData:UpdateFishRodTension()
   return change
 end
 
-function FishingData:SetRankDict(rankList)
-  self.RankDict = {}
-  local fishAreaTableRows = Z.TableMgr.GetTable("FishingAreaTableMgr").GetDatas()
-  for _, area in pairs(fishAreaTableRows) do
-    self.RankDict[area.SceneObjectId] = {}
-    for _, fish in ipairs(area.FishGroup) do
-      for key, rank_ in pairs(rankList) do
-        if key == fish then
-          self.sortRankList(rank_.worldRank)
-          self.sortRankList(rank_.unionRank)
-          self.RankDict[area.SceneObjectId][fish] = rank_
-          break
-        end
-      end
-    end
-  end
-end
-
-function FishingData.sortRankList(list)
+function FishingData.SortRankList(list)
   table.sort(list, function(a, b)
     if a.size == b.size then
       return a.millisecond < b.millisecond
@@ -430,82 +413,22 @@ function FishingData.sortRankList(list)
   end)
 end
 
-function FishingData:GetRankListByArea(selectArea)
-  local rankDict_ = self.RankDict[selectArea]
-  if rankDict_ == nil or table.zcount(rankDict_) == 0 then
-    logGreen("\229\175\185\229\186\148\230\176\180\229\159\159\230\178\161\230\156\137\230\149\176\230\141\174, areaid: " .. selectArea)
-    return nil
-  end
-  return rankDict_
-end
-
-function FishingData:GetRankListByAreaAndFish(selectArea, fishId, isWorld)
-  if self.RankDict == nil then
-    return nil
-  end
-  local rankDict_ = self.RankDict[selectArea]
-  if rankDict_ == nil or table.zcount(rankDict_) == 0 then
-    logGreen("\229\175\185\229\186\148\230\176\180\229\159\159\230\178\161\230\156\137\230\149\176\230\141\174, areaid: " .. selectArea)
-    return nil
-  end
-  local rankDictFish_ = rankDict_[fishId]
-  if rankDictFish_ == nil or table.zcount(rankDictFish_) == 0 then
-    logGreen("\229\175\185\229\186\148\230\176\180\229\159\159\230\178\161\230\156\137\230\149\176\230\141\174, areaid: " .. selectArea .. "FishId: " .. fishId)
-    return nil
-  end
-  if isWorld then
-    return rankDictFish_.worldRank
-  else
-    return rankDictFish_.unionRank
-  end
-end
-
-function FishingData:GetPlayerRankByAreaAndFish(selectArea, fishId, isWorld)
-  if self.RankDict == nil then
-    return
-  end
-  local rankDict_ = self.RankDict[selectArea]
-  if rankDict_ == nil or table.zcount(rankDict_) == 0 then
-    logGreen("\229\175\185\229\186\148\230\176\180\229\159\159\230\178\161\230\156\137\230\149\176\230\141\174, areaid: " .. selectArea)
-    return
-  end
-  local rankDictFish_ = rankDict_[fishId]
-  if rankDictFish_ == nil or table.zcount(rankDictFish_) == 0 then
-    logGreen("\229\175\185\229\186\148\230\176\180\229\159\159\230\178\161\230\156\137\230\149\176\230\141\174, areaid: " .. selectArea .. "FishId: " .. fishId)
-    return
-  end
-  local rankStr = Z.Global.FishTopN .. "+"
-  local rankList_
-  if isWorld then
-    rankList_ = rankDictFish_.worldRank
-  else
-    rankList_ = rankDictFish_.unionRank
-  end
-  local isTop = false
-  if #rankList_ == 0 then
-    return
-  end
-  for index, v in ipairs(rankList_) do
-    if v.playerData.charId == rankDictFish_.selfInfo.playerData.charId then
-      rankStr = index
-      isTop = index <= 3
-      break
-    end
-  end
-  return rankDictFish_.selfInfo, rankStr, isTop
-end
-
 function FishingData:refreshFishRecordDict()
+  local isFirstFish = self.FishRecordDict == nil or table.zcount(self.FishRecordDict) == 0
   self.FishRecordDict = {}
   local fishingcfgs_ = Z.TableMgr.GetTable("FishingTableMgr").GetDatas()
   for _, v in pairs(fishingcfgs_) do
     local recordData_ = Z.ContainerMgr.CharSerialize.fishSetting.fishRecords[v.FishId]
-    local level_ = 0
+    local level_ = 1
     local progress_ = 0
     local curResearchExpInterval_ = 0
     local needResearchExpInterval_ = 0
     local star_ = 0
     if recordData_ ~= nil then
+      if isFirstFish then
+        isFirstFish = false
+        self:SetActionFishId(v.FishId)
+      end
       if v.IfResearch and 0 < #v.FishingResearchExp then
         for lv = 1, #v.FishingResearchExp do
           if recordData_.research >= v.FishingResearchExp[lv] then
@@ -621,9 +544,14 @@ end
 
 function FishingData.GetStarBySize(size, fishCfg)
   local star_ = 0
-  if fishCfg.Size and 0 < #fishCfg.Size then
+  local sizeTableCount = #fishCfg.Size
+  if fishCfg.Size and 0 < sizeTableCount then
     for k, v in ipairs(fishCfg.Size) do
-      if size > v[1] and size <= v[2] then
+      if size >= v[1] and size < v[2] then
+        star_ = k
+        break
+      end
+      if k == sizeTableCount and size >= v[1] then
         star_ = k
         break
       end
@@ -705,7 +633,13 @@ function FishingData:GetFishingLevelByExp()
 end
 
 function FishingData:GetFishingRodDurability(uuid)
-  local res = 100
+  local itemsVM_ = Z.VMMgr.GetVM("items")
+  local rodConfigId_ = itemsVM_.GetItemTabDataByUuid(uuid).Id
+  local fishingRodRow_ = Z.TableMgr.GetTable("FishingRodTableMgr").GetRow(rodConfigId_)
+  if not fishingRodRow_ then
+    return
+  end
+  local res = fishingRodRow_.Durability
   for key, rod in pairs(Z.ContainerMgr.CharSerialize.fishSetting.fishRodDurability) do
     if key == uuid then
       return res - rod
@@ -741,6 +675,104 @@ end
 function FishingData:RemoveFishingSettingWatcher()
   Z.ContainerMgr.CharSerialize.fishSetting.Watcher:UnregWatcher(self.onDataChange)
   Z.EventMgr:Remove(Z.ConstValue.LanguageChange, self.onDataChange)
+end
+
+function FishingData:GetFishingRankRewardsData(fishId, isWorld)
+  local fishingRankRewards = {}
+  local fishingRankAwardTableRow = Z.TableMgr.GetTable("FishingRankAwardTableMgr").GetRow(fishId)
+  if not fishingRankAwardTableRow then
+    return fishingRankRewards
+  end
+  local rankList = {}
+  local awardList = {}
+  if isWorld then
+    rankList = fishingRankAwardTableRow.WorldRank
+    awardList = fishingRankAwardTableRow.WorldRankAward
+  else
+    rankList = fishingRankAwardTableRow.UnionRank
+    awardList = fishingRankAwardTableRow.UnionRankAward
+  end
+  local lastMaxRank = 0
+  for k, v in pairs(rankList) do
+    local fishingRankRewardData = {}
+    fishingRankRewardData.fishId = fishId
+    fishingRankRewardData.minRank = lastMaxRank
+    lastMaxRank = v
+    fishingRankRewardData.maxRank = v
+    fishingRankRewardData.awardPackageId = awardList[k]
+    table.insert(fishingRankRewards, fishingRankRewardData)
+  end
+  return fishingRankRewards
+end
+
+function FishingData:GetActionFishList()
+  local fishRecordList = {}
+  if not self.FishRecordDict then
+    return fishRecordList
+  end
+  for k, v in pairs(self.FishRecordDict) do
+    if v.FishRecord ~= nil then
+      table.insert(fishRecordList, v.FishCfg)
+    end
+  end
+  return fishRecordList
+end
+
+function FishingData:GetActionIsMaxSize()
+  if not Z.LocalUserDataMgr.ContainsByLua(E.LocalUserDataType.Character, "FishingActionIsMaxSize") then
+    return true
+  end
+  return Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Character, "FishingActionIsMaxSize") > 0
+end
+
+function FishingData:SetActionIsMaxSize(isMaxSize)
+  Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Character, "FishingActionIsMaxSize", isMaxSize and 1 or 0)
+end
+
+function FishingData:GetCurActionSize()
+  local isMaxSize = self:GetActionIsMaxSize()
+  local fishID = self:GetActionFishId()
+  if self.FishRecordDict[fishID] and self.FishRecordDict[fishID].FishRecord then
+    return isMaxSize and self.FishRecordDict[fishID].FishRecord.size or self.FishRecordDict[fishID].FishRecord.minSize
+  else
+    return 0
+  end
+end
+
+function FishingData:SetActionFishId(fishId)
+  Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Character, "FishingActionFishId", fishId)
+  Z.EventMgr:Dispatch(Z.ConstValue.Fishing.UpdateActionCurFishId)
+end
+
+function FishingData:GetActionFishId()
+  local firstFishID = 0
+  if 0 >= table.zcount(Z.ContainerMgr.CharSerialize.fishSetting.fishRecords) then
+    return firstFishID
+  end
+  if Z.LocalUserDataMgr.ContainsByLua(E.LocalUserDataType.Character, "FishingActionFishId") then
+    return Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Character, "FishingActionFishId")
+  end
+  for k, v in pairs(Z.ContainerMgr.CharSerialize.fishSetting.fishRecords) do
+    local recordData_ = v
+    if 0 < recordData_.fishId then
+      firstFishID = recordData_.fishId
+      break
+    end
+  end
+  self:SetActionFishId(firstFishID)
+  return firstFishID
+end
+
+function FishingData:GetActionFishModelId()
+  local fishID = self:GetActionFishId()
+  if fishID == 0 then
+    return 0
+  end
+  local fishRow = Z.TableMgr.GetTable("FishingTableMgr").GetRow(fishID)
+  if fishRow == nil then
+    return 0
+  end
+  return fishRow.ModelId
 end
 
 return FishingData

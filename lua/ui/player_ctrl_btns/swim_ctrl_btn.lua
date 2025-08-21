@@ -1,12 +1,13 @@
 local super = require("ui.player_ctrl_btns.player_ctrl_btn_base")
 local SwimCtrlBtn = class("SwimCtrlBtn", super)
-local keyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 
 function SwimCtrlBtn:ctor(key, panel)
   self.uiBinder = nil
   super.ctor(self, key, panel)
   self.uiMaxLayer_ = 0
   self.chargeMax_ = 0
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function SwimCtrlBtn:GetUIUnitPath()
@@ -16,7 +17,7 @@ end
 
 function SwimCtrlBtn:OnActive()
   Z.GuideMgr:SetSteerIdByComp(self.uiBinder.steer_item, E.DynamicSteerType.KeyBoardId, 8)
-  keyIconHelper.InitKeyIcon(self, self.uiBinder.binder_key, 8)
+  self.inputKeyDescComp_:Init(8, self.uiBinder.binder_key)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, false)
   self.uiBinder.event_trigger.onDown:AddListener(function()
     if self.uiBinder == nil then
@@ -35,6 +36,7 @@ function SwimCtrlBtn:OnDeActive()
   self.uiBinder.event_trigger.onDown:RemoveAllListeners()
   self.uiBinder.event_trigger.onUp:RemoveAllListeners()
   self.uiBinder.effect_click:SetEffectGoVisible(false)
+  self.inputKeyDescComp_:UnInit()
 end
 
 function SwimCtrlBtn:BindLuaAttrWatchers()
@@ -45,6 +47,10 @@ end
 
 function SwimCtrlBtn:onSwimStageChanged()
   if self.uiBinder == nil then
+    return
+  end
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
     return
   end
   local swimStage = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.ESwimStage).Value

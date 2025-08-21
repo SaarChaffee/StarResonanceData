@@ -3,55 +3,32 @@ local SceneLineLoopItem = class("SceneLineLoopItem", super)
 local playerPortraitHgr = require("ui.component.role_info.common_player_portrait_item_mgr")
 
 function SceneLineLoopItem:ctor()
+  self.sceneLineData_ = Z.DataMgr.Get("sceneline_data")
 end
 
 function SceneLineLoopItem:OnInit()
-  self.parentUIView = self.parent.UIView
+  self.parentUIView_ = self.parent.UIView
+  self.nodeHeadList = {
+    self.uiBinder.node_head_1,
+    self.uiBinder.node_head_2,
+    self.uiBinder.node_head_3,
+    self.uiBinder.node_head_4
+  }
 end
 
 function SceneLineLoopItem:OnRefresh(data)
-  self.data = data
-  self.uiBinder.img_icon:SetImage(data.lineColor)
-  self.uiBinder.lab_line_num.text = data.lineName
-  self:setPlayerHead(self.uiBinder.node_head_1, 1)
-  self:setPlayerHead(self.uiBinder.node_head_2, 2)
-  self:setPlayerHead(self.uiBinder.node_head_3, 3)
-  self:SelectState()
-end
-
-function SceneLineLoopItem:setPlayerHead(node_head, index)
-  node_head.img_bg:RemoveAllListeners()
-  if self.data.teamFriendSocialDatas[index] then
-    Z.CoroUtil.create_coro_xpcall(function()
-      node_head.Ref.UIComp:SetVisible(true)
-      playerPortraitHgr.InsertNewPortraitBySocialData(node_head, self.data.teamFriendSocialDatas[index], function()
-        self:showIdCard(index)
-      end)
-    end)()
+  self.data_ = data
+  self.uiBinder.icon_state:ChangeStateByKey(self:getIconStateKey(data.status))
+  local param = {
+    val = data.lineId
+  }
+  if data.status == E.SceneLineState.SceneLineStatusRecycle then
+    self.uiBinder.lab_line_num.text = Lang("LineRecycleNote", param)
   else
-    node_head.Ref.UIComp:SetVisible(false)
+    self.uiBinder.lab_line_num.text = Lang("Line", param)
   end
-end
-
-function SceneLineLoopItem:showIdCard(index)
-  Z.CoroUtil.create_coro_xpcall(function()
-    local charId = self.data.teamFriendSocialDatas[index].charId
-    if charId and 0 < charId then
-      Z.VMMgr.GetVM("idcard").AsyncGetCardData(charId, self.parentUIView.cancelSource:CreateToken())
-    end
-  end)()
-end
-
-function SceneLineLoopItem:Selected(isSelected)
-  if isSelected then
-    self.parentUIView:OnSceneLineSelect(self:GetCurData().sceneLineInfo.lineId)
-  end
-  self:SelectState()
-end
-
-function SceneLineLoopItem:SelectState()
-  local isSelected = self.IsSelected
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, isSelected)
+  self:refreshTeamPlayerPortrait()
+  self:refreshSelectedUI()
 end
 
 function SceneLineLoopItem:OnSelected(isSelected)
@@ -59,11 +36,52 @@ function SceneLineLoopItem:OnSelected(isSelected)
   if curData == nil then
     return
   end
-  self.data = curData
-  self:Selected(isSelected)
+  if isSelected then
+    self.parentUIView_:OnSceneLineSelect(curData)
+  end
+  self:refreshSelectedUI()
 end
 
 function SceneLineLoopItem:OnUnInit()
+end
+
+function SceneLineLoopItem:getIconStateKey(status)
+  if status == E.SceneLineState.SceneLineStatusLow or status == E.SceneLineState.SceneLineStatusMedium then
+    return "Green"
+  elseif status == E.SceneLineState.SceneLineStatusHigh then
+    return "Orange"
+  elseif status == E.SceneLineState.SceneLineStatusFull then
+    return "Red"
+  elseif status == E.SceneLineState.SceneLineStatusRecycle then
+    return "Gray"
+  end
+end
+
+function SceneLineLoopItem:refreshTeamPlayerPortrait()
+  if self.sceneLineData_.SocialDataBySceneGuidDict == nil then
+    return
+  end
+  local socialDataList = self.sceneLineData_.SocialDataBySceneGuidDict[self.data_.sceneGuid]
+  for index, node_head in ipairs(self.nodeHeadList) do
+    if socialDataList == nil then
+      node_head.Ref.UIComp:SetVisible(false)
+    else
+      local socialData = socialDataList[index]
+      if socialData then
+        playerPortraitHgr.InsertNewPortraitBySocialData(self.nodeHeadList[index], socialData, function()
+          local idCardVM = Z.VMMgr.GetVM("idcard")
+          idCardVM.AsyncGetCardData(socialData.basicData.charID, self.parentUIView_.cancelSource:CreateToken())
+        end, self.parentUIView_.cancelSource:CreateToken())
+        node_head.Ref.UIComp:SetVisible(true)
+      else
+        node_head.Ref.UIComp:SetVisible(false)
+      end
+    end
+  end
+end
+
+function SceneLineLoopItem:refreshSelectedUI(isSelected)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.IsSelected)
 end
 
 return SceneLineLoopItem

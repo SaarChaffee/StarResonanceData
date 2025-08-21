@@ -19,8 +19,6 @@ message WeaponStarTableBase {
     mlstring Name = 439;
     mlstring Des = 266;
 }
-
 message WeaponStarTableMgr {
-    map<int32, .bokura.WeaponStarTableBase> datas = 1;
+    repeated bokura.WeaponStarTableMgr.DatasEntry datas = 1;
 }
-

@@ -11,6 +11,7 @@ function UnionData:ctor()
   self.ResourceDict = {}
   self.CacheUnionList = {}
   self.SpeedUpTimes = 0
+  self.ApplyNum = 0
   self.collectionUnionList_ = {}
   self.collectionUnionDict_ = {}
   self.lastServerQueryTimeDict_ = {}
@@ -20,6 +21,7 @@ function UnionData:ctor()
   self.huntRankInfoListMaxCount_ = Z.UnionActivityConfig.HuntListLimitNum
   self.unionCrowFund_ = nil
   self.unionCrowMemberList_ = nil
+  self:ResetUnionSDKGroupData()
 end
 
 function UnionData:Init()
@@ -37,6 +39,9 @@ function UnionData:ClearUnionCacheData()
   self.unionActiveRewardStateDict_ = {}
   self.unionHuntProgressDict_ = nil
   self.unitHuntRankInfo_ = {}
+  self.ApplyNum = 0
+  self:ClearUnionItemCount()
+  self:ResetUnionSDKGroupData()
 end
 
 function UnionData:Clear()
@@ -437,16 +442,61 @@ end
 function UnionData:SetHuntRecommendRedChecked(checked)
   self.recommendRedChecked_ = checked
   if checked then
-    Z.LocalUserDataMgr.SetLong("UnionHuntActivityChecked", math.floor(Z.TimeTools.Now() / 1000))
+    Z.LocalUserDataMgr.SetLongByLua(E.LocalUserDataType.Character, "UnionHuntActivityChecked", math.floor(Z.TimeTools.Now() / 1000))
   end
 end
 
+function UnionData:SetSignRecommendRedChecked(checked)
+  self.recommendSignRedChecked_ = checked
+  if checked then
+    Z.LocalUserDataMgr.SetLongByLua(E.LocalUserDataType.Character, "UnionSignActivityChecked", math.floor(Z.TimeTools.Now() / 1000))
+  end
+end
+
+function UnionData:SignRecommendRedChecked()
+  local lastCheckedTime = Z.LocalUserDataMgr.GetLongByLua(E.LocalUserDataType.Character, "UnionSignActivityChecked", 0)
+  if Z.TimeTools.CheckIsSameDay(math.floor(Z.TimeTools.Now() / 1000), lastCheckedTime) then
+    return true
+  end
+  return self.recommendSignRedChecked_
+end
+
 function UnionData:HuntRecommendRedChecked()
-  local lastCheckedTime = Z.LocalUserDataMgr.GetLong("UnionHuntActivityChecked", 0)
+  local lastCheckedTime = Z.LocalUserDataMgr.GetLongByLua(E.LocalUserDataType.Character, "UnionHuntActivityChecked", 0)
   if Z.TimeTools.CheckIsSameDay(math.floor(Z.TimeTools.Now() / 1000), lastCheckedTime) then
     return true
   end
   return self.recommendRedChecked_
+end
+
+function UnionData:ClearUnionItemCount()
+  local itemsData = Z.DataMgr.Get("items_data")
+  for k, v in pairs(E.UnionResourceId) do
+    itemsData:SetItemTotalCount(v, 0)
+  end
+end
+
+function UnionData:SetUnionAllRiadBossData(unionBossData)
+  self.unionBossData_ = unionBossData
+end
+
+function UnionData:GetUnionAllRiadBossData(bossId)
+  if not self.unionBossData_ then
+    return
+  end
+  if not self.unionBossData_[bossId] then
+    return 0
+  end
+  return self.unionBossData_[bossId].killCnt
+end
+
+function UnionData:ResetUnionSDKGroupData()
+  self.SDKGroupInfo = {
+    BindState = 0,
+    GroupId = "",
+    GroupName = "",
+    GroupRelation = 0
+  }
 end
 
 return UnionData

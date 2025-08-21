@@ -7,38 +7,29 @@ local cJson = require("cjson")
 cJson.encode_sparse_array(true)
 local OnCallStub = function(call)
   xpcall(function()
-    if call:GetMethodId() == 1 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
-      local pbMsg = pb.decode("zproto.MatchNtf.EnterMatchNtf", pbData)
+    if call:GetMethodId() == 4 then
+      local pbData = call:GetCallData()
+      local pbMsg = pb.decode("zproto.MatchNtf.EnterMatchResultNtf", pbData)
       if MessageInspectBridge.InInspectState == true then
-        MessageInspectBridge.HandleReceiveMessage(822849903, 1, cJson.encode(pbMsg), pbData, true)
+        MessageInspectBridge.HandleReceiveMessage(822849903, 4, cJson.encode(pbMsg), pbData, true)
       end
-      impl:EnterMatchNtf(call, pbMsg.vRequest)
+      impl:EnterMatchResultNtf(call, pbMsg.vRequest)
       return
     end
-    if call:GetMethodId() == 2 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
-      local pbMsg = pb.decode("zproto.MatchNtf.CancelMatchNtf", pbData)
+    if call:GetMethodId() == 5 then
+      local pbData = call:GetCallData()
+      local pbMsg = pb.decode("zproto.MatchNtf.CancelMatchResultNtf", pbData)
       if MessageInspectBridge.InInspectState == true then
-        MessageInspectBridge.HandleReceiveMessage(822849903, 2, cJson.encode(pbMsg), pbData, true)
+        MessageInspectBridge.HandleReceiveMessage(822849903, 5, cJson.encode(pbMsg), pbData, true)
       end
-      impl:CancelMatchNtf(call, pbMsg.vRequest)
+      impl:CancelMatchResultNtf(call, pbMsg.vRequest)
       return
     end
-    if call:GetMethodId() == 3 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+    if call:GetMethodId() == 6 then
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.MatchNtf.MatchReadyStatusNtf", pbData)
       if MessageInspectBridge.InInspectState == true then
-        MessageInspectBridge.HandleReceiveMessage(822849903, 3, cJson.encode(pbMsg), pbData, true)
+        MessageInspectBridge.HandleReceiveMessage(822849903, 6, cJson.encode(pbMsg), pbData, true)
       end
       impl:MatchReadyStatusNtf(call, pbMsg.vRequest)
       return

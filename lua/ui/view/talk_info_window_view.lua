@@ -3,20 +3,25 @@ local super = require("ui.ui_view_base")
 local Talk_info_windowView = class("Talk_info_windowView", super)
 
 function Talk_info_windowView:ctor()
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "talk_info_window")
 end
 
 function Talk_info_windowView:OnActive()
-  self.panel.scenemask.SceneMask:SetSceneMaskByKey(self.SceneMaskKey)
-  self:AddClick(self.panel.btn_close.Btn, function()
+  self.uiBinder.scenemask:SetSceneMaskByKey(self.SceneMaskKey)
+  self:AddClick(self.uiBinder.btn_close, function()
     Z.UIMgr:CloseView("talk_info_window")
   end)
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   local msgItem = self.viewData
   local messageRow = msgItem.config
-  self.panel.lab_title.TMPLab.text = Z.TableMgr.DecodeLineBreak(Z.Placeholder.Placeholder(messageRow.ChatName, msgItem.param))
-  self.panel.lab_content.TMPLab.text = Z.TableMgr.DecodeLineBreak(Z.Placeholder.Placeholder(messageRow.Content, msgItem.param))
-  self.panel.scrollview_content.Scroll.verticalNormalizedPosition = 1
+  self.uiBinder.lab_title.text = Z.TableMgr.DecodeLineBreak(Z.Placeholder.Placeholder(messageRow.ChatName, msgItem.param))
+  self.uiBinder.lab_content.text = Z.TableMgr.DecodeLineBreak(Z.Placeholder.Placeholder(messageRow.Content, msgItem.param))
+  self.uiBinder.scrollview_content.verticalNormalizedPosition = 1
 end
 
 function Talk_info_windowView:OnDeActive()

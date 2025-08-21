@@ -14,8 +14,6 @@ message ItemPackageTableBase {
     string Consume = 1838;
     int32 CapacityExtra = 1638;
 }
-
 message ItemPackageTableMgr {
-    map<int32, .bokura.ItemPackageTableBase> datas = 1;
+    repeated bokura.ItemPackageTableMgr.DatasEntry datas = 1;
 }
-

@@ -12,12 +12,12 @@ function skill_slot_vm:OnUIPlayEffect(skillId, slotId, effectName, isRun)
   if skillId and skillId ~= 0 then
     key = skillId
   end
-  Z.EventMgr:Dispatch("UIEffectEventFired", skillId, slotId, effectName, isRun)
   if isRun == false then
     self:RemoveEffectInfo(key, effectName)
   else
     self:AddEffectInfo(key, effectName)
   end
+  Z.EventMgr:Dispatch("UIEffectEventFired", skillId, slotId, effectName, isRun)
 end
 
 function skill_slot_vm:AddEffectInfo(key, effectName)
@@ -34,7 +34,7 @@ function skill_slot_vm:RemoveEffectInfo(key, effectName)
   if self.effectList[key] == nil then
     return
   end
-  for i = 1, #self.effectList[key] do
+  for i = #self.effectList[key], 1, -1 do
     if self.effectList[key][i] == effectName then
       self.effectList[key][i] = nil
       break

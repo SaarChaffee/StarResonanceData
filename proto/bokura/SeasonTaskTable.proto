@@ -16,8 +16,6 @@ message SeasonTaskTableBase {
     int_array QuickJumpParam = 1617;
     string Desc = 1953;
 }
-
 message SeasonTaskTableMgr {
-    map<int32, .bokura.SeasonTaskTableBase> datas = 1;
+    repeated bokura.SeasonTaskTableMgr.DatasEntry datas = 1;
 }
-

@@ -11,4 +11,3 @@ enum EDamageAreaType {
     DamageSphere = 5;
     DamagePoint = 6;
 }
-

@@ -25,8 +25,8 @@ function Menu_featureView:OnSelectFaceStyle(faceId)
 end
 
 function Menu_featureView:OnActive()
-  self:InitSlider(self.uiBinder.node_scale, 0, 10, 0)
-  self:InitSlider(self.uiBinder.node_rotation, 0, 10, 0)
+  self:refreshScale()
+  self:refreshRotate()
   local x, y = self.uiBinder.img_control_panel_ref:GetSize(nil, nil)
   self.controlPanelW_ = x
   self.controlPanelH_ = y
@@ -37,22 +37,24 @@ function Menu_featureView:OnActive()
   self.uiBinder.img_control_panel.onDrag:AddListener(function(go, pointerData)
     self:updatePointerPos(pointerData)
   end)
+  self.uiBinder.img_control_panel.onEndDrag:AddListener(function(go, pointerData)
+    self.faceVM_.CacheFaceData()
+  end)
   self.uiBinder.img_control_panel.onClick:AddListener(function(go, pointerData)
     self:updatePointerPos(pointerData)
   end)
   self:InitSliderFunc(self.uiBinder.node_scale.slider_sens, function(value)
     self.uiBinder.node_scale.lab_value.text = string.format("%d", math.floor(value + 0.5))
-    value = self:CheckValueRang(value, self.featureDataAttr_, self.faceData_.FaceDef.EAttrParamFaceHandleData.Scale)
-    self.faceVM_.SetFaceOptionByAttrType(self.featureDataAttr_, value / 10, self.faceData_.FaceDef.EAttrParamFaceHandleData.Scale)
+    self:SetFaceAttrValueByShowValue(value, self.featureDataAttr_, self.faceData_.FaceDef.EAttrParamFaceHandleData.Scale)
   end, self.featureDataAttr_, self.isScale_)
   self:InitSliderFunc(self.uiBinder.node_rotation.slider_sens, function(value)
     self.uiBinder.node_rotation.lab_value.text = string.format("%d", math.floor(value + 0.5))
-    value = self:CheckValueRang(value, self.featureDataAttr_, self.faceData_.FaceDef.EAttrParamFaceHandleData.Rotation)
-    self.faceVM_.SetFaceOptionByAttrType(self.featureDataAttr_, value / 10, self.faceData_.FaceDef.EAttrParamFaceHandleData.Rotation)
+    self:SetFaceAttrValueByShowValue(value, self.featureDataAttr_, self.faceData_.FaceDef.EAttrParamFaceHandleData.Rotation)
   end, self.featureDataAttr_, self.isRotation_)
   self.uiBinder.tog_open:AddListener(function(isOn)
     self.faceVM_.RecordFaceEditorCommand(self.featureDataAttr_)
     self.faceVM_.SetFaceOptionByAttrType(self.featureDataAttr_, isOn, self.faceData_.FaceDef.EAttrParamFaceHandleData.IsFlip)
+    self.faceVM_.CacheFaceData()
   end)
 end
 
@@ -91,15 +93,11 @@ function Menu_featureView:refreshMove()
 end
 
 function Menu_featureView:refreshScale()
-  local scale = self.faceVM_.GetFaceOptionByAttrType(self.featureDataAttr_, self.faceData_.FaceDef.EAttrParamFaceHandleData.Scale)
-  local value = self:GetValueInRang(scale, self.featureDataAttr_, self.faceData_.FaceDef.EAttrParamFaceHandleData.Scale)
-  self:SetSliderValueWithoutNotify(self.uiBinder.node_scale, value)
+  self:InitSlider(self.uiBinder.node_scale, self.featureDataAttr_, self.faceData_.FaceDef.EAttrParamFaceHandleData.Scale)
 end
 
 function Menu_featureView:refreshRotate()
-  local rot = self.faceVM_.GetFaceOptionByAttrType(self.featureDataAttr_, self.faceData_.FaceDef.EAttrParamFaceHandleData.Rotation)
-  local value = self:GetValueInRang(rot, self.featureDataAttr_, self.faceData_.FaceDef.EAttrParamFaceHandleData.Rotation)
-  self:SetSliderValueWithoutNotify(self.uiBinder.node_rotation, value)
+  self:InitSlider(self.uiBinder.node_rotation, self.featureDataAttr_, self.faceData_.FaceDef.EAttrParamFaceHandleData.Rotation)
 end
 
 function Menu_featureView:refreshBack()
@@ -109,29 +107,33 @@ end
 function Menu_featureView:refreshUIBySelectedStyle(faceId)
   local isShow = 0 < faceId
   self.uiBinder.cont_palette.Ref.UIComp:SetVisible(isShow)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.group_pos_control, isShow)
+  local isShowFunc = false
   if isShow then
     local row = Z.TableMgr.GetTable("FaceStickerTableMgr").GetRow(faceId)
     if row then
       if row.Move == 1 then
+        isShowFunc = true
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_pos_control, true)
         self:refreshMove()
       else
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_pos_control, false)
       end
       if row.Scale == 1 then
+        isShowFunc = true
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_scale.Ref, true)
         self:refreshScale()
       else
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_scale.Ref, false)
       end
       if row.Rotate == 1 then
+        isShowFunc = true
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_rotation.Ref, true)
         self:refreshRotate()
       else
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_rotation.Ref, false)
       end
       if row.Back == 1 then
+        isShowFunc = true
         self.uiBinder.Ref:SetVisible(self.uiBinder.tog_open, true)
         self:refreshBack()
       else
@@ -153,6 +155,7 @@ function Menu_featureView:refreshUIBySelectedStyle(faceId)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_rotation.Ref, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.tog_open, false)
   end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.group_pos_control, isShowFunc)
 end
 
 function Menu_featureView:updatePointerPos(pointerData)

@@ -83,10 +83,10 @@ function ret.ParseFightAttrTips(attrId, value, forceApplySymbol)
   local tipTemplate = fightAttr.TipTemplate
   local str = ret.ParseFightAttrNumber(attrId, value)
   if value == 0 and forceApplySymbol then
-    str = string.zconcat("+", str)
+    str = Lang("PositiveNumber", {val = str})
   end
   if ret.IsApplyExtraText(attrId) then
-    str = string.zconcat(Lang("EquipExtraText"), str)
+    str = Lang("EquipExtraTextWithValue", {val = str})
   end
   local view = template.new(tipTemplate)
   view.attr = {value = str}
@@ -120,7 +120,7 @@ function ret.ParseFightAttrTipsAndOnlyShowRange(attrId, rangeValuse)
   if minStr == maxStr then
     str = minStr
   else
-    str = string.zconcat(minStr, "~", maxStr)
+    str = Lang("AttrRange", {min = minStr, max = maxStr})
   end
   local view = template.new(tipTemplate)
   view.attr = {value = str}
@@ -138,44 +138,56 @@ function ret.ParseTalentBasicAttrEffectTips(basicAttrEffectId, basicAttrEffectTa
     if #basicAttrEffectTableRow.AttrStrengthTable > 0 then
       local str = ret.ParseTalentBasicAttrEffectDes(basicAttrEffectTableRow.AttrStrengthTable)
       if basicAttrEffectTableRow.AttrStrengthMax and 0 < basicAttrEffectTableRow.AttrStrengthMax then
-        limitStr = string.format(Lang("EffectUpperLimit"), basicAttrEffectTableRow.AttrStrengthMax)
+        limitStr = Lang("EffectUpperLimit", {
+          val = basicAttrEffectTableRow.AttrStrengthMax
+        })
       end
-      table.insert(effectList, string.format(Lang("BasicAttrEffect_1"), str, limitStr))
+      table.insert(effectList, Lang("BasicAttrEffect_1", {str = str, limit = limitStr}))
     end
     if 0 < #basicAttrEffectTableRow.AttrVitalityTable then
       local str = ret.ParseTalentBasicAttrEffectDes(basicAttrEffectTableRow.AttrVitalityTable)
       if basicAttrEffectTableRow.AttrVitalityMax and 0 < basicAttrEffectTableRow.AttrVitalityMax then
-        limitStr = string.format(Lang("EffectUpperLimit"), basicAttrEffectTableRow.AttrVitalityMax)
+        limitStr = Lang("EffectUpperLimit", {
+          val = basicAttrEffectTableRow.AttrVitalityMax
+        })
       end
-      table.insert(effectList, string.format(Lang("BasicAttrEffect_2"), str, limitStr))
+      table.insert(effectList, Lang("BasicAttrEffect_2", {str = str, limit = limitStr}))
     end
     if 0 < #basicAttrEffectTableRow.AttrDexterityTable then
       local str = ret.ParseTalentBasicAttrEffectDes(basicAttrEffectTableRow.AttrDexterityTable)
       if basicAttrEffectTableRow.AttrDexterityMax and 0 < basicAttrEffectTableRow.AttrDexterityMax then
-        limitStr = string.format(Lang("EffectUpperLimit"), basicAttrEffectTableRow.AttrDexterityMax)
+        limitStr = Lang("EffectUpperLimit", {
+          val = basicAttrEffectTableRow.AttrDexterityMax
+        })
       end
-      table.insert(effectList, string.format(Lang("BasicAttrEffect_3"), str, limitStr))
+      table.insert(effectList, Lang("BasicAttrEffect_3", {str = str, limit = limitStr}))
     end
     if 0 < #basicAttrEffectTableRow.AttrIntelligenceTable then
       local str = ret.ParseTalentBasicAttrEffectDes(basicAttrEffectTableRow.AttrIntelligenceTable)
       if basicAttrEffectTableRow.AttrIntelligenceMax and 0 < basicAttrEffectTableRow.AttrIntelligenceMax then
-        limitStr = string.format(Lang("EffectUpperLimit"), basicAttrEffectTableRow.AttrIntelligenceMax)
+        limitStr = Lang("EffectUpperLimit", {
+          val = basicAttrEffectTableRow.AttrIntelligenceMax
+        })
       end
-      table.insert(effectList, string.format(Lang("BasicAttrEffect_4"), str, limitStr))
+      table.insert(effectList, Lang("BasicAttrEffect_4", {str = str, limit = limitStr}))
     end
     if 0 < #basicAttrEffectTableRow.AttrMindTable then
       local str = ret.ParseTalentBasicAttrEffectDes(basicAttrEffectTableRow.AttrMindTable)
       if basicAttrEffectTableRow.AttrMindMax and 0 < basicAttrEffectTableRow.AttrMindMax then
-        limitStr = string.format(Lang("EffectUpperLimit"), basicAttrEffectTableRow.AttrMindMax)
+        limitStr = Lang("EffectUpperLimit", {
+          val = basicAttrEffectTableRow.AttrMindMax
+        })
       end
-      table.insert(effectList, string.format(Lang("BasicAttrEffect_5"), str, limitStr))
+      table.insert(effectList, Lang("BasicAttrEffect_5", {str = str, limit = limitStr}))
     end
     if 0 < #basicAttrEffectTableRow.AttrObserveTable then
       local str = ret.ParseTalentBasicAttrEffectDes(basicAttrEffectTableRow.AttrObserveTable)
       if basicAttrEffectTableRow.AttrObserveMax and 0 < basicAttrEffectTableRow.AttrObserveMax then
-        limitStr = string.format(Lang("EffectUpperLimit"), basicAttrEffectTableRow.AttrObserveMax)
+        limitStr = Lang("EffectUpperLimit", {
+          val = basicAttrEffectTableRow.AttrObserveMax
+        })
       end
-      table.insert(effectList, string.format(Lang("BasicAttrEffect_6"), str, limitStr))
+      table.insert(effectList, Lang("BasicAttrEffect_6", {str = str, limit = limitStr}))
     end
   end
   return table.concat(effectList, "\n")
@@ -191,13 +203,41 @@ function ret.ParseTalentBasicAttrEffectDes(basicAttrEffectList)
       local valueStr = func(fightAttrPrecise, true)
       local tempStr = string.format(" %s %s", Z.RichTextHelper.ApplyStyleTag(valueStr, E.TextStyleTag.TipsGreen), fightAttrData.OfficialName)
       if i ~= 1 then
-        str = string.zconcat(str, ",", tempStr)
+        str = Lang("ConcatenateWithComma", {prev = str, curr = tempStr})
       else
         str = tempStr
       end
     end
   end
   return str
+end
+
+function ret.GetRecommendFightAttrId()
+  local talentVm = Z.VMMgr.GetVM("talent_skill")
+  local talentStageId = talentVm.GetCurProfessionTalentStage()
+  local talentStageRow = Z.TableMgr.GetTable("TalentStageTableMgr").GetRow(talentStageId)
+  if talentStageRow ~= nil then
+    return talentStageRow.RecommendAttrList, talentStageRow.MainAttrShow
+  end
+  return {}, {}
+end
+
+function ret.ShowRecommendAttrsTips(root, recommendAttrs)
+  local talentVm = Z.VMMgr.GetVM("talent_skill")
+  local talentStageName = talentVm.GetCurProfessionTalentStageName()
+  local title = Lang("talentName", {val = talentStageName})
+  local desc = Lang("recommend_attrs")
+  for index, value in ipairs(recommendAttrs) do
+    local fightAttrCfg = Z.TableMgr.GetTable("FightAttrTableMgr").GetRow(value)
+    if fightAttrCfg then
+      if index == 1 then
+        desc = desc .. fightAttrCfg.OfficialName
+      else
+        desc = string.zconcat(desc, "\\", fightAttrCfg.OfficialName)
+      end
+    end
+  end
+  Z.CommonTipsVM.ShowTipsTitleContent(root, title, desc)
 end
 
 return ret

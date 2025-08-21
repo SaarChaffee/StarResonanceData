@@ -6,11 +6,16 @@ local invokeEvtFunc = function(func, object, ...)
     func(...)
   end
 end
+local errorHandler = function(err)
+  logError("[Event] Error in invokeEvtFunc: " .. tostring(err))
+end
 
 function EventDispatcher:ctor(invokeFunc, isCoroutine)
   self.eventTable_ = {}
   if invokeFunc == nil then
-    invokeFunc = invokeEvtFunc
+    function invokeFunc(func, object, ...)
+      local success, result = xpcall(invokeEvtFunc, errorHandler, func, object, ...)
+    end
   end
   if isCoroutine then
     invokeFunc = Z.CoroUtil.create_coro_xpcall(invokeFunc)
@@ -18,20 +23,20 @@ function EventDispatcher:ctor(invokeFunc, isCoroutine)
   self.invokeFunc = invokeFunc
 end
 
-function EventDispatcher:Add(evtName, func, obj)
+function EventDispatcher:Add(evtName, func, object)
   if not evtName then
     logError("[EventDispatcher:Add]evtName is invalid:{0}", evtName)
     return
   end
-  obj = obj or "_EDOBJ"
+  object = object or "_EDOBJ"
   if not self.eventTable_[evtName] then
     self.eventTable_[evtName] = {}
   end
   local eventDatas = self.eventTable_[evtName]
-  if not eventDatas[obj] then
-    eventDatas[obj] = {}
+  if not eventDatas[object] then
+    eventDatas[object] = {}
   end
-  eventDatas[obj][func] = true
+  eventDatas[object][func] = true
 end
 
 function EventDispatcher:Dispatch(evtName, ...)

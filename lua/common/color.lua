@@ -5,10 +5,10 @@ local hex2Rgba = function(hexStr)
     table.insert(pams_, string.sub(hexStr, i, i + 1))
   end
   local colorRgb = {}
-  colorRgb.r = tonumber(pams_[1] or "0", 16)
-  colorRgb.g = tonumber(pams_[2] or "0", 16)
-  colorRgb.b = tonumber(pams_[3] or "0", 16)
-  colorRgb.a = tonumber(pams_[4] or "FF", 16)
+  colorRgb.r = tonumber(pams_[1] or "0", 16) or "0"
+  colorRgb.g = tonumber(pams_[2] or "0", 16) or "0"
+  colorRgb.b = tonumber(pams_[3] or "0", 16) or "0"
+  colorRgb.a = tonumber(pams_[4] or "FF", 16) or "0"
   return colorRgb
 end
 local getDefaultHSV = function()

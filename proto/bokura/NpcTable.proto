@@ -55,8 +55,6 @@ message NpcTableBase {
     int_table ShowStatusInfo = 1473;
     int_table ShowStatusTransition = 1771;
 }
-
 message NpcTableMgr {
-    map<int32, .bokura.NpcTableBase> datas = 1;
+    repeated bokura.NpcTableMgr.DatasEntry datas = 1;
 }
-

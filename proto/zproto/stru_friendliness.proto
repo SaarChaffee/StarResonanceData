@@ -7,7 +7,6 @@ message Friendliness {
     int32 curExp = 2;
     int64 updateTimeStamp = 3;
     int32 todayTotalAddExps = 4;
-    map<int32, int32> todayPartAddExps = 5;
+    repeated zproto.Friendliness.TodayPartAddExpsEntry todayPartAddExps = 5;
     repeated int32 gotLevelAwards = 6;
 }
-

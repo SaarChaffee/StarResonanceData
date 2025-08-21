@@ -12,8 +12,6 @@ message MapActivityTableBase {
     int32 FunctionId = 149;
     int32 RedDotId = 754;
 }
-
 message MapActivityTableMgr {
-    map<int32, .bokura.MapActivityTableBase> datas = 1;
+    repeated bokura.MapActivityTableMgr.DatasEntry datas = 1;
 }
-

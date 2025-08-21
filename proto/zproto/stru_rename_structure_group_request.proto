@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message RenameStructureGroupRequest {
+    int64 groupId = 1;
+    string groupName = 2;
+    bool isOuter = 3;
+}

@@ -80,6 +80,39 @@ local mergeDataFuncs = {
       container.levelAwardFlag.__data__[dk] = dv
       container.Watcher:MarkMapDirty("levelAwardFlag", dk, last)
     end
+  end,
+  [6] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt64(buffer)
+      container.monsterHuntRefrshTime.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("monsterHuntRefrshTime", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.monsterHuntRefrshTime.__data__[dk]
+      container.monsterHuntRefrshTime.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("monsterHuntRefrshTime", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt64(buffer)
+      local last = container.monsterHuntRefrshTime.__data__[dk]
+      container.monsterHuntRefrshTime.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("monsterHuntRefrshTime", dk, last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -121,6 +154,9 @@ local resetData = function(container, pbData)
   if not pbData.levelAwardFlag then
     container.__data__.levelAwardFlag = {}
   end
+  if not pbData.monsterHuntRefrshTime then
+    container.__data__.monsterHuntRefrshTime = {}
+  end
   setForbidenMt(container)
   container.monsterHuntList.__data__ = {}
   setForbidenMt(container.monsterHuntList)
@@ -132,6 +168,9 @@ local resetData = function(container, pbData)
   container.levelAwardFlag.__data__ = pbData.levelAwardFlag
   setForbidenMt(container.levelAwardFlag)
   container.__data__.levelAwardFlag = nil
+  container.monsterHuntRefrshTime.__data__ = pbData.monsterHuntRefrshTime
+  setForbidenMt(container.monsterHuntRefrshTime)
+  container.__data__.monsterHuntRefrshTime = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -230,6 +269,27 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  if container.monsterHuntRefrshTime ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.monsterHuntRefrshTime) do
+      data[key] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.monsterHuntRefrshTime = {
+      fieldId = 6,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.monsterHuntRefrshTime = {
+      fieldId = 6,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -243,12 +303,16 @@ local new = function()
     },
     levelAwardFlag = {
       __data__ = {}
+    },
+    monsterHuntRefrshTime = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.monsterHuntList)
   setForbidenMt(ret.levelAwardFlag)
+  setForbidenMt(ret.monsterHuntRefrshTime)
   return ret
 end
 return {New = new}

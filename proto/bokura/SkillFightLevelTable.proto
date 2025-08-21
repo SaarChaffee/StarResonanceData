@@ -16,8 +16,6 @@ message SkillFightLevelTableBase {
     string_table FloatParameter = 1246;
     int_array ShowParameter = 661;
 }
-
 message SkillFightLevelTableMgr {
-    map<int32, .bokura.SkillFightLevelTableBase> datas = 1;
+    repeated bokura.SkillFightLevelTableMgr.DatasEntry datas = 1;
 }
-

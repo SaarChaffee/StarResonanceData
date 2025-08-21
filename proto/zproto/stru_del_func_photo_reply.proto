@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message DelFuncPhotoReply {
-    int32 errCode = 1;
-}
-

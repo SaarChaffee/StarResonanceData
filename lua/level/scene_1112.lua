@@ -7,20 +7,10 @@ end
 function Scene:LoadComplete()
 end
 
-Scene.Seasons = {}
+Scene.Seasons = {2}
 
 function Scene:InitEvents()
   self.EventItems = {}
-  self.EventItems[100829] = {
-    eventType = E.LevelEventType.TriggerEvent,
-    enable = true,
-    group = 0,
-    eventId = 100829,
-    count = -1,
-    action = function(localSelf)
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("HeroDungeon_Tower/Guide_easy", 0, 0, 20, false, 0)
-    end
-  }
   self.EventItems[1314] = {
     eventType = E.LevelEventType.OnCutsceneEnd,
     enable = true,

@@ -10,7 +10,7 @@ local equip_choice_view_ = require("ui.view.equip_choice_sub_view")
 function Equip_recast_subView:ctor(parent)
   self.parent_ = parent
   self.uiBinder = nil
-  super.ctor(self, "equip_recast_sub", "equip/equip_recast_sub", UI.ECacheLv.None)
+  super.ctor(self, "equip_recast_sub", "equip/equip_recast_sub", UI.ECacheLv.None, true)
   self.equipSystemVM_ = Z.VMMgr.GetVM("equip_system")
   self.itemsVm_ = Z.VMMgr.GetVM("items")
   self.equipVm_ = Z.VMMgr.GetVM("equip_system")
@@ -20,6 +20,7 @@ function Equip_recast_subView:ctor(parent)
   self.equipRecastVm_ = Z.VMMgr.GetVM("equip_recast")
   self.acquireVm_ = Z.VMMgr.GetVM("item_show")
   self.equipAttrParseVM_ = Z.VMMgr.GetVM("equip_attr_parse")
+  self.talentSkillVm_ = Z.VMMgr.GetVM("talent_skill")
   self.tradeVM_ = Z.VMMgr.GetVM("trade")
   self.equipLockView_ = equipLockView.new(self)
   self.filterFuncs_ = {}
@@ -43,6 +44,7 @@ function Equip_recast_subView:initUiBinders()
   self.prefectTipsNode_ = self.uiBinder.node_tips
   self.perfectionNumLab_ = self.uiBinder.lab_perfection_num
   self.progressImg_ = self.uiBinder.img_progress
+  self.progress2Img_ = self.uiBinder.img_progress_02
   self.lockBtn_ = self.uiBinder.btn_lock
   self.lockRect_ = self.uiBinder.rect_lock
   self.equipName_ = self.uiBinder.lab_equip_name
@@ -51,28 +53,13 @@ function Equip_recast_subView:initUiBinders()
   self.nodeItemSub_ = self.uiBinder.node_item_sub
   self.specialRef_ = self.uiBinder.node_prompt_special
   self.basicsRef_ = self.uiBinder.node_prompt_basics
+  self.infoBtn_ = self.uiBinder.btn_info
   self.parent_.uiBinder.ui_depth:AddChildDepth(self.uiBinder.effect)
 end
 
 function Equip_recast_subView:initBtns()
   self:AddClick(self.addBtn_, function()
-    if self.items_ and #self.items_ > 0 then
-      if 0 < self.items_[1].equipAttr.totalRecastCount then
-        Z.TipsVM.ShowTips(150022)
-        return
-      end
-      local selectFun = function()
-        self:selectedConsumeItem(self.items_[1])
-      end
-      local canTrade = self.tradeVM_:CheckItemCanExchange(self.items_[1].configId, self.items_[1].uuid)
-      if canTrade then
-        self.equipVm_.OpenDayDialog(selectFun, Lang("EquipRecastCanTradeTips"), E.DlgPreferencesKeyType.EquipRecastCanTradeTips)
-      else
-        selectFun()
-      end
-    else
-      Z.TipsVM.ShowTips(150010)
-    end
+    self:addOneKey(true)
   end)
   self:AddClick(self.equipIconBtn_, function()
     if self.tipsId_ then
@@ -93,36 +80,101 @@ function Equip_recast_subView:initBtns()
   end)
   self:AddClick(self.addItemBtn_, function()
     self.choiceSubView_:Active({
-      items = self.items_
+      items = self.items_,
+      selectedEquipId = self.selectedItemconfigId_,
+      tipsRoot = self.uiBinder.node_tips_root,
+      title = Lang("SelectEquip"),
+      labInfo = Lang("EquipObtainRecastMaterialTips"),
+      isRecast = true
     }, self.nodeItemSub_.transform)
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+  end)
+  self:AddClick(self.infoBtn_, function()
+    Z.CommonTipsVM.ShowTipsContent(self.infoBtn_.transform, Lang("EquipAttention"))
   end)
   self:AddAsyncClick(self.recastBtn_, function()
-    local func = function()
-      self.lastInfo_ = {}
-      self:setLastAttrData(self.selectedItem_.equipAttr.basicAttr)
-      self:setLastAttrData(self.selectedItem_.equipAttr.advanceAttr)
-      if self.isRecast_ then
-        self:setLastAttrData(self.selectedItem_.equipAttr.recastAttr)
-      end
-      self.uiBinder.effect:SetEffectGoVisible(true)
-      self.uiBinder.effect:Play()
-      self:asyncRecastEquip()
-      self.playEffectTime_ = self.timerMgr:StartTimer(function()
-        self:playAttrUnitEffect()
-        self.playEffectTime_ = nil
-      end, 3, 1)
-      Z.AudioMgr:Play("UI_Event_Equipment_Rebuild")
+    if not self.consumeItem_ then
+      Z.TipsVM.ShowTips(150011)
+      return
     end
-    if self.consumeItem_ and self.selectedItem_ then
-      if self.selectedItem_.bindFlag == 1 and self.consumeItem_.bindFlag == 0 then
-        self.equipVm_.OpenDayDialog(func, Lang("EquipRecastingBindingTips"), E.DlgPreferencesKeyType.EquipRecastingBindingTips)
+    if not self.consumeItem_.IsEquipItem then
+      local configId = self.consumeItem_.ConfigId
+      local totalCount = self.itemsVm_.GetItemTotalCount(configId)
+      if totalCount < self.consumeItem_.ExpendNum then
+        local name = self.itemsVm_.ApplyItemNameWithQualityTag(configId)
+        Z.TipsVM.ShowTips(150015, {val = name})
+        if self.sourceTipsId_ then
+          Z.TipsVM.CloseItemTipsView(self.sourceTipsId_)
+          self.sourceTipsId_ = nil
+        end
+        self.sourceTipsId_ = Z.TipsVM.OpenSourceTips(configId, self.recastBtn_.transform)
         return
       end
-      func()
-    else
-      Z.TipsVM.ShowTips(150011)
+    end
+    local func = function()
+      if self.selectedItem_.bindFlag == 1 and self.consumeItem_.IsEquipItem and self.consumeItem_.Item.bindFlag == 0 then
+        self.equipVm_.OpenDayDialog(function()
+          self:recastEquip()
+        end, Lang("EquipRecastingBindingTips"), E.DlgPreferencesKeyType.EquipRecastingBindingTips)
+        return
+      end
+      self:recastEquip()
+    end
+    if self.consumeItem_ and self.selectedItem_ then
+      if self.selectedItem_.equipAttr.maxPerfectionValue == self.selectedItem_.equipAttr.perfectionValue then
+        self.equipVm_.OpenDayDialog(function()
+          func()
+        end, Lang("EquipRecastMaxPerfect", {
+          val = self.selectedItem_.equipAttr.maxPerfectionValue
+        }), E.DlgPreferencesKeyType.EquipRecastMaxPerfect)
+      else
+        func()
+      end
     end
   end, nil, nil)
+end
+
+function Equip_recast_subView:recastEquip()
+  self.lastInfo_ = {}
+  self:setLastAttrData(self.selectedItem_.equipAttr.basicAttr)
+  self:setLastAttrData(self.selectedItem_.equipAttr.advanceAttr)
+  if self.isRecast_ then
+    self:setLastAttrData(self.selectedItem_.equipAttr.recastAttr)
+  end
+  self:asyncRecastEquip()
+  self.playEffectTime_ = self.timerMgr:StartTimer(function()
+    if self.playEffect_ then
+      Z.TipsVM.ShowTips(150014)
+    end
+    self.playEffectTime_ = nil
+  end, 3, 1)
+  Z.AudioMgr:Play("UI_Event_Equipment_Rebuild")
+end
+
+function Equip_recast_subView:addOneKey(showTips)
+  if self.items_ and #self.items_ > 0 then
+    local selectFun = function()
+      self:selectedConsumeItem(self.items_[1])
+    end
+    if self.items_[1].IsEquipItem then
+      if 0 < self.items_[1].Item.equipAttr.totalRecastCount then
+        if showTips then
+          Z.TipsVM.ShowTips(150022)
+        end
+        return
+      end
+      local canTrade = self.tradeVM_:CheckItemCanExchange(self.items_[1].Item.configId, self.items_[1].Item.uuid)
+      if canTrade and showTips then
+        self.equipVm_.OpenDayDialog(selectFun, Lang("EquipRecastCanTradeTips"), E.DlgPreferencesKeyType.EquipRecastCanTradeTips)
+      else
+        selectFun()
+      end
+    else
+      selectFun()
+    end
+  elseif showTips then
+    Z.TipsVM.ShowTips(150010)
+  end
 end
 
 function Equip_recast_subView:setLastAttrData(attrs)
@@ -134,6 +186,7 @@ end
 
 function Equip_recast_subView:OnActive()
   self.uiBinder.Trans:SetSizeDelta(0, 0)
+  self.parent_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.Ref.UIComp.UIDepth)
   self:initUiBinders()
   self:onStartAnimShow()
   self:initBtns()
@@ -172,8 +225,10 @@ function Equip_recast_subView:OnActive()
 end
 
 function Equip_recast_subView:OnDeActive()
+  Z.CommonTipsVM.CloseTipsContent()
   self.selectedItemUuid_ = 0
-  self.parent_.uiBinder.ui_depth:AddChildDepth(self.uiBinder.effect)
+  self.parent_.uiBinder.ui_depth:RemoveChildDepth(self.uiBinder.effect)
+  self.parent_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.Ref.UIComp.UIDepth)
   self.equip_list_view_:DeActive()
   self.equipLockView_:DeActive()
   self.choiceItemClass_:UnInit()
@@ -187,11 +242,15 @@ function Equip_recast_subView:OnDeActive()
     Z.TipsVM.CloseItemTipsView(self.tipsId_)
     self.tipsId_ = nil
   end
+  if self.sourceTipsId_ then
+    Z.TipsVM.CloseItemTipsView(self.sourceTipsId_)
+    self.sourceTipsId_ = nil
+  end
   self.choiceSubView_:DeActive()
 end
 
 function Equip_recast_subView:asyncRecastEquip()
-  local ret = self.equipRecastVm_.AsyncRecastEquip(self.selectedItemUuid_, self.consumeItem_.uuid, self.cancelSource:CreateToken())
+  local ret = self.equipRecastVm_.AsyncRecastEquip(self.selectedItemUuid_, self.consumeItem_, self.cancelSource:CreateToken())
   if ret == 0 then
     self.recastSurcced_ = true
     self.equip_list_view_:RefreshItemInfoDatas()
@@ -205,6 +264,7 @@ function Equip_recast_subView:asyncRecastEquip()
       itemUuid = self.selectedItemUuid_,
       configId = self.selectedItemconfigId_
     }, self.uiBinder.node_left.transform)
+    self:addOneKey()
   else
     self.playEffect_ = false
   end
@@ -212,8 +272,7 @@ end
 
 function Equip_recast_subView:onItemSelected(itemUuid, configId)
   self.equipName_.text = self.itemsVm_.ApplyItemNameWithQualityTag(configId)
-  local itemsVm = Z.VMMgr.GetVM("items")
-  self.recastItemIcon_:SetImage(itemsVm.GetItemIcon(configId))
+  self.recastItemIcon_:SetImage(self.itemsVm_.GetItemIcon(configId))
   self.playEffect_ = self.selectedItemUuid_ == itemUuid
   if self.playEffect_ and self.recastSurcced_ then
     self.uiBinder.effect:SetEffectGoVisible(true)
@@ -233,29 +292,38 @@ function Equip_recast_subView:onItemSelected(itemUuid, configId)
   self.choiceItemBinder_.Ref.UIComp:SetVisible(false)
   self.uiBinder.Ref:SetVisible(self.addItemBtn_, true)
   self.consumeItem_ = nil
-  self.items_ = self.equipVm_.GetEquipsByConfigId(configId, itemUuid, true)
+  self.items_ = self.equipRecastVm_.GetRecastItems(configId, itemUuid, true)
   if #self.items_ > 0 then
     table.sort(self.items_, function(leftItem, rightItem)
-      if leftItem.equipAttr.totalRecastCount < rightItem.equipAttr.totalRecastCount then
+      if not leftItem.IsEquipItem and rightItem.IsEquipItem then
         return true
-      elseif leftItem.equipAttr.totalRecastCount > rightItem.equipAttr.totalRecastCount then
+      end
+      if leftItem.IsEquipItem and not rightItem.IsEquipItem then
         return false
       end
-      local canTradeLeft = self.tradeVM_:CheckItemCanExchange(leftItem.configId, leftItem.uuid)
-      local canTradeRight = self.tradeVM_:CheckItemCanExchange(rightItem.configId, rightItem.uuid)
+      if not leftItem.IsEquipItem and not rightItem.IsEquipItem then
+        return false
+      end
+      if leftItem.Item.equipAttr.totalRecastCount < rightItem.Item.equipAttr.totalRecastCount then
+        return true
+      elseif leftItem.Item.equipAttr.totalRecastCount > rightItem.Item.equipAttr.totalRecastCount then
+        return false
+      end
+      local canTradeLeft = self.tradeVM_:CheckItemCanExchange(leftItem.Item.configId, leftItem.Item.uuid)
+      local canTradeRight = self.tradeVM_:CheckItemCanExchange(rightItem.Item.configId, rightItem.Item.uuid)
       if canTradeLeft and not canTradeRight then
         return false
       elseif not canTradeLeft and canTradeRight then
         return true
       end
-      if leftItem.bindFlag == 0 and rightItem.bindFlag ~= 0 then
+      if leftItem.Item.bindFlag == 0 and rightItem.Item.bindFlag ~= 0 then
         return true
-      elseif leftItem.bindFlag ~= 0 and rightItem.bindFlag == 0 then
+      elseif leftItem.Item.bindFlag ~= 0 and rightItem.Item.bindFlag == 0 then
         return false
       end
-      if leftItem.equipAttr.perfectionValue < rightItem.equipAttr.perfectionValue then
+      if leftItem.Item.equipAttr.perfectionValue < rightItem.Item.equipAttr.perfectionValue then
         return true
-      elseif leftItem.equipAttr.perfectionValue > rightItem.equipAttr.perfectionValue then
+      elseif leftItem.Item.equipAttr.perfectionValue > rightItem.Item.equipAttr.perfectionValue then
         return false
       end
       return false
@@ -271,8 +339,13 @@ function Equip_recast_subView:onItemSelected(itemUuid, configId)
 end
 
 function Equip_recast_subView:refrshLockInfo()
+  local maxPerfectionValue = self.selectedItem_.equipAttr.maxPerfectionValue == 0 and 100 or self.selectedItem_.equipAttr.maxPerfectionValue
   self.progressImg_.fillAmount = self.selectedItem_.equipAttr.perfectionValue / 100
-  self.perfectionNumLab_.text = self.selectedItem_.equipAttr.perfectionValue
+  self.progress2Img_.fillAmount = (100 - maxPerfectionValue) / 100
+  self.perfectionNumLab_.text = Lang("season_achievement_progress", {
+    val1 = self.selectedItem_.equipAttr.perfectionValue,
+    val2 = maxPerfectionValue
+  })
   local equipRow = Z.TableMgr.GetRow("EquipTableMgr", self.selectedItem_.configId)
   if not equipRow then
     return
@@ -289,46 +362,12 @@ function Equip_recast_subView:refrshLockInfo()
   if not tableRow then
     return
   end
-  local minAttrValue = equipPerfectLibTable.PerfectPart[1]
-  local x = 0
-  local width = self.uiBinder.img_progress.rectTransform.rect.width
-  local str = ""
-  local maxLevel = self.equipCfgData_.RecastMaxLevleTab[equipRow.PerfectLibId]
-  local isMaxLevel = maxLevel == self.selectedItem_.equipAttr.perfectionLevel
-  if tableRow.PerfectType[1] == 1 then
-    self.equipLockTips_ = Lang("EquipPerfectvalExplainTips", {val = minAttrValue}) or ""
-    self.perfectionProgressLab_.text = tableRow.PerfectLibId
-    local nexLevleCount = tableRow.MinimumGuarantee - self.selectedItem_.equipAttr.recastCount
-    if isMaxLevel then
-      str = Lang("EquipRecastPerfectTips3", {val = minAttrValue})
-    else
-      local nextAttrValue = self.equipSystemVM_.GetEquipMinPerfectByLevel(self.selectedItem_.configId, self.selectedItem_.equipAttr.perfectionLevel + 1)
-      str = Lang("EquipRecastPerfectTips2", {
-        val1 = minAttrValue,
-        val2 = nexLevleCount,
-        val3 = nextAttrValue
-      })
-    end
-    x = width / 100 * (minAttrValue - 1)
-  elseif tableRow.PerfectType[1] == 2 then
-    local maxAttrValue = equipPerfectLibTable.PerfectPart[2]
-    self.equipLockTips_ = Lang("EquipPerfectvalExplainTips", {val = maxAttrValue}) or ""
-    if isMaxLevel then
-      str = Lang("EquipRecastPerfectTips3", {val = minAttrValue})
-      x = width * (self.selectedItem_.equipAttr.perfectionValue / 100)
-    else
-      local minValue = tableRow.PerfectType[3]
-      local maxValue = tableRow.PerfectType[4]
-      x = width * (maxAttrValue / 100)
-      str = Lang("EquipRecastPerfectTips1", {
-        val1 = maxAttrValue,
-        val2 = minValue,
-        val3 = maxValue
-      })
-    end
-  end
+  local width = self.progress2Img_.rectTransform.rect.width
+  local x = width * (maxPerfectionValue / 100)
+  local str = Lang("EquipRecastPerfectUpperLimitTips", {val = maxPerfectionValue}) or ""
+  self.equipLockTips_ = Lang("EquipPerfectvalExplainTips", {val = maxPerfectionValue}) or ""
   self.perfectionProgressLab_.text = str
-  self.lockRect_:SetAnchorPosition(x, 5)
+  self.lockRect_:SetAnchorPosition(x - self.lockRect_.rect.width / 2, 5)
 end
 
 function Equip_recast_subView:OnRefresh()
@@ -340,14 +379,22 @@ function Equip_recast_subView:selectedConsumeItem(item)
     self.uiBinder.Ref:SetVisible(self.addItemBtn_, false)
     local itemData = {
       uiBinder = self.choiceItemBinder_,
-      configId = item.configId,
-      uuid = item.uuid,
+      configId = item.ConfigId,
+      itemInfo = item.IsEquipItem and item.Item,
+      uuid = item.IsEquipItem and item.Item.uuid,
+      expendCount = not item.IsEquipItem and item.ExpendNum or nil,
+      labType = not item.IsEquipItem and E.ItemLabType.Expend or nil,
+      lab = self.itemsVm_.GetItemTotalCount(item.ConfigId),
       isSquareItem = true
     }
-    self.choiceItemClass_:Init(itemData)
+    self.choiceItemClass_:RefreshByData(itemData)
     self.choiceItemBinder_.Ref:SetVisible(self.choiceItemBinder_.btn_minus, true)
     self.consumeItem_ = item
   end
+end
+
+function Equip_recast_subView:getAttrData(attrArray)
+  return self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(attrArray)
 end
 
 function Equip_recast_subView:setEquipAttr(equipAttr)
@@ -357,19 +404,66 @@ function Equip_recast_subView:setEquipAttr(equipAttr)
     unit.effect_blue:SetEffectGoVisible(false)
     unit.effect_blue:Stop()
   end
+  self.equipAttr_ = equipAttr
   self.allUnit_ = {}
   self.newAttrData = {}
   self.isRecast_ = self.equipSystemVM_.CheckCanRecast(nil, self.selectedItemconfigId_)
   self:ClearAllUnits()
-  self:loadEquipAttrUnit(equipAttr.basicAttr, self.node_basics_item, "baseAttrInfo", true)
-  self:loadEquipAttrUnit(equipAttr.advanceAttr, self.node_special_item, "advanceAttrInfo", false)
+  local equipTableRow = Z.TableMgr.GetRow("EquipTableMgr", self.selectedItem_.configId)
+  if equipTableRow == nil then
+    return
+  end
+  if equipTableRow.BasicAttrLibId[1] ~= 2 then
+    self:loadEquipAttrUnit(self:getAttrData(equipAttr.basicAttr), self.node_basics_item, "baseAttrInfo", true)
+  else
+    self:loadSchoolAttrUnits(true)
+  end
+  if equipTableRow.AdvancedAttrLibId[1] == 2 then
+    self:loadSchoolAttrUnits(false)
+  else
+    self:loadEquipAttrUnit(self:getAttrData(equipAttr.rareQualityAttr), self.uiBinder.node_special_item, "rareQualityAttrInfo", false, false, true)
+  end
+  self:loadEquipAttrUnit(self:getAttrData(equipAttr.advanceAttr), self.node_special_item, "advanceAttrInfo", false)
   if self.isRecast_ then
-    self:loadEquipAttrUnit(equipAttr.recastAttr, self.node_recast_item, "recastAttrInfo", false, true)
+    self:loadEquipAttrUnit(self:getAttrData(equipAttr.recastAttr), self.node_recast_item, "recastAttrInfo", false, true)
   end
 end
 
-function Equip_recast_subView:loadEquipAttrUnit(attrArray, attrWidget, unitName, isBaseAttr, isRecastAttr)
-  if attrArray == nil or next(attrArray) == nil then
+function Equip_recast_subView:getBreakAttrByLibIds(attrLibIds, randomValue, talentSchoolId)
+  local attrType = 0
+  local basicAttr = {}
+  for index, value in ipairs(attrLibIds) do
+    if index == 1 then
+      attrType = value
+    elseif attrType == 1 then
+      table.zmerge(basicAttr, self.equipAttrParseVM_.GetEquipAttrDataByAttrLibId(value, randomValue))
+    else
+      table.zmerge(basicAttr, self.equipAttrParseVM_.GetEquipAttrDataBySchoolAttrLibId(value, talentSchoolId, index - 1, randomValue))
+    end
+  end
+  return basicAttr
+end
+
+function Equip_recast_subView:loadSchoolAttrUnits(isBasicAttr)
+  local curProfessionId = Z.ContainerMgr.CharSerialize.professionList.curProfessionId
+  local talentSchoolId = self.equipCfgData_.TalentSchoolMap[self.talentSkillVm_.GetProfressionTalentStage(curProfessionId)]
+  if isBasicAttr then
+    local basicAttr = {}
+    if self.equipAttr_ and table.zcount(self.equipAttr_.equipAttrSet.basicAttr) ~= 0 then
+      basicAttr = self.equipAttrParseVM_.GetEquipShoolAttrByAttrDic(self.equipAttr_.equipAttrSet.basicAttr, talentSchoolId)
+      self:loadEquipAttrUnit(basicAttr, self.uiBinder.node_basics_item, "baseAttrInfo", true)
+    end
+  else
+    local advancedAttr = {}
+    if self.equipAttr_ and table.zcount(self.equipAttr_.equipAttrSet.advanceAttr) ~= 0 then
+      advancedAttr = self.equipAttrParseVM_.GetEquipShoolAttrByAttrDic(self.equipAttr_.equipAttrSet.advanceAttr, talentSchoolId)
+      self:loadEquipAttrUnit(advancedAttr, self.uiBinder.node_special_item, "advanceAttrInfo", false)
+    end
+  end
+end
+
+function Equip_recast_subView:loadEquipAttrUnit(attrData, attrWidget, unitName, isBaseAttr, isRecastAttr, isRare)
+  if attrData == nil or table.zcount(attrData) == nil then
     self.uiBinder.Ref:SetVisible(attrWidget, false)
     self.uiBinder.Ref:SetVisible(self.node_special_item, false)
     if isBaseAttr then
@@ -377,70 +471,67 @@ function Equip_recast_subView:loadEquipAttrUnit(attrArray, attrWidget, unitName,
     end
     return
   end
-  local utilPath = Z.ConstValue.Unit_equip_arr_tpl
-  local attrData = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(attrArray)
-  if isRecastAttr then
-    if attrData and 0 < #attrData then
-      self.uiBinder.Ref:SetVisible(self.basicsRef_, false)
-      self.uiBinder.Ref:SetVisible(self.specialRef_, false)
-      for key, value in ipairs(attrData) do
-        local name = table.zconcat({unitName, key}, "recastAttr")
-        local unit = self:AsyncLoadUiUnit(utilPath, name, attrWidget.transform)
-        if unit then
-          self.allUnit_[value.attrId] = unit
-          self.newAttrData[value.attrId] = value.attrValue
-          local fightAttrData = self.fightAttrParseVm_.GetFightAttrTableRow(value.attrId)
-          if fightAttrData then
-            local nameText = fightAttrData.OfficialName
-            local num = value.attrValue
-            unit.Ref:SetVisible(unit.img_bg, true)
-            if not value.IsFitProfessionAttr then
-              nameText = Z.RichTextHelper.ApplyColorTag(nameText, Z.Global.EquipAttColourNotSuitable)
-              num = Z.RichTextHelper.ApplyColorTag(num, Z.Global.EquipAttColourNotSuitable)
-            end
-            unit.lab_name.text = nameText
-            unit.lab_num.text = num
-            unit.Ref:SetVisible(unit.img_up_or_down, false)
-            local itemFunctionTableRow = fightTableMgr.GetRow(fightAttrData.Id, true)
-            unit.img_icon:SetImage(itemFunctionTableRow.Icon)
-          end
-        end
-      end
-    else
-      self.uiBinder.Ref:SetVisible(self.basicsRef_, true)
-      self.uiBinder.Ref:SetVisible(self.specialRef_, true)
-      utilPath = GetLoadAssetPath(Z.ConstValue.Unit_Multi_Line_Labe_Addr)
-      local name = table.zconcat({unitName, "recastAttr"}, "_")
-      local unit = self:AsyncLoadUiUnit(utilPath, name, attrWidget.transform)
-      if unit then
-        unit.Ref:SetVisible(unit.img_bg, true)
-        unit.tmp_Desc.text = Z.RichTextHelper.ApplyColorTag(Lang("EquipNoRecastingState") .. Lang("RecastUnLock"), Z.Global.EquipAttColourNotActive)
-      end
-    end
+  local utilPath
+  if Z.IsPCUI then
+    utilPath = Z.ConstValue.Unit_equip_arr_tpl_pc
   else
-    for key, value in pairs(attrData) do
-      local name = table.zconcat({unitName, key}, "_")
+    utilPath = Z.ConstValue.Unit_equip_arr_tpl
+  end
+  local equipRow
+  if isRare then
+    equipRow = Z.TableMgr.GetRow("EquipTableMgr", self.selectedItemconfigId_)
+    if not equipRow or equipRow.QualitychiIdType == 0 then
+      return
+    end
+  end
+  local recommendAttrs, recommendDescAttrs = self.fightAttrParseVm_.GetRecommendFightAttrId()
+  if attrData and 0 < #attrData then
+    for key, value in ipairs(attrData) do
+      local name = table.zconcat({unitName, key}, isRecastAttr and "recastAttr" or "_")
       local unit = self:AsyncLoadUiUnit(utilPath, name, attrWidget.transform)
       if unit then
-        unit.Ref:SetVisible(unit.img_bg, false)
         self.allUnit_[value.attrId] = unit
         self.newAttrData[value.attrId] = value.attrValue
-        local fightAttrData = self.fightAttrParseVm_.GetFightAttrTableRow(value.attrId)
-        if fightAttrData then
-          local name = fightAttrData.OfficialName
+        do
+          local name = value.des
           local num = value.attrValue
-          unit.Ref:SetVisible(unit.img_up_or_down, false)
-          local itemFunctionTableRow = fightTableMgr.GetRow(fightAttrData.Id, true)
-          unit.img_icon:SetImage(itemFunctionTableRow.Icon)
-          if not value.IsFitProfessionAttr then
-            name = Z.RichTextHelper.ApplyColorTag(name, Z.Global.EquipAttColourNotSuitable)
-            num = Z.RichTextHelper.ApplyColorTag(num, Z.Global.EquipAttColourNotSuitable)
+          unit.Ref:SetVisible(unit.img_bg, isRecastAttr)
+          if isRare then
+            name = Z.RichTextHelper.ApplyColorTag(name, E.EquipRareQualityColor[equipRow.QualitychiIdType])
+            num = Z.RichTextHelper.ApplyColorTag(num, E.EquipRareQualityColor[equipRow.QualitychiIdType])
+            unit.img_icon:SetColorByHex(E.EquipRareQualityColor[equipRow.QualitychiIdType])
           else
+            if not value.IsFitProfessionAttr then
+              name = Z.RichTextHelper.ApplyColorTag(name, Z.Global.EquipAttColourNotSuitable)
+              num = Z.RichTextHelper.ApplyColorTag(num, Z.Global.EquipAttColourNotSuitable)
+            end
+            unit.img_icon:SetColorByHex(E.ColorHexValues.White)
           end
+          unit.Ref:SetVisible(unit.img_praise, table.zcontains(recommendAttrs, value.attrId))
           unit.lab_name.text = name
           unit.lab_num.text = num
+          unit.Ref:SetVisible(unit.img_up_or_down, false)
+          unit.img_icon:SetImage(value.iconPath)
+          self:AddAsyncClick(unit.node_btn, function()
+            self.fightAttrParseVm_.ShowRecommendAttrsTips(unit.Trans, recommendDescAttrs)
+          end)
         end
       end
+    end
+  elseif isRecastAttr then
+    self.uiBinder.Ref:SetVisible(self.basicsRef_, true)
+    self.uiBinder.Ref:SetVisible(self.specialRef_, true)
+    local recastUtilPath
+    if Z.IsPCUI then
+      recastUtilPath = GetLoadAssetPath(Z.ConstValue.Unit_Multi_Line_Labe_Addr_PC)
+    else
+      recastUtilPath = GetLoadAssetPath(Z.ConstValue.Unit_Multi_Line_Labe_Addr)
+    end
+    local name = table.zconcat({unitName, "recastAttr"}, "_")
+    local unit = self:AsyncLoadUiUnit(recastUtilPath, name, attrWidget.transform)
+    if unit then
+      unit.Ref:SetVisible(unit.img_bg, true)
+      unit.tmp_Desc.text = Z.RichTextHelper.ApplyColorTag(Lang("EquipNoRecastingState") .. Lang("RecastUnLock"), Z.Global.EquipAttColourNotActive)
     end
   end
 end
@@ -453,9 +544,11 @@ function Equip_recast_subView:playAttrUnitEffect()
       local lastValue = self.lastInfo_[k]
       if newValue then
         if not lastValue then
+          self.parent_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(unit.effect)
           unit.effect:SetEffectGoVisible(true)
           unit.effect:Play()
         elseif newValue ~= lastValue then
+          self.parent_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(unit.effect_blue)
           unit.effect_blue:SetEffectGoVisible(true)
           unit.effect_blue:Play()
         end

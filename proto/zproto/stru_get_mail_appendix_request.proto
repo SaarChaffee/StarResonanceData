@@ -6,4 +6,3 @@ message GetMailAppendixRequest {
     repeated int64 mailIds = 2;
     bool onlyGet = 3;
 }
-

@@ -7,4 +7,3 @@ message SpeedUpUpgradeUnionBuildingRequest {
     int32 buildingId = 3;
     int32 buildLevel = 4;
 }
-

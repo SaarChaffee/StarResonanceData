@@ -12,8 +12,6 @@ message EquipAttrLibTableBase {
     int_array Attr = 889;
     number_table ValueCal = 605;
 }
-
 message EquipAttrLibTableMgr {
-    map<int32, .bokura.EquipAttrLibTableBase> datas = 1;
+    repeated bokura.EquipAttrLibTableMgr.DatasEntry datas = 1;
 }
-

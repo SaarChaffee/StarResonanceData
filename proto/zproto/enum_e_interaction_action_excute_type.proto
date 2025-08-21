@@ -7,4 +7,3 @@ enum EInteractionActionExcuteType {
     EInteractionActionExcuteTypeServer = 1;
     EInteractionActionExcuteTypeBoth = 2;
 }
-

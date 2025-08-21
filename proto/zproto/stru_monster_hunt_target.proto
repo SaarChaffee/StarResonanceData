@@ -7,7 +7,5 @@ import "stru_dirty_mask.proto";
 
 message MonsterHuntTarget {
     int32 monsterId = 1;
-    map<int32, .zproto.MonsterTargetInfo> targetInfoList = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.MonsterHuntTarget.TargetInfoListEntry targetInfoList = 2;
 }
-

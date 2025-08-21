@@ -3,21 +3,27 @@ syntax = "proto3";
 package zproto;
 
 import "enum_e_actor_state.proto";
+import "enum_e_detach_magnetic_type.proto";
+import "enum_e_error_code.proto";
 import "enum_e_interaction_action.proto";
 import "enum_e_show_piece_type.proto";
 import "stru_accept_profession_quest_request.proto";
 import "stru_accept_quest_info.proto";
-import "stru_accept_transfer_be_leader_reply.proto";
 import "stru_accept_transfer_be_leader_request.proto";
+import "stru_activate_profession_skill_skin_request.proto";
 import "stru_active_profession_talent_request.proto";
+import "stru_activity_action_reply.proto";
+import "stru_activity_action_request.proto";
+import "stru_add_collect_mail_request.proto";
 import "stru_add_collect_union_id_reply.proto";
 import "stru_add_collect_union_id_request.proto";
+import "stru_add_to_structure_group_request.proto";
+import "stru_ao_yi_item_decompose_reply.proto";
 import "stru_ao_yi_item_decompose_request.proto";
 import "stru_ao_yi_item_fusion_request.proto";
 import "stru_ao_yi_skill_remodel_request.proto";
 import "stru_aoyi_skill_active_request.proto";
 import "stru_aoyi_skill_upgrade_request.proto";
-import "stru_apply_be_leader_reply.proto";
 import "stru_apply_be_leader_request.proto";
 import "stru_apply_join_team_reply.proto";
 import "stru_apply_join_team_request.proto";
@@ -28,11 +34,13 @@ import "stru_approval_request_request.proto";
 import "stru_batch_search_union_list_reply.proto";
 import "stru_batch_search_union_list_request.proto";
 import "stru_begin_match_param.proto";
+import "stru_bind_group_with_tencent_reply.proto";
+import "stru_bind_group_with_tencent_request.proto";
 import "stru_buy_battle_pass_info.proto";
 import "stru_buy_shop_item_request.proto";
-import "stru_cancel_collected_union_id_reply.proto";
+import "stru_cancel_act_request.proto";
+import "stru_cancel_collect_mail_request.proto";
 import "stru_cancel_collected_union_id_request.proto";
-import "stru_cancel_effect_buff_reply.proto";
 import "stru_cancel_effect_buff_request.proto";
 import "stru_cancel_match_param.proto";
 import "stru_cancel_red_dot_param.proto";
@@ -41,18 +49,51 @@ import "stru_challenge_affix.proto";
 import "stru_challenge_dungeon_score_award_param.proto";
 import "stru_change_avatar_reply.proto";
 import "stru_change_avatar_request.proto";
-import "stru_change_group_name_reply.proto";
 import "stru_change_group_name_request.proto";
-import "stru_change_group_reply.proto";
 import "stru_change_group_request.proto";
+import "stru_change_team_member_type_request.proto";
 import "stru_color_data.proto";
+import "stru_community_accept_reject_invitation_reply.proto";
+import "stru_community_accept_reject_invitation_request.proto";
+import "stru_community_build_furniture_accelerate_request.proto";
+import "stru_community_build_furniture_cancel_request.proto";
+import "stru_community_build_furniture_receive_request.proto";
+import "stru_community_build_furniture_request.proto";
+import "stru_community_enter_homeland_request.proto";
+import "stru_community_enter_request.proto";
+import "stru_community_get_home_land_base_info_reply.proto";
+import "stru_community_get_home_land_base_info_request.proto";
+import "stru_community_grain_fertilizer_update_structure_reply.proto";
+import "stru_community_grain_gain_update_structure_reply.proto";
+import "stru_community_grain_pick_up_update_structure_reply.proto";
+import "stru_community_grain_pollen_update_structure_reply.proto";
+import "stru_community_grain_seeding_update_structure_reply.proto";
+import "stru_community_grain_update_structure_reply.proto";
+import "stru_community_grain_water_update_structure_reply.proto";
+import "stru_community_invitation_cohabitant_request.proto";
+import "stru_community_invitation_reply.proto";
+import "stru_community_invitation_request.proto";
+import "stru_community_person_data_reply.proto";
+import "stru_community_person_data_request.proto";
+import "stru_community_quit_cohabitant_agree_request.proto";
+import "stru_community_quit_cohabitant_cancel_request.proto";
+import "stru_community_quit_cohabitant_request.proto";
+import "stru_community_set_authority_request.proto";
+import "stru_community_set_check_in_content_request.proto";
+import "stru_community_set_introduction_request.proto";
+import "stru_community_set_name_reply.proto";
+import "stru_community_set_name_request.proto";
+import "stru_community_set_player_authority_request.proto";
+import "stru_community_transfer_ownership_agree_request.proto";
+import "stru_community_transfer_ownership_cancel_request.proto";
+import "stru_community_transfer_ownership_request.proto";
+import "stru_community_unlock_furniture_recipe_request.proto";
 import "stru_confirm_recast_equip_request.proto";
 import "stru_copy_self_photo_to_union_tmp_album_reply.proto";
 import "stru_copy_self_photo_to_union_tmp_album_request.proto";
-import "stru_craft_energy_refresh_reply.proto";
-import "stru_craft_energy_refresh_request.proto";
-import "stru_create_group_reply.proto";
 import "stru_create_group_request.proto";
+import "stru_create_structure_group_reply.proto";
+import "stru_create_structure_group_request.proto";
 import "stru_create_team_reply.proto";
 import "stru_create_team_request.proto";
 import "stru_create_union_album_reply.proto";
@@ -63,48 +104,51 @@ import "stru_create_warehouse_reply.proto";
 import "stru_create_warehouse_request.proto";
 import "stru_dance_active.proto";
 import "stru_dance_begin.proto";
-import "stru_deal_apply_join_reply.proto";
 import "stru_deal_apply_join_request.proto";
+import "stru_decompose_mod_reply.proto";
 import "stru_decompose_mod_request.proto";
-import "stru_delete_friend_reply.proto";
 import "stru_delete_friend_request.proto";
-import "stru_delete_group_reply.proto";
 import "stru_delete_group_request.proto";
 import "stru_delete_item_param.proto";
 import "stru_delete_mail_reply.proto";
 import "stru_delete_mail_request.proto";
-import "stru_delete_union_album_reply.proto";
 import "stru_delete_union_album_request.proto";
-import "stru_delete_union_photo_reply.proto";
 import "stru_delete_union_photo_request.proto";
-import "stru_delete_union_tmp_photo_reply.proto";
 import "stru_delete_union_tmp_photo_request.proto";
-import "stru_deny_all_apply_join_reply.proto";
 import "stru_deny_all_apply_join_request.proto";
-import "stru_deposit_warehouse_reply.proto";
 import "stru_deposit_warehouse_request.proto";
-import "stru_disband_warehouse_reply.proto";
 import "stru_disband_warehouse_request.proto";
+import "stru_dissolve_structure_group_request.proto";
+import "stru_drawn_function_open_award_reply.proto";
 import "stru_dungeon_enter_param.proto";
 import "stru_dungeon_info.proto";
+import "stru_dungeon_ready_info.proto";
 import "stru_dungeon_roll_param.proto";
 import "stru_dungeon_sync_data.proto";
 import "stru_edit_union_album_name_reply.proto";
 import "stru_edit_union_album_name_request.proto";
+import "stru_empty_grpc_msg.proto";
+import "stru_end_bubble_act_request.proto";
+import "stru_enter_act_reply.proto";
+import "stru_enter_act_request.proto";
+import "stru_enter_edit_state_request.proto";
+import "stru_equip_breach_request.proto";
+import "stru_equip_create_reply.proto";
+import "stru_equip_create_request.proto";
+import "stru_equip_decompose_reply.proto";
+import "stru_equip_enchant_request.proto";
 import "stru_equip_profession_info.proto";
 import "stru_equip_slot_refine_reply.proto";
 import "stru_equip_slot_refine_request.proto";
-import "stru_exchange_buy_item_reply.proto";
 import "stru_exchange_buy_item_request.proto";
-import "stru_exchange_care_cancel_reply.proto";
 import "stru_exchange_care_cancel_request.proto";
 import "stru_exchange_care_list_reply.proto";
 import "stru_exchange_care_list_request.proto";
-import "stru_exchange_care_reply.proto";
 import "stru_exchange_care_request.proto";
 import "stru_exchange_list_reply.proto";
 import "stru_exchange_list_request.proto";
-import "stru_exchange_notice_buy_item_reply.proto";
+import "stru_exchange_lowest_price_reply.proto";
+import "stru_exchange_lowest_price_request.proto";
 import "stru_exchange_notice_buy_item_request.proto";
 import "stru_exchange_notice_detail_reply.proto";
 import "stru_exchange_notice_detail_request.proto";
@@ -112,13 +156,9 @@ import "stru_exchange_notice_pre_buy_reply.proto";
 import "stru_exchange_notice_pre_buy_request.proto";
 import "stru_exchange_notice_reply.proto";
 import "stru_exchange_notice_request.proto";
-import "stru_exchange_notice_take_item_reply.proto";
-import "stru_exchange_notice_take_item_request.proto";
-import "stru_exchange_put_item_reply.proto";
 import "stru_exchange_put_item_request.proto";
 import "stru_exchange_record_reply.proto";
 import "stru_exchange_record_request.proto";
-import "stru_exchange_sale_buy_reply.proto";
 import "stru_exchange_sale_buy_request.proto";
 import "stru_exchange_sale_data_reply.proto";
 import "stru_exchange_sale_data_request.proto";
@@ -126,21 +166,20 @@ import "stru_exchange_sale_rank_reply.proto";
 import "stru_exchange_sale_rank_request.proto";
 import "stru_exchange_sale_record_reply.proto";
 import "stru_exchange_sale_record_request.proto";
-import "stru_exchange_sale_reply.proto";
 import "stru_exchange_sale_request.proto";
-import "stru_exchange_sale_take_reply.proto";
 import "stru_exchange_sale_take_request.proto";
 import "stru_exchange_sell_item_reply.proto";
 import "stru_exchange_sell_item_request.proto";
-import "stru_exchange_take_item_reply.proto";
 import "stru_exchange_take_item_request.proto";
-import "stru_exchange_withdraw_reply.proto";
 import "stru_exchange_withdraw_request.proto";
-import "stru_exit_warehouse_reply.proto";
+import "stru_exit_act_request.proto";
+import "stru_exit_edit_state_request.proto";
 import "stru_exit_warehouse_request.proto";
 import "stru_face_data.proto";
 import "stru_fast_cook_info.proto";
+import "stru_fertilizer_update_structure_request.proto";
 import "stru_fishing_first_show_record_request.proto";
+import "stru_fishing_get_level_reward_reply.proto";
 import "stru_fishing_get_level_reward_request.proto";
 import "stru_fishing_research_request.proto";
 import "stru_fishing_result_report_reply.proto";
@@ -150,30 +189,52 @@ import "stru_fishing_set_bait_request.proto";
 import "stru_fishing_set_research_fish_request.proto";
 import "stru_fishing_set_rod_request.proto";
 import "stru_fishing_set_stage_request.proto";
+import "stru_gain_update_structure_request.proto";
 import "stru_gasha_draw_reply.proto";
 import "stru_gasha_draw_request.proto";
 import "stru_gasha_record_reply.proto";
 import "stru_gasha_record_request.proto";
+import "stru_gasha_wish_selection_request.proto";
+import "stru_get_activity_list_reply.proto";
+import "stru_get_activity_reward_param.proto";
 import "stru_get_avatar_token_request.proto";
+import "stru_get_battle_pass_award_reply.proto";
 import "stru_get_battle_pass_award_request.proto";
 import "stru_get_collected_union_list_reply.proto";
 import "stru_get_collected_union_list_request.proto";
+import "stru_get_collection_reward_reply.proto";
 import "stru_get_cur_season_reply.proto";
-import "stru_get_dance_ball_award_reply.proto";
 import "stru_get_dance_ball_award_request.proto";
-import "stru_get_detailed_data_info_reply.proto";
-import "stru_get_detailed_data_info_request.proto";
 import "stru_get_exchange_item_reply.proto";
 import "stru_get_exchange_item_request.proto";
+import "stru_get_fashion_benefit_reward_reply.proto";
+import "stru_get_first_pay_reply.proto";
+import "stru_get_fish_rank_top_reply.proto";
+import "stru_get_fish_rank_top_request.proto";
 import "stru_get_friend_base_info_reply.proto";
 import "stru_get_friend_base_info_request.proto";
 import "stru_get_friendliness_reply.proto";
 import "stru_get_friendliness_request.proto";
+import "stru_get_homeland_build_furniture_info_reply.proto";
+import "stru_get_homeland_build_furniture_info_request.proto";
+import "stru_get_homeland_bulletin_boards_reply.proto";
+import "stru_get_homeland_bulletin_boards_request.proto";
+import "stru_get_homeland_check_in_content_reply.proto";
+import "stru_get_homeland_check_in_content_request.proto";
+import "stru_get_homeland_cohabitant_reply.proto";
+import "stru_get_homeland_cohabitant_request.proto";
+import "stru_get_homeland_furniture_warehouse_info_reply.proto";
+import "stru_get_homeland_furniture_warehouse_info_request.proto";
+import "stru_get_homeland_warehouse_info_reply.proto";
+import "stru_get_homeland_warehouse_info_request.proto";
+import "stru_get_mail_appendix_reply.proto";
 import "stru_get_mail_appendix_request.proto";
 import "stru_get_mail_info_reply.proto";
 import "stru_get_mail_info_request.proto";
 import "stru_get_mail_list_reply.proto";
 import "stru_get_mail_list_request.proto";
+import "stru_get_mail_manager_reply.proto";
+import "stru_get_mail_manager_request.proto";
 import "stru_get_mail_uuid_list_reply.proto";
 import "stru_get_mail_uuid_list_request.proto";
 import "stru_get_match_info_param.proto";
@@ -182,6 +243,8 @@ import "stru_get_near_team_list_request.proto";
 import "stru_get_personal_info_reply.proto";
 import "stru_get_personal_info_request.proto";
 import "stru_get_personal_zone_target_award_request.proto";
+import "stru_get_questionnaire_list_reply.proto";
+import "stru_get_questionnaire_list_request.proto";
 import "stru_get_rank_info_reply.proto";
 import "stru_get_rank_info_request.proto";
 import "stru_get_recommend_play_data_reply.proto";
@@ -189,22 +252,26 @@ import "stru_get_recommend_play_data_request.proto";
 import "stru_get_request_list_reply.proto";
 import "stru_get_request_list_request.proto";
 import "stru_get_room_award_param.proto";
-import "stru_get_shop_item_can_buy_reply.proto";
-import "stru_get_shop_item_can_buy_request.proto";
+import "stru_get_season_dungeon_list_reply.proto";
+import "stru_get_season_quest_award_reply.proto";
 import "stru_get_shop_item_list_reply.proto";
 import "stru_get_shop_item_list_request.proto";
+import "stru_get_sign_reward_replay.proto";
+import "stru_get_sign_reward_request.proto";
 import "stru_get_social_data_reply.proto";
 import "stru_get_social_data_request.proto";
+import "stru_get_structure_group_info_reply.proto";
+import "stru_get_structure_group_info_request.proto";
 import "stru_get_suggestion_list_reply.proto";
 import "stru_get_suggestion_list_request.proto";
-import "stru_get_summary_info_reply.proto";
-import "stru_get_summary_info_request.proto";
 import "stru_get_team_info_reply.proto";
 import "stru_get_team_info_request.proto";
 import "stru_get_team_list_reply.proto";
 import "stru_get_team_list_request.proto";
 import "stru_get_tmp_album_photos_reply.proto";
 import "stru_get_tmp_album_photos_request.proto";
+import "stru_get_treasure_info_reply.proto";
+import "stru_get_treasure_info_request.proto";
 import "stru_get_trial_road_award_param.proto";
 import "stru_get_union_activity_info_reply.proto";
 import "stru_get_union_activity_info_request.proto";
@@ -218,36 +285,56 @@ import "stru_get_union_grow_fund_info_reply.proto";
 import "stru_get_union_grow_fund_info_request.proto";
 import "stru_get_union_resource_lib_reply.proto";
 import "stru_get_union_resource_lib_request.proto";
+import "stru_get_upgrade_reward_reply.proto";
 import "stru_get_warehouse_reply.proto";
 import "stru_get_warehouse_request.proto";
 import "stru_get_world_boss_info_param.proto";
 import "stru_giveup_quest_info.proto";
 import "stru_gm_cmd.proto";
 import "stru_gm_result.proto";
-import "stru_go_to_team_mem_world_reply.proto";
 import "stru_go_to_team_mem_world_request.proto";
 import "stru_goods.proto";
+import "stru_homeland_set_furniture_material_request.proto";
+import "stru_homeland_set_furniture_name_request.proto";
+import "stru_homeland_set_lamplight_request.proto";
+import "stru_homeland_set_material_info_request.proto";
+import "stru_homeland_switch_all_lamplight_request.proto";
+import "stru_homeland_switch_lamplight_request.proto";
+import "stru_homeland_warehouse_store_request.proto";
+import "stru_homeland_warehouse_take_out_request.proto";
 import "stru_install_mod_request.proto";
 import "stru_interaction_template_data.proto";
-import "stru_invite_join_union_reply.proto";
+import "stru_invite_join_dungeons_request.proto";
+import "stru_invite_join_group_with_tencent_request.proto";
 import "stru_invite_join_union_request.proto";
 import "stru_invite_to_ride_param.proto";
-import "stru_invite_to_team_reply.proto";
 import "stru_invite_to_team_request.proto";
-import "stru_invite_to_warehouse_reply.proto";
 import "stru_invite_to_warehouse_request.proto";
 import "stru_item_recycle.proto";
+import "stru_join_dungeons_request.proto";
 import "stru_join_union_grow_func_reply.proto";
 import "stru_join_union_grow_func_request.proto";
-import "stru_kick_out_reply.proto";
 import "stru_kick_out_request.proto";
-import "stru_kick_out_warehouse_reply.proto";
 import "stru_kick_out_warehouse_request.proto";
 import "stru_leader_get_apply_list_reply.proto";
 import "stru_leader_get_apply_list_request.proto";
 import "stru_level_proficiency.proto";
+import "stru_life_profession_alchemy_reply.proto";
+import "stru_life_profession_alchemy_req.proto";
+import "stru_life_profession_build_reply.proto";
+import "stru_life_profession_build_req.proto";
+import "stru_life_profession_cooking_reply.proto";
+import "stru_life_profession_cooking_req.proto";
+import "stru_life_profession_r_d_alchemy_req.proto";
+import "stru_life_profession_r_d_alchemy_ret.proto";
+import "stru_life_profession_r_d_cooking_req.proto";
+import "stru_life_profession_r_d_cooking_ret.proto";
+import "stru_life_profession_work_early_end_reply.proto";
+import "stru_life_profession_work_history_info.proto";
+import "stru_life_profession_work_reward_reply.proto";
 import "stru_lua_scene_attr_reply.proto";
 import "stru_mark_info.proto";
+import "stru_master_mode_award.proto";
 import "stru_match_info.proto";
 import "stru_match_ready_param.proto";
 import "stru_materials.proto";
@@ -255,55 +342,61 @@ import "stru_medal_node.proto";
 import "stru_monster_award_info.proto";
 import "stru_monster_award_param.proto";
 import "stru_monster_hunt_level_award_param.proto";
-import "stru_move_photo_to_union_album_reply.proto";
 import "stru_move_photo_to_union_album_request.proto";
-import "stru_move_tmp_photo_to_album_reply.proto";
 import "stru_move_tmp_photo_to_album_request.proto";
 import "stru_notice_list.proto";
-import "stru_payment_request.proto";
+import "stru_pay_reply.proto";
+import "stru_pay_request.proto";
+import "stru_pay_success_reply.proto";
+import "stru_pay_success_request.proto";
+import "stru_pick_up_update_structure_request.proto";
 import "stru_pioneer_info.proto";
-import "stru_process_add_request_reply.proto";
+import "stru_play_action_param.proto";
+import "stru_pollen_update_structure_request.proto";
 import "stru_process_add_request_request.proto";
 import "stru_profession_skill_active_request.proto";
 import "stru_profession_skill_upgrade_request.proto";
+import "stru_query_balance_reply.proto";
+import "stru_query_balance_request.proto";
+import "stru_query_player_furniture_reply.proto";
+import "stru_query_player_furniture_request.proto";
+import "stru_query_product_reply.proto";
+import "stru_query_product_request.proto";
 import "stru_quit_team_reply.proto";
 import "stru_quit_team_request.proto";
 import "stru_rd_cook_reply.proto";
 import "stru_rd_cook_request.proto";
 import "stru_re_be_initiate_warehouse_reply.proto";
 import "stru_re_be_initiate_warehouse_request.proto";
-import "stru_re_ject_union_invite_reply.proto";
 import "stru_re_ject_union_invite_request.proto";
 import "stru_read_mail_reply.proto";
 import "stru_read_mail_request.proto";
 import "stru_recast_equip_request.proto";
 import "stru_receive_boss_reward_param.proto";
 import "stru_receive_score_reward_param.proto";
+import "stru_receive_season_activation_award_reply.proto";
+import "stru_receive_season_rank_award_reply.proto";
 import "stru_receive_union_activity_award_reply.proto";
 import "stru_receive_union_activity_award_request.proto";
+import "stru_recommend_play_match_param.proto";
+import "stru_recycle_items_reply.proto";
 import "stru_reforge_key_param.proto";
 import "stru_refresh_shop_request.proto";
-import "stru_refuse_leader_apply_reply.proto";
 import "stru_refuse_leader_apply_request.proto";
-import "stru_reply_be_invitation_reply.proto";
+import "stru_remove_structure_group_request.proto";
+import "stru_rename_structure_group_request.proto";
 import "stru_reply_be_invitation_request.proto";
-import "stru_reply_join_activity_reply.proto";
 import "stru_reply_join_activity_request.proto";
-import "stru_req_change_official_members_reply.proto";
 import "stru_req_change_official_members_request.proto";
 import "stru_req_change_officials_reply.proto";
 import "stru_req_change_officials_request.proto";
-import "stru_req_get_union_activity_award_reply.proto";
 import "stru_req_get_union_activity_award_request.proto";
 import "stru_req_join_unions_reply.proto";
 import "stru_req_join_unions_request.proto";
-import "stru_req_kick_out_reply.proto";
 import "stru_req_kick_out_request.proto";
-import "stru_req_leave_union_reply.proto";
 import "stru_req_leave_union_request.proto";
 import "stru_req_scene_line_info_reply.proto";
 import "stru_req_scene_line_info_request.proto";
-import "stru_req_switch_scene_line_reply.proto";
 import "stru_req_switch_scene_line_request.proto";
 import "stru_req_transfer_president_reply.proto";
 import "stru_req_transfer_president_request.proto";
@@ -315,7 +408,6 @@ import "stru_req_union_info_reply.proto";
 import "stru_req_union_info_request.proto";
 import "stru_req_union_mems_list_reply.proto";
 import "stru_req_union_mems_list_request.proto";
-import "stru_request_add_friend_reply.proto";
 import "stru_request_add_friend_request.proto";
 import "stru_reset_profession_talent_request.proto";
 import "stru_reward_personal_friendliness_lv_reply.proto";
@@ -326,17 +418,16 @@ import "stru_search_friend_reply.proto";
 import "stru_search_friend_request.proto";
 import "stru_search_union_list_reply.proto";
 import "stru_search_union_list_request.proto";
+import "stru_season_bp_award_reply.proto";
 import "stru_season_bp_award.proto";
 import "stru_season_center_history_reply.proto";
 import "stru_season_center_history_request.proto";
+import "stru_seeding_update_structure_request.proto";
 import "stru_set_effect_buff_reply.proto";
 import "stru_set_effect_buff_request.proto";
 import "stru_set_flag_info.proto";
-import "stru_set_friend_remarks_reply.proto";
 import "stru_set_friend_remarks_request.proto";
-import "stru_set_group_sort_reply.proto";
 import "stru_set_group_sort_request.proto";
-import "stru_set_hobby_mark_reply.proto";
 import "stru_set_hobby_mark_request.proto";
 import "stru_set_microphone_status_request.proto";
 import "stru_set_personal_zone_action_info_request.proto";
@@ -349,28 +440,21 @@ import "stru_set_personal_zone_tags_request.proto";
 import "stru_set_personal_zone_theme_request.proto";
 import "stru_set_personal_zone_title_request.proto";
 import "stru_set_personal_zone_u_i_position_request.proto";
-import "stru_set_recruit_info_reply.proto";
 import "stru_set_recruit_info_request.proto";
-import "stru_set_remind_reply.proto";
 import "stru_set_remind_request.proto";
-import "stru_set_show_hall_reply.proto";
 import "stru_set_show_hall_request.proto";
-import "stru_set_show_picture_reply.proto";
 import "stru_set_show_picture_request.proto";
-import "stru_set_signature_reply.proto";
 import "stru_set_signature_request.proto";
+import "stru_set_slot_auto_battle_request.proto";
 import "stru_set_speak_status_request.proto";
-import "stru_set_team_target_info_reply.proto";
 import "stru_set_team_target_info_request.proto";
-import "stru_set_time_mark_reply.proto";
+import "stru_set_team_target_quick_say_reply.proto";
+import "stru_set_team_target_quick_say_request.proto";
 import "stru_set_time_mark_request.proto";
-import "stru_set_top_reply.proto";
 import "stru_set_top_request.proto";
-import "stru_set_union_album_cover_reply.proto";
 import "stru_set_union_album_cover_request.proto";
 import "stru_set_union_auto_pass_reply.proto";
 import "stru_set_union_auto_pass_request.proto";
-import "stru_set_union_cover_photo_reply.proto";
 import "stru_set_union_cover_photo_request.proto";
 import "stru_set_union_declaration_reply.proto";
 import "stru_set_union_declaration_request.proto";
@@ -385,8 +469,8 @@ import "stru_set_union_tags_request.proto";
 import "stru_set_voice_id_reply.proto";
 import "stru_set_voice_id_request.proto";
 import "stru_settlement_position_param.proto";
-import "stru_share_object_in_chat_reply.proto";
 import "stru_share_object_in_chat_request.proto";
+import "stru_show_master_mode_score.proto";
 import "stru_sort_package_param.proto";
 import "stru_speed_up_upgrade_union_building_reply.proto";
 import "stru_speed_up_upgrade_union_building_request.proto";
@@ -395,10 +479,10 @@ import "stru_start_ride_param.proto";
 import "stru_switch_info.proto";
 import "stru_switch_profession_info.proto";
 import "stru_take_off_ride_param.proto";
+import "stru_take_on_activate_ride_skin_param.proto";
 import "stru_take_on_ride_param.proto";
-import "stru_take_out_warehouse_reply.proto";
+import "stru_take_on_set_ride_skin_param.proto";
 import "stru_take_out_warehouse_request.proto";
-import "stru_team_cancel_activity_reply.proto";
 import "stru_team_cancel_activity_request.proto";
 import "stru_team_invite_user_reply.proto";
 import "stru_team_invite_user_request.proto";
@@ -406,3023 +490,2839 @@ import "stru_team_leader_call_reply.proto";
 import "stru_team_leader_call_request.proto";
 import "stru_team_mem_call_reply.proto";
 import "stru_team_mem_call_request.proto";
-import "stru_team_mem_change_scene_reply.proto";
 import "stru_team_mem_change_scene_request.proto";
 import "stru_team_tower_layer.proto";
-import "stru_toggle_edit_state_request.proto";
 import "stru_tower_process_award.proto";
-import "stru_transfer_leader_reply.proto";
 import "stru_transfer_leader_request.proto";
+import "stru_un_bind_group_with_tencent_reply.proto";
+import "stru_un_bind_group_with_tencent_request.proto";
 import "stru_uninstall_mod_request.proto";
+import "stru_union_get_all_boss_data_reply.proto";
+import "stru_union_get_all_boss_data_request.proto";
+import "stru_union_get_kill_boss_data_reply.proto";
+import "stru_union_get_kill_boss_data_request.proto";
 import "stru_union_list_reply.proto";
 import "stru_union_list_request.proto";
-import "stru_union_remove_item_reply.proto";
 import "stru_union_remove_item_request.proto";
 import "stru_union_scene.proto";
 import "stru_unlock_info.proto";
 import "stru_update_structure_request.proto";
+import "stru_update_team_group_request.proto";
 import "stru_upgrade_mod_request.proto";
 import "stru_upgrade_union_building_reply.proto";
 import "stru_upgrade_union_building_request.proto";
 import "stru_use_item_param.proto";
+import "stru_use_profession_skill_skin_request.proto";
 import "stru_use_profession_skin_info.proto";
 import "stru_use_slot_request.proto";
+import "stru_water_update_structure_request.proto";
 import "stru_week_target_param.proto";
 import "stru_world_boss_info.proto";
+import "stru_world_boss_match_param.proto";
 import "stru_world_event_transfer_info.proto";
 
 message World {
     message ChangeCharFunctionState_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ChangeCharFunctionState {
         zproto.EActorState stateType = 1;
     }
-
     message ClientBreakState {
         int32 vOperator = 1;
     }
-
     message GMCommand_Ret {
-        uint32 ret_code = 1;
-        zproto.GmResult ret = 2;
+        zproto.GmResult ret = 1;
     }
-
     message GMCommand {
         zproto.GmCmd cmd = 1;
     }
-
-    message PlayAction {
-        int32 actionId = 1;
-        bool isUpper = 2;
-    }
-
     message PlayEmote {
         int32 emoteId = 1;
     }
-
     message LearnExpressionAction_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message LearnExpressionAction {
         int32 expressionId = 1;
     }
-
     message ChangeName {
         string vName = 1;
     }
-
     message MonsterCastSkill {
         int64 selfUuid = 1;
         int32 skillId = 2;
         int64 targetUuid = 3;
     }
-
     message ReqInsight_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalState {
         int32 vPersonalState = 1;
         bool vIsRemove = 2;
     }
-
     message InstallResonanceSkillReq_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message InstallResonanceSkillReq {
         int32 vPosition = 1;
         int32 vResonanceId = 2;
     }
-
     message GetNoticeList_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetNoticeList {
         zproto.NoticeList vList = 1;
     }
-
     message UnStuck_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ChangeShowId {
         uint32 vShowId = 1;
     }
-
-    message UserResurrection_Ret {
-        uint32 ret_code = 1;
+    message PlayAction {
+        zproto.PlayActionParam playActionParam = 1;
     }
-
+    message UserResurrection_Ret {
+        zproto.EErrorCode ret = 1;
+    }
     message UserResurrection {
         int32 vReviveId = 1;
     }
-
     message QteEnd {
         uint32 qteId = 1;
         repeated int32 index = 2;
         bool res = 3;
     }
-
-    message ResurrectionOtherUser_Ret {
-        uint32 ret_code = 1;
-    }
-
-    message ResurrectionOtherUser {
-        int64 vTargetUuid = 1;
-        int32 vReviveId = 2;
-    }
-
     message UseItem_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UseItem {
         zproto.UseItemParam vParam = 1;
     }
-
     message SortPackage_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SortPackage {
         zproto.SortPackageParam vParam = 1;
     }
-
     message DecomposeItem_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message DecomposeItem {
-        map<int32, uint32> vItems = 1;
+        repeated zproto.World.DecomposeItem.VItemsEntry vItems = 1;
         uint32 vFunctionId = 2;
     }
-
     message RefineItem_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message RefineItem {
         uint32 vQueueIndex = 1;
         uint32 vColumnIndex = 2;
     }
-
     message GainItem_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GainItem {
         uint32 vQueueIndex = 1;
         uint32 vColumnIndex = 2;
     }
-
     message UnlockItem_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UnlockItem {
         uint32 vQueueIndex = 1;
         uint32 vColumnIndex = 2;
     }
-
     message AddEnergyLimit_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message InstantRefine_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message InstantReceive_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetQuickBar_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetQuickBar {
         int32 itemConfigId = 1;
     }
-
     message ReforgeKey_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReforgeKey {
         zproto.ReforgeKeyParam vParam = 1;
     }
-
     message RecycleItems_Ret {
-        uint32 ret_code = 1;
+        zproto.RecycleItemsReply ret = 1;
     }
-
     message RecycleItems {
         repeated zproto.ItemRecycle itemList = 1;
     }
-
     message DeleteItem_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message DeleteItem {
         zproto.DeleteItemParam vParam = 1;
     }
-
     message LeaveScene_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SwitchSceneLayer_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SwitchSceneLayer {
         int32 layer = 1;
     }
-
     message PickupDropItem_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message PickupDropItem {
         int64 vDropObjUuid = 1;
     }
-
     message UserDoAction {
         string vSelectedStr = 1;
     }
-
     message GetLuaSceneAttr_Ret {
-        uint32 ret_code = 1;
-        zproto.LuaSceneAttrReply ret = 2;
+        zproto.LuaSceneAttrReply ret = 1;
     }
-
     message GetLuaSceneAttr {
         string vAttributeName = 1;
     }
-
     message SaveUserSingleSceneCutsState {
         int32 cutsKey = 1;
         int32 cutsValue = 2;
     }
-
     message CutScenePlayEnd {
         uint32 vCutSceneId = 1;
     }
-
     message FlowPlayEnd {
         uint32 vFlowId = 1;
     }
-
     message GetPioneerInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.PioneerInfo ret = 2;
+        zproto.PioneerInfo ret = 1;
     }
-
     message GetPioneerInfo {
         uint32 levelId = 1;
     }
-
     message SetQuestTrackingId {
         uint32 questId = 1;
     }
-
     message SetTargetFinish {
         int32 vTargetType = 1;
         repeated int32 vOtherParam = 2;
     }
-
     message GetWorldQuestAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetWorldQuestAward {
         int64 vTimeStamp = 1;
         int32 vIndex = 2;
     }
-
     message AcceptQuest_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message AcceptQuest {
         zproto.AcceptQuestInfo vAcceptQuestInfo = 1;
     }
-
     message SetFollowWorldQuest_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetFollowWorldQuest {
         int32 vQuestId = 1;
     }
-
     message RemoveFollowWorldQuest_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message RemoveFollowWorldQuest {
         int32 vQuestId = 1;
     }
-
     message SetTrackOptionalQuest {
         int32 vIndex = 1;
         int32 vQuestId = 2;
     }
-
     message GiveupQuest_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GiveupQuest {
         zproto.GiveupQuestInfo vInfo = 1;
     }
-
     message WorldEventTransfer_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message WorldEventTransfer {
         zproto.WorldEventTransferInfo vTransferInfo = 1;
     }
-
     message SaveSetting {
-        map<int32, string> map = 1;
+        repeated zproto.World.SaveSetting.MapEntry map = 1;
     }
-
     message GetSwitchInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.SwitchInfo ret = 2;
+        zproto.SwitchInfo ret = 1;
     }
-
     message ComposeReq_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ComposeReq {
         int32 vConsumeItemConfigId = 1;
         int32 vComposeCount = 2;
         int32 vNotBindFlg = 3;
     }
-
     message ExchangeItem_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangeItem {
         int32 vShopId = 1;
         int32 vItemConfigId = 2;
         int32 vTimes = 3;
     }
-
     message PutOnEquip_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message PutOnEquip {
         int32 vSlot = 1;
         uint64 itemUuid = 2;
     }
-
     message TakeOffEquip_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message TakeOffEquip {
         int32 vSlot = 1;
     }
-
-    message EquipBreach_Ret {
-        uint32 ret_code = 1;
-    }
-
-    message EquipBreach {
-        uint64 vItemUuid = 1;
-    }
-
     message EquipDecompose_Ret {
-        uint32 ret_code = 1;
+        zproto.EquipDecomposeReply ret = 1;
     }
-
     message EquipDecompose {
         repeated uint64 vItemUuids = 1;
     }
-
     message RecastEquip_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message RecastEquip {
         zproto.RecastEquipRequest vRequest = 1;
     }
-
     message ConfirmRecastEquip_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ConfirmRecastEquip {
         zproto.ConfirmRecastEquipRequest vRequest = 1;
     }
-
     message EquipSlotRefine_Ret {
-        uint32 ret_code = 1;
-        zproto.EquipSlotRefineReply ret = 2;
+        zproto.EquipSlotRefineReply ret = 1;
     }
-
     message EquipSlotRefine {
         zproto.EquipSlotRefineRequest vRequest = 1;
     }
-
-    message SetFaceData_Ret {
-        uint32 ret_code = 1;
+    message EquipEnchant_Ret {
+        zproto.EErrorCode ret = 1;
     }
-
+    message EquipEnchant {
+        zproto.EquipEnchantRequest vRequest = 1;
+    }
+    message EquipCreate_Ret {
+        zproto.EquipCreateReply ret = 1;
+    }
+    message EquipCreate {
+        zproto.EquipCreateRequest vRequest = 1;
+    }
+    message EquipBreach_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message EquipBreach {
+        zproto.EquipBreachRequest vRequest = 1;
+    }
+    message SetFaceData_Ret {
+        zproto.EErrorCode ret = 1;
+    }
     message SetFaceData {
         zproto.FaceData vFaceData = 1;
     }
-
     message UnLockFaceItem_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UnLockFaceItem {
         int32 vConfigId = 1;
     }
-
     message ShareObjectInChat_Ret {
-        uint32 ret_code = 1;
-        zproto.ShareObjectInChatReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ShareObjectInChat {
         zproto.ShareObjectInChatRequest vRequest = 1;
     }
-
     message TransferPointUnlock_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message TransferPointUnlock {
         uint32 vTransferPointId = 1;
     }
-
     message SetMapMark_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetMapMark {
         int32 sceneId = 1;
         zproto.MarkInfo vMark = 2;
     }
-
     message RemoveMapMark_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message RemoveMapMark {
         int32 sceneId = 1;
         int64 vMarkId = 2;
     }
-
     message GetDungeonContainerData_Ret {
-        uint32 ret_code = 1;
-        zproto.DungeonSyncData ret = 2;
+        zproto.DungeonSyncData ret = 1;
     }
-
     message GetSeasonDungeonList_Ret {
-        uint32 ret_code = 1;
-        repeated uint32 ret = 2;
+        zproto.GetSeasonDungeonListReply ret = 1;
     }
-
     message StartEnterDungeon_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message StartEnterDungeon {
         zproto.DungeonEnterParam vParam = 1;
     }
-
     message DungeonVote_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message DungeonVote {
         int64 vUuid = 1;
     }
-
     message CheckBeforeEnterDungeon_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message CheckBeforeEnterDungeon {
         zproto.DungeonInfo vDungeonInfo = 1;
     }
-
     message GetPioneerAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetPioneerAward {
         zproto.DungeonInfo vDungeonInfo = 1;
         int32 vAwardId = 2;
     }
-
     message UserAction_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UserAction {
         int64 vActionId = 1;
     }
-
     message EnterPlanetMemoryRoom_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message EnterPlanetMemoryRoom {
         int32 vRoomId = 1;
     }
-
     message Bartending_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message Bartending {
         int32 vBartendingId = 1;
     }
-
     message GetChallengeDungeonScoreAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetChallengeDungeonScoreAward {
         zproto.ChallengeDungeonScoreAwardParam vChallengeDungeonScoreAwardParam = 1;
     }
-
     message StartPlayingDungeon_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message StartPlayingDungeon {
         zproto.StartPlayingDungeonInfo vParam = 1;
     }
-
     message ReportSettlementPosition {
         zproto.SettlementPositionParam vUserPos = 1;
     }
-
     message DungeonRoll_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message DungeonRoll {
         zproto.DungeonRollParam vParam = 1;
     }
-
     message GetDungeonWeekTargetAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetDungeonWeekTargetAward {
         zproto.WeekTargetParam vParam = 1;
     }
-
     message GetTeamTowerLayerInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.TeamTowerLayer ret = 2;
+        zproto.TeamTowerLayer ret = 1;
     }
-
     message GetWeeklyTowerProcessAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetWeeklyTowerProcessAward {
         zproto.TowerProcessAward process = 1;
     }
-
     message GetChallengeDungeonAffix_Ret {
-        uint32 ret_code = 1;
-        zproto.ChallengeAffix ret = 2;
+        zproto.ChallengeAffix ret = 1;
     }
-
     message GetChallengeDungeonAffix {
         zproto.ChallengeAffixParam param = 1;
     }
-
-    message FashionWear_Ret {
-        uint32 ret_code = 1;
+    message TeamLeaderReadyCheck_Ret {
+        zproto.EErrorCode ret = 1;
     }
-
+    message TeamMemberReadyCheckReport_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message TeamMemberReadyCheckReport {
+        zproto.DungeonReadyInfo vReadyInfo = 1;
+    }
+    message GetMasterModeAward_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message GetMasterModeAward {
+        zproto.MasterModeAward vReadyInfo = 1;
+    }
+    message SetShowMasterModeScore_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message SetShowMasterModeScore {
+        zproto.ShowMasterModeScore vReadyInfo = 1;
+    }
+    message FashionWear_Ret {
+        zproto.EErrorCode ret = 1;
+    }
     message FashionWear {
-        repeated uint64 wear = 1;
+        repeated int32 wear = 1;
         repeated int32 unwear = 2;
     }
-
     message FashionSetColor_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message FashionSetColor {
         int32 fashionID = 1;
         zproto.ColorData data = 2;
     }
-
     message UnlockColor_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UnlockColor {
         int32 fashionId = 1;
         int32 colorId = 2;
     }
-
-    message SaveDisplayedPlayHelp_Ret {
-        uint32 ret_code = 1;
+    message GetCollectionReward_Ret {
+        zproto.GetCollectionRewardReply ret = 1;
     }
-
+    message GetCollectionReward {
+        repeated int32 index = 1;
+    }
+    message GetFashionBenefitReward_Ret {
+        zproto.GetFashionBenefitRewardReply ret = 1;
+    }
+    message GetFashionBenefitReward {
+        int32 index = 1;
+    }
+    message UnlockSvColor_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message UnlockSvColor {
+        int32 fashionId = 1;
+        int32 colorIndex = 2;
+    }
+    message UnlockAdvanceFashion_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message UnlockAdvanceFashion {
+        int32 fashionId = 1;
+    }
+    message SaveFashionTryOn_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message SaveFashionTryOn {
+        int32 fashionId = 1;
+        int32 advanceFashionId = 2;
+    }
+    message SaveDisplayedPlayHelp_Ret {
+        zproto.EErrorCode ret = 1;
+    }
     message SaveDisplayedPlayHelp {
         int32 vPlayHelpId = 1;
     }
-
     message SaveCompletedGuide_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SaveCompletedGuide {
         int32 vGuideId = 1;
     }
-
-    message GetMailAppendix {
-        zproto.GetMailAppendixRequest request = 1;
-    }
-
     message GetMailList_Ret {
-        uint32 ret_code = 1;
-        zproto.GetMailListReply ret = 2;
+        zproto.GetMailListReply ret = 1;
     }
-
     message GetMailList {
         zproto.GetMailListRequest vRequest = 1;
     }
-
     message GetMailInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.GetMailInfoReply ret = 2;
+        zproto.GetMailInfoReply ret = 1;
     }
-
     message GetMailInfo {
         zproto.GetMailInfoRequest vRequest = 1;
     }
-
     message ReadMail_Ret {
-        uint32 ret_code = 1;
-        zproto.ReadMailReply ret = 2;
+        zproto.ReadMailReply ret = 1;
     }
-
     message ReadMail {
         zproto.ReadMailRequest vRequest = 1;
     }
-
     message DeleteMail_Ret {
-        uint32 ret_code = 1;
-        zproto.DeleteMailReply ret = 2;
+        zproto.DeleteMailReply ret = 1;
     }
-
     message DeleteMail {
         zproto.DeleteMailRequest vRequest = 1;
     }
-
     message GetMailUuidList_Ret {
-        uint32 ret_code = 1;
-        zproto.GetMailUuidListReply ret = 2;
+        zproto.GetMailUuidListReply ret = 1;
     }
-
     message GetMailUuidList {
         zproto.GetMailUuidListRequest vRequest = 1;
     }
-
-    message ApplicationInteraction_Ret {
-        uint32 ret_code = 1;
+    message AddCollectMail_Ret {
+        zproto.EErrorCode ret = 1;
     }
-
+    message AddCollectMail {
+        zproto.AddCollectMailRequest vRequest = 1;
+    }
+    message CancelCollectMail_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CancelCollectMail {
+        zproto.CancelCollectMailRequest vRequest = 1;
+    }
+    message GetMailManager_Ret {
+        zproto.GetMailManagerReply ret = 1;
+    }
+    message GetMailManager {
+        zproto.GetMailManagerRequest vRequest = 1;
+    }
+    message GetMailAppendix_Ret {
+        zproto.GetMailAppendixReply ret = 1;
+    }
+    message GetMailAppendix {
+        zproto.GetMailAppendixRequest request = 1;
+    }
+    message ApplicationInteraction_Ret {
+        zproto.EErrorCode ret = 1;
+    }
     message ApplicationInteraction {
         int64 vInviteeId = 1;
         int32 vActionId = 2;
     }
-
     message ReplyApplicationResult_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReplyApplicationResult {
-        int32 vOrigId = 1;
+        int64 vOrigId = 1;
         int32 vActionId = 2;
         bool vIsAgree = 3;
     }
-
     message CancelAction_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UpgradeUnionBuilding_Ret {
-        uint32 ret_code = 1;
-        zproto.UpgradeUnionBuildingReply ret = 2;
+        zproto.UpgradeUnionBuildingReply ret = 1;
     }
-
     message UpgradeUnionBuilding {
         zproto.UpgradeUnionBuildingRequest vRequest = 1;
     }
-
     message SpeedUpUpgradeUnionBuilding_Ret {
-        uint32 ret_code = 1;
-        zproto.SpeedUpUpgradeUnionBuildingReply ret = 2;
+        zproto.SpeedUpUpgradeUnionBuildingReply ret = 1;
     }
-
     message SpeedUpUpgradeUnionBuilding {
         zproto.SpeedUpUpgradeUnionBuildingRequest vRequest = 1;
     }
-
     message EnterUnionScene_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message EnterUnionScene {
         zproto.UnionScene request = 1;
     }
-
     message ReceiveUnionActivityAward_Ret {
-        uint32 ret_code = 1;
-        zproto.ReceiveUnionActivityAwardReply ret = 2;
+        zproto.ReceiveUnionActivityAwardReply ret = 1;
     }
-
     message ReceiveUnionActivityAward {
         zproto.ReceiveUnionActivityAwardRequest vRequest = 1;
     }
-
     message BeginDance_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message BeginDance {
         zproto.DanceBegin request = 1;
     }
-
     message BeginDanceActive_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message BeginDanceActive {
         zproto.DanceActive request = 1;
     }
-
     message ReqLeaveUnion_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqLeaveUnionReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReqLeaveUnion {
         zproto.ReqLeaveUnionRequest vRequest = 1;
     }
-
     message ReqKickOut_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqKickOutReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReqKickOut {
         zproto.ReqKickOutRequest vRequest = 1;
     }
-
     message UnionRemoveItem_Ret {
-        uint32 ret_code = 1;
-        zproto.UnionRemoveItemReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message UnionRemoveItem {
         zproto.UnionRemoveItemRequest vRequest = 1;
     }
-
     message InviteJoinUnion_Ret {
-        uint32 ret_code = 1;
-        zproto.InviteJoinUnionReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message InviteJoinUnion {
         zproto.InviteJoinUnionRequest vRequest = 1;
     }
-
     message BatchSearchUnionList_Ret {
-        uint32 ret_code = 1;
-        zproto.BatchSearchUnionListReply ret = 2;
+        zproto.BatchSearchUnionListReply ret = 1;
     }
-
     message BatchSearchUnionList {
         zproto.BatchSearchUnionListRequest vRequest = 1;
     }
-
     message SetRecruitInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.SetRecruitInfoReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetRecruitInfo {
         zproto.SetRecruitInfoRequest vRequest = 1;
     }
-
     message AddCollectUnionId_Ret {
-        uint32 ret_code = 1;
-        zproto.AddCollectUnionIdReply ret = 2;
+        zproto.AddCollectUnionIdReply ret = 1;
     }
-
     message AddCollectUnionId {
         zproto.AddCollectUnionIdRequest vRequest = 1;
     }
-
     message CancelCollectedUnionId_Ret {
-        uint32 ret_code = 1;
-        zproto.CancelCollectedUnionIdReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message CancelCollectedUnionId {
         zproto.CancelCollectedUnionIdRequest vRequest = 1;
     }
-
     message GetCollectedUnionList_Ret {
-        uint32 ret_code = 1;
-        zproto.GetCollectedUnionListReply ret = 2;
+        zproto.GetCollectedUnionListReply ret = 1;
     }
-
     message GetCollectedUnionList {
         zproto.GetCollectedUnionListRequest vRequest = 1;
     }
-
     message ReqUnionActivityProgressInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqUnionActivityProgressInfoReply ret = 2;
+        zproto.ReqUnionActivityProgressInfoReply ret = 1;
     }
-
     message ReqUnionActivityProgressInfo {
         zproto.ReqUnionActivityProgressInfoRequest vRequest = 1;
     }
-
     message ReqUnionActivityRank_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqUnionActivityRankReply ret = 2;
+        zproto.ReqUnionActivityRankReply ret = 1;
     }
-
     message ReqUnionActivityRank {
         zproto.ReqUnionActivityRankRequest vRequest = 1;
     }
-
     message ReqGetUnionActivityAward_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqGetUnionActivityAwardReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReqGetUnionActivityAward {
         zproto.ReqGetUnionActivityAwardRequest vRequest = 1;
     }
-
     message GetUnionActivityInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.GetUnionActivityInfoReply ret = 2;
+        zproto.GetUnionActivityInfoReply ret = 1;
     }
-
     message GetUnionActivityInfo {
         zproto.GetUnionActivityInfoRequest vRequest = 1;
     }
-
     message GetUnionResourceLib_Ret {
-        uint32 ret_code = 1;
-        zproto.GetUnionResourceLibReply ret = 2;
+        zproto.GetUnionResourceLibReply ret = 1;
     }
-
     message GetUnionResourceLib {
         zproto.GetUnionResourceLibRequest vRequest = 1;
     }
-
     message GetDanceBallAward_Ret {
-        uint32 ret_code = 1;
-        zproto.GetDanceBallAwardReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetDanceBallAward {
         zproto.GetDanceBallAwardRequest vRequest = 1;
     }
-
     message SetEffectBuff_Ret {
-        uint32 ret_code = 1;
-        zproto.SetEffectBuffReply ret = 2;
+        zproto.SetEffectBuffReply ret = 1;
     }
-
     message SetEffectBuff {
         zproto.SetEffectBuffRequest vRequest = 1;
     }
-
     message CancelEffectBuff_Ret {
-        uint32 ret_code = 1;
-        zproto.CancelEffectBuffReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message CancelEffectBuff {
         zproto.CancelEffectBuffRequest vRequest = 1;
     }
-
     message GetTmpAlbumPhotos_Ret {
-        uint32 ret_code = 1;
-        zproto.GetTmpAlbumPhotosReply ret = 2;
+        zproto.GetTmpAlbumPhotosReply ret = 1;
     }
-
     message GetTmpAlbumPhotos {
         zproto.GetTmpAlbumPhotosRequest vRequest = 1;
     }
-
     message GetUnionAllAlbum_Ret {
-        uint32 ret_code = 1;
-        zproto.GetUnionAllAlbumReply ret = 2;
+        zproto.GetUnionAllAlbumReply ret = 1;
     }
-
     message GetUnionAllAlbum {
         zproto.GetUnionAllAlbumRequest vRequest = 1;
     }
-
     message GetUnionAlbumPhotos_Ret {
-        uint32 ret_code = 1;
-        zproto.GetUnionAlbumPhotosReply ret = 2;
+        zproto.GetUnionAlbumPhotosReply ret = 1;
     }
-
     message GetUnionAlbumPhotos {
         zproto.GetUnionAlbumPhotosRequest vRequest = 1;
     }
-
     message CopySelfPhotoToUnionTmpAlbum_Ret {
-        uint32 ret_code = 1;
-        zproto.CopySelfPhotoToUnionTmpAlbumReply ret = 2;
+        zproto.CopySelfPhotoToUnionTmpAlbumReply ret = 1;
     }
-
     message CopySelfPhotoToUnionTmpAlbum {
         zproto.CopySelfPhotoToUnionTmpAlbumRequest vRequest = 1;
     }
-
     message SetUnionCoverPhoto_Ret {
-        uint32 ret_code = 1;
-        zproto.SetUnionCoverPhotoReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetUnionCoverPhoto {
         zproto.SetUnionCoverPhotoRequest vRequest = 1;
     }
-
     message SetUnionAlbumCover_Ret {
-        uint32 ret_code = 1;
-        zproto.SetUnionAlbumCoverReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetUnionAlbumCover {
         zproto.SetUnionAlbumCoverRequest vRequest = 1;
     }
-
     message CreateUnionAlbum_Ret {
-        uint32 ret_code = 1;
-        zproto.CreateUnionAlbumReply ret = 2;
+        zproto.CreateUnionAlbumReply ret = 1;
     }
-
     message CreateUnionAlbum {
         zproto.CreateUnionAlbumRequest vRequest = 1;
     }
-
     message MovePhotoToUnionAlbum_Ret {
-        uint32 ret_code = 1;
-        zproto.MovePhotoToUnionAlbumReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message MovePhotoToUnionAlbum {
         zproto.MovePhotoToUnionAlbumRequest vRequest = 1;
     }
-
     message DeleteUnionPhoto_Ret {
-        uint32 ret_code = 1;
-        zproto.DeleteUnionPhotoReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message DeleteUnionPhoto {
         zproto.DeleteUnionPhotoRequest vRequest = 1;
     }
-
     message DeleteUnionAlbum_Ret {
-        uint32 ret_code = 1;
-        zproto.DeleteUnionAlbumReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message DeleteUnionAlbum {
         zproto.DeleteUnionAlbumRequest vRequest = 1;
     }
-
     message MoveTmpPhotoToAlbum_Ret {
-        uint32 ret_code = 1;
-        zproto.MoveTmpPhotoToAlbumReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message MoveTmpPhotoToAlbum {
         zproto.MoveTmpPhotoToAlbumRequest vRequest = 1;
     }
-
     message DeleteUnionTmpPhoto_Ret {
-        uint32 ret_code = 1;
-        zproto.DeleteUnionTmpPhotoReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message DeleteUnionTmpPhoto {
         zproto.DeleteUnionTmpPhotoRequest vRequest = 1;
     }
-
     message EditUnionAlbumName_Ret {
-        uint32 ret_code = 1;
-        zproto.EditUnionAlbumNameReply ret = 2;
+        zproto.EditUnionAlbumNameReply ret = 1;
     }
-
     message EditUnionAlbumName {
         zproto.EditUnionAlbumNameRequest vRequest = 1;
     }
-
     message GetUnionGrowFundInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.GetUnionGrowFundInfoReply ret = 2;
+        zproto.GetUnionGrowFundInfoReply ret = 1;
     }
-
     message GetUnionGrowFundInfo {
         zproto.GetUnionGrowFundInfoRequest vRequest = 1;
     }
-
     message JoinUnionGrowFunc_Ret {
-        uint32 ret_code = 1;
-        zproto.JoinUnionGrowFuncReply ret = 2;
+        zproto.JoinUnionGrowFuncReply ret = 1;
     }
-
     message JoinUnionGrowFunc {
         zproto.JoinUnionGrowFuncRequest vRequest = 1;
     }
-
     message GetUnionEScreenList_Ret {
-        uint32 ret_code = 1;
-        zproto.GetUnionEScreenListReply ret = 2;
+        zproto.GetUnionEScreenListReply ret = 1;
     }
-
     message GetUnionEScreenList {
         zproto.GetUnionEScreenListRequest vRequest = 1;
     }
-
     message SetUnionEScreenPhoto_Ret {
-        uint32 ret_code = 1;
-        zproto.SetUnionEScreenPhotoReply ret = 2;
+        zproto.SetUnionEScreenPhotoReply ret = 1;
     }
-
     message SetUnionEScreenPhoto {
         zproto.SetUnionEScreenPhotoRequest vRequest = 1;
     }
-
     message ReJectUnionInvite_Ret {
-        uint32 ret_code = 1;
-        zproto.ReJectUnionInviteReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReJectUnionInvite {
         zproto.ReJectUnionInviteRequest vRequest = 1;
     }
-
-    message UnionList_Ret {
-        uint32 ret_code = 1;
-        zproto.UnionListReply ret = 2;
+    message BindGroupWithTencent_Ret {
+        zproto.BindGroupWithTencentReply ret = 1;
     }
-
+    message BindGroupWithTencent {
+        zproto.BindGroupWithTencentRequest vRequest = 1;
+    }
+    message UnBindGroupWithTencent_Ret {
+        zproto.UnBindGroupWithTencentReply ret = 1;
+    }
+    message UnBindGroupWithTencent {
+        zproto.UnBindGroupWithTencentRequest vRequest = 1;
+    }
+    message InviteJoinGroupWithTencent_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message InviteJoinGroupWithTencent {
+        zproto.InviteJoinGroupWithTencentRequest vRequest = 1;
+    }
+    message UnionGetKillBossData_Ret {
+        zproto.UnionGetKillBossDataReply ret = 1;
+    }
+    message UnionGetKillBossData {
+        zproto.UnionGetKillBossDataRequest vRequest = 1;
+    }
+    message UnionGetAllBossData_Ret {
+        zproto.UnionGetAllBossDataReply ret = 1;
+    }
+    message UnionGetAllBossData {
+        zproto.UnionGetAllBossDataRequest vRequest = 1;
+    }
+    message UnionList_Ret {
+        zproto.UnionListReply ret = 1;
+    }
     message UnionList {
         zproto.UnionListRequest vRequest = 1;
     }
-
     message SearchUnionList_Ret {
-        uint32 ret_code = 1;
-        zproto.SearchUnionListReply ret = 2;
+        zproto.SearchUnionListReply ret = 1;
     }
-
     message SearchUnionList {
         zproto.SearchUnionListRequest vRequest = 1;
     }
-
     message CreateUnion_Ret {
-        uint32 ret_code = 1;
-        zproto.CreateUnionReply ret = 2;
+        zproto.CreateUnionReply ret = 1;
     }
-
     message CreateUnion {
         zproto.CreateUnionRequest vRequest = 1;
     }
-
     message ReqJoinUnions_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqJoinUnionsReply ret = 2;
+        zproto.ReqJoinUnionsReply ret = 1;
     }
-
     message ReqJoinUnions {
         zproto.ReqJoinUnionsRequest vRequest = 1;
     }
-
     message ReqUnionInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqUnionInfoReply ret = 2;
+        zproto.ReqUnionInfoReply ret = 1;
     }
-
     message ReqUnionInfo {
         zproto.ReqUnionInfoRequest vRequest = 1;
     }
-
     message ReqUnionMemsList_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqUnionMemsListReply ret = 2;
+        zproto.ReqUnionMemsListReply ret = 1;
     }
-
     message ReqUnionMemsList {
         zproto.ReqUnionMemsListRequest vRequest = 1;
     }
-
     message ReqChangeOfficialMembers_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqChangeOfficialMembersReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReqChangeOfficialMembers {
         zproto.ReqChangeOfficialMembersRequest vRequest = 1;
     }
-
     message ReqChangeOfficials_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqChangeOfficialsReply ret = 2;
+        zproto.ReqChangeOfficialsReply ret = 1;
     }
-
     message ReqChangeOfficials {
         zproto.ReqChangeOfficialsRequest vRequest = 1;
     }
-
     message ReqTransferPresident_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqTransferPresidentReply ret = 2;
+        zproto.ReqTransferPresidentReply ret = 1;
     }
-
     message ReqTransferPresident {
         zproto.ReqTransferPresidentRequest vRequest = 1;
     }
-
     message GetRequestList_Ret {
-        uint32 ret_code = 1;
-        zproto.GetRequestListReply ret = 2;
+        zproto.GetRequestListReply ret = 1;
     }
-
     message GetRequestList {
         zproto.GetRequestListRequest vRequest = 1;
     }
-
     message ApprovalRequest_Ret {
-        uint32 ret_code = 1;
-        zproto.ApprovalRequestReply ret = 2;
+        zproto.ApprovalRequestReply ret = 1;
     }
-
     message ApprovalRequest {
         zproto.ApprovalRequestRequest vRequest = 1;
     }
-
     message SetUnionIcon_Ret {
-        uint32 ret_code = 1;
-        zproto.SetUnionIconReply ret = 2;
+        zproto.SetUnionIconReply ret = 1;
     }
-
     message SetUnionIcon {
         zproto.SetUnionIconRequest vRequest = 1;
     }
-
     message SetUnionTags_Ret {
-        uint32 ret_code = 1;
-        zproto.SetUnionTagsReply ret = 2;
+        zproto.SetUnionTagsReply ret = 1;
     }
-
     message SetUnionTags {
         zproto.SetUnionTagsRequest vRequest = 1;
     }
-
     message SetUnionDeclaration_Ret {
-        uint32 ret_code = 1;
-        zproto.SetUnionDeclarationReply ret = 2;
+        zproto.SetUnionDeclarationReply ret = 1;
     }
-
     message SetUnionDeclaration {
         zproto.SetUnionDeclarationRequest vRequest = 1;
     }
-
     message SetUnionName_Ret {
-        uint32 ret_code = 1;
-        zproto.SetUnionNameReply ret = 2;
+        zproto.SetUnionNameReply ret = 1;
     }
-
     message SetUnionName {
         zproto.SetUnionNameRequest vRequest = 1;
     }
-
     message SetUnionAutoPass_Ret {
-        uint32 ret_code = 1;
-        zproto.SetUnionAutoPassReply ret = 2;
+        zproto.SetUnionAutoPassReply ret = 1;
     }
-
     message SetUnionAutoPass {
         zproto.SetUnionAutoPassRequest vRequest = 1;
     }
-
     message PersonalObjectAction_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message PersonalObjectAction {
         int64 vObjUuid = 1;
     }
-
     message GetLevelAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetLevelAward {
         int32 vLevel = 1;
         int32 vAwardId = 2;
     }
-
     message SetProficiency_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetProficiency {
         zproto.LevelProficiency vProficiency = 1;
     }
-
     message UnlockProficiency_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UnlockProficiency {
         int32 level = 1;
         int32 buffId = 2;
     }
-
     message GetAllLevelAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetSeasonTargetAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetSeasonTargetAward {
         int32 vTargetId = 1;
     }
-
     message GetCurSeason_Ret {
-        uint32 ret_code = 1;
-        zproto.GetCurSeasonReply ret = 2;
+        zproto.GetCurSeasonReply ret = 1;
     }
-
     message ActivatePivot_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ActivatePivot {
         uint64 vPivotID = 1;
     }
-
     message PivotStateGetReward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message PivotStateGetReward {
         uint64 vPivotID = 1;
         int32 vStage = 2;
     }
-
     message ScenePivotStageGetReward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ScenePivotStageGetReward {
         int32 vSceneId = 1;
         int32 vStage = 2;
     }
-
     message PermanentCloseRedDot {
         int32 vRedDotId = 1;
     }
-
     message CancelRedDot {
         zproto.CancelRedDotParam vParam = 1;
     }
-
     message GetPersonalInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.GetPersonalInfoReply ret = 2;
+        zproto.GetPersonalInfoReply ret = 1;
     }
-
     message GetPersonalInfo {
         zproto.GetPersonalInfoRequest vRequest = 1;
     }
-
     message GetFriendBaseInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.GetFriendBaseInfoReply ret = 2;
+        zproto.GetFriendBaseInfoReply ret = 1;
     }
-
     message GetFriendBaseInfo {
         zproto.GetFriendBaseInfoRequest vRequest = 1;
     }
-
     message RequestAddFriend_Ret {
-        uint32 ret_code = 1;
-        zproto.RequestAddFriendReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message RequestAddFriend {
         zproto.RequestAddFriendRequest vRequest = 1;
     }
-
     message ProcessAddRequest_Ret {
-        uint32 ret_code = 1;
-        zproto.ProcessAddRequestReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ProcessAddRequest {
         zproto.ProcessAddRequestRequest vRequest = 1;
     }
-
     message SetFriendRemarks_Ret {
-        uint32 ret_code = 1;
-        zproto.SetFriendRemarksReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetFriendRemarks {
         zproto.SetFriendRemarksRequest vRequest = 1;
     }
-
     message DeleteFriend_Ret {
-        uint32 ret_code = 1;
-        zproto.DeleteFriendReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message DeleteFriend {
         zproto.DeleteFriendRequest vRequest = 1;
     }
-
     message SetShowPicture_Ret {
-        uint32 ret_code = 1;
-        zproto.SetShowPictureReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetShowPicture {
         zproto.SetShowPictureRequest vRequest = 1;
     }
-
     message SetSignature_Ret {
-        uint32 ret_code = 1;
-        zproto.SetSignatureReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetSignature {
         zproto.SetSignatureRequest vRequest = 1;
     }
-
     message SetHobbyMark_Ret {
-        uint32 ret_code = 1;
-        zproto.SetHobbyMarkReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetHobbyMark {
         zproto.SetHobbyMarkRequest vRequest = 1;
     }
-
     message SetTimeMark_Ret {
-        uint32 ret_code = 1;
-        zproto.SetTimeMarkReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetTimeMark {
         zproto.SetTimeMarkRequest vRequest = 1;
     }
-
     message SearchFriend_Ret {
-        uint32 ret_code = 1;
-        zproto.SearchFriendReply ret = 2;
+        zproto.SearchFriendReply ret = 1;
     }
-
     message SearchFriend {
         zproto.SearchFriendRequest vRequest = 1;
     }
-
     message SetRemind_Ret {
-        uint32 ret_code = 1;
-        zproto.SetRemindReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetRemind {
         zproto.SetRemindRequest vRequest = 1;
     }
-
     message SetTop_Ret {
-        uint32 ret_code = 1;
-        zproto.SetTopReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetTop {
         zproto.SetTopRequest vRequest = 1;
     }
-
     message GetSuggestionList_Ret {
-        uint32 ret_code = 1;
-        zproto.GetSuggestionListReply ret = 2;
+        zproto.GetSuggestionListReply ret = 1;
     }
-
     message GetSuggestionList {
         zproto.GetSuggestionListRequest vRequest = 1;
     }
-
     message SetGroupSort_Ret {
-        uint32 ret_code = 1;
-        zproto.SetGroupSortReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetGroupSort {
         zproto.SetGroupSortRequest vRequest = 1;
     }
-
     message ChangeGroup_Ret {
-        uint32 ret_code = 1;
-        zproto.ChangeGroupReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ChangeGroup {
         zproto.ChangeGroupRequest vRequest = 1;
     }
-
     message CreateGroup_Ret {
-        uint32 ret_code = 1;
-        zproto.CreateGroupReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message CreateGroup {
         zproto.CreateGroupRequest vRequest = 1;
     }
-
     message DeleteGroup_Ret {
-        uint32 ret_code = 1;
-        zproto.DeleteGroupReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message DeleteGroup {
         zproto.DeleteGroupRequest vRequest = 1;
     }
-
     message ChangeGroupName_Ret {
-        uint32 ret_code = 1;
-        zproto.ChangeGroupNameReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ChangeGroupName {
         zproto.ChangeGroupNameRequest vRequest = 1;
     }
-
     message RewardPersonalFriendlinessLv_Ret {
-        uint32 ret_code = 1;
-        zproto.RewardPersonalFriendlinessLvReply ret = 2;
+        zproto.RewardPersonalFriendlinessLvReply ret = 1;
     }
-
     message RewardPersonalFriendlinessLv {
         zproto.RewardPersonalFriendlinessLvRequest vRequest = 1;
     }
-
     message RewardTotalFriendlinessLv_Ret {
-        uint32 ret_code = 1;
-        zproto.RewardTotalFriendlinessLvReply ret = 2;
+        zproto.RewardTotalFriendlinessLvReply ret = 1;
     }
-
     message RewardTotalFriendlinessLv {
         zproto.RewardTotalFriendlinessLvRequest vRequest = 1;
     }
-
     message GetFriendliness_Ret {
-        uint32 ret_code = 1;
-        zproto.GetFriendlinessReply ret = 2;
+        zproto.GetFriendlinessReply ret = 1;
     }
-
     message GetFriendliness {
         zproto.GetFriendlinessRequest vRequest = 1;
     }
-
     message SelectReasoning_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SelectReasoning {
         uint32 vInvestigationId = 1;
         uint32 vStepId = 2;
         uint32 vReasoningId = 3;
         uint32 vAnswerId = 4;
     }
-
     message GetSeasonQuestAward_Ret {
-        uint32 ret_code = 1;
+        zproto.GetSeasonQuestAwardReply ret = 1;
     }
-
     message GetSeasonQuestAward {
         int32 vTargetId = 1;
     }
-
     message BuyShopItem {
         zproto.BuyShopItemRequest vRequest = 1;
     }
-
-    message Payment {
-        zproto.PaymentRequest vRequest = 1;
-    }
-
-    message ExchangeCurrency {
-        int32 functionId = 1;
-        int32 useCount = 2;
-    }
-
     message RefreshShop_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message RefreshShop {
         zproto.RefreshShopRequest vRequest = 1;
     }
-
     message GetShopItemList_Ret {
-        uint32 ret_code = 1;
-        zproto.GetShopItemListReply ret = 2;
+        zproto.GetShopItemListReply ret = 1;
     }
-
     message GetShopItemList {
         zproto.GetShopItemListRequest vRequest = 1;
     }
-
-    message GetShopItemCanBuy_Ret {
-        uint32 ret_code = 1;
-        zproto.GetShopItemCanBuyReply ret = 2;
-    }
-
-    message GetShopItemCanBuy {
-        zproto.GetShopItemCanBuyRequest vRequest = 1;
-    }
-
     message UnlockShowPiece_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UnlockShowPiece {
         zproto.EShowPieceType vPieceType = 1;
         int32 vPieceId = 2;
     }
-
     message SetOftenUseShowPieceList_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetOftenUseShowPieceList {
         zproto.EShowPieceType vPieceType = 1;
         int32 vPieceId = 2;
         bool vIsAdd = 3;
     }
-
     message SetShowPieceRoulette_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetShowPieceRoulette {
         int32 vPosition = 1;
         zproto.EShowPieceType vPieceType = 2;
         int32 vPieceId = 3;
     }
-
     message TakeOnShowPiece_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message TakeOnShowPiece {
         zproto.EShowPieceType vPieceType = 1;
         int32 vPieceId = 2;
     }
-
     message TakeOffShowPiece_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message TakeOffShowPiece {
         zproto.EShowPieceType vPieceType = 1;
         int32 vPieceId = 2;
     }
-
     message GetStickerAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetStickerAward {
         uint32 bookId = 1;
         uint32 stickerId = 2;
     }
-
     message GetBookAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetBookAward {
         uint32 bookId = 1;
     }
-
     message Interaction_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message Interaction {
         zproto.InteractionTemplateData vInfo = 1;
     }
-
     message InteractionActionEnd_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message InteractionActionEnd {
         int32 curStage = 1;
         zproto.EInteractionAction actionType = 2;
         bool isSuccess = 3;
     }
-
     message MonsterExploreUnlock_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message MonsterExploreUnlock {
         zproto.UnlockInfo info = 1;
     }
-
     message GetAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetAward {
         zproto.MonsterAwardInfo info = 1;
     }
-
     message SetFlag_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetFlag {
         zproto.SetFlagInfo info = 1;
     }
-
     message EquipProfession_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message EquipProfession {
         zproto.EquipProfessionInfo vInfo = 1;
     }
-
     message SwitchProfession_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SwitchProfession {
         zproto.SwitchProfessionInfo vInfo = 1;
     }
-
     message ProfessionUpgrade_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ProfessionUpgrade {
         int32 vProfessionId = 1;
         zproto.Materials vMaterials = 2;
     }
-
     message ProfessionBreakthrough_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ProfessionBreakthrough {
         int32 vProfessionId = 1;
     }
-
     message SkillUpgrade_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SkillUpgrade {
         int32 vProfessionId = 1;
         int32 vSkillId = 2;
         int32 vSkillFinalLevel = 3;
     }
-
     message ProfessionSkillRemodel_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ProfessionSkillRemodel {
         int32 vProfessionNodeId = 1;
     }
-
     message ProfessionSkillChange_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ProfessionSkillChange {
         int32 vProfessionId = 1;
         int32 vSkillGroupId = 2;
         int32 vChangeSkillId = 3;
     }
-
     message ProfessionForge_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ProfessionForge {
         int32 vProfessionId = 1;
     }
-
     message UseProfessionSkin_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UseProfessionSkin {
         zproto.UseProfessionSkinInfo vInfo = 1;
     }
-
     message ProfessionSkillActive_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ProfessionSkillActive {
         zproto.ProfessionSkillActiveRequest vRequest = 1;
     }
-
     message ProfessionSkillUpgrade_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ProfessionSkillUpgrade {
         zproto.ProfessionSkillUpgradeRequest vRequest = 1;
     }
-
     message AoYiSkillActive_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message AoYiSkillActive {
         zproto.AoyiSkillActiveRequest vRequest = 1;
     }
-
     message AoYiSkillUpgrade_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message AoYiSkillUpgrade {
         zproto.AoyiSkillUpgradeRequest vRequest = 1;
     }
-
     message ActiveProfessionTalent_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ActiveProfessionTalent {
         zproto.ActiveProfessionTalentRequest vRequest = 1;
     }
-
     message ResetProfessionTalent_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ResetProfessionTalent {
         zproto.ResetProfessionTalentRequest vRequest = 1;
     }
-
     message AoYiSkillRemodel_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message AoYiSkillRemodel {
         zproto.AoYiSkillRemodelRequest vRequest = 1;
     }
-
     message AoYiItemFusion_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message AoYiItemFusion {
         zproto.AoYiItemFusionRequest vRequest = 1;
     }
-
     message AoYiItemDecompose_Ret {
-        uint32 ret_code = 1;
+        zproto.AoYiItemDecomposeReply ret = 1;
     }
-
     message AoYiItemDecompose {
         zproto.AoYiItemDecomposeRequest vRequest = 1;
     }
-
     message AcceptProfessionQuest_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message AcceptProfessionQuest {
         zproto.AcceptProfessionQuestRequest vRequest = 1;
     }
-
-    message FastCook_Ret {
-        uint32 ret_code = 1;
+    message ActivateProfessionSkillSkin_Ret {
+        zproto.EErrorCode ret = 1;
     }
-
+    message ActivateProfessionSkillSkin {
+        zproto.ActivateProfessionSkillSkinRequest vRequest = 1;
+    }
+    message UseProfessionSkillSkin_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message UseProfessionSkillSkin {
+        zproto.UseProfessionSkillSkinRequest vRequest = 1;
+    }
+    message FastCook_Ret {
+        zproto.EErrorCode ret = 1;
+    }
     message FastCook {
         zproto.FastCookInfo vInfo = 1;
     }
-
     message RdCook_Ret {
-        uint32 ret_code = 1;
-        zproto.RdCookReply ret = 2;
+        zproto.RdCookReply ret = 1;
     }
-
     message RdCook {
         zproto.RdCookRequest vRequest = 1;
     }
-
     message ReceiveSeasonAchievementAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReceiveSeasonAchievementAward {
         uint32 achievementId = 1;
     }
-
     message AdvanceSeasonMaxRankStart_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReceiveSeasonRankAward_Ret {
-        uint32 ret_code = 1;
+        zproto.ReceiveSeasonRankAwardReply ret = 1;
     }
-
     message ReceiveSeasonRankAward {
         uint32 rankStart = 1;
     }
-
     message SetSeasonRankShowArmband_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetSeasonRankShowArmband {
         uint32 rankStart = 1;
     }
-
     message UploadTLogBody {
         string tLogName = 1;
         string tLogBody = 2;
     }
-
     message BuyBattlePassLevel_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message BuyBattlePassLevel {
         zproto.BuyBattlePassInfo request = 1;
     }
-
     message GetBattlePassAward_Ret {
-        uint32 ret_code = 1;
+        zproto.GetBattlePassAwardReply ret = 1;
     }
-
     message GetBattlePassAward {
         zproto.GetBattlePassAwardRequest request = 1;
     }
-
     message GetSeasonBpQuestAward_Ret {
-        uint32 ret_code = 1;
+        zproto.SeasonBpAwardReply ret = 1;
     }
-
     message GetSeasonBpQuestAward {
         zproto.SeasonBpAward request = 1;
     }
-
     message GetSeasonHistoryData_Ret {
-        uint32 ret_code = 1;
-        zproto.SeasonCenterHistoryReply ret = 2;
+        zproto.SeasonCenterHistoryReply ret = 1;
     }
-
     message GetSeasonHistoryData {
         zproto.SeasonCenterHistoryRequest request = 1;
     }
-
     message ChooseCoreSeasonHoleNode_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ChooseCoreSeasonHoleNode {
         repeated zproto.MedalNode chosenNodeIds = 1;
     }
-
     message ResetNormalSeasonHoles_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ResetNormalSeasonHoles {
         uint32 holeId = 1;
     }
-
     message UpgradeSeasonCoreMedalHole_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UpgradeSeasonCoreMedalHole {
         uint32 holeId = 1;
     }
-
     message UpgradeSeasonNormalHole_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UpgradeSeasonNormalHole {
         uint32 holeId = 1;
-        map<uint32, uint32> itemIdNum = 2;
+        repeated zproto.World.UpgradeSeasonNormalHole.ItemIdNumEntry itemIdNum = 2;
     }
-
     message SetPersonalZoneTags_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalZoneTags {
         zproto.SetPersonalZoneTagsRequest vRequest = 1;
     }
-
     message SetPersonalZonePhoto_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalZonePhoto {
         zproto.SetPersonalZonePhotoRequest vRequest = 1;
     }
-
     message SetPersonalZoneMedal_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalZoneMedal {
         zproto.SetPersonalZoneMedalRequest vRequest = 1;
     }
-
     message SetPersonalZoneTheme_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalZoneTheme {
         zproto.SetPersonalZoneThemeRequest vRequest = 1;
     }
-
     message SetPersonalZoneBusinessCardStyle_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalZoneBusinessCardStyle {
         zproto.SetPersonalZoneBusinessCardStyleRequest vRequest = 1;
     }
-
     message SetPersonalZoneAvatar_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalZoneAvatar {
         zproto.SetPersonalZoneAvatarRequest vRequest = 1;
     }
-
     message SetPersonalZoneAvatarFrame_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalZoneAvatarFrame {
         zproto.SetPersonalZoneAvatarFrameRequest vRequest = 1;
     }
-
     message SetPersonalZoneActionInfo_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalZoneActionInfo {
         zproto.SetPersonalZoneActionInfoRequest vRequest = 1;
     }
-
     message SetPersonalZoneUIPosition_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalZoneUIPosition {
         zproto.SetPersonalZoneUIPositionRequest vRequest = 1;
     }
-
     message SetPersonalZoneTitle_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetPersonalZoneTitle {
         zproto.SetPersonalZoneTitleRequest vRequest = 1;
     }
-
     message GetPersonalZoneTargetAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetPersonalZoneTargetAward {
         zproto.GetPersonalZoneTargetAwardRequest vRequest = 1;
     }
-
-    message SaveRoomBrightness_Ret {
-        uint32 ret_code = 1;
+    message BuyHouse_Ret {
+        zproto.EErrorCode ret = 1;
     }
-
-    message SaveRoomBrightness {
-        int32 brightness = 1;
+    message BuyHouse {
+        zproto.EmptyGrpcMsg vRequest = 1;
     }
-
-    message ToggleEditState_Ret {
-        uint32 ret_code = 1;
+    message CommunitySetCheckInContent_Ret {
+        zproto.EErrorCode ret = 1;
     }
-
-    message ToggleEditState {
-        zproto.ToggleEditStateRequest vRequest = 1;
+    message CommunitySetCheckInContent {
+        zproto.CommunitySetCheckInContentRequest vRequest = 1;
     }
-
+    message CommunityGetHomeLandBaseInfo_Ret {
+        zproto.CommunityGetHomeLandBaseInfoReply ret = 1;
+    }
+    message CommunityGetHomeLandBaseInfo {
+        zproto.CommunityGetHomeLandBaseInfoRequest vRequest = 1;
+    }
+    message CommunityEnter_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityEnter {
+        zproto.CommunityEnterRequest vRequest = 1;
+    }
+    message CommunityEnterHomeland_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityEnterHomeland {
+        zproto.CommunityEnterHomelandRequest vRequest = 1;
+    }
+    message CommunitySetName_Ret {
+        zproto.CommunitySetNameReply ret = 1;
+    }
+    message CommunitySetName {
+        zproto.CommunitySetNameRequest vRequest = 1;
+    }
+    message EnterEditState_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message EnterEditState {
+        zproto.EnterEditStateRequest vRequest = 1;
+    }
+    message ExitEditState_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message ExitEditState {
+        zproto.ExitEditStateRequest vRequest = 1;
+    }
     message UpdateStructure_Ret {
-        uint32 ret_code = 1;
+        zproto.CommunityGrainUpdateStructureReply ret = 1;
     }
-
     message UpdateStructure {
         zproto.UpdateStructureRequest vRequest = 1;
     }
-
+    message CommunityAcceptRejectInvitation_Ret {
+        zproto.CommunityAcceptRejectInvitationReply ret = 1;
+    }
+    message CommunityAcceptRejectInvitation {
+        zproto.CommunityAcceptRejectInvitationRequest vRequest = 1;
+    }
+    message CommunityPersonData_Ret {
+        zproto.CommunityPersonDataReply ret = 1;
+    }
+    message CommunityPersonData {
+        zproto.CommunityPersonDataRequest vRequest = 1;
+    }
+    message CommunityInvitationCohabitant_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityInvitationCohabitant {
+        zproto.CommunityInvitationCohabitantRequest vRequest = 1;
+    }
+    message CommunityInvitation_Ret {
+        zproto.CommunityInvitationReply ret = 1;
+    }
+    message CommunityInvitation {
+        zproto.CommunityInvitationRequest vRequest = 1;
+    }
+    message CommunityQuitCohabitant_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityQuitCohabitant {
+        zproto.CommunityQuitCohabitantRequest vRequest = 1;
+    }
+    message CommunityQuitCohabitantCancel_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityQuitCohabitantCancel {
+        zproto.CommunityQuitCohabitantCancelRequest vRequest = 1;
+    }
+    message CommunityQuitCohabitantAgree_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityQuitCohabitantAgree {
+        zproto.CommunityQuitCohabitantAgreeRequest vRequest = 1;
+    }
+    message GetHomelandCohabitant_Ret {
+        zproto.GetHomelandCohabitantReply ret = 1;
+    }
+    message GetHomelandCohabitant {
+        zproto.GetHomelandCohabitantRequest vRequest = 1;
+    }
+    message CommunityTransferOwnership_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityTransferOwnership {
+        zproto.CommunityTransferOwnershipRequest vRequest = 1;
+    }
+    message CommunityTransferOwnershipCancel_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityTransferOwnershipCancel {
+        zproto.CommunityTransferOwnershipCancelRequest vRequest = 1;
+    }
+    message CommunityTransferOwnershipAgree_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityTransferOwnershipAgree {
+        zproto.CommunityTransferOwnershipAgreeRequest vRequest = 1;
+    }
+    message CommunityBuildFurniture_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityBuildFurniture {
+        zproto.CommunityBuildFurnitureRequest vRequest = 1;
+    }
+    message CommunityBuildFurnitureCancel_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityBuildFurnitureCancel {
+        zproto.CommunityBuildFurnitureCancelRequest vRequest = 1;
+    }
+    message CommunityBuildFurnitureAccelerate_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityBuildFurnitureAccelerate {
+        zproto.CommunityBuildFurnitureAccelerateRequest vRequest = 1;
+    }
+    message CommunityBuildFurnitureReceive_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityBuildFurnitureReceive {
+        zproto.CommunityBuildFurnitureReceiveRequest vRequest = 1;
+    }
+    message CommunityUnlockFurnitureRecipe_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunityUnlockFurnitureRecipe {
+        zproto.CommunityUnlockFurnitureRecipeRequest vRequest = 1;
+    }
+    message GetHomelandBulletinBoards_Ret {
+        zproto.GetHomelandBulletinBoardsReply ret = 1;
+    }
+    message GetHomelandBulletinBoards {
+        zproto.GetHomelandBulletinBoardsRequest vRequest = 1;
+    }
+    message CommunitySetIntroduction_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunitySetIntroduction {
+        zproto.CommunitySetIntroductionRequest vRequest = 1;
+    }
+    message GetHomelandBuildFurnitureInfo_Ret {
+        zproto.GetHomelandBuildFurnitureInfoReply ret = 1;
+    }
+    message GetHomelandBuildFurnitureInfo {
+        zproto.GetHomelandBuildFurnitureInfoRequest vRequest = 1;
+    }
+    message CommunitySetAuthority_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunitySetAuthority {
+        zproto.CommunitySetAuthorityRequest vRequest = 1;
+    }
+    message CommunitySetPlayerAuthority_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CommunitySetPlayerAuthority {
+        zproto.CommunitySetPlayerAuthorityRequest vRequest = 1;
+    }
+    message HomelandWarehouseStore_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message HomelandWarehouseStore {
+        zproto.HomelandWarehouseStoreRequest vRequest = 1;
+    }
+    message HomelandWarehouseTakeOut_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message HomelandWarehouseTakeOut {
+        zproto.HomelandWarehouseTakeOutRequest vRequest = 1;
+    }
+    message GetHomelandWarehouseInfo_Ret {
+        zproto.GetHomelandWarehouseInfoReply ret = 1;
+    }
+    message GetHomelandWarehouseInfo {
+        zproto.GetHomelandWarehouseInfoRequest vRequest = 1;
+    }
+    message CreateStructureGroup_Ret {
+        zproto.CreateStructureGroupReply ret = 1;
+    }
+    message CreateStructureGroup {
+        zproto.CreateStructureGroupRequest vRequest = 1;
+    }
+    message DissolveStructureGroup_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message DissolveStructureGroup {
+        zproto.DissolveStructureGroupRequest vRequest = 1;
+    }
+    message RemoveStructureGroup_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message RemoveStructureGroup {
+        zproto.RemoveStructureGroupRequest vRequest = 1;
+    }
+    message AddToStructureGroup_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message AddToStructureGroup {
+        zproto.AddToStructureGroupRequest vRequest = 1;
+    }
+    message RenameStructureGroup_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message RenameStructureGroup {
+        zproto.RenameStructureGroupRequest vRequest = 1;
+    }
+    message GetStructureGroupInfo_Ret {
+        zproto.GetStructureGroupInfoReply ret = 1;
+    }
+    message GetStructureGroupInfo {
+        zproto.GetStructureGroupInfoRequest vRequest = 1;
+    }
+    message GetHomelandFurnitureWarehouseInfo_Ret {
+        zproto.GetHomelandFurnitureWarehouseInfoReply ret = 1;
+    }
+    message GetHomelandFurnitureWarehouseInfo {
+        zproto.GetHomelandFurnitureWarehouseInfoRequest vRequest = 1;
+    }
+    message GetHomelandCheckInContent_Ret {
+        zproto.GetHomelandCheckInContentReply ret = 1;
+    }
+    message GetHomelandCheckInContent {
+        zproto.GetHomelandCheckInContentRequest vRequest = 1;
+    }
+    message HomelandSetLamplight_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message HomelandSetLamplight {
+        zproto.HomelandSetLamplightRequest vRequest = 1;
+    }
+    message HomelandSwitchLamplight_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message HomelandSwitchLamplight {
+        zproto.HomelandSwitchLamplightRequest vRequest = 1;
+    }
+    message HomelandSwitchAllLamplight_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message HomelandSwitchAllLamplight {
+        zproto.HomelandSwitchAllLamplightRequest vRequest = 1;
+    }
+    message HomelandSetFurnitureName_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message HomelandSetFurnitureName {
+        zproto.HomelandSetFurnitureNameRequest vRequest = 1;
+    }
+    message HomelandSetFurnitureMaterial_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message HomelandSetFurnitureMaterial {
+        zproto.HomelandSetFurnitureMaterialRequest vRequest = 1;
+    }
+    message HomelandSetMaterialInfo_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message HomelandSetMaterialInfo {
+        zproto.HomelandSetMaterialInfoRequest vRequest = 1;
+    }
+    message LevelUp_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message LevelUp {
+        int32 curLevel = 1;
+    }
+    message DestroyClutter_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message DestroyClutter {
+        int64 uuid = 1;
+    }
+    message SubmitTask_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message SubmitTask {
+        int32 taskId = 1;
+    }
+    message SellHomeLandItems_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message SellHomeLandItems {
+        int32 itemId = 1;
+        int32 itemNum = 2;
+    }
+    message SeedingUpdateStructure_Ret {
+        zproto.CommunityGrainSeedingUpdateStructureReply ret = 1;
+    }
+    message SeedingUpdateStructure {
+        zproto.SeedingUpdateStructureRequest vRequest = 1;
+    }
+    message WaterUpdateStructure_Ret {
+        zproto.CommunityGrainWaterUpdateStructureReply ret = 1;
+    }
+    message WaterUpdateStructure {
+        zproto.WaterUpdateStructureRequest vRequest = 1;
+    }
+    message FertilizerUpdateStructure_Ret {
+        zproto.CommunityGrainFertilizerUpdateStructureReply ret = 1;
+    }
+    message FertilizerUpdateStructure {
+        zproto.FertilizerUpdateStructureRequest vRequest = 1;
+    }
+    message PollenUpdateStructure_Ret {
+        zproto.CommunityGrainPollenUpdateStructureReply ret = 1;
+    }
+    message PollenUpdateStructure {
+        zproto.PollenUpdateStructureRequest vRequest = 1;
+    }
+    message PickUpUpdateStructure_Ret {
+        zproto.CommunityGrainPickUpUpdateStructureReply ret = 1;
+    }
+    message PickUpUpdateStructure {
+        zproto.PickUpUpdateStructureRequest vRequest = 1;
+    }
+    message GainUpdateStructure_Ret {
+        zproto.CommunityGrainGainUpdateStructureReply ret = 1;
+    }
+    message GainUpdateStructure {
+        zproto.GainUpdateStructureRequest vRequest = 1;
+    }
+    message QueryPlayerFurniture_Ret {
+        zproto.QueryPlayerFurnitureReply ret = 1;
+    }
+    message QueryPlayerFurniture {
+        zproto.QueryPlayerFurnitureRequest vRequest = 1;
+    }
     message GetSeasonActivationTarget_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message RefreshSeasonActivation_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReceiveSeasonActivationAward_Ret {
-        uint32 ret_code = 1;
+        zproto.ReceiveSeasonActivationAwardReply ret = 1;
     }
-
     message ReceiveSeasonActivationAward {
         int32 stage = 1;
     }
-
     message InstallSkill_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message InstallSkill {
         int32 vSlotId = 1;
         int32 vSkillId = 2;
     }
-
     message UseSlot_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UseSlot {
         zproto.UseSlotRequest vRequest = 1;
     }
-
-    message MonsterHuntUnlockMonster_Ret {
-        uint32 ret_code = 1;
+    message SetSlotAutoBattle_Ret {
+        zproto.EErrorCode ret = 1;
     }
-
+    message SetSlotAutoBattle {
+        zproto.SetSlotAutoBattleRequest vRequest = 1;
+    }
+    message MonsterHuntUnlockMonster_Ret {
+        zproto.EErrorCode ret = 1;
+    }
     message MonsterHuntUnlockMonster {
         zproto.UnlockInfo info = 1;
     }
-
     message GetMonsterAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetMonsterAward {
         zproto.MonsterAwardParam monsterAwardParam = 1;
     }
-
     message GetMonsterHuntLevelAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetMonsterHuntLevelAward {
         zproto.MonsterHuntLevelAwardParam monsterHuntLevelAwardParam = 1;
     }
-
     message InstallMod_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message InstallMod {
         zproto.InstallModRequest vRequest = 1;
     }
-
     message UninstallMod_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UninstallMod {
         zproto.UninstallModRequest vRequest = 1;
     }
-
     message UpgradeMod_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message UpgradeMod {
         zproto.UpgradeModRequest vRequest = 1;
     }
-
     message DecomposeMod_Ret {
-        uint32 ret_code = 1;
+        zproto.DecomposeModReply ret = 1;
     }
-
     message DecomposeMod {
         zproto.DecomposeModRequest vRequest = 1;
     }
-
     message CreateWarehouse_Ret {
-        uint32 ret_code = 1;
-        zproto.CreateWarehouseReply ret = 2;
+        zproto.CreateWarehouseReply ret = 1;
     }
-
     message CreateWarehouse {
         zproto.CreateWarehouseRequest vRequest = 1;
     }
-
     message DepositWarehouse_Ret {
-        uint32 ret_code = 1;
-        zproto.DepositWarehouseReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message DepositWarehouse {
         zproto.DepositWarehouseRequest vRequest = 1;
     }
-
     message TakeOutWarehouse_Ret {
-        uint32 ret_code = 1;
-        zproto.TakeOutWarehouseReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message TakeOutWarehouse {
         zproto.TakeOutWarehouseRequest vRequest = 1;
     }
-
     message ExitWarehouse_Ret {
-        uint32 ret_code = 1;
-        zproto.ExitWarehouseReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExitWarehouse {
         zproto.ExitWarehouseRequest vRequest = 1;
     }
-
     message GetWarehouse_Ret {
-        uint32 ret_code = 1;
-        zproto.GetWarehouseReply ret = 2;
+        zproto.GetWarehouseReply ret = 1;
     }
-
     message GetWarehouse {
         zproto.GetWarehouseRequest vRequest = 1;
     }
-
     message InviteToWarehouse_Ret {
-        uint32 ret_code = 1;
-        zproto.InviteToWarehouseReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message InviteToWarehouse {
         zproto.InviteToWarehouseRequest vRequest = 1;
     }
-
     message ReBeInitiateWarehouse_Ret {
-        uint32 ret_code = 1;
-        zproto.ReBeInitiateWarehouseReply ret = 2;
+        zproto.ReBeInitiateWarehouseReply ret = 1;
     }
-
     message ReBeInitiateWarehouse {
         zproto.ReBeInitiateWarehouseRequest vRequest = 1;
     }
-
     message KickOutWarehouse_Ret {
-        uint32 ret_code = 1;
-        zproto.KickOutWarehouseReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message KickOutWarehouse {
         zproto.KickOutWarehouseRequest vRequest = 1;
     }
-
     message DisbandWarehouse_Ret {
-        uint32 ret_code = 1;
-        zproto.DisbandWarehouseReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message DisbandWarehouse {
         zproto.DisbandWarehouseRequest vRequest = 1;
     }
-
     message ExchangeBuyItem_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeBuyItemReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangeBuyItem {
         zproto.ExchangeBuyItemRequest request = 1;
     }
-
     message ExchangePutItem_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangePutItemReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangePutItem {
         zproto.ExchangePutItemRequest request = 1;
     }
-
     message ExchangeTakeItem_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeTakeItemReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangeTakeItem {
         zproto.ExchangeTakeItemRequest request = 1;
     }
-
     message ExchangeWithdraw_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeWithdrawReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangeWithdraw {
         zproto.ExchangeWithdrawRequest request = 1;
     }
-
-    message ExchangeNoticeTakeItem_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeNoticeTakeItemReply ret = 2;
-    }
-
-    message ExchangeNoticeTakeItem {
-        zproto.ExchangeNoticeTakeItemRequest request = 1;
-    }
-
     message ExchangeNoticeBuyItem_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeNoticeBuyItemReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangeNoticeBuyItem {
         zproto.ExchangeNoticeBuyItemRequest request = 1;
     }
-
     message ExchangeSale_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeSaleReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangeSale {
         zproto.ExchangeSaleRequest vRequest = 1;
     }
-
     message ExchangeSaleTake_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeSaleTakeReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangeSaleTake {
         zproto.ExchangeSaleTakeRequest vRequest = 1;
     }
-
     message ExchangeSaleBuy_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeSaleBuyReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangeSaleBuy {
         zproto.ExchangeSaleBuyRequest vRequest = 1;
     }
-
     message ExchangeList_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeListReply ret = 2;
+        zproto.ExchangeListReply ret = 1;
     }
-
     message ExchangeList {
         zproto.ExchangeListRequest vRequest = 1;
     }
-
     message GetExchangeItem_Ret {
-        uint32 ret_code = 1;
-        zproto.GetExchangeItemReply ret = 2;
+        zproto.GetExchangeItemReply ret = 1;
     }
-
     message GetExchangeItem {
         zproto.GetExchangeItemRequest vRequest = 1;
     }
-
     message ExchangeSellItem_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeSellItemReply ret = 2;
+        zproto.ExchangeSellItemReply ret = 1;
     }
-
     message ExchangeSellItem {
         zproto.ExchangeSellItemRequest vRequest = 1;
     }
-
     message ExchangeRecord_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeRecordReply ret = 2;
+        zproto.ExchangeRecordReply ret = 1;
     }
-
     message ExchangeRecord {
         zproto.ExchangeRecordRequest vRequest = 1;
     }
-
     message ExchangeNotice_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeNoticeReply ret = 2;
+        zproto.ExchangeNoticeReply ret = 1;
     }
-
     message ExchangeNotice {
         zproto.ExchangeNoticeRequest vRequest = 1;
     }
-
     message ExchangeNoticeDetail_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeNoticeDetailReply ret = 2;
+        zproto.ExchangeNoticeDetailReply ret = 1;
     }
-
     message ExchangeNoticeDetail {
         zproto.ExchangeNoticeDetailRequest vRequest = 1;
     }
-
     message ExchangeNoticePreBuy_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeNoticePreBuyReply ret = 2;
+        zproto.ExchangeNoticePreBuyReply ret = 1;
     }
-
     message ExchangeNoticePreBuy {
         zproto.ExchangeNoticePreBuyRequest vRequest = 1;
     }
-
     message ExchangeSaleData_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeSaleDataReply ret = 2;
+        zproto.ExchangeSaleDataReply ret = 1;
     }
-
     message ExchangeSaleData {
         zproto.ExchangeSaleDataRequest vRequest = 1;
     }
-
     message ExchangeSaleRecord_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeSaleRecordReply ret = 2;
+        zproto.ExchangeSaleRecordReply ret = 1;
     }
-
     message ExchangeSaleRecord {
         zproto.ExchangeSaleRecordRequest vRequest = 1;
     }
-
     message ExchangeSaleRank_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeSaleRankReply ret = 2;
+        zproto.ExchangeSaleRankReply ret = 1;
     }
-
     message ExchangeSaleRank {
         zproto.ExchangeSaleRankRequest vRequest = 1;
     }
-
     message ExchangeCare_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeCareReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangeCare {
         zproto.ExchangeCareRequest vRequest = 1;
     }
-
     message ExchangeCareCancel_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeCareCancelReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ExchangeCareCancel {
         zproto.ExchangeCareCancelRequest vRequest = 1;
     }
-
     message ExchangeCareList_Ret {
-        uint32 ret_code = 1;
-        zproto.ExchangeCareListReply ret = 2;
+        zproto.ExchangeCareListReply ret = 1;
     }
-
     message ExchangeCareList {
         zproto.ExchangeCareListRequest vRequest = 1;
     }
-
+    message ExchangeLowestPrice_Ret {
+        zproto.ExchangeLowestPriceReply ret = 1;
+    }
+    message ExchangeLowestPrice {
+        zproto.ExchangeLowestPriceRequest vRequest = 1;
+    }
     message FishingExit_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message FishingSetRod_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message FishingSetRod {
         zproto.FishingSetRodRequest vRequest = 1;
     }
-
     message FishingSetBait_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message FishingSetBait {
         zproto.FishingSetBaitRequest vRequest = 1;
     }
-
     message FishingSetStage_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message FishingSetStage {
         zproto.FishingSetStageRequest vRequest = 1;
     }
-
     message FishingRod_Ret {
-        uint32 ret_code = 1;
-        zproto.FishingRodReply ret = 2;
+        zproto.FishingRodReply ret = 1;
     }
-
     message FishingSetResearchFish_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message FishingSetResearchFish {
         zproto.FishingSetResearchFishRequest vRequest = 1;
     }
-
     message FishingFirstShowRecord_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message FishingFirstShowRecord {
         zproto.FishingFirstShowRecordRequest vRequest = 1;
     }
-
     message FishingResearch_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message FishingResearch {
         zproto.FishingResearchRequest vRequest = 1;
     }
-
     message FishingResultReport_Ret {
-        uint32 ret_code = 1;
-        zproto.FishingResultReportReply ret = 2;
+        zproto.FishingResultReportReply ret = 1;
     }
-
     message FishingResultReport {
         zproto.FishingResultReportRequest vRequest = 1;
     }
-
     message FishingGetLevelReward_Ret {
-        uint32 ret_code = 1;
+        zproto.FishingGetLevelRewardReply ret = 1;
     }
-
     message FishingGetLevelReward {
         zproto.FishingGetLevelRewardRequest vRequest = 1;
     }
-
     message GetRankInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.GetRankInfoReply ret = 2;
+        zproto.GetRankInfoReply ret = 1;
     }
-
     message GetRankInfo {
         zproto.GetRankInfoRequest vRequest = 1;
     }
-
-    message SubmitGoods_Ret {
-        uint32 ret_code = 1;
+    message GetFishRankTop_Ret {
+        zproto.GetFishRankTopReply ret = 1;
     }
-
+    message GetFishRankTop {
+        zproto.GetFishRankTopRequest vRequest = 1;
+    }
+    message SubmitGoods_Ret {
+        zproto.EErrorCode ret = 1;
+    }
     message SubmitGoods {
         zproto.Goods goodsInfo = 1;
     }
-
     message SetOff_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message RewardFreightAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message CheckRefreshGoods_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetRoomAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetRoomAward {
         zproto.GetRoomAwardParam param = 1;
     }
-
     message GetTrialRoadAward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message GetTrialRoadAward {
         zproto.GetTrialRoadAwardParam param = 1;
     }
-
     message GashaDraw_Ret {
-        uint32 ret_code = 1;
-        zproto.GashaDrawReply ret = 2;
+        zproto.GashaDrawReply ret = 1;
     }
-
     message GashaDraw {
         zproto.GashaDrawRequest vRequest = 1;
     }
-
-    message GashaRecord_Ret {
-        uint32 ret_code = 1;
-        zproto.GashaRecordReply ret = 2;
+    message GashaWishSelection_Ret {
+        zproto.EErrorCode ret = 1;
     }
-
+    message GashaWishSelection {
+        zproto.GashaWishSelectionRequest vRequest = 1;
+    }
+    message GashaRecord_Ret {
+        zproto.GashaRecordReply ret = 1;
+    }
     message GashaRecord {
         zproto.GashaRecordRequest vRequest = 1;
     }
-
-    message GetSummaryInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.GetSummaryInfoReply ret = 2;
-    }
-
-    message GetSummaryInfo {
-        zproto.GetSummaryInfoRequest vRequest = 1;
-    }
-
-    message GetDetailedDataInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.GetDetailedDataInfoReply ret = 2;
-    }
-
-    message GetDetailedDataInfo {
-        zproto.GetDetailedDataInfoRequest vRequest = 1;
-    }
-
     message GetSocialData_Ret {
-        uint32 ret_code = 1;
-        zproto.GetSocialDataReply ret = 2;
+        zproto.GetSocialDataReply ret = 1;
     }
-
     message GetSocialData {
         zproto.GetSocialDataRequest vRequest = 1;
     }
-
     message ChangeAvatar_Ret {
-        uint32 ret_code = 1;
-        zproto.ChangeAvatarReply ret = 2;
+        zproto.ChangeAvatarReply ret = 1;
     }
-
     message ChangeAvatar {
         zproto.ChangeAvatarRequest vRequest = 1;
     }
-
     message GetMatchInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.MatchInfo ret = 2;
+        zproto.MatchInfo ret = 1;
     }
-
     message GetMatchInfo {
         zproto.GetMatchInfoParam getMatchInfoParam = 1;
     }
-
-    message BeginMatch_Ret {
-        uint32 ret_code = 1;
-    }
-
     message BeginMatch {
         zproto.BeginMatchParam beginMatchParam = 1;
     }
-
-    message CancelMatch_Ret {
-        uint32 ret_code = 1;
-    }
-
     message CancelMatch {
         zproto.CancelMatchParam cancelMatchParam = 1;
     }
-
-    message MatchReady_Ret {
-        uint32 ret_code = 1;
-    }
-
     message MatchReady {
         zproto.MatchReadyParam matchReadyParam = 1;
     }
-
     message GetWorldBossInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.WorldBossInfo ret = 2;
+        zproto.WorldBossInfo ret = 1;
     }
-
     message GetWorldBossInfo {
         zproto.GetWorldBossInfoParam getWorldBossInfoParam = 1;
     }
-
     message ReceiveScoreReward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReceiveScoreReward {
         zproto.ReceiveScoreRewardParam receiveScoreRewardParam = 1;
     }
-
     message ReceiveBossReward_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReceiveBossReward {
         zproto.ReceiveBossRewardParam receiveBossRewardParam = 1;
     }
-
-    message CraftEnergyRefresh_Ret {
-        uint32 ret_code = 1;
-        zproto.CraftEnergyRefreshReply ret = 2;
+    message BeginWorldBossMatch_Ret {
+        zproto.EErrorCode ret = 1;
     }
-
-    message CraftEnergyRefresh {
-        zproto.CraftEnergyRefreshRequest vRequest = 1;
+    message BeginWorldBossMatch {
+        zproto.WorldBossMatchParam worldBossMatchParam = 1;
     }
-
     message GetAvatarToken {
         zproto.GetAvatarTokenRequest vRequest = 1;
     }
-
     message GetTeamList_Ret {
-        uint32 ret_code = 1;
-        zproto.GetTeamListReply ret = 2;
+        zproto.GetTeamListReply ret = 1;
     }
-
     message GetTeamList {
         zproto.GetTeamListRequest vRequest = 1;
     }
-
     message GetNearTeamList_Ret {
-        uint32 ret_code = 1;
-        zproto.GetNearTeamListReply ret = 2;
+        zproto.GetNearTeamListReply ret = 1;
     }
-
     message GetNearTeamList {
         zproto.GetNearTeamListRequest vRequest = 1;
     }
-
     message CreateTeam_Ret {
-        uint32 ret_code = 1;
-        zproto.CreateTeamReply ret = 2;
+        zproto.CreateTeamReply ret = 1;
     }
-
     message CreateTeam {
         zproto.CreateTeamRequest vRequest = 1;
     }
-
     message ApplyJoinTeam_Ret {
-        uint32 ret_code = 1;
-        zproto.ApplyJoinTeamReply ret = 2;
+        zproto.ApplyJoinTeamReply ret = 1;
     }
-
     message ApplyJoinTeam {
         zproto.ApplyJoinTeamRequest vRequest = 1;
     }
-
     message LeaderGetApplyList_Ret {
-        uint32 ret_code = 1;
-        zproto.LeaderGetApplyListReply ret = 2;
+        zproto.LeaderGetApplyListReply ret = 1;
     }
-
     message LeaderGetApplyList {
         zproto.LeaderGetApplyListRequest vRequest = 1;
     }
-
     message DealApplyJoin_Ret {
-        uint32 ret_code = 1;
-        zproto.DealApplyJoinReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message DealApplyJoin {
         zproto.DealApplyJoinRequest vRequest = 1;
     }
-
     message DenyAllApplyJoin_Ret {
-        uint32 ret_code = 1;
-        zproto.DenyAllApplyJoinReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message DenyAllApplyJoin {
         zproto.DenyAllApplyJoinRequest vRequest = 1;
     }
-
     message InviteToTeam_Ret {
-        uint32 ret_code = 1;
-        zproto.InviteToTeamReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message InviteToTeam {
         zproto.InviteToTeamRequest vRequest = 1;
     }
-
     message ReplyBeInvitation_Ret {
-        uint32 ret_code = 1;
-        zproto.ReplyBeInvitationReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReplyBeInvitation {
         zproto.ReplyBeInvitationRequest vRequest = 1;
     }
-
     message ApplyBeLeader_Ret {
-        uint32 ret_code = 1;
-        zproto.ApplyBeLeaderReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ApplyBeLeader {
         zproto.ApplyBeLeaderRequest vRequest = 1;
     }
-
     message RefuseLeaderApply_Ret {
-        uint32 ret_code = 1;
-        zproto.RefuseLeaderApplyReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message RefuseLeaderApply {
         zproto.RefuseLeaderApplyRequest vRequest = 1;
     }
-
     message TransferLeader_Ret {
-        uint32 ret_code = 1;
-        zproto.TransferLeaderReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message TransferLeader {
         zproto.TransferLeaderRequest vRequest = 1;
     }
-
     message AcceptTransferBeLeader_Ret {
-        uint32 ret_code = 1;
-        zproto.AcceptTransferBeLeaderReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message AcceptTransferBeLeader {
         zproto.AcceptTransferBeLeaderRequest vRequest = 1;
     }
-
     message KickOut_Ret {
-        uint32 ret_code = 1;
-        zproto.KickOutReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message KickOut {
         zproto.KickOutRequest vRequest = 1;
     }
-
     message QuitTeam_Ret {
-        uint32 ret_code = 1;
-        zproto.QuitTeamReply ret = 2;
+        zproto.QuitTeamReply ret = 1;
     }
-
     message QuitTeam {
         zproto.QuitTeamRequest vRequest = 1;
     }
-
     message TeamCancelActivity_Ret {
-        uint32 ret_code = 1;
-        zproto.TeamCancelActivityReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message TeamCancelActivity {
         zproto.TeamCancelActivityRequest vRequest = 1;
     }
-
     message ReplyJoinActivity_Ret {
-        uint32 ret_code = 1;
-        zproto.ReplyJoinActivityReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReplyJoinActivity {
         zproto.ReplyJoinActivityRequest vRequest = 1;
     }
-
     message SetTeamTargetInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.SetTeamTargetInfoReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetTeamTargetInfo {
         zproto.SetTeamTargetInfoRequest vRequest = 1;
     }
-
     message SetShowHall_Ret {
-        uint32 ret_code = 1;
-        zproto.SetShowHallReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message SetShowHall {
         zproto.SetShowHallRequest vRequest = 1;
     }
-
     message GoToTeamMemWorld_Ret {
-        uint32 ret_code = 1;
-        zproto.GoToTeamMemWorldReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message GoToTeamMemWorld {
         zproto.GoToTeamMemWorldRequest vRequest = 1;
     }
-
     message TeamLeaderCall_Ret {
-        uint32 ret_code = 1;
-        zproto.TeamLeaderCallReply ret = 2;
+        zproto.TeamLeaderCallReply ret = 1;
     }
-
     message TeamLeaderCall {
         zproto.TeamLeaderCallRequest vRequest = 1;
     }
-
     message TeamMemCall_Ret {
-        uint32 ret_code = 1;
-        zproto.TeamMemCallReply ret = 2;
+        zproto.TeamMemCallReply ret = 1;
     }
-
     message TeamMemCall {
         zproto.TeamMemCallRequest vRequest = 1;
     }
-
     message TeamMemChangeScene_Ret {
-        uint32 ret_code = 1;
-        zproto.TeamMemChangeSceneReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message TeamMemChangeScene {
         zproto.TeamMemChangeSceneRequest vRequest = 1;
     }
-
     message GetTeamInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.GetTeamInfoReply ret = 2;
+        zproto.GetTeamInfoReply ret = 1;
     }
-
     message GetTeamInfo {
         zproto.GetTeamInfoRequest vRequest = 1;
     }
-
     message TeamInviteUser_Ret {
-        uint32 ret_code = 1;
-        zproto.TeamInviteUserReply ret = 2;
+        zproto.TeamInviteUserReply ret = 1;
     }
-
     message TeamInviteUser {
         zproto.TeamInviteUserRequest vRequest = 1;
     }
-
     message SetMicrophoneStatus {
         zproto.SetMicrophoneStatusRequest vRequest = 1;
     }
-
     message SetSpeakStatus {
         zproto.SetSpeakStatusRequest vRequest = 1;
     }
-
     message SetVoiceId_Ret {
-        uint32 ret_code = 1;
-        zproto.SetVoiceIdReply ret = 2;
+        zproto.SetVoiceIdReply ret = 1;
     }
-
     message SetVoiceId {
         zproto.SetVoiceIdRequest vRequest = 1;
     }
-
-    message GetRecommendPlayData_Ret {
-        uint32 ret_code = 1;
-        zproto.GetRecommendPlayDataReply ret = 2;
+    message ChangeTeamMemberType {
+        zproto.ChangeTeamMemberTypeRequest vRequest = 1;
     }
-
+    message UpdateTeamGroup {
+        zproto.UpdateTeamGroupRequest vRequest = 1;
+    }
+    message SetTeamTargetQuickSay_Ret {
+        zproto.SetTeamTargetQuickSayReply ret = 1;
+    }
+    message SetTeamTargetQuickSay {
+        zproto.SetTeamTargetQuickSayRequest vRequest = 1;
+    }
+    message JoinDungeons_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message JoinDungeons {
+        zproto.JoinDungeonsRequest vRequest = 1;
+    }
+    message InviteJoinDungeons_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message InviteJoinDungeons {
+        zproto.InviteJoinDungeonsRequest vRequest = 1;
+    }
+    message GetRecommendPlayData_Ret {
+        zproto.GetRecommendPlayDataReply ret = 1;
+    }
     message GetRecommendPlayData {
         zproto.GetRecommendPlayDataRequest vRequest = 1;
     }
-
-    message TakeOnRide_Ret {
-        uint32 ret_code = 1;
+    message EnterAct_Ret {
+        zproto.EnterActReply ret = 1;
     }
-
+    message EnterAct {
+        zproto.EnterActRequest vRequest = 1;
+    }
+    message CancelAct_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CancelAct {
+        zproto.CancelActRequest vRequest = 1;
+    }
+    message ExitAct_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message ExitAct {
+        zproto.ExitActRequest vRequest = 1;
+    }
+    message BeginRecommendPlayMatch {
+        zproto.RecommendPlayMatchParam vRequest = 1;
+    }
+    message TakeOnRide_Ret {
+        zproto.EErrorCode ret = 1;
+    }
     message TakeOnRide {
         zproto.TakeOnRideParam param = 1;
     }
-
     message TakeOffRide_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message TakeOffRide {
         zproto.TakeOffRideParam param = 1;
     }
-
     message StartRide_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message StartRide {
         zproto.StartRideParam param = 1;
     }
-
     message StopRide_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message StopRide {
         bool isForce = 1;
     }
-
     message ApplyToRide_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ApplyToRide {
         zproto.ApplyToRideParam param = 1;
     }
-
     message InviteToRide_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message InviteToRide {
         zproto.InviteToRideParam param = 1;
     }
-
     message ApplyToRideResult_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message ApplyToRideResult {
         zproto.ApplyToRideResultParam param = 1;
     }
-
     message RideReconfirm_Ret {
-        uint32 ret_code = 1;
+        zproto.EErrorCode ret = 1;
     }
-
     message RideReconfirm {
         int64 charId = 1;
     }
-
-    message DrawnFunctionOpenAward_Ret {
-        uint32 ret_code = 1;
+    message SwitchRideAttach_Ret {
+        zproto.EErrorCode ret = 1;
     }
-
+    message SwitchRideMagnetic_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message DetachRideMagnetic_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message DetachRideMagnetic {
+        zproto.EDetachMagneticType detachType = 1;
+    }
+    message RideMagneticAttachTo_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message RideMagneticAttachTo {
+        int64 targetUuid = 1;
+    }
+    message TakeOnActivateRideSkin_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message TakeOnActivateRideSkin {
+        zproto.TakeOnActivateRideSkinParam param = 1;
+    }
+    message TakeOnSetRideSkin_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message TakeOnSetRideSkin {
+        zproto.TakeOnSetRideSkinParam param = 1;
+    }
+    message SyncCirclePathLength_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message SyncCirclePathLength {
+        float pathLength = 1;
+    }
+    message DrawnFunctionOpenAward_Ret {
+        zproto.DrawnFunctionOpenAwardReply ret = 1;
+    }
     message DrawnFunctionOpenAward {
         int32 functionId = 1;
     }
-
     message ReqSceneLineInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqSceneLineInfoReply ret = 2;
+        zproto.ReqSceneLineInfoReply ret = 1;
     }
-
     message ReqSceneLineInfo {
         zproto.ReqSceneLineInfoRequest vRequest = 1;
     }
-
     message ReqSwitchSceneLine_Ret {
-        uint32 ret_code = 1;
-        zproto.ReqSwitchSceneLineReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReqSwitchSceneLine {
         zproto.ReqSwitchSceneLineRequest vRequest = 1;
     }
-
+    message Pay_Ret {
+        zproto.PayReply ret = 1;
+    }
+    message Pay {
+        zproto.PayRequest vRequest = 1;
+    }
+    message QueryProduct_Ret {
+        zproto.QueryProductReply ret = 1;
+    }
+    message QueryProduct {
+        zproto.QueryProductRequest vRequest = 1;
+    }
+    message GetFirstPay_Ret {
+        zproto.GetFirstPayReply ret = 1;
+    }
+    message PaySuccess_Ret {
+        zproto.PaySuccessReply ret = 1;
+    }
+    message PaySuccess {
+        zproto.PaySuccessRequest vRequest = 1;
+    }
+    message QueryBalance_Ret {
+        zproto.QueryBalanceReply ret = 1;
+    }
+    message QueryBalance {
+        zproto.QueryBalanceRequest vRequest = 1;
+    }
+    message UnLockLifeProfession_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message UnLockLifeProfession {
+        uint32 lifeProfessionId = 1;
+    }
+    message GetUpgradeReward_Ret {
+        zproto.GetUpgradeRewardReply ret = 1;
+    }
+    message GetUpgradeReward {
+        uint32 targetId = 1;
+    }
+    message ActivateSpecialization_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message ActivateSpecialization {
+        uint32 lifeProfessionId = 1;
+        uint32 specializationId = 2;
+    }
+    message LifeProfessionBuild_Ret {
+        zproto.LifeProfessionBuildReply ret = 1;
+    }
+    message LifeProfessionBuild {
+        zproto.LifeProfessionBuildReq req = 1;
+    }
+    message LifeProfessionCooking_Ret {
+        zproto.LifeProfessionCookingReply ret = 1;
+    }
+    message LifeProfessionCooking {
+        zproto.LifeProfessionCookingReq cookingReq = 1;
+    }
+    message LifeProfessionRDCooking_Ret {
+        zproto.LifeProfessionRDCookingRet ret = 1;
+    }
+    message LifeProfessionRDCooking {
+        zproto.LifeProfessionRDCookingReq rdReq = 1;
+    }
+    message LifeProfessionAlchemy_Ret {
+        zproto.LifeProfessionAlchemyReply ret = 1;
+    }
+    message LifeProfessionAlchemy {
+        zproto.LifeProfessionAlchemyReq req = 1;
+    }
+    message LifeProfessionRDAlchemy_Ret {
+        zproto.LifeProfessionRDAlchemyRet ret = 1;
+    }
+    message LifeProfessionRDAlchemy {
+        zproto.LifeProfessionRDAlchemyReq req = 1;
+    }
+    message LifeProfessionStartWork_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message LifeProfessionStartWork {
+        uint32 lifeProfessionId = 1;
+        uint32 count = 2;
+    }
+    message LifeProfessionStopWork_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message LifeProfessionWorkReward_Ret {
+        zproto.LifeProfessionWorkRewardReply ret = 1;
+    }
+    message LifeProfessionWorkEarlyEnd_Ret {
+        zproto.LifeProfessionWorkEarlyEndReply ret = 1;
+    }
+    message GetLifeProfessionWorkHistoryInfo_Ret {
+        zproto.LifeProfessionWorkHistoryInfo ret = 1;
+    }
+    message ResetSpecialization_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message ResetSpecialization {
+        uint32 lifeProfessionId = 1;
+    }
+    message GetMonthlyGuideReward_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message ClickMonthlyCardTips_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message UnlockEmoji_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message UnlockEmoji {
+        int32 vEmojiId = 1;
+    }
+    message GetActivityList_Ret {
+        zproto.GetActivityListReply ret = 1;
+    }
+    message GetActivityReward_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message GetActivityReward {
+        zproto.GetActivityRewardParam param = 1;
+    }
+    message ActivityAction_Ret {
+        zproto.ActivityActionReply ret = 1;
+    }
+    message ActivityAction {
+        zproto.ActivityActionRequest param = 1;
+    }
+    message GetTreasureInfo_Ret {
+        zproto.GetTreasureInfoReply ret = 1;
+    }
+    message GetTreasureInfo {
+        zproto.GetTreasureInfoRequest vRequest = 1;
+    }
+    message ForceSettlement_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message EndBubbleAct_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message EndBubbleAct {
+        zproto.EndBubbleActRequest vRequest = 1;
+    }
+    message GetSignReward_Ret {
+        zproto.GetSignRewardReplay ret = 1;
+    }
+    message GetSignReward {
+        zproto.GetSignRewardRequest vRequest = 1;
+    }
+    message GetQuestionnaireList_Ret {
+        zproto.GetQuestionnaireListReply ret = 1;
+    }
+    message GetQuestionnaireList {
+        zproto.GetQuestionnaireListRequest vRequest = 1;
+    }
 }
-

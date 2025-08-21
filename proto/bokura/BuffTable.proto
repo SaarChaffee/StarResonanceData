@@ -30,8 +30,6 @@ message BuffTableBase {
     string ShowHUDIcon = 125;
     int32 HudSwitch = 92;
 }
-
 message BuffTableMgr {
-    map<int32, .bokura.BuffTableBase> datas = 1;
+    repeated bokura.BuffTableMgr.DatasEntry datas = 1;
 }
-

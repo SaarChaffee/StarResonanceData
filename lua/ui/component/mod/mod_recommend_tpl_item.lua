@@ -34,9 +34,13 @@ function ModRecommendTplItem:OnRefresh(data)
     self.uiBinder.lab_name_on.text = modEffectConfig.EffectName
     self.uiBinder.lab_name_off.text = modEffectConfig.EffectName
   end
-  modGlossaryItemTplItem.RefreshTpl(self.uiBinder.node_glossary_item_tpl, self.data_.Id, 0)
+  modGlossaryItemTplItem.RefreshTpl(self.uiBinder.node_glossary_item_tpl, self.data_.Id)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_recommend, self.data_.recommend)
-  self.uiBinder.tog:SetIsOnWithoutCallBack(self.data_.isOn)
+  if self.parent.UIView.SelectEffectId[self.data_.Id] then
+    self.uiBinder.tog:SetIsOnWithoutCallBack(true)
+  else
+    self.uiBinder.tog:SetIsOnWithoutCallBack(false)
+  end
 end
 
 function ModRecommendTplItem:OnUnInit()

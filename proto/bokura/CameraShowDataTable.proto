@@ -26,8 +26,6 @@ message CameraShowDataTableBase {
     bool IsRandom = 1573;
     number_array ExtraParms = 202;
 }
-
 message CameraShowDataTableMgr {
-    map<int64, .bokura.CameraShowDataTableBase> datas = 1;
+    repeated bokura.CameraShowDataTableMgr.DatasEntry datas = 1;
 }
-

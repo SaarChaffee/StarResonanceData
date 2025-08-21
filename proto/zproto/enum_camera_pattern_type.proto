@@ -7,4 +7,3 @@ enum CameraPatternType {
     SelfPhoto = 1;
     AR = 2;
 }
-

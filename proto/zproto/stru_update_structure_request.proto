@@ -5,7 +5,6 @@ package zproto;
 import "stru_structure_op.proto";
 
 message UpdateStructureRequest {
-    int64 homeId = 2;
-    repeated zproto.StructureOp ops = 3;
+    int64 homeId = 1;
+    repeated zproto.StructureOp ops = 2;
 }
-

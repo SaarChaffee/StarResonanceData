@@ -7,4 +7,3 @@ enum EActorRideStateSwitchType {
     ActorRideStateSwitchTypeSwitch = 1;
     ActorRideStateSwitchTypeStopAction = 2;
 }
-

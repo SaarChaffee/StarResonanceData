@@ -21,7 +21,6 @@ end
 
 function Tips_contentView:OnDeActive()
   self.uiBinder.presscheck:StopCheck()
-  self.uiBinder.anim:PlayOnce("anim_iteminfo_tips_002")
 end
 
 function Tips_contentView:OnRefresh()

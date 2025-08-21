@@ -12,8 +12,6 @@ message SeasonTaskTargetTableBase {
     int_array Param = 1207;
     mlstring Describe = 1195;
 }
-
 message SeasonTaskTargetTableMgr {
-    map<int32, .bokura.SeasonTaskTargetTableBase> datas = 1;
+    repeated bokura.SeasonTaskTargetTableMgr.DatasEntry datas = 1;
 }
-

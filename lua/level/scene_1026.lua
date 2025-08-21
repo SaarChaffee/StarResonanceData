@@ -7,23 +7,19 @@ end
 function Scene:LoadComplete()
 end
 
-Scene.Seasons = {}
+Scene.Seasons = {2}
 
 function Scene:InitEvents()
   self.EventItems = {}
-  self.EventItems[548] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
+  self.EventItems[101348] = {
+    eventType = E.LevelEventType.OnSceneLeave,
     enable = true,
     group = 0,
-    eventId = 548,
-    count = 1,
-    entity = {actorType = 5, tableUid = 806},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      if localSelf.count == 0 then
-        return
-      else
-        localSelf.count = localSelf.count - 1
-      end
+    eventId = 101348,
+    count = -1,
+    action = function(localSelf)
+      Panda.ZGame.CameraManager.Instance:CameraInvoke(0, true, {2032}, false)
+      Panda.ZGame.CameraManager.Instance:SwitchCameraTemplate({0}, {2030}, 0)
     end
   }
 end

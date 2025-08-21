@@ -9,14 +9,14 @@ local openDeadView = function()
   if showBoss then
     Z.UIMgr:OpenView("bossbattle")
   end
-  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
-  if gotoFuncVM.CheckFuncCanUse(E.FunctionID.MainChat, true) then
-    Z.UIMgr:OpenView("main_chat")
-  end
   Z.EventMgr:Dispatch(Z.ConstValue.Dead)
 end
 local closeDeadView = function()
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
+  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttrState()
   if deadStateId ~= stateId then
     Z.UIMgr:CloseView("dead")
   end
@@ -28,17 +28,9 @@ local asyncRevive = function(vReviveId, cancelToken)
     Z.TipsVM.ShowTips(ret)
   end
 end
-local asyncReviveOtherUser = function(vTargetUuid, vReviveId, cancelToken)
-  local worldProxy = require("zproxy.world_proxy")
-  local ret = worldProxy.ResurrectionOtherUser(vTargetUuid, vReviveId, cancelToken)
-  if ret ~= 0 and Z.PbEnum("EErrorCode", "ErrAsynchronousReturn") ~= ret then
-    Z.TipsVM.ShowTips(ret)
-  end
-  return ret
-end
 local checkPlayerIsDead = function()
   if Z.EntityMgr.PlayerEnt then
-    local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
+    local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttrState()
     if deadStateId == stateId then
       return true
     end
@@ -48,9 +40,9 @@ end
 local getPlayerReviveInfo = function(reviveId)
   local info = {
     PersonReviveCount = 0,
-    PersonReviveLimit = 0,
+    PersonReviveLimit = -1,
     TotalReviveCount = 0,
-    TotalReviveLimit = 0
+    TotalReviveLimit = -1
   }
   if Z.EntityMgr.PlayerEnt then
     info.PersonReviveCount = Z.EntityHelper.GetReviveCount(Z.EntityMgr.PlayerEnt, reviveId)
@@ -74,14 +66,14 @@ local getPlayerReviveInfo = function(reviveId)
 end
 local checkReviveCount = function(reviveId, isShowTips)
   local reviveInfo = getPlayerReviveInfo(reviveId)
-  if reviveInfo.PersonReviveLimit > 0 and reviveInfo.PersonReviveCount >= reviveInfo.PersonReviveLimit then
+  if reviveInfo.PersonReviveLimit >= 0 and reviveInfo.PersonReviveCount >= reviveInfo.PersonReviveLimit then
     if isShowTips then
       Z.TipsVM.ShowTipsLang(1050002, {
         val = reviveInfo.PersonReviveCount
       })
     end
     return false
-  elseif 0 < reviveInfo.TotalReviveLimit and reviveInfo.TotalReviveCount >= reviveInfo.TotalReviveLimit then
+  elseif 0 <= reviveInfo.TotalReviveLimit and reviveInfo.TotalReviveCount >= reviveInfo.TotalReviveLimit then
     if isShowTips then
       Z.TipsVM.ShowTipsLang(1050003, {
         val = reviveInfo.TotalReviveCount
@@ -120,7 +112,6 @@ local ret = {
   OpenDeadView = openDeadView,
   CloseDeadView = closeDeadView,
   AsyncRevive = asyncRevive,
-  AsyncReviveOtherUser = asyncReviveOtherUser,
   CheckPlayerIsDead = checkPlayerIsDead,
   GetPlayerReviveInfo = getPlayerReviveInfo,
   CheckReviveCount = checkReviveCount,

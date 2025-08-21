@@ -7,4 +7,3 @@ message UnionActivityProgressInfo {
     int32 progress = 2;
     repeated uint32 award = 3;
 }
-

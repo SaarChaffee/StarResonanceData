@@ -13,5 +13,5 @@ message GetPhotoUpTokenRequest {
     string photoDesc = 6;
     zproto.EPlatformFuncType funcType = 7;
     int64 ownerId = 8;
+    string text = 9;
 }
-

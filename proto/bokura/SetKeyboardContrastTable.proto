@@ -10,8 +10,6 @@ message SetKeyboardContrastTableBase {
     int32 ShowType = 1131;
     string ImageWay = 1135;
 }
-
 message SetKeyboardContrastTableMgr {
-    map<int32, .bokura.SetKeyboardContrastTableBase> datas = 1;
+    repeated bokura.SetKeyboardContrastTableMgr.DatasEntry datas = 1;
 }
-

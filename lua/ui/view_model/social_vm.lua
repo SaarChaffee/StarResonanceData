@@ -1,4 +1,4 @@
-local socialProxy = require("zproxy.social_proxy")
+local socialProxy = require("zproxy.world_proxy")
 local ret = {}
 
 function ret.AsyncGetSocialData(mask, charId, cancelToken)
@@ -6,9 +6,7 @@ function ret.AsyncGetSocialData(mask, charId, cancelToken)
     mask = 0
   end
   if charId == nil then
-    local playerdata = Z.DataMgr.Get("player_data")
-    local selfCharId = playerdata.CharInfo.baseInfo.charId
-    charId = selfCharId
+    charId = Z.ContainerMgr.CharSerialize.charId
   end
   local req = {mask = mask, charId = charId}
   if socialProxy then
@@ -32,10 +30,23 @@ function ret.AsyncGetAvatarInfo(charId, cancelToken)
   return ret.AsyncGetSocialData(mask, charId, cancelToken)
 end
 
+function ret.AsyncGetPersonalZone(charId, cancelToken)
+  local mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypePersonalZone, 0)
+  return ret.AsyncGetSocialData(mask, charId, cancelToken)
+end
+
 function ret.AsyncGetHeadAndHeadFrameInfo(charId, cancelToken)
   local mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeBase, 0)
   mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeAvatar, mask)
   mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypePersonalZone, mask)
+  return ret.AsyncGetSocialData(mask, charId, cancelToken)
+end
+
+function ret.AsyncGetHeadAndHeadFrameInfoAndSDKPrivilege(charId, cancelToken)
+  local mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeBase, 0)
+  mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeAvatar, mask)
+  mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypePersonalZone, mask)
+  mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialSDKPrivilege, mask)
   return ret.AsyncGetSocialData(mask, charId, cancelToken)
 end
 
@@ -46,6 +57,11 @@ end
 
 function ret.AsyncGetWeaponData(charId, cancelToken)
   local mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeWeapon, 0)
+  return ret.AsyncGetSocialData(mask, charId, cancelToken)
+end
+
+function ret.AsyncGetAccountData(charId, cancelToken)
+  local mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeAccount, 0)
   return ret.AsyncGetSocialData(mask, charId, cancelToken)
 end
 

@@ -43,18 +43,20 @@ function Seasonact_activity_tplView:refreshLoop()
   local seasonActTable = Z.TableMgr.GetTable("SeasonActTableMgr").GetDatas()
   local data = {}
   for _, value in ipairs(seasonActTable) do
-    if value.ParentId == 0 then
-      table.insert(data, value)
-    else
-      if self.subActDict_[value.ParentId] == nil then
-        self.subActDict_[value.ParentId] = {}
-      end
-      if value.RelatedDungeonId ~= 0 then
-        if self:checkDungeonOpen(value) then
+    if value.FunctionType == E.SeasonActFuncType.Recommend then
+      if value.ParentId == 0 then
+        table.insert(data, value)
+      else
+        if self.subActDict_[value.ParentId] == nil then
+          self.subActDict_[value.ParentId] = {}
+        end
+        if value.RelatedDungeonId ~= 0 then
+          if self:checkDungeonOpen(value) then
+            table.insert(self.subActDict_[value.ParentId], value)
+          end
+        else
           table.insert(self.subActDict_[value.ParentId], value)
         end
-      else
-        table.insert(self.subActDict_[value.ParentId], value)
       end
     end
   end

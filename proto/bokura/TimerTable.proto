@@ -11,8 +11,6 @@ message TimerTableBase {
     string duration = 1720;
     string command = 995;
 }
-
 message TimerTableMgr {
-    map<int64, .bokura.TimerTableBase> datas = 1;
+    repeated bokura.TimerTableMgr.DatasEntry datas = 1;
 }
-

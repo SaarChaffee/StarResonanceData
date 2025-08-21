@@ -9,8 +9,6 @@ message RedDotCheckTableBase {
     int32 FunctionId = 149;
     int32 CheckMethodType = 690;
 }
-
 message RedDotCheckTableMgr {
-    map<int32, .bokura.RedDotCheckTableBase> datas = 1;
+    repeated bokura.RedDotCheckTableMgr.DatasEntry datas = 1;
 }
-

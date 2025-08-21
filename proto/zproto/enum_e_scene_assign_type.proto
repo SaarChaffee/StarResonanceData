@@ -12,5 +12,5 @@ enum ESceneAssignType {
     SceneAssignTypeOwners = 6;
     SceneAssignRideChangeMap = 7;
     SceneAssignAllChangeMap = 8;
+    SceneAssignReconnect = 9;
 }
-

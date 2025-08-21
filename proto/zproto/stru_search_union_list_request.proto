@@ -5,4 +5,3 @@ package zproto;
 message SearchUnionListRequest {
     string searchContent = 2;
 }
-

@@ -55,6 +55,7 @@ function Union_task_mainView:OnRefresh()
 end
 
 function Union_task_mainView:initBinders()
+  self:startAnimatedShow()
   self.submit_btn_ = self.uiBinder.btn_submit
   self.go_btn_ = self.uiBinder.btn_go
   self.close_btn_ = self.uiBinder.btn_close
@@ -154,6 +155,10 @@ function Union_task_mainView:initBaseData()
   self.extraAwardId_ = Z.Global.UnionResolveBaseAwardId
 end
 
+function Union_task_mainView:startAnimatedShow()
+  self.uiBinder.anim_main:Restart(Z.DOTweenAnimType.Open)
+end
+
 function Union_task_mainView:ClickLeftItem(data)
 end
 
@@ -171,7 +176,7 @@ function Union_task_mainView:checkSendSuccess()
       local getAwardTime = self.unionTaskVM_:GetCanGetRewardTime()
       local leftTime = math.ceil(getAwardTime - nowTime)
       if 0 <= leftTime then
-        self.uiBinder.lab_time.text = Z.TimeTools.FormatToDHMSStr(leftTime)
+        self.uiBinder.lab_time.text = Z.TimeFormatTools.FormatToDHMS(leftTime)
       end
     end, 1, -1)
   end
@@ -181,12 +186,16 @@ end
 
 function Union_task_mainView:initPanelInfo()
   self.uiBinder.lab_digit.text = self.minLimitValue_
-  local timeTable = Z.TableMgr.GetTable("TimerTableMgr")
-  local timeCfg = timeTable.GetRow(tableId_)
-  if timeCfg and #timeCfg.offset > 0 then
-    local startTime = timeCfg.offset[1]
-    local timeStr = Z.TimeTools.S2HMSFormat(startTime)
-    self.uiBinder.lab_go_time.text = Lang("UnionResloveAutoSend") .. timeStr
+  local timerConfigItem = Z.DIServiceMgr.ZCfgTimerService:GetZCfgTimerItem(tableId_)
+  if not timerConfigItem then
+    return
+  end
+  local offsetTimes = timerConfigItem.Offset
+  if offsetTimes and offsetTimes.count >= 1 then
+    local timeStr = Z.TimeFormatTools.FormatToDHMS(offsetTimes[0], true, true)
+    self.uiBinder.lab_go_time.text = Lang("UnionResloveAutoSend", {
+      val = Z.Global.AssociationMinSetOutCargoVolume
+    }) .. timeStr
   end
   local dataList = self:GetAwardData(Z.Global.UnionResolveBaseAwardId, 1)
   self.baseAwardScrollView_:RefreshListView(dataList)

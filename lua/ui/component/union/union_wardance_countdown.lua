@@ -98,6 +98,7 @@ function UnionWardanceCountDown:bindEvent()
     elseif self.canReceive then
       self.unionWarDanceVM_:AsyncGetPersonalReward(self.cancelSource:CreateToken())
     else
+      Z.TipsVM.ShowTipsLang(1005007)
       self:showPreviewAward()
     end
   end)
@@ -184,11 +185,11 @@ function UnionWardanceCountDown:refresh()
     self.timerLab = self.uiBinder.lab_time_not_open
     self.timeLanguage = "UnionWardanceCountDownPre"
   end
-  local hasEnd, _, endTime = Z.TimeTools.GetCycleEndTimeByTimeId(self.timerID)
+  local hasEnd, _, endTime = Z.TimeTools.GetCycleStartEndTimeByTimeId(self.timerID)
   if hasEnd then
-    local dTime = math.floor(endTime / 1000 - Z.ServerTime:GetServerTime() / 1000)
+    local dTime = math.floor(endTime - Z.ServerTime:GetServerTime() / 1000)
     if 0 <= dTime then
-      local time = Z.TimeTools.FormatToDHMSStr(dTime)
+      local time = Z.TimeFormatTools.FormatToDHMS(dTime)
       self.timerLab.text = Lang(self.timeLanguage, {val = time})
     end
   end
@@ -270,13 +271,13 @@ function UnionWardanceCountDown:refreshProgress(curTotalScore)
 end
 
 function UnionWardanceCountDown:startTimer()
-  local hasEnd, _, endTime = Z.TimeTools.GetCycleEndTimeByTimeId(self.timerID)
+  local hasEnd, _, endTime = Z.TimeTools.GetCycleStartEndTimeByTimeId(self.timerID)
   if not hasEnd then
     return
   end
   if not self.timer then
     self.timer = self.timerMgr:StartTimer(function()
-      self:countdownTime(endTime / 1000)
+      self:countdownTime(endTime)
     end, 1, -1)
   end
 end
@@ -291,7 +292,7 @@ function UnionWardanceCountDown:countdownTime(endTime)
     self:stopTime()
   end
   if 0 <= dTime then
-    local time = Z.TimeTools.FormatToDHMSStr(dTime)
+    local time = Z.TimeFormatTools.FormatToDHMS(dTime)
     self.timerLab.text = Lang(self.timeLanguage, {val = time})
   else
     self:refresh()

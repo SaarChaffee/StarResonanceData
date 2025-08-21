@@ -35,26 +35,6 @@ function PersonalZoneData:Clear()
 end
 
 function PersonalZoneData:InitConfig()
-  self.personalTags_ = {}
-  local unionTagTableMgr = Z.TableMgr.GetTable("UnionTagTableMgr")
-  local datas = unionTagTableMgr.GetDatas()
-  for _, value in pairs(datas) do
-    if value.IsHide and value.IsHide == 0 then
-      if self.personalTags_[value.Type] == nil then
-        self.personalTags_[value.Type] = {}
-      end
-      table.insert(self.personalTags_[value.Type], value)
-    end
-  end
-  for _, value in pairs(self.personalTags_) do
-    table.sort(value, function(a, b)
-      if a.ShowSort == b.ShowSort then
-        return a.Id < b.Id
-      else
-        return a.ShowSort < b.ShowSort
-      end
-    end)
-  end
   self.profileImageConfig_ = {}
   self.unlockTargetConfig_ = {}
   local profileImageConfigs = Z.TableMgr.GetTable("ProfileImageTableMgr").GetDatas()
@@ -95,93 +75,12 @@ function PersonalZoneData:InitConfig()
   end
 end
 
-function PersonalZoneData:GetTagsByType(type)
-  return self.personalTags_[type]
-end
-
-function PersonalZoneData:InitShowPhotoData()
-  self.showPhotos_ = {}
-  self.showPhotosCount_ = 0
-  if Z.ContainerMgr.CharSerialize.personalZone and Z.ContainerMgr.CharSerialize.personalZone.photos then
-    local photos = Z.ContainerMgr.CharSerialize.personalZone.photos
-    for key, photo in pairs(photos) do
-      if photo ~= 0 then
-        self.showPhotos_[key] = photo
-        self.showPhotosCount_ = self.showPhotosCount_ + 1
-      end
-    end
-  end
-end
-
-function PersonalZoneData:GetEmptyPhotoIndex()
-  if self.showPhotosCount_ >= DEFINE.ShowPhotoMaxCount then
-    return -1
-  end
-  for i = 1, DEFINE.ShowPhotoMaxCount do
-    if self.showPhotos_[i] == nil or self.showPhotos_[i] == 0 then
-      return i
-    end
-  end
-  return -1
-end
-
-function PersonalZoneData:GetShowPhotoCount()
-  return self.showPhotosCount_
-end
-
-function PersonalZoneData:SetShowPhoto(index, photoId)
-  if self:IsContainPhotoId(photoId) then
-    return
-  end
-  self.showPhotos_[index] = photoId
-  self.showPhotosCount_ = self.showPhotosCount_ + 1
-end
-
-function PersonalZoneData:RemoveShowPhoto(photoId)
-  local index = -1
-  for key, value in pairs(self.showPhotos_) do
-    if value == photoId then
-      index = key
-      self.showPhotos_[key] = nil
-      self.showPhotosCount_ = self.showPhotosCount_ - 1
-      break
-    end
-  end
-  if index ~= -1 then
-    for i = index, DEFINE.ShowPhotoMaxCount - 1 do
-      self.showPhotos_[i] = self.showPhotos_[i + 1]
-    end
-    self.showPhotos_[DEFINE.ShowPhotoMaxCount] = nil
-  end
-end
-
-function PersonalZoneData:IsContainPhotoId(photoId)
-  for _, photo in pairs(self.showPhotos_) do
-    if photo == photoId then
-      return true
-    end
-  end
-  return false
-end
-
-function PersonalZoneData:GetShowPhoto()
-  return self.showPhotos_
-end
-
 function PersonalZoneData:GetProfileImageConfigsByType(type)
   return self.profileImageConfig_[type]
 end
 
 function PersonalZoneData:GetDefaultProfileImageConfigByType(type)
   return self.defaultProfileImageConfig_[type].Id
-end
-
-function PersonalZoneData:SetCurPreviewPersonalZoneData(viewData)
-  self.mainViewData_ = viewData
-end
-
-function PersonalZoneData:GetCurPreviewPersonalZoneData()
-  return self.mainViewData_
 end
 
 function PersonalZoneData:GetProfileImageTarget(id)
@@ -210,6 +109,16 @@ function PersonalZoneData:ClearMedalAddReddot()
   local medalTableMgr = Z.TableMgr.GetTable("MedalTableMgr")
   for key, id in pairs(self.addItemRedDot_) do
     if medalTableMgr.GetRow(id, true) ~= nil then
+      self.addItemRedDot_[key] = nil
+    end
+  end
+end
+
+function PersonalZoneData:ClearAddReddotByType(type)
+  local profileImageTableMgr = Z.TableMgr.GetTable("ProfileImageTableMgr")
+  for key, id in pairs(self.addItemRedDot_) do
+    local config = profileImageTableMgr.GetRow(id, true)
+    if config ~= nil and config.Type == type then
       self.addItemRedDot_[key] = nil
     end
   end

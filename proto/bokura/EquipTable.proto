@@ -20,8 +20,6 @@ message EquipTableBase {
     int_table BonusGrowTimes = 1523;
     int32 BasicGrowRange = 1306;
 }
-
 message EquipTableMgr {
-    map<int32, .bokura.EquipTableBase> datas = 1;
+    repeated bokura.EquipTableMgr.DatasEntry datas = 1;
 }
-

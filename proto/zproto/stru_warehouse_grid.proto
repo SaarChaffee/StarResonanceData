@@ -9,4 +9,3 @@ message WarehouseGrid {
     int64 ownerCharId = 2;
     zproto.Item itemInfo = 3;
 }
-

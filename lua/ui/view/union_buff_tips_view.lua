@@ -85,7 +85,7 @@ function Union_buff_tipsView:refreshBuffInfo(buffId)
     self.uiBinder.trans_bg:SetHeight(HEIGHT_UNLOCK_NORMAL)
   end
   self.uiBinder.lab_time.text = Lang("UnionBuffTimeDesc", {
-    time = Z.TimeTools.FormatToDHM(buffConfig.Time)
+    time = Z.TimeFormatTools.FormatToDHMS(buffConfig.Time)
   })
 end
 

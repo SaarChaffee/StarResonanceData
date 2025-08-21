@@ -15,8 +15,6 @@ message StiffTemplateTableBase {
     float SkillFlowOffset = 204;
     float SkillFlowRadius = 990;
 }
-
 message StiffTemplateTableMgr {
-    map<int64, .bokura.StiffTemplateTableBase> datas = 1;
+    repeated bokura.StiffTemplateTableMgr.DatasEntry datas = 1;
 }
-

@@ -5,4 +5,3 @@ package zproto;
 message StartRideParam {
     int32 RideType = 1;
 }
-

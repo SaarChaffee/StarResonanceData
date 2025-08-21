@@ -21,4 +21,3 @@ enum EStageTrigger {
     EStageTrigger_OnBtnPress = 10001;
     EStageTrigger_OnBtnUp = 10002;
 }
-

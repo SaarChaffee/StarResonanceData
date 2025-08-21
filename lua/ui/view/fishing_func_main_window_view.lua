@@ -19,9 +19,9 @@ function Fishing_func_main_windowView:ctor()
   self.funcIconPathDict_ = {
     [E.FishingMainFunc.Illustrated] = "ui/atlas/item/c_tab_icon/com_icon_tab_176",
     [E.FishingMainFunc.Research] = "ui/atlas/item/c_tab_icon/com_icon_tab_175",
-    [E.FishingMainFunc.Shop] = "ui/atlas/item/c_tab_icon/com_icon_tab_178",
+    [E.FishingMainFunc.Shop] = "ui/atlas/item/c_tab_icon/com_icon_tab_86",
     [E.FishingMainFunc.RankList] = "ui/atlas/item/c_tab_icon/com_icon_tab_177",
-    [E.FishingMainFunc.Archives] = "ui/atlas/item/c_tab_icon/com_icon_tab_177"
+    [E.FishingMainFunc.Archives] = "ui/atlas/item/c_tab_icon/com_icon_tab_133"
   }
   self.handlersFunc_ = {
     [E.FishingMainFunc.Illustrated] = function(cancelSource)
@@ -44,13 +44,17 @@ function Fishing_func_main_windowView:ctor()
 end
 
 function Fishing_func_main_windowView:OnActive()
+  self:onStartAnimShow()
   self.initAreaTab_ = false
   self.curFunc_ = 0
   self.fishingArea_ = 0
   self.showAreaSelect_ = false
   self.startFunc_ = E.FishingMainFunc.Illustrated
   if self.viewData and self.viewData.startFunc_ then
-    self.startFunc_ = self.viewData.startFunc_
+    local functionRow = Z.TableMgr.GetTable("FunctionTableMgr").GetRow(self.viewData.startFunc_, true)
+    if functionRow then
+      self.startFunc_ = self.viewData.startFunc_
+    end
   end
   self.funcTabDict_ = {
     [E.FishingMainFunc.Illustrated] = self.uiBinder.com_tab_codex,
@@ -59,6 +63,14 @@ function Fishing_func_main_windowView:OnActive()
     [E.FishingMainFunc.RankList] = self.uiBinder.com_tab_ranking,
     [E.FishingMainFunc.Archives] = self.uiBinder.com_tab_archives
   }
+  for k, v in pairs(self.funcTabDict_) do
+    local isFuncUnlock = self.switchVM_.CheckFuncSwitch(k)
+    self.uiBinder.Ref:SetVisible(v.Trans, isFuncUnlock)
+  end
+  local isStartFuncUnlock = self.switchVM_.CheckFuncSwitch(self.startFunc_)
+  if not table.zcontainsKey(self.funcTabDict_, self.startFunc_) or not isStartFuncUnlock then
+    self.startFunc_ = E.FishingMainFunc.Illustrated
+  end
   self:bindClickEvent()
   self:initAreaSelectUI()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
@@ -148,7 +160,8 @@ function Fishing_func_main_windowView:refreshUI()
       DataList = self.fishingData_.PeripheralData.ArchivesData,
       ShowInChat = false,
       CharId = Z.ContainerMgr.CharSerialize.charId,
-      titleData = self.fishingData_.GetArchivesTitleData()
+      titleData = self.fishingData_.GetArchivesTitleData(),
+      IsNewbie = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrIsNewbie")).Value
     }
   else
     viewData = {
@@ -276,7 +289,12 @@ function Fishing_func_main_windowView:refreshFuncTab()
     v.tog_tab_select.group = nil
     v.tog_tab_select:SetIsOnWithoutCallBack(false)
   end
-  self.funcTabDict_[self.startFunc_].tog_tab_select.isOn = true
+  if self.funcTabDict_[self.startFunc_] then
+    self.funcTabDict_[self.startFunc_].tog_tab_select.isOn = true
+  else
+    self.startFunc_ = E.FishingMainFunc.Illustrated
+    self.funcTabDict_[self.startFunc_].tog_tab_select.isOn = true
+  end
   for _, v in pairs(self.funcTabDict_) do
     v.tog_tab_select.group = group_
   end
@@ -293,6 +311,10 @@ function Fishing_func_main_windowView:GetCacheData()
   local viewData = self.viewData or {}
   viewData.startFunc_ = self.curFunc_
   return viewData
+end
+
+function Fishing_func_main_windowView:onStartAnimShow()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Fishing_func_main_windowView

@@ -9,4 +9,3 @@ message InviteJoinUnionRequest {
     int64 unionId = 5;
     int64 charid = 6;
 }
-

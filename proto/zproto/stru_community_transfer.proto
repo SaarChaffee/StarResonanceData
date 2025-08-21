@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityTransfer {
+    int64 charId = 1;
+    int64 time = 2;
+    int64 lastTime = 3;
+}

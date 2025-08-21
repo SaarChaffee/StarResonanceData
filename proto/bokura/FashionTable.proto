@@ -27,8 +27,6 @@ message FashionTableBase {
     string SwitchName = 227;
     int32 HeadwearType = 528;
 }
-
 message FashionTableMgr {
-    map<int32, .bokura.FashionTableBase> datas = 1;
+    repeated bokura.FashionTableMgr.DatasEntry datas = 1;
 }
-

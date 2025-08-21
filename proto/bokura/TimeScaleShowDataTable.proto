@@ -12,8 +12,6 @@ message TimeScaleShowDataTableBase {
     int32 GroupId = 196;
     float TimeScale = 1847;
 }
-
 message TimeScaleShowDataTableMgr {
-    map<int64, .bokura.TimeScaleShowDataTableBase> datas = 1;
+    repeated bokura.TimeScaleShowDataTableMgr.DatasEntry datas = 1;
 }
-

@@ -6,6 +6,4 @@ import "stru_dirty_mask.proto";
 
 message AffixData {
     repeated int32 affixIds = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

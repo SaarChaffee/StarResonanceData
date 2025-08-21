@@ -44,7 +44,7 @@ function InvestigationClueItem:updateShowClueInfo()
     local showContent = Z.RichTextHelper.ApplyStyleTag(clueData.ClueLockContext, E.TextStyleTag.InvestigateLockClue)
     self.uiBinder.lab_name_not.text = showContent
     self.uiBinder.lab_name_not:SetVerticesDirty()
-    local size = self.uiBinder.lab_name_not:GetPreferredValues(showContent, 648, 32)
+    local size = self.uiBinder.lab_name_not:GetPreferredValues(showContent, 608, 32)
     local height = math.max(size.y, 150)
     self.uiBinder.lab_not_ref:SetHeight(height)
     self.uiBinder.img_off:SetHeight(height + 8)
@@ -79,7 +79,7 @@ function InvestigationClueItem:updateShowClueInfo()
       end
       isHaveComplete = true
     else
-      replace = string.zconcat("<link=\"", keyData.KeyContext, "\">", keyData.KeyContext, "</link>")
+      replace = string.zconcat("<link>", keyData.KeyContext, "</link>")
       needClick = true
       if table.zcontains(Z.Global.InvestigationGuideClueId, clueData.ClueId) and keyData.TapBubble and linkIndex == -1 then
         linkIndex = i - 1
@@ -89,6 +89,7 @@ function InvestigationClueItem:updateShowClueInfo()
       showContext = self:replaceShowContext(showContext, replace, keyData.AnswerId)
     end
   end
+  showContext = string.zreplace(showContext, "<br>", "\n")
   self.uiBinder.lab_name_ok:RemoveAllListeners()
   if isShowCompleteAnim and animKeyContext ~= "" then
     self:showCompleteAnim(showContext, animKeyContext, animKeyId)
@@ -96,18 +97,18 @@ function InvestigationClueItem:updateShowClueInfo()
     self.uiBinder.lab_name_ok.text = showContext
   end
   if needClick then
-    self.uiBinder.lab_name_ok:AddListener(function(answer)
+    self.uiBinder.lab_name_ok:AddListener(function(linkId, linkText)
       if not isAllUnlock then
         return
       end
       for i = 1, #clueData.ClueAnswerList do
         local keyData = clueData.ClueAnswerList[i]
-        if answer == keyData.KeyContext then
+        if linkText == keyData.KeyContext then
           if keyData.IsComplete == true then
             return
           end
           self.parent.UIView:OnSelectClueAnswer(self.data_.ClueId, keyData.AnswerId, keyData.TapBubble)
-          Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvnet, string.zconcat(E.SteerGuideEventType.Investigation, "=", 2))
+          Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvent, string.zconcat(E.SteerGuideEventType.Investigation, "=", 2))
         end
       end
     end)
@@ -115,11 +116,11 @@ function InvestigationClueItem:updateShowClueInfo()
   if isAllUnlock then
     self:checkGuide(linkIndex, isHaveComplete)
   end
-  local size = self.uiBinder.lab_name_ok:GetPreferredValues(showContext, 648, 32)
+  local size = self.uiBinder.lab_name_ok:GetPreferredValues(showContext, 608, 32)
   local height = math.max(size.y, 150)
   self.uiBinder.lab_ok_ref:SetHeight(height)
-  self.uiBinder.img_on:SetHeight(height + 40)
-  self.uiBinder.Trans:SetHeight(height + 40)
+  self.uiBinder.img_on:SetHeight(height + 48)
+  self.uiBinder.Trans:SetHeight(height + 48)
   self.loopListView:OnItemSizeChanged(self.Index)
 end
 
@@ -154,7 +155,7 @@ function InvestigationClueItem:showCompleteAnim(showContext, keyContext, animKey
   local color = E.ColorHexValues.InvestigateUnlockClue
   local index = 0
   self:showAnimText(index, showContext, keyContext, color, animKeyId)
-  self.animKey_ = string.zconcat(E.GlobalTimerTag.Investigate, self.data_.ClueId, "Investigate")
+  self.animKey_ = string.zconcat(E.GlobalTimerTag.Investigate, self.data_.ClueId, "Investigate", animKeyId)
   Z.GlobalTimerMgr:StartTimer(self.animKey_, function()
     index = index + 1
     self:showAnimText(index, showContext, keyContext, color, animKeyId)

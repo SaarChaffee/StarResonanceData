@@ -14,8 +14,6 @@ message QuestTypeTableBase {
     bool QuestListHide = 1962;
     int32 order = 1680;
 }
-
 message QuestTypeTableMgr {
-    map<int32, .bokura.QuestTypeTableBase> datas = 1;
+    repeated bokura.QuestTypeTableMgr.DatasEntry datas = 1;
 }
-

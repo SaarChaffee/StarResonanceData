@@ -7,7 +7,6 @@ import "stru_team_mem_data.proto";
 
 message TeamInfo {
     int64 teamId = 1;
-    map<int64, .zproto.TeamMemData> members = 2;
+    repeated zproto.TeamInfo.MembersEntry members = 2;
     zproto.TeamBaseInfo baseInfo = 3;
 }
-

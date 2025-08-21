@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
-message NotifyTeamEnterErrRequest {
-    int32 errorCode = 2;
-    int64 charId = 3;
-}
+import "enum_e_error_code.proto";
 
+message NotifyTeamEnterErrRequest {
+    zproto.EErrorCode errCode = 1;
+    int64 charId = 2;
+}

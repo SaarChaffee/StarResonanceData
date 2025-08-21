@@ -7,4 +7,3 @@ message SetUnionEScreenPhotoRequest {
     int32 eScreenId = 2;
     repeated uint32 photoIdList = 4;
 }
-

@@ -12,8 +12,6 @@ message WeaponLevelTableBase {
     int_table ExtrCost = 1404;
     int32 SkillMaxLevel = 111;
 }
-
 message WeaponLevelTableMgr {
-    map<int32, .bokura.WeaponLevelTableBase> datas = 1;
+    repeated bokura.WeaponLevelTableMgr.DatasEntry datas = 1;
 }
-

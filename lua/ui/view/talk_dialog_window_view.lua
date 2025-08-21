@@ -18,6 +18,17 @@ function Talk_dialog_windowView:ctor()
   self.talkData_ = Z.DataMgr.Get("talk_data")
   self.settingVM_ = Z.VMMgr.GetVM("setting")
   self.quest_task_btn_com_ = questTaskBtnCom.new()
+  
+  function self.onSpace_()
+    if not self or not self.lab_content_ then
+      return
+    end
+    self.lab_content_:SetTyperTimeScale(5)
+    if self:isAllowNext() then
+      Z.AudioMgr:Play("sys_general_click_dialog")
+      Z.EPFlowBridge.OnTalkDialogClick()
+    end
+  end
 end
 
 function Talk_dialog_windowView:OnActive()
@@ -31,12 +42,12 @@ function Talk_dialog_windowView:OnActive()
   Z.EventMgr:Add("HideTalkArrowUI", self.hideArrowUI, self)
   Z.EventMgr:Add(Z.ConstValue.Talk.OnSetBackGround, self.onSetBackGround, self)
   Z.EventMgr:Add(Z.ConstValue.NpcTalk.OnAutoPlayChange, self.onAutoPlayChange, self)
-  if self.viewData and self.viewData.NeedWaitVoiceEnd then
-    Z.EventMgr:Add(Z.ConstValue.NpcTalk.EPFlowVoiceEnd, self.onEPFlowVoiceEnd, self)
-  end
+  Z.EventMgr:Add(Z.ConstValue.NpcTalk.EPFlowVoiceEnd, self.onEPFlowVoiceEnd, self)
+  Z.EventMgr:Add(Z.ConstValue.Talk.CloseTalkDialog, self.onCloseTalkDialog, self)
   self:AddClick(self.btn_go_, function()
     self.lab_content_:SetTyperTimeScale(5)
     if self:isAllowNext() then
+      Z.AudioMgr:Play("sys_general_click_dialog")
       Z.EPFlowBridge.OnTalkDialogClick()
     end
   end)
@@ -49,7 +60,6 @@ function Talk_dialog_windowView:OnActive()
       self:autoPlayNext()
     end
   end)
-  self:registerInputAction()
   self.quest_task_btn_com_:Init(E.QuestTaskBtnsSource.Talk, self.talk_btns_binder_, self.viewConfigKey)
 end
 
@@ -75,6 +85,7 @@ function Talk_dialog_windowView:OnRefresh()
     self.timerMgr:StopTimer(self.autoPlayTimer_)
     self.autoPlayTimer_ = nil
   end
+  self.isCloseFlow_ = true
   self.quest_task_btn_com_:Refresh()
   self:refreshTalkerName(self.viewData.NpcIdList, self.viewData.OverrideTalkerName)
   self:refreshTalkContent(self.viewData.Content)
@@ -82,24 +93,15 @@ function Talk_dialog_windowView:OnRefresh()
   self:refreshDialogShake(self.viewData.IsDialogShake)
   self:refreshTalkCamera(self.viewData.CameraTemplateId)
   self:refreshShowItem(self.viewData.ShowItemId)
-  self:refreshPromptText()
 end
 
-function Talk_dialog_windowView:refreshPromptText()
-  self.talk_btns_lab_prompt_.text = Lang("Long_Press_Skip_PromptDefault")
-  local keyVM = Z.VMMgr.GetVM("setting_key")
-  local keyCode = keyVM.GetKeyCodeListByKeyId(1)[1]
-  if keyCode then
-    local contrastRow = Z.TableMgr.GetRow("SetKeyboardContrastTableMgr", keyCode)
-    if contrastRow then
-      self.talk_btns_lab_prompt_.text = Lang("Long_Press_Skip_Prompt", {
-        val = contrastRow.Keyboard
-      })
-    end
-  end
+function Talk_dialog_windowView:onCloseTalkDialog()
+  self.isCloseFlow_ = false
+  Z.UIMgr:CloseView("talk_dialog_window")
 end
 
 function Talk_dialog_windowView:OnDeActive()
+  logGreen("[quest] Talk_dialog_windowView:OnDeActive")
   self.quest_task_btn_com_:UnInit()
   self.anim_:ResetAniState("talk_dialog_window_shock")
   self.lab_content_:RemoveAllListeners()
@@ -110,29 +112,11 @@ function Talk_dialog_windowView:OnDeActive()
   end
   Z.AudioMgr:StopPlayingEvent(self.curAudioEventId_)
   Z.EventMgr:RemoveObjAll(self)
-  if Z.IsPCUI then
-    Z.InputMgr:RemoveInputEventDelegate(self.onSpace_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Jump)
-    Z.InputMgr:RemoveInputEventDelegate(self.onSpace_, Z.InputActionEventType.ButtonPressedForTimeJustReleased, Z.RewiredActionsConst.Interact)
+  if self.isCloseFlow_ then
+    Z.EPFlowBridge.StopAllFlow()
+    logGreen("[quest] Talk_dialog_windowView:OnDeActive StopAllFlow")
   end
-end
-
-function Talk_dialog_windowView:registerInputAction()
-  if not Z.IsPCUI then
-    return
-  end
-  
-  function self.onSpace_()
-    if not self or not self.lab_content_ then
-      return
-    end
-    self.lab_content_:SetTyperTimeScale(5)
-    if self:isAllowNext() then
-      Z.EPFlowBridge.OnTalkDialogClick()
-    end
-  end
-  
-  Z.InputMgr:AddInputEventDelegate(self.onSpace_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Jump)
-  Z.InputMgr:AddInputEventDelegate(self.onSpace_, Z.InputActionEventType.ButtonPressedForTimeJustReleased, Z.RewiredActionsConst.Interact, 0, 0.2)
+  self.isCloseFlow_ = true
 end
 
 function Talk_dialog_windowView:hideArrowUI()
@@ -236,7 +220,9 @@ function Talk_dialog_windowView:refreshTalkAudio(audioPath)
 end
 
 function Talk_dialog_windowView:onEPFlowVoiceEnd()
-  self:autoPlayNext(AUDIO_AUTO_PLAY_DELAY)
+  if self.viewData and self.viewData.NeedWaitVoiceEnd then
+    self:autoPlayNext(AUDIO_AUTO_PLAY_DELAY)
+  end
 end
 
 function Talk_dialog_windowView:autoPlayNext(duration)
@@ -293,6 +279,15 @@ function Talk_dialog_windowView:isAllowNext(notCheckTyper)
     end
   end
   return false
+end
+
+function Talk_dialog_windowView:OnTriggerInputAction(inputActionEventData)
+  if inputActionEventData.actionId == Z.RewiredActionsConst.Jump then
+    self.onSpace_(inputActionEventData)
+  end
+  if inputActionEventData.actionId == Z.RewiredActionsConst.Interact and inputActionEventData.eventType == Z.InputActionEventType.ButtonPressedForTimeJustReleased then
+    self.onSpace_(inputActionEventData)
+  end
 end
 
 function Talk_dialog_windowView:isOptionActive()

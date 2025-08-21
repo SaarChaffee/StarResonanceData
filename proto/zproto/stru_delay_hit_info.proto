@@ -11,4 +11,3 @@ message DelayHitInfo {
     float playTime = 4;
     repeated zproto.DelayHitTargetInfo targetInfos = 5;
 }
-

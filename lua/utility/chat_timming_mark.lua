@@ -11,20 +11,20 @@ function ret.BinderEvent()
   Z.EventMgr:Add(Z.ConstValue.Team.EnterTeam, ret.OnEnterTeam)
   Z.EventMgr:Add(Z.ConstValue.Dungeon.EndDungeon, ret.OnEndDungeon)
   Z.EventMgr:Add(Z.ConstValue.Dead, ret.OnDead)
-  Z.EventMgr:Add(Z.ConstValue.BeRevire, ret.OnBeRevive)
+  Z.EventMgr:Add(Z.ConstValue.Revive, ret.OnRevive)
 end
 
 function ret.UnBinderEvent()
   Z.EventMgr:Remove(Z.ConstValue.Team.EnterTeam, ret.OnEnterTeam)
   Z.EventMgr:Remove(Z.ConstValue.Dungeon.EndDungeon, ret.OnEndDungeon)
   Z.EventMgr:Remove(Z.ConstValue.Dead, ret.OnDead)
-  Z.EventMgr:Remove(Z.ConstValue.BeRevire, ret.OnBeRevive)
+  Z.EventMgr:Remove(Z.ConstValue.Revive, ret.OnRevive)
 end
 
 function ret:asyncLoadSpriteItem(id)
 end
 
-function ret.OnBeRevive()
+function ret.OnRevive()
   local teamVm = Z.VMMgr.GetVM("team")
   if not teamVm.CheckIsInTeam() then
     return

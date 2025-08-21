@@ -8,8 +8,6 @@ message MonsterEntityGlobalTableBase {
     int32 UId = 2028;
     number_array Position = 686;
 }
-
 message MonsterEntityGlobalTableMgr {
-    map<int32, .bokura.MonsterEntityGlobalTableBase> datas = 1;
+    repeated bokura.MonsterEntityGlobalTableMgr.DatasEntry datas = 1;
 }
-

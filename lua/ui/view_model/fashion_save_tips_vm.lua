@@ -25,7 +25,7 @@ end
 local isExistUnsavedFashion = function()
   local wears = fashionData:GetWears()
   for _, styleData in pairs(wears) do
-    if not getFashionWearIsSaved(styleData.fashionId) then
+    if not getFashionWearIsSaved(styleData.wearFashionId) then
       return true
     end
   end
@@ -40,12 +40,29 @@ local isExistUnsavedFashion = function()
   return false
 end
 local getFashionWearIsUnlocked = function(fashionId)
-  local items = Z.ContainerMgr.CharSerialize.itemPackage.packages[7].items
+  local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(fashionId)
+  if itemRow == nil then
+    return false
+  end
+  if itemRow.Type == E.FashionRegion.WeapoonSkin then
+    local weaponSkinRow = Z.TableMgr.GetTable("WeaponSkinTableMgr").GetRow(fashionId)
+    if weaponSkinRow == nil then
+      return false
+    end
+    if weaponSkinRow.Original == 1 then
+      return true
+    end
+  end
+  local itemPackageRow = Z.TableMgr.GetTable("ItemTypeTableMgr").GetRow(itemRow.Type)
+  if itemPackageRow == nil then
+    return false
+  end
+  local items = Z.ContainerMgr.CharSerialize.itemPackage.packages[itemPackageRow.Package].items
   for uuid, item in pairs(items) do
     local itemData = itemTbl.GetRow(item.configId)
     if itemData then
       local relatedFashion = itemData.CorrelationId
-      if fashionId == relatedFashion then
+      if fashionId == relatedFashion or fashionId == item.configId then
         return true
       end
     end
@@ -102,12 +119,25 @@ local getFashionConfirmDataList = function()
   local tempFashionSet = {}
   local wears = fashionData:GetWears()
   for _, styleData in pairs(wears) do
-    local fashionId = styleData.fashionId
-    if not getFashionWearIsUnlocked(fashionId) then
-      local confirmData = {
-        FashionId = fashionId,
-        Reason = E.FashionTipsReason.UnlockedWear
-      }
+    local fashionId = styleData.wearFashionId
+    local fashionVM = Z.VMMgr.GetVM("fashion")
+    local row = fashionVM.GetFashionAdvanced(fashionId)
+    if row then
+      if not fashionVM.GetFashionAdvancedIsUnlock(row.FashionId, fashionId) then
+        local confirmData = {
+          FashionId = row.FashionId,
+          Reason = E.FashionTipsReason.UnlockedFashionAdvanced
+        }
+        table.insert(ret, confirmData)
+        tempFashionSet[fashionId] = true
+      end
+    elseif not getFashionWearIsUnlocked(fashionId) then
+      local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(fashionId)
+      local reason = E.FashionTipsReason.UnlockedWear
+      if itemRow and itemRow.Type == E.FashionRegion.WeapoonSkin then
+        reason = E.FashionTipsReason.UnlockedWeaponSkin
+      end
+      local confirmData = {FashionId = fashionId, Reason = reason}
       table.insert(ret, confirmData)
       tempFashionSet[fashionId] = true
     end
@@ -162,7 +192,7 @@ local getFashionColorAreaStr = function(fashionId, areaList)
       areaStr = areaStr .. Lang("RomanNumeral" .. showArea)
     end
     if i ~= count then
-      areaStr = areaStr .. "\227\128\129"
+      areaStr = areaStr .. Lang("Comma")
     end
   end
   return areaStr
@@ -171,7 +201,7 @@ local isFashionWearChange = function()
   local wears = fashionData:GetWears()
   for region, styleData in pairs(wears) do
     local wornFashion = fashionData:GetServerFashionWear(region)
-    if wornFashion ~= styleData.fashionId then
+    if wornFashion ~= styleData.wearFashionId then
       return true
     end
   end

@@ -5,4 +5,3 @@ package zproto;
 message FishingSetBaitRequest {
     int32 baitId = 1;
 }
-

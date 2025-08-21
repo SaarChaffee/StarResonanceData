@@ -1,7 +1,7 @@
 local qte_parkour_jump = class("qte_parkour_jump")
 local QteInfo = require("ui.component.qte.qte_info")
 
-function qte_parkour_jump:ctor(id, fighterview, panel)
+function qte_parkour_jump:ctor(id, fighterview, uiBinder)
   self.timerMgr = Z.TimerMgr.new()
   self.Info_ = QteInfo.new(id)
   if self.Info_ == nil then
@@ -11,7 +11,7 @@ function qte_parkour_jump:ctor(id, fighterview, panel)
   self.key_ = "qte_" .. math.random()
   self.uuid_ = 0
   self.view_ = fighterview
-  self.panel_ = panel
+  self.uiBinder_ = uiBinder
   self.qteId_ = id
   self.uiObj_ = nil
   self.isActive_ = true
@@ -48,7 +48,7 @@ function qte_parkour_jump:Load()
   local uipath = self.Info_.UIPath
   Z.CoroUtil.create_coro_xpcall(function()
     if not self.uiObj_ then
-      self.uiObj_ = self.view_:AsyncLoadUiUnit(uipath, self.key_, self.panel_.parkour_qte_pos.Trans)
+      self.uiObj_ = self.view_:AsyncLoadUiUnit(uipath, self.key_, self.uiBinder_.parkour_qte_pos)
       if not self.uiObj_ then
         Z.QteMgr.OnQteClosed(self.uuid_)
         return
@@ -74,6 +74,10 @@ function qte_parkour_jump:start()
     self.uiObj_.effect_start[i].ZEff:SetEffectGoVisible(false)
     self.uiObj_.effect_loop[i].ZEff:SetEffectGoVisible(false)
     self.uiObj_.effect_on[i].ZEff:SetEffectGoVisible(false)
+  end
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
   end
   self.curDotCount = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EParkourQTEEnergyBean).Value
   self:OpenEnergyBean()
@@ -119,6 +123,10 @@ function qte_parkour_jump:OnQteTriggerShow()
 end
 
 function qte_parkour_jump:OpenEnergyBean()
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local enegryDotCount = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EParkourQTEEnergyBean).Value
   for i = 1, enegryDotCount do
     self.uiObj_.img_on[i]:SetVisible(true)

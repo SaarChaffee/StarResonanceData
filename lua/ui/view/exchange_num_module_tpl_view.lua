@@ -11,7 +11,7 @@ end
 
 function Exchange_num_module_tplView:OnActive()
   self.loaded_ = true
-  self.overLapNum_ = -1
+  self.overLapNum_ = self.overLapNum_ == nil and -1 or self.overLapNum_
   if self.viewData and self.viewData.itemId then
     local itemCfg = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.viewData.itemId)
     if not itemCfg then
@@ -67,6 +67,8 @@ function Exchange_num_module_tplView:OnDeActive()
   if self.keypad_ then
     self.keypad_:DeActive()
   end
+  self.uiBinder.slider_temp:RemoveAllListeners()
+  self.cacheData_ = nil
 end
 
 function Exchange_num_module_tplView:OnRefresh()
@@ -186,10 +188,11 @@ function Exchange_num_module_tplView:InputNum(num, tipId, force)
     self.curNum_ = self.min_
   end
   if num < 1 then
-    self.curNum_ = 1
+    self.curNum_ = self.min_
   end
   if num > self.max_ then
-    Z.VMMgr.GetVM("all_tips").OpenMessageView({configId = 1000721})
+    local tipsId = self.viewData.tipsId or 1000721
+    Z.VMMgr.GetVM("all_tips").OpenMessageView({configId = tipsId})
     self.curNum_ = self.max_
   end
   self:updateNumData()

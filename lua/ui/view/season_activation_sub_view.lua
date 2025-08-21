@@ -11,7 +11,7 @@ local Item_Small_Size = 72
 function Season_activation_subView:ctor(parent)
   self.parentView_ = parent
   self.uiBinder = nil
-  super.ctor(self, "season_activation_sub", "season_activation/season_activation_sub", UI.ECacheLv.None)
+  super.ctor(self, "season_activation_sub", "season_activation/season_activation_sub", UI.ECacheLv.None, true)
 end
 
 function Season_activation_subView:OnActive()
@@ -25,7 +25,11 @@ function Season_activation_subView:OnActive()
   self:initRefreshNum()
   self:initSeasonName()
   self:initReferBattlePassLevelInfo()
+  self:refreshCompensateShopBtn()
   self:bindEvents()
+  Z.CoroUtil.create_coro_xpcall(function()
+    self:initPrivilegesTips()
+  end)()
 end
 
 function Season_activation_subView:OnDeActive()
@@ -48,6 +52,7 @@ function Season_activation_subView:OnRefresh()
   Z.CoroUtil.create_coro_xpcall(function()
     self.seasonActivationVm_.AsyncGetActivationTargetRequest(self.cancelSource:CreateToken())
   end)()
+  self:setBpPrivileges()
 end
 
 function Season_activation_subView:initBinders()
@@ -73,6 +78,7 @@ function Season_activation_subView:initBinders()
   self.node_slider_extra_ = self.uiBinder.node_slider_extra
   self.btn_shop_ = self.uiBinder.btn_shop
   self.lab_shop_ = self.uiBinder.lab_shop
+  self.btn_compensate_shop_ = self.uiBinder.btn_compensate
 end
 
 function Season_activation_subView:initParam()
@@ -81,10 +87,10 @@ function Season_activation_subView:initParam()
   self.awardData_ = {}
   self.seasonActivationVm_ = Z.VMMgr.GetVM("season_activation")
   self.battlePassVM_ = Z.VMMgr.GetVM("battlepass")
-  self.battlePassContainer_ = Z.ContainerMgr.CharSerialize.seasonCenter.battlePass
   self.battlePassCardData_ = self.battlePassVM_.AssemblyData()
   self.seasonGlobalTableMgr_ = Z.TableMgr.GetTable("SeasonGlobalTableMgr")
   self.seasonData_ = Z.DataMgr.Get("season_data")
+  self.battlePassData_ = Z.DataMgr.Get("battlepass_data")
   self.isInitLoopListView_ = false
 end
 
@@ -98,6 +104,19 @@ function Season_activation_subView:initBtnClick()
   self:AddClick(self.btn_shop_, function()
     local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
     gotoFuncVM.GoToFunc(E.FunctionID.SeasonPassShop)
+  end)
+  self:AddClick(self.uiBinder.btn_goto, function()
+    self.battlePassVM_.OpenBattlePassBuyView()
+  end)
+  self:AddClick(self.uiBinder.btn_privilege, function()
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_privilege, false)
+  end)
+  self:AddClick(self.uiBinder.btn_find, function()
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_privilege, true)
+  end)
+  self:AddClick(self.btn_compensate_shop_, function()
+    local shopVm = Z.VMMgr.GetVM("shop")
+    shopVm.OpenCompensatenShopView()
   end)
 end
 
@@ -125,7 +144,9 @@ end
 
 function Season_activation_subView:initSeasonName()
   local seasonConfig = self.seasonGlobalTableMgr_.GetRow(self.seasonData_.CurSeasonId)
-  self.uiBinder.lab_season_name.text = seasonConfig.SeasonName
+  if seasonConfig then
+    self.uiBinder.lab_season_name.text = seasonConfig.SeasonName
+  end
 end
 
 function Season_activation_subView:bindWatchers()
@@ -134,21 +155,22 @@ function Season_activation_subView:bindWatchers()
   end
   
   Z.ContainerMgr.CharSerialize.seasonActivation.Watcher:RegWatcher(self.regRefreshData)
-  
-  function self.battlePassDataUpDateFunc_(container, dirtys)
-    if dirtys.curexp then
-      self:initReferBattlePassLevelInfo()
-    end
+  Z.EventMgr:Add(Z.ConstValue.BattlePassDataUpdate, self.onBattlePassDataUpDateFunc, self)
+end
+
+function Season_activation_subView:onBattlePassDataUpDateFunc(dirtyTable)
+  if dirtyTable.curexp or dirtyTable.level then
+    self:initReferBattlePassLevelInfo()
   end
-  
-  Z.ContainerMgr.CharSerialize.seasonCenter.battlePass.Watcher:RegWatcher(self.battlePassDataUpDateFunc_)
+  if dirtyTable.buyPrimePass then
+    self:setBpPrivileges()
+  end
 end
 
 function Season_activation_subView:unBindWatchers()
+  Z.EventMgr:Remove(Z.ConstValue.BattlePassDataUpdate, self.onBattlePassDataUpDateFunc, self)
   Z.ContainerMgr.CharSerialize.seasonActivation.Watcher:UnregWatcher(self.regRefreshData)
-  Z.ContainerMgr.CharSerialize.seasonCenter.battlePass.Watcher:UnregWatcher(self.battlePassDataUpDateFunc_)
   self.regRefreshData = nil
-  self.battlePassDataUpDateFunc_ = nil
 end
 
 function Season_activation_subView:refreshData(dirty)
@@ -169,7 +191,15 @@ end
 function Season_activation_subView:initMainLoopListView()
   self.loopListView_ = loopListView.new(self, self.scrollView_content_)
   self.loopListView_:SetGetPrefabNameFunc(function(data)
-    if data.Type == 1 then
+    if Z.IsPCUI then
+      if data.Type == 1 then
+        return "season_activation_title_tpl_pc"
+      elseif data[1] and data[1].rewardRate and data[1].rewardRate > 100 then
+        return "season_activation_recommend_item_list_tpl_pc"
+      else
+        return "season_activation_item_list_tpl_pc"
+      end
+    elseif data.Type == 1 then
       return "season_activation_title_tpl"
     elseif data[1] and data[1].rewardRate and data[1].rewardRate > 100 then
       return "season_activation_recommend_item_list_tpl"
@@ -186,13 +216,13 @@ function Season_activation_subView:initMainLoopListView()
       return season_activation_list_item
     end
   end)
-  local dataLists = self.seasonActivationVm_.GetActivationTargetData()
+  local dataLists = self.seasonActivationVm_.GetActivationTargetData(Z.IsPCUI)
   self.loopListView_:Init(dataLists)
   self.isInitLoopListView_ = true
 end
 
 function Season_activation_subView:refreshMainLoopGridView()
-  local dataLists = self.seasonActivationVm_.GetActivationTargetData()
+  local dataLists = self.seasonActivationVm_.GetActivationTargetData(Z.IsPCUI)
   if self.loopListView_ then
     self.loopListView_:RefreshListView(dataLists)
   end
@@ -341,7 +371,15 @@ function Season_activation_subView:initRefreshNum()
 end
 
 function Season_activation_subView:initReferBattlePassLevelInfo()
-  local level = self.battlePassContainer_.level + 1
+  local curBattlePassData = self.battlePassVM_.GetCurrentBattlePassContainer()
+  if not curBattlePassData or not next(curBattlePassData) then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_bpcard, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_bpcard_slider, false)
+    return
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_bpcard, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_bpcard_slider, true)
+  local level = curBattlePassData.level + 1
   if level > #self.battlePassCardData_ then
     level = #self.battlePassCardData_
   end
@@ -350,16 +388,83 @@ function Season_activation_subView:initReferBattlePassLevelInfo()
   if bpCardData then
     seasonExp = bpCardData.SeasonExp
   end
-  local bpCardGlobalInfo = self.battlePassVM_.GetBattlePassGlobalTableInfo(self.battlePassContainer_.id)
-  self.top_lab_grade_.text = self.battlePassContainer_.level
-  self.top_progress_lab_.text = string.format("%s/%s", self.battlePassContainer_.curexp, seasonExp)
+  local bpCardGlobalInfo = self.battlePassVM_.GetBattlePassGlobalTableInfo(curBattlePassData.id)
+  self.top_lab_grade_.text = curBattlePassData.level
+  self.top_progress_lab_.text = string.format("%s/%s", curBattlePassData.curexp, seasonExp)
   self.top_slider_temp_.maxValue = seasonExp
-  self.top_slider_temp_.value = self.battlePassContainer_.curexp
-  self.top_week_lab_manage_.text = string.format("%s/%s", self.battlePassContainer_.weekExp, bpCardGlobalInfo.WeeklyExpLimit)
+  local curSliderVal = curBattlePassData.curexp
+  if level > #self.battlePassCardData_ then
+    curSliderVal = seasonExp
+  end
+  self.top_slider_temp_.value = curSliderVal
+  self.top_progress_lab_.text = string.format("%s/%s", curSliderVal, seasonExp)
+  self.top_week_lab_manage_.text = string.format("%s/%s", curBattlePassData.weekExp, bpCardGlobalInfo.WeeklyExpLimit)
 end
 
 function Season_activation_subView:startAnimatedShow()
+  if Z.IsPCUI then
+    return
+  end
   self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+end
+
+function Season_activation_subView:setBpPrivileges()
+  local battlePassContainer_ = self.battlePassVM_.GetCurrentBattlePassContainer()
+  local isPrimePass = battlePassContainer_ and battlePassContainer_.buyPrimePass
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_goto, not isPrimePass)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_privileges, isPrimePass)
+end
+
+function Season_activation_subView:initPrivilegesTips()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_privilege, false)
+  local privilegesData = self.battlePassVM_.GetBpCardPrivilegesData(self.battlePassData_.CurBattlePassData.id)
+  if table.zcount(privilegesData) <= 0 then
+    return
+  end
+  local path = self.prefab_cache_:GetString("privileges_tips")
+  for k, v in pairs(privilegesData) do
+    local name = string.format("privileges_tips_%s", k)
+    local item = self:AsyncLoadUiUnit(path, name, self.uiBinder.node_privilege_tips)
+    self:setPrivilegesTipsItemInfo(item, v)
+  end
+end
+
+function Season_activation_subView:setPrivilegesTipsItemInfo(item, data)
+  item.img_icon:SetImage(data.PrivilegeIcon)
+  item.lab_title.text = self.battlePassVM_.AssembledBpCardPrivilegesContent(data)
+  item.Ref:SetVisible(item.lab_time, data.IsShowAccelerated)
+  if data.IsShowAccelerated then
+    local bpCardGlobalInfo = self.battlePassVM_.GetBattlePassGlobalTableInfo(self.battlePassData_.CurBattlePassData.id)
+    if not bpCardGlobalInfo or not bpCardGlobalInfo.Timer then
+      item.Ref:SetVisible(item.lab_time, false)
+      return
+    end
+    local time = Z.TimeTools.GetLeftTimeByTimerId(bpCardGlobalInfo.Timer)
+    if 0 < time then
+      time = math.floor(time / 86400)
+    else
+      item.Ref:SetVisible(item.lab_time, false)
+      return
+    end
+    item.lab_time.text = Lang("Day", {val = time})
+  end
+end
+
+function Season_activation_subView:refreshCompensateShopBtn()
+  self.uiBinder.Ref:SetVisible(self.btn_compensate_shop_, false)
+  local funcVm = Z.VMMgr.GetVM("gotofunc")
+  local funcOpen = funcVm.FuncIsOn(E.FunctionID.CompensatenShop, true)
+  if not funcOpen then
+    return
+  end
+  Z.CoroUtil.create_coro_xpcall(function()
+    local shopVM = Z.VMMgr.GetVM("shop")
+    local shopItemData = shopVM.AsyncGetShopDataByShopType(E.EShopType.CompensateShop, self.cancelSource:CreateToken())
+    if table.zcount(shopItemData) == 0 then
+      return
+    end
+    self.uiBinder.Ref:SetVisible(self.btn_compensate_shop_, true)
+  end)()
 end
 
 return Season_activation_subView

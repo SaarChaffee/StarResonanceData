@@ -15,8 +15,6 @@ message SetKeyboardTableBase {
     int32 ShowSwitch = 343;
     string GoBack = 1601;
 }
-
 message SetKeyboardTableMgr {
-    map<int32, .bokura.SetKeyboardTableBase> datas = 1;
+    repeated bokura.SetKeyboardTableMgr.DatasEntry datas = 1;
 }
-

@@ -7,4 +7,3 @@ enum EFightAttrInheritType {
     InheritCopyByMaster = 1;
     NoInherit = 100;
 }
-

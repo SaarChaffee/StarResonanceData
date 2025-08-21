@@ -58,8 +58,6 @@ message AITableBase {
     bool IsPlayVigilanceAction = 149;
     string VigilanceActionJsonName = 1933;
 }
-
 message AITableMgr {
-    map<int32, .bokura.AITableBase> datas = 1;
+    repeated bokura.AITableMgr.DatasEntry datas = 1;
 }
-

@@ -7,4 +7,3 @@ enum EBulletDirectionType {
     ETargetPos = 1;
     ETargetEnt = 2;
 }
-

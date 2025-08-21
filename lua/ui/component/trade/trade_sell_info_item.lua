@@ -21,10 +21,10 @@ function TradeSellItemInfo:OnRefresh(data)
   if delta <= 0 then
     self.uiBinder.lab_time.text = Lang("timeout")
   else
-    self.uiBinder.lab_time.text = Z.TimeTools.S2HMSFormat(delta)
+    self.uiBinder.lab_time.text = Z.TimeFormatTools.FormatToDHMS(delta, true)
     self.itemSellTimer_ = self.parent.UIView.timerMgr:StartTimer(function()
       delta = delta - 1
-      self.uiBinder.lab_time.text = Z.TimeTools.S2HMSFormat(delta)
+      self.uiBinder.lab_time.text = Z.TimeFormatTools.FormatToDHMS(delta, true)
       if delta <= 0 then
         self.uiBinder.Ref:SetVisible(self.uiBinder.lab_time, false)
       end

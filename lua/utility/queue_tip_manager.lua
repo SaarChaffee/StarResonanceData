@@ -8,7 +8,9 @@ local TypeMaxInQueueCount = {
   [E.EQueueTipType.FashionAndVehicle] = 5,
   [E.EQueueTipType.ResonanceSkillGet] = 10,
   [E.EQueueTipType.ItemShow] = 10,
-  [E.EQueueTipType.SelectPack] = 10
+  [E.EQueueTipType.SelectPack] = 10,
+  [E.EQueueTipType.Activities] = 10,
+  [E.EQueueTipType.LifeRecipe] = 20
 }
 
 function Mgr:AddQueueTipData(tipType, viewConfigKey, viewData, priority, unrealScenePath, unrealSceneConfig)
@@ -24,7 +26,7 @@ function Mgr:AddQueueTipData(tipType, viewConfigKey, viewData, priority, unrealS
   self:enQueue(tipData)
 end
 
-function Mgr:OnLogin()
+function Mgr:Init()
   self.queueViewDic_ = {}
   self.queueOpenViewConfigKey_ = {}
   self.queueViewDicCount_ = {}
@@ -32,10 +34,8 @@ function Mgr:OnLogin()
   Z.EventMgr:Add(Z.ConstValue.UIClose, self.onCloseViewEvent, self)
 end
 
-function Mgr:OnLogout()
-  self.queueViewDic_ = {}
-  self.queueOpenViewConfigKey_ = {}
-  self.queueViewDicCount_ = {}
+function Mgr:UnInit()
+  self:ClearTipsQueueData()
   if self.cancelSource_ then
     self.cancelSource_:Recycle()
     self.cancelSource_ = nil
@@ -43,7 +43,7 @@ function Mgr:OnLogout()
   Z.EventMgr:Remove(Z.ConstValue.UIClose, self.onCloseViewEvent, self)
 end
 
-function Mgr:OnEnterScene()
+function Mgr:ClearTipsQueueData()
   self.queueViewDic_ = {}
   self.queueOpenViewConfigKey_ = {}
   self.queueViewDicCount_ = {}
@@ -86,6 +86,12 @@ function Mgr:enQueue(tipData)
 end
 
 function Mgr:popQueue(type)
+  if Z.EntityMgr.PlayerEnt then
+    local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttrState()
+    if self.deadStateId_ == stateId then
+      return
+    end
+  end
   if self.queueViewDic_[type] == nil then
     return
   end

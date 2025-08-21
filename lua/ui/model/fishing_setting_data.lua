@@ -19,17 +19,17 @@ end
 function FishingSettingData:InitShowCfg()
   self.ShowEntityAllCfg = {
     {
-      type = E.CamerasysShowEntityType.Stranger,
+      type = E.CameraSystemShowEntityType.Stranger,
       txt = Lang("Stranger"),
       state = true
     },
     {
-      type = E.CamerasysShowEntityType.FriendlyNPCS,
+      type = E.CameraSystemShowEntityType.FriendlyNPCS,
       txt = Lang("Photograph_Display_NPC"),
       state = true
     },
     {
-      type = E.CamerasysShowEntityType.WeaponsAppearance,
+      type = E.CameraSystemShowEntityType.WeaponsAppearance,
       txt = Lang("FishingWeaponShowSetting"),
       state = false
     }
@@ -63,7 +63,7 @@ function FishingSettingData:SetShowUICfg(type, state)
 end
 
 function FishingSettingData:ReadSettingData()
-  local data = Z.LocalUserDataMgr.GetString("FishingShowSetting")
+  local data = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Character, "FishingShowSetting")
   if data ~= "" then
     local settingDict = self:AnalysisData(data)
     for _, eCfg in ipairs(self.ShowEntityAllCfg) do
@@ -83,7 +83,7 @@ end
 
 function FishingSettingData:WriteSettingData()
   local data = self:ConcatSettingData()
-  Z.LocalUserDataMgr.SetString("FishingShowSetting", data)
+  Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Character, "FishingShowSetting", data)
 end
 
 function FishingSettingData:AnalysisData(data)

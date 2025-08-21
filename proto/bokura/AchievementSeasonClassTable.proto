@@ -12,8 +12,6 @@ message AchievementSeasonClassTableBase {
     int_array EntryList = 343;
     int32 SortID = 504;
 }
-
 message AchievementSeasonClassTableMgr {
-    map<int32, .bokura.AchievementSeasonClassTableBase> datas = 1;
+    repeated bokura.AchievementSeasonClassTableMgr.DatasEntry datas = 1;
 }
-

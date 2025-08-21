@@ -221,7 +221,7 @@ end
 function Union_upgrade_mainView:refreshButtonLabel(isUpgrade, nextUpgradeConfig)
   local labStr
   if isUpgrade then
-    local timeDesc = Z.TimeTools.FormatToDHM(nextUpgradeConfig.UpgradingAccelerateTime)
+    local timeDesc = Z.TimeFormatTools.FormatToDHMS(nextUpgradeConfig.UpgradingAccelerateTime)
     labStr = Lang("UnionSpeedUpDesc", {val = timeDesc})
   else
     labStr = Lang("levelUp")
@@ -393,7 +393,7 @@ end
 
 function Union_upgrade_mainView:onTimerUpdate(startTime, currentTime, endTime)
   local timeStr = Lang("UnionBuildTime", {
-    time = Z.TimeTools.S2HMSFormat(endTime - currentTime)
+    time = Z.TimeFormatTools.FormatToDHMS(endTime - currentTime, true)
   })
   local progress = (currentTime - startTime) / (endTime - startTime)
   self.uiBinder.binder_info.lab_upgrade_time.text = timeStr

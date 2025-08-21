@@ -11,8 +11,6 @@ message ProfileAttrTableBase {
     int32 Type = 673;
     mlstring TypeDisplayName = 1876;
 }
-
 message ProfileAttrTableMgr {
-    map<int32, .bokura.ProfileAttrTableBase> datas = 1;
+    repeated bokura.ProfileAttrTableMgr.DatasEntry datas = 1;
 }
-

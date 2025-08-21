@@ -45,7 +45,7 @@ if sutf8 then
 else
   function utf8.len(s)
     assert(s, "bad argument #1 to 'len' (string expected, got nil)")
-
+    
     local len = 0
     for _ in utf8.byte_indices(s) do
       len = len + 1

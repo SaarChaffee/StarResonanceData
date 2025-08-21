@@ -1,6 +1,6 @@
 local super = require("ui.player_ctrl_btns.player_ctrl_btn_base")
 local skill_slot_obj = class("skill_slot_obj", super)
-local keyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 
 function skill_slot_obj:ctor(key, panel)
   self.uiBinder = nil
@@ -13,12 +13,18 @@ function skill_slot_obj:ctor(key, panel)
   self.effectSwitchOnTimer_ = nil
   self.enableTouch_ = true
   self.vm = Z.VMMgr.GetVM("skill_slot")
+  self.fighterBtns_vm_ = Z.VMMgr.GetVM("fighterbtns")
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function skill_slot_obj:GetUIUnitPath()
+  local keyNum = tonumber(self.key_)
   local path = GetLoadAssetPath(Z.IsPCUI and "BattleBtn_Skill_PC" or "BattleBtn_Skill")
-  if tonumber(self.key_) == 10 and Z.IsPCUI then
-    path = path .. "_long"
+  if Z.IsPCUI and keyNum ~= 6 and keyNum ~= 7 and keyNum ~= 8 then
+    path = GetLoadAssetPath("BattleBtn_Skill_Small_PC")
+  end
+  if keyNum == 10 and Z.IsPCUI then
+    path = GetLoadAssetPath("BattleBtn_Skill_Long_PC")
   end
   return path
 end
@@ -28,6 +34,7 @@ function skill_slot_obj:OnActive()
   self.isFirst = true
   self.platAutoBattleAnim_ = false
   self.env_Vm = Z.VMMgr.GetVM("env")
+  self.weaponSkillVm_ = Z.VMMgr.GetVM("weapon_skill")
   self:InitComponent()
   self:Init()
   self:initKeyIcon()
@@ -41,12 +48,21 @@ end
 
 function skill_slot_obj:RegisterEvent()
   Z.EventMgr:Add("UIEffectEventFired", self.UIEffectEventFired, self)
-  Z.EventMgr:Add(Z.ConstValue.UIHide, self.onUIViewHide, self)
   Z.EventMgr:Add(Z.ConstValue.ShowSkillLableChange, self.onSkillLabelChange, self)
-  Z.EventMgr:Add(Z.ConstValue.AutoBattleChange, self.refreshAutoBattleSwitch, self)
-  Z.EventMgr:Add(Z.ConstValue.OnAutoBattleBannedBySkillBanned, self.refreshAutoBattleSwitch, self)
   Z.EventMgr:Add(Z.ConstValue.OnPorfessionChange, self.refreshDynamicEffect, self)
   Z.EventMgr:Add(Z.ConstValue.OnEnvSkillCd, self.refreshEnvCd, self)
+  Z.EventMgr:Add(Z.ConstValue.AutoBattleChange, self.refreshAISlot, self)
+  Z.EventMgr:Add(Z.ConstValue.AISlotSetMode, self.refreshAISlot, self)
+  Z.EventMgr:Add(Z.ConstValue.Vehicle.UpdateRiding, self.onRiding, self)
+  Z.EventMgr:Add(Z.ConstValue.OpenSkillRoulette, self.OpenSkillRoulette, self)
+  
+  function self.onSlotChange(container, dirty)
+    if dirty.slots then
+      self:refreshDynamicEffect()
+    end
+  end
+  
+  Z.ContainerMgr.CharSerialize.slots.Watcher:RegWatcher(self.onSlotChange)
   if tonumber(self.key_) == 101 then
     Z.EventMgr:Add("ResonanceSkill1", self.keyFuncCall, self)
   elseif tonumber(self.key_) == 102 then
@@ -56,6 +72,8 @@ end
 
 function skill_slot_obj:UnregisterEvent()
   Z.EventMgr:RemoveObjAll(self)
+  Z.ContainerMgr.CharSerialize.slots.Watcher:UnregWatcher(self.onSlotChange)
+  self.onSlotChange = nil
 end
 
 function skill_slot_obj:InitComponent()
@@ -73,22 +91,13 @@ function skill_slot_obj:UnInitComponent()
   self.uiBinder.event_trigger.onDown:RemoveAllListeners()
   self.uiBinder.event_trigger.onUp:RemoveAllListeners()
   self.uiBinder.event_trigger.onExit:RemoveAllListeners()
-end
-
-function skill_slot_obj:onUIViewHide(viewConfigKey, visible)
-  if self.uiBinder == nil then
-    return
-  end
-  if viewConfigKey == self.panel_.viewConfigKey then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.trans_effect_group, visible)
-  end
+  self.inputKeyDescComp_:UnInit()
 end
 
 function skill_slot_obj:Init()
   local keyNum = tonumber(self.key_)
   self.uiBinder.skill_slot_data:SetSlotKey(keyNum)
   self.uiBinder.skill_slot_data:RefreshSkillLabel(Z.VMMgr.GetVM("setting").Get(E.SettingID.ShowSkillTag))
-  self:refreshAutoBattleSwitch()
   local skillId = Z.SkillDataMgr:TryGetSkillIdBySlotId(keyNum)
   local effectInfoList = self.vm:GetSlotEffects(skillId, keyNum)
   if effectInfoList ~= nil then
@@ -99,9 +108,34 @@ function skill_slot_obj:Init()
   self.enableTouch_ = true
   self:AddListener()
   self:refreshEnvCd()
+  self:refreshAISlot()
+end
+
+function skill_slot_obj:refreshAISlot()
+  local slotId = tonumber(self.key_)
+  local slotConfig = Z.TableMgr.GetTable("SkillSlotPositionTableMgr").GetRow(slotId)
+  if slotConfig == nil then
+    self.uiBinder.skill_slot_data:SetAutoBattleHide(false)
+    return
+  end
+  if slotConfig.SlotType ~= 0 then
+    self.uiBinder.skill_slot_data:SetAutoBattleHide(false)
+    return
+  end
+  local autoBattleOpen = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAutoBattleSwitch).Value
+  local setAIMode = self.fighterBtns_vm_:CheckAISlotSetMode()
+  if not autoBattleOpen and not setAIMode then
+    self.uiBinder.skill_slot_data:SetAutoBattleHide(false)
+    return
+  end
+  self.uiBinder.skill_slot_data:ResetAutoBattlestatus()
 end
 
 function skill_slot_obj:refreshEnvCd(changeResonanceId)
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local resonanceId
   if self.key_ == E.SlotName.ResonanceSkillSlot_left then
     resonanceId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrResourceLeft")).Value
@@ -121,11 +155,17 @@ function skill_slot_obj:refreshEnvCd(changeResonanceId)
   local row = Z.TableMgr.GetTable("EnvironmentResonanceTableMgr").GetRow(resonanceId)
   if row then
     local cdHandler = self.uiBinder.binder_count_down_other.count_down
+    local resonanceRemainTime = self.env_Vm.GetResonanceRemainTime(resonanceId)
     cdHandler.CDLen = row.Time
-    cdHandler.Progress = 1 - self.env_Vm.GetResonanceRemainTime(resonanceId) / row.Time
+    cdHandler.Progress = resonanceRemainTime == -1 and 1 or 1 - resonanceRemainTime / row.Time
     cdHandler:ChangeCdKey("resonanceDuration_" .. self.key_)
     cdHandler:CreateCD()
   end
+end
+
+function skill_slot_obj:onRiding()
+  local keyNum = tonumber(self.key_)
+  self.uiBinder.skill_slot_data:SetSlotKey(keyNum)
 end
 
 function skill_slot_obj:keyFuncCall(keyState)
@@ -150,7 +190,6 @@ function skill_slot_obj:AddListener()
     if self.uiBinder == nil or not self.enableTouch_ then
       return
     end
-    self.uiBinder.skill_slot_data:ShowClickEffect()
     Z.PlayerInputController:Attack(slotId, true)
   end)
   self.uiBinder.event_trigger.onUp:AddListener(function()
@@ -165,6 +204,34 @@ function skill_slot_obj:AddListener()
     end
     Z.PlayerInputController:Attack(slotId, false)
   end)
+  if Z.IsPCUI then
+    return
+  end
+  self.uiBinder.joystick:SetSlotId(slotId)
+  self.uiBinder.joystick:SetCancelRect(self.panel_.uiBinder.node_skill_cancel)
+  self.uiBinder.joystick.onDown:AddListener(function()
+    if self.uiBinder == nil or not self.enableTouch_ then
+      return
+    end
+    Z.PlayerInputController:Attack(slotId, true)
+  end)
+  self.uiBinder.joystick.onUp:AddListener(function()
+    if self.uiBinder == nil or not self.enableTouch_ then
+      return
+    end
+    Z.PlayerInputController:Attack(slotId, false)
+  end)
+end
+
+function skill_slot_obj:OpenSkillRoulette(slotId, open)
+  if Z.IsPCUI then
+    return
+  end
+  if tonumber(self.key_) ~= slotId then
+    self.enableTouch_ = not open
+    return
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.joystick_bg, open)
 end
 
 function skill_slot_obj:UIEffectEventFired(skillId, slotId, effectName, isRun)
@@ -176,21 +243,18 @@ function skill_slot_obj:UIEffectEventFired(skillId, slotId, effectName, isRun)
   if Z.SkillDataMgr:TryGetSkillIdBySlotId(slotKey) ~= skillId and slotKey ~= slotId then
     return
   end
-  if isRun then
-    self.uiBinder.effect_dynamic:CreatEFFGO(effectName, Vector3.zero, self.panel_.IsVisible)
-  else
-    self.uiBinder.effect_dynamic:ReleseEffGo()
-  end
+  self:refreshDynamicEffect()
 end
 
 function skill_slot_obj:refreshDynamicEffect()
-  local skillId = Z.SkillDataMgr:TryGetSkillIdBySlotId(tonumber(self.key_))
+  local skillId = self.weaponSkillVm_:GetSkillBySlot(tonumber(self.key_))
   local effectInfoList = self.vm:GetSlotEffects(skillId, tonumber(self.key_))
   local showDynamicEffect = false
   if effectInfoList ~= nil then
     for _, effectName in pairs(effectInfoList) do
       showDynamicEffect = true
-      self.uiBinder.effect_dynamic:CreatEFFGO(effectName, Vector3.zero, self.panel_.IsVisible)
+      self.uiBinder.effect_dynamic:CreatEFFGO(effectName, Vector3.zero)
+      break
     end
   end
   if not showDynamicEffect then
@@ -233,8 +297,9 @@ function skill_slot_obj:initKeyIcon()
   end
   if keyId and keyId ~= 0 then
     Z.GuideMgr:SetSteerIdByComp(self.uiBinder.steer_item, E.DynamicSteerType.KeyBoardId, keyId)
-    keyIconHelper.InitKeyIcon(self, self.uiBinder.binder_key, keyId)
+    self.inputKeyDescComp_:Init(keyId, self.uiBinder.binder_key)
   else
+    self.inputKeyDescComp_:UnInit()
     self.uiBinder.Ref:SetVisible(self.uiBinder.binder_key, false)
   end
 end
@@ -246,47 +311,10 @@ function skill_slot_obj:onSkillLabelChange(show)
   self.uiBinder.skill_slot_data:RefreshSkillLabel(show)
 end
 
-function skill_slot_obj:refreshAutoBattleSwitch(forceHide)
-  if self.uiBinder == nil or tonumber(self.key_) ~= E.SkillSlotType.NormalAttack then
-    self.uiBinder.skill_slot_data:RefreshSkillAutoTips(false)
-    return
-  end
-  local settingVm = Z.VMMgr.GetVM("setting")
-  local autoBattleOpen = settingVm.Get(E.SettingID.AutoBattle)
-  local switchOpen = Z.LocalUserDataMgr.GetBool("auto_battle_switch", false)
-  local fightrtVm = Z.VMMgr.GetVM("fighterbtns")
-  local autoBattleFlag = fightrtVm:GetAutoBattleFlag()
-  self.uiBinder.skill_slot_data:RefreshSkillAutoTips(autoBattleOpen and switchOpen and autoBattleFlag)
-end
-
 function skill_slot_obj:BindLuaAttrWatchers()
   self:BindEntityLuaAttrWatcher({
-    Z.LocalAttr.EAutoBattleAnim
-  }, Z.EntityMgr.PlayerEnt, self.switchAutoBattleAnim, true)
-end
-
-function skill_slot_obj:switchAutoBattleAnim()
-  if Z.IgnoreMgr:IsInputIgnore(Panda.ZGame.EInputMask.Skill) or self.uiBinder == nil or tonumber(self.key_) ~= E.SkillSlotType.NormalAttack then
-    return
-  end
-  local play = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAutoBattleAnim).Value
-  if play then
-    if not self.platAutoBattleAnim_ then
-      Z.TipsVM.ShowTips(100133)
-      self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
-    end
-    self.uiBinder.img_icon_1:SetColorByHex(E.ColorHexValues.Yellow)
-    self.uiBinder.img_icon_2:SetColorByHex(E.ColorHexValues.Yellow)
-    self.platAutoBattleAnim_ = true
-  else
-    self.uiBinder.anim:Pause()
-    self.uiBinder.img_icon_1:SetColorByHex(E.ColorHexValues.White)
-    self.uiBinder.img_icon_2:SetColorByHex(E.ColorHexValues.White)
-    if self.platAutoBattleAnim_ then
-      Z.TipsVM.ShowTips(100134)
-    end
-    self.platAutoBattleAnim_ = false
-  end
+    Z.LocalAttr.EAutoBattleSwitch
+  }, Z.EntityMgr.PlayerEnt, self.refreshAISlot, true)
 end
 
 return skill_slot_obj

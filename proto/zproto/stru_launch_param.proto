@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_launch_platform.proto";
+
+message LaunchParam {
+    zproto.LaunchPlatform launchPlatform = 1;
+    string uniqueUid = 2;
+}

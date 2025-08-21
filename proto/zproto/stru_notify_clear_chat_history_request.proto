@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_chit_chat_channel_type.proto";
+
+message NotifyClearChatHistoryRequest {
+    zproto.ChitChatChannelType channelType = 1;
+    string targetId = 2;
+}

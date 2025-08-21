@@ -10,4 +10,3 @@ message WarehouseInfo {
     repeated int64 memIdList = 3;
     repeated zproto.WarehouseGrid warehouseGrids = 4;
 }
-

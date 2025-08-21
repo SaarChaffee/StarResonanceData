@@ -39,8 +39,6 @@ message DummyEntityTableBase {
     int32 SourceType = 380;
     int32 DefaultState = 1528;
 }
-
 message DummyEntityTableMgr {
-    map<int32, .bokura.DummyEntityTableBase> datas = 1;
+    repeated bokura.DummyEntityTableMgr.DatasEntry datas = 1;
 }
-

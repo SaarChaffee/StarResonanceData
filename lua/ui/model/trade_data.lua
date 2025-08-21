@@ -8,6 +8,7 @@ function TradeData:Init()
   self.exchangeItemList_ = {}
   self.ExchangeItemCD = {}
   self.ExchangeRefreshClickCD = 0
+  self.ExchangeFocusRefreshClickCD = 0
   self.ExchangeItemDict = {}
   self.ExchangePriceItemList = {}
   self.ExchangeSellItemList = {}
@@ -18,10 +19,13 @@ function TradeData:Init()
   self.ServerRate = 0
   self.CurPageIndex = 1
   self.CurTradeItemNum = 0
+  self.PurchaseRefreshClickCD = 0
   self.ExchangeNoticeItemCD = {}
   self.ExchangeNoticeRefreshClickCD = 0
+  self.ExchangeFocusNoticeRefreshClickCD = 0
   self.ExchangeNoticeItemDict = {}
   self.ExchangeNoticePriceItemList = {}
+  self.ExchangeNoticeMinPriceList = {}
   self.PlayerPrebuyItemList = {}
   self.PlayerPrebuyItemDict = {}
   self.ConsignmentDataRankList = {}
@@ -71,30 +75,51 @@ function TradeData:CacheExchangeItemList(type, subType, itemList)
   if self.ExchangeItemCD[type] == nil then
     self.ExchangeItemCD[type] = {}
   end
-  self.ExchangeItemCD[type][subType] = self.RefreshCD
-  Z.GlobalTimerMgr:StartTimer("exchange_mainType_" .. type .. "subType" .. subType, function()
-    self.ExchangeItemCD[type][subType] = self.ExchangeItemCD[type][subType] - 1
-  end, 1, self.RefreshCD)
+  self.ExchangeItemCD[type][subType] = Z.TimeTools.Now() / 1000
 end
 
-function TradeData:CacheFocusItemList(itemList)
+function TradeData:CacheFocusItemList(itemList, isNotice)
   for _, value in ipairs(itemList) do
     value.isCare = true
-    self.ExchangeItemDict[value.configId] = value
+    if isNotice then
+      self.ExchangeNoticeItemDict[value.configId] = value
+    else
+      self.ExchangeItemDict[value.configId] = value
+    end
   end
 end
 
-function TradeData:SetClickRefreshCD(isNotice)
+function TradeData:GetCacheFocusItemList(isNotice)
+  local allCacheItemDict = {}
+  local focusItemDict = {}
   if isNotice then
-    self.ExchangeNoticeRefreshClickCD = self.RefreshCD
-    Z.GlobalTimerMgr:StartTimer("click_refresh_mainType_1", function()
-      self.ExchangeNoticeRefreshClickCD = self.ExchangeNoticeRefreshClickCD - 1
-    end, 1, self.RefreshCD)
+    allCacheItemDict = self.ExchangeNoticeItemDict
   else
-    self.ExchangeRefreshClickCD = self.RefreshCD
-    Z.GlobalTimerMgr:StartTimer("click_refresh_mainType_2", function()
-      self.ExchangeRefreshClickCD = self.ExchangeRefreshClickCD - 1
-    end, 1, self.RefreshCD)
+    allCacheItemDict = self.ExchangeItemDict
+  end
+  for configId, value in pairs(allCacheItemDict) do
+    if value.isCare then
+      table.insert(focusItemDict, value)
+    end
+  end
+  return focusItemDict
+end
+
+function TradeData:SetClickRefreshCD(isNotice, isPurchase, isFocus)
+  if isPurchase then
+    self.PurchaseRefreshClickCD = Z.TimeTools.Now() / 1000
+    return
+  end
+  if isNotice then
+    if isFocus then
+      self.ExchangeFocusNoticeRefreshClickCD = Z.TimeTools.Now() / 1000
+    else
+      self.ExchangeNoticeRefreshClickCD = Z.TimeTools.Now() / 1000
+    end
+  elseif isFocus then
+    self.ExchangeFocusRefreshClickCD = Z.TimeTools.Now() / 1000
+  else
+    self.ExchangeRefreshClickCD = Z.TimeTools.Now() / 1000
   end
 end
 
@@ -144,16 +169,14 @@ function TradeData:CacheEchangeNoticeData(type, subType, itemList)
   if self.ExchangeNoticeItemCD[type] == nil then
     self.ExchangeNoticeItemCD[type] = {}
   end
-  self.ExchangeNoticeItemCD[type][subType] = self.RefreshCD
-  Z.GlobalTimerMgr:StartTimer("notice_mainType_" .. type .. "subType" .. subType, function()
-    self.ExchangeNoticeItemCD[type][subType] = self.ExchangeNoticeItemCD[type][subType] - 1
-  end, 1, self.RefreshCD)
+  self.ExchangeNoticeItemCD[type][subType] = Z.TimeTools.Now() / 1000
 end
 
-function TradeData:CacheExchangeNoticePriceItemList(configId, itemList, nextPage)
+function TradeData:CacheExchangeNoticePriceItemList(configId, itemList, nextPage, minPrice)
   if self.ExchangeNoticePriceItemList[configId] == nil then
     self.ExchangeNoticePriceItemList[configId] = {}
   end
+  self.ExchangeNoticeMinPriceList[configId] = minPrice
   if nextPage then
     for _, value in ipairs(itemList) do
       table.insert(self.ExchangeNoticePriceItemList[configId], value)

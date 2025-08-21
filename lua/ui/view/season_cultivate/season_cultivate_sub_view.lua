@@ -11,7 +11,7 @@ local SeasonCultivateGlobal = require("ui.view.season_cultivate.season_cultivate
 
 function SeasonCultivateMain:ctor(parent)
   self.uiRootPanel_ = parent
-  super.ctor(self, "season_cultivate", "season_cultivate/season_cultivate_sub", Z.UI.ECacheLv.None)
+  super.ctor(self, "season_cultivate", "season_cultivate/season_cultivate_sub", Z.UI.ECacheLv.None, true)
   self.seasonCultivateVM_ = Z.VMMgr.GetVM("season_cultivate")
   self.seasonVM_ = Z.VMMgr.GetVM("season")
   self.itemVM_ = Z.VMMgr.GetVM("items")
@@ -128,7 +128,6 @@ function SeasonCultivateMain:initData()
 end
 
 function SeasonCultivateMain:OnActive()
-  self.uiRootPanel_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.Ref.UIComp.UIDepth)
   self.uiBinder.node_level_up:SetEffectGoVisible(false)
   self:initBinder()
   self:onStartAnimShow()
@@ -138,10 +137,46 @@ function SeasonCultivateMain:OnActive()
   self:initUi()
 end
 
+function SeasonCultivateMain:setAnchorPositions(state)
+  local positionConfig = {
+    close = {
+      pc = {
+        left = {x = 238, y = -44},
+        effect = {x = -46, y = -116}
+      },
+      mobile = {
+        left = {x = 186, y = -55},
+        effect = {x = -34, y = -136}
+      }
+    },
+    open = {
+      pc = {
+        left = {x = 136, y = -44},
+        effect = {x = -484, y = -116}
+      },
+      mobile = {
+        left = {x = -46, y = -55},
+        effect = {x = -620, y = -136}
+      }
+    }
+  }
+  local platform = Z.IsPCUI and "pc" or "mobile"
+  local config = positionConfig[state][platform]
+  self.leftNode_:SetAnchorPosition(config.left.x, config.left.y)
+  self.entryNode_:SetAnchorPosition(config.left.x, config.left.y)
+  self.effectNode_:SetAnchorPosition(config.effect.x, config.effect.y)
+end
+
+function SeasonCultivateMain:onCloseIsPcPos()
+  self:setAnchorPositions("close")
+end
+
+function SeasonCultivateMain:onOpenIsPcPos()
+  self:setAnchorPositions("open")
+end
+
 function SeasonCultivateMain:closeRightTips()
-  self.leftNode_:SetAnchorPosition(186, -55)
-  self.entryNode_:SetAnchorPosition(186, -55)
-  self.effectNode_:SetAnchorPosition(-34, -136)
+  self:onCloseIsPcPos()
   self.uiBinder.Ref:SetVisible(self.rightSubNode_, false)
   self.uiBinder.Ref:SetVisible(self.maskImg_, false)
   self.uiBinder.Ref:SetVisible(self.closeMaskBtn_, false)
@@ -254,9 +289,7 @@ function SeasonCultivateMain:onSelectNode(holeId)
   self:setCoreState(active)
   self.uiBinder.Ref:SetVisible(self.rightSubNode_, true)
   self:onStartSelectAnimShow()
-  self.leftNode_:SetAnchorPosition(-46, -50)
-  self.entryNode_:SetAnchorPosition(-46, -50)
-  self.effectNode_:SetAnchorPosition(-620, -136)
+  self:onOpenIsPcPos()
   self.uiBinder.Ref:SetVisible(self.maskImg_, holeId == 0)
   self.uiBinder.Ref:SetVisible(self.closeMaskBtn_, holeId == 0)
   if holeId == 0 then
@@ -397,6 +430,9 @@ function SeasonCultivateMain:onSlotSubViewClose()
 end
 
 function SeasonCultivateMain:onStartAnimShow()
+  if Z.IsPCUI then
+    return
+  end
   self.uiBinder.anim_season:CoroPlayOnce("anim_season_cultivate_sub_open", self.cancelSource:CreateToken(), function()
   end, function(err)
     if err == ZUtil.ZCancelSource.CancelException then
@@ -407,18 +443,31 @@ function SeasonCultivateMain:onStartAnimShow()
 end
 
 function SeasonCultivateMain:onStartSelectAnimShow()
+  if Z.IsPCUI then
+    return
+  end
   self.uiBinder.anim_dotween_season:Restart(Z.DOTweenAnimType.Open)
 end
 
 function SeasonCultivateMain:onStartUnlockAnimShow()
+  if Z.IsPCUI then
+    return
+  end
   local curCoreLevel = self.seasonCultivateVM_.GetCoreNodeLevel()
   if curCoreLevel == 1 then
     self.uiBinder.anim_dotween_season:Restart(Z.DOTweenAnimType.Tween_1)
   else
-    self.uiRootPanel_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_level_up)
+    local parentUIDepth = self:GetParentUIDepth()
+    if parentUIDepth then
+      parentUIDepth:AddChildDepth(self.uiBinder.node_level_up)
+    end
     Z.AudioMgr:Play("sys_team_created")
     self.uiBinder.node_level_up:SetEffectGoVisible(true)
   end
+end
+
+function SeasonCultivateMain:GetParentUIDepth()
+  return self.uiRootPanel_:GetParentUIDepth()
 end
 
 return SeasonCultivateMain

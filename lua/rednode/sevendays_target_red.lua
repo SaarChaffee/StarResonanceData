@@ -2,8 +2,15 @@ local SevenDaysTargetRed = {}
 local sevendaysTargetKeyCache = {}
 
 function SevenDaysTargetRed.RefreshOrInitSevenDaysTargetRed(task)
-  SevenDaysTargetRed.InitOrRefreshTitlePageRed(task)
-  SevenDaysTargetRed.InitOrRefreshManualRed(task)
+  local switchVm = Z.VMMgr.GetVM("switch")
+  local pageFuncOpen = switchVm.CheckFuncSwitch(E.FunctionID.SevendayTargetTitlePage)
+  if pageFuncOpen then
+    SevenDaysTargetRed.InitOrRefreshTitlePageRed(task)
+  end
+  local manualFuncOpen = switchVm.CheckFuncSwitch(E.FunctionID.SevendayTargetManual)
+  if manualFuncOpen then
+    SevenDaysTargetRed.InitOrRefreshManualRed(task)
+  end
 end
 
 function SevenDaysTargetRed.InitOrRefreshTitlePageRed(tasks_)
@@ -21,7 +28,7 @@ function SevenDaysTargetRed.InitOrRefreshTitlePageRed(tasks_)
         if taskData_.award == vm.AwardState.canGet then
           count_ = 1
         end
-        Z.RedPointMgr.RefreshServerNodeCount(titlePageKey_, count_)
+        Z.RedPointMgr.UpdateNodeCount(titlePageKey_, count_)
       end
     end
   end
@@ -45,7 +52,7 @@ function SevenDaysTargetRed.InitOrRefreshManualRed(tasks_)
     sevendaysTargetKeyCache[manualQuestTabKey_] = true
     Z.RedPointMgr.AddChildNodeData(E.RedType.SevenDaysTargetManualTab, E.RedType.SevenDaysTargetManualQuestTab, manualQuestTabKey_)
     local count_ = 0
-    for _, cfg in ipairs(taskCfgs) do
+    for _, cfg in pairs(taskCfgs) do
       if cfg.OpenDay == key and tasks_[cfg.OpenDay] and tasks_[cfg.OpenDay][cfg.TargetId] then
         local taskData_ = tasks_[cfg.OpenDay][cfg.TargetId]
         if cfg and cfg.tab == E.SevenDayStargetType.Manual then
@@ -56,9 +63,9 @@ function SevenDaysTargetRed.InitOrRefreshManualRed(tasks_)
         end
       end
     end
-    Z.RedPointMgr.RefreshServerNodeCount(manualQuestTabKey_, count_)
+    Z.RedPointMgr.UpdateNodeCount(manualQuestTabKey_, count_)
   end
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.SevenDaysTargetManualQuestBtn, 0)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.SevenDaysTargetManualQuestBtn, 0)
 end
 
 function SevenDaysTargetRed.RemoveAllRedItem(view)
@@ -84,13 +91,13 @@ function SevenDaysTargetRed.InitOrRefreshFuncPreviewRed(init)
     Z.RedPointMgr.AddChildNodeData(E.RedType.SevenDaysTargetFuncPreviewTab, E.RedType.SevenDaysTargetFuncPreviewItem, key)
     sevendaysTargetKeyCache[key] = true
     local count = v == E.FuncPreviewAwardState.CanGet and 1 or 0
-    Z.RedPointMgr.RefreshServerNodeCount(key, count)
+    Z.RedPointMgr.UpdateNodeCount(key, count)
     if 0 < count then
       totalCount = totalCount + 1
     end
   end
   local showPreviewMain = 3 <= totalCount and 1 or 0
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.SevenDaysTargetFuncPreviewAwardMain, showPreviewMain)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.SevenDaysTargetFuncPreviewAwardMain, showPreviewMain)
 end
 
 function SevenDaysTargetRed.LoadFuncPreviewRedItem(funcId, view, parentTrans)

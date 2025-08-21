@@ -12,8 +12,6 @@ message StaticInteractiveClassBase {
     string_array PlayerActionEnd = 1549;
     int32 ExitType = 1391;
 }
-
 message StaticInteractiveClassMgr {
-    map<int32, .bokura.StaticInteractiveClassBase> datas = 1;
+    repeated bokura.StaticInteractiveClassMgr.DatasEntry datas = 1;
 }
-

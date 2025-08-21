@@ -13,8 +13,7 @@ function Menu_noseView:OnActive()
   self:refreshSlider()
   self:InitSliderFunc(self.uiBinder.node_fluctuation.slider_sens, function(value)
     self.uiBinder.node_fluctuation.lab_value.text = string.format("%d", math.floor(value + 0.5))
-    value = self:CheckValueRang(value, Z.ModelAttr.EModelAnimHeadPinchNoseUD)
-    self.faceVM_.SetFaceOptionByAttrType(Z.ModelAttr.EModelAnimHeadPinchNoseUD, (value + 10) / 20)
+    self:SetFaceAttrValueByShowValue(value, Z.ModelAttr.EModelAnimHeadPinchNoseUD)
   end, Z.ModelAttr.EModelAnimHeadPinchNoseUD, self.fluctuationSlider_)
 end
 
@@ -32,9 +31,7 @@ function Menu_noseView:refreshFaceMenuView()
 end
 
 function Menu_noseView:refreshSlider()
-  local value = self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelAnimHeadPinchNoseUD) * 2 - 1
-  value = self:GetValueInRang(value, Z.ModelAttr.EModelAnimHeadPinchNoseUD)
-  self:InitSlider(self.uiBinder.node_fluctuation, value)
+  self:InitSlider(self.uiBinder.node_fluctuation, Z.ModelAttr.EModelAnimHeadPinchNoseUD)
 end
 
 return Menu_noseView

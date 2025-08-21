@@ -25,6 +25,7 @@ end
 function WeaponRoleMainWeaponSubView:OnActive()
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.uiBinder.Trans:SetOffsetMax(0, 0)
+  self:onIsPcUI()
   self:AddAsyncClick(self.uiBinder.node_talent.btn, function()
     local talentSkillVM = Z.VMMgr.GetVM("talent_skill")
     talentSkillVM.OpenTalentSkillMainWindow()
@@ -40,6 +41,16 @@ function WeaponRoleMainWeaponSubView:OnActive()
 end
 
 function WeaponRoleMainWeaponSubView:OnDeActive()
+end
+
+function WeaponRoleMainWeaponSubView:onIsPcUI()
+  local labSize = Z.IsPCUI and 24 or 32
+  local talentText = Lang("TalentProficient")
+  local weaponText = Lang("CareerChoice")
+  local val_talent = Z.RichTextHelper.ApplySizeTag(talentText, labSize)
+  local val_weapon = Z.RichTextHelper.ApplySizeTag(weaponText, labSize)
+  self.uiBinder.lab_name_talent.text = val_talent
+  self.uiBinder.lab_name_weapon.text = val_weapon
 end
 
 function WeaponRoleMainWeaponSubView:initPartEquipItems()
@@ -105,7 +116,7 @@ function WeaponRoleMainWeaponSubView:refershEquipment()
           value.Ref:SetVisible(value.rimg_equip_on, true)
           value.rimg_equip_on:SetImage(self.itemsVm_.GetItemIcon(itemTabData.Id))
           value.Ref:SetVisible(value.img_frame, true)
-          value.img_frame:SetImage("ui/atlas/weap/weap_equip_btn_on" .. itemData.quality)
+          value.img_frame:SetImage("ui/atlas/weap/weap_equip_btn_on" .. itemTabData.Quality)
           value.Ref:SetVisible(value.img_damage, false)
           local effectPath = Z.ConstValue.EquipEffect[itemTabData.Quality]
           if effectPath and self.equipVm_.CheckCanRecast(itemData.uuid, itemData.configId) then

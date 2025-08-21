@@ -9,4 +9,3 @@ enum TransferAttrType {
     TransferAttrTypePassLineLeave = 3;
     TransferAttrTypePassLineEnter = 4;
 }
-

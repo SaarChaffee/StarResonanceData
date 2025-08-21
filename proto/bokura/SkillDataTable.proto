@@ -15,8 +15,6 @@ message SkillDataTableBase {
     int64_array BulletArray = 947;
     int64_array TimeScaleArray = 1615;
 }
-
 message SkillDataTableMgr {
-    map<int64, .bokura.SkillDataTableBase> datas = 1;
+    repeated bokura.SkillDataTableMgr.DatasEntry datas = 1;
 }
-

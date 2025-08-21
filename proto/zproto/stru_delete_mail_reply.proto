@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
-message DeleteMailReply {
-    int32 errCode = 2;
-    map<int64, int32> mailRet = 3;
-}
+import "enum_e_error_code.proto";
 
+message DeleteMailReply {
+    repeated zproto.DeleteMailReply.MailRetEntry mailRet = 3;
+    zproto.EErrorCode errCode = 4;
+}

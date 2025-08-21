@@ -13,8 +13,6 @@ message PhotoParamTableBase {
     vector2 Angle = 1093;
     int_array TargetId = 1432;
 }
-
 message PhotoParamTableMgr {
-    map<int32, .bokura.PhotoParamTableBase> datas = 1;
+    repeated bokura.PhotoParamTableMgr.DatasEntry datas = 1;
 }
-

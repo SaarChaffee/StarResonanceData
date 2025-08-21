@@ -3,29 +3,15 @@ local super = require("ui.ui_view_base")
 local AcquiretipView = class("AcquiretipView", super)
 
 function AcquiretipView:ctor()
-  self.panel = nil
-  if Z.IsPCUI then
-    Z.UIConfig.acquiretip.PrefabPath = "tv/tv_acquiretip_pc"
-  else
-    Z.UIConfig.acquiretip.PrefabPath = "tv/tv_acquiretip"
-  end
+  self.uiBinder = nil
   super.ctor(self, "acquiretip")
 end
 
 function AcquiretipView:OnActive()
-  self.perItemHeight_ = 60
-  if Z.IsPCUI then
-    self.perItemHeight_ = 40
-  end
+  self.perItemHeight_ = Z.IsPCUI and 40 or 50
   self.moveHeight_ = 0
-  local curRatio = Z.UIRoot.CurScreenSize.x / Z.UIRoot.CurScreenSize.y
-  local deRatio = Z.UIRoot.ScreenDesignSize.x / Z.UIRoot.ScreenDesignSize.y
-  if curRatio - deRatio < -0.1 then
-    self.totalCount_ = 4
-  else
-    self.totalCount_ = 3
-  end
-  self.panel.rect.Ref:SetHeight(self.totalCount_ * self.perItemHeight_)
+  self.totalCount_ = 3
+  self.uiBinder.trans_rect:SetHeight(self.totalCount_ * self.perItemHeight_)
   self.data_ = Z.DataMgr.Get("tips_data")
   self.isUpdate_ = false
   self.activeItems_ = {}
@@ -95,7 +81,7 @@ function AcquiretipView:addItem()
     local AcquiretipItemView = require("ui.view.acquiretipitem_view")
     item = AcquiretipItemView.new()
   end
-  item:Active(self, itemInfo, (self.totalCount_ - #self.activeItems_ - 1) * self.perItemHeight_)
+  item:Active(self, itemInfo, (self.totalCount_ - #self.activeItems_ - 1) * self.perItemHeight_, self.uiBinder.trans_rect)
   table.insert(self.activeItems_, item)
 end
 

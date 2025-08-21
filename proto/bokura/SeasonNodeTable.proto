@@ -16,8 +16,6 @@ message SeasonNodeTableBase {
     int_table NumberConsume = 1835;
     int_table OtherConsume = 1176;
 }
-
 message SeasonNodeTableMgr {
-    map<int32, .bokura.SeasonNodeTableBase> datas = 1;
+    repeated bokura.SeasonNodeTableMgr.DatasEntry datas = 1;
 }
-

@@ -83,9 +83,9 @@ function Union_recruit_popupView:onInputLvChange()
 end
 
 function Union_recruit_popupView:onInputSloganChange()
-  local length = string.zlen(self.uiBinder.input_slogan.text)
+  local length = string.zlenNormalize(self.uiBinder.input_slogan.text)
   if length > self.limitSloganNum_ then
-    self.uiBinder.input_slogan.text = string.zcut(self.uiBinder.input_slogan.text, self.limitSloganNum_)
+    self.uiBinder.input_slogan.text = string.zcutNormalize(self.uiBinder.input_slogan.text, self.limitSloganNum_)
   else
     self.uiBinder.lab_digit_slogan.text = string.zconcat(length, "/", self.limitSloganNum_)
   end
@@ -93,9 +93,9 @@ function Union_recruit_popupView:onInputSloganChange()
 end
 
 function Union_recruit_popupView:onInputAnnounceChange()
-  local length = string.zlen(self.uiBinder.input_announce.text)
+  local length = string.zlenNormalize(self.uiBinder.input_announce.text)
   if length > self.limitAnnounceNum_ then
-    self.uiBinder.input_announce.text = string.zcut(self.uiBinder.input_announce.text, self.limitAnnounceNum_)
+    self.uiBinder.input_announce.text = string.zcutNormalize(self.uiBinder.input_announce.text, self.limitAnnounceNum_)
   else
     self.uiBinder.lab_digit_announce.text = string.zconcat(length, "/", self.limitAnnounceNum_)
   end
@@ -106,9 +106,9 @@ function Union_recruit_popupView:checkInfoVaild()
   local curLv = tonumber(self.uiBinder.input_lv.text) or 0
   if curLv < self.limitLvMin_ or curLv > self.limitLvMax_ then
     return false
-  elseif string.zlen(self.uiBinder.input_slogan.text) > self.limitSloganNum_ then
+  elseif string.zlenNormalize(self.uiBinder.input_slogan.text) > self.limitSloganNum_ then
     return false
-  elseif string.zlen(self.uiBinder.input_announce.text) > self.limitAnnounceNum_ then
+  elseif string.zlenNormalize(self.uiBinder.input_announce.text) > self.limitAnnounceNum_ then
     return false
   else
     return true
@@ -138,8 +138,8 @@ function Union_recruit_popupView:asyncSetRecruit()
     local level = tonumber(self.uiBinder.input_lv.text)
     local slogan = self.uiBinder.input_slogan.text
     local announce = self.uiBinder.input_announce.text
-    local reply = self.unionVM_:AsyncSetUnionRecruit(level, slogan, announce, self.cancelSource:CreateToken())
-    if reply.errCode and reply.errCode == 0 then
+    local errCode = self.unionVM_:AsyncSetUnionRecruit(level, slogan, announce, self.cancelSource:CreateToken())
+    if errCode == 0 then
       Z.TipsVM.ShowTips(1000547)
       Z.UIMgr:CloseView(self.viewConfigKey)
     end

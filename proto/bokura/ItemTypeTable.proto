@@ -12,8 +12,6 @@ message ItemTypeTableBase {
     int32 SortId = 1586;
     int32 PreviewId = 438;
 }
-
 message ItemTypeTableMgr {
-    map<int32, .bokura.ItemTypeTableBase> datas = 1;
+    repeated bokura.ItemTypeTableMgr.DatasEntry datas = 1;
 }
-

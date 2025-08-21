@@ -4,8 +4,8 @@ end
 local closeEnterView = function()
   Z.UIMgr:CloseView("team_enter")
 end
-local openAffixInfoView = function(teamActivity)
-  Z.UIMgr:OpenView("hero_dungeon_affix_item_tpl", teamActivity)
+local openAffixInfoView = function(dungeonAffix, keyAffix)
+  Z.UIMgr:OpenView("hero_dungeon_affix_item_tpl", {dungeonAffix = dungeonAffix, keyAffix = keyAffix})
 end
 local closeAffixInfoView = function()
   Z.UIMgr:CloseView("hero_dungeon_affix_item_tpl")

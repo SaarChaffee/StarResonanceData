@@ -57,7 +57,7 @@ function BattlePassContentLoopItem:initParam()
   self.itemClassTab_ = {}
   self.itemUnit = {}
   self.composeView_ = self.parent.UIView
-  self.battlePassContainer_ = self.battlePassVM_.GetBattlePassContainer()
+  self.battlePassData_ = Z.DataMgr.Get("battlepass_data")
   self.itemListIndex = 1
   self.rewardList_ = {}
 end
@@ -70,9 +70,12 @@ function BattlePassContentLoopItem:OnRefresh(data)
 end
 
 function BattlePassContentLoopItem:refreshItemState()
-  self.uiBinder.Ref:SetVisible(self.lock_img, not self.battlePassContainer_.isUnlock)
+  if next(self.battlePassData_.CurBattlePassData) == nil then
+    return
+  end
+  self.uiBinder.Ref:SetVisible(self.lock_img, not self.battlePassData_.CurBattlePassData.isUnlock)
   self.level_label.text = self.data_.configData.SeasonLevel
-  self.uiBinder.Ref:SetVisible(self.top_img, self.data_.configData.SeasonLevel == self.battlePassContainer_.level)
+  self.uiBinder.Ref:SetVisible(self.top_img, self.data_.configData.SeasonLevel == self.battlePassData_.CurBattlePassData.level)
   self:setReceiveIsShow()
 end
 
@@ -89,14 +92,17 @@ function BattlePassContentLoopItem:initAward()
 end
 
 function BattlePassContentLoopItem:loadAwardUnit(awards, rootTrans, isShowReceive, awardType)
+  if next(self.battlePassData_.CurBattlePassData) == nil then
+    return
+  end
   if awards == nil or #awards < 1 then
     return
   end
   for k, v in ipairs(awards) do
     local d = {}
     d.awardData = v
-    local isShowLight = self.data_.configData.SeasonLevel <= self.battlePassContainer_.level and not isShowReceive
-    if awardType == E.EBattlePassAwardType.Payment and not self.battlePassContainer_.isUnlock then
+    local isShowLight = self.data_.configData.SeasonLevel <= self.battlePassData_.CurBattlePassData.level and not isShowReceive
+    if awardType == E.EBattlePassAwardType.Payment and not self.battlePassData_.CurBattlePassData.isUnlock then
       isShowLight = false
     end
     d.isShowLight = isShowLight
@@ -153,7 +159,10 @@ function BattlePassContentLoopItem:clearUnit()
 end
 
 function BattlePassContentLoopItem:getAwards(unlock)
-  self.battlePassVM_.AsyncGetBattlePassAwardRequest(false, self.data_.configData.SeasonLevel, unlock, self.composeView_.cancelSource:CreateToken())
+  if next(self.battlePassData_.CurBattlePassData) == nil then
+    return
+  end
+  self.battlePassVM_.AsyncGetBattlePassAwardRequest(self.battlePassData_.CurBattlePassData.id, false, self.data_.configData.SeasonLevel, unlock, self.composeView_.cancelSource:CreateToken())
 end
 
 function BattlePassContentLoopItem:AddAsyncClick(btn, clickFunc, onErr, onCancel)
@@ -161,13 +170,16 @@ function BattlePassContentLoopItem:AddAsyncClick(btn, clickFunc, onErr, onCancel
 end
 
 function BattlePassContentLoopItem:setReceiveIsShow()
-  if self.data_.configData.SeasonLevel > self.battlePassContainer_.level then
+  if next(self.battlePassData_.CurBattlePassData) == nil then
+    return
+  end
+  if self.data_.configData.SeasonLevel > self.battlePassData_.CurBattlePassData.level then
     self.uiBinder.Ref:SetVisible(self.top_item_btn, false)
     self.uiBinder.Ref:SetVisible(self.bottom_item_btn, false)
     return
   end
   self.uiBinder.Ref:SetVisible(self.top_item_btn, not self.data_.freeAwardIsReceive)
-  self.uiBinder.Ref:SetVisible(self.bottom_item_btn, not self.data_.paidAwardIsReceive and not not self.battlePassContainer_.isUnlock)
+  self.uiBinder.Ref:SetVisible(self.bottom_item_btn, not self.data_.paidAwardIsReceive and not not self.battlePassData_.CurBattlePassData.isUnlock)
 end
 
 return BattlePassContentLoopItem

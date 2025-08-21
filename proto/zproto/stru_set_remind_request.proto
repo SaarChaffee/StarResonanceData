@@ -6,4 +6,3 @@ message SetRemindRequest {
     int64 charId = 2;
     bool isRemind = 3;
 }
-

@@ -7,4 +7,3 @@ message ItemRecycle {
     int64 itemUuid = 2;
     int64 count = 3;
 }
-

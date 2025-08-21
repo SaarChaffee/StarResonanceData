@@ -66,10 +66,10 @@ function Equip_middle_role_subView:refreshPartEquipItems()
         value.img_icon.Img:SetImage(self.itemsVm_.GetItemIcon(itemTabData.Id))
         value.img_icon:SetVisible(true)
         value.img_defaulticon:SetVisible(false)
-        value.img_bg.Img:SetImage("ui/atlas/item/prop/common_cimg_quality_" .. itemData.quality)
+        value.img_bg.Img:SetImage(Z.ConstValue.QualityImgCircleBg .. itemTabData.Quality)
         value.img_damaged:SetVisible(false)
         value.group.anim:PlayByTime(string.zconcat(animName, randomNum), -1)
-        value.eff_root.ZEff:CreatEFFGO(unitEffPathPrefix .. itemData.quality, Vector3.zero, true)
+        value.eff_root.ZEff:CreatEFFGO(unitEffPathPrefix .. itemTabData.Quality, Vector3.zero, true)
         needHide = false
       end
     end

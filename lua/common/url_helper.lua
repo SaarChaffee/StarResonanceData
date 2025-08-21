@@ -20,4 +20,15 @@ function UrlHelper.Decode(urlPath)
   return urlPath
 end
 
+function UrlHelper.GetUrlMontageQueryStart(url)
+  local index = string.find(url, "?")
+  if index == nil then
+    return "?"
+  elseif index == #url then
+    return ""
+  else
+    return "&"
+  end
+end
+
 return UrlHelper

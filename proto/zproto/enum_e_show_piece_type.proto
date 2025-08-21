@@ -9,4 +9,3 @@ enum EShowPieceType {
     ShowPieceDoubleAction = 3;
     ShowPieceSticker = 4;
 }
-

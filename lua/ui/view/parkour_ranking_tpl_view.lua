@@ -3,8 +3,7 @@ local imgNormalColor = Color.New(0.8235294117647058, 0.8313725490196079, 0.76862
 local textNormalColor = Color.New(1, 1, 1, 1)
 local imgRedColor = Color.New(0.996078431372549, 0.49411764705882355, 0.44313725490196076, 1)
 local textRedColor = Color.New(0.996078431372549, 0.49411764705882355, 0.44313725490196076, 1)
-local rankImgPath = "ui/atlas/parkour/pakour_img_"
-local rankImgBgPath = "ui/atlas/parkour/pakour_bg_"
+local rankImgPath = "ui/textures/parkour/pakour_img_"
 local unitEffPathPrefix = "ui/uieffect/prefab/ui_sfx_parkour_001/ui_sfx_node_ranking_level_00"
 
 function Parkour_ranking_tplView:ctor()
@@ -20,7 +19,7 @@ function Parkour_ranking_tplView:Init(go, name, isShowRank, canPlayShowRank, ran
   self.isFirst_ = 0
   self.rankCallBack = rankCallBack
   self.node_ranking_current = self.unit.node_ranking_level
-  self.img_bg_ranking = self.unit.img_bg
+  self.img_bg_ranking = self.unit.rimg_bg
   self.img_num_rank_current = self.unit.img_num_current
   self.img_letter_ranking_current = self.unit.img_letter_current
   self.img_num_rank_last = self.unit.img_num_last
@@ -42,6 +41,7 @@ function Parkour_ranking_tplView:Init(go, name, isShowRank, canPlayShowRank, ran
   self.add_time_label_arr = self.unit.lab_num
   self.img_green = self.unit.img_green
   self.img_red = self.unit.img_red
+  self.realTime_ = 0
   self.img_red:SetVisible(false)
   self.img_green:SetVisible(false)
   self.lastRankingNum_ = 0
@@ -76,64 +76,66 @@ function Parkour_ranking_tplView:DeActive()
   end
 end
 
-function Parkour_ranking_tplView:CountDownFunc(timeNumber, limitTime, addLimitTime, timingDirection, addTimeUiType, startTime, timeFinishFunc, timeCallFunc, timeLimitFunc, isShowZeroSecond)
-  local detailTime = timeNumber
-  if timeNumber <= 0 then
+function Parkour_ranking_tplView:CountDownFunc(timeInfo)
+  local detailTime = timeInfo.timeNumber
+  if timeInfo.timeNumber <= 0 then
     return
   end
-  if isShowZeroSecond then
-    detailTime = timeNumber - 1000
+  if timeInfo.isShowZeroSecond then
+    detailTime = timeInfo.timeNumber - 1000
   end
-  local realT = math.floor((detailTime - Z.ServerTime:GetServerTime()) / 1000)
-  local showTimeString = realT
-  if timingDirection == E.DungeonTimerDirection.DungeonTimerDirectionUp then
-    showTimeString = math.floor((Z.ServerTime:GetServerTime() - startTime * 1000) / 1000)
+  self:clearTimer()
+  self.realTime_ = math.floor((detailTime - Z.ServerTime:GetServerTime()) / 1000)
+  local showTimeString = self.realTime_
+  if timeInfo.timingDirection == E.DungeonTimerDirection.DungeonTimerDirectionUp then
+    showTimeString = math.floor((Z.ServerTime:GetServerTime() - timeInfo.startTime * 1000) / 1000)
   end
-  self.lab_time.TMPLab.text = Z.TimeTools.S2MSFormat(showTimeString)
-  if self.timer then
-    self.isCalledFinsishFunc = true
-    self.timer:Stop()
+  local curTime = Z.TimeFormatTools.FormatToDHMS(showTimeString, true, true)
+  self.lab_time.TMPLab.text = self:changeLabColor(curTime)
+  if 0 < timeInfo.pauseTime then
+    return
   end
-  self:showAddTimeUI(addLimitTime, addTimeUiType)
+  self:showAddTimeUI(timeInfo.addLimitTime, timeInfo.addTimeUiType)
   local isTirggerLimitTime = true
   self.isCalledFinsishFunc = false
+  local t = self.realTime_
   self.timer = self.timerMgr:StartTimer(function()
-    local t = 0
-    if timingDirection == E.DungeonTimerDirection.DungeonTimerDirectionUp then
-      t = math.floor((Z.ServerTime:GetServerTime() - startTime * 1000) / 1000)
+    if timeInfo.timingDirection == E.DungeonTimerDirection.DungeonTimerDirectionUp then
+      t = t + 1
     else
-      t = math.floor((detailTime - Z.ServerTime:GetServerTime()) / 1000)
+      t = t - 1
     end
     if t <= 0 then
       t = 0
     end
-    if limitTime ~= nil then
-      if t <= limitTime then
+    if timeInfo.limitTime ~= nil then
+      if t <= timeInfo.limitTime then
         if isTirggerLimitTime then
           isTirggerLimitTime = false
           self:SetNodeColor(true)
-          if timeLimitFunc then
-            timeLimitFunc()
+          if timeInfo.timeLimitFunc then
+            timeInfo.timeLimitFunc()
           end
         end
       else
         self:SetNodeColor(false)
       end
     end
-    if timeCallFunc then
-      timeCallFunc()
+    if timeInfo.timeCallFunc then
+      timeInfo.timeCallFunc()
     end
-    self.lab_time.TMPLab.text = Z.TimeTools.S2MSFormat(t)
+    local curShowTime = Z.TimeFormatTools.FormatToDHMS(t, true, true)
+    self.lab_time.TMPLab.text = self:changeLabColor(curShowTime)
     if t == 0 then
       self.timer:Stop()
     end
-  end, 0.2, -1, true, function()
+  end, 1, self.realTime_, true, function()
     if self.isCalledFinsishFunc == false then
       self.unit.Ref:SetVisible(false)
       self.isCalledFinsishFunc = true
     end
-    if timeFinishFunc then
-      timeFinishFunc()
+    if timeInfo.timeFinishFunc then
+      timeInfo.timeFinishFunc()
     end
   end)
 end
@@ -225,7 +227,9 @@ function Parkour_ranking_tplView:SetRankingIamge(rankingNum)
       self.lastRankingNum_ = currentRankingNum
     end
     rankingImgPath = rankImgPath .. currentRankingNum
-    rankBgPath = rankImgBgPath .. currentRankingNum
+    local rankImgBgPath = self.unit.Ref.PrefabCacheData:GetString("rankImgBgPath")
+    local bgPathNum = 4 < currentRankingNum and 4 or currentRankingNum
+    rankBgPath = rankImgBgPath .. bgPathNum
     rankingImgPath_last = rankImgPath .. self.lastRankingNum_
     rankBgPath_last = rankImgBgPath .. self.lastRankingNum_
     if rankingImgPath == "" or rankBgPath == "" or rankingImgPath_last == "" or rankBgPath_last == "" then
@@ -242,9 +246,9 @@ function Parkour_ranking_tplView:SetRankingIamge(rankingNum)
     return
   end
   self.lastRankingNum_ = rankingNum
-  self.img_bg_ranking.Img:SetImage(rankBgPath)
-  self.img_num_rank_last.Img:SetImage(rankingImgPath_last)
-  self.img_num_rank_current.Img:SetImage(rankingImgPath)
+  self.img_bg_ranking.RImg:SetImage(rankBgPath)
+  local curChar = self:characterConversion(currentRankingNum)
+  self.img_num_rank_current.UVOffsetImage:SetValue(curChar)
   self.eff_root_ranking.ZEff:CreatEFFGO(unitEffPathPrefix .. currentRankingNum, Vector3.zero, true)
   self.eff_root_ranking.ZEff:SetEffectGoVisible(true)
   self:onPlayAnim()
@@ -282,6 +286,35 @@ function Parkour_ranking_tplView:SetNodeColor(isChangeColor)
   self.img_right.Img:SetColor(imgColor)
   self.img_clock.Img:SetColor(textColor)
   self.lab_time.TMPLab.color = textColor
+end
+
+function Parkour_ranking_tplView:clearTimer()
+  if self.timer then
+    self.isCalledFinsishFunc = true
+    self.timer:Stop()
+  end
+  self.realTime_ = 0
+end
+
+function Parkour_ranking_tplView:changeLabColor(curTime, outLookType)
+  if outLookType == E.DungeonTimerTimerLookType.EDungeonTimerTimerLookTypeRed then
+    curTime = Z.RichTextHelper.ApplyStyleTag(curTime, E.TextStyleTag.TipsRed)
+  end
+  return curTime
+end
+
+function Parkour_ranking_tplView:characterConversion(currentNum)
+  local curChar = 1
+  if currentNum == 1 then
+    curChar = "a"
+  elseif currentNum == 2 then
+    curChar = "b"
+  elseif currentNum == 3 then
+    curChar = "c"
+  else
+    curChar = currentNum
+  end
+  return curChar
 end
 
 return Parkour_ranking_tplView

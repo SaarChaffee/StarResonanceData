@@ -20,8 +20,6 @@ message JumpTableBase {
     int_array ShaderIsBreath = 172;
     number_array EnergyConsume = 2017;
 }
-
 message JumpTableMgr {
-    map<int32, .bokura.JumpTableBase> datas = 1;
+    repeated bokura.JumpTableMgr.DatasEntry datas = 1;
 }
-

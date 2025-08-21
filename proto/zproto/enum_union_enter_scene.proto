@@ -7,4 +7,3 @@ enum UnionEnterScene {
     UnionEnterSceneDance = 1;
     UnionEnterSceneHunt = 2;
 }
-

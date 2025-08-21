@@ -6,4 +6,3 @@ enum EBulletOrientationType {
     EBulletOrientationTypeSummoner = 0;
     EBulletOrientationTypeAllAround = 1;
 }
-

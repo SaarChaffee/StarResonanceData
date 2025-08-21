@@ -1,7 +1,7 @@
 local friend_data = require("ui.data.friend_data")
 local super = require("ui.model.data_base")
 local FriendMainData = class("FriendMainData", super)
-E.FriendViewType = {Chat = 1, Friend = 0}
+E.FriendViewType = {Chat = 1, Friend = 2}
 E.PersonalizationStatus = {
   EStatusDefault = 0,
   EStatusOnline = 1,
@@ -41,6 +41,8 @@ function FriendMainData:ResetProp()
   self.addressSelectCharId_ = 0
   self.rightShowCharId_ = 0
   self.friendViewType_ = E.FriendViewType.Chat
+  self.friendViewOpen_ = false
+  self.isShowFriendChat_ = false
   self.chatRightSubViewList_ = {}
   self.friendsRightSubViewList_ = {}
   self.FriendlinessLevel_ = 1
@@ -79,6 +81,9 @@ function FriendMainData:GetChatSelectCharId()
 end
 
 function FriendMainData:SetChatSelectCharId(charId)
+  if self.chatSelectCharId_ ~= charId then
+    self:ClearChatRightSubViewList()
+  end
   self.chatSelectCharId_ = charId
 end
 
@@ -96,6 +101,22 @@ end
 
 function FriendMainData:SetFriendViewType(viewType)
   self.friendViewType_ = viewType
+end
+
+function FriendMainData:GetFriendViewOpen()
+  return self.friendViewOpen_
+end
+
+function FriendMainData:SetFriendViewOpen(isOpen)
+  self.friendViewOpen_ = isOpen
+end
+
+function FriendMainData:GetIsShowFriendChat()
+  return self.isShowFriendChat_
+end
+
+function FriendMainData:SetIsShowFriendChat(isShow)
+  self.isShowFriendChat_ = isShow
 end
 
 function FriendMainData:GetRightSubViewList()
@@ -132,6 +153,9 @@ function FriendMainData:GetTotalFriendliness()
 end
 
 function FriendMainData:SetFriendlinessLevel(level)
+  if level == 0 then
+    level = 1
+  end
   self.FriendlinessLevel_ = level
 end
 
@@ -250,6 +274,14 @@ end
 
 function FriendMainData:GetApplicationList()
   return self.applicationList_
+end
+
+function FriendMainData:GetApplicationCharList()
+  local list = {}
+  for i = 1, #self.applicationList_ do
+    list[#list + 1] = self.applicationList_[i]:GetCharId()
+  end
+  return list
 end
 
 function FriendMainData:AddSendedFriendList(charId)
@@ -516,6 +548,90 @@ function FriendMainData:CheckGroupSort()
   return true
 end
 
+local friendSortFunc = function(left, right)
+  local leftSortValue = 0
+  local rightSortValue = 0
+  if left:GetPlayerOffLineTime() == 0 then
+    leftSortValue = leftSortValue + 100
+  end
+  if right:GetPlayerOffLineTime() == 0 then
+    rightSortValue = rightSortValue + 100
+  end
+  if leftSortValue == rightSortValue then
+    if left:GetPlayerOffLineTime() == 0 and right:GetPlayerOffLineTime() == 0 then
+      return left:GetCharId() < right:GetCharId()
+    else
+      return left:GetPlayerOffLineTime() > right:GetPlayerOffLineTime()
+    end
+  else
+    return leftSortValue > rightSortValue
+  end
+end
+
+function FriendMainData:GetFriendPCListData()
+  local chatGroupCfgs = self:GetGroupTableData()
+  local groupFriendList = {}
+  local systemGroup = {}
+  groupFriendList[1] = {
+    loopItemType = E.FriendLoopItemType.EFriendGroupName,
+    IsDefault = true
+  }
+  for _, friendsGroup in pairs(chatGroupCfgs) do
+    groupFriendList[#groupFriendList + 1] = {
+      loopItemType = E.FriendLoopItemType.EFriendGroup,
+      GroupId = friendsGroup.Id,
+      GroupName = friendsGroup.GroupName,
+      IsDefault = true
+    }
+    systemGroup[#systemGroup + 1] = friendsGroup.Id
+    local list = {}
+    local count = 0
+    if self.groupAndFriendList_[friendsGroup.Id] then
+      for _, friendData in pairs(self.groupAndFriendList_[friendsGroup.Id]) do
+        list[#list + 1] = friendData
+        count = count + 1
+      end
+      table.sort(list, friendSortFunc)
+      for i = 1, count do
+        groupFriendList[#groupFriendList + 1] = {
+          loopItemType = E.FriendLoopItemType.EFriendItem,
+          friendData = list[i]
+        }
+      end
+    end
+  end
+  groupFriendList[#groupFriendList + 1] = {
+    loopItemType = E.FriendLoopItemType.EFriendGroupName
+  }
+  if self.groupSort_ then
+    for _, groupId in ipairs(self.groupSort_) do
+      if self.customGroup_[groupId] and not table.zcontains(systemGroup, groupId) then
+        groupFriendList[#groupFriendList + 1] = {
+          loopItemType = E.FriendLoopItemType.EFriendGroup,
+          GroupId = groupId,
+          GroupName = self.customGroup_[groupId]
+        }
+        if self.groupAndFriendList_[groupId] then
+          local list = {}
+          local count = 0
+          for _, friendData in pairs(self.groupAndFriendList_[groupId]) do
+            list[#list + 1] = friendData
+            count = count + 1
+          end
+          table.sort(list, friendSortFunc)
+          for i = 1, count do
+            groupFriendList[#groupFriendList + 1] = {
+              loopItemType = E.FriendLoopItemType.EFriendItem,
+              friendData = list[i]
+            }
+          end
+        end
+      end
+    end
+  end
+  return groupFriendList
+end
+
 function FriendMainData:InitGroupSort()
   local chatGroupCfgs = self:GetGroupTableData()
   local systemGroup = {}
@@ -598,6 +714,9 @@ function FriendMainData:DelFriendLiness(charId)
 end
 
 function FriendMainData:AddFriendCharList(charId)
+  if table.zcontains(self.FriendCharIdList_, charId) then
+    return
+  end
   self.FriendCharIdList_[#self.FriendCharIdList_ + 1] = charId
 end
 

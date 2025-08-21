@@ -8,4 +8,3 @@ message GetFuncPhotoListRequest {
     zproto.EPlatformFuncType funcType = 1;
     int64 ownerId = 2;
 }
-

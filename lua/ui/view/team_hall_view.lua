@@ -4,16 +4,23 @@ local Team_hallView = class("Team_hallView", super)
 local loopListView = require("ui/component/loop_list_view")
 local dropDownLoopItem = require("ui/component/team/dropdown_loop_item")
 local teamLoopItem = require("ui.component.team.team_loop_item")
+local keyPad = require("ui.view.cont_num_keyboard_view")
 
 function Team_hallView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "team_hall_sub", "team/team_hall_sub", UI.ECacheLv.None, parent)
+  if Z.IsPCUI then
+    super.ctor(self, "team_hall_sub", "team/team_hall_sub_pc", UI.ECacheLv.None)
+  else
+    super.ctor(self, "team_hall_sub", "team/team_hall_sub", UI.ECacheLv.None)
+  end
   self.targetId_ = E.TeamTargetId.All
   self.teamVM_ = Z.VMMgr.GetVM("team")
   self.settingVM_ = Z.VMMgr.GetVM("setting")
   self.teamData_ = Z.DataMgr.Get("team_data")
   self.matchData_ = Z.DataMgr.Get("match_data")
+  self.matchTeamData_ = Z.DataMgr.Get("match_team_data")
   self.matchVm_ = Z.VMMgr.GetVM("match")
+  self.keypad_ = keyPad.new(self)
 end
 
 function Team_hallView:initBinder()
@@ -26,7 +33,6 @@ function Team_hallView:initBinder()
   self.scrollview_ = self.uiBinder.scrollview
   self.tog_leader_ = self.uiBinder.tog_leader
   self.cont_lab_tips_ = self.uiBinder.cont_lab_tips
-  self.prefab_cache_ = self.uiBinder.prefab_cache
   self.outBtn_ = self.uiBinder.btn_out
   self.hallBtnNode_ = self.uiBinder.node_btn_hall
   self.nearBtnNode_ = self.uiBinder.node_btn_nearby
@@ -34,6 +40,14 @@ function Team_hallView:initBinder()
   self.btn_near_refresh_ = self.uiBinder.btn_near_refresh
   self.btn_near_create_ = self.uiBinder.btn_near_create
   self.btn_near_out_ = self.uiBinder.btn_near_out
+  self.showFiltrateBtn_ = self.uiBinder.btn_filtrate
+  self.filtrateNode_ = self.uiBinder.group_filtrate
+  self.filtrateBtn_ = self.filtrateNode_.btn_filtrate
+  self.refreshBtn_ = self.filtrateNode_.btn_refresh
+  self.numberBtn_ = self.filtrateNode_.btn_number
+  self.numberLab_ = self.filtrateNode_.lab_number
+  self.keypadNode_ = self.filtrateNode_.node_keypad
+  self.professionTog_ = self.filtrateNode_.tog_filter_type
 end
 
 function Team_hallView:OnActive()
@@ -47,6 +61,8 @@ function Team_hallView:OnActive()
   self.anim_:Restart(Z.DOTweenAnimType.Open)
   self:BindEvents()
   self:initBtns()
+  self.filtrateNumber_ = 0
+  self.filtrateIsNeedProfession_ = false
   self:setTarget()
   self:setHallInfo()
   self:setTargetInfo()
@@ -56,13 +72,15 @@ function Team_hallView:OnActive()
 end
 
 function Team_hallView:initBtns()
+  self:AddClick(self.showFiltrateBtn_, function()
+    self.filtrateNode_.Ref.UIComp:SetVisible(true)
+  end)
   self:AddAsyncClick(self.btn_near_join_, function()
     local havTeam = self.teamVM_.CheckIsInTeam()
     if havTeam then
       Z.DialogViewDataMgr:OpenNormalDialog(Lang("QuitJoinTeam"), function()
         self.teamVM_.AsyncQuitTeam(self.cancelSource)
         self:oneKeyJoinTeam()
-        Z.DialogViewDataMgr:CloseDialogView()
       end)
     else
       self:oneKeyJoinTeam()
@@ -86,42 +104,15 @@ function Team_hallView:initBtns()
   self:AddAsyncClick(self.btn_create_, function()
     self.teamVM_.AsyncCreatTeam(self.targetId_, self.cancelSource:CreateToken())
   end)
-  self:AddAsyncClick(self.btn_match_, function()
-    if self.targetId_ == E.TeamTargetId.All then
-      Z.TipsVM.ShowTipsLang(100111)
-      return
-    end
-    if self.targetId_ == E.TeamTargetId.Costume then
-      Z.TipsVM.ShowTipsLang(1000622)
-      return
-    end
+  self:AddClick(self.btn_match_, function()
     local teamTargetRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(self.targetId_)
     if not teamTargetRow then
       return
     end
-    if not teamTargetRow.MemberCountStopMatch or teamTargetRow.MemberCountStopMatch == 0 then
-      Z.TipsVM.ShowTips(1000750)
-      return
-    end
-    local matching = self.matchData_:GetSelfMatchData("matching")
-    local matchType = self.matchData_:GetMatchType()
-    if matching and matchType == E.MatchType.Team then
-      Z.EventMgr:Add(Z.ConstValue.Team.RepeatCharCancelMatch, self.repeatCharMatch, self)
-      self.matchVm_.AsyncCancelMatchNew(E.MatchType.Team, false, self.cancelSource:CreateToken())
-    else
-      local requestParam = {}
-      requestParam.targetId = self.targetId_
-      requestParam.checkTags = {}
-      if self.isLeader_ then
-        requestParam.wantLeader = 1
-      else
-        requestParam.wantLeader = 0
-      end
-      self.matchVm_.AsyncBeginMatchNew(E.MatchType.Team, requestParam, false, self.cancelSource:CreateToken())
-    end
+    self.matchVm_.RequestBeginMatch(E.MatchType.Team, teamTargetRow.RelativeDungeonId, self.cancelSource:CreateToken())
   end)
   self:AddAsyncClick(self.btn_cancel_, function()
-    self.matchVm_.AsyncCancelMatchNew(E.MatchType.Team, false, self.cancelSource:CreateToken())
+    self.matchVm_.AsyncCancelMatch()
   end)
   self:AddAsyncClick(self.btn_refresh_, function()
     if self.btnCanClick_ == true then
@@ -132,14 +123,29 @@ function Team_hallView:initBtns()
       self:getTeamList(true)
     end
   end)
-  self.tog_leader_.isOn = self.isLeader_
   self:AddClick(self.tog_leader_, function(isOn)
     self.settingVM_.AsyncSaveSetting({
       [Z.PbEnum("ESettingType", "ToBeLeader")] = isOn and "0" or "1"
     })
     self.isLeader_ = isOn
   end)
-  self.teamLoopListRect_ = loopListView.new(self, self.loop_list_view_, teamLoopItem, "team_item_list_tpl")
+  self:AddClick(self.professionTog_, function(isOn)
+    self.teamData_.IsNeedCurProfession = isOn
+    self.filtrateIsNeedProfession_ = isOn
+  end)
+  self:AddClick(self.filtrateBtn_, function()
+    self.filtrateNode_.Ref.UIComp:SetVisible(false)
+  end)
+  self:AddClick(self.refreshBtn_, function()
+  end)
+  self:AddClick(self.numberBtn_, function()
+    self.keypad_:Active({max = 20}, self.keypadNode_)
+  end)
+  local listItemTplName = "team_item_list_tpl"
+  if Z.IsPCUI then
+    listItemTplName = "team_item_list_tpl_pc"
+  end
+  self.teamLoopListRect_ = loopListView.new(self, self.loop_list_view_, teamLoopItem, listItemTplName)
   self.teamLoopListRect_:Init({})
 end
 
@@ -171,6 +177,7 @@ function Team_hallView:OnRefresh()
 end
 
 function Team_hallView:OnDeActive()
+  self.keypad_:DeActive()
   if self.teamLoopListRect_ then
     self.teamLoopListRect_:UnInit()
     self.teamLoopListRect_ = nil
@@ -185,12 +192,13 @@ end
 
 function Team_hallView:setTarget()
   if not self.isNearTeam_ then
-    self.targetId_ = self.matchData_:GetSelfMatchData("targetId") or E.TeamTargetId.All
+    self.targetId_ = self.matchTeamData_:GetCurMatchingTargetId() or self.targetId_
   end
   local settingInfo = Z.ContainerMgr.CharSerialize.settingData.settingMap
   local isLeader = settingInfo[Z.PbEnum("ESettingType", "ToBeLeader")] or "0"
   self.isMatch_ = false
   self.isLeader_ = isLeader == "0"
+  self.tog_leader_.isOn = self.isLeader_
 end
 
 function Team_hallView:updateHallRefreshBtn()
@@ -201,36 +209,34 @@ function Team_hallView:updateHallRefreshBtn()
 end
 
 function Team_hallView:setTargetInfo()
-  self.targetView = dropDownLoopItem.new(self, self.scrollview_.Content, self.prefab_cache_:GetString("dropdown1"), self.prefab_cache_:GetString("dropdown2"))
+  local teamHallFirstTplPath, teamHallSecondTplPath
+  if Z.IsPCUI then
+    teamHallFirstTplPath = GetLoadAssetPath("TeamHallFirstTplPathPC")
+    teamHallSecondTplPath = GetLoadAssetPath("TeamHallSecondTplPathPC")
+  else
+    teamHallFirstTplPath = GetLoadAssetPath("TeamHallFirstTplPath")
+    teamHallSecondTplPath = GetLoadAssetPath("TeamHallSecondTplPath")
+  end
+  self.targetView = dropDownLoopItem.new(self, self.scrollview_.Content, teamHallFirstTplPath, teamHallSecondTplPath)
   self.targetView:createTargetItem()
-end
-
-function Team_hallView:repeatCharMatch()
-  Z.CoroUtil.create_coro_xpcall(function()
-    local requestParam = {}
-    requestParam.targetId = self.targetId_
-    requestParam.checkTags = {}
-    if self.isLeader_ then
-      requestParam.wantLeader = 1
-    else
-      requestParam.wantLeader = 0
-    end
-    self.matchVm_.AsyncBeginMatchNew(E.MatchType.Team, requestParam, false, self.cancelSource:CreateToken())
-    Z.EventMgr:Remove(Z.ConstValue.Team.RepeatCharCancelMatch, self.repeatCharMatch, self)
-  end)()
 end
 
 function Team_hallView:setCompActive()
   local havTeam = self.teamVM_.CheckIsInTeam()
-  local matching = self.matchData_:GetSelfMatchData("matching")
-  local matchType = self.matchData_:GetMatchType()
-  matching = matching and matchType == E.MatchType.Team
-  self.uiBinder.Ref:SetVisible(self.cont_lab_tips_, not havTeam and matching)
-  self.uiBinder.Ref:SetVisible(self.btn_cancel_, not havTeam and matching)
-  self.uiBinder.Ref:SetVisible(self.btn_match_, not havTeam and not matching)
+  local matching = self.matchVm_.IsMatching()
+  matching = matching and self.matchTeamData_:GetCurMatchingTargetId() == self.targetId_
+  local showMatch = false
+  local teamTargetRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(self.targetId_)
+  if teamTargetRow then
+    showMatch = teamTargetRow.MatchID and teamTargetRow.MatchID > 0
+  end
+  self.uiBinder.Ref:SetVisible(self.cont_lab_tips_, not havTeam and matching and showMatch)
+  self.uiBinder.Ref:SetVisible(self.btn_cancel_, not havTeam and matching and showMatch)
+  self.uiBinder.Ref:SetVisible(self.btn_match_, not havTeam and not matching and showMatch)
   self.uiBinder.Ref:SetVisible(self.btn_create_, not havTeam)
   self.uiBinder.Ref:SetVisible(self.outBtn_, havTeam)
   self.uiBinder.Ref:SetVisible(self.tog_leader_, not havTeam)
+  self:refreshComp()
 end
 
 function Team_hallView:getNearTeamList(isForce)
@@ -246,7 +252,6 @@ function Team_hallView:getTeamList(isForce)
   else
     Z.CoroUtil.create_coro_xpcall(function()
       self.teamVM_.AsyncGetTeamList(self.targetId_, isForce, self.cancelSource:CreateToken())
-      self.matchVm_.SetSelfMatchData(self.targetId, "targetId")
     end)()
   end
 end
@@ -276,11 +281,9 @@ function Team_hallView:updateApplyBtn()
 end
 
 function Team_hallView:SetTargetid(targetid)
-  self.setTargetId_ = targetid
   self.targetId_ = targetid
-  self.matchVm_.SetSelfMatchData(self.targetId_, "targetId")
-  self:setTarget()
   self:getTeamList()
+  self:setCompActive()
 end
 
 function Team_hallView:compCd()
@@ -306,9 +309,13 @@ function Team_hallView:refreshComp()
   self.uiBinder.Ref:SetVisible(self.btn_near_out_, havTeam)
 end
 
+function Team_hallView:onMatchWantLeaderChange(wantLeader)
+  self.tog_leader_:SetIsOnWithoutCallBack(wantLeader)
+end
+
 function Team_hallView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Team.MatchWaitTimeOut, self.setCompActive, self)
-  Z.EventMgr:Add(Z.ConstValue.Team.RefreshMatchingStatus, self.setCompActive, self)
+  Z.EventMgr:Add(Z.ConstValue.Match.MatchStateChange, self.setCompActive, self)
   Z.EventMgr:Add(Z.ConstValue.Team.RefreshHallList, self.refreshHallTeamList, self)
   Z.EventMgr:Add(Z.ConstValue.Team.RefreshNearByList, self.refreshHallTeamList, self)
   Z.EventMgr:Add(Z.ConstValue.Team.UpdateHallRefreshBtn, self.updateHallRefreshBtn, self)
@@ -316,6 +323,16 @@ function Team_hallView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Team.Refresh, self.setCompActive, self)
   Z.EventMgr:Add(Z.ConstValue.Team.UpdateNearByRefreshBtn, self.updateNearByRefreshBtn, self)
   Z.EventMgr:Add(Z.ConstValue.Team.UpdateOneKeyJoinBtn, self.updateOneKeyJoinBtn, self)
+  Z.EventMgr:Add(Z.ConstValue.Match.MatchWantLeaderChange, self.onMatchWantLeaderChange, self)
+end
+
+function Team_hallView:InputNum(num)
+  self.numberLab_.text = num
+  self.filtrateNumber_ = num
+  self.teamData_.NeedMreMemberCount = num
+end
+
+function Team_hallView:setFiltrateInfo()
 end
 
 return Team_hallView

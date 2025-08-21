@@ -6,7 +6,11 @@ local itemClass = require("common.item_binder")
 function Weapon_develop_skill_subView:ctor()
   self.panel = nil
   self.uiBinder = nil
-  super.ctor(self, "weapon_develop_skill_sub", "weapon_develop/weapon_develop_skill_sub", UI.ECacheLv.None)
+  local assetPath = "weapon_develop/weapon_develop_skill_sub"
+  if Z.IsPCUI then
+    assetPath = "weapon_develop/weapon_develop_skill_sub_pc"
+  end
+  super.ctor(self, "weapon_develop_skill_sub", assetPath, UI.ECacheLv.None)
 end
 
 function Weapon_develop_skill_subView:OnActive()
@@ -61,7 +65,7 @@ end
 
 function Weapon_develop_skill_subView:BindEvents()
   function self.onContainerChanged(container, dirty)
-    if dirty.weaponList or dirty.aoyiSkillInfoMap then
+    if dirty.professionList or dirty.aoyiSkillInfoMap then
       self.selectSkillId_ = self.viewData.skillId
       
       self.professionId_ = self.viewData.professionId
@@ -78,24 +82,21 @@ function Weapon_develop_skill_subView:BindEvents()
       skillId = self.selectSkillId_
     }
     self.weaponVm_.OpenUpgradeView(viewData)
-    self:refreshTitle()
-    self:refreshSkillDesc()
-    self:refreshBtnLvUp()
   end, self)
 end
 
 function Weapon_develop_skill_subView:OnRefresh()
-  Z.RedPointMgr.RemoveChildernNodeItem(self.uiBinder.btn_upgrade.transform, self)
-  Z.RedPointMgr.RemoveChildernNodeItem(self.uiBinder.btn_remodel.transform, self)
-  Z.RedPointMgr.RemoveChildernNodeItem(self.uiBinder.btn_unlock.transform, self)
+  Z.RedPointMgr.RemoveNodeItem(self.upNodeId_, self)
+  Z.RedPointMgr.RemoveNodeItem(self.remouldNodeId_, self)
+  Z.RedPointMgr.RemoveNodeItem(self.unlockNodeId_, self)
   self.selectSkillId_ = self.viewData.skillId
   self.selectReplaceId_ = self.weaponSkillVm_:GetReplaceSkillId(self.selectSkillId_)
-  local remouldNodeId = self.weaponSkillVm_:GetSkillRemouldRedId(self.selectSkillId_)
-  local upNodeId = self.weaponSkillVm_:GetSkillUpRedId(self.selectSkillId_)
-  local unlockNodeId = self.weaponSkillVm_:GetSkillUnlockRedId(self.selectSkillId_)
-  Z.RedPointMgr.LoadRedDotItem(upNodeId, self, self.uiBinder.btn_upgrade.transform)
-  Z.RedPointMgr.LoadRedDotItem(remouldNodeId, self, self.uiBinder.btn_remodel.transform)
-  Z.RedPointMgr.LoadRedDotItem(unlockNodeId, self, self.uiBinder.btn_unlock.transform)
+  self.remouldNodeId_ = self.weaponSkillVm_:GetSkillRemouldRedId(self.selectSkillId_)
+  self.upNodeId_ = self.weaponSkillVm_:GetSkillUpRedId(self.selectSkillId_)
+  self.unlockNodeId_ = self.weaponSkillVm_:GetSkillUnlockRedId(self.selectSkillId_)
+  Z.RedPointMgr.LoadRedDotItem(self.upNodeId_, self, self.uiBinder.btn_upgrade.transform)
+  Z.RedPointMgr.LoadRedDotItem(self.remouldNodeId_, self, self.uiBinder.btn_remodel.transform)
+  Z.RedPointMgr.LoadRedDotItem(self.unlockNodeId_, self, self.uiBinder.btn_unlock.transform)
   self.professionId_ = self.viewData.professionId
   self:refreshTitle()
   self:refreshSkillDesc()
@@ -110,7 +111,9 @@ function Weapon_develop_skill_subView:refreshTitle()
   self.selectSkillLevel_ = self.weaponVm_.GetShowSkillLevel(self.professionId_, self.selectReplaceId_)
   local maxLevel = self.weaponSkillVm_:GetSkillMaxlevel(self.selectReplaceId_)
   self.uiBinder.lab_title.text = config.Name
-  self.uiBinder.lab_grade.text = Lang("Lv") .. self.selectSkillLevel_ .. "/" .. maxLevel
+  self.uiBinder.lab_grade.text = Lang("Level", {
+    val = self.selectSkillLevel_ .. "/" .. maxLevel
+  })
   local skillFightData = self.weaponSkillVm_:GetSkillFightDataById(self.selectReplaceId_)
   local skillFightLvTblData = skillFightData[self.selectSkillLevel_]
   local skillAttrDescList
@@ -239,10 +242,14 @@ function Weapon_develop_skill_subView:refreshUnlockInfo()
   self.uiBinder.Ref:SetVisible(self.uiBinder.loop_item_cost, true)
   local btnDisabled = false
   local parent = self.uiBinder.item_root_content
+  local path = self.uiBinder.prefab_cache:GetString("item_unit")
+  if Z.IsPCUI then
+    path = self.uiBinder.prefab_cache:GetString("item_unit_pc")
+  end
   Z.CoroUtil.create_coro_xpcall(function(...)
     for _, value in ipairs(cost) do
       local totalCount = self.itemVm_.GetItemTotalCount(value.itemID)
-      local unit = self:AsyncLoadUiUnit(GetLoadAssetPath(Z.ConstValue.Backpack.BackPack_Item_Unit_Addr1_8_New), value.itemID, parent)
+      local unit = self:AsyncLoadUiUnit(path, value.itemID, parent)
       table.insert(self.itemUnits_, value.itemID)
       self.itemClassTab_[value.itemID] = itemClass.new(self)
       self.itemClassTab_[value.itemID]:Init({
@@ -346,6 +353,9 @@ function Weapon_develop_skill_subView:OnDeActive()
     value:UnInit()
   end
   self.itemClassTab_ = {}
+  Z.RedPointMgr.RemoveNodeItem(self.upNodeId_, self)
+  Z.RedPointMgr.RemoveNodeItem(self.remouldNodeId_, self)
+  Z.RedPointMgr.RemoveNodeItem(self.unlockNodeId_, self)
 end
 
 return Weapon_develop_skill_subView

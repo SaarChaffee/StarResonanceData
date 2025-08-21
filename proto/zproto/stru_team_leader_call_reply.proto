@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
-message TeamLeaderCallReply {
-    int32 errCode = 1;
-    repeated uint32 callMem = 2;
-}
+import "enum_e_error_code.proto";
 
+message TeamLeaderCallReply {
+    repeated int64 callMem = 1;
+    zproto.EErrorCode errCode = 2;
+}

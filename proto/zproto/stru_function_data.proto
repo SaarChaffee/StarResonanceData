@@ -5,8 +5,6 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message FunctionData {
-    map<int32, bool> unlockedMap = 1;
+    repeated zproto.FunctionData.UnlockedMapEntry unlockedMap = 1;
     repeated int32 drawnFunctionIds = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

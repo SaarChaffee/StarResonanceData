@@ -9,8 +9,6 @@ message NeighbouringSceneTableBase {
     int_array NeighbouringScene = 854;
     int_array Portal = 1218;
 }
-
 message NeighbouringSceneTableMgr {
-    map<int32, .bokura.NeighbouringSceneTableBase> datas = 1;
+    repeated bokura.NeighbouringSceneTableMgr.DatasEntry datas = 1;
 }
-

@@ -8,8 +8,6 @@ message IgnoreTableBase {
     int32 Id = 1463;
     int_array FunctionIds = 28;
 }
-
 message IgnoreTableMgr {
-    map<int32, .bokura.IgnoreTableBase> datas = 1;
+    repeated bokura.IgnoreTableMgr.DatasEntry datas = 1;
 }
-

@@ -21,8 +21,6 @@ message WorldEventTableBase {
     int32 StartMessage = 518;
     string PhaseTime = 1605;
 }
-
 message WorldEventTableMgr {
-    map<int32, .bokura.WorldEventTableBase> datas = 1;
+    repeated bokura.WorldEventTableMgr.DatasEntry datas = 1;
 }
-

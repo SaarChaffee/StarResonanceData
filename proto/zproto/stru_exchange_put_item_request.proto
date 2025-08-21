@@ -8,4 +8,3 @@ message ExchangePutItemRequest {
     int32 step = 4;
     bool isPublic = 5;
 }
-

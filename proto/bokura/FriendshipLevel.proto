@@ -13,8 +13,6 @@ message FriendshipLevelBase {
     int_table RewardID = 212;
     int32 AwardID = 1636;
 }
-
 message FriendshipLevelMgr {
-    map<int32, .bokura.FriendshipLevelBase> datas = 1;
+    repeated bokura.FriendshipLevelMgr.DatasEntry datas = 1;
 }
-

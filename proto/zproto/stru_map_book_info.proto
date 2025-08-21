@@ -7,8 +7,6 @@ import "stru_dirty_mask.proto";
 
 message MapBookInfo {
     uint32 id = 1;
-    map<uint32, .zproto.MapStickerInfo> mapStickerMap = 2;
+    repeated zproto.MapBookInfo.MapStickerMapEntry mapStickerMap = 2;
     uint32 awardFlag = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

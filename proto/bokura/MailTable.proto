@@ -17,8 +17,6 @@ message MailTableBase {
     int32 Important = 1782;
     int32 LimitType = 92;
 }
-
 message MailTableMgr {
-    map<int32, .bokura.MailTableBase> datas = 1;
+    repeated bokura.MailTableMgr.DatasEntry datas = 1;
 }
-

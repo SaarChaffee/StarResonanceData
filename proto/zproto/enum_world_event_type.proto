@@ -9,6 +9,7 @@ enum WorldEventType {
     ExitBossFightCam = 3;
     PlayCutScene = 4;
     ScreenEffect = 5;
+    NpcBubbleChat = 6;
     SetCamPitch = 7;
     PauseCam = 8;
     ShowEntryUI = 10;
@@ -20,7 +21,7 @@ enum WorldEventType {
     DungeonTip = 16;
     CameraConfigReplace = 17;
     NpcHandInHand = 18;
-    WeatherCtrl = 19;
+    VolumeCtrl = 19;
     SetCamLookAtPoint = 20;
     CameraInvoke = 21;
     ScreenFade = 22;
@@ -32,4 +33,3 @@ enum WorldEventType {
     NextDungeonCountDown = 28;
     BossDBM = 29;
 }
-

@@ -39,7 +39,10 @@ function Camera_menu_container_history_subView:OnDeActive()
     self.playerPosWatcher:Dispose()
     self.playerPosWatcher = nil
   end
-  self:UnBindEntityLuaAttrWatcher(self.playerStateWatcher)
+  if self.playerStateWatcher ~= nil then
+    self.playerStateWatcher:Dispose()
+    self.playerStateWatcher = nil
+  end
 end
 
 function Camera_menu_container_history_subView:bindEvent()
@@ -128,7 +131,9 @@ function Camera_menu_container_history_subView:setItemData(item, showPieceData, 
     return
   end
   item.Ref:SetVisible(item.img_lock, false)
-  item.Ref:SetVisible(item.img_emoji_circulate, false)
+  for i = 1, 3 do
+    item.Ref:SetVisible(item["img_emoji_corner_" .. i], false)
+  end
   item.Ref:SetVisible(item.img_select, false)
   local data, iconKey
   local pieceId = type(showPieceData) == "number" and showPieceData or showPieceData.Id
@@ -146,16 +151,14 @@ function Camera_menu_container_history_subView:setItemData(item, showPieceData, 
   if not emoteCfg then
     return
   end
-  self:setItemPress(item, data, showPieceData, itemType)
+  self:setItemPress(item, emoteCfg, showPieceData, itemType)
   local itemBgPath = self.uiBinder.prefabCache:GetString("itemBgPath")
-  local emojiPath = self.uiBinder.prefabCache:GetString("emojiPath")
-  item.img_emoji:SetImage(string.format("%s%s", emojiPath, emoteCfg.Icon))
+  item.img_emoji:SetImage(emoteCfg.Icon)
   local originalColor = Color.New(item.img_emoji.color.r, item.img_emoji.color.g, item.img_emoji.color.b, 1)
   item.img_emoji:SetColor(originalColor)
-  if emoteCfg.IsLoop then
-    item.Ref:SetVisible(item.img_emoji_circulate, true)
-    local circulatePath = self.uiBinder.prefabCache:GetString("circulatePath")
-    item.img_emoji_circulate:SetImage(circulatePath)
+  local cornerMark = emoteCfg.CornerMark
+  for i = 1, 3 do
+    item.Ref:SetVisible(item["img_emoji_corner_" .. i], i == cornerMark)
   end
   item.Ref:SetVisible(item.img_btn_emoji_bg, true)
   item.img_btn_emoji_bg:SetImage(string.format("%s%s", itemBgPath, "_off"))
@@ -163,8 +166,13 @@ end
 
 function Camera_menu_container_history_subView:setItemPress(item, data, actionId, itemType)
   self:AddClick(item.btn_select, function()
-    local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
-    if stateId ~= Z.PbEnum("EActorState", "ActorStateDefault") and stateId ~= Z.PbEnum("EActorState", "ActorStateAction") and stateId ~= Z.PbEnum("EActorState", "ActorStateSelfPhoto") then
+    if Z.EntityMgr.PlayerEnt == nil then
+      logError("PlayerEnt is nil")
+      return
+    end
+    local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
+    local canPlayAction = self.expressionVm_.CanPlayActionCheck(stateId)
+    if not canPlayAction then
       item.Ref:SetVisible(item.img_select, false)
       Z.TipsVM.ShowTips(1000028)
       return
@@ -175,7 +183,8 @@ function Camera_menu_container_history_subView:setItemPress(item, data, actionId
         self.selectedItemWidget_.Ref:SetVisible(self.selectedItemWidget_.img_select, false)
       end
       self.selectedItemWidget_ = item
-      self:onPlayAction(actionId, data, item, itemType)
+      self:onPlayAction(actionId, item, itemType)
+      self.expressionVm_.OpenTipsActionNamePopup(item.Trans, data.Name)
     else
       item.Ref:SetVisible(item.img_select, false)
     end
@@ -189,7 +198,7 @@ function Camera_menu_container_history_subView:setItemPress(item, data, actionId
   end
 end
 
-function Camera_menu_container_history_subView:onPlayAction(showPieceData, data, item, itemType)
+function Camera_menu_container_history_subView:onPlayAction(showPieceData, item, itemType)
   self.expressionClickTag_ = true
   local isUpdateHistoryData = itemType == itemViewType.Common
   local showPieceId = type(showPieceData) == "number" and showPieceData or showPieceData.Id
@@ -204,7 +213,6 @@ function Camera_menu_container_history_subView:onPlayAction(showPieceData, data,
     self.expressionVm_.PlayEmote(showPieceId, emoteId, true, isUpdateHistoryData)
     Z.EventMgr:Dispatch(Z.ConstValue.Expression.ClickEmotion, showPieceId)
   end
-  item.Ref:SetVisible(item.img_select, true)
 end
 
 function Camera_menu_container_history_subView:bindLuaAttrWatchers()
@@ -212,13 +220,17 @@ function Camera_menu_container_history_subView:bindLuaAttrWatchers()
     self.playerPosWatcher = Z.DIServiceMgr.PlayerAttrComponentWatcherService:OnAttrVirtualPosChanged(function()
       self:updatePosEvent()
     end)
-    self.playerStateWatcher = self:BindEntityLuaAttrWatcher({
-      Z.AttrCreator.ToIndex(Z.LocalAttr.EAttrState)
-    }, Z.EntityMgr.PlayerEnt, self.onPlayerStateChange)
+    self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
+      self:onPlayerStateChange()
+    end)
   end
 end
 
 function Camera_menu_container_history_subView:updatePosEvent()
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local currentPosition = Z.EntityMgr.PlayerEnt:GetLocalAttrVirtualPos()
   if not self.lastPosition_ then
     self.lastPosition_ = currentPosition
@@ -235,7 +247,11 @@ function Camera_menu_container_history_subView:updatePosEvent()
 end
 
 function Camera_menu_container_history_subView:onPlayerStateChange()
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
+  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttrState()
   if stateId ~= Z.PbEnum("EActorState", "ActorStateDefault") and stateId ~= Z.PbEnum("EActorState", "ActorStateAction") then
     if not self.expressionClickTag_ and self.selectedItemWidget_ then
       self.selectedItemWidget_.Ref:SetVisible(self.selectedItemWidget_.img_select, false)

@@ -5,7 +5,6 @@ package zproto;
 message UseItemParam {
     int64 itemUuid = 1;
     string param = 2;
-    map<uint32, uint32> select = 3;
+    repeated zproto.UseItemParam.SelectEntry select = 3;
     int32 useNum = 4;
 }
-

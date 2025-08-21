@@ -6,4 +6,3 @@ message UnionResource {
     int64 sumNum = 1;
     int32 timerLimitNum = 2;
 }
-

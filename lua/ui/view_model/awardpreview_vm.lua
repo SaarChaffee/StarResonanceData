@@ -38,22 +38,17 @@ function ret.OpenRewardDetailViewByItemList(itemList, title)
   })
 end
 
-function ret.checkSexLimit(param)
-  local charInfo = Z.ContainerMgr.CharSerialize.charBase
-  if charInfo == nil then
+function ret.needCheckEquipProfessionLimit(awardTableRow)
+  if awardTableRow == nil then
     return false
   end
-  if param == nil or param == nil or #param < 1 then
-    logError("\230\178\161\230\156\137\233\133\141\231\189\174\230\128\167\229\136\171\233\153\144\229\136\182\231\154\132\229\143\130\230\149\176")
+  local professionLimit = awardTableRow.ProfessionLimit
+  if professionLimit ~= 1 then
     return false
+  else
+    return true
   end
-  local sex = tonumber(param[1])
-  return charInfo.gender == sex
 end
-
-ret.checkLimitFuncs = {
-  [E.AwardPrevLimitType.Sex] = ret.checkSexLimit
-}
 
 function ret.checkValid(awardTableRow)
   if not awardTableRow or awardTableRow.PreviewUseLimite == 0 then
@@ -134,6 +129,7 @@ end
 
 function ret.parseGroupContentNew(awardTotalList, awardPackageTableRow, isShowCount)
   local packageGroupContent = awardPackageTableRow.PackContent
+  local equipVm = Z.VMMgr.GetVM("equip")
   for contentIndex, value in ipairs(packageGroupContent) do
     local awardTableID = value[1]
     local awardTableRow = Z.TableMgr.GetTable("AwardTableMgr").GetRow(awardTableID)
@@ -146,60 +142,66 @@ function ret.parseGroupContentNew(awardTotalList, awardPackageTableRow, isShowCo
       if ret.checkValid(awardTableRow) then
         local num1 = value[2]
         local num2 = value[3]
+        local needCheckEquipProfessionLimit = ret.needCheckEquipProfessionLimit(awardTableRow)
         for index, value1 in ipairs(groupContentItems) do
           local id = value1[1]
           local itemNum1 = value1[2]
           local itemNum2 = value1[3]
           local num1_ = 0
           local num2_ = 0
-          if isShowCount then
-            if awardPackageTableRow.RandomRule == 1 then
-              if awardTableRow.RandomRule == 1 then
-                num1_ = num1 * itemNum1
-                num2_ = num2 * itemNum2
-              end
-            elseif awardPackageTableRow.RandomRule == 3 then
-              local groupWeight = awardTableRow.GroupWeight
-              if groupWeight ~= nil and 1 < #groupWeight then
-                num1_ = num1 * itemNum1
-                num2_ = num2 * itemNum2
-              end
-            end
-          end
-          local prevDropType
-          if awardPackageTableRow.PackType == 1 then
-            if awardPackageTableRow.RandomRule == 1 then
-              if awardTableRow.RandomRule == 1 then
-                prevDropType = E.AwardPrevDropType.Definitely
-              else
-                prevDropType = E.AwardPrevDropType.Probability
-              end
-            elseif awardPackageTableRow.RandomRule == 4 then
-              local groupWeight = awardPackageTableRow.GroupWeight
-              if groupWeight ~= nil and 1 < #groupWeight then
-                prevDropType = E.AwardPrevDropType.Probability
-              else
-                prevDropType = E.AwardPrevDropType.Definitely
-              end
-            else
-              local rateList = awardPackageTableRow.GroupRates
-              if rateList and rateList[contentIndex] and 10000 <= rateList[contentIndex] and awardTableRow.RandomRule == 1 then
-                prevDropType = E.AwardPrevDropType.Definitely
-              else
-                prevDropType = E.AwardPrevDropType.Probability
+          if not needCheckEquipProfessionLimit or needCheckEquipProfessionLimit and equipVm.CheckEquipProfession(id) then
+            if isShowCount then
+              if awardPackageTableRow.RandomRule == 1 then
+                if awardTableRow.RandomRule == 1 then
+                  num1_ = num1 * itemNum1
+                  num2_ = num2 * itemNum2
+                elseif awardTableRow.RandomRule == 4 then
+                  num1_ = num1 * itemNum1
+                  num2_ = num2 * itemNum2
+                end
+              elseif awardPackageTableRow.RandomRule == 3 then
+                local groupWeight = awardTableRow.GroupWeight
+                if groupWeight ~= nil and 1 < #groupWeight then
+                  num1_ = num1 * itemNum1
+                  num2_ = num2 * itemNum2
+                end
               end
             end
-          elseif awardPackageTableRow.PackType == 2 then
-            prevDropType = E.AwardPrevDropType.Multipe
+            local prevDropType
+            if awardPackageTableRow.PackType == 1 then
+              if awardPackageTableRow.RandomRule == 1 then
+                if awardTableRow.RandomRule == 1 then
+                  prevDropType = E.AwardPrevDropType.Definitely
+                else
+                  prevDropType = E.AwardPrevDropType.Probability
+                end
+              elseif awardPackageTableRow.RandomRule == 4 then
+                local groupWeight = awardPackageTableRow.GroupWeight
+                if groupWeight ~= nil and 1 < #groupWeight then
+                  prevDropType = E.AwardPrevDropType.Probability
+                else
+                  prevDropType = E.AwardPrevDropType.Definitely
+                end
+              else
+                local rateList = awardPackageTableRow.GroupRates
+                if rateList and rateList[contentIndex] and 10000 <= rateList[contentIndex] and awardTableRow.RandomRule == 1 then
+                  prevDropType = E.AwardPrevDropType.Definitely
+                else
+                  prevDropType = E.AwardPrevDropType.Probability
+                end
+              end
+            elseif awardPackageTableRow.PackType == 2 then
+              prevDropType = E.AwardPrevDropType.Multipe
+            end
+            table.insert(awardTotalList, {
+              awardId = id,
+              awardNum = num1_,
+              awardNumExtend = num2_,
+              BindInfo = bindInfo_,
+              Index = index,
+              PrevDropType = prevDropType
+            })
           end
-          table.insert(awardTotalList, {
-            awardId = id,
-            awardNum = num1_,
-            awardNumExtend = num2_,
-            BindInfo = bindInfo_,
-            Index = index,
-            PrevDropType = prevDropType
-          })
         end
       end
     end
@@ -207,8 +209,8 @@ function ret.parseGroupContentNew(awardTotalList, awardPackageTableRow, isShowCo
 end
 
 function ret.getAwardList(awardTotalList, list)
-  local isShowPreviewItem = false
   local isShowCount = true
+  local isShowPreviewItem = false
   for _, awardId in ipairs(awardTotalList) do
     local awardPackageTableRow = Z.TableMgr.GetTable("AwardPackageTableMgr").GetRow(awardId)
     if awardPackageTableRow then
@@ -221,32 +223,28 @@ function ret.getAwardList(awardTotalList, list)
       list[#list + 1] = awardPackageTableRow
     end
   end
-  if not isShowPreviewItem then
-    return isShowCount, isShowPreviewItem
-  end
-  for i = #list, 1, -1 do
-    if #list[i].PreviewItem == 0 then
-      table.remove(list, i)
-    end
-  end
-  return isShowCount, isShowPreviewItem
-end
-
-function ret.getPreItems(awardTotalList, awardPackageTableRow, previewItemSortDic, isShowCount)
-  local previewItems = awardPackageTableRow.PreviewItem
-  local levelUpAwardId = 0
-  if not previewItems or not (0 < #previewItems) then
-    levelUpAwardId = ret.checkAwardLevelUp(awardPackageTableRow.PackID)
-    if levelUpAwardId ~= awardPackageTableRow.PackID then
-      logGreen("\229\165\150\229\138\177\229\140\133\229\141\135\231\186\167: {0} => {0}", awardPackageTableRow.PackID, levelUpAwardId)
-      local awardTableRow = Z.TableMgr.GetTable("AwardTableMgr").GetRow(levelUpAwardId)
-      if not awardTableRow then
-        return
+  if isShowPreviewItem then
+    for i = #list, 1, -1 do
+      if #list[i].PreviewItem == 0 then
+        table.remove(list, i)
       end
     end
   end
+  return isShowCount
+end
+
+function ret.getPreItems(awardTotalList, awardPackageTableRow, previewItemSortDic, isShowCount)
+  local levelUpAwardPackageId = ret.checkAwardLevelUp(awardPackageTableRow.PackID)
+  if levelUpAwardPackageId ~= awardPackageTableRow.PackID then
+    logGreen("\229\165\150\229\138\177\229\140\133\229\141\135\231\186\167: {0} => {0}", awardPackageTableRow.PackID, levelUpAwardPackageId)
+    awardPackageTableRow = Z.TableMgr.GetTable("AwardPackageTableMgr").GetRow(levelUpAwardPackageId, true)
+    if not awardPackageTableRow then
+      return
+    end
+  end
+  local previewItems = awardPackageTableRow.PreviewItem
   if previewItems and 0 < #previewItems then
-    ret.parsePreviewItem(previewItems, awardTotalList, levelUpAwardId, previewItemSortDic, isShowCount, awardPackageTableRow)
+    ret.parsePreviewItem(previewItems, awardTotalList, levelUpAwardPackageId, previewItemSortDic, isShowCount, awardPackageTableRow)
   else
     ret.parseGroupContentNew(awardTotalList, awardPackageTableRow, isShowCount)
   end
@@ -307,18 +305,19 @@ function ret.getAwardIds(awardIdOrIds)
   end
 end
 
-function ret.GetAllAwardPreListByIds(awardIdOrIds)
+function ret.GetAllAwardPreListByIds(awardIdOrIds, split)
   local awardIds = ret.getAwardIds(awardIdOrIds)
   local previewItemSortDic = {}
   local list = {}
-  local isShowCount, isShowPreviewItem = ret.getAwardList(awardIds, list)
+  local isShowCount = ret.getAwardList(awardIds, list)
   local itemList = {}
   for _, awardPackageTableRow in ipairs(list) do
     ret.getPreItems(itemList, awardPackageTableRow, previewItemSortDic, isShowCount)
   end
-  if not isShowPreviewItem then
-    itemList = ret.mergeAwardItems(itemList)
+  if split then
+    return itemList
   end
+  itemList = ret.mergeAwardItems(itemList)
   if next(previewItemSortDic) ~= nil then
     table.sort(itemList, function(a, b)
       return previewItemSortDic[a.awardId] < previewItemSortDic[b.awardId]
@@ -355,24 +354,24 @@ function ret.checkAwardLevelUp(awardPackageId)
   return ret.doCheckAwardLevelUp(awardPackageId, checkedMap)
 end
 
-function ret.doCheckAwardLevelUp(awardId, checkedMap)
-  checkedMap[awardId] = true
+function ret.doCheckAwardLevelUp(awardPackageId, checkedMap)
+  checkedMap[awardPackageId] = true
   local level = 0
-  local awardTableRow = Z.TableMgr.GetTable("AwardPackageTableMgr").GetRow(awardId)
+  local awardTableRow = Z.TableMgr.GetTable("AwardPackageTableMgr").GetRow(awardPackageId)
   local cond = awardTableRow.LevelUpConditions
   if cond == 0 then
-    return awardId
+    return awardPackageId
   elseif math.floor(cond / 100) == Z.ConstValue.AwardLevelUpCondition.Count then
     local count = 1
     local time = 0
-    local data = ret.getAwardData(awardId)
+    local data = ret.getAwardData(awardPackageId)
     if data then
       count = data.dropTimes + 1
       time = data.lastDropTime
     end
     if ret.islevelUpAwardCountReSet(cond, time) then
       count = 1
-      return awardId
+      return awardPackageId
     end
     level = ret.getAwardLevelByCount(count, awardTableRow)
   elseif cond == Z.ConstValue.AwardLevelUpCondition.SeasonDay then
@@ -384,18 +383,18 @@ function ret.doCheckAwardLevelUp(awardId, checkedMap)
     end
   end
   if level == 0 then
-    return awardId
+    return awardPackageId
   end
   local levelUpAwards = awardTableRow.LevelUpPackage
   if levelUpAwards and level <= #levelUpAwards then
     local levelUpAwardId = levelUpAwards[level]
     if table.zcontains(checkedMap, levelUpAwardId) then
-      logError("\233\133\141\231\189\174\233\148\153\232\175\175, \229\165\150\229\138\177\229\190\170\231\142\175\229\141\135\231\186\167, awardId = {0}", awardId)
-      return awardId
+      logError("\233\133\141\231\189\174\233\148\153\232\175\175, \229\165\150\229\138\177\229\190\170\231\142\175\229\141\135\231\186\167, awardId = {0}", awardPackageId)
+      return awardPackageId
     end
     return ret.doCheckAwardLevelUp(levelUpAwardId, checkedMap)
   end
-  return awardId
+  return awardPackageId
 end
 
 function ret.getAwardLevelByCount(count, awardTableRow)
@@ -424,8 +423,8 @@ function ret.islevelUpAwardCountReSet(condition, lastTime)
     local curSeason, _ = seasonVM.GetSeasonByTime(serverTime)
     return lastSeason < curSeason
   elseif condition == Z.ConstValue.AwardLevelUpCondition.CountDay then
-    local lastTimeDate = Z.TimeTools.GetDailyCycleTimeDataByTime(lastTime)
-    local curTimeDate = Z.TimeTools.GetDailyCycleTimeDataByTime(serverTime)
+    local lastTimeDate = Z.TimeTools.GetDailyCycleTimeDataByTime(lastTime, Z.Global.AwardNextLevelDailyCount)
+    local curTimeDate = Z.TimeTools.GetDailyCycleTimeDataByTime(serverTime, Z.Global.AwardNextLevelDailyCount)
     if lastTimeDate ~= nil and curTimeDate ~= nil and lastTimeDate.year == curTimeDate.year and lastTimeDate.yday == curTimeDate.yday then
       return false
     end
@@ -435,10 +434,10 @@ function ret.islevelUpAwardCountReSet(condition, lastTime)
   end
 end
 
-function ret.getAwardData(awardId)
+function ret.getAwardData(awardPackageId)
   local dataDic = Z.ContainerMgr.CharSerialize.syncAwardData.levelUpAwardInfos
-  if dataDic and dataDic[awardId] ~= nil then
-    local data = dataDic[awardId]
+  if dataDic and dataDic[awardPackageId] ~= nil then
+    local data = dataDic[awardPackageId]
     return data
   end
   return nil
@@ -457,6 +456,137 @@ function ret.GetAwardType(awardPackageID)
   local packageRow = Z.TableMgr.GetTable("AwardPackageTableMgr").GetRow(awardPackageID)
   if packageRow then
     return packageRow.PackType
+  end
+end
+
+function ret.GetAwardProbData(allRewards)
+  local rewardProbTable = {}
+  for k, v in pairs(allRewards) do
+    local awardPackageTableRow = Z.TableMgr.GetTable("AwardPackageTableMgr").GetRow(v)
+    if awardPackageTableRow then
+      table.insert(rewardProbTable, ret.getAwardProbData(awardPackageTableRow))
+    end
+  end
+  return ret.mergeRewardProbs(rewardProbTable)
+end
+
+function ret.getAwardProbData(awardPackageTableRow)
+  local count2ProbTable = {}
+  local rewardId = awardPackageTableRow.PackContent[1][1]
+  if 1 < table.zcount(awardPackageTableRow.PackContent) then
+    logError("\229\189\147\229\137\141 \229\165\150\229\138\177\231\164\188\229\140\133AwardPackageTable \229\143\130\230\149\176\233\148\153\232\175\175\239\188\140\229\189\147\229\137\141\229\143\170\230\148\175\230\140\129\229\141\149\228\184\170\231\164\188\229\140\133\229\164\132\231\144\134\239\188\140 awardPackageID is " .. awardPackageTableRow.PackID)
+  end
+  local awardTableRow = Z.TableMgr.GetTable("AwardTableMgr").GetRow(rewardId)
+  if not awardTableRow then
+    return nil
+  end
+  local zeroProb = 0
+  if awardPackageTableRow.RandomRule == 1 then
+    if awardTableRow.RandomRule == 4 then
+      local totalWeight = 0
+      for i = 1, #awardTableRow.GroupWeight do
+        totalWeight = totalWeight + awardTableRow.GroupWeight[i]
+      end
+      for k, v in pairs(awardTableRow.GroupContent) do
+        local count = v[2]
+        local prob = totalWeight == 0 and 0 or awardTableRow.GroupWeight[k] / totalWeight
+        local probData = {}
+        probData.count = count
+        probData.prob = prob
+        table.insert(count2ProbTable, probData)
+      end
+    elseif awardTableRow.RandomRule == 1 then
+      for k, v in pairs(awardTableRow.GroupContent) do
+        local count = v[2]
+        local probData = {}
+        probData.count = count
+        probData.prob = 1
+        table.insert(count2ProbTable, probData)
+      end
+    else
+      logError("\229\189\147\229\137\141 \229\165\150\229\138\177\231\164\188\229\140\133AwardTable \229\143\130\230\149\176\233\148\153\232\175\175\239\188\140\231\173\150\229\136\146\229\191\133\233\161\187\233\133\141\230\166\130\231\142\135\231\177\187\229\158\139\228\184\1864\239\188\140 awardID is " .. awardTableRow.AwardID)
+    end
+  elseif awardPackageTableRow.RandomRule == 3 then
+    zeroProb = 1 - awardPackageTableRow.GroupRates[1] / 10000
+    local zeroProbData = {}
+    zeroProbData.count = 0
+    zeroProbData.prob = zeroProb
+    table.insert(count2ProbTable, zeroProbData)
+    if awardTableRow.RandomRule == 4 then
+      local totalWeight = 0
+      for i = 1, #awardTableRow.GroupWeight do
+        totalWeight = totalWeight + awardTableRow.GroupWeight[i]
+      end
+      for k, v in pairs(awardTableRow.GroupContent) do
+        local count = v[2]
+        local prob = totalWeight == 0 and 0 or awardTableRow.GroupWeight[k] / totalWeight
+        local probData = {}
+        probData.count = count
+        probData.prob = prob * (1 - zeroProb)
+        table.insert(count2ProbTable, probData)
+      end
+    elseif awardTableRow.RandomRule == 1 then
+      for k, v in pairs(awardTableRow.GroupContent) do
+        local count = v[2]
+        local prob = 1
+        local probData = {}
+        probData.count = count
+        probData.prob = prob * (1 - zeroProb)
+        table.insert(count2ProbTable, probData)
+      end
+    else
+      logError("\229\189\147\229\137\141 \229\165\150\229\138\177\231\164\188\229\140\133AwardTable \229\143\130\230\149\176\233\148\153\232\175\175\239\188\140\231\173\150\229\136\146\229\191\133\233\161\187\233\133\141\230\166\130\231\142\135\231\177\187\229\158\139\228\184\1864\239\188\140 awardID is " .. awardTableRow.AwardID)
+    end
+  else
+    logError("\229\189\147\229\137\141 \229\165\150\229\138\177\231\164\188\229\140\133AwardPackageTable \229\143\130\230\149\176\233\148\153\232\175\175\239\188\140\231\173\150\229\136\146\229\191\133\233\161\187\233\133\141\230\166\130\231\142\135\231\177\187\229\158\139\228\184\1863\230\136\150\232\128\1331\239\188\140 awardPackageID is " .. awardPackageTableRow.PackID)
+  end
+  return count2ProbTable
+end
+
+function ret.mergeRewardProbs(data)
+  local mergedRewardProbs
+  for i = 1, #data do
+    if mergedRewardProbs == nil then
+      mergedRewardProbs = data[i]
+    else
+      mergedRewardProbs = ret.mergeRewardProb(mergedRewardProbs, data[i])
+    end
+  end
+  return mergedRewardProbs
+end
+
+function ret.mergeRewardProb(data1, data2)
+  local rslt = {}
+  if #data1 == 0 then
+    rslt = data2
+  end
+  if #data2 == 0 then
+    rslt = data1
+  end
+  for i = 1, #data1 do
+    for j = 1, #data2 do
+      local count = data1[i].count + data2[j].count
+      local prob = data1[i].prob * data2[j].prob
+      ret.AddRewardProb(rslt, count, prob)
+    end
+  end
+  return rslt
+end
+
+function ret.AddRewardProb(curMap, count, prob)
+  local hasSame = false
+  for i = 1, #curMap do
+    if curMap[i].count == count then
+      hasSame = true
+      curMap[i].prob = curMap[i].prob + prob
+      break
+    end
+  end
+  if not hasSame then
+    local probData = {}
+    probData.count = count
+    probData.prob = prob
+    table.insert(curMap, probData)
   end
 end
 

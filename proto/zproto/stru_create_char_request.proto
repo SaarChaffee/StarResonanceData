@@ -6,17 +6,12 @@ import "stru_device_info.proto";
 import "stru_face_data_db.proto";
 
 message CreateCharRequest {
-    string openId = 2;
-    int32 sdkType = 3;
     string token = 4;
     string name = 5;
     int32 gender = 6;
     int32 vBodySize = 7;
-    string accountId = 8;
     zproto.FaceDataDb faceData = 9;
-    int32 platformType = 10;
     zproto.DeviceInfo deviceInfo = 11;
     int32 initProfessionId = 13;
     int32 areaId = 14;
 }
-

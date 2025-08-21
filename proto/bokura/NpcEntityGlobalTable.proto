@@ -10,8 +10,6 @@ message NpcEntityGlobalTableBase {
     number_array Position = 686;
     int32 SourceType = 380;
 }
-
 message NpcEntityGlobalTableMgr {
-    map<int32, .bokura.NpcEntityGlobalTableBase> datas = 1;
+    repeated bokura.NpcEntityGlobalTableMgr.DatasEntry datas = 1;
 }
-

@@ -38,6 +38,7 @@ function Dungeon_timer_windowView:OnRefresh()
   else
     self:Hide()
   end
+  self:SetAsFirstSibling()
   Z.CoroUtil.create_coro_xpcall(function()
     self:initSubView()
   end)()
@@ -132,7 +133,22 @@ function Dungeon_timer_windowView:initWaitCommonCountdownUI(timerData, timerInfo
   self.componentArray_.timePreparePrefab = timePrepareView.new()
   local timeStamp = self.dungeonTimerVM.GetEndTimeStamp()
   self.componentArray_.timePreparePrefab:Init(uiUnit_.Go, compName)
-  self.componentArray_.timePreparePrefab:CountDownFunc(timeStamp, timerInfo.startTime, timerInfo.direction, timerInfo.changeTime, timerInfo.effectType, timerData.timeLimitNumber, timerData.timeFinishFunc, timerData.timeCallFunc, timerData.timeLimitFunc, timerData.isShowZeroSecond)
+  local data = {
+    timeNumber = timeStamp,
+    startTime = timerInfo.startTime,
+    timingDirection = timerInfo.direction,
+    addTime = timerInfo.changeTime,
+    addTimeUiType = timerInfo.effectType,
+    limitTime = timerData.timeLimitNumber,
+    timeFinishFunc = timerData.timeFinishFunc,
+    timeCallFunc = timerData.timeCallFunc,
+    timeLimitFunc = timerData.timeLimitFunc,
+    isShowZeroSecond = timerData.isShowZeroSecond,
+    pauseTime = timerInfo.pauseTime,
+    pauseTotalTime = timerInfo.pauseTotalTime,
+    outLookType = timerInfo.outLookType
+  }
+  self.componentArray_.timePreparePrefab:CountDownFunc(data)
 end
 
 function Dungeon_timer_windowView:initMiddleCommonCountdownUI(timerData, timerInfo)
@@ -152,7 +168,16 @@ function Dungeon_timer_windowView:initMiddleCommonCountdownUI(timerData, timerIn
   if timerData.rankStartMark then
     timerData.rankStartMark = false
   end
-  self.componentArray_.rankingPrefab:CountDownFunc(timeStamp, timerData.timeLimitNumber, timerInfo.changeTime, timerInfo.direction, timerInfo.effectType, timerInfo.startTime)
+  local data = {
+    timeNumber = timeStamp,
+    limitTime = timerData.timeLimitNumber,
+    addLimitTime = timerInfo.changeTime,
+    timingDirection = timerInfo.direction,
+    addTimeUiType = timerInfo.effectType,
+    startTime = timerInfo.startTime,
+    pauseTime = timerInfo.pauseTime
+  }
+  self.componentArray_.rankingPrefab:CountDownFunc(data)
   if timerData.isShowRank then
     timerData.rankData = self.parkourVM.GetParkourRankingByContainer()
     if timerData.rankData and timerData.rankData.rank then
@@ -170,7 +195,15 @@ function Dungeon_timer_windowView:initStartingGunCountdownUI(timerData, timerInf
   end
   self.componentArray_.countDownPrefab = countDownView.new()
   self.componentArray_.countDownPrefab:Init(uiUnit_.Go, compName)
-  self.componentArray_.countDownPrefab:CountDownFunc(timerInfo.dungeonTimes, timerData.timeLimitNumber, timerData.timeFinishFunc, timerData.timeCallFunc, timerData.timeLimitFunc, timerData.isEndShow)
+  local data = {
+    timeNumber = timerInfo.dungeonTimes,
+    limitTime = timerData.timeLimitNumber,
+    timeFinishFunc = timerData.timeFinishFunc,
+    timeCallFunc = timerData.timeCallFunc,
+    timeLimitFunc = timerData.timeLimitFunc,
+    isEndShow = timerData.isEndShow
+  }
+  self.componentArray_.countDownPrefab:CountDownFunc(data)
 end
 
 function Dungeon_timer_windowView:initRightCommonCountdownUI(timerInfo)
@@ -184,23 +217,28 @@ function Dungeon_timer_windowView:initRightCommonCountdownUI(timerInfo)
   local data = {}
   data.showType = E.DungeonTimeShowType.time
   data.startTime = timerInfo.startTime
-  data.endTime = timerInfo.startTime + timerInfo.dungeonTimes
+  data.endTime = timerInfo.startTime + timerInfo.dungeonTimes + timerInfo.pauseTotalTime
   data.timeType = timerInfo.direction
   data.changeTimeNumber = timerInfo.changeTime
   data.changeTimeType = timerInfo.effectType
+  data.lookType = timerInfo.outLookType
+  data.pauseTime = timerInfo.pauseTime
   self.componentArray_.rightCommonPrefab = heroTimeView.new()
   self.componentArray_.rightCommonPrefab:Init(self, uiUnit_, data)
+  Z.AudioMgr:Play("UI_Event_Countdown_Short")
 end
 
 function Dungeon_timer_windowView:initHeroCountdownUI(timerData, ignoreChange)
   local compName = "hero_dungeon_time_tpl_view"
-  local path = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "heroTimePath")
+  local pathKey = Z.IsPCUI and "heroTimePathPC" or "heroTimePath"
+  local path = self:GetPrefabCacheDataNew(self.uiBinder.pcd, pathKey)
   local uiUnit_ = self:createUiUnit(path, compName, self.leftCommonZwidget)
   if not uiUnit_ then
     return
   end
   self.componentArray_.heroTimePrefab = heroTimeView.new()
   self.componentArray_.heroTimePrefab:Init(self, uiUnit_, timerData, ignoreChange)
+  Z.AudioMgr:Play("UI_Event_Countdown_Short")
 end
 
 return Dungeon_timer_windowView

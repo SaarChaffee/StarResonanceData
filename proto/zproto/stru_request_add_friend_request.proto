@@ -6,4 +6,3 @@ message RequestAddFriendRequest {
     int64 charId = 2;
     int32 source = 3;
 }
-

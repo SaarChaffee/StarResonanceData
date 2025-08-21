@@ -403,7 +403,6 @@ function ComposeView:checkIsProbabilityEnough()
   if self.composeData_.SuccessfulProbability // 100 < 100 then
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("ComposeProbabilityNotEnough"), function()
       self:checkIsUnbindToBind()
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   else
     self:checkIsUnbindToBind()
@@ -434,7 +433,6 @@ function ComposeView:checkIsUnbindToBind()
     local desc = Lang("ComposeUnbindToBind", param)
     Z.DialogViewDataMgr:OpenNormalDialog(desc, function()
       self:sendCompose()
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   else
     self:sendCompose()

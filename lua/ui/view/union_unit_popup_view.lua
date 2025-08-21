@@ -28,7 +28,6 @@ function Union_unit_popupView:OnDeActive()
   self:unInitLoopListView()
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_eff)
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_item_eff)
-  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.img_depth_build)
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.img_frame)
 end
 
@@ -38,7 +37,6 @@ end
 function Union_unit_popupView:onStartAnimShow()
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff)
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_item_eff)
-  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.img_depth_build)
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.img_frame)
   self.uiBinder.anim:PlayOnce("anim_union_unit_popup_open")
   self.uiBinder.anim_dotween:Restart(Z.DOTweenAnimType.Open)
@@ -54,6 +52,11 @@ end
 
 function Union_unit_popupView:initComponent()
   self.uiBinder.scenemask_bg:SetSceneMaskByKey(self.SceneMaskKey)
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   self:AddClick(self.uiBinder.btn_mask, function()
     Z.UIMgr:CloseView(self.viewConfigKey)
   end)
@@ -61,7 +64,7 @@ end
 
 function Union_unit_popupView:refreshTotalInfo()
   self.uiBinder.lab_build_name.text = self.buildConfig_.BuildingName
-  self.uiBinder.img_build:SetImage(self.buildConfig_.SmallPicture)
+  self.uiBinder.rimg_build:SetImage(self.buildConfig_.SmallPicture)
   self.uiBinder.img_icon:SetImage(ICON_PATH[self.popupType_])
   if self.popupType_ == E.UnionBuildPopupType.Upgrade then
     self.uiBinder.lab_title.text = Lang("level_upgrade_success")

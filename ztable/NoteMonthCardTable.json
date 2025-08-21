@@ -1,0 +1,83 @@
+{
+  "9070001": {
+    "Id": 9070001,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_month_card/monthly_reward_card_main_card_02",
+    "Resources": "ui/textures/handbook_month_card/monthly_reward_card_02",
+    "Episode": 9070001,
+    "IsHide": false
+  },
+  "9070002": {
+    "Id": 9070002,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_month_card/monthly_reward_card_main_card_03",
+    "Resources": "ui/textures/handbook_month_card/monthly_reward_card_03",
+    "Episode": 9070002,
+    "IsHide": false
+  },
+  "9070003": {
+    "Id": 9070003,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_month_card/monthly_reward_card_main_card_04",
+    "Resources": "ui/textures/handbook_month_card/monthly_reward_card_04",
+    "Episode": 9070003,
+    "IsHide": false
+  },
+  "9070004": {
+    "Id": 9070004,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_month_card/monthly_reward_card_main_card_05",
+    "Resources": "ui/textures/handbook_month_card/monthly_reward_card_05",
+    "Episode": 9070004,
+    "IsHide": false
+  },
+  "9070005": {
+    "Id": 9070005,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_month_card/monthly_reward_card_main_card_06",
+    "Resources": "ui/textures/handbook_month_card/monthly_reward_card_06",
+    "Episode": 9070005,
+    "IsHide": false
+  },
+  "9070006": {
+    "Id": 9070006,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_month_card/monthly_reward_card_main_card_01",
+    "Resources": "ui/textures/handbook_month_card/monthly_reward_card_01",
+    "Episode": 9070006,
+    "IsHide": false
+  },
+  "9070007": {
+    "Id": 9070007,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_month_card/monthly_reward_card_main_card_02",
+    "Resources": "ui/textures/handbook_month_card/monthly_reward_card_01",
+    "Episode": 9070007,
+    "IsHide": false
+  },
+  "9070008": {
+    "Id": 9070008,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_month_card/monthly_reward_card_main_card_03",
+    "Resources": "ui/textures/handbook_month_card/monthly_reward_card_01",
+    "Episode": 9070008,
+    "IsHide": false
+  },
+  "9070009": {
+    "Id": 9070009,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_month_card/monthly_reward_card_main_card_04",
+    "Resources": "ui/textures/handbook_month_card/monthly_reward_card_01",
+    "Episode": 9070009,
+    "IsHide": false
+  }
+}

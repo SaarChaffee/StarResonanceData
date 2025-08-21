@@ -9,4 +9,3 @@ message NotifyTeamMemVoiceIdChangeRequest {
     int64 memberId = 2;
     int32 voiceId = 3;
 }
-

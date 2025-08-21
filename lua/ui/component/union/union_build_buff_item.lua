@@ -10,7 +10,7 @@ function UnionBuildBuffItem:OnRefresh(data)
   if data.Type == "Time" then
     local buffTime = data.Value
     self.uiBinder.lab_desc.text = Lang("UnionBuffTimeTipsDesc", {
-      time = Z.TimeTools.S2HMSFormat(buffTime)
+      time = Z.TimeFormatTools.FormatToDHMS(buffTime, true)
     })
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon, false)
     self.uiBinder.trans_desc:SetAnchorPosition(POS_TIME_X, 0)

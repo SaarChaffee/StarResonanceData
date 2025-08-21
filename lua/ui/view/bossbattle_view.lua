@@ -3,11 +3,6 @@ local BossbattleView = class("BossbattleView", super)
 
 function BossbattleView:ctor()
   self.uiBinder = nil
-  if Z.IsPCUI then
-    Z.UIConfig.bossbattle.PrefabPath = "battle/battle_boss_blood_pc_sub"
-  else
-    Z.UIConfig.bossbattle.PrefabPath = "battle/battle_boss_blood_sub"
-  end
   super.ctor(self, "bossbattle")
   self.abnormalStateView_ = require("ui/view/abnormal_state_view").new()
   self.vm = Z.VMMgr.GetVM("bossbattle")
@@ -35,7 +30,7 @@ function BossbattleView:OnActive()
     self.vm.CloseBossUI()
     return
   end
-  local state = bossEntity:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
+  local state = bossEntity:GetLuaAttrState()
   if state == 9 then
     self.vm.SetBossUuid(nil)
     self.vm.CloseBossUI()
@@ -53,7 +48,9 @@ function BossbattleView:OnRefresh()
 end
 
 function BossbattleView:OnDeActive()
-  self.uiBinder.boss_blood_comp:ResetParams()
+  if self.uiBinder.boss_blood_comp then
+    self.uiBinder.boss_blood_comp:ResetParams()
+  end
   self.monsterId_ = nil
   self:UnBindLuaAttrWatchers()
   Z.CameraMgr:UpdateDarkScene(false, Color.New(0, 0, 0, 1))
@@ -72,13 +69,16 @@ function BossbattleView:BindLuaAttrWatchers()
   if bossEntity == nil then
     return
   end
-  self.stateToken = self:BindEntityLuaAttrWatcher({
-    Z.PbAttrEnum("AttrState")
-  }, bossEntity, self.refreshState)
+  self.stateWatcher = Z.DIServiceMgr.AttrStateComponentWatcherService:OnAttrStateChanged(self.bossUuid_, function()
+    self:refreshState()
+  end)
 end
 
 function BossbattleView:UnBindLuaAttrWatchers()
-  self:UnBindEntityLuaAttrWatcher(self.stateToken)
+  if self.stateWatcher ~= nil then
+    self.stateWatcher:Dispose()
+    self.stateWatcher = nil
+  end
 end
 
 function BossbattleView:refreshState()
@@ -86,7 +86,7 @@ function BossbattleView:refreshState()
   if bossEntity == nil then
     return
   end
-  local state = bossEntity:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
+  local state = bossEntity:GetLuaAttrState()
   if state == 9 then
     self.vm.CloseBossUI()
   end
@@ -107,7 +107,6 @@ function BossbattleView:onDisplayBossOutOverdriveUI(isBreak, isWeak)
     asyncCall(self.uiBinder.img_break_bg, clipName, self.cancelSource:CreateToken())
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_break_bg, false)
     self.isPlayingAnim = false
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_boss_fury_break, false)
     self.abnormalStateView_:BindLuaAttrWatchers()
   end)
 end

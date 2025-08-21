@@ -4,6 +4,11 @@ local mergeDataFuncs = {
     local last = container.__data__.professionId
     container.__data__.professionId = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("professionId", last)
+  end,
+  [2] = function(container, buffer, watcherList)
+    local last = container.__data__.WeaponSkin
+    container.__data__.WeaponSkin = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("WeaponSkin", last)
   end
 }
 local setForbidenMt = function(t)
@@ -35,6 +40,9 @@ local resetData = function(container, pbData)
   container.__data__ = pbData
   if not pbData.professionId then
     container.__data__.professionId = 0
+  end
+  if not pbData.WeaponSkin then
+    container.__data__.WeaponSkin = 0
   end
   setForbidenMt(container)
 end
@@ -79,6 +87,11 @@ local getContainerElem = function(container)
     fieldId = 1,
     dataType = 0,
     data = container.professionId
+  }
+  ret.WeaponSkin = {
+    fieldId = 2,
+    dataType = 0,
+    data = container.WeaponSkin
   }
   return ret
 end

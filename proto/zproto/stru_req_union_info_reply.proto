@@ -13,16 +13,14 @@ import "stru_union_resource.proto";
 import "stru_user_summary_data.proto";
 
 message ReqUnionInfoReply {
-    zproto.EErrorCode errorCode = 1;
-    int32 errCode = 2;
-    zproto.UnionInfo info = 3;
-    zproto.RecruitInfo recruitInfo = 4;
-    zproto.UserSummaryData presidentInfo = 5;
-    map<int32, .zproto.UnionBuilding> unionBuildings = 6;
-    zproto.UnionActivity unionActivity = 7;
-    zproto.MemUnionActivity selfActivity = 8;
-    map<int32, .zproto.UnionResource> unionResourceLib = 9;
-    int32 selfSpeedTimes = 10;
-    repeated zproto.UnionEffectBuff effectBuffs = 11;
+    zproto.UnionInfo info = 1;
+    zproto.RecruitInfo recruitInfo = 2;
+    zproto.UserSummaryData presidentInfo = 3;
+    repeated zproto.ReqUnionInfoReply.UnionBuildingsEntry unionBuildings = 4;
+    zproto.UnionActivity unionActivity = 5;
+    zproto.MemUnionActivity selfActivity = 6;
+    repeated zproto.ReqUnionInfoReply.UnionResourceLibEntry unionResourceLib = 7;
+    int32 selfSpeedTimes = 8;
+    repeated zproto.UnionEffectBuff effectBuffs = 9;
+    zproto.EErrorCode errCode = 10;
 }
-

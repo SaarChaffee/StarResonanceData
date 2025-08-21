@@ -26,8 +26,6 @@ message GuideTableBase {
     int32 ShowHelplibraryId = 464;
     string_array DynamicUI = 1636;
 }
-
 message GuideTableMgr {
-    map<int32, .bokura.GuideTableBase> datas = 1;
+    repeated bokura.GuideTableMgr.DatasEntry datas = 1;
 }
-

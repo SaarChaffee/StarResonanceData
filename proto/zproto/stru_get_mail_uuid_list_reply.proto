@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
-message GetMailUuidListReply {
-    int32 errCode = 2;
-    repeated int64 mailUuidList = 3;
-}
+import "enum_e_error_code.proto";
 
+message GetMailUuidListReply {
+    repeated int64 mailUuidList = 3;
+    zproto.EErrorCode errCode = 4;
+}

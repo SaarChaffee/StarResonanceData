@@ -20,14 +20,6 @@ function StageLogin:OnEnterStage(sceneId)
   if QualityGradeSetting.CurrentPlatform == EQualityPlatform.Standalone then
     Panda.Core.GameContext.UseECSModel = true
   end
-  local needShowMark = Z.ScreenMark
-  if needShowMark then
-    local loginVm = Z.VMMgr.GetVM("login")
-    local deviceInfo = loginVm:GetDeviceInfo()
-    Z.UIMgr:OpenView("mark_main", {
-      key = deviceInfo.deviceId
-    })
-  end
 end
 
 return StageLogin

@@ -13,8 +13,6 @@ message InferenceStepTableBase {
     mlstring_array WrongBubble = 512;
     int_array WrongBubbleAction = 1770;
 }
-
 message InferenceStepTableMgr {
-    map<int32, .bokura.InferenceStepTableBase> datas = 1;
+    repeated bokura.InferenceStepTableMgr.DatasEntry datas = 1;
 }
-

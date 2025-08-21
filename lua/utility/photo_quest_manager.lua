@@ -72,6 +72,10 @@ end
 function PhotoQuestMgr:GetNearestPhotoTaskId(posInfoList)
   local photoTaskId = 0
   local nearestDistance = 0
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return photoTaskId, nearestDistance
+  end
   local playerPos = Z.EntityMgr.PlayerEnt:GetLocalAttrVirtualPos()
   for photoId, value in pairs(posInfoList) do
     if value.data then

@@ -12,7 +12,5 @@ message DungeonEventData {
     int32 startTime = 2;
     zproto.DungeonEventState state = 3;
     zproto.DungeonEventResult result = 4;
-    map<int32, .zproto.DungeonTargetData> dungeonTarget = 5;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.DungeonEventData.DungeonTargetEntry dungeonTarget = 5;
 }
-

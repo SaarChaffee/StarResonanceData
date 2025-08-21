@@ -3,7 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message PrivateChatTargetBlockRequest {
-    uint32 targetId = 2;
-    bool setBlock = 3;
+    uint32 targetId = 1;
+    bool setBlock = 2;
 }
-

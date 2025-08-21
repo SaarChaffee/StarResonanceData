@@ -24,7 +24,7 @@ function Trading_ring_buy_sell_subView:OnActive()
     local nodeState = Z.RedPointMgr.GetRedState(E.RedType.TradeItemPreBuy)
     if nodeState then
       Z.RedPointMgr.AsyncCancelRedDot(E.RedType.TradeItemPreBuy)
-      Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TradeItemPreBuy, 0)
+      Z.RedPointMgr.UpdateNodeCount(E.RedType.TradeItemPreBuy, 0)
     end
   end)()
 end

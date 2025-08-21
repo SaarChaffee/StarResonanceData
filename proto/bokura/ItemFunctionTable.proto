@@ -21,8 +21,6 @@ message ItemFunctionTableBase {
     int32 CanQuick = 2025;
     int32 ItemBatch = 1530;
 }
-
 message ItemFunctionTableMgr {
-    map<int32, .bokura.ItemFunctionTableBase> datas = 1;
+    repeated bokura.ItemFunctionTableMgr.DatasEntry datas = 1;
 }
-

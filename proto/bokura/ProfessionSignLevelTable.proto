@@ -10,8 +10,6 @@ message ProfessionSignLevelTableBase {
     int32 LevelID = 896;
     int_table EffectPara = 1683;
 }
-
 message ProfessionSignLevelTableMgr {
-    map<int32, .bokura.ProfessionSignLevelTableBase> datas = 1;
+    repeated bokura.ProfessionSignLevelTableMgr.DatasEntry datas = 1;
 }
-

@@ -6,9 +6,7 @@ import "stru_map_sticker_task_info.proto";
 import "stru_dirty_mask.proto";
 
 message MapStickerInfo {
-    map<uint32, .zproto.MapStickerTaskInfo> stickerMap = 1;
+    repeated zproto.MapStickerInfo.StickerMapEntry stickerMap = 1;
     repeated uint32 finishMap = 2;
     uint32 awardFlag = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

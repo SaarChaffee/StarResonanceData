@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message AddToStructureGroupRequest {
+    int64 groupId = 1;
+    repeated int64 structureIds = 2;
+    bool isOuter = 3;
+}

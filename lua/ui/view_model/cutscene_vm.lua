@@ -1,19 +1,22 @@
-local openCutsceneView = function(cutsceneId, isInFlow)
+local openCutsceneView = function(cutsceneId, isInFlow, skipType)
   local viewData = {}
   viewData.CutsceneId = cutsceneId
   viewData.IsInFlow = isInFlow
-  if Z.StatusSwitchMgr:CheckSwitchEnable(Z.EStatusSwitch.StatusCutscene) then
+  viewData.SkipType = skipType
+  if Z.StatusSwitchMgr:TrySwitchToState(Z.EStatusSwitch.StatusCutscene) then
     Z.UIMgr:OpenView("cutscene_main", viewData)
   end
 end
 local closeCutsceneView = function()
   Z.UIMgr:CloseView("cutscene_main")
 end
-local onPlayCutscene = function(cutsceneId, isInFlow)
-  local cutRow = Z.TableMgr.GetTable("CutsceneTableMgr").GetRow(cutsceneId)
-  if cutRow and cutRow.CanSkip ~= E.CutsceneSkipType.NotAllow then
+local onPlayCutscene = function(cutsceneId, isInFlow, skipType)
+  if skipType == -1 or skipType == nil then
+    local cutRow = Z.TableMgr.GetTable("CutsceneTableMgr").GetRow(cutsceneId)
+    skipType = cutRow.CanSkip
+  end
+  if skipType ~= E.CutsceneSkipType.NotAllow then
     local isSkip = false
-    local skipType = cutRow.CanSkip
     if skipType == E.CutsceneSkipType.Allow then
       isSkip = true
     elseif skipType == E.CutsceneSkipType.FirstNotAllow then
@@ -22,11 +25,11 @@ local onPlayCutscene = function(cutsceneId, isInFlow)
     if isSkip then
       local cutData = Z.DataMgr.Get("cutscene_data")
       cutData.CutsceneUIHost = cutsceneId
-      openCutsceneView(cutsceneId, isInFlow)
+      openCutsceneView(cutsceneId, isInFlow, skipType)
     end
   end
-  local questTrackVM = Z.VMMgr.GetVM("quest_track")
-  questTrackVM.SetQuestGuideEffectVisible(false)
+  local questGoalGuideVm = Z.VMMgr.GetVM("quest_goal_guide")
+  questGoalGuideVm.SetQuestGuideEffectVisible(false)
   Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnPlayCutscene, cutsceneId)
 end
 local onStopCutscene = function(cutsceneId)
@@ -35,8 +38,8 @@ local onStopCutscene = function(cutsceneId)
     closeCutsceneView()
     cutData.CutsceneUIHost = 0
   end
-  local questTrackVM = Z.VMMgr.GetVM("quest_track")
-  questTrackVM.SetQuestGuideEffectVisible(true)
+  local questGoalGuideVm = Z.VMMgr.GetVM("quest_goal_guide")
+  questGoalGuideVm.SetQuestGuideEffectVisible(true)
   local questData = Z.DataMgr.Get("quest_data")
   local args = questData.CutsceneBlackMaskArgsDict[cutsceneId]
   if args then

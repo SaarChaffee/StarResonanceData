@@ -36,11 +36,12 @@ function UnionScheduleItem:SetState(scoreNum, isReceive)
   local isScoreEnough = scoreNum >= self.param_.scoreNum
   self.isScoreEnough = isScoreEnough
   self.isReceive = isReceive
+  local isRed = Z.RedPointMgr.GetRedState(E.RedType.UnionHuntPorgress)
   self:SetVisible(self.uiBinder.img_unselected, not isScoreEnough)
   self:SetVisible(self.uiBinder.img_selected, isScoreEnough)
   self:SetVisible(self.uiBinder.node_finish_icon, isScoreEnough)
   self:SetVisible(self.uiBinder.img_receive, isReceive)
-  self:SetVisible(self.uiBinder.img_red, isScoreEnough and not isReceive)
+  self:SetVisible(self.uiBinder.img_red, isScoreEnough and isRed and not isReceive)
 end
 
 function UnionScheduleItem:OnItemClick()

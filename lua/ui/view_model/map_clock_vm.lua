@@ -112,7 +112,7 @@ local refreshReddotInfo = function()
       end
     end
   end
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.ScenicPhoto, count)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.ScenicPhoto, count)
 end
 local getPhotoTask = function()
   local ret = {}

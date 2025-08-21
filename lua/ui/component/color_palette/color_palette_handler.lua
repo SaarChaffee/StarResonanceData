@@ -7,7 +7,8 @@ function FashionColorItemHandler:ctor(parentView)
 end
 
 function FashionColorItemHandler:GetItemAddress()
-  return GetLoadAssetPath("FaceColorItem")
+  local colorItem = Z.IsPCUI and "FaceColorItemPC" or "FaceColorItem"
+  return GetLoadAssetPath(colorItem)
 end
 
 function FashionColorItemHandler:GetToggleWidget(container)

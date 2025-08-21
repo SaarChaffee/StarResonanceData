@@ -20,7 +20,7 @@ end
 function dmg_skill_data:Active(itemName, viewData, parent, allHit)
   self.allHit_ = allHit
   self.viewData_ = viewData
-  self.unitName_ = itemName .. viewData.skillUuid
+  self.unitName_ = itemName .. viewData.skillId
   Z.CoroUtil.create_coro_xpcall(function()
     self.item_ = self.parent_:AsyncLoadUiUnit(GetLoadAssetPath(assetPath), self.unitName_, parent)
     self.item_.Ref:SetParent(parent)
@@ -30,23 +30,23 @@ end
 
 function dmg_skill_data:setTextData()
   if self.viewData_.hitSource == EDamageSourceSkill then
-    local skillTab = Z.TableMgr.GetTable("SkillTableMgr").GetRow(tonumber(self.viewData_.skillUuid))
+    local skillTab = Z.TableMgr.GetTable("SkillTableMgr").GetRow(tonumber(self.viewData_.skillId))
     if skillTab then
       local skillEffectCfgData = Z.TableMgr.GetTable("SkillEffectTableMgr").GetRow(skillTab.EffectIDs[1])
       self.item_.lab_01.TMPLab.text = Lang("WeaponHeroSkill") .. skillEffectCfgData.Id .. skillEffectCfgData.Name
     end
   elseif self.viewData_.hitSource == EDamageSourceBuff then
-    local buffTab = Z.TableMgr.GetTable("BuffTableMgr").GetRow(tonumber(self.viewData_.skillUuid))
+    local buffTab = Z.TableMgr.GetTable("BuffTableMgr").GetRow(tonumber(self.viewData_.skillId))
     if buffTab then
       self.item_.lab_01.TMPLab.text = "Buff" .. buffTab.Id .. buffTab.Name
     end
   elseif self.viewData_.hitSource == EDamageSourceBullet then
-    local bulletTab = Z.TableMgr.GetTable("BulletTableMgr").GetRow(tonumber(self.viewData_.skillUuid))
+    local bulletTab = Z.TableMgr.GetTable("BulletTableMgr").GetRow(tonumber(self.viewData_.skillId))
     if bulletTab then
       self.item_.lab_01.TMPLab.text = Lang("Bullet") .. bulletTab.Id .. bulletTab.Name
     end
   else
-    self.item_.lab_01.TMPLab.text = self.viewData_.skillUuid
+    self.item_.lab_01.TMPLab.text = self.viewData_.skillId
   end
   local radio
   local hit = dmgData.TypeIndex == 3 and self.viewData_.Hit or self.viewData_.sheildAndHpLessenValue

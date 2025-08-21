@@ -10,4 +10,3 @@ message GashaRecord {
     repeated zproto.GashaRecordItemInfo gashaRecordInfo = 3;
     int64 firstTimestamp = 4;
 }
-

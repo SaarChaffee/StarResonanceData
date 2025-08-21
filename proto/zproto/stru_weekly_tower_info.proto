@@ -9,4 +9,3 @@ message WeeklyTowerInfo {
     bool continuous = 2;
     zproto.DungeonRandomEntityConfigIdInfo randEntities = 3;
 }
-

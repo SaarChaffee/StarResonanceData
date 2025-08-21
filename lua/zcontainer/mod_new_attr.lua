@@ -13,6 +13,21 @@ local mergeDataFuncs = {
       t[#t + 1] = v
       container.Watcher:MarkDirty("modParts", last)
     end
+  end,
+  [2] = function(container, buffer, watcherList)
+    local count = br.ReadInt32(buffer)
+    if count == -4 then
+      return
+    end
+    local t = {}
+    local last = container.__data__.upgradeRecords
+    container.__data__.upgradeRecords = t
+    for i = 1, count do
+      local v = require("zcontainer.mod_part_upgrade_record").New()
+      v:MergeData(buffer, watcherList)
+      t[#t + 1] = v
+      container.Watcher:MarkDirty("upgradeRecords", last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -44,6 +59,9 @@ local resetData = function(container, pbData)
   container.__data__ = pbData
   if not pbData.modParts then
     container.__data__.modParts = {}
+  end
+  if not pbData.upgradeRecords then
+    container.__data__.upgradeRecords = {}
   end
   setForbidenMt(container)
 end
@@ -101,6 +119,35 @@ local getContainerElem = function(container)
   else
     ret.modParts = {
       fieldId = 1,
+      dataType = 3,
+      data = {}
+    }
+  end
+  if container.upgradeRecords ~= nil then
+    local data = {}
+    for index, repeatedItem in pairs(container.upgradeRecords) do
+      if repeatedItem == nil then
+        data[index] = {
+          fieldId = 2,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[index] = {
+          fieldId = 2,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
+    end
+    ret.upgradeRecords = {
+      fieldId = 2,
+      dataType = 3,
+      data = data
+    }
+  else
+    ret.upgradeRecords = {
+      fieldId = 2,
       dataType = 3,
       data = {}
     }

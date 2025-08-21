@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_exchange_price_item_data.proto";
 
 message ExchangeNoticePreBuyReply {
-    int32 errCode = 1;
     repeated zproto.ExchangePriceItemData items = 2;
+    zproto.EErrorCode errCode = 3;
 }
-

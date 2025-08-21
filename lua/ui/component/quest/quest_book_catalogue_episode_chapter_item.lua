@@ -9,8 +9,8 @@ function QuestBookCatalogueEpisodeChapterItem:initComp()
 end
 
 function QuestBookCatalogueEpisodeChapterItem:OnRefresh(data)
-  self.uiBinder.lab_name_off.text = data.chapterInfo.TitleName
-  self.uiBinder.lab_name_on.text = data.chapterInfo.TitleName
+  self.uiBinder.lab_name_off.text = data.phaseInfo.PhaseName
+  self.uiBinder.lab_name_on.text = data.phaseInfo.PhaseName
   self.uiBinder.tog_item.isOn = self.IsSelected
 end
 
@@ -20,7 +20,7 @@ end
 function QuestBookCatalogueEpisodeChapterItem:OnSelected(isSelected)
   self.uiBinder.tog_item.isOn = isSelected
   if isSelected then
-    self.parent.UIView:OnSelectChapter(self:GetCurData().chapterInfo)
+    self.parent.UIView:OnSelectPhase(self:GetCurData().phaseInfo)
   end
 end
 

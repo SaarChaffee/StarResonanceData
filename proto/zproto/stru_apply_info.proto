@@ -9,4 +9,3 @@ message ApplyInfo {
     uint64 time = 4;
     zproto.UserSummaryData userSummaryData = 9;
 }
-

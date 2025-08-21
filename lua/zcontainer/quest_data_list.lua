@@ -494,6 +494,9 @@ local resetData = function(container, pbData)
   if not pbData.acceptQuestMap then
     container.__data__.acceptQuestMap = {}
   end
+  if not pbData.version then
+    container.__data__.version = 0
+  end
   setForbidenMt(container)
   container.questMap.__data__ = {}
   setForbidenMt(container.questMap)
@@ -897,6 +900,11 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  ret.version = {
+    fieldId = 16,
+    dataType = 0,
+    data = container.version
+  }
   return ret
 end
 local new = function()

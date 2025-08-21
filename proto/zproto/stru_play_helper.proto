@@ -5,8 +5,6 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message PlayHelper {
-    map<int32, bool> displayedHelperList = 1;
-    map<int32, bool> completedGuide = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.PlayHelper.DisplayedHelperListEntry displayedHelperList = 1;
+    repeated zproto.PlayHelper.CompletedGuideEntry completedGuide = 2;
 }
-

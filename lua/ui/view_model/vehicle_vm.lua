@@ -11,12 +11,20 @@ function VehicleVM.OpenVehicleMain(vehicleId)
   end
 end
 
-function VehicleVM.OpenPopView(vehicleId, type)
-  Z.UIMgr:OpenView("vehicle_skill_popup", {vehicleId = vehicleId, type = type})
+function VehicleVM.OpenPopView(vehicleId, type, rect)
+  Z.UIMgr:OpenView("vehicle_tips", {
+    vehicleId = vehicleId,
+    type = type,
+    rect = rect
+  })
 end
 
 function VehicleVM.OpenEquipPopView(vehicleId, type)
   Z.UIMgr:OpenView("vehicle_equip_popup", {vehicleId = vehicleId, type = type})
+end
+
+function VehicleVM.GetRedNodeId(id)
+  return E.RedType.Vehicle .. "_" .. id
 end
 
 function VehicleVM.TakeRide()
@@ -32,6 +40,10 @@ end
 function VehicleVM.IsEquip(id)
   local isEquip = false
   local type
+  local config = Z.TableMgr.GetTable("VehicleBaseTableMgr").GetRow(id)
+  if config and config.ParentId and config.ParentId ~= 0 then
+    id = config.ParentId
+  end
   for key, value in pairs(Z.ContainerMgr.CharSerialize.rideList.rides) do
     if value.rideId == id then
       if type == nil then
@@ -52,6 +64,18 @@ function VehicleVM.IsTypeEquip(type)
   return 0
 end
 
+function VehicleVM.GetEquipSkinId(configId)
+  if Z.ContainerMgr.CharSerialize.rideList.skinData[configId] then
+    local skinId = Z.ContainerMgr.CharSerialize.rideList.skinData[configId].rideSkinId
+    if skinId ~= 0 then
+      return skinId
+    else
+      return configId
+    end
+  end
+  return configId
+end
+
 function VehicleVM.IsHaveVehicleEquip()
   if Z.ContainerMgr.CharSerialize.rideList.rides then
     for _, value in pairs(Z.ContainerMgr.CharSerialize.rideList.rides) do
@@ -64,10 +88,13 @@ function VehicleVM.IsHaveVehicleEquip()
 end
 
 function VehicleVM.StartOrStopRide(cancelToken)
-  if Z.EntityMgr.PlayerEnt:GetLuaRidingId() ~= 0 then
+  if Z.EntityMgr.PlayerEnt and Z.EntityMgr.PlayerEnt:GetLuaRidingId() ~= 0 then
     VehicleVM.StopRide()
   else
-    VehicleVM.StartRide(vehicleDefine.VehicleUseType.land, cancelToken)
+    local result = VehicleVM.AsyncStartRide(vehicleDefine.VehicleUseType.land, cancelToken)
+    if not result then
+      Z.ZPathFindingMgr:StopPathFinding()
+    end
   end
 end
 
@@ -80,7 +107,7 @@ function VehicleVM.CheckIsCanRide(status)
   if vehicleData.IsSendMessage then
     return false
   end
-  if Z.EntityMgr.PlayerEnt:GetLuaRideStage() == vehicleDefine.ERideStage.ERideUp or Z.EntityMgr.PlayerEnt:GetLuaRideStage() == vehicleDefine.ERideStage.ERideDown then
+  if not Z.EntityMgr.PlayerEnt or Z.EntityMgr.PlayerEnt:GetLuaRideStage() == vehicleDefine.ERideStage.ERideUp or Z.EntityMgr.PlayerEnt:GetLuaRideStage() == vehicleDefine.ERideStage.ERideDown then
     return false
   end
   if status == Z.EStatusSwitch.RideLandStateDefault then
@@ -108,7 +135,7 @@ function VehicleVM.CheckReply(reply)
   end
 end
 
-function VehicleVM.TakeOnRide(ridetype, id, cancelToken)
+function VehicleVM.AsyncTakeOnRide(ridetype, id, cancelToken)
   local request = {RideType = ridetype, RideId = id}
   local reply = worldProxy.TakeOnRide(request, cancelToken)
   if VehicleVM.CheckReply(reply) then
@@ -119,7 +146,7 @@ function VehicleVM.TakeOnRide(ridetype, id, cancelToken)
   end
 end
 
-function VehicleVM.TakeOffRide(id, cancelToken)
+function VehicleVM.AsyncTakeOffRide(id, cancelToken)
   local request = {RideId = id}
   local reply = worldProxy.TakeOffRide(request, cancelToken)
   if VehicleVM.CheckReply(reply) then
@@ -130,22 +157,21 @@ function VehicleVM.TakeOffRide(id, cancelToken)
   end
 end
 
-function VehicleVM.StartRide(type, cancelToken)
+function VehicleVM.AsyncStartRide(type, cancelToken)
   local vehicleId = VehicleVM.IsTypeEquip(type)
   if vehicleId == 0 then
     Z.TipsVM.ShowTipsLang(1000904)
     return false
-  else
-    if Z.LuaBridge.CheckVehicleCanSummon(vehicleId) == false then
-      Z.TipsVM.ShowTipsLang(1000905)
-      return false
-    end
-    if Z.LuaBridge.CheckCanRideUpInWater(vehicleId) == false then
-      Z.TipsVM.ShowTipsLang(1000906)
-      return false
-    end
   end
   if not VehicleVM.CheckIsCanRide(Z.EStatusSwitch.RideLandStateDefault) then
+    return false
+  end
+  if Z.LuaBridge.CheckVehicleCanSummon(vehicleId) == false then
+    Z.TipsVM.ShowTipsLang(1000905)
+    return false
+  end
+  if Z.LuaBridge.CheckCanRideUpInWater(vehicleId) == false then
+    Z.TipsVM.ShowTipsLang(1000906)
     return false
   end
   local vehicleData = Z.DataMgr.Get("vehicle_data")
@@ -154,28 +180,33 @@ function VehicleVM.StartRide(type, cancelToken)
   local request = {
     RideType = vehicleDefine.VehicleUseType.land
   }
+  local result = false
   xpcall(function()
     local reply = worldProxy.StartRide(request, cancelToken)
     vehicleData.IsSendMessage = false
     if VehicleVM.CheckReply(reply) then
-      return true
+      Z.AudioMgr:Play("UI_Button_Vehicle")
+      result = true
     else
-      return false
+      Z.StatusSwitchMgr:SetStateActive(Z.EStatusSwitch.RideRequest, false)
+      result = false
     end
   end, function(error)
     logError(error)
     vehicleData.IsSendMessage = false
   end)
+  return result
 end
 
 function VehicleVM.StopRide()
   if not VehicleVM.CheckIsCanRide(Z.EStatusSwitch.ActorStateDefault) then
     return false
   end
+  Z.StatusSwitchMgr:TrySwitchToState(Z.EStatusSwitch.ActorStateDefault)
   return true
 end
 
-function VehicleVM.ApplyToRide(targetId, cancelToken)
+function VehicleVM.AsyncApplyToRide(targetId, cancelToken)
   local vehicleData = Z.DataMgr.Get("vehicle_data")
   vehicleData.IsSendMessage = true
   local request = {targetId = targetId}
@@ -193,7 +224,7 @@ function VehicleVM.ApplyToRide(targetId, cancelToken)
   end)
 end
 
-function VehicleVM.InviteToRide(inviterId, cancelToken)
+function VehicleVM.AsyncInviteToRide(inviterId, cancelToken)
   local vehicleData = Z.DataMgr.Get("vehicle_data")
   if vehicleData.IsSendMessage then
     return false
@@ -214,21 +245,52 @@ function VehicleVM.InviteToRide(inviterId, cancelToken)
   end)
 end
 
-function VehicleVM.ApplyToRideResult(vOrigId, result, cancelToken)
+function VehicleVM.AsyncApplyToRideResult(vOrigId, result, cancelToken)
   local request = {vOrigId = vOrigId, result = result}
-  Z.StatusSwitchMgr:SetStateActive(Z.EStatusSwitch.RideRequest, true)
+  local isInvited = Z.EntityMgr.PlayerEnt and Z.EntityMgr.PlayerEnt:GetLuaRidingId() == 0
+  if isInvited then
+    Z.StatusSwitchMgr:SetStateActive(Z.EStatusSwitch.RideRequest, true)
+  end
   local reply = worldProxy.ApplyToRideResult(request, cancelToken)
   if VehicleVM.CheckReply(reply) then
+    return true
+  else
+    if isInvited then
+      Z.StatusSwitchMgr:SetStateActive(Z.EStatusSwitch.RideRequest, false)
+    end
+    return false
+  end
+end
+
+function VehicleVM.AsyncRideReconfirm(charId, cancelToken)
+  Z.StatusSwitchMgr:SetStateActive(Z.EStatusSwitch.RideRequest, true)
+  local reply = worldProxy.RideReconfirm(charId, cancelToken)
+  if VehicleVM.CheckReply(reply) then
+    return true
+  else
+    Z.StatusSwitchMgr:SetStateActive(Z.EStatusSwitch.RideRequest, false)
+    return false
+  end
+end
+
+function VehicleVM.AsyncTakeOnActivateRideSkin(skinId, cancelToken)
+  local request = {SkinId = skinId}
+  local reply = worldProxy.TakeOnActivateRideSkin(request, cancelToken)
+  if VehicleVM.CheckReply(reply) then
+    Z.TipsVM.ShowTips(1000910)
+    Z.EventMgr:Dispatch(Z.ConstValue.Vehicle.OnActiveRideSkin)
     return true
   else
     return false
   end
 end
 
-function VehicleVM.RideReconfirm(charId, cancelSource)
-  Z.StatusSwitchMgr:SetStateActive(Z.EStatusSwitch.RideRequest, true)
-  local reply = worldProxy.RideReconfirm(charId, cancelSource)
+function VehicleVM.AsyncTakeOnSetRideSkin(skinId, cancelToken)
+  local request = {SkinId = skinId}
+  local reply = worldProxy.TakeOnSetRideSkin(request, cancelToken)
   if VehicleVM.CheckReply(reply) then
+    Z.TipsVM.ShowTips(1000911)
+    Z.EventMgr:Dispatch(Z.ConstValue.Vehicle.SetRideSkin)
     return true
   else
     return false

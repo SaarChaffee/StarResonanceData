@@ -3,9 +3,9 @@ syntax = "proto3";
 package zproto;
 
 import "stru_album_show.proto";
+import "enum_e_error_code.proto";
 
 message GetUnionAllAlbumReply {
-    int32 errCode = 1;
-    repeated zproto.AlbumShow allAlbums = 2;
+    repeated zproto.AlbumShow allAlbums = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

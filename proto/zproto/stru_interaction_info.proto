@@ -7,10 +7,8 @@ import "stru_dirty_mask.proto";
 message InteractionInfo {
     int32 interactionStage = 1;
     int32 actionId = 2;
-    int32 originatorId = 3;
-    int32 inviteeId = 4;
+    int64 originatorId = 3;
+    int64 inviteeId = 4;
     bool isOriginator = 5;
     int32 interactionType = 6;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

@@ -1,11 +1,12 @@
 local super = require("ui.ui_base")
 local UIViewBase = class("UIViewBase", super)
 
-function UIViewBase:ctor(viewConfigKey, assetPath)
+function UIViewBase:ctor(viewConfigKey, assetPath, isHavePCUI)
   self.ViewConfigKey = viewConfigKey
   self.ViewConfig = Z.UIConfig[viewConfigKey]
   assetPath = assetPath or self.ViewConfig.PrefabPath
-  super.ctor(self, viewConfigKey, assetPath, self.ViewConfig.CacheLv)
+  isHavePCUI = isHavePCUI or self.ViewConfig.IsHavePCUI
+  super.ctor(self, viewConfigKey, assetPath, self.ViewConfig.CacheLv, isHavePCUI)
   self.uiLayer = self.ViewConfig.Layer
   self.uiType = self.ViewConfig.ViewType
 end
@@ -32,6 +33,21 @@ function UIViewBase:UpdateAfterVisibleChanged(visible)
   end
 end
 
+function UIViewBase:SetUIMaskState(state)
+  if self.ViewConfig.IsFullScreen or self.ViewConfig.IsUnrealScene or self.ViewConfig.ViewType == Z.UI.EType.Exclusive then
+    local dict = Z.UIMgr.UIMaskIgnoreViewDict
+    dict[self.viewConfigKey] = state and 1 or 0
+    local isShowMask = false
+    for key, value in pairs(dict) do
+      if 0 < value then
+        isShowMask = true
+        break
+      end
+    end
+    Z.UIRoot:SetUIMaskState(isShowMask)
+  end
+end
+
 function UIViewBase:UnLoad()
   super.UnLoad(self)
   Z.UIMgr:UpdateDepth(self.uiLayer)
@@ -52,7 +68,10 @@ function UIViewBase:UpdateDepth()
     return
   end
   if self.uiBinder then
-    self.uiBinder.Ref.UIComp.UIDepth:UpdateViewDepth(self.uiLayer)
+    local uiDepth = self.uiBinder.Ref.UIComp:GetUIDepth()
+    if uiDepth then
+      uiDepth:UpdateViewDepth(self.uiLayer)
+    end
   elseif self.panel then
     self.panel.Ref.ZUIDepth:UpdateViewDepth(self.uiLayer)
   end
@@ -112,6 +131,10 @@ function UIViewBase:ClearReShowStandaloneDict()
     end
   end
   self.waitReShowStandaloneViewDict_ = nil
+end
+
+function UIViewBase:checkViewLayerVisible()
+  return Z.UIRoot:GetLayerVisible(self.uiLayer)
 end
 
 return UIViewBase

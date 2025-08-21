@@ -5,7 +5,6 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message UnlockColorInfo {
-    map<int32, bool> colorInfoMap = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.UnlockColorInfo.ColorInfoMapEntry colorInfoMap = 1;
+    repeated zproto.UnlockColorInfo.ColorBlockInfoMapEntry colorBlockInfoMap = 2;
 }
-

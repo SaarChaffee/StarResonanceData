@@ -1,9 +1,9 @@
 local worldProxy = require("zproxy.world_proxy")
 local unionResolveTableMgr_ = Z.TableMgr.GetTable("UnionResolveTableMgr")
 local UnionTaskVM = {}
-local CheckErrorCode = function(errorCode)
-  if errorCode and errorCode ~= 0 then
-    Z.TipsVM.ShowTips(errorCode)
+local CheckErrorCode = function(errCode)
+  if errCode and errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   return true

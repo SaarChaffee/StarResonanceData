@@ -9,4 +9,3 @@ message NotifyUnionInfoRequest {
     zproto.UnionInfo info = 2;
     zproto.EnumUnionNotifyType type = 3;
 }
-

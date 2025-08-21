@@ -1,4 +1,3 @@
-local UI = Z.UI
 local super = require("ui.ui_view_base")
 local HeroDungeonOpen = class("HeroDungeonOpen", super)
 local loopListView = require("ui.component.loop_list_view")
@@ -49,6 +48,9 @@ function HeroDungeonOpen:initBtn()
     self.vm_.CloseDungeonOpenView()
   end)
   self:AddAsyncClick(self.btn_ok_, function()
+    if self.isTeamMember_ then
+      return
+    end
     local ret = self.vm_.AsyncStartPlayingDungeon(self.cancelSource, self.isUseKey_)
     if ret == 0 then
       local data = {}
@@ -58,37 +60,36 @@ function HeroDungeonOpen:initBtn()
       self.data_.DunegonEndTime = 0
     end
   end)
+  local dungeonTypeName = self.dungeonCfg_.DungeonTypeName
+  if self.dungeonCfg_.PlayType == E.DungeonType.MasterChallengeDungeon then
+    local diff = Z.ContainerMgr.DungeonSyncData.dungeonSceneInfo.difficulty
+    dungeonTypeName = self.vm_.GetHeroDungeonTypeName(self.dungeonId_, diff)
+  end
   if self.dungeonCfg_ then
-    self.lab_title_.text = self.dungeonCfg_.Name
-    self.open_lab_title_.text = self.dungeonCfg_.Name
-    self.lab_deadreduce_.text = Lang("Second", {
-      val = self.dungeonCfg_.DeathReleaseTime
-    })
+    local title = self.dungeonCfg_.Name
+    if not string.zisEmpty(self.dungeonCfg_.DungeonTypeName) then
+      title = Lang("DungeonsTitle", {
+        val1 = self.dungeonCfg_.Name,
+        val2 = dungeonTypeName
+      })
+    end
+    self.lab_title_.text = title
   end
   if self.challengeCfg_ then
     if self.challengeCfg_.LimitTime <= 0 then
       self.lab_time_.text = Lang("NoTimeLimit")
     else
-      self.lab_time_.text = Z.TimeTools.S2MSFormat(self.challengeCfg_.LimitTime)
+      self.lab_time_.text = Z.TimeFormatTools.FormatToDHMS(self.challengeCfg_.LimitTime, true, true)
     end
   end
-  local isChalle = self.vm_.IsHeroChallengeDungeonScene()
-  local showTime = self.dungeonCfg_ and self.dungeonCfg_.DeathReleaseTime > 0
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_entry_deadreduce, showTime and isChalle)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_entry_time, not isChalle or showTime ~= false)
-end
-
-function HeroDungeonOpen:getkeyConfigInfo()
-  if self.dungeonCfg_ and self.challengeCfg_ then
-    self.consumeItemId_ = self.dungeonCfg_.ItemConsume[1]
-    self.consumeItemCount_ = self.dungeonCfg_.ItemConsume[2]
-    self.keyTtemCfgData_ = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.consumeItemId_)
-  end
+  local showTime = self.vm_.GetDeadreduceTime()
+  self.lab_deadreduce_.text = Lang("Second", {val = showTime})
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_entry_deadreduce, 0 < showTime)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_entry_time, self.challengeCfg_ and self.challengeCfg_.LimitTime > 0)
 end
 
 function HeroDungeonOpen:initWidgets()
   self.lab_title_ = self.uiBinder.lab_title
-  self.open_lab_title_ = self.uiBinder.lab_title
   self.lab_time_ = self.uiBinder.lab_double_digit1
   self.lab_deadreduce_ = self.uiBinder.lab_double_digit2
   self.btn_cancel_ = self.uiBinder.btn_cancel
@@ -96,9 +97,9 @@ function HeroDungeonOpen:initWidgets()
   self.node_content_ = self.uiBinder.node_content
   self.node_bg_ = self.uiBinder.node_bg
   self.countdown_ = self.uiBinder.lab_time
+  self.leaderBeginTips_ = self.uiBinder.lab_tips
   self.affixScrollRect_ = loopListView.new(self, self.uiBinder.loop_item, affixLoopItem, "hero_dungeon_open_item_tpl")
-  local dataList = {}
-  self.affixScrollRect_:Init(dataList)
+  self.affixScrollRect_:Init({})
 end
 
 function HeroDungeonOpen:initItem()
@@ -110,13 +111,20 @@ function HeroDungeonOpen:initItem()
       keyAffixList[value] = 1
     end
   end
+  local affixCfgs = Z.TableMgr.GetTable("AffixTableMgr")
   local dataList = {}
+  local dataListIndex = 0
   local affixList = self.data_:GetAffixArray()
   for _, value in ipairs(affixList) do
-    local d = {}
-    d.isKey = keyAffixList[value] ~= nil
-    d.affixId = value
-    dataList[#dataList + 1] = d
+    local config = affixCfgs.GetRow(value)
+    if config and config.IsShowUI then
+      local tempTable = {
+        isKey = keyAffixList[value] ~= nil,
+        affixId = value
+      }
+      dataListIndex = dataListIndex + 1
+      dataList[dataListIndex] = tempTable
+    end
   end
   self.affixScrollRect_:RefreshListView(dataList, true)
 end
@@ -125,6 +133,10 @@ function HeroDungeonOpen:showBtn()
   self.state_ = self.vm_.GetDungeonState()
   self:SetUIVisible(self.btn_cancel_, self.state_ == E.DungeonState.DungeonStateActive)
   self:SetUIVisible(self.btn_ok_, self.state_ == E.DungeonState.DungeonStateActive)
+  local leaderId = self.teamData_.TeamInfo.baseInfo.leaderId
+  self.isTeamMember_ = leaderId ~= nil and leaderId ~= 0 and leaderId ~= Z.ContainerMgr.CharSerialize.charId
+  self.btn_ok_.IsDisabled = self.isTeamMember_
+  self.uiBinder.Ref:SetVisible(self.leaderBeginTips_, self.isTeamMember_ and self.state_ == E.DungeonState.DungeonStateActive)
   if self.state_ == E.DungeonState.DungeonStateReady then
     self:setTime()
     self.frameTimer = self.timerMgr:StartTimer(function()
@@ -132,6 +144,7 @@ function HeroDungeonOpen:showBtn()
     end, self.vm_.GetStartOpenTime() + 1)
   elseif self.state_ >= E.DungeonState.DungeonStatePlaying then
     self.vm_.CloseDungeonOpenView()
+    self.vm_.OpenBeginReadyView()
   end
 end
 

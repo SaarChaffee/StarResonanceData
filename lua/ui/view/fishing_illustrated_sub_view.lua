@@ -7,13 +7,19 @@ local fishingRed = require("rednode.fishing_red")
 
 function Fishing_Illustrate_subView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "fishing_illustrated_sub", "fishing/fishing_illustrated_sub", UI.ECacheLv.None)
+  if Z.IsPCUI then
+    super.ctor(self, "fishing_illustrated_sub", "fishing/fishing_illustrated_sub_pc", UI.ECacheLv.None)
+  else
+    super.ctor(self, "fishing_illustrated_sub", "fishing/fishing_illustrated_sub", UI.ECacheLv.None)
+  end
   self.fishingData_ = Z.DataMgr.Get("fishing_data")
   self.fishingVM_ = Z.VMMgr.GetVM("fishing")
   self.quickJumpVM_ = Z.VMMgr.GetVM("quick_jump")
 end
 
 function Fishing_Illustrate_subView:OnActive()
+  self:onStartAnimShow()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_kun, false)
   self.uiBinder.Trans:SetSizeDelta(0, 0)
   self.selectArea_ = self.viewData.areaId
   self.initTypeTab_ = false
@@ -61,7 +67,11 @@ function Fishing_Illustrate_subView:refreshUI()
 end
 
 function Fishing_Illustrate_subView:initLoopGridView()
-  self.loopGridView_ = loopGridView.new(self, self.uiBinder.loop_item, fishingillustratedItem, "fishing_illustrated_item_tpl")
+  if Z.IsPCUI then
+    self.loopGridView_ = loopGridView.new(self, self.uiBinder.loop_item, fishingillustratedItem, "fishing_illustrated_item_tpl_pc")
+  else
+    self.loopGridView_ = loopGridView.new(self, self.uiBinder.loop_item, fishingillustratedItem, "fishing_illustrated_item_tpl")
+  end
   self.loopGridView_:Init({})
 end
 
@@ -234,6 +244,10 @@ function Fishing_Illustrate_subView:initFishTypeTab()
       firstTab.isOn = true
     end
   end)()
+end
+
+function Fishing_Illustrate_subView:onStartAnimShow()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Fishing_Illustrate_subView

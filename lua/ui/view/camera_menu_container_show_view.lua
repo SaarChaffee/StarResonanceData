@@ -33,19 +33,14 @@ function Camera_menu_container_showView:camerasysPatternTypeChange(valueData)
         item.tog_camera_setting.isOn = true
       end
     end
-    if valueData.targetType == E.CameraState.Default then
+    if valueData.targetType == E.TakePhotoSate.Default then
       self.entityTempTab_ = self.cameraData_:GetShowEntityData()
-    elseif valueData.targetType == E.CameraState.AR then
+    elseif valueData.targetType == E.TakePhotoSate.AR then
       self.entityTempTab_ = self.cameraData_:GetShowEntityARData()
-    elseif valueData.targetType == E.CameraState.SelfPhoto then
+    elseif valueData.targetType == E.TakePhotoSate.SelfPhoto then
       self.entityTempTab_ = self.cameraData_:GetShowEntitySelfPhotoData()
     end
   end
-end
-
-function Camera_menu_container_showView:refreshShowState()
-  self:updateListItem()
-  self.cameraData_.MenuContainerShowDirty = false
 end
 
 function Camera_menu_container_showView:OnRefresh()
@@ -56,13 +51,13 @@ end
 function Camera_menu_container_showView:updateListItem()
   local cameraPatternType
   if not self.cameraData_.CameraPatternType then
-    cameraPatternType = E.CameraState.Default
+    cameraPatternType = E.TakePhotoSate.Default
   else
     cameraPatternType = self.cameraData_.CameraPatternType
   end
-  if cameraPatternType == E.CameraState.AR then
+  if cameraPatternType == E.TakePhotoSate.AR then
     self.entityTempTab_ = self.cameraData_:GetShowEntityARData()
-  elseif cameraPatternType == E.CameraState.SelfPhoto then
+  elseif cameraPatternType == E.TakePhotoSate.SelfPhoto then
     self.entityTempTab_ = self.cameraData_:GetShowEntitySelfPhotoData()
   else
     self.entityTempTab_ = self.cameraData_:GetShowEntityData()
@@ -121,12 +116,12 @@ end
 function Camera_menu_container_showView:setTogFunc(type, isOn)
   self.cameraData_.CameraEntityVisible[type] = not isOn
   self:setEntityShow(type, isOn)
-  if type == E.CamerasysShowEntityType.Oneself then
+  if type == E.CameraSystemShowEntityType.Oneself then
     self.cameraData_.IsHideSelfModel = not isOn
   end
   local cameraPatternType
   if not self.cameraData_.CameraPatternType then
-    cameraPatternType = E.CameraState.Default
+    cameraPatternType = E.TakePhotoSate.Default
   else
     cameraPatternType = self.cameraData_.CameraPatternType
   end

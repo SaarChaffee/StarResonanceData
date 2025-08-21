@@ -16,8 +16,6 @@ message FaceStickerTableBase {
     vector2 DefaultPosition = 1451;
     float DefaultRotate = 1670;
 }
-
 message FaceStickerTableMgr {
-    map<int32, .bokura.FaceStickerTableBase> datas = 1;
+    repeated bokura.FaceStickerTableMgr.DatasEntry datas = 1;
 }
-

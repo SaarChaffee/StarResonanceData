@@ -77,6 +77,16 @@ local mergeDataFuncs = {
       last:MergeData(buffer, watcherList)
       container.Watcher:MarkMapDirty("award", dk, {})
     end
+  end,
+  [10] = function(container, buffer, watcherList)
+    local last = container.__data__.isValid
+    container.__data__.isValid = br.ReadBoolean(buffer)
+    container.Watcher:MarkDirty("isValid", last)
+  end,
+  [11] = function(container, buffer, watcherList)
+    local last = container.__data__.isSendedMail
+    container.__data__.isSendedMail = br.ReadBoolean(buffer)
+    container.Watcher:MarkDirty("isSendedMail", last)
   end
 }
 local setForbidenMt = function(t)
@@ -132,6 +142,12 @@ local resetData = function(container, pbData)
   end
   if not pbData.award then
     container.__data__.award = {}
+  end
+  if not pbData.isValid then
+    container.__data__.isValid = false
+  end
+  if not pbData.isSendedMail then
+    container.__data__.isSendedMail = false
   end
   setForbidenMt(container)
   container.award.__data__ = {}
@@ -248,6 +264,16 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  ret.isValid = {
+    fieldId = 10,
+    dataType = 0,
+    data = container.isValid
+  }
+  ret.isSendedMail = {
+    fieldId = 11,
+    dataType = 0,
+    data = container.isSendedMail
+  }
   return ret
 end
 local new = function()

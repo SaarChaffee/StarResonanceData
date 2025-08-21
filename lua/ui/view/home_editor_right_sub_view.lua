@@ -4,15 +4,17 @@ local Home_editor_right_subView = class("Home_editor_right_subView", super)
 local wareHouseSubView = require("ui/view/home_editor_warehouse_sub_view")
 local furnitureHouseSubView = require("ui/view/home_editor_furniture_sub_view")
 local settingHouseSubView = require("ui/view/home_editor_setting_sub_view")
+local lightSubView = require("ui/view/home_editor_lamplight_sub_view")
 
 function Home_editor_right_subView:ctor(parent)
   self.uiBinder = nil
   self.parent = parent
   super.ctor(self, "home_editor_right_sub", "home_editor/home_editor_right_sub", UI.ECacheLv.None)
   self.subViews = {}
-  self.subViews[E.EHomeRightSubType.Furniture] = furnitureHouseSubView.new(self)
+  self.subViews[E.EHomeRightSubType.Furniture] = wareHouseSubView.new(self)
   self.subViews[E.EHomeRightSubType.Warehouse] = wareHouseSubView.new(self)
   self.subViews[E.EHomeRightSubType.Setting] = settingHouseSubView.new(self)
+  self.subViews[E.EHomeRightSubType.Light] = lightSubView.new(self)
 end
 
 function Home_editor_right_subView:initBinders()
@@ -24,15 +26,22 @@ end
 
 function Home_editor_right_subView:OnActive()
   self:initBinders()
-  if self.viewData == E.EHomeRightSubType.Warehouse then
-    self.bgNode_:SetWidth(330)
-  else
-    self.bgNode_:SetWidth(612)
-  end
-  self.subViews[self.viewData]:Active(nil, self.subViewNode_)
+  self:SetBgWidth((self.viewData == E.EHomeRightSubType.Setting or self.viewData == E.EHomeRightSubType.Light) and 560 or 416)
+  self.subViews[self.viewData]:Active({
+    subType = self.viewData
+  }, self.subViewNode_)
   self:AddClick(self.closeBtn_, function()
-    self.parent:OnDeActiveRigtSubView()
+    self:closeView()
   end)
+  Z.EventMgr:Add(Z.ConstValue.Home.HomeEntitySelectingSingle, self.closeView, self)
+end
+
+function Home_editor_right_subView:closeView()
+  self.parent:OnDeActiveRigtSubView()
+end
+
+function Home_editor_right_subView:SetBgWidth(width)
+  self.bgNode_:SetWidth(width)
 end
 
 function Home_editor_right_subView:OnDeActive()

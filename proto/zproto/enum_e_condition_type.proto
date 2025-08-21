@@ -24,4 +24,3 @@ enum EConditionType {
     Condition_ClickCount = 10003;
     Condition_PressTime = 10004;
 }
-

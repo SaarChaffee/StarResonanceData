@@ -11,8 +11,6 @@ message ActionTableBase {
     int32 UnlockItem = 702;
     bool IsFollow = 1100;
 }
-
 message ActionTableMgr {
-    map<int32, .bokura.ActionTableBase> datas = 1;
+    repeated bokura.ActionTableMgr.DatasEntry datas = 1;
 }
-

@@ -12,4 +12,3 @@ enum ETransferType {
     TransferTypeLoadingWhite = 6;
     TransferTypeLoadingNoEffect = 7;
 }
-

@@ -46,8 +46,6 @@ message ZoneEntityTableBase {
     string_array InteractionEvent = 1343;
     int32 ZoneType = 593;
 }
-
 message ZoneEntityTableMgr {
-    map<int32, .bokura.ZoneEntityTableBase> datas = 1;
+    repeated bokura.ZoneEntityTableMgr.DatasEntry datas = 1;
 }
-

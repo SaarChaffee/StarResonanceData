@@ -9,8 +9,6 @@ message ChatStickersTableBase {
     string Res = 1275;
     int32 UnlockItem = 702;
 }
-
 message ChatStickersTableMgr {
-    map<int32, .bokura.ChatStickersTableBase> datas = 1;
+    repeated bokura.ChatStickersTableMgr.DatasEntry datas = 1;
 }
-

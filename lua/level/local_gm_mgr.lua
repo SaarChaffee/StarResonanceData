@@ -86,7 +86,8 @@ function LocalGM.show.setIsPCUI(...)
   }
   local isPCUI = params[1] == 1
   Z.IsPCUI = isPCUI
-  Z.LocalUserDataMgr.SetBool("BKR_IS_PCUI", isPCUI, 0, true)
+  Z.LocalUserDataMgr.SetBoolByLua(E.LocalUserDataType.Device, "BKR_IS_PCUI", isPCUI)
+  Z.LocalUserDataMgr.Save()
 end
 
 function LocalGM.show.saveFaceData(...)
@@ -113,6 +114,16 @@ function LocalGM.show.saveFaceLuaDataWithPath(...)
   }
   local faceVM = Z.VMMgr.GetVM("face")
   faceVM.SaveFaceDataToLuaFile(params[1])
+end
+
+function LocalGM.show.setShowAllFashion(...)
+  local params = {
+    ...
+  }
+  local isShowAllFashion = params[1] == 1
+  local fashionData = Z.DataMgr.Get("fashion_data")
+  fashionData.IsShowAllFashion = isShowAllFashion
+  Z.EventMgr:Dispatch(Z.ConstValue.Fashion.FashionShowState)
 end
 
 function LocalGM.show.loadFashionLuaData(...)
@@ -180,11 +191,13 @@ function LocalGM.show.luaDoString(...)
 end
 
 function LocalGM.show.openZoneDebug(...)
-  Z.LocalUserDataMgr.SetBool("ZoneDebugMode", true, 0, true)
+  Z.LocalUserDataMgr.SetBoolByLua(E.LocalUserDataType.Device, "ZoneDebugMode", true)
+  Z.LocalUserDataMgr.Save()
 end
 
 function LocalGM.show.closeZoneDebug(...)
-  Z.LocalUserDataMgr.SetBool("ZoneDebugMode", false, 0, true)
+  Z.LocalUserDataMgr.SetBoolByLua(E.LocalUserDataType.Device, "ZoneDebugMode", false)
+  Z.LocalUserDataMgr.Save()
 end
 
 function LocalGM.show.setSeason(...)
@@ -193,7 +206,8 @@ function LocalGM.show.setSeason(...)
   }
   local i = tonumber(ps[1])
   logGreen("gm change season:" .. tostring(i))
-  Z.LocalUserDataMgr.SetInt("Season", i, 0, true)
+  Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Device, "Season", i)
+  Z.LocalUserDataMgr.Save()
 end
 
 function LocalGM.show.clearPrefs(...)
@@ -204,7 +218,7 @@ function LocalGM.show.switchEventLog(...)
   local params = {
     ...
   }
-  Z.LocalUserDataMgr.SetInt("avoidEventLogs_", tonumber(params[1], 0, true))
+  Z.UserDataManager.SetInt("avoidEventLogs_", tonumber(params[1]))
 end
 
 local doFileErrorFunc = function(err)
@@ -323,6 +337,11 @@ function LocalGM.show.switchAsyncLoadEffect(state)
   Z.LuaBridge.SetAsyncLoadEffect(isOpen)
 end
 
+function LocalGM.show.switchEffectCountMonitor(state)
+  local isOpen = (tonumber(state) or 0) == 1
+  Z.LuaBridge.SetEffectCountMonitor(isOpen)
+end
+
 function LocalGM.show.closeHud(state)
   local isClosed = (tonumber(state) or 0) == 1
   Z.LuaBridge.SetHudSwitch(not isClosed, Panda.ZGame.EHudAvailableSource.EGm)
@@ -398,6 +417,23 @@ function LocalGM.show.enterFunctionDungeon(functionID, dungeonId, selectType, he
   end, function(err)
     logError(err)
   end)()
+end
+
+function LocalGM.show.addMemoryPressure()
+  Z.LuaBridge.AddMemoryPressure()
+end
+
+function LocalGM.show.saveHomeLocalData()
+  Z.DIServiceMgr.HomeService:SaveLocalData()
+end
+
+function LocalGM.show.setSavePowerOpen(...)
+  local params = {
+    ...
+  }
+  local isOpen = params[1] == 1
+  local powerSaveVM = Z.VMMgr.GetVM("power_save")
+  powerSaveVM.SetIsPowerSaveOpen(isOpen)
 end
 
 function LocalGM:CallLocalGM(meesageConmmand, ...)

@@ -13,4 +13,3 @@ enum ChitChatChannelType {
     ChannelTopNotice = 7;
     ChannelSystem = 99;
 }
-

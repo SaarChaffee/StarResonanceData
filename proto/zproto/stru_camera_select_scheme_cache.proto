@@ -7,4 +7,3 @@ import "stru_camera_scheme_info.proto";
 message cameraSelectSchemeCache {
     zproto.cameraSchemeInfo cameraSchemeCache = 1;
 }
-

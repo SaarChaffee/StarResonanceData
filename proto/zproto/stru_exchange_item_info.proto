@@ -8,4 +8,3 @@ message ExchangeItemInfo {
     uint32 minPrice = 3;
     bool isCare = 4;
 }
-

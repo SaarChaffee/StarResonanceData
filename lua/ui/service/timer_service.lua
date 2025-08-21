@@ -63,7 +63,7 @@ function TimerService:unionWarDanceTimer(state, offsetIndex)
     Z.EventMgr:Dispatch(Z.ConstValue.UnionWarDanceEvt.UnionWarDanceSelfActivityStart)
     unionWarDanceVM:NoticeActivityOpen()
     unionWarDanceVM:StartUnionWarDanceMusic(true)
-    unionWarDanceVM:ShowUnionWarDanceVibe(true)
+    unionWarDanceVM:ShowUnionWarDanceVibe()
     local unionWarDanceData_ = Z.DataMgr.Get("union_wardance_data")
     local isInArea = unionWarDanceData_:IsInDanceArea()
     if isInArea then

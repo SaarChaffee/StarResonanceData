@@ -8,4 +8,3 @@ message ReportMSdkRequest {
     string traceId = 4;
     int32 execTime = 5;
 }
-

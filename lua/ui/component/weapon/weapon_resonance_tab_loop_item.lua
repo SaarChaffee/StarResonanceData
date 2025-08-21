@@ -18,7 +18,7 @@ function WeaponResonanceTabLoopItem:OnRefresh(data)
   if levelNum < 10 then
     levelStr = "0" .. levelStr
   end
-  local colorRichText = isUnlock and "<alpha=#ff>" or "<alpha=#1A>"
+  local colorRichText = isUnlock and "<alpha=#ff>" or "<alpha=#99>"
   levelStr = string.zconcat(colorRichText, levelStr)
   self.uiBinder.lab_normal.text = levelStr
   self.uiBinder.lab_select.text = levelStr

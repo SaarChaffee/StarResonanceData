@@ -2,7 +2,11 @@ syntax = "proto3";
 
 package zproto;
 
-message SetUnionNameReply {
-    int32 errCode = 2;
-}
+import "enum_e_error_code.proto";
+import "stru_union_base_data.proto";
 
+message SetUnionNameReply {
+    int64 passTimeMs = 1;
+    zproto.UnionBaseData data = 2;
+    zproto.EErrorCode errCode = 3;
+}

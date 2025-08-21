@@ -33,6 +33,9 @@ local asyncUserAction = function(actionid, cancelSource)
   Z.TipsVM.ShowTips(ret)
 end
 local quitDungeon = function(cancelToken)
+  if not Z.EntityMgr.PlayerEnt then
+    return
+  end
   local proxy = require("zproxy.world_proxy")
   local visualLayerId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrVisualLayerUid")).Value
   if 0 < visualLayerId then

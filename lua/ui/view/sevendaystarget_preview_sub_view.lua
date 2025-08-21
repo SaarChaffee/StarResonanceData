@@ -10,6 +10,7 @@ function Sevendaystarget_preview_subView:ctor(parent)
   self.switchVm_ = Z.VMMgr.GetVM("switch")
   self.vm = Z.VMMgr.GetVM("function_preview")
   self.data = Z.DataMgr.Get("function_preview_data")
+  self.parent_ = parent
 end
 
 function Sevendaystarget_preview_subView:OnActive()
@@ -30,6 +31,7 @@ function Sevendaystarget_preview_subView:OnActive()
   
   Z.EventMgr:Add(Z.ConstValue.SwitchFunctionChange, self.onFuncDataChange_)
   Z.ContainerMgr.CharSerialize.FunctionData.Watcher:RegWatcher(self.onFuncDataChange_)
+  self.parent_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
 end
 
 function Sevendaystarget_preview_subView:OnDeActive()
@@ -37,6 +39,7 @@ function Sevendaystarget_preview_subView:OnDeActive()
   self:unInitLoopListView()
   Z.EventMgr:Remove(Z.ConstValue.SwitchFunctionChange, self.onFuncDataChange_)
   Z.ContainerMgr.CharSerialize.FunctionData.Watcher:UnregWatcher(self.onFuncDataChange_)
+  self.parent_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_effect)
 end
 
 function Sevendaystarget_preview_subView:OnRefresh()

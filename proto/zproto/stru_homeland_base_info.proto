@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_authority_info.proto";
+import "stru_community_player_info.proto";
+import "stru_community_transfer.proto";
+import "stru_home_land_clutter_generation_record.proto";
+import "stru_home_land_clutter_info.proto";
+import "stru_homeland_decoration_info.proto";
+import "stru_home_land_item_instance.proto";
+import "stru_home_land_sell_shop_info.proto";
+
+message HomelandBaseInfo {
+    int64 homelandId = 1;
+    int32 level = 2;
+    int64 exp = 3;
+    int64 homeResource = 4;
+    int32 cleanliness = 5;
+    int64 lastsubtractcleanlinesstime = 6;
+    zproto.HomeLandClutterInfo homeLandClutter = 7;
+    zproto.HomeLandClutterGenerationRecord homeLandClutterGenerationRecord = 8;
+    zproto.HomeLandSellShopInfo homeLandSellShopInfo = 9;
+    repeated zproto.HomelandBaseInfo.ItemsEntry items = 10;
+    repeated zproto.HomelandBaseInfo.SlotsEntry slots = 11;
+    repeated zproto.HomelandBaseInfo.ItemToSlotEntry itemToSlot = 12;
+    int64 Capacity = 13;
+    int64 UsedSlots = 14;
+    int64 houseOwnerCharId = 15;
+    string name = 16;
+    string checkInContent = 17;
+    string introduction = 18;
+    zproto.CommunityTransfer transferCommunity = 19;
+    repeated zproto.HomelandBaseInfo.CohabitantEntry cohabitant = 20;
+    repeated zproto.HomelandBaseInfo.FurnitureStateEntry furnitureState = 21;
+    zproto.CommunityAuthorityInfo authorityInfo = 22;
+    int32 fieldId = 23;
+    zproto.HomelandDecorationInfo outerDecorationInfo = 24;
+    zproto.HomelandDecorationInfo innerDecorationInfo = 25;
+    repeated int32 unlockedAreas = 26;
+    int32 HousingType = 27;
+    int32 outerEmptyLand = 28;
+    int32 innerEmptyLand = 29;
+    int32 flowersNum = 30;
+}

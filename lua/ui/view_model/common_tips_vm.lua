@@ -28,12 +28,13 @@ function CommonTipsVM.OpenAffixTips(affixArray, posTrans)
 ]]))
 end
 
-function CommonTipsVM.ShowTipsTitleContent(rect, title, content, isRightFirst)
+function CommonTipsVM.ShowTipsTitleContent(rect, title, content, isRightFirst, subTitle)
   local viewData = {
     rect = rect,
     title = title,
     content = content,
-    isRightFirst = isRightFirst ~= nil
+    isRightFirst = isRightFirst ~= nil,
+    subTitle = subTitle
   }
   Z.UIMgr:OpenView("tips_title_content", viewData)
 end
@@ -73,6 +74,19 @@ function CommonTipsVM.CloseUnderline()
   Z.UIMgr:CloseView("tips_underline")
 end
 
+function CommonTipsVM.OpenSkillTips(skillId, position, pivot)
+  local viewData = {
+    skillId = skillId,
+    position = position,
+    pivot = pivot
+  }
+  Z.UIMgr:OpenView("common_skill_tips", viewData)
+end
+
+function CommonTipsVM.CloseSkillTips()
+  Z.UIMgr:CloseView("common_skill_tips")
+end
+
 function CommonTipsVM.OpenTitleContentItems(rect, title, content, itemDataArray, isRightFirst)
   local viewData = {
     rect = rect,
@@ -86,6 +100,19 @@ end
 
 function CommonTipsVM.CloseTitleContentItems()
   Z.UIMgr:CloseView("tips_title_content_items")
+end
+
+function CommonTipsVM.OpenExp(rect, info1, info2)
+  local viewData = {
+    rect = rect,
+    info1 = info1,
+    info2 = info2
+  }
+  Z.UIMgr:OpenView("tips_exp", viewData)
+end
+
+function CommonTipsVM.CloseExp()
+  Z.UIMgr:CloseView("tips_exp")
 end
 
 return CommonTipsVM

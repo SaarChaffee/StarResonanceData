@@ -5,4 +5,3 @@ package zproto;
 message PlanetMemoryContext {
     int32 roomId = 1;
 }
-

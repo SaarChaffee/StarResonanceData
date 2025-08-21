@@ -12,5 +12,5 @@ message PlaceHolderFishPersonalTotal {
     int32 FavourZero = 7;
     string userName = 8;
     string unionName = 9;
+    bool isNewbie = 10;
 }
-

@@ -7,4 +7,3 @@ message ReqGetUnionActivityAwardRequest {
     int32 activityId = 3;
     int32 progress = 4;
 }
-

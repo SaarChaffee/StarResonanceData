@@ -10,4 +10,3 @@ enum EDungeonTimerType {
     DungeonTimerTypeWait = 4;
     DungeonTimerTypePrepare = 5;
 }
-

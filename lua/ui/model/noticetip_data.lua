@@ -34,7 +34,8 @@ function NoticeTipData:ctor()
     [E.TipsType.MiddleTips] = "noticetip_middle_popup",
     [E.TipsType.QuestLetter] = "quest_letter_window",
     [E.TipsType.DungeonRedTips] = "noticetip_pop",
-    [E.TipsType.DungeonGreenTips] = "noticetip_pop"
+    [E.TipsType.DungeonGreenTips] = "noticetip_pop",
+    [E.TipsType.QuestLetterWithBackground] = "quest_letter_window"
   }
   self.CopyTextShowingState = false
   self.NpcShowingState = false
@@ -82,11 +83,20 @@ function NoticeTipData:CheckNpcDataCount()
 end
 
 function NoticeTipData:ClearNpcData(tosceneId)
-  local sceneCfg = Z.TableMgr.GetTable("SceneTableMgr").GetRow(tosceneId)
-  if sceneCfg.SceneSubType ~= E.SceneSubType.Mirror then
-    self.npc_msg_data = {}
-    Z.EventMgr:Dispatch("ShowNoticeCaption")
+  if tosceneId == nil then
+    logError("NoticeTipsData clearNpcData toSceneId is nil!")
+    self:clearNoticeCaptionData()
+    return
   end
+  local sceneCfg = Z.TableMgr.GetTable("SceneTableMgr").GetRow(tosceneId)
+  if sceneCfg == nil or sceneCfg.SceneSubType ~= E.SceneSubType.Mirror then
+    self:clearNoticeCaptionData()
+  end
+end
+
+function NoticeTipData:clearNoticeCaptionData()
+  self.npc_msg_data = {}
+  Z.EventMgr:Dispatch("ShowNoticeCaption")
 end
 
 function NoticeTipData:EnqueueMiddlePopData(msgItem)
@@ -114,6 +124,10 @@ end
 
 function NoticeTipData:GetTopPopDataCount()
   return table.zcount(self.top_pop_data)
+end
+
+function NoticeTipData:ClearTopPopData()
+  self.top_pop_data = {}
 end
 
 function NoticeTipData:CheckConfigRepeat(checkMsgTable, msgItem)

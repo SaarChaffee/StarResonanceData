@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message CharStatisticsData {
+    int32 LoginDays = 1;
+    uint64 LastLoginTime = 2;
+}

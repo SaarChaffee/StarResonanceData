@@ -7,4 +7,3 @@ import "stru_union_activity_progress_info.proto";
 message NotifyUnionActivityProgressRequest {
     zproto.UnionActivityProgressInfo progressInfo = 2;
 }
-

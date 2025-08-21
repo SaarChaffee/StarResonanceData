@@ -7,8 +7,8 @@ local loopScrollRect = require("ui/component/loopscrollrect")
 function Home_editor_furniture_subView:ctor(parent)
   self.uiBinder = nil
   super.ctor(self, "home_editor_furniture_sub", "home_editor/home_editor_furniture_sub", UI.ECacheLv.None)
-  self.vm_ = Z.VMMgr.GetVM("home")
-  self.data_ = Z.DataMgr.Get("home_data")
+  self.vm_ = Z.VMMgr.GetVM("home_editor")
+  self.data_ = Z.DataMgr.Get("home_editor_data")
 end
 
 function Home_editor_furniture_subView:initBinders()

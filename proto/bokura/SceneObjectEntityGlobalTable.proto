@@ -11,8 +11,6 @@ message SceneObjectEntityGlobalTableBase {
     int32 SourceType = 380;
     string OptionData = 853;
 }
-
 message SceneObjectEntityGlobalTableMgr {
-    map<int32, .bokura.SceneObjectEntityGlobalTableBase> datas = 1;
+    repeated bokura.SceneObjectEntityGlobalTableMgr.DatasEntry datas = 1;
 }
-

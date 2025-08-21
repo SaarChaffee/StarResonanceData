@@ -9,8 +9,6 @@ message PlotCharactersTableBase {
     string PlotCharactersAge = 1071;
     string PlotCharactersContent = 1541;
 }
-
 message PlotCharactersTableMgr {
-    map<int32, .bokura.PlotCharactersTableBase> datas = 1;
+    repeated bokura.PlotCharactersTableMgr.DatasEntry datas = 1;
 }
-

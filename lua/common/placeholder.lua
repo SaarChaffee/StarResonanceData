@@ -135,7 +135,7 @@ local setHeroChallengeDungeonName = function(placeholderParam, actionStageData)
   placeholderParam.heroChallengeDungeon.name = dungeonsTable.Name
   return placeholderParam
 end
-local setHeroNormalDungeonName = function(placeholderParam, actionStageData)
+local asyncSetHeroNormalDungeonName = function(placeholderParam, actionStageData)
   if placeholderParam == nil then
     placeholderParam = {}
   end
@@ -166,6 +166,81 @@ local setHeroNormalDungeonName = function(placeholderParam, actionStageData)
     placeholderParam.heroNormalDungeon = {}
   end
   placeholderParam.heroNormalDungeon.name = dungeonData.Name
+  return placeholderParam
+end
+local setNpcName = function(placeholderParam)
+  if placeholderParam == nil then
+    placeholderParam = {}
+  end
+  
+  function placeholderParam.npcname(npcId)
+    local npcTable = Z.TableMgr.GetTable("NpcTableMgr").GetRow(npcId)
+    if not npcTable then
+      return ""
+    end
+    return npcTable.Name
+  end
+  
+  return placeholderParam
+end
+local setItemName = function(placeholderParam)
+  if placeholderParam == nil then
+    placeholderParam = {}
+  end
+  
+  function placeholderParam.itemname(itemId)
+    local itemTable = Z.TableMgr.GetTable("ItemTableMgr").GetRow(itemId)
+    if not itemTable then
+      return ""
+    end
+    return itemTable.Name
+  end
+  
+  return placeholderParam
+end
+local setMonsterName = function(placeholderParam)
+  if placeholderParam == nil then
+    placeholderParam = {}
+  end
+  
+  function placeholderParam.monstername(monsterId)
+    local monsterTable = Z.TableMgr.GetTable("MonsterTableMgr").GetRow(monsterId)
+    if not monsterTable then
+      return ""
+    end
+    return monsterTable.Name
+  end
+  
+  return placeholderParam
+end
+local setQuestName = function(placeholderParam)
+  if placeholderParam == nil then
+    placeholderParam = {}
+  end
+  
+  function placeholderParam.questname(questId)
+    local questTable = Z.TableMgr.GetTable("QuestTableMgr").GetRow(questId)
+    if not questTable then
+      return ""
+    end
+    return questTable.QuestName
+  end
+  
+  return placeholderParam
+end
+local setCollectionName = function(placeholderParam)
+  if placeholderParam == nil then
+    placeholderParam = {}
+  end
+  
+  function placeholderParam.collectionname(collectionId)
+    local collectionTable = Z.TableMgr.GetTable("CollectionTableMgr").GetRow(collectionId)
+    if not collectionTable then
+      return ""
+    end
+    return collectionTable.CollectionName
+  end
+  
   return placeholderParam
 end
 local placeholderHandle = function(content, param)
@@ -233,12 +308,17 @@ local ret = {
   SetMePlaceholder = setMePlaceholder,
   SetDungeonValVluew = setDungeonValVluew,
   SetToPercentPlaceholder = setToPercentPlaceholder,
+  SetNpcName = setNpcName,
+  SetItemName = setItemName,
+  SetMonsterName = setMonsterName,
+  SetQuestName = setQuestName,
+  SetCollectionName = setCollectionName,
   Placeholder = placeholder,
   Placeholder_task = placeholder_task,
   SetTextColor = setTextColor,
   SetTextSize = setTextSize,
   SetDungeonName = setDungeonName,
   SetHeroChallengeDungeonName = setHeroChallengeDungeonName,
-  SetHeroNormalDungeonName = setHeroNormalDungeonName
+  AsyncSetHeroNormalDungeonName = asyncSetHeroNormalDungeonName
 }
 return ret

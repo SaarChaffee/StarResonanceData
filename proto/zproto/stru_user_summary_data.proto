@@ -5,6 +5,8 @@ package zproto;
 import "stru_avatar_info.proto";
 import "stru_basic_data.proto";
 import "stru_char_team.proto";
+import "stru_community_summary_data.proto";
+import "stru_privilege_data.proto";
 import "stru_profession_data.proto";
 import "stru_union_data.proto";
 
@@ -15,5 +17,6 @@ message UserSummaryData {
     int64 fightPoint = 5;
     zproto.CharTeam teamData = 6;
     zproto.UnionData unionData = 7;
+    zproto.CommunitySummaryData communityData = 8;
+    zproto.PrivilegeData privilegeData = 9;
 }
-

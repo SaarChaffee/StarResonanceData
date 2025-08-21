@@ -69,6 +69,12 @@ local resetData = function(container, pbData)
   if not pbData.seasonAchievementList then
     container.__data__.seasonAchievementList = {}
   end
+  if not pbData.hasInitDones then
+    container.__data__.hasInitDones = {}
+  end
+  if not pbData.version then
+    container.__data__.version = 0
+  end
   setForbidenMt(container)
   container.seasonAchievementList.__data__ = {}
   setForbidenMt(container.seasonAchievementList)
@@ -77,6 +83,9 @@ local resetData = function(container, pbData)
     container.seasonAchievementList[k]:ResetData(v)
   end
   container.__data__.seasonAchievementList = nil
+  container.hasInitDones.__data__ = pbData.hasInitDones
+  setForbidenMt(container.hasInitDones)
+  container.__data__.hasInitDones = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -144,6 +153,32 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  if container.hasInitDones ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.hasInitDones) do
+      data[key] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.hasInitDones = {
+      fieldId = 2,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.hasInitDones = {
+      fieldId = 2,
+      dataType = 2,
+      data = {}
+    }
+  end
+  ret.version = {
+    fieldId = 3,
+    dataType = 0,
+    data = container.version
+  }
   return ret
 end
 local new = function()
@@ -154,11 +189,15 @@ local new = function()
     GetContainerElem = getContainerElem,
     seasonAchievementList = {
       __data__ = {}
+    },
+    hasInitDones = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.seasonAchievementList)
+  setForbidenMt(ret.hasInitDones)
   return ret
 end
 return {New = new}

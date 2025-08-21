@@ -9,4 +9,3 @@ message GetExchangeItemRequest {
     repeated zproto.ExchangeFilter filter = 3;
     int32 page = 5;
 }
-

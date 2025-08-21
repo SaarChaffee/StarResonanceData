@@ -1,0 +1,58 @@
+{
+  "1": {
+    "Id": 1,
+    "CoverTitle": "",
+    "CoverDesc": "",
+    "CoverPictureURL": "https://wegame-pkg.panda-tke.tencent-cloud.com/shardData/item_icons_item_icons_citizen_note(1).png",
+    "ReceivingPageDesc": "",
+    "ReceivingPagePictureURL": [],
+    "ReceivingPagePictureData": [
+      [
+        828,
+        600
+      ]
+    ]
+  },
+  "2": {
+    "Id": 2,
+    "CoverTitle": "",
+    "CoverDesc": "",
+    "CoverPictureURL": "https://wegame-pkg.panda-tke.tencent-cloud.com/shardData/item_icons_item_icons_citizen_note(1).png",
+    "ReceivingPageDesc": "",
+    "ReceivingPagePictureURL": [],
+    "ReceivingPagePictureData": [
+      [
+        828,
+        1500
+      ]
+    ]
+  },
+  "3": {
+    "Id": 3,
+    "CoverTitle": "",
+    "CoverDesc": "",
+    "CoverPictureURL": "https://wegame-pkg.panda-tke.tencent-cloud.com/shardData/item_icons_item_icons_citizen_note(1).png",
+    "ReceivingPageDesc": "",
+    "ReceivingPagePictureURL": [],
+    "ReceivingPagePictureData": [
+      [
+        828,
+        1500
+      ]
+    ]
+  },
+  "4": {
+    "Id": 4,
+    "CoverTitle": "",
+    "CoverDesc": "",
+    "CoverPictureURL": "https://wegame-pkg.panda-tke.tencent-cloud.com/shardData/item_icons_item_icons_citizen_note(1).png",
+    "ReceivingPageDesc": "",
+    "ReceivingPagePictureURL": [],
+    "ReceivingPagePictureData": [
+      [
+        828,
+        1500
+      ]
+    ]
+  }
+}

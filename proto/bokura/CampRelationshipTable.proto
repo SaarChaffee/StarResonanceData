@@ -8,8 +8,6 @@ message CampRelationshipTableBase {
     int32 MapId = 838;
     int_table RelationshipID = 1484;
 }
-
 message CampRelationshipTableMgr {
-    map<int32, .bokura.CampRelationshipTableBase> datas = 1;
+    repeated bokura.CampRelationshipTableMgr.DatasEntry datas = 1;
 }
-

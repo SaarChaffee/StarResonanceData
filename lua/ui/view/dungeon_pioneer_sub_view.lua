@@ -15,7 +15,7 @@ function Dungeon_pioneer_subView:OnActive()
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self:AddAsyncClick(self.uiBinder.btn_close, function()
-    self.parent_:CloseRightSubview()
+    self.parent_:CloseRightSubView()
   end)
   self:initData()
 end

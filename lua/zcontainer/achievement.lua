@@ -44,6 +44,9 @@ local resetData = function(container, pbData)
   if not pbData.hasReceived then
     container.__data__.hasReceived = false
   end
+  if not pbData.beginProgress then
+    container.__data__.beginProgress = 0
+  end
   setForbidenMt(container)
 end
 local mergeData = function(container, buffer, watcherList)
@@ -92,6 +95,11 @@ local getContainerElem = function(container)
     fieldId = 2,
     dataType = 0,
     data = container.hasReceived
+  }
+  ret.beginProgress = {
+    fieldId = 3,
+    dataType = 0,
+    data = container.beginProgress
   }
   return ret
 end

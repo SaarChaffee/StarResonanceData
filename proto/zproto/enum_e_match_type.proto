@@ -5,6 +5,5 @@ package zproto;
 enum EMatchType {
     EMatchTypeNull = 0;
     EMatchTypeTeam = 1;
-    EMatchTypeWorldBoss = 2;
+    EMatchTypeActivity = 2;
 }
-

@@ -1,0 +1,999 @@
+{
+  "1001": {
+    "Id": 1001,
+    "Name": "",
+    "GashaType": 1,
+    "OpenType": 0,
+    "FunctionId": 800820,
+    "Work": 1,
+    "TimerId": 80101,
+    "Note": "非绑池",
+    "Sort": 1001,
+    "Bind": [],
+    "Cost": [
+      1070018,
+      1
+    ],
+    "CostSecond": [
+      1070018,
+      10
+    ],
+    "MallItemId": 811034,
+    "Limit": 2000,
+    "LimitRefreshTimer": 10102,
+    "Banner": [
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_fashion_1"
+      ],
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_fashion_1"
+      ],
+      [
+        "ui/prefabs/gasha/gasha_fashion_banner_tpl_1"
+      ]
+    ],
+    "BannerTitle": "ui/textures/gasha/gasha_fashion_02",
+    "BannerTips": "",
+    "Sticker": [],
+    "StickerEffect": "ui_sfx_niudan_tab_002",
+    "Show": 1,
+    "Cutscene": [
+      [
+        50200301,
+        50200302,
+        50200303,
+        50200303
+      ],
+      [
+        50200304,
+        50200305,
+        50200306,
+        50200306
+      ]
+    ],
+    "Quality": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "AwardPackageGroup": [
+      50000050,
+      50000030,
+      50000020,
+      50000010
+    ],
+    "QualityTitle": [
+      1154781285,
+      1154781286,
+      1154781287,
+      1154781288
+    ],
+    "GashaIconPreview": [],
+    "GashaProbabilityDesc": [
+      1171418526,
+      1171418527,
+      1171418528,
+      1171418529
+    ],
+    "IfWish": 0,
+    "WishItem": [],
+    "WishPercent": 0,
+    "WishNum": 0,
+    "WishLimit": 0,
+    "WishLimitTime": 0,
+    "ResonancePrefab": "",
+    "ShareGuarantee": 1,
+    "ShopFunc": 800812,
+    "ShopIcon": "ui/atlas/item/c_tab_icon/com_icon_tab_218",
+    "PoolDesc": "",
+    "BannerVideo": [],
+    "Currency": [
+      1070018,
+      10003
+    ]
+  },
+  "1002": {
+    "Id": 1002,
+    "Name": "",
+    "GashaType": 1,
+    "OpenType": 0,
+    "FunctionId": 800820,
+    "Work": 1,
+    "TimerId": 80101,
+    "Note": "绑定池",
+    "Sort": 1002,
+    "Bind": [
+      1,
+      1
+    ],
+    "Cost": [
+      1070030,
+      1
+    ],
+    "CostSecond": [
+      1070030,
+      10
+    ],
+    "MallItemId": 0,
+    "Limit": 2000,
+    "LimitRefreshTimer": 10102,
+    "Banner": [
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_fashion_1"
+      ],
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_fashion_1"
+      ],
+      [
+        "ui/prefabs/gasha/gasha_fashion_banner_tpl_1"
+      ]
+    ],
+    "BannerTitle": "ui/textures/gasha/gasha_fashion_02",
+    "BannerTips": "",
+    "Sticker": [],
+    "StickerEffect": "ui_sfx_niudan_tab_002",
+    "Show": 1,
+    "Cutscene": [
+      [
+        50200301,
+        50200302,
+        50200303,
+        50200303
+      ],
+      [
+        50200304,
+        50200305,
+        50200306,
+        50200306
+      ]
+    ],
+    "Quality": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "AwardPackageGroup": [
+      50000050,
+      50000030,
+      50001160,
+      50001150
+    ],
+    "QualityTitle": [
+      1154782374,
+      1154782375,
+      1154782376,
+      1154782377
+    ],
+    "GashaIconPreview": [],
+    "GashaProbabilityDesc": [
+      1171419615,
+      1171419616,
+      1171419617,
+      1171419618
+    ],
+    "IfWish": 0,
+    "WishItem": [],
+    "WishPercent": 0,
+    "WishNum": 0,
+    "WishLimit": 0,
+    "WishLimitTime": 0,
+    "ResonancePrefab": "",
+    "ShareGuarantee": 2,
+    "ShopFunc": 800812,
+    "ShopIcon": "ui/atlas/item/c_tab_icon/com_icon_tab_218",
+    "PoolDesc": "",
+    "BannerVideo": [],
+    "Currency": [
+      1070030,
+      10005
+    ]
+  },
+  "1003": {
+    "Id": 1003,
+    "Name": "",
+    "GashaType": 1,
+    "OpenType": 0,
+    "FunctionId": 800820,
+    "Work": 1,
+    "TimerId": 80102,
+    "Note": "非绑池",
+    "Sort": 1003,
+    "Bind": [
+      2,
+      0
+    ],
+    "Cost": [
+      1070018,
+      1
+    ],
+    "CostSecond": [
+      1070018,
+      10
+    ],
+    "MallItemId": 811034,
+    "Limit": 2000,
+    "LimitRefreshTimer": 10102,
+    "Banner": [
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_fashion"
+      ],
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_fashion"
+      ],
+      [
+        "ui/prefabs/gasha/gasha_fashion_banner_tpl"
+      ]
+    ],
+    "BannerTitle": "ui/textures/gasha/gasha_fashion_01",
+    "BannerTips": "",
+    "Sticker": [],
+    "StickerEffect": "ui_sfx_niudan_tab_002",
+    "Show": 1,
+    "Cutscene": [
+      [
+        50200301,
+        50200302,
+        50200303,
+        50200303
+      ],
+      [
+        50200304,
+        50200305,
+        50200306,
+        50200306
+      ]
+    ],
+    "Quality": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "AwardPackageGroup": [
+      50000050,
+      50000030,
+      50000020,
+      50000010
+    ],
+    "QualityTitle": [
+      1154783463,
+      1154783464,
+      1154783465,
+      1154783466
+    ],
+    "GashaIconPreview": [],
+    "GashaProbabilityDesc": [
+      1171420704,
+      1171420705,
+      1171420706,
+      1171420707
+    ],
+    "IfWish": 0,
+    "WishItem": [],
+    "WishPercent": 0,
+    "WishNum": 0,
+    "WishLimit": 0,
+    "WishLimitTime": 0,
+    "ResonancePrefab": "",
+    "ShareGuarantee": 1,
+    "ShopFunc": 800812,
+    "ShopIcon": "ui/atlas/item/c_tab_icon/com_icon_tab_218",
+    "PoolDesc": "",
+    "BannerVideo": [],
+    "Currency": [
+      1070018,
+      10003
+    ]
+  },
+  "1004": {
+    "Id": 1004,
+    "Name": "",
+    "GashaType": 1,
+    "OpenType": 0,
+    "FunctionId": 800820,
+    "Work": 1,
+    "TimerId": 80102,
+    "Note": "绑定池",
+    "Sort": 1004,
+    "Bind": [
+      2,
+      1
+    ],
+    "Cost": [
+      1070030,
+      1
+    ],
+    "CostSecond": [
+      1070030,
+      10
+    ],
+    "MallItemId": 0,
+    "Limit": 2000,
+    "LimitRefreshTimer": 10102,
+    "Banner": [
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_fashion"
+      ],
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_fashion"
+      ],
+      [
+        "ui/prefabs/gasha/gasha_fashion_banner_tpl"
+      ]
+    ],
+    "BannerTitle": "ui/textures/gasha/gasha_fashion_01",
+    "BannerTips": "",
+    "Sticker": [],
+    "StickerEffect": "ui_sfx_niudan_tab_002",
+    "Show": 1,
+    "Cutscene": [
+      [
+        50200301,
+        50200302,
+        50200303,
+        50200303
+      ],
+      [
+        50200304,
+        50200305,
+        50200306,
+        50200306
+      ]
+    ],
+    "Quality": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "AwardPackageGroup": [
+      50000050,
+      50000030,
+      50001160,
+      50001150
+    ],
+    "QualityTitle": [
+      1154784552,
+      1154784553,
+      1154784554,
+      1154784555
+    ],
+    "GashaIconPreview": [],
+    "GashaProbabilityDesc": [
+      1171421793,
+      1171421794,
+      1171421795,
+      1171421796
+    ],
+    "IfWish": 0,
+    "WishItem": [],
+    "WishPercent": 0,
+    "WishNum": 0,
+    "WishLimit": 0,
+    "WishLimitTime": 0,
+    "ResonancePrefab": "",
+    "ShareGuarantee": 2,
+    "ShopFunc": 800812,
+    "ShopIcon": "ui/atlas/item/c_tab_icon/com_icon_tab_218",
+    "PoolDesc": "",
+    "BannerVideo": [],
+    "Currency": [
+      1070030,
+      10005
+    ]
+  },
+  "2001": {
+    "Id": 2001,
+    "Name": "",
+    "GashaType": 2,
+    "OpenType": 0,
+    "FunctionId": 800820,
+    "Work": 1,
+    "TimerId": 80101,
+    "Note": "非绑池",
+    "Sort": 2003,
+    "Bind": [
+      3,
+      0
+    ],
+    "Cost": [
+      1070018,
+      1
+    ],
+    "CostSecond": [
+      1070018,
+      10
+    ],
+    "MallItemId": 811034,
+    "Limit": 2000,
+    "LimitRefreshTimer": 10102,
+    "Banner": [
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_vehicle_1"
+      ],
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_vehicle_1"
+      ],
+      [
+        "ui/prefabs/gasha/gasha_vehicle_banner_tpl_1"
+      ]
+    ],
+    "BannerTitle": "ui/textures/gasha/gasha_vehicle_02",
+    "BannerTips": "",
+    "Sticker": [],
+    "StickerEffect": "ui_sfx_niudan_tab_001",
+    "Show": 1,
+    "Cutscene": [
+      [
+        50200301,
+        50200302,
+        50200303,
+        50200303
+      ],
+      [
+        50200304,
+        50200305,
+        50200306,
+        50200306
+      ]
+    ],
+    "Quality": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "AwardPackageGroup": [
+      50001140,
+      50001130,
+      50001120,
+      50001110
+    ],
+    "QualityTitle": [
+      1193916678,
+      1193916679,
+      1193916680,
+      1193916681
+    ],
+    "GashaIconPreview": [],
+    "GashaProbabilityDesc": [
+      1210553919,
+      1210553920,
+      1210553921,
+      1210553922
+    ],
+    "IfWish": 0,
+    "WishItem": [],
+    "WishPercent": 0,
+    "WishNum": 0,
+    "WishLimit": 0,
+    "WishLimitTime": 0,
+    "ResonancePrefab": "",
+    "ShareGuarantee": 3,
+    "ShopFunc": 800812,
+    "ShopIcon": "ui/atlas/item/c_tab_icon/com_icon_tab_218",
+    "PoolDesc": "",
+    "BannerVideo": [],
+    "Currency": [
+      1070018,
+      10003
+    ]
+  },
+  "2002": {
+    "Id": 2002,
+    "Name": "",
+    "GashaType": 2,
+    "OpenType": 0,
+    "FunctionId": 800820,
+    "Work": 1,
+    "TimerId": 80101,
+    "Note": "绑定池",
+    "Sort": 2004,
+    "Bind": [
+      3,
+      1
+    ],
+    "Cost": [
+      1070030,
+      1
+    ],
+    "CostSecond": [
+      1070030,
+      10
+    ],
+    "MallItemId": 0,
+    "Limit": 2000,
+    "LimitRefreshTimer": 10102,
+    "Banner": [
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_vehicle_1"
+      ],
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_vehicle_1"
+      ],
+      [
+        "ui/prefabs/gasha/gasha_vehicle_banner_tpl_1"
+      ]
+    ],
+    "BannerTitle": "ui/textures/gasha/gasha_vehicle_02",
+    "BannerTips": "",
+    "Sticker": [],
+    "StickerEffect": "ui_sfx_niudan_tab_001",
+    "Show": 1,
+    "Cutscene": [
+      [
+        50200301,
+        50200302,
+        50200303,
+        50200303
+      ],
+      [
+        50200304,
+        50200305,
+        50200306,
+        50200306
+      ]
+    ],
+    "Quality": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "AwardPackageGroup": [
+      50001140,
+      50001130,
+      50001220,
+      50001210
+    ],
+    "QualityTitle": [
+      1193917767,
+      1193917768,
+      1193917769,
+      1193917770
+    ],
+    "GashaIconPreview": [],
+    "GashaProbabilityDesc": [
+      1210555008,
+      1210555009,
+      1210555010,
+      1210555011
+    ],
+    "IfWish": 0,
+    "WishItem": [],
+    "WishPercent": 0,
+    "WishNum": 0,
+    "WishLimit": 0,
+    "WishLimitTime": 0,
+    "ResonancePrefab": "",
+    "ShareGuarantee": 4,
+    "ShopFunc": 800812,
+    "ShopIcon": "ui/atlas/item/c_tab_icon/com_icon_tab_218",
+    "PoolDesc": "",
+    "BannerVideo": [],
+    "Currency": [
+      1070030,
+      10005
+    ]
+  },
+  "2003": {
+    "Id": 2003,
+    "Name": "",
+    "GashaType": 2,
+    "OpenType": 0,
+    "FunctionId": 800820,
+    "Work": 1,
+    "TimerId": 80102,
+    "Note": "非绑池",
+    "Sort": 2003,
+    "Bind": [
+      4,
+      0
+    ],
+    "Cost": [
+      1070018,
+      1
+    ],
+    "CostSecond": [
+      1070018,
+      10
+    ],
+    "MallItemId": 811034,
+    "Limit": 2000,
+    "LimitRefreshTimer": 10102,
+    "Banner": [
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_vehicle"
+      ],
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_vehicle"
+      ],
+      [
+        "ui/prefabs/gasha/gasha_vehicle_banner_tpl"
+      ]
+    ],
+    "BannerTitle": "ui/textures/gasha/gasha_vehicle_01",
+    "BannerTips": "",
+    "Sticker": [],
+    "StickerEffect": "ui_sfx_niudan_tab_001",
+    "Show": 1,
+    "Cutscene": [
+      [
+        50200301,
+        50200302,
+        50200303,
+        50200303
+      ],
+      [
+        50200304,
+        50200305,
+        50200306,
+        50200306
+      ]
+    ],
+    "Quality": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "AwardPackageGroup": [
+      50001140,
+      50001130,
+      50001120,
+      50001110
+    ],
+    "QualityTitle": [
+      1193918856,
+      1193918857,
+      1193918858,
+      1193918859
+    ],
+    "GashaIconPreview": [],
+    "GashaProbabilityDesc": [
+      1210556097,
+      1210556098,
+      1210556099,
+      1210556100
+    ],
+    "IfWish": 0,
+    "WishItem": [],
+    "WishPercent": 0,
+    "WishNum": 0,
+    "WishLimit": 0,
+    "WishLimitTime": 0,
+    "ResonancePrefab": "",
+    "ShareGuarantee": 3,
+    "ShopFunc": 800812,
+    "ShopIcon": "ui/atlas/item/c_tab_icon/com_icon_tab_218",
+    "PoolDesc": "",
+    "BannerVideo": [],
+    "Currency": [
+      1070018,
+      10003
+    ]
+  },
+  "2004": {
+    "Id": 2004,
+    "Name": "",
+    "GashaType": 2,
+    "OpenType": 0,
+    "FunctionId": 800820,
+    "Work": 1,
+    "TimerId": 80102,
+    "Note": "绑定池",
+    "Sort": 2004,
+    "Bind": [
+      4,
+      1
+    ],
+    "Cost": [
+      1070030,
+      1
+    ],
+    "CostSecond": [
+      1070030,
+      10
+    ],
+    "MallItemId": 0,
+    "Limit": 2000,
+    "LimitRefreshTimer": 10102,
+    "Banner": [
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_vehicle"
+      ],
+      [
+        "ui/textures/gasha/gasha_panel_03",
+        "ui/textures/gasha/gasha_banner_vehicle"
+      ],
+      [
+        "ui/prefabs/gasha/gasha_vehicle_banner_tpl"
+      ]
+    ],
+    "BannerTitle": "ui/textures/gasha/gasha_vehicle_01",
+    "BannerTips": "",
+    "Sticker": [],
+    "StickerEffect": "ui_sfx_niudan_tab_001",
+    "Show": 1,
+    "Cutscene": [
+      [
+        50200301,
+        50200302,
+        50200303,
+        50200303
+      ],
+      [
+        50200304,
+        50200305,
+        50200306,
+        50200306
+      ]
+    ],
+    "Quality": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "AwardPackageGroup": [
+      50001140,
+      50001130,
+      50001120,
+      50001110
+    ],
+    "QualityTitle": [
+      1193919945,
+      1193919946,
+      1193919947,
+      1193919948
+    ],
+    "GashaIconPreview": [],
+    "GashaProbabilityDesc": [
+      1210557186,
+      1210557187,
+      1210557188,
+      1210557189
+    ],
+    "IfWish": 0,
+    "WishItem": [],
+    "WishPercent": 0,
+    "WishNum": 0,
+    "WishLimit": 0,
+    "WishLimitTime": 0,
+    "ResonancePrefab": "",
+    "ShareGuarantee": 4,
+    "ShopFunc": 800812,
+    "ShopIcon": "ui/atlas/item/c_tab_icon/com_icon_tab_218",
+    "PoolDesc": "",
+    "BannerVideo": [],
+    "Currency": [
+      1070030,
+      10005
+    ]
+  },
+  "3003": {
+    "Id": 3003,
+    "Name": "",
+    "GashaType": 3,
+    "OpenType": 1,
+    "FunctionId": 800821,
+    "Work": 1,
+    "TimerId": 10101,
+    "Note": "意志池",
+    "Sort": 3003,
+    "Bind": [
+      5,
+      1
+    ],
+    "Cost": [
+      1070031,
+      1
+    ],
+    "CostSecond": [
+      1070031,
+      10
+    ],
+    "MallItemId": 811078,
+    "Limit": 2000,
+    "LimitRefreshTimer": 10102,
+    "Banner": [
+      [
+        "ui/textures/gasha/gasha_panel_01",
+        "ui/textures/gasha/gasha_banner_battle"
+      ],
+      [
+        "ui/textures/gasha/gasha_panel_01",
+        "ui/textures/gasha/gasha_banner_battle"
+      ],
+      [
+        "ui/prefabs/gasha/gasha_battle_banner_tpl"
+      ]
+    ],
+    "BannerTitle": "ui/textures/gasha/gasha_battle_01",
+    "BannerTips": "",
+    "Sticker": [],
+    "StickerEffect": "ui_sfx_niudan_tab_002",
+    "Show": 1,
+    "Cutscene": [
+      [
+        50200301,
+        50200302,
+        50200303,
+        50200303
+      ],
+      [
+        50200304,
+        50200305,
+        50200306,
+        50200306
+      ]
+    ],
+    "Quality": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "AwardPackageGroup": [
+      50001200,
+      50001190,
+      50001180,
+      50001170
+    ],
+    "QualityTitle": [
+      1233054249,
+      1233054250,
+      1233054251,
+      1233054252
+    ],
+    "GashaIconPreview": [],
+    "GashaProbabilityDesc": [
+      1249691490,
+      1249691491,
+      1249691492,
+      1249691493
+    ],
+    "IfWish": 1,
+    "WishItem": [
+      3010008,
+      3010011,
+      3010037,
+      3010019
+    ],
+    "WishPercent": 10000,
+    "WishNum": 1,
+    "WishLimit": 1,
+    "WishLimitTime": 80301,
+    "ResonancePrefab": "ui/textures/gasha/gasha_banner_illusion_",
+    "ShareGuarantee": 5,
+    "ShopFunc": 0,
+    "ShopIcon": "",
+    "PoolDesc": "",
+    "BannerVideo": [],
+    "Currency": [
+      1070031,
+      10005
+    ]
+  },
+  "3001": {
+    "Id": 3001,
+    "Name": "",
+    "GashaType": 3,
+    "OpenType": 1,
+    "FunctionId": 800821,
+    "Work": 0,
+    "TimerId": 10501,
+    "Note": "意志池",
+    "Sort": 3003,
+    "Bind": [
+      6,
+      1
+    ],
+    "Cost": [
+      1070031,
+      1
+    ],
+    "CostSecond": [
+      1070031,
+      10
+    ],
+    "MallItemId": 811078,
+    "Limit": 2000,
+    "LimitRefreshTimer": 10102,
+    "Banner": [
+      [
+        "ui/textures/gasha/gasha_panel_01",
+        "ui/textures/gasha/gasha_banner_battle"
+      ],
+      [
+        "ui/textures/gasha/gasha_panel_01",
+        "ui/textures/gasha/gasha_banner_battle"
+      ],
+      [
+        "ui/prefabs/gasha/gasha_battle_banner_tpl"
+      ]
+    ],
+    "BannerTitle": "ui/textures/gasha/gasha_battle_01",
+    "BannerTips": "",
+    "Sticker": [],
+    "StickerEffect": "ui_sfx_niudan_tab_002",
+    "Show": 1,
+    "Cutscene": [
+      [
+        50200301,
+        50200302,
+        50200303,
+        50200303
+      ],
+      [
+        50200304,
+        50200305,
+        50200306,
+        50200306
+      ]
+    ],
+    "Quality": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "AwardPackageGroup": [
+      50001200,
+      50001190,
+      50001180,
+      50001170
+    ],
+    "QualityTitle": [
+      1233052071,
+      1233052072,
+      1233052073,
+      1233052074
+    ],
+    "GashaIconPreview": [],
+    "GashaProbabilityDesc": [
+      1249689312,
+      1249689313,
+      1249689314,
+      1249689315
+    ],
+    "IfWish": 1,
+    "WishItem": [
+      3010008,
+      3010011,
+      3010037,
+      3010019
+    ],
+    "WishPercent": 10000,
+    "WishNum": 1,
+    "WishLimit": 1,
+    "WishLimitTime": 80301,
+    "ResonancePrefab": "ui/textures/gasha/gasha_banner_illusion_",
+    "ShareGuarantee": 5,
+    "ShopFunc": 0,
+    "ShopIcon": "",
+    "PoolDesc": "",
+    "BannerVideo": [],
+    "Currency": [
+      1070031,
+      10005
+    ]
+  }
+}

@@ -25,22 +25,23 @@ function DungeonTime:Init(view, unit, data, ignoreChange)
   self.view_ = view
   self.unit_ = unit
   self.data_ = data
+  self.realTime_ = 0
   self.scoreLevle_ = -1
   self.worldAttrWatcherToken = {}
   if self.unit_ then
     self.unit_.Trans:SetOffsetMin(0, 0)
     self.unit_.Trans:SetOffsetMax(0, 0)
-    if Z.IsPCUI then
-      self.unit_.node_copy:SetScale(0.8, 0.8)
-      self.unit_.node_copy:SetAnchorPosition(235, -80)
-    end
   end
   self:refresh()
   self:initDead()
   if not ignoreChange then
     self:showTimeChange()
   end
-  self:onStartAnimatedShow()
+  if self.data_.isShowStartAnim or ignoreChange then
+    self:onStartAnimatedShow()
+  end
+  Z.EventMgr:Add(Z.ConstValue.HalfScreenView.HalfScreenIsOpen, self.OnHideHalfScreenView, self)
+  Z.EventMgr:Add(Z.ConstValue.Dungeon.ContributionInfoChange, self.refreshWorldBoss, self)
 end
 
 function DungeonTime:refresh()
@@ -50,6 +51,7 @@ function DungeonTime:refresh()
   else
     self.unit_.Ref.UIComp:SetVisible(true)
   end
+  self.unit_.Ref:SetVisible(self.unit_.node_timing, false)
   if self.data_.isShowScore then
     self.unit_.Ref:SetVisible(self.unit_.layout_lab, true)
     self.unit_.Ref:SetVisible(self.unit_.node_rank, true)
@@ -58,12 +60,27 @@ function DungeonTime:refresh()
     self.unit_.Ref:SetVisible(self.unit_.node_rank, false)
   end
   self.unit_.lab_time_name.text = self.data_.timeLab or Lang("Time")
-  self.unit_.lab_time.text = "00:00"
+  self:calcTime()
+  local defaultTime = 0
+  if self.data_.showType == E.DungeonTimeShowType.num then
+    defaultTime = math.floor(self.realTime_)
+  else
+    defaultTime = Z.TimeFormatTools.FormatToDHMS(self.realTime_, true, true)
+  end
+  if self.data_.lookType == E.DungeonTimerTimerLookType.EDungeonTimerTimerLookTypeRed then
+    defaultTime = Z.RichTextHelper.ApplyStyleTag(defaultTime, E.TextStyleTag.TipsRed)
+  end
+  self.unit_.lab_time.text = defaultTime
   self.unit_.lab_score.text = 0
   self:isShowTime(true)
   self:setTime()
   if self.data_.isShowScore then
     self:initScore()
+  end
+  self.unit_.Ref:SetVisible(self.unit_.node_contribution, self:checkIsWorldBoss())
+  self:refreshWorldBoss()
+  if 0 < self.data_.pauseTime then
+    self:stopTime()
   end
 end
 
@@ -78,10 +95,12 @@ function DungeonTime:initDead()
       local deadCount = Z.World:GetWorldLuaAttr(attrDeathCount)
       local attrDeathSubTimeSecond = Z.PbAttrEnum("AttrDeathSubTimeSecond")
       local deathSubTimeSecond = Z.World:GetWorldLuaAttr(attrDeathSubTimeSecond)
-      local deathSubTimeShow = Z.TimeTools.S2HMSFormat(deathSubTimeSecond.Value)
+      local deathSubTimeShow = Z.TimeFormatTools.FormatToDHMS(deathSubTimeSecond.Value, true, true)
       if self.unit_ then
         self.unit_.node_dead_father.lab_deadcount.text = deadCount.Value
-        self.unit_.node_dead_father.lab_deadreduce.text = "-" .. deathSubTimeShow
+        self.unit_.node_dead_father.lab_deadreduce.text = deathSubTimeShow
+        self:stopTime()
+        self:refresh()
       end
     end
   end
@@ -132,19 +151,19 @@ function DungeonTime:stopTime()
     self.view_.timerMgr:StopTimer(self.time_)
     self.time_ = nil
   end
+  self.realTime_ = 0
 end
 
 function DungeonTime:justTime()
-  local nowTime = math.floor(Z.ServerTime:GetServerTime() / 1000)
-  local dTime = nowTime - self.data_.startTime
-  if 0 <= dTime then
+  self.realTime_ = self.realTime_ + 1
+  if self.realTime_ >= 0 then
     local time
     if self.data_.showType == E.DungeonTimeShowType.num then
-      time = math.floor(dTime)
+      time = math.floor(self.realTime_)
     else
-      time = Z.TimeTools.S2MSFormat(dTime)
+      time = Z.TimeFormatTools.FormatToDHMS(self.realTime_, true, true)
     end
-    if nowTime > self.data_.endTime then
+    if self.data_.lookType == E.DungeonTimerTimerLookType.EDungeonTimerTimerLookTypeRed then
       time = Z.RichTextHelper.ApplyStyleTag(time, E.TextStyleTag.TipsRed)
     end
     self.unit_.lab_time.text = time
@@ -154,13 +173,16 @@ function DungeonTime:justTime()
 end
 
 function DungeonTime:countdownTime()
-  local dTime = math.floor(self.data_.endTime - Z.ServerTime:GetServerTime() / 1000)
-  if 0 <= dTime then
+  self.realTime_ = self.realTime_ - 1
+  if self.realTime_ >= 0 then
     local time
     if self.data_.showType == E.DungeonTimeShowType.num then
-      time = math.floor(dTime)
+      time = math.floor(self.realTime_)
     else
-      time = Z.TimeTools.S2MSFormat(dTime)
+      time = Z.TimeFormatTools.FormatToDHMS(self.realTime_, true, true)
+    end
+    if self.data_.lookType == E.DungeonTimerTimerLookType.EDungeonTimerTimerLookTypeRed then
+      time = Z.RichTextHelper.ApplyStyleTag(time, E.TextStyleTag.TipsRed)
     end
     self.unit_.lab_time.text = time
   else
@@ -170,23 +192,72 @@ end
 
 function DungeonTime:setTime()
   self:stopTime()
+  self:calcTime()
   if self.data_.timeType == E.DungeonTimerDirection.DungeonTimerDirectionUp then
     if self.data_.startTime then
-      self:justTime()
       local func = function()
         self:justTime()
       end
       self.time_ = self.view_.timerMgr:StartTimer(func, 1, -1)
     end
   elseif self.data_.timeType == E.DungeonTimerDirection.DungeonTimerDirectionDown then
-    self:countdownTime()
     local func = function()
       self:countdownTime()
     end
     if self.data_.endTime then
-      self.time_ = self.view_.timerMgr:StartTimer(func, 1, -1)
+      self.time_ = self.view_.timerMgr:StartTimer(func, 1, self.realTime_)
     end
   end
+end
+
+function DungeonTime:refreshContribution()
+  local worldBossData = Z.DataMgr.Get("world_boss_data")
+  local rankInfos = worldBossData:GetWorldBossRankInfo()
+  local selfInfoData
+  local randNum = 0
+  if not selfInfoData then
+    for index, value in ipairs(rankInfos) do
+      if value.charId == Z.ContainerMgr.CharSerialize.charId then
+        randNum = index
+        selfInfoData = value
+      end
+    end
+  end
+  local curContribution = 0
+  if selfInfoData ~= nil then
+    curContribution = selfInfoData.score
+  end
+  local hasReward = curContribution >= Z.WorldBoss.WorldBossMinContribute
+  if hasReward then
+    self.unit_.lab_rewards.text = Lang("WorldBossContributionEnough", {
+      cur = curContribution,
+      max = Z.WorldBoss.WorldBossMinContribute
+    })
+  else
+    self.unit_.lab_rewards.text = Lang("WorldBossContributionNotEnough", {
+      cur = curContribution,
+      max = Z.WorldBoss.WorldBossMinContribute
+    })
+  end
+end
+
+function DungeonTime:refreshWorldBoss()
+  if not self:checkIsWorldBoss() then
+    return
+  end
+  self:refreshContribution()
+end
+
+function DungeonTime:checkIsWorldBoss()
+  local dungeonId = Z.StageMgr.GetCurrentDungeonId()
+  if 0 < dungeonId then
+    local dungeonTable = Z.TableMgr.GetTable("DungeonsTableMgr")
+    local tableRow = dungeonTable.GetRow(dungeonId)
+    if tableRow and tableRow.PlayType == E.DungeonType.WorldBoss then
+      return true
+    end
+  end
+  return false
 end
 
 function DungeonTime:initScore()
@@ -218,6 +289,23 @@ end
 function DungeonTime:SetScore(score, ratio)
   self.unit_.lab_score.text = string.zconcat(score, "(x ", ratio, "%)")
   self:setScoreIcon(score)
+end
+
+function DungeonTime:calcTime()
+  if self.data_.timeType == E.DungeonTimerDirection.DungeonTimerDirectionUp then
+    local nowTime = math.floor(Z.ServerTime:GetServerTime() / 1000)
+    local deathSubTimeSecond = 0
+    if self.data_.showDead then
+      local deathSecond = Z.World:GetWorldLuaAttr(Z.PbAttrEnum("AttrDeathSubTimeSecond"))
+      if deathSecond and 0 < deathSecond.Value then
+        deathSubTimeSecond = deathSecond.Value
+      end
+    end
+    local dTime = nowTime - self.data_.startTime - self.data_.totalPauseTime + deathSubTimeSecond
+    self.realTime_ = dTime
+  elseif self.data_.timeType == E.DungeonTimerDirection.DungeonTimerDirectionDown then
+    self.realTime_ = math.floor(self.data_.endTime - Z.ServerTime:GetServerTime() / 1000)
+  end
 end
 
 function DungeonTime:setScoreIcon(score)
@@ -255,6 +343,15 @@ function DungeonTime:DeActive()
   end
   self.worldAttrWatcherToken = {}
   self:stopTime()
+  Z.EventMgr:Remove(Z.ConstValue.HalfScreenView.HalfScreenIsOpen, self.OnHideHalfScreenView, self)
+  Z.EventMgr:Remove(Z.ConstValue.Dungeon.ContributionInfoChange, self.refreshWorldBoss, self)
+end
+
+function DungeonTime:OnHideHalfScreenView(isOpen, viewConfigKey)
+  if not Z.IsPCUI then
+    return
+  end
+  self.unit_.Ref.UIComp:SetVisible(not isOpen)
 end
 
 return DungeonTime

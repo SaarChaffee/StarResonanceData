@@ -7,4 +7,3 @@ message ProfessionSkillUpgradeRequest {
     int32 skillId = 2;
     int32 targetLevel = 3;
 }
-

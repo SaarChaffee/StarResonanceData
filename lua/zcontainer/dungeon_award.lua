@@ -37,6 +37,30 @@ local mergeDataFuncs = {
       last:MergeData(buffer, watcherList)
       container.Watcher:MarkMapDirty("items", dk, {})
     end
+  end,
+  [2] = function(container, buffer, watcherList)
+    local last = container.__data__.flagAssist
+    container.__data__.flagAssist = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("flagAssist", last)
+  end,
+  [3] = function(container, buffer, watcherList)
+    local last = container.__data__.awardCount
+    container.__data__.awardCount = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("awardCount", last)
+  end,
+  [4] = function(container, buffer, watcherList)
+    local count = br.ReadInt32(buffer)
+    if count == -4 then
+      return
+    end
+    local t = {}
+    local last = container.__data__.firstItems
+    container.__data__.firstItems = t
+    for i = 1, count do
+      local v = br.ReadInt64(buffer)
+      t[#t + 1] = v
+      container.Watcher:MarkDirty("firstItems", last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -68,6 +92,15 @@ local resetData = function(container, pbData)
   container.__data__ = pbData
   if not pbData.items then
     container.__data__.items = {}
+  end
+  if not pbData.flagAssist then
+    container.__data__.flagAssist = 0
+  end
+  if not pbData.awardCount then
+    container.__data__.awardCount = 0
+  end
+  if not pbData.firstItems then
+    container.__data__.firstItems = {}
   end
   setForbidenMt(container)
   container.items.__data__ = {}
@@ -141,6 +174,37 @@ local getContainerElem = function(container)
     ret.items = {
       fieldId = 1,
       dataType = 2,
+      data = {}
+    }
+  end
+  ret.flagAssist = {
+    fieldId = 2,
+    dataType = 0,
+    data = container.flagAssist
+  }
+  ret.awardCount = {
+    fieldId = 3,
+    dataType = 0,
+    data = container.awardCount
+  }
+  if container.firstItems ~= nil then
+    local data = {}
+    for index, repeatedItem in pairs(container.firstItems) do
+      data[index] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.firstItems = {
+      fieldId = 4,
+      dataType = 3,
+      data = data
+    }
+  else
+    ret.firstItems = {
+      fieldId = 4,
+      dataType = 3,
       data = {}
     }
   end

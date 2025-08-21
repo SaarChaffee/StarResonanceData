@@ -12,4 +12,3 @@ message TeamMemberFastSyncData {
     int64 maxHp = 5;
     int32 state = 6;
 }
-

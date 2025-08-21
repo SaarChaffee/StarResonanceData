@@ -9,4 +9,3 @@ message SceneInteractionInfo {
     int32 posId = 2;
     zproto.Vec3 pos = 3;
 }
-

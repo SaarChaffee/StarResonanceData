@@ -11,8 +11,6 @@ message MaterialPriorityTableBase {
     int32 MaterialPriority = 1183;
     int32 MaterialType = 1428;
 }
-
 message MaterialPriorityTableMgr {
-    map<int32, .bokura.MaterialPriorityTableBase> datas = 1;
+    repeated bokura.MaterialPriorityTableMgr.DatasEntry datas = 1;
 }
-

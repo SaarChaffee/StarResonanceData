@@ -3,52 +3,52 @@ local super = require("ui.ui_subview_base")
 local Season_shop_subView = class("Season_shop_subView", super)
 local loopScrollRect_ = require("ui/component/loop_grid_view")
 local shop_loop_item_ = require("ui/component/season/season_shop_loop_item")
+local currency_item_list = require("ui.component.currency.currency_item_list")
 
 function Season_shop_subView:ctor()
   self.uiBinder = nil
-  super.ctor(self, "season_shop_sub", "season/season_shop_sub", UI.ECacheLv.None)
-  self.vm = Z.VMMgr.GetVM("season_shop")
-  self.data_ = Z.DataMgr.Get("season_data")
+  super.ctor(self, "season_shop_sub", "season/season_shop_sub", UI.ECacheLv.None, true)
 end
 
 function Season_shop_subView:OnActive()
+  self.data_ = Z.DataMgr.Get("season_data")
+  self.shopVM_ = Z.VMMgr.GetVM("shop")
+  self.uiBinder.Trans:SetOffsetMax(0, 0)
+  self.uiBinder.Trans:SetOffsetMin(0, 0)
+  self.currencyItemList_ = currency_item_list.new()
+  self.currencyItemList_:Init(self.uiBinder.currency_info, {})
   self.allRedNodeTab_ = {}
   self.togItemDict_ = {}
   self:startAnimatedShow()
-  self.uiBinder.Trans:SetOffsetMax(0, 0)
-  self.uiBinder.Trans:SetOffsetMin(0, 0)
   self:initwidgets()
   Z.CoroUtil.create_coro_xpcall(function()
     self:initProps()
     self:initPages()
   end)()
+  Z.EventMgr:Add(Z.ConstValue.Shop.NotifyBuyShopResult, self.buyCallFunc, self)
 end
 
 function Season_shop_subView:OnDeActive()
   self.propLoopScrollRect_:UnInit()
   self.propLoopScrollRect_ = nil
+  self.currencyItemList_:UnInit()
+  self.currencyItemList_ = nil
   self:clearAllLoadItem()
   self:startAnimatedHide()
   self.curChoosePage = -1
   self.timerCallTable_ = nil
-  Z.VMMgr.GetVM("currency").CloseCurrencyView(self)
-  for key, nodeId in pairs(self.allRedNodeTab_) do
+  for _, nodeId in pairs(self.allRedNodeTab_) do
     Z.RedPointMgr.RemoveNodeItem(nodeId)
   end
-end
-
-function Season_shop_subView:OnRefresh()
 end
 
 function Season_shop_subView:initwidgets()
   self.pageItemParent_ = self.uiBinder.cont_info.layout
   self.pageToggleGroup_ = self.uiBinder.cont_info.togs_layout
-  self.propLoopScrollRect_ = loopScrollRect_.new(self, self.uiBinder.cont_info.loopscroll, shop_loop_item_, "season_shop_item_tpl")
-  local dataList_ = {}
-  self.propLoopScrollRect_:Init(dataList_)
   self.emptyGo_ = self.uiBinder.cont_info.cont_empty
-  self.currency_root_ = self.uiBinder.Trans
   self.season_time_label_ = self.uiBinder.cont_info.lab_table_name
+  self.propLoopScrollRect_ = loopScrollRect_.new(self, self.uiBinder.cont_info.loopscroll, shop_loop_item_, "season_shop_item_tpl", true)
+  self.propLoopScrollRect_:Init({})
 end
 
 function Season_shop_subView:initPages()
@@ -102,6 +102,9 @@ function Season_shop_subView:initPages()
       clickItem_ = itemUnit
     end
   end
+  if not clickItem_ then
+    return
+  end
   if clickItem_.tog_item.isOn then
     clickItem_.tog_item.isOn = false
   end
@@ -120,7 +123,7 @@ end
 
 function Season_shop_subView:initProps()
   self.timerMgr:Clear()
-  self.shopData_ = self.vm.AsyncGetShopData(self.cancelSource, E.EShopType.SeasonShop)
+  self.shopData_ = self.shopVM_.AsyncGetShopDataByShopType(E.EShopType.SeasonShop, self.cancelSource:CreateToken())
   self.timerMgr:StartTimer(function()
     self:UpdateProp()
   end, Z.TimeTools.GetCurDayEndTime(), 1)
@@ -159,7 +162,7 @@ function Season_shop_subView:onPageToggleIsOn(index)
   end
   self.curChoosePage = index
   self.currencyIds_ = self.shopData_[index].cfg.CurrencyDisplay
-  Z.VMMgr.GetVM("currency").OpenCurrencyView(self.currencyIds_, self.currency_root_, self)
+  self.currencyItemList_:Init(self.uiBinder.currency_info, self.currencyIds_)
   self:showProp(index)
   self:showSeasonTime()
 end
@@ -168,14 +171,22 @@ function Season_shop_subView:showProp(index)
   local props = self.shopData_[index]
   self.propLoopScrollRect_:RefreshListView(props.items)
   self.emptyGo_.Ref.UIComp:SetVisible(#props.items <= 0)
+  if self.data_:GetCurSelectItem() then
+    for k, v in ipairs(props.items) do
+      local mallItemCfgData = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(v.itemId)
+      if mallItemCfgData and mallItemCfgData.ItemId == self.data_:GetCurSelectItem() then
+        self.propLoopScrollRect_:MovePanelToItemIndex(k)
+        self.propLoopScrollRect_:SetSelected(k)
+        break
+      end
+    end
+    self.data_:SetCurSelectItem(nil)
+  end
 end
 
 function Season_shop_subView:showSeasonTime()
   local cfg = self.shopData_[self.curChoosePage].cfg
-  local timerCfg = Z.TableMgr.GetTable("TimerTableMgr").GetRow(cfg.TimerId)
-  if timerCfg then
-    self.season_time_label_.text = timerCfg.starttime .. "-" .. timerCfg.endtime
-  end
+  self.season_time_label_.text = Z.TimeTools.GetTimeDescByTimerId(cfg.TimerId)
 end
 
 function Season_shop_subView:UpdateProp()
@@ -191,30 +202,51 @@ function Season_shop_subView:GetPropData(index)
 end
 
 function Season_shop_subView:OpenBuyPopup(data)
-  self.vm.OpenBuyPopup(data, function(data_, num)
-    self.vm.AsyncBuyShopItem(1, data_, num, function(req)
-      if req.errorCode == 0 then
-        self.vm.CloseBuyPopup()
-        self:UpdateProp()
-        local mallCfg = Z.TableMgr.GetTable("SeasonShopItemTableMgr").GetRow(req.itemId)
-        if mallCfg then
-          Z.CoroUtil.create_coro_xpcall(function()
-            for id, num in pairs(mallCfg.Cost) do
-              if num == 0 then
-                Z.VMMgr.GetVM("shop").AsyncSetShopItemRed(req.itemId, E.EShopType.SeasonShop)
-                break
-              end
-            end
-          end)()
-        end
-        if mallCfg.DeliverWay and mallCfg.DeliverWay[1] and mallCfg.DeliverWay[1][1] == 1 then
-          Z.TipsVM.ShowTipsLang(1000732)
-        elseif mallCfg.DeliverWay and mallCfg.DeliverWay[1] and mallCfg.DeliverWay[1][1] == 0 then
-          Z.TipsVM.ShowTipsLang(1000733)
-        end
-      end
-    end, self.cancelSource, self.shopData_[self.curChoosePage].Id)
+  self.shopVM_.OpenBuyPopup(data, function(data_, num)
+    self.shopVM_.AsyncShopBuyItemList({
+      [data.itemId] = {buyNum = num}
+    }, self.cancelSource:CreateToken())
   end, self.currencyIds_)
+end
+
+function Season_shop_subView:buyCallFunc(buyShopItemInfo)
+  if buyShopItemInfo then
+    local isSuccess = false
+    local updataShopId, updataShopItemId
+    for _, data in pairs(buyShopItemInfo) do
+      if data.errCode == 0 then
+        isSuccess = true
+        updataShopId = data.shopId
+        updataShopItemId = data.itemId
+        local mallCfg = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(data.itemId)
+        if mallCfg then
+          for id, num in pairs(mallCfg.Cost) do
+            if num == 0 then
+              self.shopVM_.SetShopItemRed(data.itemId, E.EShopType.SeasonShop)
+              break
+            end
+          end
+        end
+        self.shopVM_.ShowBuyResultTips(mallCfg.DeliverWay)
+      else
+        Z.TipsVM.ShowTips(data.errCode)
+      end
+    end
+    if isSuccess and updataShopId and updataShopItemId then
+      self.shopVM_.CloseBuyPopup()
+      Z.CoroUtil.create_coro_xpcall(function()
+        local shopData = self.shopVM_.AsyncGetShopData({updataShopId}, self.cancelSource:CreateToken())
+        for i = 1, #self.shopData_ do
+          if updataShopId == self.shopData_[i].Id then
+            self.shopVM_.UpdataShopItemData(self.shopData_[i].items, shopData, updataShopId, updataShopItemId)
+            break
+          end
+        end
+        local props = self.shopData_[self.curChoosePage]
+        self.propLoopScrollRect_:RefreshListView(props.items)
+      end)()
+    end
+  end
 end
 
 function Season_shop_subView:RigestTimerCall(key, func)

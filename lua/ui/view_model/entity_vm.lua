@@ -41,6 +41,9 @@ local checkIsAIByEntId = function(entId)
   return entId >> 10 & 1 ~= 0
 end
 local configIdToUUid = function(configId)
+  if configId == nil then
+    return 0
+  end
   local entity = Z.EntityMgr:GetEntityByConfigId(Z.PbEnum("EEntityType", "EntNpc"), configId)
   if entity then
     return entity.Uuid

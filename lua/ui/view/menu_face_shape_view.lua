@@ -14,15 +14,12 @@ function Menu_face_shapeView:OnActive()
   self:refreshSlider()
   self:InitSliderFunc(self.uiBinder.node_length.slider_sens, function(value)
     self.uiBinder.node_length.lab_value.text = string.format("%d", math.floor(value + 0.5))
-    value = self:CheckValueRang(value, Z.ModelAttr.EModelAnimHeadPinchChinLength)
-    self.faceVM_.SetFaceOptionByAttrType(Z.ModelAttr.EModelAnimHeadPinchChinLength, (value + 10) / 20)
+    self:SetFaceAttrValueByShowValue(value, Z.ModelAttr.EModelAnimHeadPinchChinLength)
   end, Z.ModelAttr.EModelAnimHeadPinchChinLength, self.lengthSlider_)
 end
 
 function Menu_face_shapeView:refreshSlider()
-  local value = self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelAnimHeadPinchChinLength) * 2 - 1
-  value = self:GetValueInRang(value, Z.ModelAttr.EModelAnimHeadPinchChinLength)
-  self:InitSlider(self.uiBinder.node_length, value)
+  self:InitSlider(self.uiBinder.node_length, Z.ModelAttr.EModelAnimHeadPinchChinLength)
 end
 
 function Menu_face_shapeView:refreshFaceMenuView()

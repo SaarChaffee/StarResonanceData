@@ -6,4 +6,3 @@ message ReqJoinUnionsRequest {
     repeated int64 unionIds = 2;
     bool isAll = 3;
 }
-

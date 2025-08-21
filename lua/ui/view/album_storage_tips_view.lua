@@ -70,6 +70,7 @@ end
 function Album_storage_tipsView:endTimer()
   self.timerMgr:StopTimer(self.overTimer_)
   self.overTimer_ = nil
+  Z.UIMgr:CloseView(self.viewConfigKey)
 end
 
 function Album_storage_tipsView:OnRefresh()

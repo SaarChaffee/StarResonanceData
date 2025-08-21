@@ -1,10 +1,11 @@
 local super = require("ui.player_ctrl_btns.player_ctrl_btn_base")
 local FlowCancelCtrlBtn = class("FlowCancelCtrlBtn", super)
-local keyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 
 function FlowCancelCtrlBtn:ctor(key, panel)
   self.uiBinder = nil
   super.ctor(self, key, panel)
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function FlowCancelCtrlBtn:GetUIUnitPath()
@@ -23,6 +24,10 @@ function FlowCancelCtrlBtn:OnDeActive()
     self.timerMgr:StopTimer(self.flowCdTimer)
     self.flowCdTimer = nil
   end
+  if self.playerStateWatcher ~= nil then
+    self.playerStateWatcher:Dispose()
+    self.playerStateWatcher = nil
+  end
   Z.EventMgr:Remove("ResonanceSkill1", self.btnCallFunc, self)
   Z.EventMgr:Remove("ResonanceSkill2", self.btnCallFunc, self)
 end
@@ -35,30 +40,39 @@ function FlowCancelCtrlBtn:InitComponent()
 end
 
 function FlowCancelCtrlBtn:UnInitComponent()
+  self.inputKeyDescComp_:UnInit()
   self.uiBinder.binder_count_down.count_down:UnInit()
   self.uiBinder.btn_item:RemoveAllListeners()
   self.uiBinder.effect_click:SetEffectGoVisible(false)
 end
 
 function FlowCancelCtrlBtn:initKeyAndEvent()
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local left = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrResourceLeft")).Value
   local right = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrResourceRight")).Value
   if 50101 == left then
     Z.EventMgr:Add("ResonanceSkill1", self.btnCallFunc, self)
     Z.GuideMgr:SetSteerIdByComp(self.uiBinder.steer_item, E.DynamicSteerType.KeyBoardId, 9)
-    keyIconHelper.InitKeyIcon(self, self.uiBinder.binder_key, 9)
+    self.inputKeyDescComp_:Init(9, self.uiBinder.binder_key)
   elseif 50101 == right then
     Z.EventMgr:Add("ResonanceSkill2", self.btnCallFunc, self)
     Z.GuideMgr:SetSteerIdByComp(self.uiBinder.steer_item, E.DynamicSteerType.KeyBoardId, 10)
-    keyIconHelper.InitKeyIcon(self, self.uiBinder.binder_key, 10)
+    self.inputKeyDescComp_:Init(10, self.uiBinder.binder_key)
   end
 end
 
 function FlowCancelCtrlBtn:btnCallFunc(keyState)
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   if keyState == 2 then
     return
   end
-  local stateID = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
+  local stateID = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
   if stateID == Z.PbEnum("EActorState", "ActorStateFlow") then
     Z.PlayerInputController:Flow(false)
   elseif stateID == Z.PbEnum("EActorState", "ActorStateGlide") then
@@ -67,16 +81,20 @@ function FlowCancelCtrlBtn:btnCallFunc(keyState)
 end
 
 function FlowCancelCtrlBtn:BindLuaAttrWatchers()
-  self.playerFlowWatcher = self:BindEntityLuaAttrWatcher({
-    Z.LocalAttr.EAttrState
-  }, Z.EntityMgr.PlayerEnt, self.refreshFlowBtns, true)
+  self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
+    self:refreshFlowBtns()
+  end)
 end
 
 function FlowCancelCtrlBtn:refreshFlowBtns()
   if self.isReset_ then
     return
   end
-  local stateID = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
+  local stateID = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
   if Z.PbEnum("EActorState", "ActorStateFlow") == stateID then
     self.uiBinder.img_button:SetImage("ui/atlas/mainui/skill/weapon_fz_flow")
   else

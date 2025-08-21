@@ -13,4 +13,3 @@ enum EFriendSyncDataType {
     DataTypeAppearance = 7;
     DataTypeGroupSort = 8;
 }
-

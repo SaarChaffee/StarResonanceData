@@ -5,7 +5,9 @@ E.ChatHyperLinkType = {
   FishingIllrate = 8009003,
   FishingRank = 8009004,
   FishingArchives = 8009005,
-  PersonalZone = 3001001
+  PersonalZone = 3001001,
+  UnionGroup = 1004020,
+  MasterDungeonScore = 1050001
 }
 
 function ChatMainData:ctor()
@@ -15,11 +17,25 @@ end
 
 function ChatMainData:Init()
   self.CancelSource = Z.CancelSource.Rent()
+  self.blockChatMap_ = {}
   Z.EventMgr:Add(Z.ConstValue.LanguageChange, self.onLanguageChange, self)
 end
 
 function ChatMainData:Clear()
+  self.blockChatMap_ = {}
   self:ResetData()
+end
+
+function ChatMainData:SetBlockChat(blockType, blockState)
+  if blockState then
+    self.blockChatMap_[blockType] = true
+  else
+    self.blockChatMap_[blockType] = nil
+  end
+end
+
+function ChatMainData:IsBlocked()
+  return next(self.blockChatMap_) ~= nil
 end
 
 function ChatMainData:OnReconnect()
@@ -42,6 +58,10 @@ function ChatMainData:resetProp()
   self.comprehensiveConfig_ = {}
   self.charLimit_ = 0
   self.ComprehensiveConfigSettingId_ = 101
+  self.chatBubblePressBgOtherScale_ = nil
+  self.chatBubblePressBgSelfScale_ = nil
+  self.mainChatInputChannel_ = E.ChatChannelType.EChannelWorld
+  self.MainViewAutoHideTime = 60
 end
 
 function ChatMainData:ResetData()
@@ -50,8 +70,7 @@ function ChatMainData:ResetData()
   self.curChannelId_ = nil
   self.sendChannelId_ = nil
   self.curWorldGroupId_ = 0
-  self.curWorldNum_ = 0
-  self.curWorldMaxNum_ = 0
+  self.curWorldChannelState_ = 1
   self.banTime_ = 0
   self.emojiHistoryList_ = {}
   self.msgHistoryList_ = {}
@@ -59,7 +78,8 @@ function ChatMainData:ResetData()
   self.privateChatList_ = {}
   self.blackList_ = {}
   self.miniChatList_ = {}
-  self.selectMiniChatChannelId_ = 0
+  self.miniIndex_ = 0
+  self.selectMiniChatIndex_ = 0
   self.newPrivateChatMessageTipsCharId_ = 0
   self:ClearChatMsgQueue()
   self:ClearChatDraft()
@@ -74,22 +94,60 @@ function ChatMainData:ResetData()
   self.isInitList_ = false
   self.channelList_ = {}
   self.channelFunctionIdList_ = {}
-  self.ChatLinkTips = {}
+  self.ChatLinkTipsId = nil
   self.hyperLink_ = nil
   self.playerLevelTableData_ = nil
+  self.chatVoiceChannelId_ = nil
 end
 
-function ChatMainData:ClearChatMsgQueue()
-  self.chatMsgQueue_ = {
-    [E.ChatChannelType.EChannelWorld] = {},
-    [E.ChatChannelType.EChannelScene] = {},
-    [E.ChatChannelType.EChannelTeam] = {},
-    [E.ChatChannelType.EChannelUnion] = {},
+function ChatMainData:ClearChatMsgQueue(ignoreSystemChannel)
+  if not self.chatMsgQueue_ then
+    self.chatMsgQueue_ = {
+      [E.ChatChannelType.EChannelWorld] = {},
+      [E.ChatChannelType.EChannelScene] = {},
+      [E.ChatChannelType.EChannelTeam] = {},
+      [E.ChatChannelType.EChannelUnion] = {},
+      [E.ChatChannelType.EChannelPrivate] = {},
+      [E.ChatChannelType.EComprehensive] = {},
+      [E.ChatChannelType.EMain] = {},
+      [E.ChatChannelType.ESystem] = {}
+    }
+  else
+    self.chatMsgQueue_[E.ChatChannelType.EChannelWorld] = {}
+    self.chatMsgQueue_[E.ChatChannelType.EChannelScene] = {}
+    self.chatMsgQueue_[E.ChatChannelType.EChannelTeam] = {}
+    self.chatMsgQueue_[E.ChatChannelType.EChannelUnion] = {}
+    self.chatMsgQueue_[E.ChatChannelType.EChannelPrivate] = {}
+    self.chatMsgQueue_[E.ChatChannelType.EComprehensive] = {}
+    self.chatMsgQueue_[E.ChatChannelType.EMain] = {}
+    if not ignoreSystemChannel then
+      self.chatMsgQueue_[E.ChatChannelType.ESystem] = {}
+    end
+  end
+  self.chatMsgQueueMaxMsgId_ = {
+    [E.ChatChannelType.EChannelWorld] = 0,
+    [E.ChatChannelType.EChannelScene] = 0,
+    [E.ChatChannelType.EChannelTeam] = 0,
+    [E.ChatChannelType.EChannelUnion] = 0,
     [E.ChatChannelType.EChannelPrivate] = {},
-    [E.ChatChannelType.EComprehensive] = {},
-    [E.ChatChannelType.ESystem] = {},
-    [E.ChatChannelType.EMain] = {}
+    [E.ChatChannelType.ESystem] = 0
   }
+end
+
+function ChatMainData:SetChatMsgQueueMaxMsgId(channelId, msgId, targetId)
+  if targetId then
+    self.chatMsgQueueMaxMsgId_[channelId][targetId] = msgId
+  else
+    self.chatMsgQueueMaxMsgId_[channelId] = msgId
+  end
+end
+
+function ChatMainData:GetChatMsgQueueMaxMsgId(channelId, targetId)
+  if targetId then
+    return self.chatMsgQueueMaxMsgId_[channelId][targetId]
+  else
+    return self.chatMsgQueueMaxMsgId_[channelId]
+  end
 end
 
 function ChatMainData:ClearChatDraft()
@@ -149,13 +207,13 @@ function ChatMainData:ClearChatDataFlg()
   }
 end
 
-function ChatMainData:SetChatDataFlg(channelType, windowType, dataFlg, record)
+function ChatMainData:SetChatDataFlg(channelType, windowType, dataFlg, record, charId)
   if channelType == E.ChatChannelType.EChannelPrivate then
-    if not self.chatFlg_[channelType][self.privateSelectId_] then
-      self.chatFlg_[channelType][self.privateSelectId_] = {flg = dataFlg, isRecord = record}
+    if not self.chatFlg_[channelType][charId] then
+      self.chatFlg_[channelType][charId] = {flg = dataFlg, isRecord = record}
     else
-      self.chatFlg_[channelType][self.privateSelectId_].flg = dataFlg
-      self.chatFlg_[channelType][self.privateSelectId_].isRecord = record
+      self.chatFlg_[channelType][charId].flg = dataFlg
+      self.chatFlg_[channelType][charId].isRecord = record
     end
   elseif not self.chatFlg_[channelType][windowType] then
     self.chatFlg_[channelType][windowType] = {flg = dataFlg, isRecord = record}
@@ -165,9 +223,9 @@ function ChatMainData:SetChatDataFlg(channelType, windowType, dataFlg, record)
   end
 end
 
-function ChatMainData:GetChatDataFlg(channelType, windowType)
+function ChatMainData:GetChatDataFlg(channelType, windowType, charId)
   if channelType == E.ChatChannelType.EChannelPrivate then
-    return self.chatFlg_[channelType][self.privateSelectId_]
+    return self.chatFlg_[channelType][charId]
   else
     return self.chatFlg_[channelType][windowType]
   end
@@ -177,9 +235,17 @@ function ChatMainData:ClearChannelQueueByChannelId(channel)
   if self.chatMsgQueue_[channel] then
     self.chatMsgQueue_[channel] = {}
   end
+  if channel == E.ChatChannelType.EChannelPrivate then
+    self.chatMsgQueueMaxMsgId_[channel] = {}
+  else
+    self.chatMsgQueueMaxMsgId_[channel] = 0
+  end
 end
 
 function ChatMainData:ClearClientChannelData(dataChannelId, clearChannelId)
+  if not self.chatMsgQueue_[dataChannelId] or not self.chatMsgQueue_[dataChannelId].multiMsgList then
+    return
+  end
   for i = #self.chatMsgQueue_[dataChannelId].multiMsgList, 1, -1 do
     local msgData = self.chatMsgQueue_[dataChannelId].multiMsgList[i]
     if Z.ChatMsgHelper.GetChannelId(msgData) == clearChannelId then
@@ -201,6 +267,9 @@ function ChatMainData:ClearNewPrivateChatMessageTipsCharId()
     return
   end
   local queue = self:GetChannelQueueByChannelId(E.ChatChannelType.EChannelPrivate, self.newPrivateChatMessageTipsCharId_, true)
+  if not queue then
+    return
+  end
   for i = #queue, 1, -1 do
     if queue[i].IsNewMessage then
       table.remove(queue, i)
@@ -235,7 +304,10 @@ function ChatMainData:AddPrivateChatByCharId(charId)
   end
   local privateChatItem = {
     charId = charId,
-    multiMsgList = {}
+    loopItemType = E.FriendLoopItemType.EPrivateChat,
+    multiMsgList = {},
+    maxReadMsgId = 0,
+    isTop = false
   }
   self.privateChatList_[#self.privateChatList_ + 1] = privateChatItem
 end
@@ -261,15 +333,12 @@ function ChatMainData:AddPrivateChatListAddByTargetInfo(targetInfo)
   end
   local privateChatItem = {
     charId = targetInfo.charId,
-    maxReadMsgId = targetInfo.maxReadMsgId,
+    maxReadMsgId = targetInfo.maxReadMsgId or 0,
     isTop = targetInfo.isTop,
     latestMsg = targetInfo.latestMsg,
+    loopItemType = E.FriendLoopItemType.EPrivateChat,
     multiMsgList = {}
   }
-  self.privateChatList_[#self.privateChatList_ + 1] = privateChatItem
-end
-
-function ChatMainData:AddPrivateChat(privateChatItem)
   self.privateChatList_[#self.privateChatList_ + 1] = privateChatItem
 end
 
@@ -286,10 +355,11 @@ function ChatMainData:DelPrivateChatByCharId(charId)
   end
 end
 
-function ChatMainData:GetPrivateChatUnReadCount()
+function ChatMainData:GetPrivateChatUnReadCount(isFriendMessageCount)
   local unReadCount = 0
+  local friendMainData = Z.DataMgr.Get("friend_main_data")
   for i = 1, #self.privateChatList_ do
-    if self.privateChatList_[i].maxReadMsgId and self.privateChatList_[i].latestMsg and self.privateChatList_[i].latestMsg.msgId and self.privateChatList_[i].latestMsg.msgId > self.privateChatList_[i].maxReadMsgId then
+    if self.privateChatList_[i].maxReadMsgId and self.privateChatList_[i].latestMsg and self.privateChatList_[i].latestMsg.msgId and self.privateChatList_[i].latestMsg.msgId > self.privateChatList_[i].maxReadMsgId and (not isFriendMessageCount or isFriendMessageCount and friendMainData:IsFriendByCharId(self.privateChatList_[i].charId)) then
       unReadCount = unReadCount + self.privateChatList_[i].latestMsg.msgId - self.privateChatList_[i].maxReadMsgId
     end
   end
@@ -304,11 +374,64 @@ function ChatMainData:GetPrivateChatList()
   return self.privateChatList_
 end
 
+local getMsgTime = function(data)
+  if data and data.latestMsg then
+    return data.latestMsg.timestamp
+  end
+  return 0
+end
+local getFriendlinessValue = function(data)
+  local friendMainData = Z.DataMgr.Get("friend_main_data")
+  local friendLinessData = friendMainData:GetFriendLinessData(data.charId)
+  if friendLinessData then
+    return friendLinessData.friendLinessLevel, friendLinessData.friendLinessCurExp
+  else
+    return 0, 0
+  end
+end
+local sortFunc = function(left, right)
+  if left.isTop ~= right.isTop then
+    if left.isTop then
+      return true
+    else
+      return false
+    end
+  end
+  local leftMsgTime = getMsgTime(left)
+  local rightMsgTime = getMsgTime(right)
+  if leftMsgTime == rightMsgTime then
+    local leftFriendLinessLevel, leftFriendLinessExp = getFriendlinessValue(left)
+    local rightFriendLinessLevel, rightFriendLinessExp = getFriendlinessValue(right)
+    if leftFriendLinessLevel == rightFriendLinessLevel then
+      return leftFriendLinessExp > rightFriendLinessExp
+    else
+      return leftFriendLinessLevel > rightFriendLinessLevel
+    end
+  else
+    return leftMsgTime > rightMsgTime
+  end
+end
+
+function ChatMainData:SortPrivateChatList()
+  table.sort(self.privateChatList_, sortFunc)
+end
+
 function ChatMainData:GetPrivateChatItemByCharId(charId)
   if #self.privateChatList_ > 0 then
     for i = 1, #self.privateChatList_ do
       if self.privateChatList_[i].charId == charId then
         return self.privateChatList_[i]
+      end
+    end
+  end
+end
+
+function ChatMainData:SetPrivateChatMsgIdByCharId(charId, msgId)
+  if #self.privateChatList_ > 0 then
+    for i = 1, #self.privateChatList_ do
+      if self.privateChatList_[i].charId == charId and msgId > self.privateChatList_[i].maxReadMsgId then
+        self.privateChatList_[i].maxReadMsgId = msgId
+        break
       end
     end
   end
@@ -335,6 +458,8 @@ function ChatMainData:initChannelCfg()
   table.sort(self.channelCfg_, function(left, right)
     return left.Sort < right.Sort
   end)
+  self.isInitList_ = false
+  self.channelList_ = {}
 end
 
 function ChatMainData:GetPlayerLevelTableData()
@@ -353,6 +478,14 @@ function ChatMainData:GetChannelName(channelId)
       return self.channelCfg_[i].ChannelName
     end
   end
+end
+
+function ChatMainData:SetChatVoiceChannelId(channelId)
+  self.chatVoiceChannelId_ = channelId
+end
+
+function ChatMainData:GetChatVoiceChannelId()
+  return self.chatVoiceChannelId_
 end
 
 function ChatMainData:SetEmojiHistory(emoji)
@@ -393,6 +526,10 @@ function ChatMainData:GetBanTime()
   return self.banTime_ - math.modf(Z.ServerTime:GetServerTime() * 0.001)
 end
 
+function ChatMainData:GetBanEndTime()
+  return self.banTime_
+end
+
 function ChatMainData:GetChatCDList()
   return self.chatCD_
 end
@@ -415,54 +552,33 @@ function ChatMainData:GetScaleStatus()
   return self.scale_
 end
 
-function ChatMainData:SetWorldGroupId(data, num, maxNum)
+function ChatMainData:SetWorldGroupId(data, state)
   self.curWorldGroupId_ = data
-  self.curWorldNum_ = num
-  self.curWorldMaxNum_ = maxNum
+  self.curWorldChannelState_ = state
 end
 
 function ChatMainData:GetWorldGroupId()
   return self.curWorldGroupId_
 end
 
-function ChatMainData:GetShowWorldGroupChannel()
-  return self.curWorldGroupId_
+function ChatMainData:GetWorldChannelState()
+  return self.curWorldChannelState_
 end
 
-function ChatMainData:GetWorldNum()
-  return self.curWorldNum_
+function ChatMainData:SetMainChatInputChannel(channelId)
+  self.mainChatInputChannel_ = channelId
 end
 
-function ChatMainData:GetWorldMaxNum()
-  return self.curWorldMaxNum_
+function ChatMainData:GetMainChatInputChannel()
+  return self.mainChatInputChannel_
 end
 
-function ChatMainData:checkMessageLevelLimit(channelId, level, msgType)
-  if channelId == E.ChatChannelType.ESystem then
-    return true
-  end
-  if msgType == E.ChitChatMsgType.EChatMsgTextNotice or msgType == E.ChitChatMsgType.EChatMsgMultiLangNotice or msgType == E.ChitChatMsgType.EChatMsgHypertext then
-    return true
-  end
-  local settingData = Z.DataMgr.Get("chat_setting_data")
-  local limit = settingData:GetMessageLevel(channelId)
-  if not limit then
-    return true
-  end
-  local messageLevelLimit = math.modf(limit)
-  if messageLevelLimit and level and level < messageLevelLimit then
-    return false
-  else
-    return true
-  end
-end
-
-function ChatMainData:getShowChannelList(chatMsgList)
+function ChatMainData:getShowChannelList(chatMsgList, isShowClientTips)
   local showChatMsgDataList = {}
   if 0 < #chatMsgList then
     for i = 1, #chatMsgList do
       local chatMsgData = chatMsgList[i]
-      if Z.ChatMsgHelper.GetMsgType(chatMsgData) ~= E.ChitChatMsgType.EChatMsgClientTips and self:checkMessageLevelLimit(Z.ChatMsgHelper.GetChannelId(chatMsgData), Z.ChatMsgHelper.GetSenderLevel(chatMsgData), Z.ChatMsgHelper.GetMsgType(chatMsgData) and not self:IsInBlack(Z.ChatMsgHelper.GetCharId(chatMsgData))) then
+      if (isShowClientTips or Z.ChatMsgHelper.GetMsgType(chatMsgData) ~= E.ChitChatMsgType.EChatMsgClientTips) and Z.ChatMsgHelper.CheckChatMsgCanShow(chatMsgData) then
         showChatMsgDataList[#showChatMsgDataList + 1] = chatMsgList[i]
       end
     end
@@ -508,7 +624,6 @@ function ChatMainData:SaveChatMsgDataToChannelQueue(channelId, chatMsgData, targ
     return nil
   end
   if channelId == E.ChatChannelType.EChannelPrivate then
-    targetId = targetId or self.privateSelectId_
     if self.privateChatList_ then
       for i = 1, #self.privateChatList_ do
         if self.privateChatList_[i].charId == targetId then
@@ -516,12 +631,10 @@ function ChatMainData:SaveChatMsgDataToChannelQueue(channelId, chatMsgData, targ
             self.privateChatList_[i].multiMsgList = {}
           end
           self:addChatMsgData(self.privateChatList_[i].multiMsgList, chatMsgData, isRecord, maxCount)
-          if not isRecord and Z.ChatMsgHelper.GetMsgType(chatMsgData) ~= E.ChitChatMsgType.EChatMsgClientTips then
-            self.privateChatList_[i].latestMsg = chatMsgData.ChitChatMsg
-            if Z.ChatMsgHelper.GetCharId(chatMsgData) ~= Z.ContainerMgr.CharSerialize.charId and Z.ChatMsgHelper.GetCharId(chatMsgData) ~= self:GetPrivateSelectId() then
-              Z.RedPointMgr.RefreshServerNodeCount(E.RedType.FriendChatTab, self:GetPrivateChatUnReadCount())
-            end
+          if isRecord or Z.ChatMsgHelper.GetMsgType(chatMsgData) == E.ChitChatMsgType.EChatMsgClientTips then
+            return
           end
+          self.privateChatList_[i].latestMsg = chatMsgData.ChitChatMsg
         end
       end
     end
@@ -533,19 +646,18 @@ function ChatMainData:SaveChatMsgDataToChannelQueue(channelId, chatMsgData, targ
   end
 end
 
-function ChatMainData:GetChannelQueueByChannelId(channelId, targetId, isAllMsg)
+function ChatMainData:GetChannelQueueByChannelId(channelId, targetId, isShowClientTips)
   if channelId == nil then
     return nil
   end
   if channelId == E.ChatChannelType.EChannelPrivate then
-    targetId = targetId or self.privateSelectId_
     if self.privateChatList_ then
       for i = 1, #self.privateChatList_ do
         if self.privateChatList_[i].charId == targetId then
           if not self.privateChatList_[i].multiMsgList then
             self.privateChatList_[i].multiMsgList = {}
           end
-          return self.privateChatList_[i].multiMsgList
+          return self:getShowChannelList(self.privateChatList_[i].multiMsgList, isShowClientTips)
         end
       end
     end
@@ -553,11 +665,7 @@ function ChatMainData:GetChannelQueueByChannelId(channelId, targetId, isAllMsg)
     if not self.chatMsgQueue_[channelId].multiMsgList then
       self.chatMsgQueue_[channelId].multiMsgList = {}
     end
-    if isAllMsg then
-      return self.chatMsgQueue_[channelId].multiMsgList
-    else
-      return self:getShowChannelList(self.chatMsgQueue_[channelId].multiMsgList)
-    end
+    return self:getShowChannelList(self.chatMsgQueue_[channelId].multiMsgList, isShowClientTips)
   end
 end
 
@@ -646,13 +754,13 @@ function ChatMainData:SortChannelChatQueue(channelId)
   end)
 end
 
-function ChatMainData:UpdatePrivateChatByCharId(charId, latestMsgId, maxReadMsgId, isEnd)
+function ChatMainData:UpdatePrivateChatByCharId(charId, latestMsgId, maxReadMsgId, isEnd, ignoreSetMaxRed)
   for i = 1, #self.privateChatList_ do
     if self.privateChatList_[i].charId == charId then
       if latestMsgId then
         self.privateChatList_[i].latestMsgId = latestMsgId
       end
-      if maxReadMsgId then
+      if maxReadMsgId and not ignoreSetMaxRed and maxReadMsgId > self.privateChatList_[i].maxReadMsgId then
         self.privateChatList_[i].maxReadMsgId = maxReadMsgId
       end
       if isEnd then
@@ -682,12 +790,7 @@ function ChatMainData:IsInBlack(targetId)
   if not self.blackList_ or #self.blackList_ < 1 then
     return false
   end
-  for i = #self.blackList_, 1, -1 do
-    if self.blackList_[i] == targetId then
-      return true
-    end
-  end
-  return false
+  return table.zcontains(self.blackList_, targetId)
 end
 
 function ChatMainData:InitBlackList(blockIdList)
@@ -699,6 +802,9 @@ function ChatMainData:GetBlackList()
 end
 
 function ChatMainData:AddBlack(targetId)
+  if table.zcontains(self.blackList_, targetId) then
+    return
+  end
   self.blackList_[#self.blackList_ + 1] = targetId
 end
 
@@ -723,25 +829,21 @@ function ChatMainData:GetCharLimit()
   return self.charLimit_
 end
 
-function ChatMainData:GetChatDraft(channelId, chatWindow)
+function ChatMainData:GetChatDraft(channelId, chatWindow, charId)
   if channelId == E.ChatChannelType.EChannelPrivate then
-    if self.privateSelectId_ > 0 then
-      return self.channelChatDraft_[E.ChatWindow.Main][self.privateSelectId_]
-    end
+    return self.channelChatDraft_[E.ChatWindow.Main][charId]
   elseif chatWindow == E.ChatWindow.Main then
-    return self.channelChatDraft_[E.ChatWindow.Main]
+    return self.channelChatDraft_[chatWindow]
   elseif channelId then
     return self.channelChatDraft_[E.ChatWindow.Mini][channelId]
   end
 end
 
-function ChatMainData:SetChatDraft(draftData, channelId, chatWindow)
+function ChatMainData:SetChatDraft(draftData, channelId, chatWindow, charId)
   if channelId == E.ChatChannelType.EChannelPrivate then
-    if self.privateSelectId_ > 0 then
-      self.channelChatDraft_[E.ChatWindow.Main][self.privateSelectId_] = draftData
-    end
+    self.channelChatDraft_[E.ChatWindow.Main][charId] = draftData
   elseif chatWindow == E.ChatWindow.Main then
-    self.channelChatDraft_[E.ChatWindow.Main] = draftData
+    self.channelChatDraft_[chatWindow] = draftData
   elseif channelId then
     self.channelChatDraft_[E.ChatWindow.Mini][channelId] = draftData
   end
@@ -774,9 +876,7 @@ function ChatMainData:initChannelList()
     self.channelFunctionIdList_ = {}
     local switchVm = Z.VMMgr.GetVM("switch")
     for _, config in pairs(self.channelCfg_) do
-      if config.Id == E.ChatChannelType.EChannelUnion then
-        self.channelList_[#self.channelList_ + 1] = config
-      elseif switchVm.CheckFuncSwitch(config.FunctionId) then
+      if switchVm.CheckFuncSwitch(config.FunctionId) then
         table.insert(self.channelFunctionIdList_, config.FunctionId)
         if config.SubFunctionId and config.SubFunctionId and #config.SubFunctionId > 0 then
           local isOpen = true
@@ -884,9 +984,9 @@ function ChatMainData:GetComprehensiveConfig()
   return self.comprehensiveConfig_
 end
 
-function ChatMainData:GetExceptCurChannel()
+function ChatMainData:GetExceptCurChannel(curChannel)
   local config = {}
-  local comprehensiveId = self:GetComprehensiveId()
+  local comprehensiveId = curChannel or self:GetComprehensiveId()
   for _, v in pairs(self:GetComprehensiveConfig()) do
     if v.Id ~= comprehensiveId then
       if v.Id == E.ChatChannelType.EChannelTeam then
@@ -919,63 +1019,88 @@ function ChatMainData:GetGroupSprite(type)
   return list
 end
 
-function ChatMainData:AddMiniChat(channelId)
+function ChatMainData:GetGroupSpriteByType(type)
+  local list = {}
+  if self.chatTickersConfig_ and next(self.chatTickersConfig_) then
+    for _, v in pairs(self.chatTickersConfig_) do
+      if v.Type == type then
+        table.insert(list, v)
+      end
+    end
+  end
+  return list
+end
+
+function ChatMainData:AddMiniChat(channelId, charId, channelName, colorStyle)
   if not self.miniChatList_ then
     self.miniChatList_ = {}
   end
-  if self.miniChatList_[channelId] then
+  local miniChatData = self:getMiniChatData(channelId, charId)
+  if miniChatData then
     return
   end
   local config = self:GetConfigData(channelId)
-  local data = {}
-  data.channelId = channelId
-  data.type = E.MiniChatType.EChatView
-  data.x = 0
-  data.y = 183
-  data.channelName = config == nil and "" or config.ChannelName
-  data.colorTag = config == nil and "" or config.ChannelStyle
-  self.miniChatList_[channelId] = data
+  channelName = channelName or config == nil and "" or config.ChannelName
+  colorStyle = colorStyle or config == nil and "" or config.ChannelStyle
+  self.miniIndex_ = self.miniIndex_ + 1
+  local data = {
+    channelId = channelId,
+    charId = charId,
+    type = E.MiniChatType.EChatView,
+    x = 0,
+    y = 183,
+    channelName = channelName,
+    colorTag = colorStyle,
+    index = self.miniIndex_
+  }
+  self.miniChatList_[#self.miniChatList_ + 1] = data
+  return data
 end
 
-function ChatMainData:RemoveMiniChat(channelId)
-  if not self.miniChatList_ or not self.miniChatList_[channelId] then
-    return
-  end
-  self.miniChatList_[channelId] = nil
+function ChatMainData:GetMiniChatData(index)
+  return self.miniChatList_[index]
 end
 
-function ChatMainData:UpdateMiniChatPosition(channelId, x, y)
-  if not self.miniChatList_ or not self.miniChatList_[channelId] then
-    return
+function ChatMainData:getMiniChatData(channelId, charId)
+  for i = #self.miniChatList_, 1, -1 do
+    if channelId and self.miniChatList_[i].channelId == channelId then
+      if charId then
+        if self.miniChatList_[i].charId == charId then
+          return self.miniChatList_[i], i
+        end
+      else
+        return self.miniChatList_[i], i
+      end
+    end
   end
-  self.miniChatList_[channelId].x = x
-  self.miniChatList_[channelId].y = y
 end
 
-function ChatMainData:UpdateMiniChatType(channelId, type)
-  if not self.miniChatList_ or not self.miniChatList_[channelId] then
-    return
+function ChatMainData:RemoveMiniChat(index)
+  for i = #self.miniChatList_, 1, -1 do
+    if self.miniChatList_[i].index == index then
+      table.remove(self.miniChatList_, i)
+      break
+    end
   end
-  self.miniChatList_[channelId].type = type
+end
+
+function ChatMainData:UpdateMiniChatType(channelId, charId, type)
+  local miniChatData = self:getMiniChatData(channelId, charId)
+  if miniChatData then
+    miniChatData.type = type
+  end
 end
 
 function ChatMainData:GetMiniChatList()
   return self.miniChatList_
 end
 
-function ChatMainData:GetMiniChatData(channelId)
-  if not self.miniChatList_ then
-    return
-  end
-  return self.miniChatList_[channelId]
+function ChatMainData:GetSelectMiniChatIndex()
+  return self.selectMiniChatIndex_
 end
 
-function ChatMainData:GetSelectMiniChatChannelId()
-  return self.selectMiniChatChannelId_
-end
-
-function ChatMainData:SetSelectMiniChatChannelId(channelId)
-  self.selectMiniChatChannelId_ = channelId
+function ChatMainData:SetSelectMiniChatIndex(index)
+  self.selectMiniChatIndex_ = index
 end
 
 function ChatMainData:GetHyperLinkShareContent()
@@ -1037,8 +1162,24 @@ function ChatMainData:CreateHyperLinkData(type)
     data = require("chat_hyperlink.chat_hyperlink_fishingrank").new()
   elseif type == E.ChatHyperLinkType.PersonalZone then
     data = require("chat_hyperlink.chat_hyperlink_personalzone").new()
+  elseif type == E.ChatHyperLinkType.MasterDungeonScore then
+    data = require("chat_hyperlink.chat_hyperlink_master_dungeon_score").new()
   end
   return data
+end
+
+function ChatMainData:GetChatBubblePressBgOtherScale()
+  if not self.chatBubblePressBgOtherScale_ then
+    self.chatBubblePressBgOtherScale_ = Vector3.New(-1, 1, 1)
+  end
+  return self.chatBubblePressBgOtherScale_
+end
+
+function ChatMainData:GetChatBubblePressBgSelfScale()
+  if not self.chatBubblePressBgSelfScale_ then
+    self.chatBubblePressBgSelfScale_ = Vector3.New(1, 1, 1)
+  end
+  return self.chatBubblePressBgSelfScale_
 end
 
 return ChatMainData

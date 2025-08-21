@@ -6,4 +6,3 @@ message ChallengeDungeonScoreAwardParam {
     int32 groupId = 1;
     int32 targetId = 2;
 }
-

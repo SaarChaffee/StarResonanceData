@@ -8,4 +8,3 @@ enum ETalentType {
     TalentType_SmallSkill = 2;
     TalentType_Passive = 3;
 }
-

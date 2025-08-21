@@ -5,7 +5,5 @@ package zproto;
 message SelectCharRequest {
     string token = 2;
     int64 charId = 3;
-    string accountId = 4;
     int32 areaId = 5;
 }
-

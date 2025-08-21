@@ -5,7 +5,5 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message CompletedTargetInfo {
-    map<int32, bool> completedTargetList = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.CompletedTargetInfo.CompletedTargetListEntry completedTargetList = 1;
 }
-

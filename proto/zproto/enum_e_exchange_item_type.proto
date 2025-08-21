@@ -7,4 +7,3 @@ enum EExchangeItemType {
     ExchangeItemTypeShopItem = 1;
     ExchangeItemTypeNoticeShopItem = 2;
 }
-

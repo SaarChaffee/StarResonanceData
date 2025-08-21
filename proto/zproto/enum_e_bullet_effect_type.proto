@@ -6,4 +6,3 @@ enum EBulletEffectType {
     BulletNormalPlayEffect = 0;
     BulletWaterToIce = 1;
 }
-

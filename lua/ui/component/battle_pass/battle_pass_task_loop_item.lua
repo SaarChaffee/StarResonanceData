@@ -65,7 +65,10 @@ function BattlePassQuestLoopItem:Refresh()
 end
 
 function BattlePassQuestLoopItem:setItemInfo()
-  local bpInfo = Z.ContainerMgr.CharSerialize.seasonCenter.battlePass
+  local bpInfo = self.battlePassVM_.GetCurrentBattlePassContainer()
+  if not bpInfo then
+    return
+  end
   local seasonBPTaskTargetTableData = Z.TableMgr.GetTable("SeasonBPTaskTargetTableMgr").GetRow(self.data_.configData.Target)
   if not seasonBPTaskTargetTableData then
     logGreen("SeasonBPTaskTargetTable is not find! id = " .. self.data_.configData.Target)

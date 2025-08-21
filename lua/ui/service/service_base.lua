@@ -15,6 +15,9 @@ end
 function ServiceBase:OnLogout()
 end
 
+function ServiceBase:OnNotifyEnterWorld(sceneId)
+end
+
 function ServiceBase:OnEnterScene(sceneId)
 end
 
@@ -31,6 +34,9 @@ function ServiceBase:OnSyncAllContainerData()
 end
 
 function ServiceBase:OnVisualLayerChange()
+end
+
+function ServiceBase:OnResurrectionEnd()
 end
 
 return ServiceBase

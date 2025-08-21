@@ -11,4 +11,3 @@ message SessionInfo {
     string agentGuid = 6;
     bool isRobot = 7;
 }
-

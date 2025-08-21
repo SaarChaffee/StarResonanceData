@@ -1,0 +1,35 @@
+{
+  "1": {
+    "Id": 1,
+    "Des": "输出",
+    "TagType": 1,
+    "FightResId": 10001,
+    "TagName": "",
+    "TagIconBg": "ui/textures/talent/talent_icon_3",
+    "TagIconMark": "ui/atlas/new_com/com_icon_tab_77",
+    "SimpleDes": "",
+    "DetailsDes": ""
+  },
+  "2": {
+    "Id": 2,
+    "Des": "辅助",
+    "TagType": 2,
+    "FightResId": 10002,
+    "TagName": "",
+    "TagIconBg": "ui/textures/talent/talent_icon_2",
+    "TagIconMark": "ui/atlas/new_com/com_icon_tab_79",
+    "SimpleDes": "",
+    "DetailsDes": ""
+  },
+  "3": {
+    "Id": 3,
+    "Des": "生存",
+    "TagType": 3,
+    "FightResId": 10003,
+    "TagName": "",
+    "TagIconBg": "ui/textures/talent/talent_icon_1",
+    "TagIconMark": "ui/atlas/new_com/com_icon_tab_78",
+    "SimpleDes": "",
+    "DetailsDes": ""
+  }
+}

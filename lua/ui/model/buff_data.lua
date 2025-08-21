@@ -10,6 +10,7 @@ function BuffData:Init()
     BuffIdMapFuncIds = {},
     BuffAbilityTypeMapFuncIds = {}
   }
+  self.cacheResIconId_ = {}
   self:initBuffBanFuncMap()
   self:ClearProfessionBuff()
   Z.EventMgr:Add(Z.ConstValue.Buff.ProfessionBuffChange, self.SetProfessionBuff, self)
@@ -65,7 +66,16 @@ function BuffData:initBuffBanFuncMap()
     200502,
     200503,
     200504,
-    200505
+    200505,
+    102001,
+    200506,
+    800800,
+    100903,
+    800505,
+    800506,
+    200700,
+    200101,
+    800500
   }
 end
 
@@ -101,21 +111,33 @@ end
 function BuffData:SetProfessionBuff(buffId, type, buffLayer)
   self.professionBuffId_ = type
   self.professionBuffLayer_ = buffLayer
+  if 0 < buffLayer then
+    if not table.zcontains(self.cacheResIconId_, type) then
+      table.insert(self.cacheResIconId_, type)
+    end
+  else
+    table.zremoveByValue(self.cacheResIconId_, type)
+  end
   Z.EventMgr:Dispatch(Z.ConstValue.Buff.ProfessionBuffRefreshView)
 end
 
 function BuffData:GetProfessionBuff()
-  return self.professionBuffId_, self.professionBuffLayer_
+  return self.professionBuffId_, self.professionBuffLayer_, self.cacheResIconId_
 end
 
 function BuffData:ClearProfessionBuff()
   self.professionBuffId_ = nil
   self.professionBuffLayer_ = nil
+  self.cacheResIconId_ = {}
 end
 
 function BuffData:GetProfessionBuffPosition1()
   if not self.professionBuffPosition1_ then
-    self.professionBuffPosition1_ = Vector3.New(-12, 0, 0)
+    if Z.IsPCUI then
+      self.professionBuffPosition1_ = Vector3.New(-8, 0, 0)
+    else
+      self.professionBuffPosition1_ = Vector3.New(-12, 0, 0)
+    end
   end
   return self.professionBuffPosition1_
 end

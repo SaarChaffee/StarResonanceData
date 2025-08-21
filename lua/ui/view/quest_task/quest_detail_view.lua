@@ -14,31 +14,12 @@ function Quest_detailView:ctor()
   for i = 1, 3 do
     self.goalList_[i] = QuestGoalComp.new(self, i, E.GoalUIType.DetailPanel)
   end
-  self.limitComp_ = require("ui/component/quest/quest_limit_comp").new(self, {
-    time = function(state)
-      self:refreshTimeLimitUIByState(state)
-    end,
-    itemCount = function(idx, state)
-      self:refreshItemCountLimitUIByState(idx, state)
-    end,
-    date = function(idx, state, time)
-      self:refreshDateLimit(idx, state, time)
-    end,
-    roleLv = function(idx, state, lv)
-      self:refreshRoleLvLimit(idx, state, lv)
-    end,
-    questStep = function(idx, state, questId)
-      self:refreshQuestStepLimit(idx, state, questId)
-    end
-  })
+  self.limitComp_ = require("ui/component/quest/quest_limit_comp").new(self)
   self.questDetailVM_ = Z.VMMgr.GetVM("questdetail")
   self.questVM_ = Z.VMMgr.GetVM("quest")
+  self.questGoalVM_ = Z.VMMgr.GetVM("quest_goal")
   self.questData_ = Z.DataMgr.Get("quest_data")
   self.limitItems_ = {}
-  
-  function self.onInputAction_(inputActionEventData)
-    self:OnInputBack()
-  end
 end
 
 function Quest_detailView:initComp()
@@ -52,7 +33,7 @@ function Quest_detailView:initComp()
   self.btn_ask_ = self.uiBinder.btn_ask
   self.lab_empty_ = self.uiBinder.lab_empty
   self.node_right_ = self.uiBinder.node_right
-  self.group_condition_explain_ = self.uiBinder.group_condition_explain
+  self.node_condition_explain_ = self.uiBinder.node_condition_explain
   self.group_detail_ = self.uiBinder.group_detail
   self.lab_quest_name_ = self.uiBinder.lab_quest_name
   self.lab_quest_desc_ = self.uiBinder.lab_quest_desc
@@ -69,10 +50,14 @@ function Quest_detailView:initComp()
   self.loop_quest_award_ = self.uiBinder.node_loop_item
   self.loop_quest_series_award_ = self.uiBinder.node_loop_item_reward
   self.node_reward_desc_ = self.uiBinder.node_reward_desc
+  self.tran_layout_tab_ = self.uiBinder.tran_layout_tab
+  self.tog_group_tab_ = self.uiBinder.tog_group_tab
+  self.img_line_ = self.uiBinder.img_line
 end
 
 function Quest_detailView:OnActive()
   self:initComp()
+  self:startAnimatedShow()
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
   self.uiBinder.node_loop_eff:SetEffectGoVisible(true)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
@@ -86,16 +71,14 @@ function Quest_detailView:OnActive()
   self:initCatalogueListComp()
   self:initAwardLoopListComp()
   self:bindEvents()
-  self:RegisterInputActions()
-  self:refreshWithDefaultQuest()
+  self:initQuestGroupTabUI()
 end
 
 function Quest_detailView:OnDeActive()
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_loop_eff)
   self.uiBinder.node_loop_eff:SetEffectGoVisible(false)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
-  self:UnRegisterInputActions()
-  self.questVM_.CloseAllQuestRed()
+  Z.RedCacheContainer:GetQuestRed().CloseAllQuestRed()
   for i = 1, #self.goalList_ do
     self.goalList_[i]:UnInit()
   end
@@ -103,6 +86,7 @@ function Quest_detailView:OnDeActive()
   self.questAwardsLoopList_:UnInit()
   self.questSeriesAwardLoopList_:UnInit()
   self.limitComp_:UnInit()
+  self.curGroupId_ = nil
 end
 
 function Quest_detailView:initBtns()
@@ -128,6 +112,88 @@ function Quest_detailView:initBtns()
   end)
 end
 
+function Quest_detailView:initQuestGroupTabUI()
+  self.groupIds_ = self.questDetailVM_.GetQuestTypeGroupIds()
+  Z.CoroUtil.create_coro_xpcall(function()
+    local path
+    if Z.IsPCUI then
+      path = GetLoadAssetPath("ComTabTogItem_PC")
+    else
+      path = GetLoadAssetPath("ComTabTogItem")
+    end
+    local firstUnit
+    for i, groupId in ipairs(self.groupIds_) do
+      local unit = self:AsyncLoadUiUnit(path, "QuestTab" .. groupId, self.tran_layout_tab_)
+      if unit then
+        if Z.IsPCUI then
+          self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(unit.node_eff)
+          unit.node_eff:SetEffectGoVisible(false)
+        end
+        self:refreshGroupTabItem(groupId, unit)
+        if firstUnit == nil then
+          firstUnit = unit
+        end
+      end
+    end
+    if firstUnit then
+      local isOn = firstUnit.tog_tab_select.isOn
+      if isOn then
+        self:refreshQuestGroupTab(-1)
+      else
+        firstUnit.tog_tab_select.isOn = true
+      end
+    end
+  end)()
+end
+
+function Quest_detailView:refreshGroupTabItem(groupId, unit)
+  local imgPath, name
+  if groupId == -1 then
+    imgPath = "ui/atlas/item/c_tab_icon/com_icon_tab_67"
+    name = Lang("Overview")
+  else
+    local typeGroupTbl = Z.TableMgr.GetTable("QuestTypeGroupTableMgr")
+    local row = typeGroupTbl.GetRow(groupId)
+    if row then
+      imgPath = "ui/atlas/quest/icon/quest_icon_type_" .. row.TypeGroupUI
+      name = row.GroupName
+    end
+  end
+  unit.img_on:SetImage(imgPath)
+  unit.img_off:SetImage(imgPath)
+  if Z.IsPCUI then
+    unit.lab_name_on.text = name
+    unit.lab_name_off.text = name
+  end
+  unit.tog_tab_select.group = self.tog_group_tab_
+  unit.tog_tab_select:AddListener(function(isOn)
+    if Z.IsPCUI then
+      if isOn then
+        unit.anim_do:Restart(Z.DOTweenAnimType.Open)
+        unit.node_eff:SetEffectGoVisible(true)
+        self.anim_:Restart(Z.DOTweenAnimType.Tween_0)
+      else
+        unit.node_eff:SetEffectGoVisible(false)
+      end
+    end
+    if isOn then
+      self:refreshQuestGroupTab(groupId)
+    end
+  end)
+end
+
+function Quest_detailView:refreshQuestGroupTab(groupId)
+  if self.curGroupId_ == groupId then
+    return
+  end
+  self.curGroupId_ = groupId
+  self.catalogueListView_:ClearAllSelect()
+  if Z.IsPCUI then
+    self:setLineHeight(groupId)
+  end
+  self:refreshWithDefaultQuest()
+end
+
 function Quest_detailView:initCatalogueListComp()
   self.catalogueListView_ = loop_list_view.new(self, self.node_loop_catalogue_)
   self.catalogueListView_:SetGetItemClassFunc(function(data)
@@ -139,8 +205,14 @@ function Quest_detailView:initCatalogueListComp()
   end)
   self.catalogueListView_:SetGetPrefabNameFunc(function(data)
     if data.isQuestType then
+      if Z.IsPCUI then
+        return "quest_detail_catalogue_type_item_tpl_pc"
+      end
       return "quest_detail_catalogue_type_item_tpl"
     else
+      if Z.IsPCUI then
+        return "quest_detail_catalogue_item_tpl_pc"
+      end
       return "quest_detail_catalogue_item_tpl"
     end
   end)
@@ -148,9 +220,13 @@ function Quest_detailView:initCatalogueListComp()
 end
 
 function Quest_detailView:initAwardLoopListComp()
-  self.questAwardsLoopList_ = loop_list_view.new(self, self.loop_quest_award_, comRewardItem, "com_item_square_3_8")
+  local name = "com_item_square_3_8"
+  if Z.IsPCUI then
+    name = "com_item_square_3_8_pc"
+  end
+  self.questAwardsLoopList_ = loop_list_view.new(self, self.loop_quest_award_, comRewardItem, name)
   self.questAwardsLoopList_:Init({})
-  self.questSeriesAwardLoopList_ = loop_list_view.new(self, self.loop_quest_series_award_, quest_detail_series_reward_item, "com_item_square_3_8")
+  self.questSeriesAwardLoopList_ = loop_list_view.new(self, self.loop_quest_series_award_, quest_detail_series_reward_item, name)
   self.questSeriesAwardLoopList_:Init({})
 end
 
@@ -160,9 +236,9 @@ function Quest_detailView:onTrackBtnClick()
   end
   local questTrackVM = Z.VMMgr.GetVM("quest_track")
   if questTrackVM.CheckIsAllowReplaceTrack(true) then
-    questTrackVM.ReplaceAndTrackingQuest(self.selectQuest_)
     self.questDetailVM_.CloseDetailView()
-    questTrackVM.AfterSelectTrackQuestInView()
+    local questId = self.selectQuest_
+    questTrackVM.OnTrackBtnClick(questId)
   end
 end
 
@@ -185,37 +261,28 @@ function Quest_detailView:onGiveQuestBtnClick()
     if ret then
       self:refreshWithDefaultQuest()
     end
-    Z.DialogViewDataMgr:CloseDialogView()
   end)
 end
 
 function Quest_detailView:bindEvents()
-  Z.EventMgr:Add(Z.ConstValue.Backpack.ItemCountChange, self.onOwnItemCountChange, self)
-  Z.EventMgr:Add(Z.ConstValue.Backpack.AddItem, self.onOwnItemCountChange, self)
-  Z.EventMgr:Add(Z.ConstValue.Backpack.DelItem, self.onOwnItemCountChange, self)
   Z.EventMgr:Add(Z.ConstValue.Quest.TrackingIdChange, self.onTrackingIdChange, self)
-  Z.EventMgr:Add(Z.ConstValue.RoleLevelUp, self.onRoleLevelChange, self)
-  Z.EventMgr:Add(Z.ConstValue.Quest.StepFinish, self.onStepFinish, self)
 end
 
-function Quest_detailView:onOwnItemCountChange()
-  self.limitComp_:CheckItemCountLimit()
-  self.uiBinder.Ref:SetVisible(self.group_condition_explain_, #self.limitItems_ ~= 0)
-end
-
-function Quest_detailView:onRoleLevelChange()
-  self.limitComp_:CheckRoleLv()
-  self.uiBinder.Ref:SetVisible(self.group_condition_explain_, #self.limitItems_ ~= 0)
-end
-
-function Quest_detailView:onStepFinish()
-  self.limitComp_:checkQuestStep()
-  self.uiBinder.Ref:SetVisible(self.group_condition_explain_, #self.limitItems_ ~= 0)
+function Quest_detailView:setLineHeight(groupId)
+  local index = 0
+  for i, v in ipairs(self.groupIds_) do
+    if v == groupId then
+      index = i - 1
+      break
+    end
+  end
+  local height = 154 + 78 * index
+  self.img_line_:SetHeight(height)
 end
 
 function Quest_detailView:onTrackingIdChange()
-  self.questtypeGroupList_ = self.questDetailVM_.GetQuestTypeGroupList()
-  self.catalogueDatas_ = self.questDetailVM_.GetQuestDetailCatalogueDatas(self.questtypeGroupList_)
+  self.questtypeGroupList_ = self.questDetailVM_.GetQuestTypeGroupList(self.curGroupId_)
+  self.catalogueDatas_ = self.questDetailVM_.GetQuestDetailCatalogueDatas(self.questtypeGroupList_, self.curGroupId_)
   self.catalogueListView_:RefreshListView(self.catalogueDatas_)
 end
 
@@ -229,6 +296,7 @@ function Quest_detailView:refreshWithDefaultQuest()
   self.uiBinder.Ref:SetVisible(self.node_right_, not isEmpty)
   if selectIndex == nil or selectIndex <= 0 then
     self.uiBinder.Ref:SetVisible(self.group_detail_, false)
+    self.uiBinder.Ref:SetVisible(self.node_track_btn_, false)
   end
 end
 
@@ -304,7 +372,7 @@ function Quest_detailView:refreshQuestSeriesAwards(questId)
 end
 
 function Quest_detailView:refreshTrackUi(questContainerData)
-  local goalIdx = self.questVM_.GetUncompletedGoalIndex(questContainerData.id)
+  local goalIdx = self.questGoalVM_.GetUncompletedGoalIndex(questContainerData.id)
   local trackData = self.questData_:GetGoalTrackData(questContainerData.stepId, goalIdx)
   if trackData then
     local toSceneId = trackData.toSceneId
@@ -326,8 +394,9 @@ function Quest_detailView:refreshQuestTitleAndDes(questId, setpId)
       self.uiBinder.Ref:SetVisible(self.img_quest_main_title_, false)
     else
       self.uiBinder.Ref:SetVisible(self.img_quest_main_title_, true)
+      local content = self.questVM_.PlaceholderTaskContent(stepRow.StepMainTitle, nil)
+      self.lab_quest_target_tips_desc_.text = content
     end
-    self.lab_quest_target_tips_desc_.text = stepRow.StepMainTitle
     self.uiBinder.Ref:SetVisible(self.layout_goal_, true)
   end
 end
@@ -351,160 +420,8 @@ function Quest_detailView:setBtnTrackState(isShowTrack)
   self.uiBinder.Ref:SetVisible(self.btn_cancel_track_, not isShowTrack)
 end
 
-function Quest_detailView:refreshTimeLimitUIByState(state)
-  local questId = self.selectQuest_
-  if questId == -1 then
-    return
-  end
-  local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(questId)
-  if questRow == nil then
-    return
-  end
-  local questName = questRow.QuestName
-  local content = questName
-  if state == 0 then
-    content = questName
-  elseif state == 1 then
-    content = Z.RichTextHelper.ApplyStyleTag(string.format("%s\227\128\144%s\227\128\145", questName, Lang("QuestTimeLimitStart")), E.TextStyleTag.Red)
-  elseif state == 2 then
-    content = Z.RichTextHelper.ApplyStyleTag(string.format("%s\227\128\144%s\227\128\145", questName, Lang("QuestTimeLimitEnd")), E.TextStyleTag.Red)
-  end
-  table.insert(self.limitItems_, {
-    name = "TimeLimit",
-    refreshUnitFunc = function(unit)
-      unit.lab_special_explain.text = content
-    end
-  })
-end
-
-function Quest_detailView:refreshItemCountLimitUIByState(idx, state)
-  local questId = self.selectQuest_
-  if questId == -1 then
-    return
-  end
-  local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(questId)
-  if questRow then
-    local unitStr = idx .. "ItemLimit"
-    if state == 1 then
-      local limitData = questRow.ContinueLimit[idx]
-      local itemData = Z.TableMgr.GetTable("ItemTableMgr").GetRow(tonumber(limitData[2]))
-      if itemData == nil then
-        return
-      end
-      local itemName = itemData.Name
-      local minNum = tonumber(limitData[3])
-      local param = {
-        item = {name = itemName, num = minNum}
-      }
-      local desc = Lang("QuestItemLimit", param)
-      table.insert(self.limitItems_, {
-        name = unitStr,
-        refreshUnitFunc = function(unit)
-          unit.lab_special_explain.text = desc
-        end
-      })
-    elseif state == 2 then
-      self:clearLimitUnitByStr(unitStr)
-    end
-  end
-end
-
-function Quest_detailView:refreshDateLimit(idx, state, dateSce)
-  if state == 1 then
-    local unitStr = idx .. "date"
-    table.insert(self.limitItems_, {
-      name = unitStr,
-      refreshUnitFunc = function(unit)
-        unit.lab_special_explain.text = self:getDateLimitStr(dateSce)
-        local timer = self.timerMgr:StartTimer(function()
-          dateSce = dateSce - 1
-          unit.lab_special_explain.text = self:getDateLimitStr(dateSce)
-        end, 1, dateSce, true, function()
-          if self.IsActive then
-            self:clearLimitUnitByStr(unitStr)
-            self.uiBinder.Ref:SetVisible(self.group_condition_explain_, #self.limitItems_ ~= 0)
-          end
-        end)
-      end
-    })
-  end
-end
-
-function Quest_detailView:getDateLimitStr(dateSce)
-  local hour, min, sec = Z.TimeTools.S2HMS(dateSce)
-  local timestr
-  if 0 < hour then
-    timestr = Lang("Hour", {val = hour})
-  elseif 0 < min then
-    timestr = min .. Lang("Minute")
-  else
-    timestr = sec .. Lang("EquipSecondsText")
-  end
-  return Lang("remainderLimit", {str = timestr})
-end
-
-function Quest_detailView:refreshRoleLvLimit(idx, state, lv)
-  if state == 1 then
-    local unitStr = idx .. "LvLimit"
-    table.insert(self.limitItems_, {
-      name = unitStr,
-      refreshUnitFunc = function(unit)
-        unit.lab_special_explain.text = Lang("NeedRoleLevel", {lv = lv})
-      end
-    })
-  end
-end
-
-function Quest_detailView:refreshQuestStepLimit(idx, state, questId)
-  if state == 1 then
-    local unitStr = idx .. "questStep"
-    table.insert(self.limitItems_, {
-      name = unitStr,
-      refreshUnitFunc = function(unit)
-        local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(questId)
-        if questRow then
-          unit.lab_special_explain.text = Lang("NeedAdvanceTaskStart", {
-            str = questRow.QuestName
-          })
-        end
-      end
-    })
-  end
-end
-
 function Quest_detailView:refreshLimit()
-  Z.CoroUtil.create_coro_xpcall(function()
-    self:clearLimitUnit()
-    self.timerMgr:Clear()
-    self.limitComp_:Init(self.selectQuest_)
-    for index, value in ipairs(self.limitItems_) do
-      local name = value.name
-      if name ~= nil then
-        local unit = self:AsyncLoadUiUnit("ui/prefabs/quest/quest_target_condition_tpl", name, self.layout_list_condition_)
-        if unit ~= nil and value.refreshUnitFunc ~= nil then
-          value.refreshUnitFunc(unit)
-        end
-      end
-    end
-    self.uiBinder.Ref:SetVisible(self.group_condition_explain_, #self.limitItems_ ~= 0)
-  end)()
-end
-
-function Quest_detailView:clearLimitUnit()
-  for _, value in pairs(self.limitItems_) do
-    self:RemoveUiUnit(value.name)
-  end
-  self.limitItems_ = {}
-end
-
-function Quest_detailView:clearLimitUnitByStr(unitStr)
-  for i, value in pairs(self.limitItems_) do
-    if unitStr == value.name then
-      self:RemoveUiUnit(unitStr)
-      table.remove(self.limitItems_, i)
-      return
-    end
-  end
+  self.limitComp_:Init(self.selectQuest_, self.node_condition_explain_)
 end
 
 function Quest_detailView:startAnimatedShow()
@@ -514,12 +431,8 @@ end
 function Quest_detailView:startAnimatedHide()
 end
 
-function Quest_detailView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Quest)
-end
-
-function Quest_detailView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Quest)
+function Quest_detailView:OnClickBtnAnimShow()
+  self.anim_:Restart(Z.DOTweenAnimType.Tween_1)
 end
 
 return Quest_detailView

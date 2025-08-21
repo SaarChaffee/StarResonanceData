@@ -3,7 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message PrivateChatTargetTopRequest {
-    uint32 targetId = 2;
-    bool setTop = 3;
+    uint32 targetId = 1;
+    bool setTop = 2;
 }
-

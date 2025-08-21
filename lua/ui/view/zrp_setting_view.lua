@@ -14,7 +14,7 @@ local ECharDetailGrade = Panda.Utility.Quality.ECharDetailGrade
 local EEffectDetailGrade = Panda.Utility.Quality.EEffectDetailGrade
 local EOutlineQuality = Panda.Utility.Quality.EOutlineQuality
 local EUpScaleGrade = Panda.Utility.Quality.EUpScaleGrade
-local EEffectGrade = Panda.ZEffect.EEffectGrade
+local EEffectLod = Panda.ZEffect.EEffectLod
 
 function Zrp_settingView:ctor()
   self.uiBinder = nil
@@ -110,19 +110,19 @@ function Zrp_settingView:BindEvents()
     QualityGradeSetting.CSMShadowDistance = tonumber(text)
   end)
   self.uiBinder.input_effect_vh:AddListener(function(text)
-    QualityGradeSetting.SetEffectLimit(EEffectGrade.EVeryHigh, tonumber(text))
+    QualityGradeSetting.SetEffectLimit(EEffectLod.EVeryHigh, tonumber(text))
   end)
   self.uiBinder.input_effect_h:AddListener(function(text)
-    QualityGradeSetting.SetEffectLimit(EEffectGrade.EHigh, tonumber(text))
+    QualityGradeSetting.SetEffectLimit(EEffectLod.EHigh, tonumber(text))
   end)
   self.uiBinder.input_effect_m:AddListener(function(text)
-    QualityGradeSetting.SetEffectLimit(EEffectGrade.EMedium, tonumber(text))
+    QualityGradeSetting.SetEffectLimit(EEffectLod.EMedium, tonumber(text))
   end)
   self.uiBinder.input_effect_l:AddListener(function(text)
-    QualityGradeSetting.SetEffectLimit(EEffectGrade.ELow, tonumber(text))
+    QualityGradeSetting.SetEffectLimit(EEffectLod.ELow, tonumber(text))
   end)
   self.uiBinder.input_effect_vl:AddListener(function(text)
-    QualityGradeSetting.SetEffectLimit(EEffectGrade.EVeryLow, tonumber(text))
+    QualityGradeSetting.SetEffectLimit(EEffectLod.EVeryLow, tonumber(text))
   end)
   self.uiBinder.tog_srpbatch:AddListener(function(r)
     QualityGradeSetting.SrpBatchSwitch = r
@@ -157,6 +157,18 @@ function Zrp_settingView:BindEvents()
   self.uiBinder.tog_ecsmodel:AddListener(function(isOn)
     Panda.Core.GameContext.UseECSModel = isOn
   end)
+  self.uiBinder.tog_scene:AddListener(function(isOn)
+    QualityGradeSetting.IsSceneVisible = isOn
+    self:RefreshPasses()
+  end)
+  self.uiBinder.tog_char:AddListener(function(isOn)
+    QualityGradeSetting.IsCharVisible = isOn
+    self:RefreshPasses()
+  end)
+  self.uiBinder.tog_op_worker:AddListener(function(isOn)
+    QualityGradeSetting.IsLimitWorkerCount = isOn
+    self:RefreshPasses()
+  end)
   self.uiBinder.tog_bug:AddListener(function(isOn)
     self.gmData_.IsOpenBug = isOn
     Z.EventMgr:Dispatch(Z.ConstValue.GM.IsOpenBug, isOn)
@@ -172,7 +184,8 @@ function Zrp_settingView:BindEvents()
     Z.EventMgr:Dispatch(Z.ConstValue.GM.IsOpenGm, isOn)
   end)
   self.uiBinder.tog_watermark:AddListener(function(isOn)
-    self.gmData_.IsOpenWateMark = isOn
+    local markData = Z.DataMgr.Get("mark_data")
+    markData:SetMarkState(isOn)
     Z.EventMgr:Dispatch(Z.ConstValue.GM.IsOpenMake, isOn)
   end)
 end
@@ -204,11 +217,11 @@ function Zrp_settingView:OnRefresh()
   self.uiBinder.input_maxreducion.text = tostring(QualityGradeSetting.MipmapStreamingMaxReduction)
   self.uiBinder.input_lodbias.text = tostring(QualityGradeSetting.LodBias)
   self.uiBinder.input_csmdis.text = tostring(QualityGradeSetting.CSMShadowDistance)
-  self.uiBinder.input_effect_vh.text = tostring(QualityGradeSetting.GetEffectLimit(EEffectGrade.EVeryHigh))
-  self.uiBinder.input_effect_h.text = tostring(QualityGradeSetting.GetEffectLimit(EEffectGrade.EHigh))
-  self.uiBinder.input_effect_m.text = tostring(QualityGradeSetting.GetEffectLimit(EEffectGrade.EMedium))
-  self.uiBinder.input_effect_l.text = tostring(QualityGradeSetting.GetEffectLimit(EEffectGrade.ELow))
-  self.uiBinder.input_effect_vl.text = tostring(QualityGradeSetting.GetEffectLimit(EEffectGrade.EVeryLow))
+  self.uiBinder.input_effect_vh.text = tostring(QualityGradeSetting.GetEffectLimit(EEffectLod.EVeryHigh))
+  self.uiBinder.input_effect_h.text = tostring(QualityGradeSetting.GetEffectLimit(EEffectLod.EHigh))
+  self.uiBinder.input_effect_m.text = tostring(QualityGradeSetting.GetEffectLimit(EEffectLod.EMedium))
+  self.uiBinder.input_effect_l.text = tostring(QualityGradeSetting.GetEffectLimit(EEffectLod.ELow))
+  self.uiBinder.input_effect_vl.text = tostring(QualityGradeSetting.GetEffectLimit(EEffectLod.EVeryLow))
   self.uiBinder.tog_srpbatch.isOn = QualityGradeSetting.SrpBatchSwitch
   self.uiBinder.tog_cutscene.isOn = QualityGradeSetting.CutSceneSwitch
   self.uiBinder.tog_fog.isOn = QualityGradeSetting.EnableVolumeFog
@@ -221,10 +234,24 @@ function Zrp_settingView:OnRefresh()
   self.uiBinder.tog_subpass.isOn = QualityGradeSetting.EnableSubpass
   self.uiBinder.tog_vsync.isOn = QualityGradeSetting.EnableVSync
   self.uiBinder.tog_ecsmodel.isOn = Panda.Core.GameContext.UseECSModel
+  self.uiBinder.tog_scene.isOn = QualityGradeSetting.IsSceneVisible
+  self.uiBinder.tog_char.isOn = QualityGradeSetting.IsCharVisible
+  self.uiBinder.tog_op_worker.isOn = QualityGradeSetting.IsLimitWorkerCount
   self.uiBinder.tog_bug.isOn = self.gmData_.IsOpenBug
   self.uiBinder.tog_gm.isOn = self.gmData_.IsOpenGm
-  self.uiBinder.tog_watermark.isOn = self.gmData_.IsOpenWateMark
+  self.uiBinder.tog_watermark.isOn = self.gmData_.IsOpenWaterMark
   self.uiBinder.tog_outline.isOn = QualityGradeSetting.EnableOutline
+  self:RefreshPasses()
+  local lastScore = Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Device, "Devices_Quality_Score", 0)
+  if lastScore ~= 0 then
+    self.uiBinder.last_score.text = "Quality Score:" .. lastScore
+  else
+    self.uiBinder.last_score.text = ""
+  end
+  self.uiBinder.performancescore.text = tostring(Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Device, "PERFORMANCE_TEST_SCORE", 0))
+end
+
+function Zrp_settingView:RefreshPasses()
   self:ClearPassObjs()
   if QualityGradeSetting.RenderPassList then
     for i = 0, QualityGradeSetting.RenderPassList.Count - 1 do
@@ -242,13 +269,6 @@ function Zrp_settingView:OnRefresh()
       end
     end
   end
-  local lastScore = Z.LocalUserDataMgr.GetInt("Devices_Quality_Score", 0)
-  if lastScore ~= 0 then
-    self.uiBinder.last_score.text = "Quality Score:" .. lastScore
-  else
-    self.uiBinder.last_score.text = ""
-  end
-  self.uiBinder.performancescore.text = tostring(Z.LocalUserDataMgr.GetInt("PERFORMANCE_TEST_SCORE", 0))
 end
 
 function Zrp_settingView:AddRenderPass(pass)

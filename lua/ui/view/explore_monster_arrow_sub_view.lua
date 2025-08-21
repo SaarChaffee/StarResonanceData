@@ -3,18 +3,13 @@ local super = require("ui.ui_subview_base")
 local Explore_monster_arrow_subView = class("Explore_monster_arrow_subView", super)
 
 function Explore_monster_arrow_subView:ctor(parent)
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "explore_monster_arrow_sub", "explore_monster/explore_monster_positioning_tpl", UI.ECacheLv.None)
   self.vm = Z.VMMgr.GetVM("explore_monster")
 end
 
 function Explore_monster_arrow_subView:OnActive()
-  self:initWidget()
   Z.EventMgr:Add(Z.ConstValue.Explore_Monster.arrow, self.updateArrow, self)
-end
-
-function Explore_monster_arrow_subView:initWidget()
-  self.arrows_ = self.panel.node_positioning
 end
 
 function Explore_monster_arrow_subView:OnRefresh()
@@ -28,7 +23,6 @@ end
 function Explore_monster_arrow_subView:updateArrow()
   local dataMgr = Z.DataMgr.Get("explore_monster_data")
   local monsters = dataMgr:GetExploreArrowContent()
-  local dataList = {}
   local sceneId = Z.StageMgr.GetCurrentSceneId()
   local uuid
   local guideData = Z.DataMgr.Get("goal_guide_data")

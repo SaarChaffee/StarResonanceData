@@ -2,21 +2,23 @@ local Id = 1
 local AcquiretipItemView = class("AcquiretipItemView")
 
 function AcquiretipItemView:ctor()
-  self.unit_ = nil
+  self.uiBinder = nil
   self.IsActive = false
   self.targetHeight_ = 0
-  self.itemsVm_ = Z.VMMgr.GetVM("items")
+  self.itemsVM_ = Z.VMMgr.GetVM("items")
+  self.commonVM_ = Z.VMMgr.GetVM("common")
 end
 
-function AcquiretipItemView:Active(acquiretipView, itemData, targetHeight)
+function AcquiretipItemView:Active(acquiretipView, itemData, targetHeight, itemParent)
   self.IsActive = true
   self.itemData_ = itemData
   self.targetHeight_ = targetHeight
-  self.Height = -65
+  self.Height = -30
   self.view_ = acquiretipView
+  self.itemParent_ = itemParent
   self:refresh()
   self:playAnim()
-  if self.unit_ == nil then
+  if self.uiBinder == nil then
     self:load()
   else
     self:onloadCompleted()
@@ -24,50 +26,50 @@ function AcquiretipItemView:Active(acquiretipView, itemData, targetHeight)
 end
 
 function AcquiretipItemView:UnInit()
-  if self.unit_ then
-    self.unit_:SetVisible(false)
-    self.unit_.Ref:SetPosition(0, self.Height)
+  if self.uiBinder ~= nil then
+    self.uiBinder.Ref.UIComp:SetVisible(false)
+    self.uiBinder.Trans:SetAnchorPosition(0, self.Height)
+    self.uiBinder = nil
   end
-  self.unit_ = nil
   self.view_ = nil
+  self.itemParent_ = nil
   self.unitName = nil
   self.IsActive = false
 end
 
 function AcquiretipItemView:Update(deltaTime, addHeightNum)
   self.targetHeight_ = self.targetHeight_ + addHeightNum
-  if self.unit_ and self.Height ~= self.targetHeight_ then
+  if self.uiBinder ~= nil and self.Height ~= self.targetHeight_ then
     self.Height = self.Height + deltaTime * 200
     if self.Height > self.targetHeight_ then
       self.Height = self.targetHeight_
     end
-    local pos = self.unit_.Ref.RectTransform.anchoredPosition
-    self.unit_.Ref:SetPosition(pos.x, self.Height)
+    local x, y = self.uiBinder.Trans:GetAnchorPosition(nil, nil)
+    self.uiBinder.Trans:SetAnchorPosition(x, self.Height)
   end
 end
 
 function AcquiretipItemView:load()
   self.unitName = "item" .. Id
   Id = Id + 1
-  local parent = self.view_.panel.rect.Trans
   local prefabPath = Z.IsPCUI and "ui/prefabs/tips/tips_acquire_tpl_pc" or "ui/prefabs/tips/tips_acquire_tpl"
   Z.CoroUtil.create_coro_xpcall(function()
-    self.unit_ = self.view_:AsyncLoadUiUnit(prefabPath, self.unitName, parent, self.view_.cancelSource:CreateToken())
+    self.uiBinder = self.view_:AsyncLoadUiUnit(prefabPath, self.unitName, self.itemParent_, self.view_.cancelSource:CreateToken())
     self:onloadCompleted()
   end)()
 end
 
 function AcquiretipItemView:onloadCompleted()
-  if self.unit_ == nil then
+  if self.uiBinder == nil then
     return
   end
-  self.unit_.Ref:SetPosition(0, self.Height)
+  self.uiBinder.Trans:SetAnchorPosition(0, self.Height)
   self:refresh()
   self:playAnim()
 end
 
 function AcquiretipItemView:refresh()
-  if self.unit_ == nil then
+  if self.uiBinder == nil then
     return
   end
   if self.itemData_ == nil then
@@ -77,9 +79,9 @@ function AcquiretipItemView:refresh()
   if itemTableData == nil then
     return
   end
-  self.unit_.rimg_icon:SetVisible(true)
-  self.unit_.img_tv_acquire_done.Go:SetActive(false)
-  self.unit_.node_tv_acquire_special.Go:SetActive(false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_icon, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.trans_done, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.trans_special, false)
   local isSpecial = false
   local itemConfig = Z.TableMgr.GetRow("ItemTableMgr", self.itemData_.ItemConfigId, true)
   if itemConfig then
@@ -88,38 +90,35 @@ function AcquiretipItemView:refresh()
       isSpecial = true
     end
   end
-  self.unit_.img_tv_acquire_done.Go:SetActive(not isSpecial)
-  self.unit_.node_tv_acquire_special.Go:SetActive(isSpecial)
-  if isSpecial then
-    Z.AudioMgr:Play("sfx_treasure_gorgeous")
+  self.uiBinder.Ref:SetVisible(self.uiBinder.trans_done, not isSpecial)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.trans_special, isSpecial)
+  if itemConfig.Quality >= 4 then
+    Z.AudioMgr:Play("UI_Event_GetTip_Golden")
+  else
+    Z.AudioMgr:Play("UI_Event_GetTip_Normal")
   end
-  self.unit_.rimg_icon.RImg:SetImage(self.itemsVm_.GetItemIcon(self.itemData_.ItemConfigId))
-  local text = self.itemsVm_.ApplyItemNameWithQualityTag(self.itemData_.ItemConfigId)
-  self.unit_.lab_name.TMPLab.text = text
-  self.unit_.lab_count.TMPLab.text = self.itemData_.ChangeCount
-  self.unit_.content.ZLayout:ForceRebuildLayoutImmediate()
-  self.unit_.img_icon_timelimit:SetVisible(itemTableData.TimeType ~= 0)
+  self.uiBinder.rimg_icon:SetImage(self.itemsVM_.GetItemIcon(self.itemData_.ItemConfigId))
+  local text = self.itemsVM_.ApplyItemNameWithQualityTag(self.itemData_.ItemConfigId)
+  self.uiBinder.lab_name.text = text
+  self.uiBinder.lab_count.text = self.itemData_.ChangeCount
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_time_limit, itemTableData.TimeType ~= 0)
+  self.uiBinder.comp_rebuilder:ForceRebuildLayoutImmediate()
 end
 
 function AcquiretipItemView:playAnim()
-  if self.unit_ == nil then
+  if self.uiBinder == nil then
     return
   end
-  self.unit_:SetVisible(true)
-  local anim = self.unit_.anim.anim
+  self.uiBinder.Ref.UIComp:SetVisible(true)
+  local anim = self.uiBinder.anim_main
   anim:ResetAniState("acquiretip_item", 0)
   local token = self.view_.cancelSource:CreateToken()
-  anim:CoroPlayOnce("acquiretip_item", token, function()
+  self.commonVM_.CommonPlayAnim(anim, "acquiretip_item", token, function()
     self.IsActive = false
-    if self.unit_ then
-      self.unit_:SetVisible(false)
-      self.unit_.Ref:SetPosition(0, self.Height)
+    if self.uiBinder ~= nil then
+      self.uiBinder.Ref.UIComp:SetVisible(false)
+      self.uiBinder.Trans:SetAnchorPosition(0, self.Height)
     end
-  end, function(err)
-    if err == ZUtil.ZCancelSource.CancelException then
-      return
-    end
-    logError(err)
   end)
 end
 

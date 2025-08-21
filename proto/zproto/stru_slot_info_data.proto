@@ -8,5 +8,5 @@ message SlotInfoData {
     bool isReplace = 3;
     bool showEffect = 4;
     int64 cd = 5;
+    bool isAutoBattleClose = 6;
 }
-

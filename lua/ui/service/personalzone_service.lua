@@ -22,6 +22,9 @@ function PersonalzoneService:OnLogin()
       local personalZoneVM = Z.VMMgr.GetVM("personal_zone")
       personalZoneVM.CheckRed()
     end
+    if dirty.fashionCollectPoint or dirty.rideCollectPoint or dirty.weaponSkinCollectPoint then
+      Z.EventMgr:Dispatch(Z.ConstValue.Collection.FashionCollectionPointChange)
+    end
   end
   
   Z.ContainerMgr.CharSerialize.personalZone.Watcher:RegWatcher(self.onContainerChanged)
@@ -53,13 +56,9 @@ function PersonalzoneService:onItemChange(item)
   if item == nil or item.configId == nil then
     return
   end
-  local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(item.configId, true)
   local itemsVM = Z.VMMgr.GetVM("items")
   if itemsVM.CheckPackageTypeByConfigId(item.configId, E.BackPackItemPackageType.Personalzone) then
     local personalZoneVM = Z.VMMgr.GetVM("personal_zone")
-    if itemConfig and itemConfig.IsSpecialDisplay then
-      personalZoneVM.OpenAwardPopView(item.configId)
-    end
     local personalzoneData = Z.DataMgr.Get("personal_zone_data")
     personalzoneData:AddPersonalzoneItem(item.configId)
     personalZoneVM.CheckRed()

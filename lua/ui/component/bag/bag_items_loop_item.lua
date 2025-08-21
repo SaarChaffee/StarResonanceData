@@ -23,10 +23,26 @@ end
 function BagItemsLoopItem:OnInit()
   self.timerMgr_ = Z.TimerMgr.new()
   self.itemClass_ = item.new(self.parent.UIView)
+  self.itemClass_:Init({
+    uiBinder = self.uiBinder,
+    isClickOpenTips = false
+  })
+  self:initDragEvent()
 end
 
 function BagItemsLoopItem:OnRefresh(data)
   self:OnReset()
+  self.data_ = data
+  if data.IsEmpty then
+    self.itemClass_:RefreshByData({
+      uiBinder = self.uiBinder,
+      isClickOpenTips = false,
+      isShowLattice = true
+    })
+    self:SetCanSelect(false)
+    return
+  end
+  self:SetCanSelect(true)
   if self.Index > #self.parent.DataList then
     self.loopGridViewItem.CanSelected = false
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_info, false)
@@ -44,13 +60,14 @@ function BagItemsLoopItem:OnRefresh(data)
   self.itemData_ = self.package_.items[self.itemUuid_]
   self.package_.Watcher:RegWatcher(self.packageWatcherFun)
   self.itemData_.Watcher:RegWatcher(self.itemWatcherFun_)
-  local itemData = {}
-  itemData.uiBinder = self.uiBinder
-  itemData.configId = self.configId_
-  itemData.uuid = self.itemUuid_
-  itemData.itemInfo = self.itemData_
-  itemData.isClickOpenTips = false
-  self.itemClass_:Init(itemData)
+  local itemData = {
+    uiBinder = self.uiBinder,
+    configId = self.configId_,
+    uuid = self.itemUuid_,
+    itemInfo = self.itemData_,
+    isClickOpenTips = false
+  }
+  self.itemClass_:RefreshByData(itemData)
   self:setui()
   self.updateTimer_ = self.timerMgr_:StartFrameTimer(function()
     self:update()
@@ -64,6 +81,7 @@ function BagItemsLoopItem:setui()
   end
   self.itemClass_:RefreshItemFlags(self.itemData_, itemTableRow)
   self.itemClass_:SetSelected(self.IsSelected)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_temp, self.IsSelected)
   self:refreshRedDot()
 end
 
@@ -108,7 +126,11 @@ function BagItemsLoopItem:OnReset()
 end
 
 function BagItemsLoopItem:OnSelected(isSelected, isClick)
+  if self.data_.IsEmpty then
+    return
+  end
   self.itemClass_:SetSelected(isSelected, isSelected)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_temp, isSelected)
   if isSelected then
     if isClick then
       Z.AudioMgr:Play("sys_general_frame")
@@ -128,6 +150,7 @@ function BagItemsLoopItem:OnUnInit()
   self.itemClass_:UnInit()
   self.updateTimer_ = nil
   self.timerMgr_ = nil
+  self:unInitDragEvent()
 end
 
 function BagItemsLoopItem:OnBeforePlayAnim()
@@ -139,6 +162,33 @@ function BagItemsLoopItem:OnBeforePlayAnim()
     groupAnimComp:AddTweenContainer(self.uiBinder.anim_dotween)
     self.uiBinder.Ref.UIComp:SetVisible(false)
   end
+end
+
+function BagItemsLoopItem:OnPointerClick(go, eventData)
+  if Z.IsPCUI then
+    self.parent.UIView:OnPlayAnim(2)
+  end
+end
+
+function BagItemsLoopItem:initDragEvent()
+  self.uiBinder.event_triggle_temp.onBeginDrag:AddListener(function(go, pointerData)
+    if not self.parent.UIView.bagTakeMedicineSubView_.IsActive then
+      return
+    end
+    self.parent.UIView:OnBeginDragItem(self.data_.configId, pointerData)
+  end)
+  self.uiBinder.event_triggle_temp.onDrag:AddListener(function(go, pointerData)
+    self.parent.UIView:OnDragItem(pointerData)
+  end)
+  self.uiBinder.event_triggle_temp.onEndDrag:AddListener(function()
+    self.parent.UIView:OnEndDragItem()
+  end)
+end
+
+function BagItemsLoopItem:unInitDragEvent()
+  self.uiBinder.event_triggle_temp.onBeginDrag:RemoveAllListeners()
+  self.uiBinder.event_triggle_temp.onDrag:RemoveAllListeners()
+  self.uiBinder.event_triggle_temp.onEndDrag:RemoveAllListeners()
 end
 
 return BagItemsLoopItem

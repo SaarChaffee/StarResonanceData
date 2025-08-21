@@ -2,9 +2,17 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_timer_exe_type.proto";
+import "enum_e_timer_type.proto";
+
 message RecommendPlayData {
     int64 startTimestamp = 1;
     int64 endTimestamp = 2;
     bool isOpen = 4;
+    int64 lastTimeStamp = 5;
+    int64 lastEndTimeStamp = 6;
+    int64 nextTimeStamp = 7;
+    int64 nextEndTimeStamp = 8;
+    zproto.ETimerExeType curType = 9;
+    zproto.ETimerType timerType = 10;
 }
-

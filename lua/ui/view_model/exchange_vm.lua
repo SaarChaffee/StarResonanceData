@@ -1,8 +1,12 @@
 local exchangeItemTbl = Z.TableMgr.GetTable("ExchangeItemTableMgr")
 local itemsVM = Z.VMMgr.GetVM("items")
+local exchangeItemTableMap = require("table.ExchangeItemTableMap")
 local openExchangeView = function(shopId, npcId)
   local entityVM = Z.VMMgr.GetVM("entity")
-  local uuid = entityVM.ConfigIdToUUid(npcId)
+  local uuid = 0
+  if npcId ~= nil then
+    uuid = entityVM.ConfigIdToUUid(npcId)
+  end
   Z.UIMgr:OpenView("exchange_main", {
     shopId = tonumber(shopId),
     npcId = uuid
@@ -51,16 +55,17 @@ local getExchangeLimitType = function(itemId)
   if exchangeItemRow then
     local type = exchangeItemRow.RefreshType
     if 0 < type then
-      local timerCfg = Z.TableMgr.GetTable("TimerTableMgr").GetRow(type)
-      if timerCfg then
-        if timerCfg.type == Z.TimeTools.FunctionOpenTimeType.DailyCycle then
-          return E.ExchangeLimitType.Day
-        elseif timerCfg.type == Z.TimeTools.FunctionOpenTimeType.WeekCycle then
-          return E.ExchangeLimitType.Week
-        end
+      local timerInfo = Z.DIServiceMgr.ZCfgTimerService:GetZCfgTimerItem(type)
+      if timerInfo == nil then
+        return E.ExchangeLimitType.Always
+      end
+      if timerInfo.TimerType == E.TimerType.Daily then
+        return E.ExchangeLimitType.Day
+      elseif timerInfo.TimerType == E.TimerType.Weekly then
+        return E.ExchangeLimitType.Week
       end
     end
-    return type
+    return E.ExchangeLimitType.Always
   end
   return E.ExchangeLimitType.Always
 end
@@ -71,8 +76,7 @@ local isEnoughExchangeChance = function(goodsId)
   end
   local shopId = exchangeItemRow.ExchangeID
   local shopInfo = Z.ContainerMgr.CharSerialize.exchangeItems.exchangeInfo[shopId]
-  local itemConfigId = exchangeItemRow.GetItemId
-  local data = shopInfo.exchangeData[itemConfigId]
+  local data = shopInfo.exchangeData[goodsId]
   if data then
     local curExchangeNum = data.curExchangeCount
     local maxNum = exchangeItemRow.RefreshNum
@@ -148,18 +152,51 @@ local getExchangeItemConditionDataAndState = function(itemId)
   end
   return tab, isUnlock
 end
-local getGoodsIdListByShopId = function(shopId)
+local getGoodsIdListByShopId = function(shopId, professionId)
   local idList = {}
   local sex = Z.ContainerMgr.CharSerialize.charBase.gender
-  local exchangeData = Z.DataMgr.Get("exchange_data")
-  for goodsId, data in pairs(exchangeData.ExchangeItemTableDatas) do
-    if data.ExchangeID == shopId and (data.SexLimit == 0 or data.SexLimit == sex) then
-      local conditionData, isUnlock = getExchangeItemConditionDataAndState(goodsId)
-      table.insert(idList, {
-        goodsId = goodsId,
-        conditionData = conditionData,
-        isUnlock = isUnlock
-      })
+  local exchangeItemMgr = Z.TableMgr.GetTable("ExchangeItemTableMgr")
+  local equipMgr = Z.TableMgr.GetTable("EquipTableMgr")
+  local exchangeShopItems = {}
+  if exchangeItemTableMap and exchangeItemTableMap.QualityGroup and exchangeItemTableMap.QualityGroup[shopId] then
+    exchangeShopItems = exchangeItemTableMap.QualityGroup[shopId]
+  end
+  for _, goodsId in ipairs(exchangeShopItems) do
+    local exchangeItemConfig = exchangeItemMgr.GetRow(goodsId)
+    if exchangeItemConfig then
+      if professionId == nil then
+        if exchangeItemConfig.SexLimit == 0 or exchangeItemConfig.SexLimit == sex then
+          local conditionData, isUnlock = getExchangeItemConditionDataAndState(goodsId)
+          table.insert(idList, {
+            goodsId = goodsId,
+            conditionData = conditionData,
+            isUnlock = isUnlock,
+            itemId = exchangeItemConfig.GetItemId
+          })
+        end
+      else
+        local isProfessionEquipItem = false
+        local equipConfig = equipMgr.GetRow(exchangeItemConfig.GetItemId, true)
+        if equipConfig then
+          for _, pro in ipairs(equipConfig.EquipProfession) do
+            if pro == professionId then
+              isProfessionEquipItem = true
+              break
+            end
+          end
+        else
+          isProfessionEquipItem = true
+        end
+        if (exchangeItemConfig.SexLimit == 0 or exchangeItemConfig.SexLimit == sex) and isProfessionEquipItem then
+          local conditionData, isUnlock = getExchangeItemConditionDataAndState(goodsId)
+          table.insert(idList, {
+            goodsId = goodsId,
+            conditionData = conditionData,
+            isUnlock = isUnlock,
+            itemId = exchangeItemConfig.GetItemId
+          })
+        end
+      end
     end
   end
   table.sort(idList, sortGoods)
@@ -167,13 +204,9 @@ local getGoodsIdListByShopId = function(shopId)
 end
 local asyncSendExchange = function(shopId, goodsId, shopNum, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
-  local exchangeItemRow = exchangeItemTbl.GetRow(goodsId)
-  if exchangeItemRow then
-    local itemConfigId = exchangeItemRow.GetItemId
-    local ret = worldProxy.ExchangeItem(shopId, itemConfigId, shopNum, cancelToken)
-    if ret ~= 0 then
-      Z.TipsVM.ShowTips(ret)
-    end
+  local ret = worldProxy.ExchangeItem(shopId, goodsId, shopNum, cancelToken)
+  if ret ~= 0 then
+    Z.TipsVM.ShowTips(ret)
   end
 end
 local onGoodsChange = function(goodsData, dirtyKeys)
@@ -218,16 +251,16 @@ local resetEntityAndUIVisible = function(isExchange)
   if isExchange then
     showSelf = false
   else
-    showSelf = entityandhudRecordData:GetShowEntityRecord(E.CamerasysShowEntityType.Oneself)
+    showSelf = entityandhudRecordData:GetShowEntityRecord(E.CameraSystemShowEntityType.Oneself)
   end
-  Z.LuaBridge.SetExchangeEntityShow(E.CamerasysShowEntityType.Oneself, showSelf)
+  Z.LuaBridge.SetExchangeEntityShow(E.CameraSystemShowEntityType.Oneself, showSelf)
   local showOtherPlayer
   if isExchange then
     showOtherPlayer = false
   else
-    showOtherPlayer = entityandhudRecordData:GetShowEntityRecord(E.CamerasysShowEntityType.OtherPlayer)
+    showOtherPlayer = entityandhudRecordData:GetShowEntityRecord(E.CameraSystemShowEntityType.OtherPlayer)
   end
-  Z.LuaBridge.SetExchangeEntityShow(E.CamerasysShowEntityType.OtherPlayer, showOtherPlayer)
+  Z.LuaBridge.SetExchangeEntityShow(E.CameraSystemShowEntityType.OtherPlayer, showOtherPlayer)
 end
 local ret = {
   AsyncSendExchange = asyncSendExchange,

@@ -5,4 +5,3 @@ package zproto;
 message FishingFirstShowRecordRequest {
     int32 fishId = 1;
 }
-

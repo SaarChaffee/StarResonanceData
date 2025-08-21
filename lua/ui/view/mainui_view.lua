@@ -1,17 +1,18 @@
 local super = require("ui.ui_view_base")
 local MainuiView = class("MainuiView", super)
 local newKeyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local mainUIShortKeyDescUIComp = require("ui.view.main.mainui_shortkeydesc_ui_comp")
+local mainUIBottomShortKeyDescUIComp = require("ui.view.main.mainui_bottomshortkeydesc_ui_comp")
+local mainUILeftSidebarSwitcherComp = require("ui.view.main.mainui_left_sidebar_switcher_comp")
+local STATE_ICON_QUIT = "ui/atlas/mainui/main_quit_icon"
+local STATE_ICON_LINE = "ui/atlas/mainui/main_change_icon"
 
 function MainuiView:ctor()
   self.uiBinder = nil
-  if Z.IsPCUI then
-    Z.UIConfig.mainui.PrefabPath = "main/main_main_pc"
-  else
-    Z.UIConfig.mainui.PrefabPath = "main/main_main"
-  end
-  super.ctor(self, "mainui")
+  super.ctor(self, "mainui", "main/main_main", true)
   self:initSubView()
   self:initParam()
+  self:initComp()
 end
 
 function MainuiView:initParam()
@@ -21,23 +22,34 @@ function MainuiView:initParam()
   self.thunderElementalVM_ = Z.VMMgr.GetVM("thunder_elemental")
   self.dungeonTimerVM_ = Z.VMMgr.GetVM("dungeon_timer")
   self.funcVM_ = Z.VMMgr.GetVM("gotofunc")
-  self.homeVM_ = Z.VMMgr.GetVM("home")
+  self.homeVM_ = Z.VMMgr.GetVM("home_editor")
   self.mainUIData_ = Z.DataMgr.Get("mainui_data")
+  self.chatMainVM_ = Z.VMMgr.GetVM("chat_main")
   self.vehicleVM_ = Z.VMMgr.GetVM("vehicle")
+  self.monthlyCardVM_ = Z.VMMgr.GetVM("monthly_reward_card")
+  self.mainUIFuncsListVM_ = Z.VMMgr.GetVM("mainui_funcs_list")
+  self.sdkVM_ = Z.VMMgr.GetVM("sdk")
+  self.bossBattleVM_ = Z.VMMgr.GetVM("bossbattle")
+  self.bubbleVM_ = Z.VMMgr.GetVM("bubble")
   self.topFuncItemList_ = {}
   self.isInLandScapeMode = false
-  self.isIgnoreHotKey = false
+  self.pcPosX = -44
+  self.handPosX = -126
   self.seasonCenterBtn_ = nil
+  self.upperRightBtn_ = {}
+  self.mainuiSkillSlotObjs_ = {}
+  self.leftTrackCurSelectedIndex_ = self.mainUIData_:GetLeftTrackCurSelectedIndex()
   
-  function self.onInputAction_(inputActionEventData)
-    self:onInputAction(inputActionEventData)
+  function self.deepLinkDeal_(url)
+    self.sdkVM_.DealOpenScheme(url)
+    Z.ZDeepLinkUtil.MarkTokenLinkDealFalg()
   end
 end
 
 function MainuiView:initSubView()
   self.fighterBtnView = require("ui/view/fighterbtns_view").new(self)
   self.joystickView = require("ui/view/zjoystick_view").new()
-  self.minimapView = require("ui/view/minimap_view").new()
+  self.minimapView = require("ui/view/minimap_view").new(self)
   self.questTrackBarView = require("ui/view/track_bar_view").new()
   self.goalGuideView_ = require("ui/view/goal_guide_view").new()
   self.lockTargetPointerView = require("ui/view/pointer_lock_target_sub_view").new()
@@ -54,156 +66,155 @@ function MainuiView:initSubView()
   self.bottomUIView_ = require("ui/view/main_bottom_ui_sub_view").new()
   self.parkourCountDownView_ = require("ui/view/parkour_tooltip_single_window_view").new()
   self.copyAdditionalView_ = require("ui.view.main_copy_additional_sub_view").new()
+  self.itemTraceView_ = require("ui.view.main_item_trace_sub_view").new()
+  self.mainEvaluateTplView_ = require("ui/view/main_evaluate_tpl_view").new(self)
+  self.mainChannelSubView_ = require("ui/view/main_channel_sub_view").new()
+  self.worldTeamSignView = require("ui/view/world_team_sign_view").new()
+  self.bubbleSubView = require("ui/view/bubble_bar_sub_view").new()
+  self.dpsSubView = require("ui/view/main_dps_sub_view").new()
+end
+
+function MainuiView:initComp()
+  self.mainUIShortKeyDescUIComp_ = mainUIShortKeyDescUIComp.new(self)
+  self.mainuiBottomShortKeyDescUIComp_ = mainUIBottomShortKeyDescUIComp.new(self)
+  self.mainUILeftSidebarSwitcherComp_ = mainUILeftSidebarSwitcherComp.new(self)
 end
 
 function MainuiView:OnActive()
-  self:initComp()
   self:startAnimatedShow()
-  self.areaComps_ = {
-    self.miniMapNode_,
-    self.group_bottom_layout_,
-    self.group_right_layout_,
-    self.fighter_node_
-  }
+  self:initBubbleData()
+  self.mainUIShortKeyDescUIComp_:Init(self.uiBinder)
+  self.mainuiBottomShortKeyDescUIComp_:Init()
+  self.mainUILeftSidebarSwitcherComp_:Init()
   self.nodeArea = {
-    self.upper_left_,
-    self.lower_left_,
-    self.upper_right_,
-    self.lower_right_
+    self.uiBinder.upper_left,
+    self.uiBinder.lower_left,
+    self.uiBinder.upper_right,
+    self.uiBinder.lower_right
   }
   if not Z.IsPCUI then
-    self.joystickView:Active(nil, self.joystick_node_)
+    self.joystickView:Active(nil, self.uiBinder.joystick_node)
   end
   if Z.GameContext.StarterRun then
     return
   end
-  self:AddAsyncClick(self.quest_detail_btn_, function()
-    local questDetailVm_ = Z.VMMgr.GetVM("questdetail")
-    questDetailVm_.OpenDetailView()
-    self:onClickQuestRed()
+  self.uiBinder.group_sceneline.Ref.UIComp:SetVisible(false)
+  if Z.IsPCUI then
+    self:AddClick(self.uiBinder.btn_mount, function()
+      self.funcVM_.GoToFunc(E.FunctionID.VehicleRide)
+    end)
+    self:AddClick(self.uiBinder.btn_esc, function()
+      self.funcVM_.GoToFunc(E.FunctionID.MainFuncMenu)
+    end)
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_bubble, false)
+    self:AddClick(self.uiBinder.btn_bubble, function()
+      self:selectedLeftBtn(E.MainViewLeftTrackUIMark.Bubble)
+    end)
+    self:AddClick(self.uiBinder.btn_dps, function()
+      if not self.funcVM_.CheckFuncCanUse(E.FunctionID.Dps) then
+        return
+      end
+      self:selectedLeftBtn(E.MainViewLeftTrackUIMark.Dps)
+    end)
+    self:AddAsyncClick(self.uiBinder.quest_detail_btn, function()
+      self:selectedLeftBtn(E.MainViewLeftTrackUIMark.Task)
+    end)
+    self:AddAsyncClick(self.uiBinder.scenery_btn, function()
+      self:switchLandscapeMode()
+    end)
+    self.uiBinder.arrow_toggle:RemoveAllListeners()
+    self.uiBinder.arrow_toggle:AddListener(function(isOn)
+      self:isShowUpperBtn(isOn)
+    end)
+  end
+  self:AddClick(self.uiBinder.group_sceneline.btn_switch_line, function()
+    local isShowDungeonExit = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.ExitDungeon)
+    if isShowDungeonExit then
+      self.funcVM_.GoToFunc(E.FunctionID.ExitDungeon)
+    else
+      self.funcVM_.GoToFunc(E.FunctionID.SceneLine)
+    end
   end)
-  self:AddClick(self.uiBinder.group_sceneline.img_refresh, function()
-    local sceneLineVM = Z.VMMgr.GetVM("sceneline")
-    sceneLineVM.OpenSceneLineView()
-  end)
-  self:AddAsyncClick(self.scenery_btn_, function()
-    self:switchLandscapeMode()
-  end)
-  self.arrow_toggle_:RemoveAllListeners()
-  self.arrow_toggle_:AddListener(function(isOn)
-    self:isShowUpperBtn(isOn)
+  self:AddClick(self.uiBinder.group_sceneline_recycle.btn_switch_line, function()
+    local isShowDungeonExit = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.ExitDungeon)
+    if isShowDungeonExit then
+      self.funcVM_.GoToFunc(E.FunctionID.ExitDungeon)
+    else
+      self.funcVM_.GoToFunc(E.FunctionID.SceneLine)
+    end
   end)
   self:initRedDotItem()
-  self:BindLuaAttrWatchers()
   self:BindEvents()
   self:registerInputActions()
   self:checkViewStateOnActive()
+  self:selectedCurLeftIndexFunc()
 end
 
-function MainuiView:initComp()
-  self.miniMapNode_ = self.uiBinder.minimap_node
-  self.group_bottom_layout_ = self.uiBinder.group_bottom_layout
-  self.scenery_btn_ = self.uiBinder.scenery_btn
-  self.group_right_layout_ = self.uiBinder.group_right_layout
-  self.fighter_node_ = self.uiBinder.fighter_node
-  self.joystick_node_ = self.uiBinder.joystick_node
-  self.quest_track_node_ = self.uiBinder.node_quest_sub
-  self.count_down_node_ = self.uiBinder.node_count_down
-  self.guide_flag_node_ = self.uiBinder.guide_flag_node
-  self.lock_target_pointer_node_ = self.uiBinder.lock_target_pointer_node
-  self.node_pos_pointer_ = self.uiBinder.node_pos_pointer
-  self.interaction_node_ = self.uiBinder.interaction_node
-  self.team_node_ = self.uiBinder.team_node
-  self.notice_captions_node_ = self.uiBinder.notice_captions_node
-  self.node_map_area_name_node_ = self.uiBinder.node_map_area_name_node
-  self.anim_ = self.uiBinder.anim
-  self.anim_dotween_ = self.uiBinder.anim_dotween
-  self.team_head_tips_node_ = self.uiBinder.node_team_head_tips
-  self.scenery_img_ = self.uiBinder.scenery_img
-  self.upper_left_ = self.uiBinder.upper_left
-  self.upper_right_ = self.uiBinder.upper_right
-  self.lower_left_ = self.uiBinder.lower_left
-  self.lower_right_ = self.uiBinder.lower_right
-  self.quest_detail_btn_ = self.uiBinder.quest_detail_btn
-  self.dot_node_ = self.uiBinder.dot_node
-  self.prefab_cache_ = self.uiBinder.prefab_cache
-  self.upper_right_layout_rebuild_ = self.uiBinder.upper_right_layout_rebuild
-  self.arrow_img_node_ = self.uiBinder.arrow_img_node
-  self.arrow_toggle_ = self.uiBinder.arrow_toggle
-  self.lv_lab_ = self.uiBinder.lv_lab
-  self.experience_num_lab_ = self.uiBinder.experience_num_lab
-  self.exp_img_ = self.uiBinder.exp_img
-  self.uiBinder.group_sceneline.Ref.UIComp:SetVisible(false)
+function MainuiView:selectedLeftBtn(type)
+  if self.leftTrackCurSelectedIndex_ ~= type then
+    self:unSelectedLastLeftIndexFunc()
+  end
+  self.leftTrackCurSelectedIndex_ = type
+  self:selectedCurLeftIndexFunc()
+  self.mainUIData_:SetLeftTrackCurSelectedIndex(self.leftTrackCurSelectedIndex_)
 end
 
 function MainuiView:checkViewStateOnActive()
-  self.fighterBtnView:Active(nil, self.fighter_node_)
-  self.goalGuideView_:Active(nil, self.guide_flag_node_)
-  self.exploreMonsterArrowView:Active(nil, self.guide_flag_node_)
-  self.lockTargetPointerView:Active(nil, self.lock_target_pointer_node_)
-  self.interactionView:Active(nil, self.interaction_node_)
-  self.bottomUIView_:Active(nil, self.uiBinder.node_bottom_ui_sub)
+  self.fighterBtnView:Active(nil, self.uiBinder.fighter_node)
+  self.goalGuideView_:Active(nil, self.uiBinder.guide_flag_node)
+  self.exploreMonsterArrowView:Active(nil, self.uiBinder.guide_flag_node)
+  self.lockTargetPointerView:Active(nil, self.uiBinder.lock_target_pointer_node)
+  self.interactionView:Active(nil, self.uiBinder.interaction_node)
   local dungeonId = Z.StageMgr.GetCurrentDungeonId()
   if 0 < dungeonId then
     local dungeonTable = Z.TableMgr.GetTable("DungeonsTableMgr")
     local tableRow = dungeonTable.GetRow(dungeonId)
-    if tableRow and tableRow.PlayType == E.DungeonType.WorldBoss then
-      self.worldBossContributionView:Active(nil, self.uiBinder.node_world_contribution)
+    if not tableRow or tableRow.PlayType == E.DungeonType.WorldBoss then
     end
   end
-  self.parkTplView:Active(nil, self.uiBinder.Trans)
-  local mapData = Z.DataMgr.Get("map_data")
-  if not mapData.IsShownNameAfterChangeScene then
-    self:showMapAreaNameView()
-  end
+  self.parkTplView:Active(nil, self.uiBinder.node_parkour)
+  self:showMapAreaNameView()
   self:ShowNoticeCaption()
   if Z.IsPCUI then
-    local shortcutViewData = {
-      keyList = Z.Global.SetKeyboardShow,
-      isShowShortcut = self.vm_.IsShowKeyHint()
-    }
-    self.mainShortcutView:Active(shortcutViewData, self.uiBinder.node_shortcut_key)
+    self.mainShortcutView:Active(nil, self.uiBinder.node_shortcut_key)
+  else
+    self.mainChannelSubView_:Active(nil, self.uiBinder.node_channel)
   end
+  self.bottomUIView_:Active(nil, self.uiBinder.node_bottom_ui_sub)
 end
 
 function MainuiView:checkViewStateOnRefresh()
   local isCanShowMiniMap = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.MiniMap)
-  self:setSubViewState(self.minimapView, isCanShowMiniMap, nil, self.miniMapNode_)
-  local isCanShowTask = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.Task)
-  self:setSubViewState(self.questTrackBarView, isCanShowTask, nil, self.quest_track_node_)
-  self.uiBinder.Ref:SetVisible(self.quest_detail_btn_, isCanShowTask)
+  self:setSubViewState(self.minimapView, isCanShowMiniMap, nil, self.uiBinder.minimap_node)
   local isCanShowTeam = self.vm_.CheckFunctionCanShowInScene(E.TeamFuncId.Team)
-  self:setSubViewState(self.teamView, isCanShowTeam, nil, self.team_node_)
-  self:setSubViewState(self.teamHeadTipsView, isCanShowTeam, nil, self.team_head_tips_node_)
-  local worldBossVM = Z.VMMgr.GetVM("world_boss")
-  local isCanShowWorldBoss = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.WorldBoss) and worldBossVM:GetIsMatching()
-  self:setSubViewState(self.worldBossSignUpView, isCanShowWorldBoss, nil, self.team_node_)
+  self:setSubViewState(self.teamView, isCanShowTeam, nil, self.uiBinder.team_node)
+  self:setSubViewState(self.teamHeadTipsView, isCanShowTeam, nil, self.uiBinder.node_team_head_tips)
+  local matchActivityData = Z.DataMgr.Get("match_activity_data")
+  local isCanShowWorldBoss = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.WorldBoss) and matchActivityData:GetCurMatchActivityType() == E.MatchActivityType.WorldBoseActivity
+  self:setSubViewState(self.worldBossSignUpView, isCanShowWorldBoss, nil, self.uiBinder.team_node)
+  local matchTeamVM = Z.VMMgr.GetVM("match_team")
+  local isCanShowWorldMatch = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.WorldBoss) and (matchTeamVM.GetIsMatching() or matchActivityData:GetCurMatchActivityType() == E.MatchActivityType.CommonActivity)
+  self:setSubViewState(self.worldTeamSignView, isCanShowWorldMatch, nil, self.uiBinder.team_node)
+  self:setSubViewState(self.itemTraceView_, true, E.ItemTracePosType.Top, self.uiBinder.group_item_trace)
 end
 
 function MainuiView:checkViewStateOnShow()
-  local isCanShowChat = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.MainChat)
-  if isCanShowChat then
-    Z.UIMgr:OpenView("main_chat")
-  else
-    Z.UIMgr:CloseView("main_chat")
-  end
-  local unionWarDanceVM = Z.VMMgr.GetVM("union_wardance")
-  local unionWarDanceData = Z.DataMgr.Get("union_wardance_data")
-  local isInArea = unionWarDanceData:IsInDanceArea()
-  local isInActivity = unionWarDanceVM:isInWarDanceActivity() or unionWarDanceVM:isinWillOpenWarDanceActivity()
-  local isCanShowUnionWarDance = isInArea and isInActivity
-  if isCanShowUnionWarDance then
-    unionWarDanceVM:OpenDanceView()
-  else
-    unionWarDanceVM:CloseDanceView()
-  end
-  self:openDungeonTime(true)
+  self:refreshSceneryShow()
+  self:setViewOpenTag(true)
   self.interactionView:Show()
+  self.mainEvaluateTplView_:Show()
+  self.fighterBtnView:Show()
 end
 
 function MainuiView:checkViewStateOnHide()
-  self:openDungeonTime(false)
+  self:setViewOpenTag(false)
   self.interactionView:Hide()
+  self.mainEvaluateTplView_:Hide()
+  self.fighterBtnView:Hide()
+  if Z.IsPCUI then
+    self:clearPathFindingProgressTimer()
+  end
 end
 
 function MainuiView:setSubViewState(subView, viewState, viewData, viewParent)
@@ -218,16 +229,18 @@ function MainuiView:setSubViewState(subView, viewState, viewData, viewParent)
   end
 end
 
-function MainuiView:openDungeonTime(isShow)
+function MainuiView:setViewOpenTag(isShow)
   self.fluxVM_.SetMainViewHideTag(isShow)
   self.parkourVM_.SetMainViewHideTag(isShow)
   self.thunderElementalVM_.SetMainViewHideTag(isShow)
   self.dungeonTimerVM_.SetMainViewHideTag(isShow)
+  self.bossBattleVM_.SetMainViewHideTag(isShow)
 end
 
 function MainuiView:OnShow()
   self:checkViewStateOnShow()
   Z.UIRoot:ActiveDebug(true)
+  self:OnDealScheme()
 end
 
 function MainuiView:OnHide()
@@ -238,6 +251,9 @@ end
 function MainuiView:OnDeActive()
   self:unRegisterInputActions()
   self:UnBindEvents()
+  self.mainUIShortKeyDescUIComp_:UnInit()
+  self.mainuiBottomShortKeyDescUIComp_:UnInit()
+  self.mainUILeftSidebarSwitcherComp_:UnInit()
   self.fighterBtnView:DeActive()
   self.joystickView:DeActive()
   self.minimapView:DeActive()
@@ -251,24 +267,34 @@ function MainuiView:OnDeActive()
   self.mapAreaNameView_:DeActive()
   self.noticeCaptionsView_:DeActive()
   self.teamHeadTipsView:DeActive()
-  self.mainShortcutView:DeActive()
-  self.bottomUIView_:DeActive()
   self.worldBossSignUpView:DeActive()
-  self.worldBossContributionView:DeActive()
+  self.worldTeamSignView:DeActive()
+  self.itemTraceView_:DeActive()
   self.copyAdditionalView_:DeActive()
-  Z.UIMgr:CloseView("main_chat")
+  self.mainEvaluateTplView_:DeActive()
+  self.bubbleSubView:DeActive()
+  self.dpsSubView:DeActive()
+  self.chatMainVM_.CloseMainChatView()
+  self.bottomUIView_:DeActive()
+  if Z.IsPCUI then
+    self.mainShortcutView:DeActive()
+  else
+    self.mainChannelSubView_:DeActive()
+  end
   if self.unitTabList_ then
     for k, v in pairs(self.unitTabList_) do
       for i, item in pairs(v) do
         Z.RedPointMgr.RemoveNodeItem(item.Id)
       end
     end
+    self.unitTabList_ = nil
   end
-  self.unitTabList_ = nil
-  self:switchLandscapeMode(true)
+  self.leftTrackCurSelectedIndex_ = self.mainUIData_:GetLeftTrackCurSelectedIndex()
   self:clearAllTopFuncItem()
   self:clearRedDotItem()
   self:clearSeasonTimer()
+  self:clearLineRecycleTimer()
+  self:clearSkillBinder()
 end
 
 function MainuiView:BindEvents()
@@ -277,34 +303,66 @@ function MainuiView:BindEvents()
   Z.EventMgr:Add("ShowNoticeCaption", self.ShowNoticeCaption, self)
   Z.EventMgr:Add(Z.ConstValue.MainUI.HideMainViewArea, self.hideArea, self)
   Z.EventMgr:Add(Z.ConstValue.MainUI.CompleteMainViewAnimShow, self.CompleteDoTweenAnimShow, self)
+  Z.EventMgr:Add(Z.ConstValue.MainUI.ShowOrHideEvaluateUI, self.refreshEvaluateView, self)
   Z.EventMgr:Add(Z.ConstValue.NpcTalk.TalkStateEnd, self.onTalkStateEnd, self)
   Z.EventMgr:Add(Z.ConstValue.QuestionnaireInfosRefresh, self.refreshQuestionnaireBtn, self)
   Z.EventMgr:Add(Z.ConstValue.RoleLevelUp, self.refreshQuestionnaireBtn, self)
   Z.EventMgr:Add(Z.ConstValue.SwitchLandSpaceMode, self.switchLandscapeMode, self)
   Z.EventMgr:Add(Z.ConstValue.EnterHomeLand, self.enterHomeLand, self)
-  Z.EventMgr:Add(Z.ConstValue.SceneLine.RefreshPlayerSceneLine, self.refreshSceneLineUI, self)
-  Z.EventMgr:Add(Z.ConstValue.RefreshFunctionIcon, self.refreshAllTopFuncItemShowState, self)
+  Z.EventMgr:Add(Z.ConstValue.SceneLine.RefreshSceneLineUI, self.refreshSceneLineUI, self)
+  Z.EventMgr:Add(Z.ConstValue.RefreshFunctionIcon, self.refreshFunctionIcon, self)
   Z.EventMgr:Add(Z.ConstValue.Match.MatchStartTimeChange, self.refreshMatchState, self)
+  Z.EventMgr:Add(Z.ConstValue.Match.MatchStateChange, self.refreshMatchState, self)
   Z.EventMgr:Add(Z.ConstValue.Quest.SetParkourSingleActive, self.refreshParkourCountDownUI, self)
   Z.EventMgr:Add(Z.ConstValue.Vehicle.UpdateRiding, self.refreshRidingBtn, self)
   Z.EventMgr:Add(Z.ConstValue.Union.UnionDataReady, self.unionReady, self)
+  Z.EventMgr:Add(Z.ConstValue.RefreshFunctionBtnState, self.refreshResonanceSkill, self)
+  Z.EventMgr:Add(Z.ConstValue.OnSceneSwitchComplete, self.OnSceneSwitchComplete, self)
+  Z.EventMgr:Add(Z.ConstValue.PathFinding.onStageChange, self.onPathFindingStageChange, self)
+  Z.EventMgr:Add(Z.ConstValue.MainUI.RefreshChatView, self.refreshChatView, self)
+  Z.EventMgr:Add(Z.ConstValue.UIOpen, self.onUIOpen, self)
+  Z.EventMgr:Add(Z.ConstValue.Bubble.CurrentIdChanged, self.onBubbleIdChanged, self)
+  self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
+    if Z.EntityMgr.PlayerEnt then
+      self:refreshRidingBtn(Z.EntityMgr.PlayerEnt:GetLuaRidingId())
+    end
+  end)
+  self.pathFindingWatcher_ = Z.DIServiceMgr.AttrPathFindingComponentWatcherService:OnLocalAttrStateChanged(function()
+    if Z.EntityMgr.PlayerEnt then
+      self:refreshPathFindingBtn()
+    end
+  end)
+  
+  function self.refreshSeasonHandbookBtnFunc_()
+    self:refreshSeasonHandbookBtn()
+  end
+  
+  Z.ContainerMgr.CharSerialize.seasonQuestList.Watcher:RegWatcher(self.refreshSeasonHandbookBtnFunc_)
+  Z.EventMgr:Add(Z.ConstValue.OnAttrIsCantRideChange, self.refreshRidingBtnState, self)
+  Z.ZDeepLinkUtil.RigistTokenLink(self.deepLinkDeal_)
 end
 
 function MainuiView:ShowNoticeCaption()
   local noticeTipData = Z.DataMgr.Get("noticetip_data")
   if noticeTipData:CheckNpcDataCount() > 0 then
-    self.noticeCaptionsView_:Active(nil, self.notice_captions_node_)
+    self.noticeCaptionsView_:Active(nil, self.uiBinder.notice_captions_node)
   else
     self.noticeCaptionsView_:DeActive()
   end
 end
 
 function MainuiView:UnBindEvents()
-  if Z.IsPCUI then
-    newKeyIconHelper.UnInitKeyIcon(self.uiBinder.scenery_key_icon_bind)
-    newKeyIconHelper.UnInitKeyIcon(self.uiBinder.quest_track_key_icon_bind)
+  Z.ContainerMgr.CharSerialize.seasonQuestList.Watcher:UnregWatcher(self.refreshSeasonHandbookBtnFunc_)
+  if self.playerStateWatcher ~= nil then
+    self.playerStateWatcher:Dispose()
+    self.playerStateWatcher = nil
+  end
+  if self.pathFindingWatcher_ ~= nil then
+    self.pathFindingWatcher_:Dispose()
+    self.pathFindingWatcher_ = nil
   end
   Z.EventMgr:RemoveObjAll(self)
+  Z.ZDeepLinkUtil.UnRigistTokenLink(self.deepLinkDeal_)
 end
 
 function MainuiView:onDoTweenAnimShow()
@@ -312,7 +370,7 @@ function MainuiView:onDoTweenAnimShow()
   local isShowRightUp = table.zcount(mainViewHideMark[3]) < 1
   local isShowRightDown = 1 > table.zcount(mainViewHideMark[4])
   if isShowRightUp then
-    self.anim_dotween_:Restart(Z.DOTweenAnimType.Open)
+    self.uiBinder.anim_dotween:Restart(Z.DOTweenAnimType.Open)
   end
   if isShowRightDown and self.fighterBtnView.IsActive then
     self.fighterBtnView:OnOpenAnimShow()
@@ -320,11 +378,12 @@ function MainuiView:onDoTweenAnimShow()
 end
 
 function MainuiView:CompleteDoTweenAnimShow()
-  self.anim_dotween_:Complete()
+  self.uiBinder.anim_dotween:Complete()
 end
 
 function MainuiView:OnRefresh()
   self:checkViewStateOnRefresh()
+  self:CheckPopupQueueCanShow()
   self:checkViewStateOnShow()
   self:onDoTweenAnimShow()
   self:SetAsFirstSibling()
@@ -334,25 +393,16 @@ function MainuiView:OnRefresh()
   self:initTopFuncItem()
   local bossBattleVM = Z.VMMgr.GetVM("bossbattle")
   bossBattleVM.DisplayBossUI(-1)
-  self:refreshMatchState(E.MatchType.WorldBoss)
+  local matchData = Z.DataMgr.Get("match_data")
+  local curMatchType = matchData:GetMatchType()
+  self:refreshMatchState(curMatchType)
   self:hideArea()
-  self:initShortcutKey()
-  self:refreshSceneLine()
+  self:refreshSceneLineUI()
   self:refreshCopyAdditionalUI()
   self:refreshRightBtnList()
-end
-
-function MainuiView:initShortcutKey()
-  if Z.IsPCUI then
-    newKeyIconHelper.InitKeyIcon(self.uiBinder.scenery_key_icon_bind, self.uiBinder.scenery_key_icon_bind, 30)
-    newKeyIconHelper.InitKeyIcon(self.uiBinder.quest_track_key_icon_bind, self.uiBinder.quest_track_key_icon_bind, 102)
-  end
-end
-
-function MainuiView:BindLuaAttrWatchers()
-  self:BindEntityLuaAttrWatcher({
-    Z.PbAttrEnum("AttrState")
-  }, Z.EntityMgr.PlayerEnt, self.onPlayerStateChange)
+  self:refreshResonanceSkill()
+  self.mainuiBottomShortKeyDescUIComp_:OnRefresh()
+  self.mainUILeftSidebarSwitcherComp_:OnRefresh()
 end
 
 function MainuiView:ShowWarDance()
@@ -365,93 +415,137 @@ function MainuiView:ShowWarDance()
 end
 
 function MainuiView:hideTeamView(hide)
-  self.uiBinder.Ref:SetVisible(self.team_node_, not hide)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.team_node, not hide)
 end
 
 function MainuiView:showMapAreaNameView()
-  if Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrVisualLayerUid")).Value > 0 then
-    return
-  end
-  self.mapAreaNameView_:Active(nil, self.node_map_area_name_node_)
-end
-
-function MainuiView:onPlayerStateChange()
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
-  local isGlide = Z.PbEnum("EActorState", "ActorStateGlide") == stateId
-  self.uiBinder.Ref:SetVisible(self.scenery_btn_, isGlide)
-  if self.isInLandScapeMode and not isGlide then
-    self:switchLandscapeMode(true)
-  end
+  self.mapAreaNameView_:Active(nil, self.uiBinder.node_map_area_name_node)
 end
 
 function MainuiView:switchLandscapeMode(forceClose)
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
   if forceClose then
     self.isInLandScapeMode = false
   else
-    if not self.isInLandScapeMode then
-      local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
-      if Z.PbEnum("EActorState", "ActorStateGlide") ~= stateId then
-        return
-      end
-    end
     self.isInLandScapeMode = not self.isInLandScapeMode
   end
-  local imgPath = self.prefab_cache_:GetString("openSceneryIcon")
+  self:refreshSceneryShow()
+end
+
+function MainuiView:refreshSceneryShow()
   if self.isInLandScapeMode then
-    imgPath = self.prefab_cache_:GetString("closeSceneryIcon")
+    Z.AudioMgr:Play("UI_Event_SystemHide")
+    self.uiBinder.do_tween_main:DoCanvasGroup(0, 0.1)
+  else
+    self.uiBinder.do_tween_main:DoCanvasGroup(1, 0.1)
   end
-  self.scenery_img_:SetImage(imgPath)
-  if self.isInLandScapeMode then
-    if not self.isIgnoreHotKey then
-      self.isIgnoreHotKey = true
-      Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, Panda.ZGame.EInputMask.DoByFuncId:ToInt(), true)
-    end
-  elseif self.isIgnoreHotKey then
-    self.isIgnoreHotKey = false
-    Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, Panda.ZGame.EInputMask.DoByFuncId:ToInt(), false)
+  if not Z.IsPCUI then
+    local isCanShow = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.LandScapeMode)
+    self:SetUIVisible(self.uiBinder.scenery_btn, isCanShow and self.isInLandScapeMode)
   end
-  Z.EntityMgr.PlayerEnt:SetLuaAttr(Z.LocalAttr.ELandscapeMode, self.isInLandScapeMode)
-  self:hideTeamView(self.isInLandScapeMode)
-  self.uiBinder.Ref:SetVisible(self.miniMapNode_, not self.isInLandScapeMode)
-  self.uiBinder.Ref:SetVisible(self.interaction_node_, not self.isInLandScapeMode)
-  self.uiBinder.Ref:SetVisible(self.guide_flag_node_, not self.isInLandScapeMode)
-  self.uiBinder.Ref:SetVisible(self.quest_track_node_, not self.isInLandScapeMode)
-  self.uiBinder.Ref:SetVisible(self.group_bottom_layout_, not self.isInLandScapeMode)
-  self.uiBinder.Ref:SetVisible(self.count_down_node_, not self.isInLandScapeMode)
+  self:refreshChatView()
+  local unionWarDanceVM = Z.VMMgr.GetVM("union_wardance")
+  local unionWarDanceData = Z.DataMgr.Get("union_wardance_data")
+  local isInArea = unionWarDanceData:IsInDanceArea()
+  local isInActivity = unionWarDanceVM:isInWarDanceActivity() or unionWarDanceVM:isinWillOpenWarDanceActivity()
+  local isCanShowUnionWarDance = isInArea and isInActivity
+  if isCanShowUnionWarDance and not self.isInLandScapeMode then
+    unionWarDanceVM:OpenDanceView()
+  else
+    unionWarDanceVM:CloseDanceView()
+  end
+end
+
+function MainuiView:refreshChatView()
+  local isCanShowChat = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.MainChat)
+  if isCanShowChat and not self.isInLandScapeMode then
+    self.chatMainVM_.OpenMainChatView()
+  else
+    self.chatMainVM_.CloseMainChatView()
+  end
+end
+
+function MainuiView:refreshSceneryBtn()
+  if Z.IsPCUI then
+    return
+  end
+  local itemBinder = self.units[E.FunctionID.LandScapeMode]
+  local config = Z.TableMgr.GetRow("MainIconTableMgr", E.FunctionID.LandScapeMode)
+  if itemBinder then
+    self:refreshTopFuncItemShowState(itemBinder, config)
+  end
+end
+
+function MainuiView:OnSceneSwitchComplete()
+  self:switchLandscapeMode(true)
+end
+
+function MainuiView:onUIOpen(viewConfigKey)
+  if viewConfigKey and viewConfigKey == "loading_window" and Z.IsPCUI then
+    self:clearPathFindingProgressTimer()
+  end
 end
 
 function MainuiView:refreshParkourCountDownUI(parkourInfo)
   if parkourInfo.isOpenView then
-    self.parkourCountDownView_:Active(parkourInfo.isFirstOpen, self.count_down_node_)
+    self.parkourCountDownView_:Active(parkourInfo.isFirstOpen, self.uiBinder.node_count_down)
   else
     self.parkourCountDownView_:DeActive()
   end
 end
 
-function MainuiView:enterHomeLand(homeId, isEnter)
-  if self.upperRightBtn_[E.FunctionID.Home] then
-    self.upperRightBtn_[E.FunctionID.Home].Ref.UIComp:SetVisible(self.homeVM_.IsSelfResident())
+function MainuiView:refreshEvaluateView(level)
+  if level == nil or level <= 0 then
+    self.mainEvaluateTplView_:DeActive()
+  else
+    self.mainEvaluateTplView_:Active(level, self.uiBinder.node_common_sub)
+  end
+end
+
+function MainuiView:enterHomeLand(fieldId, isEnter)
+  logGreen("enterHomeLand, fieldId={0}, isEnter={1}", fieldId, isEnter)
+  if Z.IsPCUI then
+    self.mainuiBottomShortKeyDescUIComp_:RefreshHomeBtn()
+  elseif self.upperRightBtn_[E.FunctionID.Home] then
+    local houseData = Z.DataMgr.Get("house_data")
+    local stageType = Z.StageMgr.GetCurrentStageType()
+    local isShow = false
+    if stageType == Z.EStageType.CommunityDungeon then
+      isShow = isEnter and houseData:GetFieldId() == fieldId
+    elseif stageType == Z.EStageType.HomelandDungeon then
+      isShow = isEnter
+    end
+    self.upperRightBtn_[E.FunctionID.Home].Ref.UIComp:SetVisible(isShow)
+    self.uiBinder.upper_right_layout_rebuild:ForceRebuildLayoutImmediate()
   end
 end
 
 function MainuiView:initTopFuncItem()
+  if Z.IsPCUI then
+    return
+  end
   self:clearAllTopFuncItem()
   self.topFuncItemList_ = self.vm_.GetMainItem()
-  if table.zcount(self.topFuncItemList_[E.MainUiArea.UpperRight]) <= 0 then
-    self.uiBinder.Ref:SetVisible(self.arrow_toggle_, false)
+  if table.zcount(self.topFuncItemList_[E.MainUIPlaceType.RightTop]) <= 0 then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.arrow_toggle, false)
   else
-    self.uiBinder.Ref:SetVisible(self.arrow_toggle_, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.arrow_toggle, true)
   end
   self:loadAllTopFuncItem()
 end
 
 function MainuiView:loadAllTopFuncItem()
-  local topItemPath = self.prefab_cache_:GetString("mainIconTopTpl")
-  local bottomItemPath = self.prefab_cache_:GetString("mainIconBottomTpl")
-  if Z.IsPCUI then
-    topItemPath = self.prefab_cache_:GetString("mainIconTopPCTpl")
-    bottomItemPath = self.prefab_cache_:GetString("mainIconBottomPCTpl")
-  end
+  self.areaComps_ = {
+    self.uiBinder.minimap_node,
+    self.uiBinder.group_bottom_layout,
+    self.uiBinder.group_right_layout,
+    self.uiBinder.fighter_node
+  }
+  local topItemPath = self.uiBinder.prefab_cache:GetString("mainIconTopTpl")
+  local bottomItemPath = self.uiBinder.prefab_cache:GetString("mainIconBottomTpl")
   if not topItemPath or not bottomItemPath then
     return
   end
@@ -459,24 +553,28 @@ function MainuiView:loadAllTopFuncItem()
     for k, v in pairs(self.topFuncItemList_) do
       for i, config in pairs(v) do
         local path
-        if config.SystemPlace == E.MainUiArea.UpperRight then
+        if table.zcontains(config.SystemPlace, E.MainUIPlaceType.RightTop) then
           path = topItemPath
-        elseif config.SystemPlace == E.MainUiArea.BottomLeft then
+        elseif table.zcontains(config.SystemPlace, E.MainUIPlaceType.LeftBottom) then
           path = bottomItemPath
         else
-          logError("[loadTopFuncItem] error, not support this type : " .. config.SystemPlace)
+          logError("[loadTopFuncItem] error, not support this type : " .. table.ztostring(config.SystemPlace))
         end
         if path and path ~= "" then
-          local itemBinder = self:AsyncLoadUiUnit(path, config.Id, self.areaComps_[config.SystemPlace], self.cancelSource:CreateToken())
-          if config.SystemPlace == E.MainUiArea.UpperRight then
-            self.upperRightBtn_[config.Id] = itemBinder
+          for _, place in ipairs(config.SystemPlace) do
+            local itemBinder = self:AsyncLoadUiUnit(path, config.Id, self.areaComps_[place], self.cancelSource:CreateToken())
+            if place == E.MainUIPlaceType.RightTop then
+              self.upperRightBtn_[config.Id] = itemBinder
+            end
+            self:refreshTopFuncItem(itemBinder, config)
           end
-          self:refreshTopfuncItem(itemBinder, config)
         end
       end
     end
     self:refreshQuestionnaireBtn()
-    self:refreshRidingBtn(Z.EntityMgr.PlayerEnt.Uuid, Z.EntityMgr.PlayerEnt:GetLuaRidingId())
+    if Z.EntityMgr.PlayerEnt then
+      self:refreshRidingBtn(Z.EntityMgr.PlayerEnt:GetLuaRidingId())
+    end
   end)()
 end
 
@@ -492,7 +590,7 @@ function MainuiView:clearAllTopFuncItem()
   self.topFuncItemList_ = {}
 end
 
-function MainuiView:refreshTopfuncItem(unit, config)
+function MainuiView:refreshTopFuncItem(unit, config)
   if not unit or not config then
     return
   end
@@ -510,9 +608,11 @@ function MainuiView:refreshTopfuncItem(unit, config)
     unit.effect_season:SetEffectGoVisible(false)
   end
   if Z.IsPCUI then
-    local keyId = self:getKeyIdByFuncId(config.Id)
+    local keyId = self.mainUIData_:GetKeyIdAndDescByFuncId(config.Id)
     if keyId then
       newKeyIconHelper.InitKeyIcon(unit, unit.cont_key_icon_uiBinder, keyId)
+    else
+      unit.cont_key_icon_uiBinder.Ref.UIComp:SetVisible(false)
     end
   else
     unit.Ref:SetVisible(unit.cont_key_icon_node, false)
@@ -541,23 +641,32 @@ function MainuiView:refreshTopfuncItem(unit, config)
       unit.effect_season:SetEffectGoVisible(true)
     end
   end
-  self:refreshTopfuncItemShowState(unit, config)
+  self:refreshTopFuncItemShowState(unit, config)
 end
 
-function MainuiView:refreshTopfuncItemShowState(unit, config)
+function MainuiView:refreshTopFuncItemShowState(unit, config)
   local isFuncOpen = self.funcVM_.FuncIsOn(config.Id, true)
   local isFuncItemShow = isFuncOpen
-  if config.Id == E.FunctionID.MainChat and not Z.IsPCUI then
+  if config.Id == E.FunctionID.Home then
+    isFuncItemShow = isFuncItemShow and self.homeVM_.IsSelfResident()
+  elseif config.Id == E.FunctionID.MainChat and not Z.IsPCUI then
     isFuncItemShow = false
-  elseif config.SystemPlace == E.MainUiArea.UpperRight then
+  elseif table.zcontains(config.SystemPlace, E.MainUIPlaceType.RightTop) then
     if config.Id == E.FunctionID.Questionnaire then
       local questionnaireVM = Z.VMMgr.GetVM("questionnaire")
       isFuncItemShow = questionnaireVM.IsHaveMainIconAndRedDot() and self.mainUIData_.IsShowLeftBtn
+    elseif config.Id == E.FunctionID.SeasonHandbook then
+      isFuncItemShow = Z.VMMgr.GetVM("season_quest_sub").CheckHasSevenDayShow() and isFuncItemShow and self.mainUIData_.IsShowLeftBtn
     elseif config.Id ~= E.FunctionID.MainFuncMenu and isFuncItemShow then
       isFuncItemShow = self.mainUIData_.IsShowLeftBtn
     end
   end
   unit.Ref.UIComp:SetVisible(isFuncItemShow)
+end
+
+function MainuiView:refreshFunctionIcon()
+  self:refreshAllTopFuncItemShowState()
+  self.mainuiBottomShortKeyDescUIComp_:RefreshAllBottomFuncItemShowState()
 end
 
 function MainuiView:refreshAllTopFuncItemShowState()
@@ -569,30 +678,25 @@ function MainuiView:refreshAllTopFuncItemShowState()
       local itemName = config.Id
       local itemBinder = self.units[itemName]
       if itemBinder then
-        self:refreshTopfuncItemShowState(itemBinder, config)
+        self:refreshTopFuncItemShowState(itemBinder, config)
       end
     end
   end
-  self.upper_right_layout_rebuild_:ForceRebuildLayoutImmediate()
+  self.uiBinder.upper_right_layout_rebuild:ForceRebuildLayoutImmediate()
+end
+
+function MainuiView:CheckPopupQueueCanShow()
+  self.monthlyCardVM_:CheckEveryDayRewardPopupCanShow()
 end
 
 function MainuiView:refreshRightBtnList()
   self.mainUIData_:RefreshMainIconStorageCondition()
   self.mainUIData_:RecordCurSceneMainIconStorageCondition(self.mainUIData_.IsShowLeftBtn)
-  self.arrow_toggle_.isOn = self.mainUIData_.IsShowLeftBtn
-end
-
-function MainuiView:getKeyIdByFuncId(funcId)
-  local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
-  for keyId, row in pairs(keyTbl.GetDatas()) do
-    if row.KeyboardDes == 2 and row.FunctionId == funcId then
-      return keyId
-    end
-  end
+  self.uiBinder.arrow_toggle.isOn = self.mainUIData_.IsShowLeftBtn
 end
 
 function MainuiView:initRedDotItem()
-  Z.RedPointMgr.LoadRedDotItem(E.RedType.QuestMain, self, self.dot_node_)
+  Z.RedPointMgr.LoadRedDotItem(E.RedType.QuestMain, self, self.uiBinder.dot_node)
 end
 
 function MainuiView:onClickQuestRed()
@@ -604,40 +708,125 @@ function MainuiView:clearRedDotItem()
 end
 
 function MainuiView:startAnimatedShow()
-  local clipName = Z.IsPCUI and "anim_mainui_pc_001" or "anim_mainui_001"
-  self.anim_:PlayOnce(clipName)
 end
 
 function MainuiView:startAnimatedHide()
-  local asyncCall = Z.CoroUtil.async_to_sync(self.anim_.CoroPlayOnce)
-  local clipName = Z.IsPCUI and "anim_mainui_pc_002" or "anim_mainui_002"
-  asyncCall(self.anim_, clipName, self.cancelSource:CreateToken())
-  self.anim_:ResetAniState(clipName)
 end
 
 function MainuiView:registerInputActions()
-  local actionIdTab = self.vm_.GetInputFuncActionIds()
-  for _, actionIds in ipairs(actionIdTab) do
-    for _, actionId in ipairs(actionIds) do
-      Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, actionId)
-    end
-  end
+  Z.FuncInputActionComp:Init()
+  self:registerPathFinding()
 end
 
 function MainuiView:unRegisterInputActions()
-  local actionIdTab = self.vm_.GetInputFuncActionIds()
-  for _, actionIds in ipairs(actionIdTab) do
-    for _, actionId in ipairs(actionIds) do
-      Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, actionId)
+  Z.FuncInputActionComp:UnInit()
+  self:unRegisterPathFinding()
+end
+
+function MainuiView:registerPathFinding()
+  if Z.IsPCUI then
+    local keyId = self.mainUIData_:GetKeyIdAndDescByFuncId(E.FunctionID.PathFinding)
+    if keyId then
+      Z.FuncInputActionComp:EnableByKeyId(keyId, false)
+    end
+    
+    function self.onPathFindingPressedAction_()
+      self:createPathFindingProgressTimer()
+    end
+    
+    function self.onPathFindingReleasedAction_()
+      self:clearPathFindingProgressTimer()
+    end
+    
+    Z.InputMgr:AddInputEventDelegate(self.onPathFindingPressedAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.PathFinding)
+    Z.InputMgr:AddInputEventDelegate(self.onPathFindingReleasedAction_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.PathFinding)
+  else
+    self.uiBinder.btn_pathfinding.ClickCD = Z.Global.PathFindingCd
+    self:AddClick(self.uiBinder.btn_pathfinding, function()
+      if Z.ZPathFindingMgr.CurStage == Panda.ZGame.EPathFindingStage.EMove then
+        Z.ZPathFindingMgr:StopPathFinding(false)
+      else
+        local pathFindingVM = Z.VMMgr.GetVM("path_finding")
+        if not pathFindingVM:CheckState() then
+          return
+        end
+        local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+        gotoFuncVM.GoToFunc(E.FunctionID.PathFinding)
+      end
+    end)
+    self:refreshPathFindingBtn()
+  end
+end
+
+function MainuiView:unRegisterPathFinding()
+  if Z.IsPCUI then
+    Z.InputMgr:RemoveInputEventDelegate(self.onPathFindingPressedAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.PathFinding)
+    Z.InputMgr:RemoveInputEventDelegate(self.onPathFindingReleasedAction_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.PathFinding)
+    self.onPathFindingPressedAction_ = nil
+    self.onPathFindingReleasedAction_ = nil
+    self:clearPathFindingProgressTimer()
+  else
+    self.uiBinder.btn_pathfinding:RemoveAllListeners()
+  end
+end
+
+function MainuiView:refreshPathFindingBtn()
+  if Z.IsPCUI then
+    self.mainuiBottomShortKeyDescUIComp_:RefreshPathFindingBtn()
+  else
+    local pathFindingVM = Z.VMMgr.GetVM("path_finding")
+    local isShow = self.funcVM_.CheckFuncCanUse(E.FunctionID.PathFinding, true) and pathFindingVM:CheckState()
+    self:SetUIVisible(self.uiBinder.btn_pathfinding, isShow)
+    self.uiBinder.anim:ResetAniState("anim_main_main_loop", 0)
+    self.uiBinder.anim:Stop()
+    if isShow then
+      if Z.ZPathFindingMgr.CurStage == Panda.ZGame.EPathFindingStage.EMove then
+        self.uiBinder.anim:PlayOnce("anim_main_main_loop")
+      else
+        self.uiBinder.anim:PlayOnce("anim_main_main_open")
+      end
     end
   end
 end
 
-function MainuiView:onInputAction(inputActionEventData)
-  if not self.IsVisible or not Z.UIRoot:GetLayerVisible(self.uiLayer) then
+function MainuiView:onPathFindingStageChange(stage)
+  if Z.IsPCUI then
+    self.mainuiBottomShortKeyDescUIComp_:RefreshPathFindingBtn()
+  else
+    self.uiBinder.anim:ResetAniState("anim_main_main_loop", 0)
+    self.uiBinder.anim:Stop()
+    if stage == Panda.ZGame.EPathFindingStage.EMove then
+      self.uiBinder.anim:PlayOnce("anim_main_main_loop")
+    end
+  end
+end
+
+function MainuiView:createPathFindingProgressTimer()
+  self:clearPathFindingProgressTimer()
+  local pathFindingVM = Z.VMMgr.GetVM("path_finding")
+  if not pathFindingVM:CheckState() then
     return
   end
-  self.vm_.TriggerInputFuncAction(inputActionEventData.actionId)
+  self.pathFindingTimer_ = self.timerMgr:StartTimer(function()
+    if Z.ZPathFindingMgr.CurStage == Panda.ZGame.EPathFindingStage.EMove then
+      Z.ZPathFindingMgr:StopPathFinding(false)
+    else
+      local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+      gotoFuncVM.GoToFunc(E.FunctionID.PathFinding)
+    end
+  end, 1, 1)
+  self:SetUIVisible(self.uiBinder.dotween_pathfinding, true)
+  self.uiBinder.img_pathfinding.fillAmount = 0
+  self.uiBinder.dotween_pathfinding:DoImageFillAmount(1, 1)
+end
+
+function MainuiView:clearPathFindingProgressTimer()
+  if self.pathFindingTimer_ then
+    self.pathFindingTimer_:Stop()
+    self.pathFindingTimer_ = nil
+  end
+  self.uiBinder.dotween_pathfinding:ClearAll()
+  self:SetUIVisible(self.uiBinder.dotween_pathfinding, false)
 end
 
 function MainuiView:hideArea()
@@ -646,7 +835,7 @@ function MainuiView:hideArea()
   for k, v in pairs(mainViewHideMark) do
     isShow = table.zcount(v) < 1
     self:hideAreaByStyleMark(self.nodeArea[k], isShow)
-    if k == E.MainUiArea.UpperRight and not isShow then
+    if k == E.MainUIArea.UpperRight and not isShow then
       for _, j in pairs(self.upperRightBtn_) do
         if j.effect then
           j.effect:SetEffectGoVisible(false)
@@ -654,8 +843,8 @@ function MainuiView:hideArea()
       end
     end
   end
-  local bottomLeftCount = table.zcount(mainViewHideMark[E.MainUiArea.BottomLeft])
-  local bottomRightCount = table.zcount(mainViewHideMark[E.MainUiArea.BottomLeft])
+  local bottomLeftCount = table.zcount(mainViewHideMark[E.MainUIPlaceType.LeftBottom])
+  local bottomRightCount = table.zcount(mainViewHideMark[E.MainUIPlaceType.LeftBottom])
   if not Z.IsPCUI then
     self.mainUIData_:SetIsShowMainChat(bottomLeftCount < 1 and bottomRightCount < 1)
     Z.EventMgr:Dispatch(Z.ConstValue.MainUI.UpdateMainUIMainChat)
@@ -663,10 +852,7 @@ function MainuiView:hideArea()
     self.mainUIData_:SetIsShowMainChat(bottomLeftCount < 1)
     Z.EventMgr:Dispatch(Z.ConstValue.MainUI.UpdateMainUIMainChat)
   end
-  Z.EventMgr:Dispatch(Z.ConstValue.MainUI.UpDatePlayerStateBar, bottomLeftCount < 1 and bottomRightCount < 1)
-  if Z.IsPCUI then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_shortcut_key, 1 > table.zcount(mainViewHideMark[E.MainViewHideStyle.Bottom]))
-  end
+  Z.EventMgr:Dispatch(Z.ConstValue.MainUI.UpDatePlayerStateBar, isShow)
 end
 
 function MainuiView:hideAreaByStyleMark(hideArea, isShow)
@@ -684,29 +870,63 @@ function MainuiView:refreshQuestionnaireBtn()
   local questionnaireVM = Z.VMMgr.GetVM("questionnaire")
   if questionnaireVM.IsHaveMainIconAndRedDot() then
     if self.units[E.FunctionID.Questionnaire] ~= nil then
-      self.units[E.FunctionID.Questionnaire].Ref.UIComp:SetVisible(true)
+      self.units[E.FunctionID.Questionnaire].Ref.UIComp:SetVisible(self.mainUIData_.IsShowLeftBtn)
     end
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.Surveys, 1)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.Surveys, 1)
   else
     if self.units[E.FunctionID.Questionnaire] ~= nil then
       self.units[E.FunctionID.Questionnaire].Ref.UIComp:SetVisible(false)
     end
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.Surveys, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.Surveys, 0)
     Z.RedPointMgr.OnClickRedDot(E.RedType.Surveys)
   end
-  self.upper_right_layout_rebuild_:ForceRebuildLayoutImmediate()
+  self.uiBinder.upper_right_layout_rebuild:ForceRebuildLayoutImmediate()
 end
 
-function MainuiView:refreshRidingBtn(uuid, rideId)
-  if Z.EntityMgr.PlayerEnt.Uuid ~= uuid then
-    return
+function MainuiView:refreshSeasonHandbookBtn()
+  if self.units[E.FunctionID.SeasonHandbook] ~= nil then
+    local isShow = Z.VMMgr.GetVM("season_quest_sub").CheckHasSevenDayShow()
+    isShow = isShow and self.mainUIData_.IsShowLeftBtn
+    self.units[E.FunctionID.SeasonHandbook].Ref.UIComp:SetVisible(isShow)
+    self.uiBinder.upper_right_layout_rebuild:ForceRebuildLayoutImmediate()
   end
+end
+
+function MainuiView:refreshRidingBtn(rideId)
   if self.units[E.FunctionID.VehicleRide] ~= nil then
     if rideId ~= 0 then
       self.units[E.FunctionID.VehicleRide].func_btn_img:SetImage(Z.ConstValue.MainUI.DownVehicleIcon)
     else
       self.units[E.FunctionID.VehicleRide].func_btn_img:SetImage(Z.ConstValue.MainUI.UpVehicleIcon)
     end
+  end
+  self:refreshRidingBtnState()
+end
+
+function MainuiView:refreshRidingBtnState()
+  self:refreshPathFindingBtn()
+  if not Z.IsPCUI then
+    return
+  end
+  local isFuncOpen = self.funcVM_.FuncIsOn(E.FunctionID.VehicleRide, true)
+  local isFuncShow = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.VehicleRide)
+  if not isFuncShow or not isFuncOpen then
+    return
+  end
+  if Z.EntityMgr.PlayerEnt == nil then
+    return
+  end
+  local canUse = false
+  local isCantRide = Z.EntityMgr.PlayerEnt:GetLuaAttrIsCantRide()
+  if Z.EntityMgr.PlayerEnt.IsRiding then
+    canUse = true
+  else
+    canUse = Z.StatusSwitchMgr:CheckSwitchEnable(Z.EStatusSwitch.RideLandStateDefault)
+  end
+  if canUse and not isCantRide then
+    self.uiBinder.node_run_jump.group_mount_canvas_group.alpha = 1
+  else
+    self.uiBinder.node_run_jump.group_mount_canvas_group.alpha = 0.2
   end
 end
 
@@ -753,20 +973,97 @@ function MainuiView:isShowUpperBtn(isOn)
   self:refreshAllTopFuncItemShowState()
 end
 
-function MainuiView:refreshSceneLineUI()
-  local sceneLineData = Z.DataMgr.Get("sceneline_data")
-  local isSceneLineFuncOpen = Z.VMMgr.GetVM("switch").CheckFuncSwitch(101010)
-  local sceneSupportLine = false
-  if sceneLineData.playerSceneLine ~= nil then
-    local sceneRow = Z.TableMgr.GetTable("SceneTableMgr").GetRow(sceneLineData.playerSceneLine.sceneId)
-    local sceneId = Z.StageMgr.GetCurrentSceneId()
-    if sceneRow and sceneRow.SceneType == 1 and sceneId ~= 5002 then
-      sceneSupportLine = true
-    end
+function MainuiView:clearLineRecycleTimer()
+  self.uiBinder.autoscroll_recycle:StopAutoScroll()
+  if self.lineRecycleCdTimer_ then
+    self.timerMgr:StopTimer(self.lineRecycleCdTimer_)
+    self.lineRecycleCdTimer_ = nil
   end
-  self.uiBinder.group_sceneline.Ref.UIComp:SetVisible(isSceneLineFuncOpen and sceneLineData.playerSceneLine ~= nil and sceneSupportLine)
-  if isSceneLineFuncOpen and sceneLineData.playerSceneLine ~= nil then
-    self.uiBinder.group_sceneline.lab_line_num.text = sceneLineData.playerSceneLine.lineName
+  if self.lineRecycleMoveTimer_ then
+    self.timerMgr:StopTimer(self.lineRecycleMoveTimer_)
+    self.lineRecycleMoveTimer_ = nil
+  end
+end
+
+function MainuiView:refreshSceneLineUI()
+  local sceneId = Z.StageMgr.GetCurrentSceneId()
+  local sceneRow = Z.TableMgr.GetTable("SceneTableMgr").GetRow(sceneId)
+  if sceneRow == nil then
+    return
+  end
+  local sceneLineData = Z.DataMgr.Get("sceneline_data")
+  local isSceneLineFuncOpen = Z.VMMgr.GetVM("switch").CheckFuncSwitch(E.FunctionID.SceneLine)
+  local sceneSupportLine = Z.VMMgr.GetVM("scene").IsStaticScene(sceneId)
+  local isSceneLineRecycle = sceneLineData.RecycleEndTime > 0
+  local showSceneLine = isSceneLineFuncOpen and sceneSupportLine
+  local lineName = ""
+  if sceneLineData.PlayerLineId then
+    local param = {
+      val = sceneLineData.PlayerLineId
+    }
+    lineName = Lang("Line", param)
+  end
+  if Z.IsPCUI then
+    self.uiBinder.lab_map_name.text = sceneRow.Name
+    if Z.StageMgr.IsDungeonStage() then
+      local dungeonRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(sceneId)
+      if dungeonRow then
+        local dungeonTypeName = dungeonRow.DungeonTypeName
+        if dungeonRow.PlayType == E.DungeonType.MasterChallengeDungeon then
+          local diff = Z.ContainerMgr.DungeonSyncData.dungeonSceneInfo.difficulty
+          dungeonTypeName = Z.VMMgr.GetVM("hero_dungeon_main").GetHeroDungeonTypeName(sceneId, diff)
+        end
+        self.uiBinder.lab_map_name.text = dungeonRow.Name .. dungeonTypeName
+      end
+    end
+    local isShowDungeonExit = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.ExitDungeon)
+    if isShowDungeonExit then
+      local str = Lang("QuitDungeon")
+      local curDungeonType = Z.StageMgr.GetCurrentStageType()
+      if curDungeonType == Z.EStageType.CommunityDungeon then
+        str = Lang("HomeOutdoorName")
+      elseif curDungeonType == Z.EStageType.HomelandDungeon then
+        str = Lang("HomeIndoorName")
+      end
+      self.uiBinder.group_sceneline.lab_line_num.text = str
+      self.uiBinder.img_state_icon:SetImage(STATE_ICON_QUIT)
+    elseif sceneSupportLine then
+      self.uiBinder.group_sceneline.lab_line_num.text = lineName
+      self.uiBinder.img_state_icon:SetImage(STATE_ICON_LINE)
+    else
+      self.uiBinder.group_sceneline.lab_line_num.text = ""
+      self.uiBinder.img_state_icon.enabled = false
+    end
+    self:SetUIVisible(self.uiBinder.group_sceneline.Ref, true)
+    self.mainUIShortKeyDescUIComp_:SetExitDungeonVisible(isShowDungeonExit)
+    self.mainUIShortKeyDescUIComp_:SetSceneLineVisible(sceneSupportLine)
+  else
+    self:SetUIVisible(self.uiBinder.group_sceneline.Ref, showSceneLine and not isSceneLineRecycle)
+    self.uiBinder.group_sceneline.lab_line_num.text = lineName
+  end
+  self:SetUIVisible(self.uiBinder.group_sceneline_recycle.Ref, isSceneLineRecycle)
+  if isSceneLineRecycle then
+    if self.lineRecycleCdTimer_ ~= nil then
+      self:clearLineRecycleTimer()
+    end
+    self.lineRecycleCdTimer_ = self.timerMgr:StartTimer(function()
+      if sceneLineData.RecycleEndTime ~= nil then
+        local serverTime = math.floor(Z.ServerTime:GetServerTime() / 1000)
+        local leftTIme = sceneLineData.RecycleEndTime - serverTime
+        if leftTIme <= 0 then
+          leftTIme = 0
+          self:clearLineRecycleTimer()
+        end
+        local param = {
+          lineId = sceneLineData.PlayerLineId,
+          leftTime = Z.TimeFormatTools.FormatToDHMS(leftTIme)
+        }
+        self.uiBinder.group_sceneline_recycle.lab_recycle_tips.text = Lang("SceneLineRecycleTips", param)
+      end
+    end, 1, -1, false, nil, true)
+    self.uiBinder.autoscroll_recycle:StartAutoScroll()
+  else
+    self:clearLineRecycleTimer()
   end
 end
 
@@ -779,21 +1076,249 @@ function MainuiView:refreshCopyAdditionalUI()
   end
 end
 
-function MainuiView:refreshSceneLine()
-  local scenelineVM_ = Z.VMMgr.GetVM("sceneline")
-  scenelineVM_.RefreshPlayerSceneLine()
+function MainuiView:refreshMatchState()
+  local matchData = Z.DataMgr.Get("match_data")
+  local curMatchType = matchData:GetMatchType()
+  if curMatchType == E.MatchType.Activity then
+    local matchActivityData = Z.DataMgr.Get("match_activity_data")
+    local curMatchActivityType = matchActivityData:GetCurMatchActivityType()
+    local matchActivityVM = Z.VMMgr.GetVM("match_activity")
+    if matchActivityVM.GetIsMatching() then
+      if curMatchActivityType == E.MatchActivityType.WorldBoseActivity then
+        self.worldBossSignUpView:Active(nil, self.uiBinder.node_world_boss_sign_up)
+      elseif curMatchActivityType == E.MatchActivityType.CommonActivity then
+        self.worldTeamSignView:Active({matchType = curMatchType}, self.uiBinder.node_world_boss_sign_up)
+      end
+    elseif curMatchActivityType == E.MatchActivityType.WorldBoseActivity then
+      self.worldBossSignUpView:DeActive()
+    elseif curMatchActivityType == E.MatchActivityType.CommonActivity then
+      self.worldTeamSignView:DeActive()
+    end
+  elseif curMatchType == E.MatchType.Team then
+    local matchTeamVm = Z.VMMgr.GetVM("match_team")
+    if matchTeamVm.GetIsMatching() then
+      self.worldTeamSignView:Active({matchType = curMatchType}, self.uiBinder.node_world_boss_sign_up)
+    else
+      self.worldTeamSignView:DeActive()
+    end
+  else
+    self.worldTeamSignView:DeActive()
+  end
 end
 
-function MainuiView:refreshMatchState(matchType)
-  if matchType ~= E.MatchType.WorldBoss then
+local mainui_skill_slot_obj = require("ui.player_ctrl_btns.mainui_skill_slot_obj")
+
+function MainuiView:refreshResonanceSkill()
+  if not Z.IsPCUI then
     return
   end
-  local worldBossVM = Z.VMMgr.GetVM("world_boss")
-  if worldBossVM:GetIsMatching() then
-    self.worldBossSignUpView:Active(nil, self.uiBinder.node_world_boss_sign_up)
-  else
-    self.worldBossSignUpView:DeActive()
+  local isFuncOpen = self.funcVM_.FuncIsOn(E.FunctionID.VehicleRide, true)
+  local isFuncShow = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.VehicleRide)
+  self.uiBinder.node_run_jump.Ref:SetVisible(self.uiBinder.node_run_jump.group_mount, isFuncOpen and isFuncShow)
+  local keyId = self.mainUIData_:GetKeyIdAndDescByFuncId(E.FunctionID.VehicleRide)
+  if keyId then
+    newKeyIconHelper.InitKeyIcon(self, self.uiBinder.node_run_jump.com_icon_key, keyId)
   end
+  local isEscFuncOpen = self.funcVM_.FuncIsOn(E.FunctionID.MainFuncMenu, true)
+  local isEscFuncShow = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.MainFuncMenu)
+  self.uiBinder.node_run_jump.Ref:SetVisible(self.uiBinder.node_run_jump.group_esc, isEscFuncOpen and isEscFuncShow)
+  local keyId = self.mainUIData_:GetKeyIdAndDescByFuncId(E.FunctionID.MainFuncMenu)
+  if keyId then
+    newKeyIconHelper.InitKeyIcon(self, self.uiBinder.node_run_jump.com_icon_key_esc, keyId)
+  end
+  Z.RedPointMgr.LoadRedDotItem(E.RedType.EscMenu, self, self.uiBinder.node_run_jump.group_esc)
+  local resonanceBinders = {
+    [1] = self.uiBinder.node_run_jump.resonance_left,
+    [2] = self.uiBinder.node_run_jump.resonance_right
+  }
+  local resonanceRoot = {
+    [1] = self.uiBinder.node_run_jump.group_skill_extra_1,
+    [2] = self.uiBinder.node_run_jump.group_skill_extra_2
+  }
+  for i = 1, 2 do
+    if self.mainuiSkillSlotObjs_[i] == nil then
+      self.mainuiSkillSlotObjs_[i] = mainui_skill_slot_obj.new(100 + i, resonanceBinders[i], resonanceRoot[i], self)
+    end
+    self.mainuiSkillSlotObjs_[i]:Active()
+  end
+end
+
+function MainuiView:clearSkillBinder()
+  if not Z.IsPCUI then
+    return
+  end
+  for _, value in ipairs(self.mainuiSkillSlotObjs_) do
+    value:DeActive()
+  end
+  self.mainuiSkillSlotObjs_ = {}
+end
+
+function MainuiView:OnTriggerInputAction(inputActionEventData)
+  local actionId = inputActionEventData.actionId
+  if inputActionEventData.actionId == Z.RewiredActionsConst.EnableMap then
+    if Z.UIMgr:CheckMainUIActionLimit(actionId) and Z.PlayerInputController:CheckChatAndMapAction(inputActionEventData) then
+      self.vm_.GotoMainUIFunc(100302)
+    end
+    return
+  end
+  if Z.IsPCUI then
+    local expressionVM = Z.VMMgr.GetVM("expression")
+    Z.CoroUtil.create_coro_xpcall(function(...)
+      expressionVM.QuickUseExpressionByInput(actionId)
+    end)()
+    if actionId == Z.RewiredActionsConst.TrackUITurnRight then
+      self:onChangeTrackView(false)
+    elseif actionId == Z.RewiredActionsConst.TrackUITurnLeft then
+      self:onChangeTrackView(true)
+    end
+  end
+end
+
+function MainuiView:OnDealScheme()
+  if not Z.IsPCUI and Z.ZDeepLinkUtil.NeedDealTokenLink then
+    Z.ZDeepLinkUtil.DealDeepLink(Z.LuaBridge.GetAppScheme())
+  end
+end
+
+function MainuiView:unSelectedLastLeftIndexFunc()
+  if self.leftTrackSubView_[self.leftTrackCurSelectedIndex_].unSelectedFunc then
+    self.leftTrackSubView_[self.leftTrackCurSelectedIndex_].unSelectedFunc()
+    self.leftTrackSubView_[self.leftTrackCurSelectedIndex_].isSelected = false
+  end
+end
+
+function MainuiView:selectedCurLeftIndexFunc()
+  if self.leftTrackSubView_[self.leftTrackCurSelectedIndex_].selectedFunc then
+    self.leftTrackSubView_[self.leftTrackCurSelectedIndex_].selectedFunc()
+  end
+end
+
+function MainuiView:onChangeTrackView(isLeft)
+  self.lastChangeTypeIsLeft_ = isLeft
+  self:unSelectedLastLeftIndexFunc()
+  if isLeft then
+    self.leftTrackCurSelectedIndex_ = self.leftTrackCurSelectedIndex_ - 1
+    if self.leftTrackCurSelectedIndex_ < 1 then
+      self.leftTrackCurSelectedIndex_ = #self.leftTrackSubView_
+    end
+  else
+    self.leftTrackCurSelectedIndex_ = self.leftTrackCurSelectedIndex_ + 1
+    if self.leftTrackCurSelectedIndex_ > #self.leftTrackSubView_ then
+      self.leftTrackCurSelectedIndex_ = 1
+    end
+  end
+  self.mainUIData_:SetLeftTrackCurSelectedIndex(self.leftTrackCurSelectedIndex_)
+  if self.leftTrackSubView_[self.leftTrackCurSelectedIndex_].isSelected then
+    return
+  end
+  self:selectedCurLeftIndexFunc()
+end
+
+function MainuiView:onBubbleIdChanged()
+  local bubbleData = Z.DataMgr.Get("bubble_data")
+  local curBubbleId = bubbleData:GetCurBubbleId()
+  if curBubbleId == 0 then
+    if self.leftTrackSubView_[E.MainViewLeftTrackUIMark.Task].isSelected then
+      return
+    end
+    self:selectedLeftBtn(E.MainViewLeftTrackUIMark.Task)
+  else
+    if not self.bubbleVM_:CheckBubbleInfo() or self.leftTrackSubView_[E.MainViewLeftTrackUIMark.Bubble].isSelected or bubbleData:GetDisplayedBubbleView() then
+      return
+    end
+    bubbleData:SetDisplayedBubbleView(true)
+    self:selectedLeftBtn(E.MainViewLeftTrackUIMark.Bubble)
+  end
+  self.mainUIData_:SetLeftTrackCurSelectedIndex(self.leftTrackCurSelectedIndex_)
+  if not Z.IsPCUI then
+    self:SetUIVisible(self.uiBinder.btn_bubble, curBubbleId ~= 0)
+  end
+end
+
+function MainuiView:onSelectBubbleBtn()
+  if not self.leftTrackSubView_[self.leftTrackCurSelectedIndex_].isSelected then
+    self:setLeftBtnState()
+    self:setSubViewState(self.bubbleSubView, true, nil, self.uiBinder.node_track_sub)
+    self:setQuestPcIconState(false)
+  end
+end
+
+function MainuiView:onSelectDpsBtn()
+  if not self.leftTrackSubView_[self.leftTrackCurSelectedIndex_].isSelected then
+    self:setLeftBtnState()
+    self:setSubViewState(self.dpsSubView, true, nil, self.uiBinder.node_track_sub)
+    self:setQuestPcIconState(false)
+  end
+end
+
+function MainuiView:onSelectQuestDetailBtn()
+  if self.leftTrackSubView_[self.leftTrackCurSelectedIndex_].isSelected then
+    local questDetailVm_ = Z.VMMgr.GetVM("questdetail")
+    questDetailVm_.OpenDetailView()
+    self:onClickQuestRed()
+  else
+    self:setLeftBtnState()
+    self:setSubViewState(self.questTrackBarView, true, nil, self.uiBinder.node_track_sub)
+    self:setQuestPcIconState(true)
+  end
+end
+
+function MainuiView:initBubbleData()
+  self.leftTrackSubView_ = {
+    {
+      isSelected = false,
+      img_line = self.uiBinder.img_quest_line,
+      title = Lang("TrackingTask"),
+      selectedFunc = function()
+        self:onSelectQuestDetailBtn()
+      end,
+      unSelectedFunc = function()
+        self.questTrackBarView:DeActive()
+      end
+    },
+    {
+      isSelected = false,
+      title = Lang("BubbleActivity"),
+      selectedFunc = function()
+        if not self.bubbleVM_:CheckBubbleInfo() then
+          self:onChangeTrackView(self.lastChangeTypeIsLeft_)
+          return
+        end
+        self:onSelectBubbleBtn()
+      end,
+      unSelectedFunc = function()
+        self.bubbleSubView:DeActive()
+      end
+    }
+  }
+end
+
+function MainuiView:setLeftBtnState()
+  local curSelectSubData = self.leftTrackSubView_[self.leftTrackCurSelectedIndex_]
+  for k, v in pairs(self.leftTrackSubView_) do
+    if not Z.IsPCUI and v.img_line then
+      self.uiBinder.Ref:SetVisible(v.img_line, false)
+    end
+    v.isSelected = false
+  end
+  curSelectSubData.isSelected = true
+  if Z.IsPCUI then
+    self.uiBinder.lab_quest.text = curSelectSubData.title
+    local preferredWidth = self.uiBinder.lab_quest.preferredWidth
+    self.uiBinder.node_quest:SetWidth(preferredWidth)
+    return
+  end
+  if curSelectSubData.img_line then
+    self.uiBinder.Ref:SetVisible(curSelectSubData.img_line, true)
+  end
+end
+
+function MainuiView:setQuestPcIconState(isShow)
+  if not Z.IsPCUI then
+    return
+  end
+  self.mainUIShortKeyDescUIComp_:SetQuestPcIconState(isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.dot_node, isShow)
 end
 
 return MainuiView

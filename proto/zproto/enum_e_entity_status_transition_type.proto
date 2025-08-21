@@ -8,4 +8,3 @@ enum EEntityStatusTransitionType {
     EEntityStatusTransitionType_InteractionTimes = 2;
     EEntityStatusTransitionType_InteractionTemplate = 3;
 }
-

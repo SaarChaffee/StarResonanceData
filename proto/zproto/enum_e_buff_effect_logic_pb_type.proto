@@ -12,10 +12,11 @@ enum EBuffEffectLogicPbType {
     BuffProfessionEffect = 7;
     TeleportBelt = 8;
     BuffEffectRainbow = 9;
-    BuffEffectVulnerable = 10;
     BuffEffectAttrHUD = 11;
     BuffEffectStop = 12;
     BuffEffectProgress = 13;
     BuffEffectEnergyDisplay = 14;
+    BuffEffectStopAll = 15;
+    BuffEffectLayerChange = 16;
+    Tension = 17;
 }
-

@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
-message EditUnionAlbumNameReply {
-    int32 errCode = 1;
-    string name = 2;
-}
+import "enum_e_error_code.proto";
 
+message EditUnionAlbumNameReply {
+    string name = 1;
+    zproto.EErrorCode errCode = 2;
+}

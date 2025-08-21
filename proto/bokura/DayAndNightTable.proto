@@ -9,8 +9,6 @@ message DayAndNightTableBase {
     int32 CycleTime = 1534;
     vector2_array Stage = 1636;
 }
-
 message DayAndNightTableMgr {
-    map<int32, .bokura.DayAndNightTableBase> datas = 1;
+    repeated bokura.DayAndNightTableMgr.DatasEntry datas = 1;
 }
-

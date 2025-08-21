@@ -19,11 +19,7 @@ function WeaponSkillItem:OnRefresh(data)
   self.uiBinder.img_icon:SetImage(skillRow.Icon)
   local level = self.weaponVm_.GetShowSkillLevel(nil, self.skillId_)
   self.uiBinder.Ref:SetVisible(self.uiBinder.lab_grade, true)
-  self.uiBinder.lab_grade.text = Lang("Lv") .. level
-  if self.parent.UIView.SelectSkillType == E.SkillType.SupportSkill then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_name, true)
-    self.uiBinder.lab_name.text = Lang("ShowSkillType_" .. data.type)
-  end
+  self.uiBinder.lab_grade.text = Lang("Level", {val = level})
 end
 
 function WeaponSkillItem:OnUnInit()

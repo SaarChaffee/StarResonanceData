@@ -7,8 +7,6 @@ message ColorTagTableBase {
     string ColorTag = 1143;
     string Color = 1995;
 }
-
 message ColorTagTableMgr {
-    map<int32, .bokura.ColorTagTableBase> datas = 1;
+    repeated bokura.ColorTagTableMgr.DatasEntry datas = 1;
 }
-

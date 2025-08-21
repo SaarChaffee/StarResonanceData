@@ -9,12 +9,12 @@ DEF.ModSlotMaxCount = 4
 DEF.MaxEffectIntensifyCount = 30
 DEF.ModIntensifyType = {Intensify = 1, Decompose = 2}
 DEF.QualityCornerPath = {
-  [E.ItemQuality.White] = "ui/atlas/weaponhero/profession/profes_img_b",
-  [E.ItemQuality.Green] = "ui/atlas/weaponhero/profession/profes_img_b",
-  [E.ItemQuality.Blue] = "ui/atlas/weaponhero/profession/profes_img_b",
-  [E.ItemQuality.Purple] = "ui/atlas/weaponhero/profession/profes_img_p",
-  [E.ItemQuality.Yellow] = "ui/atlas/weaponhero/profession/profes_img_r",
-  [E.ItemQuality.Red] = "ui/atlas/weaponhero/profession/profes_img_r"
+  [E.ItemQuality.White] = Color.New(0.5058823529411764, 0.8, 0.9254901960784314, 1),
+  [E.ItemQuality.Green] = Color.New(0.5058823529411764, 0.8, 0.9254901960784314, 1),
+  [E.ItemQuality.Blue] = Color.New(0.5058823529411764, 0.8, 0.9254901960784314, 1),
+  [E.ItemQuality.Purple] = Color.New(0.6392156862745098, 0.5058823529411764, 0.9254901960784314, 1),
+  [E.ItemQuality.Yellow] = Color.New(0.6392156862745098, 0.5058823529411764, 0.9254901960784314, 1),
+  [E.ItemQuality.Red] = Color.New(0.9058823529411765, 0.8117647058823529, 0.3333333333333333, 1)
 }
 DEF.SuccessTimesIcon = {
   Empty = "ui/atlas/mod_new/mod_dot_unactivated",

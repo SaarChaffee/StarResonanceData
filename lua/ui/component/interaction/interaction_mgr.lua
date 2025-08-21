@@ -8,14 +8,13 @@ local InteractionBtnDic = {
   [Z.EInteractionBtnType.EOptionSelect] = require("ui.component.interaction.interaction_btn_option_select"),
   [Z.EInteractionBtnType.EStaticObj] = require("ui.component.interaction.interaction_btn_static_obj")
 }
-local initInteraction = function(uiData)
+local asyncInitInteraction = function(uiData)
   local btnType = uiData.btnType
   local handleData = InteractionBtnDic[btnType].new()
-  if not handleData:Init(uiData, btnType) then
-    return
-  end
   interactionData:AddData(handleData)
-  Z.EventMgr:Dispatch(Z.ConstValue.CreateOption, handleData)
+  handleData:AsyncInit(uiData, btnType)
+  interactionData:SortData()
+  Z.EventMgr:Dispatch(Z.ConstValue.RefreshOption)
 end
-local ret = {InitInteraction = initInteraction}
+local ret = {AsyncInitInteraction = asyncInitInteraction}
 return ret

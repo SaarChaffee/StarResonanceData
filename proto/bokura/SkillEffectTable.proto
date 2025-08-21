@@ -29,8 +29,6 @@ message SkillEffectTableBase {
     bool NeedScaleCamera = 225;
     int_array SkillLearnBuffs = 363;
 }
-
 message SkillEffectTableMgr {
-    map<int32, .bokura.SkillEffectTableBase> datas = 1;
+    repeated bokura.SkillEffectTableMgr.DatasEntry datas = 1;
 }
-

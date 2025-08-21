@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
-message SwitchInfo {
-    map<uint32, uint32> infoMap = 1;
-}
+import "enum_e_error_code.proto";
 
+message SwitchInfo {
+    repeated zproto.SwitchInfo.InfoMapEntry infoMap = 1;
+    zproto.EErrorCode errCode = 2;
+}

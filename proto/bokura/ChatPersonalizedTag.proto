@@ -11,8 +11,6 @@ message ChatPersonalizedTagBase {
     string TagIcon = 25;
     int32 Sequence = 831;
 }
-
 message ChatPersonalizedTagMgr {
-    map<int32, .bokura.ChatPersonalizedTagBase> datas = 1;
+    repeated bokura.ChatPersonalizedTagMgr.DatasEntry datas = 1;
 }
-

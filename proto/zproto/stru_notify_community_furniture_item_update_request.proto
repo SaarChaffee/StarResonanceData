@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyCommunityFurnitureItemUpdateRequest {
+    repeated zproto.NotifyCommunityFurnitureItemUpdateRequest.AddItemsEntry addItems = 1;
+}

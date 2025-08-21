@@ -8,8 +8,6 @@ message BugReportFilterTableBase {
     string MatchStr = 1467;
     string Desc = 1953;
 }
-
 message BugReportFilterTableMgr {
-    map<int32, .bokura.BugReportFilterTableBase> datas = 1;
+    repeated bokura.BugReportFilterTableMgr.DatasEntry datas = 1;
 }
-

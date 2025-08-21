@@ -2,6 +2,7 @@ local super = require("ui.component.loop_grid_view_item")
 local FashionRecommendItem = class("FashionRecommendItem", super)
 
 function FashionRecommendItem:OnInit()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_none, false)
 end
 
 function FashionRecommendItem:OnRefresh(data)

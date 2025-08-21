@@ -8,6 +8,7 @@ function Fashion_save_confirm_popupView:ctor()
   self.fashionData_ = Z.DataMgr.Get("fashion_data")
   self.fashionVM_ = Z.VMMgr.GetVM("fashion")
   self.saveVM_ = Z.VMMgr.GetVM("fashion_save_tips")
+  self.itemSourceVm_ = Z.VMMgr.GetVM("item_source")
 end
 
 function Fashion_save_confirm_popupView:OnActive()
@@ -25,6 +26,10 @@ function Fashion_save_confirm_popupView:OnActive()
 end
 
 function Fashion_save_confirm_popupView:OnDeActive()
+  if self.tipsId_ then
+    Z.TipsVM.CloseItemTipsView(self.tipsId_)
+    self.tipsId_ = nil
+  end
 end
 
 function Fashion_save_confirm_popupView:createItem()
@@ -38,6 +43,7 @@ function Fashion_save_confirm_popupView:createItem()
       do
         local itemRow = itemTbl.GetRow(fashionId)
         if itemRow then
+          unit.Ref:SetVisible(unit.img_frame, false)
           unit.lab_name.text = itemRow.Name
           local itemsVM = Z.VMMgr.GetVM("items")
           unit.rimg_icon:SetImage(itemsVM.GetItemIcon(fashionId))
@@ -52,7 +58,12 @@ function Fashion_save_confirm_popupView:createItem()
             if self.tipsId_ then
               Z.TipsVM.CloseItemTipsView(self.tipsId_)
             end
-            Z.TipsVM.OpenSourceTips(fashionId, unit.Trans)
+            local sourceData = self.itemSourceVm_.GetItemSource(fashionId)
+            if sourceData and table.zcount(sourceData) > 0 then
+              self.tipsId_ = Z.TipsVM.OpenSourceTips(fashionId, unit.Trans)
+            else
+              self.tipsId_ = Z.TipsVM.ShowItemTipsView(unit.Trans, fashionId)
+            end
           end)
         end
       end
@@ -67,6 +78,10 @@ function Fashion_save_confirm_popupView:getReasonDesc(confirmData)
   elseif reason == E.FashionTipsReason.UnlockedColor then
     local areaStr = self.saveVM_.GetFashionColorAreaStr(confirmData.FashionId, confirmData.AreaList)
     return Lang("FashionUnlockedColor", {str = areaStr})
+  elseif reason == E.FashionTipsReason.UnlockedWeaponSkin then
+    return Lang("FashionUnlockedWeaponSkin")
+  elseif reason == E.FashionTipsReason.UnlockedFashionAdvanced then
+    return Lang("FashionUnlockedFashionAdvanced")
   end
   return ""
 end
@@ -82,6 +97,12 @@ function Fashion_save_confirm_popupView:onClickIgnore()
       for _, area in ipairs(confirmData.AreaList) do
         self.fashionVM_.RevertFashionColorByFashionIdAndArea(fashionId, area)
       end
+    elseif reason == E.FashionTipsReason.UnlockedWeaponSkin then
+      local region = self.fashionVM_.GetFashionRegion(fashionId)
+      self.fashionData_:SetWear(region, nil)
+    elseif reason == E.FashionTipsReason.UnlockedFashionAdvanced then
+      local region = self.fashionVM_.GetFashionRegion(fashionId)
+      self.fashionData_:SetWear(region, nil)
     end
   end
   self.fashionVM_.AsyncSaveAllFashion(self.cancelSource)

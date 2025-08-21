@@ -21,8 +21,6 @@ message ModelWpNpcTableBase {
     string WeaponIdleAnim = 102;
     string PinchConfig = 832;
 }
-
 message ModelWpNpcTableMgr {
-    map<int32, .bokura.ModelWpNpcTableBase> datas = 1;
+    repeated bokura.ModelWpNpcTableMgr.DatasEntry datas = 1;
 }
-

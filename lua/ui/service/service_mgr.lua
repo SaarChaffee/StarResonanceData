@@ -48,8 +48,28 @@ function ServiceMgr.RegisterAll()
   ServiceMgr.Register("world_boss")
   ServiceMgr.Register("timer")
   ServiceMgr.Register("weekly_hunt")
+  ServiceMgr.Register("treasure")
   ServiceMgr.Register("recommendedplay")
   ServiceMgr.Register("sevendaystarget")
+  ServiceMgr.Register("recommend_fightvalue")
+  ServiceMgr.Register("monthly_card")
+  ServiceMgr.Register("life_profession")
+  ServiceMgr.Register("recharge_activity")
+  ServiceMgr.Register("life_work")
+  ServiceMgr.Register("fashion")
+  ServiceMgr.Register("condition")
+  ServiceMgr.Register("pandora")
+  ServiceMgr.Register("payment")
+  ServiceMgr.Register("player")
+  ServiceMgr.Register("vehicle")
+  ServiceMgr.Register("sdk")
+  ServiceMgr.Register("save_power")
+  ServiceMgr.Register("handbook")
+  ServiceMgr.Register("achievement")
+  ServiceMgr.Register("device")
+  ServiceMgr.Register("match")
+  ServiceMgr.Register("bubble")
+  ServiceMgr.Register("dps")
 end
 
 function ServiceMgr.UnRegisterAll()
@@ -106,6 +126,12 @@ function ServiceMgr.OnLogout()
   end
 end
 
+function ServiceMgr.OnNotifyEnterWorld(sceneId)
+  for _, serviceInfo in ipairs(servicesList) do
+    xpcall(serviceInfo.class.OnNotifyEnterWorld, errorHandle, serviceInfo.class, sceneId)
+  end
+end
+
 function ServiceMgr.OnEnterScene(sceneId)
   for _, serviceInfo in ipairs(servicesList) do
     xpcall(serviceInfo.class.OnEnterScene, errorHandle, serviceInfo.class, sceneId)
@@ -139,6 +165,12 @@ end
 function ServiceMgr.OnVisualLayerChange()
   for _, serviceInfo in ipairs(servicesList) do
     xpcall(serviceInfo.class.OnVisualLayerChange, errorHandle, serviceInfo.class)
+  end
+end
+
+function ServiceMgr.OnResurrectionEnd()
+  for _, serviceInfo in ipairs(servicesList) do
+    xpcall(serviceInfo.class.OnResurrectionEnd, errorHandle, serviceInfo.class)
   end
 end
 

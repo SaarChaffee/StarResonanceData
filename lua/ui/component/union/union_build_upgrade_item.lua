@@ -20,9 +20,11 @@ function UnionBuildUpgradeItem:OnRefresh(data)
     if buildLevel == 1 then
       self.uiBinder.lab_desc_left.text = Lang("UnLock")
     else
-      self.uiBinder.lab_desc_left.text = Lang("Lv") .. buildLevel - 1
+      self.uiBinder.lab_desc_left.text = Lang("Level", {
+        val = buildLevel - 1
+      })
     end
-    self.uiBinder.lab_desc_right.text = Lang("Lv") .. buildLevel
+    self.uiBinder.lab_desc_right.text = Lang("Level", {val = buildLevel})
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_arrow, true)
   elseif data.Type == "Effect" then
     local diffInfo = data.Value
@@ -67,7 +69,7 @@ function UnionBuildUpgradeItem:OnRefresh(data)
   elseif data.Type == "Time" then
     local buildTime = data.Value
     self.uiBinder.lab_title.text = Lang("BuildTime")
-    self.uiBinder.lab_desc_left.text = Z.TimeTools.S2HMSFormat(buildTime)
+    self.uiBinder.lab_desc_left.text = Z.TimeFormatTools.FormatToDHMS(buildTime, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_arrow, false)
   end
 end

@@ -43,8 +43,6 @@ message NpcEntityTableBase {
     int_table InteractionTemplate = 1682;
     string_array InteractionEvent = 1343;
 }
-
 message NpcEntityTableMgr {
-    map<int32, .bokura.NpcEntityTableBase> datas = 1;
+    repeated bokura.NpcEntityTableMgr.DatasEntry datas = 1;
 }
-

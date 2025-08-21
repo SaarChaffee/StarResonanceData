@@ -14,8 +14,6 @@ message SeasonNodeDataTableBase {
     string_table BuffValueKey = 668;
     int_table BuffPar = 1688;
 }
-
 message SeasonNodeDataTableMgr {
-    map<int32, .bokura.SeasonNodeDataTableBase> datas = 1;
+    repeated bokura.SeasonNodeDataTableMgr.DatasEntry datas = 1;
 }
-

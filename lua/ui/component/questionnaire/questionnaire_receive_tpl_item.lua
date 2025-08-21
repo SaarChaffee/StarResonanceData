@@ -12,7 +12,7 @@ end
 function QuestionnaireReceiveTplItem:OnInit()
   self:AddAsyncListener(self.uiBinder.btn_goto, function()
     if self.data_ then
-      self.questionnaireVM_.OpenQuestionnaireUrl(self.data_.id)
+      self.questionnaireVM_.OpenQuestionnaireUrl(self.data_.link)
       Z.UIMgr:CloseView("questionnaire_banner_popup")
     end
   end)
@@ -22,11 +22,11 @@ end
 
 function QuestionnaireReceiveTplItem:OnRefresh(data)
   self.data_ = data
-  local config = self.questionnaireData_:GetQuestionnaireConfig(self.data_.id)
-  if config == nil then
-    return
+  if self.data_.name then
+    self.uiBinder.lab_description.text = self.data_.name
+  else
+    self.uiBinder.lab_description.text = ""
   end
-  self.uiBinder.lab_description.text = config.Name
   local isNotAnswered = self.data_.status == Z.PbEnum("QuestionnaireStatus", "QuestionnaireNotAnswered")
   if isNotAnswered then
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_goto, true)
@@ -38,15 +38,17 @@ function QuestionnaireReceiveTplItem:OnRefresh(data)
     self.uiBinder.anim.alpha = 0.5
   end
   local items = {}
-  for key, value in ipairs(config.Award) do
+  local itemCount = 0
+  for _, value in ipairs(self.data_.awards) do
     local data = {
-      configId = value[1],
+      configId = value.configId,
       isSquareItem = true,
-      lab = value[2],
+      lab = value.count,
       isShowReceive = not isNotAnswered,
       labType = E.ItemLabType.Num
     }
-    items[key] = data
+    itemCount = itemCount + 1
+    items[itemCount] = data
   end
   self.itemList_:RefreshListView(items)
 end

@@ -7,4 +7,3 @@ enum EAppearType {
     EAppearTransferIn = 1;
     EAppearTransferPassLineIn = 2;
 }
-

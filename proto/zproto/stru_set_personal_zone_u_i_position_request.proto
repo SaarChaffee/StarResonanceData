@@ -7,4 +7,3 @@ import "stru_editor_u_i_position.proto";
 message SetPersonalZoneUIPositionRequest {
     repeated zproto.EditorUIPosition uiPosition = 1;
 }
-

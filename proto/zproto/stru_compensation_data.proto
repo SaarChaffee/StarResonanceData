@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message CompensationData {
+    int64 overflowEnergy = 1;
+    int32 finishTimes = 2;
+    int32 climbUpLayerId = 3;
+}

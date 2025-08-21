@@ -12,12 +12,12 @@ local mergeDataFuncs = {
   end,
   [3] = function(container, buffer, watcherList)
     local last = container.__data__.originatorId
-    container.__data__.originatorId = br.ReadInt32(buffer)
+    container.__data__.originatorId = br.ReadInt64(buffer)
     container.Watcher:MarkDirty("originatorId", last)
   end,
   [4] = function(container, buffer, watcherList)
     local last = container.__data__.inviteeId
-    container.__data__.inviteeId = br.ReadInt32(buffer)
+    container.__data__.inviteeId = br.ReadInt64(buffer)
     container.Watcher:MarkDirty("inviteeId", last)
   end,
   [5] = function(container, buffer, watcherList)

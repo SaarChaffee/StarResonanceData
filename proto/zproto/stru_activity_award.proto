@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_activity_reward_progress.proto";
+import "stru_buy_gift_info.proto";
+import "enum_e_activity_obtain_status.proto";
+
+message ActivityAward {
+    int32 awardId = 1;
+    int64 reward_show_begintime = 2;
+    int64 reward_show_endtime = 3;
+    int64 reward_begintime = 4;
+    int64 reward_endtime = 5;
+    repeated zproto.ActivityAward.ConditionEntry condition = 6;
+    repeated zproto.ActivityAward.ItemListEntry itemList = 7;
+    repeated int32 awardList = 8;
+    zproto.EActivityObtainStatus obtainStatus = 9;
+    zproto.ActivityRewardProgress progressList = 10;
+    zproto.BuyGiftInfo rewardInfo = 11;
+}

@@ -7,8 +7,6 @@ message MainPlotDungeonTableBase {
     string Background = 343;
     int32 RedDotIndex = 371;
 }
-
 message MainPlotDungeonTableMgr {
-    map<int32, .bokura.MainPlotDungeonTableBase> datas = 1;
+    repeated bokura.MainPlotDungeonTableMgr.DatasEntry datas = 1;
 }
-

@@ -7,7 +7,7 @@ end
 function Scene:LoadComplete()
 end
 
-Scene.Seasons = {}
+Scene.Seasons = {2}
 
 function Scene:InitEvents()
   self.EventItems = {}
@@ -30,6 +30,17 @@ function Scene:InitEvents()
     count = -1,
     action = function(localSelf)
       Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("HeroDungeon_Tina/Guide_easy", 0, 0, 20, false, 0)
+    end
+  }
+  self.EventItems[101348] = {
+    eventType = E.LevelEventType.OnSceneLeave,
+    enable = true,
+    group = 0,
+    eventId = 101348,
+    count = -1,
+    action = function(localSelf)
+      Panda.ZGame.CameraManager.Instance:CameraInvoke(0, true, {2032}, false)
+      Panda.ZGame.CameraManager.Instance:SwitchCameraTemplate({0}, {2030}, 0)
     end
   }
 end

@@ -4,11 +4,16 @@ local Talent_attr_info_subView = class("Talent_attr_info_subView", super)
 local TalentSkillDefine = require("ui.model.talent_skill_define")
 local itemClass = require("common.item_binder")
 local LEFT_ITEM_COUNT = 4
+local currency_item_list = require("ui.component.currency.currency_item_list")
 
 function Talent_attr_info_subView:ctor(parent)
   self.uiBinder = nil
   self.viewData = nil
-  super.ctor(self, "talent_attr_info_sub", "talent_new/talent_attr_info_sub", UI.ECacheLv.None)
+  if Z.IsPCUI then
+    super.ctor(self, "talent_attr_info_sub", "talent_new/talent_attr_info_sub_pc", UI.ECacheLv.None)
+  else
+    super.ctor(self, "talent_attr_info_sub", "talent_new/talent_attr_info_sub", UI.ECacheLv.None)
+  end
   self.weaponVm_ = Z.VMMgr.GetVM("weapon")
   self.fightAttrParseVm_ = Z.VMMgr.GetVM("fight_attr_parse")
   self.itemVm_ = Z.VMMgr.GetVM("items")
@@ -67,6 +72,7 @@ function Talent_attr_info_subView:OnActive()
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_play, false)
   end, function()
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_play, true)
+    self.uiBinder.group_video:Seek(1)
   end)
   self:AddAsyncClick(self.uiBinder.btn_play, function()
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_play, false)
@@ -102,6 +108,8 @@ function Talent_attr_info_subView:OnActive()
   else
     self:refreshNodeInfo(true)
   end
+  self.currencyItemList_ = currency_item_list.new()
+  self.currencyItemList_:Init(self.uiBinder.currency_info, {})
 end
 
 function Talent_attr_info_subView:OnDeActive()
@@ -114,12 +122,15 @@ function Talent_attr_info_subView:OnDeActive()
   end
   self:closeSourceTip()
   self:UnBindLuaAttrWatchers()
-  local currencyVm = Z.VMMgr.GetVM("currency")
-  currencyVm.CloseCurrencyView(self)
+  if self.currencyItemList_ then
+    self.currencyItemList_:UnInit()
+    self.currencyItemList_ = nil
+  end
   for _, tipsId in pairs(self.subTipsIdList_) do
     Z.TipsVM.CloseItemTipsView(tipsId)
   end
   self.subTipsIdList_ = {}
+  self.uiBinder.group_video:RemoveAllListeners()
 end
 
 function Talent_attr_info_subView:BindLuaAttrWatchers()
@@ -210,8 +221,7 @@ function Talent_attr_info_subView:refreshNodeUpgrade()
   self.uiBinder.layout_info_1:SetAnchorPosition(0, 0)
   self.uiBinder.layout_info_2:SetAnchorPosition(0, 0)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_line, true)
-  local currencyVm = Z.VMMgr.GetVM("currency")
-  currencyVm.OpenCurrencyView(self.costItemIDs_, self.uiBinder.anim, self)
+  self.currencyItemList_:Init(self.uiBinder.currency_info, self.costItemIDs_)
   local weaponSystemTable = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(self.viewData.id)
   self.uiBinder.lab_title.text = weaponSystemTable.Name
   self.uiBinder.rimg_icon_weapon:SetImage(weaponSystemTable.MainTalentIcon)
@@ -256,7 +266,7 @@ function Talent_attr_info_subView:refreshOverStep()
   end
   local tempCondition = true
   for _, condition in ipairs(config.Conditions) do
-    local bRes, tipsStr, progress = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
+    local bRes, _, _, _, tipsParam = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
     if not bRes then
       tempCondition = false
       if condition[1] == E.ConditionType.Level then
@@ -264,9 +274,7 @@ function Talent_attr_info_subView:refreshOverStep()
           val = condition[2]
         })
       elseif condition[1] == E.ConditionType.OpenServerDay then
-        self.uiBinder.btn_level_up.lab_normal.text = Lang("ServerOpenCanGoOnBroken", {
-          val = condition[2]
-        })
+        self.uiBinder.btn_level_up.lab_normal.text = Lang("ServerOpenCanGoOnBroken", {val = tipsParam})
       end
     end
   end
@@ -347,7 +355,7 @@ function Talent_attr_info_subView:refreshLevelUpGrade()
   local tempCondition = true
   if not config.Broke then
     for _, condition in ipairs(config.Conditions) do
-      local bRes, tipsStr, progress = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
+      local bRes, _, _, _, tipsParam = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
       if not bRes then
         tempCondition = false
         if condition[1] == E.ConditionType.Level then
@@ -355,9 +363,7 @@ function Talent_attr_info_subView:refreshLevelUpGrade()
             val = condition[2]
           })
         elseif condition[1] == E.ConditionType.OpenServerDay then
-          self.uiBinder.btn_level_up.lab_normal.text = Lang("ServerOpenCanGoOnLevelUp", {
-            val = condition[2]
-          })
+          self.uiBinder.btn_level_up.lab_normal.text = Lang("ServerOpenCanGoOnLevelUp", {val = tipsParam})
         end
       end
     end
@@ -598,7 +604,7 @@ function Talent_attr_info_subView:refreshItemCost()
   if btnDisable then
     self.img_reddot_ = false
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, self.img_reddot_)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, self.img_reddot_ and self.talentSkillVm_.IsCanShowRedDot())
   if count == 0 then
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_gold_anim, false)
   else
@@ -698,7 +704,7 @@ function Talent_attr_info_subView:refreshRecordAttr(recordLv, extraExp)
   self.img_reddot_ = recordLv >= self.weapon_.level + showLevelUpRedLevel
   if recordLv == self.weapon_.level and extraExp == self.weapon_.experience then
     self:refreshDefaultAttr()
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, self.img_reddot_)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, self.img_reddot_ and self.talentSkillVm_.IsCanShowRedDot())
     return
   end
   local recordconfig = Z.TableMgr.GetTable("WeaponLevelTableMgr").GetRow(recordLv)
@@ -774,7 +780,7 @@ function Talent_attr_info_subView:refreshOverStepAttr()
     return
   end
   self.uiBinder.lab_name.text = Lang("WeaponProficiency") .. self.weapon_.level .. "/" .. self.maxLv_
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, recordLv ~= self.weapon_.level and self.img_reddot_)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, recordLv ~= self.weapon_.level and self.img_reddot_ and self.talentSkillVm_.IsCanShowRedDot())
   if recordLv == self.maxLv_ then
     local config = Z.TableMgr.GetTable("WeaponLevelTableMgr").GetRow(self.maxLv_ - 1)
     if config == nil then
@@ -868,16 +874,14 @@ function Talent_attr_info_subView:upgradeWeapon()
   end
   if config.Broke and self.weapon_.experience >= config.Exp then
     for _, condition in ipairs(config.Conditions) do
-      local bRes, tipsStr, progress = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
+      local bRes, _, _, _, tipsParam = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
       if not bRes then
         if condition[1] == E.ConditionType.Level then
           Z.TipsVM.ShowTipsLang(1042030, {
             val = condition[2]
           })
         elseif condition[1] == E.ConditionType.OpenServerDay then
-          Z.TipsVM.ShowTipsLang(1042031, {
-            val = condition[2]
-          })
+          Z.TipsVM.ShowTipsLang(1042031, {val = tipsParam})
         end
         return
       end
@@ -885,7 +889,7 @@ function Talent_attr_info_subView:upgradeWeapon()
     if self.itemNotCountEnoughId_ == nil then
       self.upGradeType = E.UpgradeType.WeaponHeroOverstep
       self.cacheLv_ = self.weapon_.level
-      self.weaponVm_.AsyncWeaponOverStep(self.weapon_.professionId, self.cancelSource:CreateToken())
+      self.weaponVm_.AsyncWeaponOverStep(self.weapon_.professionId, self.parentView_.cancelSource:CreateToken())
     else
       local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.itemNotCountEnoughId_)
       if itemConfig then
@@ -899,16 +903,14 @@ function Talent_attr_info_subView:upgradeWeapon()
   else
     if not config.Broke then
       for _, condition in ipairs(config.Conditions) do
-        local bRes, tipsStr, progress = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
+        local bRes, _, _, _, tipsParam = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
         if not bRes then
           if condition[1] == E.ConditionType.Level then
             Z.TipsVM.ShowTipsLang(1042028, {
               val = condition[2]
             })
           elseif condition[1] == E.ConditionType.OpenServerDay then
-            Z.TipsVM.ShowTipsLang(1042029, {
-              val = condition[2]
-            })
+            Z.TipsVM.ShowTipsLang(1042029, {val = tipsParam})
           end
           return
         end
@@ -945,7 +947,7 @@ function Talent_attr_info_subView:upgradeWeapon()
     end
     self.upGradeType = E.UpgradeType.WeaponHeroLevel
     self.cacheLv_ = self.weapon_.level
-    self.weaponVm_.AsyncWeaponLevelUp(self.weapon_.professionId, self.upGradeMat_, self.cancelSource:CreateToken())
+    self.weaponVm_.AsyncWeaponLevelUp(self.weapon_.professionId, self.upGradeMat_, self.parentView_.cancelSource:CreateToken())
   end
 end
 
@@ -1102,7 +1104,15 @@ function Talent_attr_info_subView:refreshNodeInfo(isShow)
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_unlock_condition_down, true)
         if tempTalentStageTips == nil then
           local talentTreeTableConfig = Z.TableMgr.GetTable("TalentTreeTableMgr").GetRow(self.viewData.id)
-          if talentTreeTableConfig and self.talentSkillVm_.GetProfessionTalentStageBdType(self.viewData.professionId, talentTreeTableConfig.TalentStage) == talentTreeTableConfig.BdType then
+          local talentStage, isRoot = self.talentSkillVm_.GetProfessionTalentStageBdType(self.viewData.professionId, talentTreeTableConfig.TalentStage, self.viewData.id)
+          if isRoot then
+            self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
+            local curWeaponIsUnlock = self.weaponVm_.CheckWeaponUnlock(self.viewData.professionId) and self.weaponVm_.GetCurWeapon() == self.viewData.professionId
+            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(curWeaponIsUnlock and tempTalentStageTips == nil)
+          elseif talentStage == -1 then
+            self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
+            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
+          elseif talentTreeTableConfig and talentStage == talentTreeTableConfig.BdType then
             self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
             local curWeaponIsUnlock = self.weaponVm_.CheckWeaponUnlock(self.viewData.professionId) and self.weaponVm_.GetCurWeapon() == self.viewData.professionId
             self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(curWeaponIsUnlock and tempTalentStageTips == nil)
@@ -1119,14 +1129,24 @@ function Talent_attr_info_subView:refreshNodeInfo(isShow)
       end
     end
     if isActive then
-      self.uiBinder.node_skill:SetHeight(370)
-      self.uiBinder.node_talent:SetHeight(370)
+      if Z.IsPCUI then
+        self.uiBinder.node_skill:SetHeight(540)
+        self.uiBinder.node_talent:SetHeight(540)
+      else
+        self.uiBinder.node_skill:SetHeight(370)
+        self.uiBinder.node_talent:SetHeight(370)
+      end
       self.uiBinder.Ref:SetVisible(self.uiBinder.img_line, false)
     else
       self:loadLockCondition()
       self:loalLockItems()
-      self.uiBinder.node_skill:SetHeight(197)
-      self.uiBinder.node_talent:SetHeight(197)
+      if Z.IsPCUI then
+        self.uiBinder.node_skill:SetHeight(370)
+        self.uiBinder.node_talent:SetHeight(370)
+      else
+        self.uiBinder.node_skill:SetHeight(197)
+        self.uiBinder.node_talent:SetHeight(197)
+      end
       self.uiBinder.Ref:SetVisible(self.uiBinder.img_line, true)
     end
     local reddot = false
@@ -1316,19 +1336,18 @@ function Talent_attr_info_subView:unlockTalent()
   if self.viewData.type == TalentSkillDefine.TalentAttrInfoSubViewType.Talent then
     self.talentSkillVm_.UnlockTalentTreeNode(self.viewData.professionId, {
       self.viewData.id
-    }, self.cancelSource:CreateToken())
+    }, self.parentView_.cancelSource:CreateToken())
   else
     local dialogViewData = {
       dlgType = E.DlgType.YesNo,
       labDesc = Lang("TalentActiveAttention"),
       onConfirm = function()
-        Z.DialogViewDataMgr:CloseDialogView()
         self.talentSkillVm_.UnlockTalentTreeNode(self.viewData.professionId, {
           self.viewData.id
-        }, self.cancelSource:CreateToken())
+        }, self.parentView_.cancelSource:CreateToken())
       end
     }
-    Z.DialogViewDataMgr:OpenDialogView(dialogViewData, E.EDialogViewDataType.Game)
+    Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
   end
 end
 

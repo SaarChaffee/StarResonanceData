@@ -1,7 +1,7 @@
 local super = require("ui.component.loop_grid_view_item")
 local FishingRewardLoopItem = class("FishingRewardLoopItem", super)
 local loopListView = require("ui.component.loop_list_view")
-local commonRewardItem = require("ui.component.explore_monster.explore_monster_reward_item")
+local fishingLevelRewardItem = require("ui.component.fishing.fishing_level_reward_item")
 local fishingRed = require("rednode.fishing_red")
 
 function FishingRewardLoopItem:ctor()
@@ -11,7 +11,7 @@ end
 
 function FishingRewardLoopItem:OnInit()
   self.parentUIView = self.parent.UIView
-  self.awardScrollRect_ = loopListView.new(self.parentUIView, self.uiBinder.loop_list_item, commonRewardItem, "com_item_square_8")
+  self.awardScrollRect_ = loopListView.new(self.parentUIView, self.uiBinder.loop_list_item, fishingLevelRewardItem, "fishing_function_reward_tpl")
   self.awardScrollRect_:Init({})
 end
 
@@ -32,12 +32,27 @@ function FishingRewardLoopItem:OnRefresh(data)
       self.fishingVM_.GetLevelReward(self.data.FishingLevel, self.parentUIView.cancelSource:CreateToken())
     end)
   end
+  local rewardLevelList = {}
+  for k, v in pairs(data.UnlockFunction) do
+    local levelData = {}
+    levelData.isReward = false
+    local functionData = {}
+    functionData.functionID = v
+    functionData.desc = data.UnlockFunctionDesc[k]
+    functionData.beGet = self.state_ == E.TrialRoadTargetState.GetReward
+    levelData.functionData = functionData
+    table.insert(rewardLevelList, levelData)
+  end
   local awardPreviewVm = Z.VMMgr.GetVM("awardpreview")
   local awardList = awardPreviewVm.GetAllAwardPreListByIds(data.ItemAward)
   for k, v in pairs(awardList) do
+    local levelData = {}
+    levelData.isReward = true
     v.beGet = self.state_ == E.TrialRoadTargetState.GetReward
+    levelData.awardData = v
+    table.insert(rewardLevelList, levelData)
   end
-  self.awardScrollRect_:RefreshListView(awardList)
+  self.awardScrollRect_:RefreshListView(rewardLevelList)
   fishingRed.LoadShopLevelAwardRedItem(data.FishingLevel, self.parentUIView, self.uiBinder.btn_receive_trans)
 end
 

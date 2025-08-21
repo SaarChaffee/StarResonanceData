@@ -60,7 +60,7 @@ function Gm_fashion_popupView:loadColor()
           h = h,
           s = s,
           v = v
-        }, true)
+        }, true, true)
       end
     end
   end

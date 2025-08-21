@@ -10,8 +10,6 @@ message BugReportConfigTableBase {
     string DataValue2 = 1651;
     string Desc = 1953;
 }
-
 message BugReportConfigTableMgr {
-    map<int32, .bokura.BugReportConfigTableBase> datas = 1;
+    repeated bokura.BugReportConfigTableMgr.DatasEntry datas = 1;
 }
-

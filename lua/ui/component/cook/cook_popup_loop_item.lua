@@ -1,6 +1,6 @@
 local super = require("ui.component.loopscrollrectitem")
 local CookPopupItem = class("CookPopupItem", super)
-local itemClass = require("common.item")
+local itemClass = require("common.item_binder")
 local cookVM = Z.VMMgr.GetVM("cook")
 local path = "cook_item_empty"
 local qualityPath = "ui/atlas/item/prop/fashion_img_quality_empty"
@@ -18,7 +18,7 @@ function CookPopupItem:Refresh()
   self.isUnlock = cookVM.IsUnlockCookBook(self.data_.Id)
   local configId = self.isUnlock and self.data_.Id or 0
   local itemPreviewData = {
-    unit = self.unit,
+    uiBinder = self.unit,
     configId = configId,
     isSquareItem = true,
     isClickOpenTips = false

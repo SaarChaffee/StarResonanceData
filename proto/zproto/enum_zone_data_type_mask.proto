@@ -12,8 +12,7 @@ enum ZoneDataTypeMask {
     CameraBlockMask = 32;
     OnlyServerTriggerMask = 64;
     DontShowAreaWallEffectMask = 128;
-    Empty3Mask = 256;
+    HomeSoftAreaWall = 256;
     Empty4Mask = 512;
     NavMask = 1024;
 }
-

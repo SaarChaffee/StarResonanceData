@@ -37,7 +37,7 @@ function Camera_menu_container_shotsetView:initVariable()
 end
 
 function Camera_menu_container_shotsetView:refHVVariable()
-  if cameraData_.CameraPatternType == E.CameraState.SelfPhoto then
+  if cameraData_.CameraPatternType == E.TakePhotoSate.SelfPhoto then
     self.tbDatarHorizontal_ = cameraData_:GetCameraSelfHorizontalRange()
     self.tbDatarVertical_ = cameraData_:GetCameraSelfVerticalRange()
   else
@@ -60,18 +60,27 @@ function Camera_menu_container_shotsetView:initListener()
     self:ResetBtn()
   end)
   self.uiBinder.slider_aperture:AddListener(function(value)
+    if not self.uiBinder.switch_depth.IsOn then
+      return
+    end
     cameraData_:SetIsSchemeParamUpdated(true)
     self.tbDatarAperture_.value = vm.GetRangeValue(value, self.tbDatarAperture_)
     self.uiBinder.aperture_lab_num.text = vm.CalculatePercentageValue(self.tbDatarAperture_.showValueMin, self.tbDatarAperture_.showValueMax, value)
     self:SetAperture(self.tbDatarAperture_.value)
   end)
   self.uiBinder.slider_near_blend:AddListener(function(value)
+    if not self.uiBinder.switch_depth.IsOn then
+      return
+    end
     cameraData_:SetIsSchemeParamUpdated(true)
     self.nearBlendRange_.value = vm.GetRangeValue(value, self.nearBlendRange_)
     self.uiBinder.lab_near_blend_val.text = vm.CalculatePercentageValue(self.nearBlendRange_.showValueMin, self.nearBlendRange_.showValueMax, value)
     self:SetNearBlend(self.nearBlendRange_.value)
   end)
   self.uiBinder.slider_far_blend:AddListener(function(value)
+    if not self.uiBinder.switch_depth.IsOn then
+      return
+    end
     cameraData_:SetIsSchemeParamUpdated(true)
     self.farBlendRange_.value = vm.GetRangeValue(value, self.farBlendRange_)
     self.uiBinder.lab_far_blend_val.text = vm.CalculatePercentageValue(self.farBlendRange_.showValueMin, self.farBlendRange_.showValueMax, value)
@@ -93,9 +102,11 @@ function Camera_menu_container_shotsetView:initListener()
       self.farBlendRange_.value = vm.GetRangeValue(self.uiBinder.slider_far_blend.value, self.farBlendRange_)
       self:SetFarBlend(self.farBlendRange_.value)
       if not self.uiBinder.switch_focus.IsOn then
-        self:SetIsFcousTarget(not self.uiBinder.switch_focus.IsOn)
-        local playerPos_ = Z.EntityMgr.PlayerEnt:GetLocalAttrVirtualPos()
-        self:SetFocusTargetPos(playerPos_.x, playerPos_.y, playerPos_.z)
+        self:SetIsFocusTarget(not self.uiBinder.switch_focus.IsOn)
+        if Z.EntityMgr.PlayerEnt then
+          local playerPos_ = Z.EntityMgr.PlayerEnt:GetLocalAttrVirtualPos()
+          self:SetFocusTargetPos(playerPos_.x, playerPos_.y, playerPos_.z)
+        end
       end
       self.uiBinder.layout_node:ForceRebuildLayoutImmediate()
     end
@@ -106,7 +117,7 @@ function Camera_menu_container_shotsetView:initListener()
   self.uiBinder.switch_focus:AddListener(function(isOn)
     cameraData_:SetIsSchemeParamUpdated(true)
     self.tbDatarFocus_.isOpen = isOn
-    self:SetIsFcousTarget(not isOn)
+    self:SetIsFocusTarget(not isOn)
     if isOn then
       self.uiBinder.slider_focus.value = vm.GetRangePerc(self.tbDatarFocus_, cameraData_.MenuContainerShotsetDirty)
       self.tbDatarFocus_.value = vm.GetRangeValue(self.uiBinder.slider_focus.value, self.tbDatarFocus_)
@@ -119,6 +130,9 @@ function Camera_menu_container_shotsetView:initListener()
     self.uiBinder.layout_node:ForceRebuildLayoutImmediate()
   end)
   self.uiBinder.slider_focus:AddListener(function(value)
+    if not self.uiBinder.switch_focus.IsOn then
+      return
+    end
     cameraData_:SetIsSchemeParamUpdated(true)
     self.tbDatarFocus_.value = vm.GetRangeValue(value, self.tbDatarFocus_)
     self.uiBinder.focus_lab_num.text = vm.CalculatePercentageValue(self.tbDatarFocus_.showValueMin, self.tbDatarFocus_.showValueMax, value)
@@ -127,7 +141,7 @@ function Camera_menu_container_shotsetView:initListener()
   self.uiBinder.slider_horizontal:AddListener(function(value)
     cameraData_:SetIsSchemeParamUpdated(true)
     local horizontal
-    if cameraData_.CameraPatternType == E.CameraState.SelfPhoto then
+    if cameraData_.CameraPatternType == E.TakePhotoSate.SelfPhoto then
       horizontal = cameraData_:GetCameraSelfHorizontalRange()
     else
       horizontal = cameraData_:GetCameraHorizontalRange()
@@ -139,7 +153,7 @@ function Camera_menu_container_shotsetView:initListener()
   self.uiBinder.slider_vertical:AddListener(function(value)
     cameraData_:SetIsSchemeParamUpdated(true)
     local vertical
-    if cameraData_.CameraPatternType == E.CameraState.SelfPhoto then
+    if cameraData_.CameraPatternType == E.TakePhotoSate.SelfPhoto then
       vertical = cameraData_:GetCameraSelfVerticalRange()
     else
       vertical = cameraData_:GetCameraVerticalRange()
@@ -147,11 +161,6 @@ function Camera_menu_container_shotsetView:initListener()
     vertical.value = vm.GetRangeValue(value, vertical)
     self.uiBinder.vertical_lab_num.text = vm.CalculatePercentageValue(vertical.showValueMin, vertical.showValueMax, value)
     self:SetVertical(vertical.value)
-  end)
-  self.uiBinder.slider_angle:AddListener(function(value)
-    cameraData_:SetIsSchemeParamUpdated(true)
-    self.tbDatarAngle_.value = vm.GetRangeValue(value, self.tbDatarAngle_)
-    self:SetAngle(self.tbDatarAngle_.value)
   end)
   self.dayAndNightSwitch_:AddListener(function(isOn)
     cameraData_:SetIsSchemeParamUpdated(true)
@@ -177,15 +186,8 @@ function Camera_menu_container_shotsetView:initListener()
   end)
 end
 
-function Camera_menu_container_shotsetView:setWeatherSliderValue(time)
-  if not time then
-    return
-  end
-  self.dayAndNightSlider.value = time / self.time
-end
-
 function Camera_menu_container_shotsetView:initSwitchState()
-  self.uiBinder.switch_focus.IsOn = cameraData_.IsFocusTag
+  self.uiBinder.switch_focus:SetIsOnWithoutNotify(cameraData_.IsFocusTag)
   self.uiBinder.switch_depth.IsOn = cameraData_.IsDepthTag
   self.dayAndNightSwitch_.IsOn = cameraData_.WorldTime ~= -1
 end
@@ -200,7 +202,6 @@ function Camera_menu_container_shotsetView:OnRefresh()
   self:SetDepthTog(self.tbDatarAperture_.isOpen)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_slider_focus, self.uiBinder.switch_focus.IsOn)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_focus_line, self.uiBinder.switch_focus.IsOn)
-  self:SetFocusTog(self.uiBinder.switch_focus.IsOn)
   self:refreshSliderValue()
   cameraData_.MenuContainerShotsetDirty = false
 end
@@ -225,7 +226,6 @@ function Camera_menu_container_shotsetView:refreshSliderValue()
   end
   self.uiBinder.slider_horizontal.value = vm.GetRangePerc(self.tbDatarHorizontal_, cameraData_.MenuContainerShotsetDirty)
   self.uiBinder.slider_vertical.value = vm.GetRangePerc(self.tbDatarVertical_, cameraData_.MenuContainerShotsetDirty)
-  self.uiBinder.slider_angle.value = vm.GetRangePerc(self.tbDatarAngle_, cameraData_.MenuContainerShotsetDirty)
   if cameraData_.WorldTime then
     if self.dayAndNightSwitch_.IsOn then
       self.dayAndNightSlider.value = cameraData_.WorldTime / self.dayAndNightMaxTime
@@ -249,27 +249,25 @@ end
 function Camera_menu_container_shotsetView:UpdateTog()
   local typeShow = false
   local tyangleShow = false
-  if cameraData_.CameraPatternType == E.CameraState.SelfPhoto then
+  if cameraData_.CameraPatternType == E.TakePhotoSate.SelfPhoto then
     typeShow = true
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_slider_horizontal, typeShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_slider_vertical, typeShow)
-  if cameraData_.CameraPatternType == E.CameraState.Default then
+  if cameraData_.CameraPatternType == E.TakePhotoSate.Default then
     tyangleShow = true
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_slider_angle, tyangleShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_line_depth, not self.uiBinder.switch_depth.IsOn)
   self.uiBinder.Ref:SetVisible(self.uiBinder.layout_camera_setting_extra, self.uiBinder.switch_depth.IsOn)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_slider_focus, self.uiBinder.switch_focus.IsOn)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_focus_line, self.uiBinder.switch_focus.IsOn)
   self.uiBinder.Ref:SetVisible(self.dayAndNightNode_, self.dayAndNightSwitch_.IsOn)
-  if cameraData_.CameraPatternType == E.CameraState.UnrealScene then
+  if cameraData_.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     self.uiBinder.Ref:SetVisible(self.dayAndNightNode_, false)
   end
 end
 
 function Camera_menu_container_shotsetView:ResetBtn()
-  self.uiBinder.slider_angle.value = vm.GetRangeDefinePerc(self.tbDatarAngle_)
   self.uiBinder.slider_horizontal.value = vm.GetRangeDefinePerc(self.tbDatarHorizontal_)
   self.uiBinder.slider_vertical.value = vm.GetRangeDefinePerc(self.tbDatarVertical_)
   self.uiBinder.slider_aperture.value = vm.GetRangePerc(self.tbDatarAperture_, true)
@@ -298,7 +296,7 @@ function Camera_menu_container_shotsetView:SetFocus(value)
 end
 
 function Camera_menu_container_shotsetView:SetFocusTog(value)
-  if not value then
+  if not value and Z.EntityMgr.PlayerEnt then
     local playerPos = Z.EntityMgr.PlayerEnt:GetLocalAttrVirtualPos()
     self:SetFocusTargetPos(playerPos.x, playerPos.y, playerPos.z)
     Z.CameraFrameCtrl:SetFocusTog(value)
@@ -313,9 +311,9 @@ function Camera_menu_container_shotsetView:SetFocusTargetPos(x, y, z)
   Z.CameraFrameCtrl:SetFocusTargetPos(x, y, z)
 end
 
-function Camera_menu_container_shotsetView:SetIsFcousTarget(value)
+function Camera_menu_container_shotsetView:SetIsFocusTarget(value)
   cameraData_:SetIsSchemeParamUpdated(true)
-  Z.CameraFrameCtrl:SetIsFcousTarget(value)
+  Z.CameraFrameCtrl:SetIsFocusTarget(value)
 end
 
 function Camera_menu_container_shotsetView:SetDepthTog(value)

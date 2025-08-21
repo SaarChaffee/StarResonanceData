@@ -4,11 +4,16 @@ local Equip_functionView = class("Equip_functionView", super)
 local decomposeView_ = require("ui.view.equip_decompose_view")
 local recastView = require("ui.view.equip_recast_sub_view")
 local refineView = require("ui.view.equip_refining_sub_view")
+local enchantView = require("ui.view.equip_enchant_sub_view")
 local switchVm_ = Z.VMMgr.GetVM("switch")
 
 function Equip_functionView:ctor()
   self.uiBinder = nil
-  super.ctor(self, "equip_function")
+  local assetPath
+  if Z.IsPCUI then
+    assetPath = "equip/equip_function_main_pc"
+  end
+  super.ctor(self, "equip_function", assetPath)
   self.commonVM_ = Z.VMMgr.GetVM("common")
   self.equipVm_ = Z.VMMgr.GetVM("equip_system")
   self.helpsysVM_ = Z.VMMgr.GetVM("helpsys")
@@ -19,6 +24,7 @@ function Equip_functionView:initWeights()
   self.recastBinder_ = self.uiBinder.binder_func_recast_item
   self.refineBinder_ = self.uiBinder.binder_func_refine_item
   self.decomposeBinder_ = self.uiBinder.binder_func_decompose_item
+  self.enchantBinder_ = self.uiBinder.binder_func_enchant_item
   self.leftLine_ = self.uiBinder.img_line_left
   self.toggleGroup_ = self.uiBinder.layout_tab
   self.subviewParent_ = self.uiBinder.node_subview_parent
@@ -32,7 +38,6 @@ end
 function Equip_functionView:OnActive()
   self:startAnimatedShow()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
-  Z.UnrealSceneMgr:InitSceneCamera()
   self:initWeights()
   self:isHideLeftView(false)
   self:AddClick(self.clostBtn_, function()
@@ -44,6 +49,10 @@ function Equip_functionView:OnActive()
   self.recastBinder_.Ref.UIComp:SetVisible(recastState == nil and true or recastState)
   local refineState = switchVm_.CheckFuncSwitch(E.EquipFuncId.EquipRefine)
   self.refineBinder_.Ref.UIComp:SetVisible(refineState == nil and true or refineState)
+  local enchantState = switchVm_.CheckFuncSwitch(E.EquipFuncId.EquipEnchant)
+  self.enchantBinder_.Ref.UIComp:SetVisible(enchantState == nil and true or enchantState)
+  local breakState = switchVm_.CheckFuncSwitch(E.EquipFuncId.EquipBreak)
+  local makeState = switchVm_.CheckFuncSwitch(E.EquipFuncId.EquipMake)
   self.funcTable_ = {}
   Z.RedPointMgr.LoadRedDotItem(E.RedType.EquipRefineRed, self, self.refineBinder_.Trans)
   self.funcTable_.decompose = {
@@ -64,6 +73,12 @@ function Equip_functionView:OnActive()
     cacheData = nil,
     subView = refineView.new(self)
   }
+  self.funcTable_.enchant = {
+    container = self.enchantBinder_,
+    funcId = E.EquipFuncId.EquipEnchant,
+    cacheData = nil,
+    subView = enchantView.new(self)
+  }
   for key, value in pairs(self.funcTable_) do
     value.container.tog_tab_select.group = self.toggleGroup_
     local viewType = key
@@ -81,6 +96,7 @@ function Equip_functionView:OnActive()
   self:AddClick(self.getBtn_, function()
     self.equipVm_.OpenEquipSearchTips(self.getBtn_.transform)
   end)
+  self:EmptyState(true, "")
   self:BindEvents()
 end
 
@@ -96,7 +112,6 @@ function Equip_functionView:GetCacheData()
 end
 
 function Equip_functionView:OnDestory()
-  Z.UnrealSceneMgr:CloseUnrealScene("equip_function")
 end
 
 function Equip_functionView:OnDeActive()
@@ -188,6 +203,8 @@ function Equip_functionView:openSubView(viewType)
 end
 
 function Equip_functionView:startAnimatedShow()
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
+  self.uiBinder.node_loop_eff:SetEffectGoVisible(true)
   self.uiBinder.anim_main:Restart(Z.DOTweenAnimType.Open)
 end
 

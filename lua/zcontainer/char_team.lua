@@ -43,6 +43,44 @@ local mergeDataFuncs = {
     local last = container.__data__.charTeamVersion
     container.__data__.charTeamVersion = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("charTeamVersion", last)
+  end,
+  [8] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt64(buffer)
+      local v = require("zcontainer.team_mem_data").New()
+      v:MergeData(buffer, watcherList)
+      container.teamMemberData.__data__[dk] = v
+      container.Watcher:MarkMapDirty("teamMemberData", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt64(buffer)
+      local last = container.teamMemberData.__data__[dk]
+      container.teamMemberData.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("teamMemberData", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt64(buffer)
+      local last = container.teamMemberData.__data__[dk]
+      if last == nil then
+        logWarning("last is nil: " .. dk)
+        last = require("zcontainer.team_mem_data").New()
+        container.teamMemberData.__data__[dk] = last
+      end
+      last:MergeData(buffer, watcherList)
+      container.Watcher:MarkMapDirty("teamMemberData", dk, {})
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -93,7 +131,17 @@ local resetData = function(container, pbData)
   if not pbData.charTeamVersion then
     container.__data__.charTeamVersion = 0
   end
+  if not pbData.teamMemberData then
+    container.__data__.teamMemberData = {}
+  end
   setForbidenMt(container)
+  container.teamMemberData.__data__ = {}
+  setForbidenMt(container.teamMemberData)
+  for k, v in pairs(pbData.teamMemberData) do
+    container.teamMemberData.__data__[k] = require("zcontainer.team_mem_data").New()
+    container.teamMemberData[k]:ResetData(v)
+  end
+  container.__data__.teamMemberData = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -183,6 +231,35 @@ local getContainerElem = function(container)
     dataType = 0,
     data = container.charTeamVersion
   }
+  if container.teamMemberData ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.teamMemberData) do
+      if repeatedItem == nil then
+        data[key] = {
+          fieldId = 8,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[key] = {
+          fieldId = 8,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
+    end
+    ret.teamMemberData = {
+      fieldId = 8,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.teamMemberData = {
+      fieldId = 8,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -190,10 +267,14 @@ local new = function()
     __data__ = {},
     ResetData = resetData,
     MergeData = mergeData,
-    GetContainerElem = getContainerElem
+    GetContainerElem = getContainerElem,
+    teamMemberData = {
+      __data__ = {}
+    }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
+  setForbidenMt(ret.teamMemberData)
   return ret
 end
 return {New = new}

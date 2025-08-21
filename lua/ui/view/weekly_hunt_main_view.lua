@@ -6,6 +6,7 @@ local playerPortraitHgr = require("ui.component.role_info.common_player_portrait
 local rewardLoopItem = require("ui.component.week_hunt.week_hunt_reward_loop_item")
 local towerLoopItem = require("ui.component.week_hunt.week_hunt_tower_loop_item")
 local lefTowerLoopItem = require("ui.component.week_hunt.week_hunt_left_tower_loop_item")
+local competencyAssessView = require("ui.view.competency_assessment_sub_view")
 local headPath = "ui/prefabs/new_com/com_head_34_item"
 
 function Weekly_hunt_mainView:ctor()
@@ -20,6 +21,8 @@ function Weekly_hunt_mainView:ctor()
   self.helpsysVM_ = Z.VMMgr.GetVM("helpsys")
   self.enterdungeonsceneVm_ = Z.VMMgr.GetVM("ui_enterdungeonscene")
   self.socialVm_ = Z.VMMgr.GetVM("social")
+  self.capabilityAssessVM_ = Z.VMMgr.GetVM("capability_assessment")
+  self.competencyAssessView_ = competencyAssessView.new()
 end
 
 function Weekly_hunt_mainView:initUibinder()
@@ -55,12 +58,22 @@ function Weekly_hunt_mainView:initUibinder()
   self.surplusTimeLab_ = self.uiBinder.lab_surplus_time
   self.anim_ = self.uiBinder.anim
   self.uiDepth_ = self.uiBinder.weekly_hunt_main
-  self.rewardUiDepth_ = self.uiBinder.node_left_bottom_anim
   self.leftTowerContent_ = self.uiBinder.content
   self.upArrowImg_ = self.uiBinder.img_arrow_up
   self.downArrowImg_ = self.uiBinder.img_arrow_down
   self.prefabCache_ = self.uiBinder.prefab_cache
-  self.uiDepth_:AddChildDepth(self.rewardUiDepth_)
+  self.lab_suggest_ = self.uiBinder.lab_recommendations
+  self.btnCompetencyAssess_ = self.uiBinder.btn_strength_assessment
+  self.lab_score_ = self.uiBinder.lab_score
+  self.itemContent_ = self.uiBinder.content_item
+  self.rimgUidepth_ = self.uiBinder.rimg_uidepth
+  self.effectUidepth_ = self.uiBinder.node_effect_uidepth
+  self.UiUidepth_ = self.uiBinder.node_uidepth
+  self.nodeLoopUidepth_ = self.uiBinder.node_loop_uidepth
+  self.uiDepth_:AddChildDepth(self.rimgUidepth_)
+  self.uiDepth_:AddChildDepth(self.effectUidepth_)
+  self.uiDepth_:AddChildDepth(self.UiUidepth_)
+  self.uiDepth_:AddChildDepth(self.nodeLoopUidepth_)
 end
 
 function Weekly_hunt_mainView:initBtns()
@@ -83,15 +96,21 @@ function Weekly_hunt_mainView:initBtns()
   end)
   self:AddAsyncClick(self.challengeBtn_, function()
     if self.climbUpLayerRow_ then
+      local dungeonCfg = Z.TableMgr.GetRow("DungeonsTableMgr", self.climbUpLayerRow_.DungeonId, true)
+      if dungeonCfg and not Z.ConditionHelper.CheckCondition(dungeonCfg.Condition, true) then
+        return
+      end
       local ret = self.weeklyHuntVm_.Enterdungeon(self.climbUpLayerRow_.DungeonId, self.cancelSource:CreateToken())
     end
   end)
+  Z.EventMgr:Add(Z.ConstValue.CompetencyAssess.IsHideLeftView, self.showOrHideTop, self)
 end
 
 function Weekly_hunt_mainView:initDatas()
   self.affixUnits_ = {}
   self.headUnits_ = {}
   self.layerRow_ = {}
+  self.itemContentY_ = -1
   self.lastIndex = 0
   self.minIndex_ = 1
   self.maxIndex_ = 0
@@ -121,34 +140,55 @@ function Weekly_hunt_mainView:initUi()
   local seasonData = Z.DataMgr.Get("season_data")
   local seasonId = seasonData.CurSeasonId
   local ruleRow = self.weeklyHuntData_:GetClimbRuleDataBySeason(seasonId)
-  self.leftTowerMaxcount_ = 0
+  self.leftTowerMaxCount_ = 0
   local stageData = {}
   if ruleRow then
     stageData = ruleRow.JumpStage
-    self.leftTowerMaxcount_ = #ruleRow.JumpStage
-    self.surplusTimeLab_.text = Z.TimeTools.FormatToDHM(Z.TimeTools.GetTimeLeftInSpecifiedTime(ruleRow.TimerId))
+    self.leftTowerMaxCount_ = #ruleRow.JumpStage
+    local surpluseTime, _ = Z.TimeTools.GetLeftTimeByTimerId(ruleRow.TimerId)
+    self.surplusTimeLab_.text = Z.TimeFormatTools.FormatToDHMS(surpluseTime)
   end
-  self.leftTwoerTyps_ = {}
+  self.leftTowerTypes_ = {}
   for key, value in ipairs(stageData) do
     if key == 1 then
-      self.leftTwoerTyps_[key] = 0
-    elseif key ~= self.leftTowerMaxcount_ then
-      self.leftTwoerTyps_[key] = 2
+      self.leftTowerTypes_[key] = 0
+    elseif key ~= self.leftTowerMaxCount_ then
+      self.leftTowerTypes_[key] = 2
     end
   end
   self.leftTowerLoopListView_:SetGetPrefabNameFunc(function(stage)
     if stage == 1 then
       return "weekly_hunt_item_top_tpl"
-    elseif stage == self.leftTowerMaxcount_ then
+    elseif stage == self.leftTowerMaxCount_ then
       return "weekly_hunt_item_bottom_tpl"
-    elseif stage == self.leftTowerMaxcount_ / 2 then
+    elseif stage == self.leftTowerMaxCount_ / 2 then
       return "weekly_hunt_item_middle_tpl_2"
     else
-      return "weekly_hunt_item_middle_tpl_" .. self.leftTwoerTyps_[stage]
+      return "weekly_hunt_item_middle_tpl_" .. self.leftTowerTypes_[stage]
     end
   end)
   self.leftTowerLoopListView_:Init(stageData)
-  self.towerLoopData_ = self.weeklyHuntData_:GetClimbUpLayerDatasBySeason(seasonId)
+  self.leftTowerLoopListView_:MovePanelToItemIndex(1)
+  local towerLoopData = self.weeklyHuntData_:GetClimbUpLayerDatasBySeason(seasonId)
+  self.towerLoopData_ = {}
+  for _, value in pairs(towerLoopData) do
+    local dungeonCfg = Z.TableMgr.GetRow("DungeonsTableMgr", value.climbUpLayerRows[1].DungeonId, true)
+    if dungeonCfg then
+      local setAllData = false
+      table.insert(self.towerLoopData_, value)
+      for _, conditionTbl in ipairs(dungeonCfg.Condition) do
+        if conditionTbl[1] == E.ConditionType.TimeInterval then
+          local _, beforeLeftTime_ = Z.TimeTools.GetLeftTimeByTimerId(conditionTbl[2])
+          if 0 < beforeLeftTime_ then
+            setAllData = true
+          end
+        end
+      end
+      if setAllData then
+        break
+      end
+    end
+  end
   self.layerCount_ = #self.towerLoopData_
   self.towerLoopListView_:Init(self.towerLoopData_)
   self:moveCurrentLayer()
@@ -158,15 +198,21 @@ function Weekly_hunt_mainView:initUi()
   end)
   Z.RedPointMgr.LoadRedDotItem(E.RedType.WeeklyHuntTarget, self, self.rewardBtn_.transform)
   if self.selectedClimbUpLayerData_ then
-    Z.Delay(0.5, self.cancelSource:CreateToken())
     self:moveLeftContent(self.selectedClimbUpLayerData_.jumpStage)
   end
+end
+
+function Weekly_hunt_mainView:showOrHideTop(hide)
+  self.uiBinder.node_title_close_new.Ref.UIComp:SetVisible(not hide)
+  self.uiBinder.Ref:SetVisible(self.leftTowerLoop_, not hide)
+  self.uiBinder.Ref:SetVisible(self.rewardBtn_, not hide)
 end
 
 function Weekly_hunt_mainView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:initUibinder()
   self:initBtns()
+  self:showOrHideTop(false)
   Z.CoroUtil.create_coro_xpcall(function()
     self:initDatas()
     local ret = self.weeklyHuntVm_.AsyncGetTeamTowerLayerInfo(self.cancelSource:CreateToken())
@@ -197,10 +243,15 @@ function Weekly_hunt_mainView:moveCurrentLayer()
   if index == 0 then
     index = 1
   end
-  self.towerLoopListView_:ClearAllSelect()
-  self.selectedClimbUpLayerData_ = self.towerLoopData_[index]
+  if self.towerLoopListView_:GetSelectedIndex() ~= self.climbUpLayerRow_.StageId then
+    self.towerLoopListView_:ClearAllSelect()
+    self.towerLoopListView_:SetSelected(self.climbUpLayerRow_.StageId)
+  end
+  if self.itemContent_.anchoredPosition.y == self.itemContentY_ then
+    return
+  end
   self.towerLoopListView_:MovePanelToItemIndex(index, 150)
-  self.towerLoopListView_:SetSelected(self.climbUpLayerRow_.StageId)
+  self.itemContentY_ = self.itemContent_.anchoredPosition.y
 end
 
 function Weekly_hunt_mainView:moveLeftContent(index)
@@ -208,7 +259,7 @@ function Weekly_hunt_mainView:moveLeftContent(index)
   if index == 1 then
   else
     y = 888
-    for key, type in ipairs(self.leftTwoerTyps_) do
+    for key, type in ipairs(self.leftTowerTypes_) do
       if index <= key then
         break
       end
@@ -218,20 +269,28 @@ function Weekly_hunt_mainView:moveLeftContent(index)
         y = y + 1248
       end
     end
-    if index == self.leftTowerMaxcount_ then
+    if index == self.leftTowerMaxCount_ then
       y = y + 510 - Z.UIRoot.CurScreenSize.y
     end
   end
   self.leftTowerContent_:DoAnchorPosMove(Vector2.New(0, y), 1)
 end
 
-function Weekly_hunt_mainView:OnSelectedLayer(data)
+function Weekly_hunt_mainView:OnSelectedLayer(data, forceRefresh)
+  if self.selectedClimbUpLayerData_ and self.selectedClimbUpLayerData_.stageId == data.stageId and not forceRefresh then
+    return
+  end
   self:startTabPlaySelectAnim()
   self.selectedClimbUpLayerData_ = data
   if #data.climbUpLayerRows == 1 then
-    self.curLayerLab_.text = data.layer .. Lang("Layer")
+    self.curLayerLab_.text = Lang("LayerValue", {
+      val = data.layer
+    })
   else
-    self.curLayerLab_.text = data.layer .. "-" .. data.climbUpLayerRows[#data.climbUpLayerRows].LayerNumber .. Lang("Layer")
+    self.curLayerLab_.text = Lang("LayerManyValue", {
+      val1 = data.layer,
+      val2 = data.climbUpLayerRows[#data.climbUpLayerRows].LayerNumber
+    })
   end
   self:moveLeftContent(data.jumpStage)
   local isShowBtn = self.climbUpLayerRow_.StageId == data.stageId and not self.isPass_
@@ -255,6 +314,32 @@ function Weekly_hunt_mainView:OnSelectedLayer(data)
   if awardId then
     local awardList = self.awardprevVm_.GetAllAwardPreListByIds(awardId)
     self.bossLoopListView_:RefreshListView(awardList)
+  end
+  self:AddClick(self.btnCompetencyAssess_, function()
+    local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+    local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.CompetencyAssess)
+    if not isOn then
+      return
+    end
+    if self.selectedClimbUpLayerData_.climbUpLayerRows[1] then
+      self.competencyAssessView_:Active({
+        dungeonId = self.selectedClimbUpLayerData_.climbUpLayerRows[1].DungeonId
+      }, self.uiBinder.Trans)
+    end
+  end)
+  local dungonCfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.selectedClimbUpLayerData_.climbUpLayerRows[1].DungeonId)
+  if dungonCfg then
+    local _, suggest = self.capabilityAssessVM_.GetAllAttrValue(dungonCfg.AssessId)
+    self.lab_suggest_.text = Lang("ReviewSuggestions") .. suggest
+  end
+  self:refreshRF(dungonCfg)
+end
+
+function Weekly_hunt_mainView:refreshRF(dungeonCfg)
+  if dungeonCfg then
+    local RFLimit_ = dungeonCfg.RecommendFightValue
+    local param = {val = RFLimit_}
+    self.lab_score_.text = Lang("GSSuggest", param)
   end
 end
 
@@ -309,7 +394,7 @@ function Weekly_hunt_mainView:loadHead()
         playerPortraitHgr.InsertNewPortraitBySocialData(unit, socialData, function()
           local idCardVM = Z.VMMgr.GetVM("idcard")
           idCardVM.AsyncGetCardData(charId, self.cancelSource:CreateToken())
-        end)
+        end, self.cancelSource:CreateToken())
         self.headUnits_[charId] = unit
       end
     end
@@ -372,8 +457,13 @@ function Weekly_hunt_mainView:OnDeActive()
     self.leftTowerLoopListView_:UnInit()
     self.leftTowerLoopListView_ = nil
   end
+  self.uiDepth_:RemoveChildDepth(self.rimgUidepth_)
+  self.uiDepth_:RemoveChildDepth(self.effectUidepth_)
+  self.uiDepth_:RemoveChildDepth(self.UiUidepth_)
+  self.uiDepth_:RemoveChildDepth(self.nodeLoopUidepth_)
   Z.CommonTipsVM.CloseTipsTitleContent()
   Z.AudioMgr:Play("UI_Event_TowerSlide_End")
+  self.competencyAssessView_:DeActive()
 end
 
 function Weekly_hunt_mainView:OnRefresh()

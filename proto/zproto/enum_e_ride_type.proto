@@ -8,4 +8,3 @@ enum ERideType {
     RideTypeVehicle = 2;
     RideTypePlatform = 3;
 }
-

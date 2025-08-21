@@ -67,7 +67,9 @@ function Friend_degree_popupView:updateExpProgress()
 end
 
 function Friend_degree_popupView:updateLinessLevel()
-  self.uiBinder.lab_grade.text = Lang("Lv") .. self.friendLinessData_.friendLinessLevel
+  self.uiBinder.lab_grade.text = Lang("Level", {
+    val = self.friendLinessData_.friendLinessLevel
+  })
 end
 
 function Friend_degree_popupView:updateExperienceValue()
@@ -91,10 +93,10 @@ end
 function Friend_degree_popupView:asyncUpdatePlayerHead()
   local socialData = self.socialVm_.AsyncGetHeadAndHeadFrameInfo(Z.ContainerMgr.CharSerialize.charBase.charId, self.cancelSource:CreateToken())
   if socialData then
-    playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.node_head_self_item, socialData)
+    playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.node_head_self_item, socialData, nil, self.cancelSource:CreateToken())
   end
   if self.friendData_ then
-    playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.node_head_friend_item, self.friendData_:GetSocialData())
+    playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.node_head_friend_item, self.friendData_:GetSocialData(), nil, self.cancelSource:CreateToken())
   end
 end
 

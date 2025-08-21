@@ -8,4 +8,3 @@ message PersonalInfo {
     repeated int32 hobbyMark = 3;
     repeated int32 timeMark = 4;
 }
-

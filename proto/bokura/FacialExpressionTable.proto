@@ -8,8 +8,6 @@ message FacialExpressionTableBase {
     string Remark = 1391;
     string Path = 172;
 }
-
 message FacialExpressionTableMgr {
-    map<int32, .bokura.FacialExpressionTableBase> datas = 1;
+    repeated bokura.FacialExpressionTableMgr.DatasEntry datas = 1;
 }
-

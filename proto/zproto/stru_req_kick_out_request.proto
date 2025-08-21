@@ -4,6 +4,5 @@ package zproto;
 
 message ReqKickOutRequest {
     int64 unionId = 2;
-    repeated uint32 vKickIds = 3;
+    repeated int64 vKickIds = 3;
 }
-

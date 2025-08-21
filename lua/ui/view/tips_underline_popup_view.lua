@@ -12,6 +12,11 @@ function Tips_underline_popupView:OnActive()
   self:initFunc()
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self.uiBinder.Trans:SetOffsetMin(0, 0)
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   Z.CoroUtil.create_coro_xpcall(function()
     self:asyncInitSkillTags()
   end)()

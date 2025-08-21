@@ -9,21 +9,20 @@ import "stru_world_quest_list.proto";
 import "stru_dirty_mask.proto";
 
 message QuestDataList {
-    map<uint32, .zproto.QuestData> questMap = 1;
-    map<uint32, bool> finishQuest = 2;
+    repeated zproto.QuestDataList.QuestMapEntry questMap = 1;
+    repeated zproto.QuestDataList.FinishQuestEntry finishQuest = 2;
     uint32 trackingId = 3;
-    map<uint32, uint32> finishResetQuest = 4;
-    map<uint32, .zproto.QuestHistory> historyMap = 5;
+    repeated zproto.QuestDataList.FinishResetQuestEntry finishResetQuest = 4;
+    repeated zproto.QuestDataList.HistoryMapEntry historyMap = 5;
     int64 worldQuestTimeStamp = 6;
-    map<uint32, .zproto.WorldQuestInfo> worldQuestInfo = 7;
-    map<uint32, uint32> allWorldQuestList = 8;
-    map<uint32, uint32> blueWorldQuestMap = 9;
-    map<int32, .zproto.worldQuestList> filterEventId = 10;
+    repeated zproto.QuestDataList.WorldQuestInfoEntry worldQuestInfo = 7;
+    repeated zproto.QuestDataList.AllWorldQuestListEntry allWorldQuestList = 8;
+    repeated zproto.QuestDataList.BlueWorldQuestMapEntry blueWorldQuestMap = 9;
+    repeated zproto.QuestDataList.FilterEventIdEntry filterEventId = 10;
     repeated uint32 acceptQuestList = 11;
     repeated uint32 followWorldQuestList = 12;
-    map<uint32, uint32> trackOptionalQuest = 13;
-    map<uint32, uint32> finishResetQuestCount = 14;
-    map<uint32, bool> acceptQuestMap = 15;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.QuestDataList.TrackOptionalQuestEntry trackOptionalQuest = 13;
+    repeated zproto.QuestDataList.FinishResetQuestCountEntry finishResetQuestCount = 14;
+    repeated zproto.QuestDataList.AcceptQuestMapEntry acceptQuestMap = 15;
+    uint64 version = 16;
 }
-

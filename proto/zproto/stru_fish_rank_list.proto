@@ -6,7 +6,5 @@ import "stru_fish_rank_info.proto";
 
 message FishRankList {
     zproto.FishRankInfo selfInfo = 1;
-    repeated zproto.FishRankInfo worldRank = 2;
-    repeated zproto.FishRankInfo unionRank = 3;
+    repeated zproto.FishRankInfo rankList = 2;
 }
-

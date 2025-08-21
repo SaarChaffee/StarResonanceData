@@ -10,4 +10,3 @@ enum ERefineState {
     Receive = 4;
     Add = 5;
 }
-

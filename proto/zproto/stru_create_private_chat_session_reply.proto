@@ -2,11 +2,11 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_private_chat_target_info.proto";
 
 message CreatePrivateChatSessionReply {
-    int32 errCode = 2;
-    zproto.PrivateChatTargetInfo addTargetInfo = 3;
-    int64 delTargetId = 4;
+    zproto.PrivateChatTargetInfo addTargetInfo = 1;
+    int64 delTargetId = 2;
+    zproto.EErrorCode errCode = 3;
 }
-

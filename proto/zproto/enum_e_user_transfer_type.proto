@@ -10,4 +10,3 @@ enum EUserTransferType {
     EUserTransferTypeCutScene = 4;
     EUserTransferTypeNear = 5;
 }
-

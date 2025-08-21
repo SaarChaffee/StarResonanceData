@@ -3,7 +3,7 @@ local super = require("ui.ui_subview_base")
 local Pointer_enemy_pos_subView = class("Pointer_enemy_pos_subView", super)
 
 function Pointer_enemy_pos_subView:ctor(parent)
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "pointer_enemy_pos_sub", "main/pointer_enemy_pos_sub", UI.ECacheLv.None)
 end
 

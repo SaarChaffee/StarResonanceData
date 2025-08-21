@@ -79,6 +79,82 @@ local mergeDataFuncs = {
       last:MergeData(buffer, watcherList)
       container.Watcher:MarkMapDirty("equipRecastInfo", dk, {})
     end
+  end,
+  [5] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt64(buffer)
+      local v = require("zcontainer.equip_enchant_info").New()
+      v:MergeData(buffer, watcherList)
+      container.equipEnchant.__data__[dk] = v
+      container.Watcher:MarkMapDirty("equipEnchant", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt64(buffer)
+      local last = container.equipEnchant.__data__[dk]
+      container.equipEnchant.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("equipEnchant", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt64(buffer)
+      local last = container.equipEnchant.__data__[dk]
+      if last == nil then
+        logWarning("last is nil: " .. dk)
+        last = require("zcontainer.equip_enchant_info").New()
+        container.equipEnchant.__data__[dk] = last
+      end
+      last:MergeData(buffer, watcherList)
+      container.Watcher:MarkMapDirty("equipEnchant", dk, {})
+    end
+  end,
+  [6] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local v = require("zcontainer.equip_suit_info").New()
+      v:MergeData(buffer, watcherList)
+      container.suitInfoDict.__data__[dk] = v
+      container.Watcher:MarkMapDirty("suitInfoDict", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.suitInfoDict.__data__[dk]
+      container.suitInfoDict.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("suitInfoDict", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local last = container.suitInfoDict.__data__[dk]
+      if last == nil then
+        logWarning("last is nil: " .. dk)
+        last = require("zcontainer.equip_suit_info").New()
+        container.suitInfoDict.__data__[dk] = last
+      end
+      last:MergeData(buffer, watcherList)
+      container.Watcher:MarkMapDirty("suitInfoDict", dk, {})
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -117,6 +193,12 @@ local resetData = function(container, pbData)
   if not pbData.equipRecastInfo then
     container.__data__.equipRecastInfo = {}
   end
+  if not pbData.equipEnchant then
+    container.__data__.equipEnchant = {}
+  end
+  if not pbData.suitInfoDict then
+    container.__data__.suitInfoDict = {}
+  end
   setForbidenMt(container)
   container.equipList.__data__ = {}
   setForbidenMt(container.equipList)
@@ -134,6 +216,20 @@ local resetData = function(container, pbData)
     container.equipRecastInfo[k]:ResetData(v)
   end
   container.__data__.equipRecastInfo = nil
+  container.equipEnchant.__data__ = {}
+  setForbidenMt(container.equipEnchant)
+  for k, v in pairs(pbData.equipEnchant) do
+    container.equipEnchant.__data__[k] = require("zcontainer.equip_enchant_info").New()
+    container.equipEnchant[k]:ResetData(v)
+  end
+  container.__data__.equipEnchant = nil
+  container.suitInfoDict.__data__ = {}
+  setForbidenMt(container.suitInfoDict)
+  for k, v in pairs(pbData.suitInfoDict) do
+    container.suitInfoDict.__data__[k] = require("zcontainer.equip_suit_info").New()
+    container.suitInfoDict[k]:ResetData(v)
+  end
+  container.__data__.suitInfoDict = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -243,6 +339,64 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  if container.equipEnchant ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.equipEnchant) do
+      if repeatedItem == nil then
+        data[key] = {
+          fieldId = 5,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[key] = {
+          fieldId = 5,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
+    end
+    ret.equipEnchant = {
+      fieldId = 5,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.equipEnchant = {
+      fieldId = 5,
+      dataType = 2,
+      data = {}
+    }
+  end
+  if container.suitInfoDict ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.suitInfoDict) do
+      if repeatedItem == nil then
+        data[key] = {
+          fieldId = 6,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[key] = {
+          fieldId = 6,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
+    end
+    ret.suitInfoDict = {
+      fieldId = 6,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.suitInfoDict = {
+      fieldId = 6,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -257,12 +411,20 @@ local new = function()
     equipAttr = require("zcontainer.equip_attr").New(),
     equipRecastInfo = {
       __data__ = {}
+    },
+    equipEnchant = {
+      __data__ = {}
+    },
+    suitInfoDict = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.equipList)
   setForbidenMt(ret.equipRecastInfo)
+  setForbidenMt(ret.equipEnchant)
+  setForbidenMt(ret.suitInfoDict)
   return ret
 end
 return {New = new}

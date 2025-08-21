@@ -1,12 +1,13 @@
 local super = require("ui.player_ctrl_btns.player_ctrl_btn_base")
 local ClimbRushCtrlBtn = class("ClimbRushCtrlBtn", super)
-local keyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 local IMG_PATH = "ui/atlas/mainui/skill/sprint"
 local UI_PATH = "ui/prefabs/controller/controller_simple_ctrl_btn_tpl"
 
 function ClimbRushCtrlBtn:ctor(key, panel)
   self.uiBinder = nil
   super.ctor(self, key, panel)
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function ClimbRushCtrlBtn:GetUIUnitPath()
@@ -16,7 +17,7 @@ end
 function ClimbRushCtrlBtn:OnActive()
   self.uiBinder.img_icon:SetImage(IMG_PATH)
   Z.GuideMgr:SetSteerIdByComp(self.uiBinder.steer_icon, E.DynamicSteerType.KeyBoardId, 29)
-  keyIconHelper.InitKeyIcon(self, self.uiBinder.binder_key, 29)
+  self.inputKeyDescComp_:Init(29, self.uiBinder.binder_key)
   self.uiBinder.event_trigger.onDown:AddListener(function()
     if self.uiBinder == nil then
       return
@@ -28,6 +29,7 @@ function ClimbRushCtrlBtn:OnActive()
 end
 
 function ClimbRushCtrlBtn:OnDeActive()
+  self.inputKeyDescComp_:UnInit()
   self.uiBinder.event_trigger.onDown:RemoveAllListeners()
   self.uiBinder.effect_click:SetEffectGoVisible(false)
 end

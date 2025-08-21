@@ -8,10 +8,7 @@ cJson.encode_sparse_array(true)
 local OnCallStub = function(call)
   xpcall(function()
     if call:GetMethodId() == 1 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyUnionInfo", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 1, cJson.encode(pbMsg), pbData, true)
@@ -20,10 +17,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 2 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyOfficialLimitUpdate", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 2, cJson.encode(pbMsg), pbData, true)
@@ -31,35 +25,8 @@ local OnCallStub = function(call)
       impl:NotifyOfficialLimitUpdate(call, pbMsg.vRequest)
       return
     end
-    if call:GetMethodId() == 3 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
-      local pbMsg = pb.decode("zproto.UnionNtf.NotifyUnionChangeName", pbData)
-      if MessageInspectBridge.InInspectState == true then
-        MessageInspectBridge.HandleReceiveMessage(504281929, 3, cJson.encode(pbMsg), pbData, true)
-      end
-      impl:NotifyUnionChangeName(call, pbMsg.vRequest)
-      return
-    end
-    if call:GetMethodId() == 4 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
-      local pbMsg = pb.decode("zproto.UnionNtf.NotifyCreateUnionResult", pbData)
-      if MessageInspectBridge.InInspectState == true then
-        MessageInspectBridge.HandleReceiveMessage(504281929, 4, cJson.encode(pbMsg), pbData, true)
-      end
-      impl:NotifyCreateUnionResult(call, pbMsg.vRequest)
-      return
-    end
     if call:GetMethodId() == 5 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyUpdateMember", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 5, cJson.encode(pbMsg), pbData, true)
@@ -68,10 +35,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 6 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyRequestListNum", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 6, cJson.encode(pbMsg), pbData, true)
@@ -80,10 +44,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 7 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyInviteJoinUnion", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 7, cJson.encode(pbMsg), pbData, true)
@@ -92,10 +53,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 8 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyUnionActivity", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 8, cJson.encode(pbMsg), pbData, true)
@@ -104,10 +62,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 9 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyUnionActivityProgress", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 9, cJson.encode(pbMsg), pbData, true)
@@ -116,10 +71,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 10 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyUnionResourceChange", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 10, cJson.encode(pbMsg), pbData, true)
@@ -128,10 +80,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 11 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyBuildingUpgradeEnd", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 11, cJson.encode(pbMsg), pbData, true)
@@ -140,10 +89,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 12 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyEffectBufChange", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 12, cJson.encode(pbMsg), pbData, true)
@@ -152,10 +98,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 13 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyUnionOfficialChange", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 13, cJson.encode(pbMsg), pbData, true)
@@ -164,10 +107,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 14 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.UnionNtf.NotifyUnionSubFuncUnlock", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(504281929, 14, cJson.encode(pbMsg), pbData, true)

@@ -37,7 +37,7 @@ function UnionHuntRankItem:asyncRefreshSelfHead()
     self.headItem_:UnInit()
     self.headItem_ = nil
   end
-  self.headItem_ = playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.binder_head, socialData)
+  self.headItem_ = playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.binder_head, socialData, nil, self.parent.UIView.cancelSource:CreateToken())
   self.uiBinder.binder_head.img_bg:AddListener(Z.CoroUtil.create_coro_xpcall(function()
     local idCardVM = Z.VMMgr.GetVM("idcard")
     idCardVM.AsyncGetCardData(charId_, self.parent.UIView.cancelSource:CreateToken())

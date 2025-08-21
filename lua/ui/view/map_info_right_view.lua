@@ -10,6 +10,7 @@ function Map_info_rightView:ctor(parent)
   self.pivotVM_ = Z.VMMgr.GetVM("pivot")
   self.unionVM_ = Z.VMMgr.GetVM("union")
   self.mapData_ = Z.DataMgr.Get("map_data")
+  self.gotofuncVM_ = Z.VMMgr.GetVM("gotofunc")
 end
 
 function Map_info_rightView:OnActive()
@@ -19,7 +20,7 @@ function Map_info_rightView:OnActive()
   self.closeByBtn_ = false
   self:AddClick(self.uiBinder.btn_close, function()
     self.closeByBtn_ = true
-    self.parent_:CloseRightSubview()
+    self.parent_:CloseRightSubView()
   end)
   self:AddAsyncClick(self.uiBinder.btn_single, function()
     if not self.flagData_.TpPointId then
@@ -32,15 +33,21 @@ function Map_info_rightView:OnActive()
   end)
   self:AddAsyncClick(self.uiBinder.btn_track, function()
     self.mapVM_.SetMapTraceByFlagData(E.GoalGuideSource.MapFlag, self.parent_:GetCurSceneId(), self.flagData_)
-    self.parent_:CloseRightSubview()
+    self.parent_:CloseRightSubView()
   end)
   self:AddAsyncClick(self.uiBinder.btn_notrack, function()
     self.mapVM_.ClearFlagDataTrackSource(self.parent_:GetCurSceneId(), self.flagData_)
-    self.parent_:CloseRightSubview()
+    self.parent_:CloseRightSubView()
   end)
   self:AddAsyncClick(self.uiBinder.btn_union, function()
     self.unionVM_:AsyncEnterUnionScene(self.cancelSource:CreateToken())
     Z.UIMgr:GotoMainView()
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_pathfinding, function()
+    self.mapVM_.SetMapTraceByFlagData(E.GoalGuideSource.MapFlag, self.parent_:GetCurSceneId(), self.flagData_)
+    local pathFindingVM = Z.VMMgr.GetVM("path_finding")
+    pathFindingVM:StartPathFindingByFlagData(self.parent_:GetCurSceneId(), self.flagData_)
+    self.parent_:CloseRightSubView()
   end)
 end
 
@@ -51,8 +58,10 @@ function Map_info_rightView:OnRefresh()
   self.mapData_.IsShowRedInfo = false
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_single, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_track, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_pathfinding, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_notrack, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_union, false)
+  local tagRow = Z.TableMgr.GetTable("SceneTagTableMgr").GetRow(self.flagData_.TypeId)
   local descStr = ""
   local needCheckTrack = false
   if self.flagData_.FlagType == E.MapFlagType.Entity then
@@ -69,6 +78,8 @@ function Map_info_rightView:OnRefresh()
           self:ShowTrackBtn()
         end
       end
+    elseif tagRow.Type == E.SceneTagType.SceneEnter then
+      needCheckTrack = true
     elseif self:CheckUnionState() then
       needCheckTrack = false
     else
@@ -78,14 +89,11 @@ function Map_info_rightView:OnRefresh()
     needCheckTrack = true
   end
   if needCheckTrack then
-    local tagRow = Z.TableMgr.GetTable("SceneTagTableMgr").GetRow(self.flagData_.TypeId)
-    if tagRow then
-      descStr = tagRow.Description
-      if tagRow.TrackType > 0 then
-        local trackRow = Z.TableMgr.GetTable("TargetTrackTableMgr").GetRow(tagRow.TrackType)
-        if trackRow.MapTrack == 1 then
-          self:ShowTrackBtn()
-        end
+    descStr = tagRow.Description
+    if tagRow.TrackType > 0 then
+      local trackRow = Z.TableMgr.GetTable("TargetTrackTableMgr").GetRow(tagRow.TrackType)
+      if trackRow.MapTrack == 1 then
+        self:ShowTrackBtn()
       end
     end
   end
@@ -98,9 +106,9 @@ function Map_info_rightView:OnRefresh()
     self.uiBinder.lab_title.text = self.flagData_.Name
   else
     local sceneTagTbl = Z.TableMgr.GetTable("SceneTagTableMgr")
-    local secenTagData = sceneTagTbl.GetRow(self.flagData_.TypeId)
-    if secenTagData then
-      self.uiBinder.lab_title.text = secenTagData.Name
+    local seceneTagData = sceneTagTbl.GetRow(self.flagData_.TypeId)
+    if seceneTagData then
+      self.uiBinder.lab_title.text = seceneTagData.Name
     end
   end
   self.uiBinder.lab_content.text = descStr
@@ -118,6 +126,8 @@ function Map_info_rightView:ShowTrackBtn()
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_track, true)
   end
+  local isShow = self.gotofuncVM_.CheckFuncCanUse(E.FunctionID.PathFinding, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_pathfinding, isShow)
 end
 
 function Map_info_rightView:CheckUnionState()

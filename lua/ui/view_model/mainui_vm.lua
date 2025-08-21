@@ -1,48 +1,5 @@
-local actionTriggerIngoreViewConfigKey = {
-  mainui_funcs_list = true,
-  socialcontact_main = true,
-  expression = true
-}
 local clientShowFuncBtnMap = {}
-local exitDungeon = function()
-  Z.DialogViewDataMgr:OpenNormalDialog(Lang("DescLeaveDungeon"), function(cancelToken)
-    local proxy = require("zproxy.world_proxy")
-    local visualLayerId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrVisualLayerUid")).Value
-    if 0 < visualLayerId then
-      proxy.ExitVisualLayer()
-    else
-      proxy.LeaveScene(cancelToken)
-    end
-    Z.DialogViewDataMgr:CloseDialogView()
-  end)
-end
-local openGmView = function()
-  local gmVM = Z.VMMgr.GetVM("gm")
-  if gmVM then
-    gmVM.OpenGmView()
-  end
-end
-local openBugReport = function()
-  Z.BugReportMgr:CaptureScreenAndShowUI()
-end
-local checkSceneShowMiniMap = function()
-  local mapInfoTableRow = Z.TableMgr.GetRow("MapInfoTableMgr", Z.StageMgr.GetCurrentSceneId(), true)
-  if mapInfoTableRow == nil then
-    return false
-  end
-  return mapInfoTableRow.IsShowMiniMap
-end
-local checkSceneShowMainMap = function()
-  local mapInfoTableRow = Z.TableMgr.GetRow("MapInfoTableMgr", Z.StageMgr.GetCurrentSceneId(), true)
-  if mapInfoTableRow == nil then
-    return false
-  end
-  return mapInfoTableRow.IsShowMainMap
-end
-local refreshIdCard = function(charIdList)
-  Z.EventMgr:Dispatch(Z.ConstValue.RefreshIdCard, charIdList)
-end
-local getMianUICfg = function()
+local getMainUICfg = function()
   if not Z.EntityMgr.PlayerEnt then
     return nil
   end
@@ -75,7 +32,7 @@ local getMianUICfg = function()
   return mainUiCfg
 end
 local checkFunctionCanShowInScene = function(functionId)
-  local mainUiCfg = getMianUICfg()
+  local mainUiCfg = getMainUICfg()
   if not mainUiCfg then
     return false
   end
@@ -87,9 +44,67 @@ local checkFunctionCanShowInScene = function(functionId)
   end
   return false
 end
+local exitDungeon = function()
+  if not checkFunctionCanShowInScene(E.FunctionID.ExitDungeon) then
+    return
+  end
+  local str = Lang("DescLeaveDungeon")
+  local curDungeonType = Z.StageMgr.GetCurrentStageType()
+  if curDungeonType == Z.EStageType.CommunityDungeon or curDungeonType == Z.EStageType.HomelandDungeon then
+    str = Lang("HomeLeaveTips")
+  end
+  Z.DialogViewDataMgr:OpenNormalDialog(str, function(cancelToken)
+    local proxy = require("zproxy.world_proxy")
+    local visualLayerId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrVisualLayerUid")).Value
+    if 0 < visualLayerId then
+      local visualLayerCfg = Z.TableMgr.GetTable("VisualLayerMgr").GetRow(visualLayerId)
+      if visualLayerCfg.VisualLayerType == E.VisualLayerType.VisualLayerTypeCommunityIndoor or visualLayerCfg.VisualLayerType == E.VisualLayerType.VisualLayerTypeCommunityOutdoor then
+        proxy.LeaveScene(cancelToken)
+      else
+        proxy.ExitVisualLayer()
+      end
+    else
+      proxy.LeaveScene(cancelToken)
+    end
+  end)
+end
+local openGmView = function()
+  local gmVM = Z.VMMgr.GetVM("gm")
+  if gmVM then
+    gmVM.OpenGmView()
+  end
+end
+local openBugReport = function()
+  if Z.GameContext.IsBlockBUGReport then
+    return
+  end
+  Z.BugReportMgr:CaptureScreenAndShowUI(function(tex)
+    local viewData = {}
+    viewData.tex = tex
+    local bugReportVM = Z.VMMgr.GetVM("bug_report")
+    bugReportVM.OpenBugReprotView(viewData)
+  end)
+end
+local checkSceneShowMiniMap = function()
+  local mapInfoTableRow = Z.TableMgr.GetRow("MapInfoTableMgr", Z.StageMgr.GetCurrentSceneId(), true)
+  if mapInfoTableRow == nil then
+    return false
+  end
+  return mapInfoTableRow.IsShowMiniMap
+end
+local checkSceneShowMainMap = function()
+  local mapInfoTableRow = Z.TableMgr.GetRow("MapInfoTableMgr", Z.StageMgr.GetCurrentSceneId(), true)
+  if mapInfoTableRow == nil then
+    return false
+  end
+  return mapInfoTableRow.IsShowMainMap
+end
+local refreshIdCard = function(charIdList)
+  Z.EventMgr:Dispatch(Z.ConstValue.RefreshIdCard, charIdList)
+end
 local getUnclickableFuncsInScene = function()
   local result = {}
-  local mainUiCfg = getMianUICfg()
+  local mainUiCfg = getMainUICfg()
   if mainUiCfg then
     local iconList = mainUiCfg.UnclickedMainIcon
     for k, v in pairs(iconList) do
@@ -115,36 +130,6 @@ local gotoMainUIFunc = function(funcId)
     gotoVM.GoToFunc(funcId)
   end
 end
-local getInputFuncActionIds = function()
-  local setKeyboardTableMgr = Z.TableMgr.GetTable("SetKeyboardTableMgr")
-  local actionIds = {}
-  for _, value in pairs(setKeyboardTableMgr.GetDatas()) do
-    if value.KeyboardDes == 2 then
-      table.insert(actionIds, value.ActionIds)
-    end
-  end
-  return actionIds
-end
-local triggerInputFuncAction = function(actionId)
-  if Z.IgnoreMgr:IsInputIgnore(Panda.ZGame.EInputMask.UIInteract) then
-    return
-  end
-  if Z.UIMgr:HasFocusView(actionTriggerIngoreViewConfigKey) then
-    return
-  end
-  if actionId == Z.RewiredActionsConst.ExitUI then
-    return
-  end
-  local setKeyboardTableMgr = Z.TableMgr.GetTable("SetKeyboardTableMgr")
-  for _, value in pairs(setKeyboardTableMgr.GetDatas()) do
-    local actionIds = value.ActionIds
-    for _, id in ipairs(actionIds) do
-      if id == actionId and value.FunctionId ~= nil and value.FunctionId ~= 0 then
-        gotoMainUIFunc(value.FunctionId)
-      end
-    end
-  end
-end
 local hideMainViewArea = function(hideStyle, viewConfigKey, isHide)
   local mainData = Z.DataMgr.Get("mainui_data")
   mainData:SetMainUiAreaHideStyle(hideStyle, viewConfigKey, isHide)
@@ -154,9 +139,9 @@ local completeDoTweenAnimShow = function()
   Z.EventMgr:Dispatch(Z.ConstValue.MainUI.CompleteMainViewAnimShow)
 end
 local isHomeFunction = function(functionId)
-  return false
+  return E.FunctionID.Home == functionId
 end
-local getPlayerExp = function(functionId)
+local getPlayerExp = function()
   local playerLevelCfg = Z.TableMgr.GetTable("PlayerLevelTableMgr")
   local curLevel = Z.ContainerMgr.CharSerialize.roleLevel.level or 0
   if 0 < curLevel then
@@ -170,19 +155,20 @@ end
 local getMainItem = function()
   local mainData = Z.DataMgr.Get("mainui_data")
   local mainItemList = {
-    [E.MainUiArea.UpperRight] = {},
-    [E.MainUiArea.BottomLeft] = {}
+    [E.MainUIPlaceType.RightTop] = {},
+    [E.MainUIPlaceType.LeftBottom] = {}
   }
   if mainData.mainUiBtnItemList == nil or table.zcount(mainData.mainUiBtnItemList) <= 0 then
     return mainItemList
   end
   for k, v in pairs(mainData.mainUiBtnItemList) do
-    local cilentHide = clientShowFuncBtnMap[v.Id] ~= nil and not clientShowFuncBtnMap[v.Id]()
-    if (isHomeFunction(v.Id) or checkFunctionCanShowInScene(v.Id)) and not cilentHide then
-      if v.SystemPlace == E.MainUiArea.UpperRight then
-        table.insert(mainItemList[E.MainUiArea.UpperRight], v)
-      elseif v.SystemPlace == E.MainUiArea.BottomLeft then
-        table.insert(mainItemList[E.MainUiArea.BottomLeft], v)
+    local clientHide = clientShowFuncBtnMap[v.Id] ~= nil and not clientShowFuncBtnMap[v.Id]()
+    if (isHomeFunction(v.Id) or checkFunctionCanShowInScene(v.Id)) and not clientHide then
+      local systemPlace = Z.IsPCUI and v.PCSystemPlace or v.SystemPlace
+      if table.zcontains(systemPlace, E.MainUIPlaceType.RightTop) then
+        table.insert(mainItemList[E.MainUIPlaceType.RightTop], v)
+      elseif table.zcontains(systemPlace, E.MainUIPlaceType.LeftBottom) then
+        table.insert(mainItemList[E.MainUIPlaceType.LeftBottom], v)
       end
     end
   end
@@ -198,6 +184,31 @@ end
 local registClientFuncShow = function(funcID, checkCanShow)
   clientShowFuncBtnMap[funcID] = checkCanShow
 end
+local openShortcutMenuView = function()
+  Z.EventMgr:Dispatch(Z.ConstValue.MainUI.ChangeShortcutMenuState, true)
+end
+local switchSceneryMode = function()
+  Z.EventMgr:Dispatch(Z.ConstValue.SwitchLandSpaceMode)
+end
+local showEvaluateUI = function(level)
+  Z.EventMgr:Dispatch(Z.ConstValue.MainUI.ShowOrHideEvaluateUI, level)
+end
+local shakeEvaluateUI = function()
+  Z.EventMgr:Dispatch(Z.ConstValue.MainUI.ShakeEvaluateUI)
+end
+local hideMainChatView = function()
+  local mainUIData = Z.DataMgr.Get("mainui_data")
+  mainUIData:SetIsShowMainChat(false)
+  Z.EventMgr:Dispatch(Z.ConstValue.MainUI.UpdateMainUIMainChat)
+end
+local showMainChatView = function()
+  local deadView = Z.UIMgr:GetView("dead")
+  if deadView and deadView.IsActive then
+    local mainUIData = Z.DataMgr.Get("mainui_data")
+    mainUIData:SetIsShowMainChat(true)
+    Z.EventMgr:Dispatch(Z.ConstValue.MainUI.UpdateMainUIMainChat)
+  end
+end
 local ret = {
   ExitDungeon = exitDungeon,
   OpenGmView = openGmView,
@@ -208,14 +219,18 @@ local ret = {
   GotoMainUIFunc = gotoMainUIFunc,
   CheckSceneShowMiniMap = checkSceneShowMiniMap,
   CheckSceneShowMainMap = checkSceneShowMainMap,
-  TriggerInputFuncAction = triggerInputFuncAction,
-  GetInputFuncActionIds = getInputFuncActionIds,
   HideMainViewArea = hideMainViewArea,
   CompleteDoTweenAnimShow = completeDoTweenAnimShow,
   IsHomeFunction = isHomeFunction,
   GetPlayerExp = getPlayerExp,
   GetUnclickableFuncsInScene = getUnclickableFuncsInScene,
   GetMainItem = getMainItem,
-  RegistClientFuncShow = registClientFuncShow
+  RegistClientFuncShow = registClientFuncShow,
+  OpenShortcutMenuView = openShortcutMenuView,
+  SwitchSceneryMode = switchSceneryMode,
+  ShowEvaluateUI = showEvaluateUI,
+  ShakeEvaluateUI = shakeEvaluateUI,
+  HideMainChatView = hideMainChatView,
+  ShowMainChatView = showMainChatView
 }
 return ret

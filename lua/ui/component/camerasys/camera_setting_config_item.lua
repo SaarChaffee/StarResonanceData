@@ -12,7 +12,7 @@ end
 
 function CameraSettingConfigItem:onEditChange(value)
   local endText = value
-  if Z.VMMgr.GetVM("camerasys").CameraSchemefIsRepeatName(endText) or string.zlen(endText) > MAX_Length then
+  if Z.VMMgr.GetVM("camerasys").CameraSchemefIsRepeatName(endText) or string.zlenNormalize(endText) > MAX_Length then
     endText = self.endInputText_
   else
     self.endInputText_ = endText
@@ -44,6 +44,7 @@ function CameraSettingConfigItem:OnReset()
 end
 
 function CameraSettingConfigItem:OnUnInit()
+  self.data_ = nil
 end
 
 return CameraSettingConfigItem

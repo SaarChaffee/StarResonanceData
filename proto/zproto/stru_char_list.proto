@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message CharList {
-    repeated int32 memberList = 1;
+    repeated int64 memberList = 1;
 }
-

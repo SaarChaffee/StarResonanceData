@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_clutter.proto";
+
+message HomeLandClutterInfo {
+    repeated zproto.HomeLandClutterInfo.HomeLandClutterEntry homeLandClutter = 1;
+}

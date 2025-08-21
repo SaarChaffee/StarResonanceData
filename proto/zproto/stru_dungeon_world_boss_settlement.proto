@@ -9,9 +9,7 @@ import "stru_dirty_mask.proto";
 message DungeonWorldBossSettlement {
     int32 bossHpPercent = 1;
     zproto.DungeonBossRank dungeonBossRank = 2;
-    map<int64, .zproto.DungeonAward> award = 3;
-    map<int64, .zproto.DungeonAward> bossRankAward = 4;
-    map<int64, .zproto.DungeonAward> lastHitAward = 5;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.DungeonWorldBossSettlement.AwardEntry award = 3;
+    repeated zproto.DungeonWorldBossSettlement.BossRankAwardEntry bossRankAward = 4;
+    repeated zproto.DungeonWorldBossSettlement.LastHitAwardEntry lastHitAward = 5;
 }
-

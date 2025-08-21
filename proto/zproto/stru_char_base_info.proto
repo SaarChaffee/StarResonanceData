@@ -14,7 +14,7 @@ import "stru_dirty_mask.proto";
 message CharBaseInfo {
     int64 charId = 1;
     string accountId = 2;
-    uint32 showId = 3;
+    int64 showId = 3;
     uint32 serverId = 4;
     string name = 5;
     zproto.EGender gender = 6;
@@ -44,6 +44,12 @@ message CharBaseInfo {
     int32 initProfessionId = 31;
     uint64 lastCalTotalTime = 32;
     int32 areaId = 33;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    string clientVersion = 34;
+    int32 fightPoint = 35;
+    int64 sumSave = 36;
+    string clientResourceVersion = 37;
+    int64 lastOfflineTime = 38;
+    int32 dayAccDurTime = 39;
+    int64 lastAccDurTimestamp = 40;
+    int64 saveSerial = 41;
 }
-

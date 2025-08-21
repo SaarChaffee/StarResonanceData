@@ -21,9 +21,11 @@ enum EStageBehaveType {
     EStageBehaveType_ClearSkillShowState = 15;
     EStageBehaveType_DeleteClientBuff = 16;
     EStageBehaveType_SwitchStage = 17;
+    EStageBehaveType_StopClientEffect = 18;
+    EStageBehaveType_NoTargetFindNewTarget = 19;
+    EStageBehaveType_SetSingGuideInitValue = 20;
     EStageBehaveType_ChangeEffect = 100;
     EStageBehaveType_SummonBullet = 101;
     EStageBehaveType_KillMe = 102;
     EStageBehaveType_RefreshDuration = 103;
 }
-

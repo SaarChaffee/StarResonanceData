@@ -3,33 +3,12 @@ local LunuoItemId = Z.SystemItem.ItemCoin
 local DiamondId = Z.SystemItem.ItemDiamond
 local FakeDiamonId = Z.SystemItem.ItemEnergyPoint
 local Vitality = E.CurrencyType.Vitality
+local FakeLunuoItemId = Z.SystemItem.Bindingcoin
 local ExchangeDiamondToSilvercoin = Z.Global.ExchangeDiamondToSilvercoin
 local ExchangeDiamondToCoppercoin = Z.Global.ExchangeDiamondToCoppercoin
 local MoneyOverflowLimit = Z.Global.MoneyOverflowLimit
 local funcVM = Z.VMMgr.GetVM("gotofunc")
 local switchVm = Z.VMMgr.GetVM("switch")
-local openCurrencyView = function(ids, parentTrans, view)
-  local viewData = {ids = ids}
-  if currencyViewTab[view] == nil then
-    currencyViewTab[view] = require("ui/view/currency_info_view").new()
-  end
-  currencyViewTab[view]:Active(viewData, parentTrans)
-end
-local openCurrencyNoAddView = function(ids, parentTrans, view)
-  local viewData = {ids = ids}
-  if currencyViewTab[view] == nil then
-    currencyViewTab[view] = require("ui/view/currency_info_noadd_view").new()
-  end
-  currencyViewTab[view]:Active(viewData, parentTrans)
-end
-local closeCurrencyView = function(view)
-  local currencyView = currencyViewTab[view]
-  if currencyView == nil then
-    return
-  end
-  currencyViewTab[view]:DeActive()
-  currencyViewTab[view] = nil
-end
 local getCurrencyIds = function()
   local configId = Z.SystemItem.DefaultCurrencyDisplay
   return configId
@@ -39,30 +18,23 @@ local getItemInfoByConfigId = function(configId)
   if itemCfg then
     local typeCfg = Z.TableMgr.GetTable("ItemTypeTableMgr").GetRow(itemCfg.Type)
     if typeCfg then
-      local package = Z.ContainerMgr.CharSerialize.itemPackage.packages[typeCfg.Package]
-      if package.items then
-        return package
+      if typeCfg.Package == E.BackPackItemPackageType.Currency then
+        local package = Z.ContainerMgr.CharSerialize.itemCurrency.currencyDatas[configId]
+        if package then
+          return package
+        end
+      else
+        local package = Z.ContainerMgr.CharSerialize.itemPackage.packages[typeCfg.Package]
+        if package.items then
+          return package
+        end
       end
     end
   end
   return nil
 end
-local numberCurrencyToStr = function(count)
-  local str = tostring(count)
-  local revStr = string.reverse(str)
-  local t = {}
-  local len = string.len(revStr)
-  for i = 1, len do
-    local char = string.sub(revStr, i, i)
-    table.insert(t, 1, char)
-    if i % 3 == 0 and i < len then
-      table.insert(t, 1, ",")
-    end
-  end
-  return table.concat(t)
-end
 local isShowExchangeBtn = function(configId)
-  if configId == DiamondId or configId == FakeDiamonId or configId == LunuoItemId or configId == Vitality then
+  if configId == DiamondId or configId == FakeDiamonId or configId == LunuoItemId or configId == Vitality or configId == FakeLunuoItemId then
     return true
   end
   if not funcVM.CheckFuncCanUse(E.FunctionID.ExChangeMoney, true) then
@@ -87,7 +59,6 @@ local openExChangeCurrencyView = function(configId, showDialog, trans)
       if showDialog then
         Z.DialogViewDataMgr:OpenNormalDialog(Lang("IsJumpPayFunction"), function()
           shopVm.OpenShopView(E.FunctionID.PayFunction)
-          Z.DialogViewDataMgr:CloseDialogView()
         end)
       else
         shopVm.OpenShopView(E.FunctionID.PayFunction)
@@ -135,10 +106,6 @@ end
 local ret = {
   GetCurrencyIds = getCurrencyIds,
   GetItemInfoByConfigId = getItemInfoByConfigId,
-  NumberCurrencyToStr = numberCurrencyToStr,
-  OpenCurrencyView = openCurrencyView,
-  OpenCurrencyNoAddView = openCurrencyNoAddView,
-  CloseCurrencyView = closeCurrencyView,
   IsShowExchangeBtn = isShowExchangeBtn,
   OpenExChangeCurrencyView = openExChangeCurrencyView,
   CloseExChangeCurrencyView = closeExChangeCurrencyView

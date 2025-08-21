@@ -1,25 +1,15 @@
 local super = require("ui.model.data_base")
 local MapData = class("MapData", super)
-E.MapFlagEffectType = {Trace = 1, WorldQuset = 2}
+E.MapFlagEffectType = {Trace = 1, WorldQuest = 2}
+local COLLECTION_POS_OFFSET = 10000000000
 
 function MapData:ctor()
   super.ctor(self)
-  self.CurAreaId = 0
-  self.IsHadShownAreaName = false
-  self.IsShownNameAfterChangeScene = false
-  self.AutoSelectTrackSrc = nil
-  self.AutoSelectFlagId = nil
-  self.IsShowRedInfo = false
-  self.TracingFlagData = nil
-  self.CurIdx = 0
-  self.showProportion_ = nil
-  self.focus_ = nil
-  self.collectionList_ = {}
-  self.dynamicTraceParams_ = {}
   self.MapEffectPathDict = {
     [E.MapFlagEffectType.Trace] = "ui/prefabs/map/map_effect_trace_tpl",
-    [E.MapFlagEffectType.WorldQuset] = "ui/prefabs/map/map_effect_worldquest_tpl"
+    [E.MapFlagEffectType.WorldQuest] = "ui/prefabs/map/map_effect_worldquest_tpl"
   }
+  self:ResetMapData()
 end
 
 function MapData:Init()
@@ -30,23 +20,45 @@ function MapData:UnInit()
   self.CancelSource:Recycle()
 end
 
+function MapData:Clear()
+  self:ResetMapData()
+end
+
+function MapData:ResetMapData()
+  self:ResetMapAreaData()
+  self.AutoSelectTrackSrc = nil
+  self.AutoSelectFlagId = nil
+  self.IsShowRedInfo = false
+  self.TracingFlagData = nil
+  self.showProportion_ = nil
+  self.focus_ = nil
+  self.targetCollectionId_ = nil
+  self.dynamicTraceParams_ = {}
+  self.collectionPosInfoDict_ = nil
+end
+
+function MapData:ResetMapAreaData()
+  self.CurAreaId = 0
+  self.IsHadShownAreaName = false
+end
+
 function MapData:SetMapFlagVisibleSettingByTypeId(id, isShow)
-  Z.LocalUserDataMgr.SetBool("BKL_MAP_FLAG_VISIBLE" .. tostring(id), isShow)
+  Z.LocalUserDataMgr.SetBoolByLua(E.LocalUserDataType.Character, "BKL_MAP_FLAG_VISIBLE" .. tostring(id), isShow)
 end
 
 function MapData:GetMapFlagVisibleSettingByTypeId(id)
-  return Z.LocalUserDataMgr.GetBool("BKL_MAP_FLAG_VISIBLE" .. tostring(id), true)
+  return Z.LocalUserDataMgr.GetBoolByLua(E.LocalUserDataType.Character, "BKL_MAP_FLAG_VISIBLE" .. tostring(id), true)
 end
 
 function MapData:SetShowProportion(value)
-  Z.LocalUserDataMgr.SetInt("BKL_PROP_TAG", value)
+  Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Character, "BKL_PROP_TAG", value)
   self.showProportion_ = value
 end
 
 function MapData:GetShowProportion()
   local data
-  if Z.LocalUserDataMgr.Contains("BKL_PROP_TAG") then
-    data = Z.LocalUserDataMgr.GetInt("BKL_PROP_TAG")
+  if Z.LocalUserDataMgr.ContainsByLua(E.LocalUserDataType.Character, "BKL_PROP_TAG") then
+    data = Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Character, "BKL_PROP_TAG")
   else
     data = E.ShowProportionType.Middle
   end
@@ -55,14 +67,14 @@ function MapData:GetShowProportion()
 end
 
 function MapData:SetViewFocus(value)
-  Z.LocalUserDataMgr.SetInt("BKL_FOCUS_TAG", value)
+  Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Character, "BKL_FOCUS_TAG", value)
   self.focus_ = value
 end
 
 function MapData:GetViewFocus()
   local data
-  if Z.LocalUserDataMgr.Contains("BKL_FOCUS_TAG") then
-    data = Z.LocalUserDataMgr.GetInt("BKL_FOCUS_TAG")
+  if Z.LocalUserDataMgr.ContainsByLua(E.LocalUserDataType.Character, "BKL_FOCUS_TAG") then
+    data = Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Character, "BKL_FOCUS_TAG")
   else
     data = E.ViewFocusType.focusDir
     self:SetViewFocus(data)
@@ -70,25 +82,13 @@ function MapData:GetViewFocus()
   return data
 end
 
-function MapData:SetCollectionData(sceneId, flagData)
-  if self.collectionList_[sceneId] == nil then
-    self.collectionList_[sceneId] = {}
-  end
-  table.insert(self.collectionList_[sceneId], flagData)
+function MapData:SetTargetCollectionId(id)
+  self.targetCollectionId_ = id
+  Z.EventMgr:Dispatch(Z.ConstValue.MapCollectionChange)
 end
 
-function MapData:RemoveCollectionData(sceneId, id)
-  if self.collectionList_[sceneId] then
-    for i = #self.collectionList_[sceneId], 1, -1 do
-      if self.collectionList_[sceneId][i].Id == id then
-        table.remove(self.collectionList_[sceneId], i)
-      end
-    end
-  end
-end
-
-function MapData:GetCollectionDataBySceneId(sceneId)
-  return self.collectionList_[sceneId] or {}
+function MapData:GetTargetCollectionId()
+  return self.targetCollectionId_
 end
 
 function MapData:SaveDynamicTraceParam(sourceType, posType, uid, param)
@@ -105,6 +105,71 @@ function MapData:GetDynamicTraceParam(sourceType, posType, uid)
   if self.dynamicTraceParams_[sourceType] and self.dynamicTraceParams_[sourceType][posType] then
     return self.dynamicTraceParams_[sourceType][posType][uid]
   end
+end
+
+function MapData:GetCollectionPosInfo(collectionId, sceneId)
+  if self.collectionPosInfoDict_ == nil then
+    self.collectionPosInfoDict_ = {}
+    local collectionRowData = Z.TableMgr.GetTable("CollectionEnrichmentTableMgr").GetDatas()
+    for id, row in pairs(collectionRowData) do
+      local sceneId = math.floor(id / COLLECTION_POS_OFFSET)
+      if self.collectionPosInfoDict_[row.CollectionId] == nil then
+        self.collectionPosInfoDict_[row.CollectionId] = {}
+      end
+      if self.collectionPosInfoDict_[row.CollectionId][sceneId] == nil then
+        self.collectionPosInfoDict_[row.CollectionId][sceneId] = {}
+      end
+      local info = {
+        Id = row.Id,
+        Count = row.Count,
+        CenterPos = row.CenterPosition
+      }
+      table.insert(self.collectionPosInfoDict_[row.CollectionId][sceneId], info)
+    end
+  end
+  if self.collectionPosInfoDict_[collectionId] ~= nil and self.collectionPosInfoDict_[collectionId][sceneId] ~= nil then
+    return self.collectionPosInfoDict_[collectionId][sceneId]
+  end
+end
+
+function MapData:GetSceneUnlockedTransporter(sceneID)
+  if not self.transferDatas then
+    self:GetAllTransporter()
+  end
+  local itemList = {}
+  local mapVM = Z.VMMgr.GetVM("map")
+  local pivotVm = Z.VMMgr.GetVM("pivot")
+  for k, v in pairs(self.transferDatas) do
+    if v.MapId == sceneID then
+      if v.TransferType == 1 then
+        if mapVM.CheckTransferPointUnlock(v.Id) then
+          local item = {}
+          item.Id = v.Id
+          table.insert(itemList, item)
+        end
+      elseif v.TransferType == 2 and pivotVm.CheckPivotUnlock(v.Id) then
+        local item = {}
+        item.Id = v.Id
+        table.insert(itemList, item)
+      end
+    end
+  end
+  table.sort(itemList, function(a, b)
+    if a.TransferType == b.TransferType then
+      return a.Id < b.Id
+    else
+      return a.TransferType < b.TransferType
+    end
+  end)
+  return itemList
+end
+
+function MapData:GetAllTransporter()
+  self.transferDatas = Z.TableMgr.GetTable("TransferTableMgr").GetDatas()
+end
+
+function MapData:OnLanguageChange()
+  self:GetAllTransporter()
 end
 
 return MapData

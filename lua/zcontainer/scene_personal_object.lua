@@ -15,7 +15,7 @@ local mergeDataFuncs = {
     end
     for i = 1, add do
       local dk = br.ReadInt64(buffer)
-      local v = require("zcontainer.personal_object_interaction_param").New()
+      local v = require("zcontainer.server_state_object_interaction_param").New()
       v:MergeData(buffer, watcherList)
       container.personalObjData.__data__[dk] = v
       container.Watcher:MarkMapDirty("personalObjData", dk, nil)
@@ -31,7 +31,7 @@ local mergeDataFuncs = {
       local last = container.personalObjData.__data__[dk]
       if last == nil then
         logWarning("last is nil: " .. dk)
-        last = require("zcontainer.personal_object_interaction_param").New()
+        last = require("zcontainer.server_state_object_interaction_param").New()
         container.personalObjData.__data__[dk] = last
       end
       last:MergeData(buffer, watcherList)
@@ -73,7 +73,7 @@ local resetData = function(container, pbData)
   container.personalObjData.__data__ = {}
   setForbidenMt(container.personalObjData)
   for k, v in pairs(pbData.personalObjData) do
-    container.personalObjData.__data__[k] = require("zcontainer.personal_object_interaction_param").New()
+    container.personalObjData.__data__[k] = require("zcontainer.server_state_object_interaction_param").New()
     container.personalObjData[k]:ResetData(v)
   end
   container.__data__.personalObjData = nil

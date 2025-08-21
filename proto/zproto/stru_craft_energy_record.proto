@@ -5,7 +5,5 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message CraftEnergyRecord {
-    map<int32, int32> records = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.CraftEnergyRecord.RecordsEntry records = 1;
 }
-

@@ -9,7 +9,7 @@ function WarehouseData:Init()
   self.CancelSource = Z.CancelSource.Rent()
   self.WarehouseCfgDatas = {}
   self.WarehouseTypeList = {}
-  self.WarehouseInfo = nil
+  self.WarehouseInfo = {}
   self:InitCfgData()
 end
 
@@ -25,8 +25,8 @@ function WarehouseData:SetWarehouseType(list)
   self.WarehouseTypeList = list
 end
 
-function WarehouseData:GetWarehouseTypeList()
-  return self.WarehouseTypeList
+function WarehouseData:GetWarehouseTypeList(warehouseType)
+  return self.WarehouseTypeList[warehouseType]
 end
 
 function WarehouseData:GetWarehouseTypeByIndex(index)
@@ -41,12 +41,14 @@ function WarehouseData:GetWarehouseCfgDataByType(type)
   return self.WarehouseCfgDatas[type]
 end
 
-function WarehouseData:GetWarehouseInfo()
-  return self.WarehouseInfo
+function WarehouseData:GetWarehouseInfo(warehouseType)
+  local warehouseType = warehouseType or E.WarehouseType.Normal
+  return self.WarehouseInfo[warehouseType]
 end
 
-function WarehouseData:SetWarehouseInfo(warehouseInfo)
-  self.WarehouseInfo = warehouseInfo
+function WarehouseData:SetWarehouseInfo(warehouseInfo, warehouseType)
+  local warehouseType = warehouseType or E.WarehouseType.Normal
+  self.WarehouseInfo[warehouseType] = warehouseInfo
 end
 
 function WarehouseData:UnInit()

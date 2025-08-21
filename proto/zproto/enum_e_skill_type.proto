@@ -10,4 +10,3 @@ enum ESkillType {
     SkillCharge = 5;
     SkillBenediction = 6;
 }
-

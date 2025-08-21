@@ -8,6 +8,4 @@ message SeasonTargetInfo {
     int32 targetId = 1;
     int32 targetProgress = 2;
     int32 awardState = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

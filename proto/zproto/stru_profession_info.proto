@@ -9,9 +9,8 @@ message ProfessionInfo {
     int32 professionId = 1;
     int32 level = 2;
     int64 experience = 3;
-    map<int32, .zproto.ProfessionSkillInfo> skillInfoMap = 4;
+    repeated zproto.ProfessionInfo.SkillInfoMapEntry skillInfoMap = 4;
     repeated int32 activeSkillIds = 6;
-    map<int32, int32> slotSkillInfoMap = 7;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.ProfessionInfo.SlotSkillInfoMapEntry slotSkillInfoMap = 7;
+    int32 UseSkinId = 8;
 }
-

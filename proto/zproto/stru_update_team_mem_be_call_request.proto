@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message UpdateTeamMemBeCallRequest {
-    map<int64, int32> callState = 2;
+    repeated zproto.UpdateTeamMemBeCallRequest.CallStateEntry callState = 1;
 }
-

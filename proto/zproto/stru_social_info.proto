@@ -10,5 +10,5 @@ message SocialInfo {
     bool top = 3;
     int32 groupId = 4;
     zproto.UserSummaryData socialData = 5;
+    int64 lastRefreshTime = 6;
 }
-

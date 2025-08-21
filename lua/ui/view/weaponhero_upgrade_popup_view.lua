@@ -15,6 +15,11 @@ end
 function Weaponhero_upgrade_popupView:OnActive()
   self.uiBinder.scene_mask:SetSceneMaskByKey(self.SceneMaskKey)
   self.uiBinder.point_check:StopCheck()
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   self:onStartAnimShow()
   self:EventAddAsyncListener(self.uiBinder.point_check.ContainGoEvent, function(isContain)
     if not isContain then
@@ -63,9 +68,11 @@ function Weaponhero_upgrade_popupView:RefreshWeaponHeroInfo()
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_num, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_content, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_content_unlock, false)
-  self.uiBinder.lab_title_grade_former.text = Lang("Lv") .. self.viewData.preLevel
+  self.uiBinder.lab_title_grade_former.text = Lang("Level", {
+    val = self.viewData.preLevel
+  })
   local nowLevel = self.vm_.GetWeaponInfo(self.viewData.professionId).level
-  self.uiBinder.lab_title_grade_after.text = Lang("Lv") .. nowLevel
+  self.uiBinder.lab_title_grade_after.text = Lang("Level", {val = nowLevel})
   self.uiBinder.lab_skill.text = ""
   local nowAttrCfgData = {}
   local preAttrCfgData = {}
@@ -109,8 +116,12 @@ function Weaponhero_upgrade_popupView:RefreshSkillInfo()
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_num, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_content, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_content_unlock, false)
-  self.uiBinder.lab_title_grade_former.text = Lang("Lv") .. self.viewData.preLevel
-  self.uiBinder.lab_title_grade_after.text = Lang("Lv") .. self.viewData.level
+  self.uiBinder.lab_title_grade_former.text = Lang("Level", {
+    val = self.viewData.preLevel
+  })
+  self.uiBinder.lab_title_grade_after.text = Lang("Level", {
+    val = self.viewData.level
+  })
   self.uiBinder.lab_title.text = Lang("level_upgrade_success")
   local skillTabData = Z.TableMgr.GetTable("SkillTableMgr").GetRow(self.viewData.skillId)
   if skillTabData == nil then
@@ -152,8 +163,8 @@ function Weaponhero_upgrade_popupView:RefreshSkillRemodelInfo()
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_content_unlock, false)
   local weaponSkillVm = Z.VMMgr.GetVM("weapon_skill")
   local remodelLevel = weaponSkillVm:GetSkillRemodelLevel(self.viewData.skillId)
-  self.uiBinder.lab_title_grade_former.text = Lang("AdvanceLevel2") .. remodelLevel - 1
-  self.uiBinder.lab_title_grade_after.text = Lang("AdvanceLevel2") .. remodelLevel
+  self.uiBinder.lab_title_grade_former.text = Lang("AdvanceLevel2") .. " " .. remodelLevel - 1
+  self.uiBinder.lab_title_grade_after.text = Lang("AdvanceLevel2") .. " " .. remodelLevel
   self.uiBinder.lab_title.text = Lang("AdvanceSuccess")
   local skillRow = Z.TableMgr.GetTable("SkillTableMgr").GetRow(self.viewData.skillId)
   if skillRow == nil then

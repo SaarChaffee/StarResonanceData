@@ -10,8 +10,6 @@ message PositionSampleTableBase {
     number_table SampleInfo = 1926;
     int32 HasChangeFlag = 1764;
 }
-
 message PositionSampleTableMgr {
-    map<int64, .bokura.PositionSampleTableBase> datas = 1;
+    repeated bokura.PositionSampleTableMgr.DatasEntry datas = 1;
 }
-

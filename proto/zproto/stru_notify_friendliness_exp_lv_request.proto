@@ -5,10 +5,9 @@ package zproto;
 import "stru_friendliness_exp_level.proto";
 
 message NotifyFriendlinessExpLvRequest {
-    repeated zproto.FriendlinessExpLevel changeList = 2;
-    int32 totalLevel = 3;
-    int32 totalExp = 4;
-    int32 todayTotalAddExps = 5;
-    int64 updateTimeStamp = 6;
+    repeated zproto.FriendlinessExpLevel changeList = 1;
+    int32 totalLevel = 2;
+    int32 totalExp = 3;
+    int32 todayTotalAddExps = 4;
+    int64 updateTimeStamp = 5;
 }
-

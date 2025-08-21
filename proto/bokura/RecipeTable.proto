@@ -11,8 +11,6 @@ message RecipeTableBase {
     string RecipeIcon = 172;
     int32 RecipeType = 1227;
 }
-
 message RecipeTableMgr {
-    map<int32, .bokura.RecipeTableBase> datas = 1;
+    repeated bokura.RecipeTableMgr.DatasEntry datas = 1;
 }
-

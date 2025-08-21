@@ -10,8 +10,6 @@ message DungeonTitleTableBase {
     mlstring Content = 783;
     int32 Weight = 140;
 }
-
 message DungeonTitleTableMgr {
-    map<int32, .bokura.DungeonTitleTableBase> datas = 1;
+    repeated bokura.DungeonTitleTableMgr.DatasEntry datas = 1;
 }
-

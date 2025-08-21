@@ -2,9 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
-message TeamTowerLayer {
-    int32 errCode = 1;
-    int32 enterClimbUpId = 2;
-    map<int64, int32> memIdMaxClimbId = 3;
-}
+import "enum_e_error_code.proto";
 
+message TeamTowerLayer {
+    int32 enterClimbUpId = 1;
+    repeated zproto.TeamTowerLayer.MemIdMaxClimbIdEntry memIdMaxClimbId = 2;
+    zproto.EErrorCode errCode = 3;
+}

@@ -5,7 +5,6 @@ package zproto;
 import "stru_friend_data.proto";
 
 message NotifyUpdateDataRequest {
-    map<int32, int32> operationMap = 2;
-    zproto.FriendData syncData = 3;
+    repeated zproto.NotifyUpdateDataRequest.OperationMapEntry operationMap = 1;
+    zproto.FriendData syncData = 2;
 }
-

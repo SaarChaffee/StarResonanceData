@@ -12,8 +12,6 @@ message PlayerLevelTableBase {
     string Icon = 1153;
     mlstring ExplainText = 323;
 }
-
 message PlayerLevelTableMgr {
-    map<int32, .bokura.PlayerLevelTableBase> datas = 1;
+    repeated bokura.PlayerLevelTableMgr.DatasEntry datas = 1;
 }
-

@@ -7,8 +7,6 @@ message MapEntityIconTableBase {
     int32 type = 679;
     string sprite = 840;
 }
-
 message MapEntityIconTableMgr {
-    map<int32, .bokura.MapEntityIconTableBase> datas = 1;
+    repeated bokura.MapEntityIconTableMgr.DatasEntry datas = 1;
 }
-

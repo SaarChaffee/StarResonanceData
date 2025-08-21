@@ -11,8 +11,6 @@ message AwardAttrFixRatioTableBase {
     int32 ItemType = 809;
     int_table ItemParams = 1953;
 }
-
 message AwardAttrFixRatioTableMgr {
-    map<int32, .bokura.AwardAttrFixRatioTableBase> datas = 1;
+    repeated bokura.AwardAttrFixRatioTableMgr.DatasEntry datas = 1;
 }
-

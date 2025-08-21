@@ -1,17 +1,18 @@
 local UI = Z.UI
 local super = require("ui.ui_view_base")
 local Warehouse_mainView = class("Warehouse_mainView", super)
-local loopListView = require("ui/component/loop_list_view")
 local loopGridView = require("ui/component/loop_grid_view")
 local toggleGroup = require("ui/component/togglegroup")
 local warehouse_firstclass_loop_item = require("ui.component.warehouse.warehouse_firstclass_loop_item")
 local warehouseLoopItem = require("ui.component.warehouse.warehouse_loop_item")
 local warehouseBagLoopItem = require("ui.component.warehouse.warehouse_bag_loop_item")
+local currency_item_list = require("ui.component.currency.currency_item_list")
 
 function Warehouse_mainView:ctor()
   self.uiBinder = nil
   super.ctor(self, "warehouse_main")
   self.vm_ = Z.VMMgr.GetVM("warehouse")
+  self.houseVm_ = Z.VMMgr.GetVM("house_warehouse")
   self.itemsVm_ = Z.VMMgr.GetVM("items")
   self.data_ = Z.DataMgr.Get("warehouse_data")
   self.warehouseTipsSubView_ = require("ui/view/warehouse_tips_sub_view").new(self)
@@ -29,7 +30,6 @@ function Warehouse_mainView:initBinders()
   self.takeLab_ = self.uiBinder.lab_take
   self.depositLab_ = self.uiBinder.lab_deposit
   self.wareTipsParent_ = self.uiBinder.ware_tips_parent
-  self.currencyParent_ = self.uiBinder.layout_content_currency
   self.node_empty = self.uiBinder.node_empty
   self.tipsLeftParent_ = self.uiBinder.node_tips_left
   self.tipsRightParent_ = self.uiBinder.node_tips_right
@@ -44,24 +44,41 @@ function Warehouse_mainView:initBtns()
     self.vm_.OpenWareMmberPopupView()
   end)
   self:AddClick(self.accessBtn_, function()
-    self.warehouseTipsSubView_:Active({}, self.wareTipsParent_.transform)
+    self.warehouseTipsSubView_:Active({
+      type = self.warehouseType_
+    }, self.wareTipsParent_.transform)
   end)
 end
 
 function Warehouse_mainView:initData()
-  self.vm_.AsyncGetWarehouse(self.cancelSource:CreateToken())
+  self.warehouseTab_ = {
+    [E.WarehouseType.Normal] = {
+      WarehouseCapacity = Z.Global.WarehouseCapacity
+    },
+    [E.WarehouseType.House] = {
+      WarehouseCapacity = Z.GlobalHome.HouseWarehouseCapacity
+    }
+  }
+  self.warehouseType_ = self.viewData or E.WarehouseType.Normal
+  if self.warehouseType_ == E.WarehouseType.Normal then
+    self.vm_.AsyncGetWarehouse(self.cancelSource:CreateToken())
+  elseif self.warehouseType_ == E.WarehouseType.House then
+    self.houseVm_.AsyncGetWarehouse(self.cancelSource:CreateToken())
+  end
 end
 
 function Warehouse_mainView:initUi()
   self.wareLoopGrid_ = loopGridView.new(self, self.warehouseLoopGridView_, warehouseLoopItem, "com_item_long_2")
-  local package = Z.ContainerMgr.CharSerialize.itemPackage.packages[E.BackPackItemPackageType.Item]
   self.wareLoopGrid_:Init({})
   self.bagLoopGrid_ = loopGridView.new(self, self.bagLoopGridView_, warehouseBagLoopItem, "com_item_long_2")
   self.bagLoopGrid_:Init({})
   self.node_empty.Ref.UIComp:SetVisible(false)
   local currencyIds = self.currencyVm_.GetCurrencyIds()
-  self.currencyVm_.OpenCurrencyView(currencyIds, self.currencyParent_, self)
-  local data = self.data_:GetWarehouseTypeList()
+  local isHouseWarehouse = self.warehouseType_ == E.WarehouseType.House
+  self.uiBinder.currency_info.Ref.UIComp:SetVisible(not isHouseWarehouse)
+  self.uiBinder.Ref:SetVisible(self.memberBtn_, not isHouseWarehouse)
+  self.currencyItemList_:Init(self.uiBinder.currency_info, currencyIds)
+  local data = self.data_:GetWarehouseTypeList(self.warehouseType_)
   local initIndex = 1
   self.firstClassToggleGroup_ = toggleGroup.new(self.firstClassTogGroup_, warehouse_firstclass_loop_item, data, self, Z.ConstValue.LoopItembindName.back_toggle_item)
   self.firstClassToggleGroup_:Init(initIndex, function(index)
@@ -79,15 +96,17 @@ function Warehouse_mainView:OnActive()
   self:initBtns()
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.node_eff)
   self.node_eff:SetEffectGoVisible(true)
+  self.currencyItemList_ = currency_item_list.new()
+  self.currencyItemList_:Init(self.uiBinder.currency_info, {})
   Z.CoroUtil.create_coro_xpcall(function()
     self:initData()
     self:initUi()
     self:bindEvent()
   end)()
-  self.currencyVm_.CloseCurrencyView(self)
 end
 
 function Warehouse_mainView:OnDeActive()
+  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.node_eff)
   self.node_eff:SetEffectGoVisible(false)
   if self.bagLoopGrid_ then
@@ -110,9 +129,14 @@ function Warehouse_mainView:OnDeActive()
     Z.ContainerMgr.CharSerialize.counterList.Watcher:UnregWatcher(self.refreshLab_)
     self.refreshLab_ = nil
   end
-  self.firstClassToggleGroup_:UnInit()
-  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
+  if self.firstClassToggleGroup_ ~= nil then
+    self.firstClassToggleGroup_:UnInit()
+  end
   self:CloseWarehouseTipsSubView()
+  if self.currencyItemList_ then
+    self.currencyItemList_:UnInit()
+    self.currencyItemList_ = nil
+  end
 end
 
 function Warehouse_mainView:CloseWarehouseTipsSubView()
@@ -134,7 +158,7 @@ function Warehouse_mainView:refreshBagLoopGrid()
 end
 
 function Warehouse_mainView:refreshWarehouseLoopGrid()
-  local data = self.vm_.GetWarehouseItemsByType(self.type_)
+  local data = self.vm_.GetWarehouseItemsByType(self.type_, self.warehouseType_)
   self.wareLoopGrid_:RefreshListView(data)
   self:setpackageCountUi()
 end
@@ -156,6 +180,8 @@ function Warehouse_mainView:openTips(item, trans, warehouseGrid)
   itemTipsViewData.isShowBg = true
   itemTipsViewData.isResident = false
   itemTipsViewData.warehouseGrid = warehouseGrid
+  itemTipsViewData.isHideMaterial = true
+  itemTipsViewData.warehouseType = self.warehouseType_
   self.tipsId_ = Z.TipsVM.OpenItemTipsView(itemTipsViewData)
 end
 
@@ -202,15 +228,16 @@ end
 
 function Warehouse_mainView:refreshLab()
   if self.type_ ~= -1 then
-    self.takeLab_.text = Lang("TakeCount") .. self.vm_.GetResidueTakeCountByType(self.type_)
-    self.depositLab_.text = Lang("DepositCount") .. self.vm_.GetResidueDepositCountByType(self.type_)
+    self.takeLab_.text = Lang("TakeCount") .. self.vm_.GetResidueTakeCountByType(self.type_, self.warehouseType_)
+    self.depositLab_.text = Lang("DepositCount") .. self.vm_.GetResidueDepositCountByType(self.type_, self.warehouseType_)
   end
 end
 
 function Warehouse_mainView:setpackageCountUi()
-  local curCount = self.vm_.GetWarehouseItemCount()
-  local str = curCount .. "/" .. Z.Global.WarehouseCapacity
-  if curCount > Z.Global.WarehouseCapacity then
+  local capacity = self.warehouseTab_[self.warehouseType_].WarehouseCapacity
+  local curCount = self.vm_.GetWarehouseItemCount(self.warehouseType_)
+  local str = curCount .. "/" .. capacity
+  if capacity < curCount then
     str = Z.RichTextHelper.ApplyStyleTag(str, E.TextStyleTag.TipsRed)
   else
     str = Z.RichTextHelper.ApplyStyleTag(str, E.TextStyleTag.White)

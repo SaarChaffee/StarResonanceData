@@ -6,8 +6,6 @@ function StageWild:ctor()
 end
 
 function StageWild:OnEnterScene(sceneId)
-  local mapData = Z.DataMgr.Get("map_data")
-  mapData.IsShownNameAfterChangeScene = false
   super.OnEnterScene(self, sceneId)
 end
 

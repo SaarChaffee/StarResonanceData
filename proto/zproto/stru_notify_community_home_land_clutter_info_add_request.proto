@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_clutter.proto";
+
+message NotifyCommunityHomeLandClutterInfoAddRequest {
+    int64 communityId = 1;
+    int64 homelandId = 2;
+    repeated zproto.NotifyCommunityHomeLandClutterInfoAddRequest.AddHomeLandClutterEntry addHomeLandClutter = 3;
+}

@@ -5,7 +5,7 @@ local DEFAULT_DESC_COLOR = Color.New(1, 1, 1, 1)
 
 function Tips_env_infoView:ctor()
   self.uiBinder = nil
-  super.ctor(self, "tips_env_info", "common_tips_new/tips_env_info", UI.ECacheLv.None)
+  super.ctor(self, "tips_env_info", "environment/tips_env_info", UI.ECacheLv.None, true)
 end
 
 function Tips_env_infoView:OnActive()
@@ -29,7 +29,6 @@ function Tips_env_infoView:SetTipsInfo()
     self.uiBinder.img_icon:SetImage(self.viewData.iconPath)
   end
   self:SetUIVisible(self.uiBinder.img_icon, self.viewData.iconPath ~= nil)
-  self.uiBinder.lab_func_name.text = self.viewData.funcName
   self.uiBinder.lab_area_name.text = self.viewData.areaName
   local isShowEmpty = self.viewData.state == E.EnvResonanceSkillState.Lock or self.viewData.state == E.EnvResonanceSkillState.NotActive
   self:SetUIVisible(self.uiBinder.lab_area_name, isShowEmpty)
@@ -59,7 +58,7 @@ function Tips_env_infoView:setLabelText(comp, str, color)
 end
 
 function Tips_env_infoView:setTimeLabel(count)
-  self.uiBinder.lab_time.text = Z.TimeTools.FormatToDHM(count)
+  self.uiBinder.lab_time.text = Z.TimeFormatTools.FormatToDHMS(count)
 end
 
 function Tips_env_infoView:createEnvTimer()

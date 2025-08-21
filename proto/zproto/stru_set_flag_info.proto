@@ -6,4 +6,3 @@ message SetFlagInfo {
     int32 monsterId = 1;
     bool isFlag = 2;
 }
-

@@ -33,16 +33,33 @@ function EquipDecomposeLoopListItem:OnSelected(isSelected)
   if isSelected then
     local itemInfo = self.itemsVm_.GetItemInfo(self.uuid_, E.BackPackItemPackageType.Equip)
     if itemInfo then
-      if itemInfo.quality > EquipQualityvalDecomTips then
-        self.equipVm_.OpenDayDialog(func, Lang("EquipDecomposeHighQualityTips"), E.DlgPreferencesKeyType.EquipDecomposeHighQualityTips, function()
-          self.parent:UnSelectIndex(self.Index)
-        end)
-      elseif self.equipSystemVm_.CheckCanRecast(nil, self.configId) and itemInfo.equipAttr.perfectionValue > EquipPerfectvalDecomTips then
-        self.equipVm_.OpenDayDialog(func, Lang("EquipEquipPerfectvalDecomposeTips", {val = EquipPerfectvalDecomTips}), E.DlgPreferencesKeyType.EquipEquipDecomposeTips, function()
+      local func1 = function()
+        local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(itemInfo.configId)
+        if itemConfig and itemConfig.Quality > EquipQualityvalDecomTips then
+          local onCanel = function()
+            self.parent:UnSelectIndex(self.Index)
+          end
+          local data = {
+            dlgType = E.DlgType.YesNo,
+            onConfirm = func,
+            labDesc = Lang("EquipDecomposeHighQualityTips"),
+            onCancel = onCanel
+          }
+          Z.DialogViewDataMgr:OpenDialogView(data)
+        elseif self.equipSystemVm_.CheckCanRecast(nil, self.configId) and itemInfo.equipAttr.perfectionValue > EquipPerfectvalDecomTips then
+          self.equipVm_.OpenDayDialog(func, Lang("EquipEquipPerfectvalDecomposeTips", {val = EquipPerfectvalDecomTips}), E.DlgPreferencesKeyType.EquipEquipDecomposeTips, function()
+            self.parent:UnSelectIndex(self.Index)
+          end)
+        else
+          func()
+        end
+      end
+      if self.equipSystemVm_.CheckIsFocusEquip(self.configId) then
+        self.equipVm_.OpenDayDialog(func1, Lang("EquipBreakDownRareEquipTips"), E.DlgPreferencesKeyType.EquipBreakDownRareEquipTips, function()
           self.parent:UnSelectIndex(self.Index)
         end)
       else
-        func()
+        func1()
       end
     else
       func()

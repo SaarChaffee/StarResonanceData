@@ -7,10 +7,34 @@ end
 function Scene:LoadComplete()
 end
 
-Scene.Seasons = {}
+Scene.Seasons = {1}
 
 function Scene:InitEvents()
   self.EventItems = {}
+  self.EventItems[8] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 8,
+    count = -1,
+    entity = {actorType = 5, tableUid = 8},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {4009})
+      do
+        local entityData = {actorType = 5, tableUid = 8}
+        if entityData.groupId then
+          Z.LevelMgr.FireSceneEvent({
+            eventType = 25,
+            intParams = {
+              entityData.groupId
+            }
+          })
+        else
+          Panda.ZGame.ZClientEntityMgr.Instance:RemoveClientEntityLua(entityData.tableUid, entityData.actorType)
+        end
+      end
+    end
+  }
   self.EventItems[361] = {
     eventType = E.LevelEventType.OnZoneEnterClient,
     enable = true,
@@ -145,28 +169,6 @@ function Scene:InitEvents()
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121114)
     end
   }
-  self.EventItems[881] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 881,
-    count = -1,
-    entity = {actorType = 5, tableUid = 2134},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121115)
-    end
-  }
-  self.EventItems[884] = {
-    eventType = E.LevelEventType.OnOptionSelect,
-    enable = true,
-    group = 0,
-    eventId = 884,
-    count = -1,
-    selectedStr = "feixing2",
-    action = function(localSelf)
-      Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121116)
-    end
-  }
   self.EventItems[919] = {
     eventType = E.LevelEventType.OnSceneInit,
     enable = true,
@@ -234,188 +236,116 @@ function Scene:InitEvents()
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121118)
     end
   }
-  self.EventItems[611] = {
+  self.EventItems[101046] = {
     eventType = E.LevelEventType.OnZoneEnterClient,
     enable = true,
     group = 0,
-    eventId = 611,
+    eventId = 101046,
     count = -1,
-    entity = {actorType = 5, tableUid = 897},
+    entity = {actorType = 5, tableUid = 101583},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121103)
     end
   }
-  self.EventItems[764] = {
+  self.EventItems[101079] = {
     eventType = E.LevelEventType.OnZoneEnterClient,
     enable = true,
     group = 0,
-    eventId = 764,
+    eventId = 101079,
     count = -1,
-    entity = {actorType = 5, tableUid = 1308},
+    entity = {actorType = 5, tableUid = 101660},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121108)
-      Z.LevelMgr.timerMgr:StartTimer(function()
-        do
-          local entityData = {actorType = 5, groupId = 64}
-          if entityData.groupId then
-            Z.LevelMgr.FireSceneEvent({
-              eventType = 24,
-              intParams = {
-                entityData.groupId
-              }
-            })
-          else
-            Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
-          end
-        end
-      end, 1)
+      Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121104)
     end
   }
-  self.EventItems[765] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
+  self.EventItems[101311] = {
+    eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 765,
+    eventId = 101311,
     count = -1,
-    entity = {actorType = 5, tableUid = 1309},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      do
-        local entityData = {actorType = 5, groupId = 64}
-        if entityData.groupId then
-          Z.LevelMgr.FireSceneEvent({
-            eventType = 25,
-            intParams = {
-              entityData.groupId
-            }
-          })
-        else
-          Panda.ZGame.ZClientEntityMgr.Instance:RemoveClientEntityLua(entityData.tableUid, entityData.actorType)
-        end
-      end
+    selectedStr = "feixing2",
+    action = function(localSelf)
+      Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121114)
     end
   }
-  self.EventItems[770] = {
+  self.EventItems[101406] = {
     eventType = E.LevelEventType.OnZoneEnterClient,
     enable = true,
     group = 0,
-    eventId = 770,
+    eventId = 101406,
     count = -1,
-    entity = {actorType = 5, tableUid = 1320},
+    entity = {actorType = 5, tableUid = 102525},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      do
-        local entityData = {actorType = 3, tableUid = 1296}
-        if entityData.groupId then
-          Z.LevelMgr.FireSceneEvent({
-            eventType = 24,
-            intParams = {
-              entityData.groupId
-            }
-          })
-        else
-          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
-        end
-      end
-      do
-        local entityData = {actorType = 3, tableUid = 1291}
-        if entityData.groupId then
-          Z.LevelMgr.FireSceneEvent({
-            eventType = 24,
-            intParams = {
-              entityData.groupId
-            }
-          })
-        else
-          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
-        end
-      end
-      do
-        local entityData = {actorType = 3, tableUid = 1292}
-        if entityData.groupId then
-          Z.LevelMgr.FireSceneEvent({
-            eventType = 24,
-            intParams = {
-              entityData.groupId
-            }
-          })
-        else
-          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
-        end
-      end
-      do
-        local entityData = {actorType = 3, tableUid = 1297}
-        if entityData.groupId then
-          Z.LevelMgr.FireSceneEvent({
-            eventType = 24,
-            intParams = {
-              entityData.groupId
-            }
-          })
-        else
-          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
-        end
-      end
-      do
-        local entityData = {actorType = 3, tableUid = 1297}
-        if entityData.groupId then
-          Z.LevelMgr.FireSceneEvent({
-            eventType = 24,
-            intParams = {
-              entityData.groupId
-            }
-          })
-        else
-          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
-        end
-      end
+      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("1211_WindTunnel_13_show", 0, 0, 20, false, 0)
     end
   }
-  self.EventItems[772] = {
+  self.EventItems[101411] = {
     eventType = E.LevelEventType.OnZoneEnterClient,
     enable = true,
     group = 0,
-    eventId = 772,
+    eventId = 101411,
     count = -1,
-    entity = {actorType = 5, tableUid = 1323},
+    entity = {actorType = 5, tableUid = 102561},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("1211_WindTunnel_14", 0, 0, 20, false, 0)
+    end
+  }
+  self.EventItems[101069] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 101069,
+    count = -1,
+    entity = {actorType = 5, tableUid = 101646},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121105)
+    end
+  }
+  self.EventItems[101070] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 101070,
+    count = -1,
+    entity = {actorType = 5, tableUid = 101648},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121109)
     end
   }
-  self.EventItems[824] = {
+  self.EventItems[101071] = {
     eventType = E.LevelEventType.OnZoneEnterClient,
     enable = true,
     group = 0,
-    eventId = 824,
+    eventId = 101071,
     count = -1,
-    entity = {actorType = 5, tableUid = 1686},
+    entity = {actorType = 5, tableUid = 101651},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121105)
-      Z.LevelMgr.timerMgr:StartTimer(function()
-        do
-          local entityData = {actorType = 5, groupId = 73}
-          if entityData.groupId then
-            Z.LevelMgr.FireSceneEvent({
-              eventType = 24,
-              intParams = {
-                entityData.groupId
-              }
-            })
-          else
-            Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
-          end
-        end
-      end, 2)
+      Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(121115)
     end
   }
-  self.EventItems[825] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
+  self.EventItems[101082] = {
+    eventType = E.LevelEventType.TriggerEvent,
     enable = true,
     group = 0,
-    eventId = 825,
+    eventId = 101082,
     count = -1,
-    entity = {actorType = 5, tableUid = 1683},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+    action = function(localSelf)
       do
-        local entityData = {actorType = 5, groupId = 73}
+        local entityData = {actorType = 5, tableUid = 101646}
+        if entityData.groupId then
+          Z.LevelMgr.FireSceneEvent({
+            eventType = 24,
+            intParams = {
+              entityData.groupId
+            }
+          })
+        else
+          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
+        end
+      end
+      do
+        local entityData = {actorType = 5, tableUid = 101660}
         if entityData.groupId then
           Z.LevelMgr.FireSceneEvent({
             eventType = 25,
@@ -458,6 +388,22 @@ function Scene:InitEvents()
     action = function(localSelf)
       Panda.ZGame.CameraManager.Instance:CameraInvoke(0, true, {2032}, false)
       Panda.ZGame.CameraManager.Instance:SwitchCameraTemplate({0}, {2030}, -1)
+    end
+  }
+  self.EventItems[101355] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 101355,
+    count = 1,
+    entity = {actorType = 5, tableUid = 102280},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1025})
     end
   }
 end

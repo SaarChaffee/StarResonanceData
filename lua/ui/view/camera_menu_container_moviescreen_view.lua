@@ -7,7 +7,7 @@ local secondaryData = Z.DataMgr.Get("photo_secondary_data")
 local vm = Z.VMMgr.GetVM("camerasys")
 
 function Camera_menu_container_moviescreenView:ctor(parent)
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "camera_menu_container_moviescreen_sub", "photograph/camera_menu_container_moviescreen_sub", UI.ECacheLv.None)
   self.tbData_exposure = cameraData_:GetScreenBrightnessRange()
   self.tbData_contrast = cameraData_:GetScreenContrastRange()
@@ -15,11 +15,11 @@ function Camera_menu_container_moviescreenView:ctor(parent)
 end
 
 function Camera_menu_container_moviescreenView:OnActive()
-  self.panel.Ref:SetOffSetMin(0, 0)
-  self.panel.Ref:SetOffSetMax(0, 0)
-  self.panel.cont_slider_exposure.slider_adjust.Slider:AddListener(function()
-    local value = vm.GetRangeValue(self.panel.cont_slider_exposure.slider_adjust.Slider.value, self.tbData_exposure)
-    self.panel.cont_slider_exposure.lab_num.TMPLab.text = vm.CalculatePercentageValue(self.tbData_exposure.showValueMin, self.tbData_exposure.showValueMax, self.panel.cont_slider_exposure.slider_adjust.Slider.value)
+  self.uiBinder.Trans:SetOffsetMin(0, 0)
+  self.uiBinder.Trans:SetOffsetMax(0, 0)
+  self.uiBinder.slider_exposure_adjust:AddListener(function()
+    local value = vm.GetRangeValue(self.uiBinder.slider_exposure_adjust.value, self.tbData_exposure)
+    self.uiBinder.lab_exposure_num.text = vm.CalculatePercentageValue(self.tbData_exposure.showValueMin, self.tbData_exposure.showValueMax, self.uiBinder.slider_exposure_adjust.value)
     if self.isToEditing_ then
       secondaryData:GetMoviescreenData().exposure = value
       Z.CameraFrameCtrl:SetAlbumSecondEdit(E.AlbumSecondEditType.Exposure, value)
@@ -31,9 +31,9 @@ function Camera_menu_container_moviescreenView:OnActive()
       decorateData:GetMoviescreenData().exposure = self.tbData_exposure.value
     end
   end)
-  self.panel.cont_slider_constrast.slider_adjust.Slider:AddListener(function()
-    local value = vm.GetRangeValue(self.panel.cont_slider_constrast.slider_adjust.Slider.value, self.tbData_contrast)
-    self.panel.cont_slider_constrast.lab_num.TMPLab.text = vm.CalculatePercentageValue(self.tbData_contrast.showValueMin, self.tbData_contrast.showValueMax, self.panel.cont_slider_constrast.slider_adjust.Slider.value)
+  self.uiBinder.slider_constrast_adjust:AddListener(function()
+    local value = vm.GetRangeValue(self.uiBinder.slider_constrast_adjust.value, self.tbData_contrast)
+    self.uiBinder.lab_constrast_num.text = vm.CalculatePercentageValue(self.tbData_contrast.showValueMin, self.tbData_contrast.showValueMax, self.uiBinder.slider_constrast_adjust.value)
     if self.isToEditing_ then
       secondaryData:GetMoviescreenData().contrast = value
       Z.CameraFrameCtrl:SetAlbumSecondEdit(E.AlbumSecondEditType.Contrast, value)
@@ -45,9 +45,9 @@ function Camera_menu_container_moviescreenView:OnActive()
       decorateData:GetMoviescreenData().contrast = self.tbData_contrast.value
     end
   end)
-  self.panel.cont_slider_saturation.slider_adjust.Slider:AddListener(function()
-    local value = vm.GetRangeValue(self.panel.cont_slider_saturation.slider_adjust.Slider.value, self.tbData_saturation)
-    self.panel.cont_slider_saturation.lab_num.TMPLab.text = vm.CalculatePercentageValue(self.tbData_saturation.showValueMin, self.tbData_saturation.showValueMax, self.panel.cont_slider_saturation.slider_adjust.Slider.value)
+  self.uiBinder.slider_saturation_adjust:AddListener(function()
+    local value = vm.GetRangeValue(self.uiBinder.slider_saturation_adjust.value, self.tbData_saturation)
+    self.uiBinder.lab_saturation_num.text = vm.CalculatePercentageValue(self.tbData_saturation.showValueMin, self.tbData_saturation.showValueMax, self.uiBinder.slider_saturation_adjust.value)
     if self.isToEditing_ then
       secondaryData:GetMoviescreenData().saturation = value
       Z.CameraFrameCtrl:SetAlbumSecondEdit(E.AlbumSecondEditType.Saturation, value)
@@ -59,7 +59,7 @@ function Camera_menu_container_moviescreenView:OnActive()
       decorateData:GetMoviescreenData().saturation = self.tbData_saturation.value
     end
   end)
-  self:AddClick(self.panel.cont_setting_title_item.btn_reset.Btn, function()
+  self:AddClick(self.uiBinder.btn_reset, function()
     local tbData_exposure = {}
     local tbData_contrast = {}
     local tbData_saturation = {}
@@ -73,13 +73,13 @@ function Camera_menu_container_moviescreenView:OnActive()
       tbData_exposureTemp.value = secondaryData:GetMoviescreenOriData().exposure
       tbData_contrastTemp.value = secondaryData:GetMoviescreenOriData().contrast
       tbData_saturationTemp.value = secondaryData:GetMoviescreenOriData().saturation
-      self.panel.cont_slider_exposure.slider_adjust.Slider.value = vm.GetRangePerc(tbData_exposureTemp, false)
-      self.panel.cont_slider_constrast.slider_adjust.Slider.value = vm.GetRangePerc(tbData_contrastTemp, false)
-      self.panel.cont_slider_saturation.slider_adjust.Slider.value = vm.GetRangePerc(tbData_saturationTemp, false)
+      self.uiBinder.slider_exposure_adjust.value = vm.GetRangePerc(tbData_exposureTemp, false)
+      self.uiBinder.slider_constrast_adjust.value = vm.GetRangePerc(tbData_contrastTemp, false)
+      self.uiBinder.slider_saturation_adjust.value = vm.GetRangePerc(tbData_saturationTemp, false)
     else
-      self.panel.cont_slider_exposure.slider_adjust.Slider.value = vm.GetRangePerc(tbData_exposure, true)
-      self.panel.cont_slider_constrast.slider_adjust.Slider.value = vm.GetRangePerc(tbData_contrast, true)
-      self.panel.cont_slider_saturation.slider_adjust.Slider.value = vm.GetRangePerc(tbData_saturation, true)
+      self.uiBinder.slider_exposure_adjust.value = vm.GetRangePerc(tbData_exposure, true)
+      self.uiBinder.slider_constrast_adjust.value = vm.GetRangePerc(tbData_contrast, true)
+      self.uiBinder.slider_saturation_adjust.value = vm.GetRangePerc(tbData_saturation, true)
       cameraData_:SetIsSchemeParamUpdated(true)
     end
   end)
@@ -108,23 +108,23 @@ function Camera_menu_container_moviescreenView:OnRefresh()
       tbData_contrastTemp.value = secondaryData:GetMoviescreenData().contrast
       tbData_saturationTemp.value = secondaryData:GetMoviescreenData().saturation
     end
-    self.panel.cont_slider_exposure.slider_adjust.Slider.value = vm.GetRangePerc(tbData_exposureTemp, false)
-    self.panel.cont_slider_constrast.slider_adjust.Slider.value = vm.GetRangePerc(tbData_contrastTemp, false)
-    self.panel.cont_slider_saturation.slider_adjust.Slider.value = vm.GetRangePerc(tbData_saturationTemp, false)
+    self.uiBinder.slider_exposure_adjust.value = vm.GetRangePerc(tbData_exposureTemp, false)
+    self.uiBinder.slider_constrast_adjust.value = vm.GetRangePerc(tbData_contrastTemp, false)
+    self.uiBinder.slider_saturation_adjust.value = vm.GetRangePerc(tbData_saturationTemp, false)
     cameraData_.SecondEditMoviescreenDirty = false
   else
-    self.panel.cont_slider_exposure.slider_adjust.Slider.value = vm.GetRangePerc(self.tbData_exposure, cameraData_.MenuContainerMoviescreenDirty)
-    self.panel.cont_slider_constrast.slider_adjust.Slider.value = vm.GetRangePerc(self.tbData_contrast, cameraData_.MenuContainerMoviescreenDirty)
-    self.panel.cont_slider_saturation.slider_adjust.Slider.value = vm.GetRangePerc(self.tbData_saturation, cameraData_.MenuContainerMoviescreenDirty)
+    self.uiBinder.slider_exposure_adjust.value = vm.GetRangePerc(self.tbData_exposure, cameraData_.MenuContainerMoviescreenDirty)
+    self.uiBinder.slider_constrast_adjust.value = vm.GetRangePerc(self.tbData_contrast, cameraData_.MenuContainerMoviescreenDirty)
+    self.uiBinder.slider_saturation_adjust.value = vm.GetRangePerc(self.tbData_saturation, cameraData_.MenuContainerMoviescreenDirty)
     cameraData_.MenuContainerMoviescreenDirty = false
   end
   self:refreshSliderValueShowText()
 end
 
 function Camera_menu_container_moviescreenView:refreshSliderValueShowText()
-  self.panel.cont_slider_exposure.lab_num.TMPLab.text = vm.CalculatePercentageValue(self.tbData_exposure.showValueMin, self.tbData_exposure.showValueMax, self.panel.cont_slider_exposure.slider_adjust.Slider.value)
-  self.panel.cont_slider_constrast.lab_num.TMPLab.text = vm.CalculatePercentageValue(self.tbData_contrast.showValueMin, self.tbData_contrast.showValueMax, self.panel.cont_slider_constrast.slider_adjust.Slider.value)
-  self.panel.cont_slider_saturation.lab_num.TMPLab.text = vm.CalculatePercentageValue(self.tbData_saturation.showValueMin, self.tbData_saturation.showValueMax, self.panel.cont_slider_saturation.slider_adjust.Slider.value)
+  self.uiBinder.lab_exposure_num.text = vm.CalculatePercentageValue(self.tbData_exposure.showValueMin, self.tbData_exposure.showValueMax, self.uiBinder.slider_exposure_adjust.value)
+  self.uiBinder.lab_constrast_num.text = vm.CalculatePercentageValue(self.tbData_contrast.showValueMin, self.tbData_contrast.showValueMax, self.uiBinder.slider_constrast_adjust.value)
+  self.uiBinder.lab_saturation_num.text = vm.CalculatePercentageValue(self.tbData_saturation.showValueMin, self.tbData_saturation.showValueMax, self.uiBinder.slider_saturation_adjust.value)
 end
 
 return Camera_menu_container_moviescreenView

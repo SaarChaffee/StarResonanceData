@@ -15,8 +15,6 @@ message FollowTableBase {
     number_array ParaTimeTo = 112;
     number_array ParaTimeBack = 1135;
 }
-
 message FollowTableMgr {
-    map<int32, .bokura.FollowTableBase> datas = 1;
+    repeated bokura.FollowTableMgr.DatasEntry datas = 1;
 }
-

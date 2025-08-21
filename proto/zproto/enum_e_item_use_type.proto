@@ -10,6 +10,13 @@ enum EItemUseType {
     ItemUseTalentPoint = 4;
     ItemUseCraftEnergyRecover = 5;
     ItemUseEatFood = 6;
+    ItemUseLifeProfessionExp = 7;
+    ItemUseLifeProfessionPoint = 8;
+    ItemUseLifeProfessionRecipe = 9;
+    ItemUseMonthlyCard = 10;
+    ItemUseUnlockEmoji = 11;
+    ItemUseBuyHouse = 12;
+    ItemUseMonthly = 13;
+    ItemUseBattlePass = 14;
     ItemUseOpenUI = 101;
 }
-

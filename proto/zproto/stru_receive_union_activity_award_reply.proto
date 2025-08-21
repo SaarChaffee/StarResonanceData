@@ -2,8 +2,11 @@ syntax = "proto3";
 
 package zproto;
 
-message ReceiveUnionActivityAwardReply {
-    int32 errCode = 1;
-    repeated int32 receivedPointAwardIds = 2;
-}
+import "enum_e_error_code.proto";
+import "stru_item.proto";
 
+message ReceiveUnionActivityAwardReply {
+    repeated int32 receivedPointAwardIds = 1;
+    repeated zproto.Item items = 2;
+    zproto.EErrorCode errCode = 3;
+}

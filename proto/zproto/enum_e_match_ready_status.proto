@@ -7,4 +7,3 @@ enum EMatchReadyStatus {
     EMatchReadyStatusReady = 1;
     EMatchReadyStatusUnReady = 2;
 }
-

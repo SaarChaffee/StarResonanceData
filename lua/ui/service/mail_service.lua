@@ -22,10 +22,20 @@ function MailService:OnEnterScene()
 end
 
 function MailService:checkMailList()
-  if Z.StageMgr.GetIsInGameScene() then
-    local mailVm = Z.VMMgr.GetVM("mail")
-    mailVm.AsyncCheckMailList()
+  if not Z.StageMgr.GetIsInGameScene() then
+    return
   end
+  Z.CoroUtil.create_coro_xpcall(function()
+    local mailData = Z.DataMgr.Get("mail_data")
+    if mailData:GetIsInit() then
+      local mailVm = Z.VMMgr.GetVM("mail")
+      mailVm.AsyncCheckMailList()
+    else
+      local mailVM = Z.VMMgr.GetVM("mail")
+      mailVM.AsyncGetMailNum()
+      mailVM.UpdateMailRedNum()
+    end
+  end)()
 end
 
 return MailService

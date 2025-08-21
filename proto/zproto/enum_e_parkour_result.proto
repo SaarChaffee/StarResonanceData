@@ -7,4 +7,3 @@ enum EParkourResult {
     EParkourResult_Success = 1;
     EParkourResult_Fail = 2;
 }
-

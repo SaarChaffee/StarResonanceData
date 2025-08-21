@@ -15,8 +15,6 @@ message WeaponSkinTableBase {
     int32 Unlock = 1666;
     mlstring UnlockDes = 1991;
 }
-
 message WeaponSkinTableMgr {
-    map<int32, .bokura.WeaponSkinTableBase> datas = 1;
+    repeated bokura.WeaponSkinTableMgr.DatasEntry datas = 1;
 }
-

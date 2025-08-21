@@ -6,7 +6,5 @@ import "stru_dungeon_enter_count.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonEnterLimit {
-    map<int32, .zproto.DungeonEnterCount> enterCount = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.DungeonEnterLimit.EnterCountEntry enterCount = 1;
 }
-

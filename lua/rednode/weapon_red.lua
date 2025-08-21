@@ -4,7 +4,7 @@ local weaponSubRedIdTab = {}
 function WeaponRed.AddNewRed(weaponType, id, count)
   local childRedId = string.zconcat(E.RedType.WeaponDevelop, weaponType, id)
   Z.RedPointMgr.AddChildNodeData(E.RedType.WeaponDevelop, weaponType, childRedId)
-  Z.RedPointMgr.RefreshServerNodeCount(childRedId, count)
+  Z.RedPointMgr.UpdateNodeCount(childRedId, count)
   weaponSubRedIdTab[weaponType .. id] = childRedId
 end
 
@@ -17,7 +17,7 @@ end
 
 function WeaponRed.RemoveRed(id)
   if weaponSubRedIdTab[id] then
-    Z.RedPointMgr.RefreshServerNodeCount(weaponSubRedIdTab[id], 0)
+    Z.RedPointMgr.UpdateNodeCount(weaponSubRedIdTab[id], 0)
     weaponSubRedIdTab[id] = nil
   end
 end

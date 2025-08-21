@@ -16,6 +16,7 @@ function FaceData:Init()
   self:ResetFaceData()
   self.isInit_ = false
   self.FaceModelName = "FaceModel"
+  self.FaceCacheData = "FaceCacheData"
   self.FaceShare = nil
   self.FaceCosDataList = nil
   self.UploadFaceDataSuccess = nil
@@ -25,10 +26,13 @@ end
 
 function FaceData:UnInit()
   self.CancelSource:Recycle()
+  self.isInit_ = false
 end
 
 function FaceData:Clear()
   self:clearFaceTableData()
+  self:ResetFaceData()
+  self.isInit_ = false
 end
 
 function FaceData:clearFaceTableData()
@@ -49,8 +53,6 @@ end
 function FaceData:ResetFaceCacheValue()
   self.cacheHeightSliderValue = 0
   self.cacheHeightShoeValue = 0
-  self.CanUseCacheFaceData = false
-  self.CacheFaceDataAccountName = ""
   self.faceEditorOperationIndex_ = 0
   self.faceEditorOperationList_ = {}
   self.copyColorHtml_ = nil
@@ -138,6 +140,7 @@ function FaceData:SetFaceOptionValue(pbEnum, value, ignoreRecord)
   else
     logError("[SetFaceOptionValue] optionEnum = {0}\228\184\141\229\173\152\229\156\168", pbEnum)
   end
+  Z.EventMgr:Dispatch(Z.ConstValue.Face.FaceOptionChange, pbEnum, value)
 end
 
 function FaceData:SetFaceOptionValueWithoutLimit(pbEnum, value)
@@ -172,7 +175,7 @@ function FaceData:GetPlayerGender()
 end
 
 function FaceData:GetPlayerModelId()
-  if Z.StageMgr.GetIsInLogin() then
+  if Z.StageMgr.GetIsInLogin() or Z.EntityMgr.PlayerEnt == nil then
     return self.ModelId
   else
     return Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value

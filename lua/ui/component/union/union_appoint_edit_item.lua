@@ -54,10 +54,9 @@ function UnionAppointEditItem:onItemClick()
     local desc = Lang("UnionTransferPresidentTips", param)
     Z.DialogViewDataMgr:OpenNormalDialog(desc, function()
       local reply = self.unionVM_:AsyncReqTransferPresident(self.unionVM_:GetPlayerUnionId(), self.memberData_.socialData.basicData.charID, self.parentView.cancelSource:CreateToken())
-      if reply.errorCode == 0 then
+      if reply.errCode == 0 then
         self.unionVM_:CloseAppointEditTips()
       end
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   else
     local isDefaultPosition = self.unionVM_:IsDefaultPosition(self.officialData_.officialId)
@@ -70,8 +69,8 @@ function UnionAppointEditItem:onItemClick()
     Z.CoroUtil.create_coro_xpcall(function()
       local modifyDict = {}
       modifyDict[self.memberData_.socialData.basicData.charID] = self.officialData_.officialId
-      local reply = self.unionVM_:AsyncReqChangeOfficialMembers(self.unionVM_:GetPlayerUnionId(), modifyDict, self.parentView.cancelSource:CreateToken())
-      if reply.errorCode == 0 then
+      local errCode = self.unionVM_:AsyncReqChangeOfficialMembers(self.unionVM_:GetPlayerUnionId(), modifyDict, self.parentView.cancelSource:CreateToken())
+      if errCode == 0 then
         Z.TipsVM.ShowTipsLang(1000592)
         self.unionVM_:CloseAppointEditTips()
       end

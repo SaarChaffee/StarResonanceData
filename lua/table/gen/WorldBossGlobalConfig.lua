@@ -3,7 +3,7 @@ local WorldBossGlobalConfig = {
   WorldBossFunctionId = 800902,
   WorldBossFinalHitAwardId = 11001031,
   WorldBossAwardCountId = 21,
-  WorldBossMatchOverTime = 180,
+  WorldBossMatchOverTime = 120,
   WorldBossMatchMaxNum = 20,
   WorldBossMatchMinNum = 12,
   WorldBossMatchAiMaxNum = 8,
@@ -12,21 +12,15 @@ local WorldBossGlobalConfig = {
     {3, 1}
   },
   WorldBossPersonalScoreAward = {
-    {500, 11001051},
-    {1000, 11001052},
-    {1500, 11001053},
-    {2000, 11001054},
-    {2500, 11001055},
-    {3000, 11001056},
-    {3500, 11001057},
-    {4000, 11001058},
-    {4500, 11001059},
-    {5000, 11001060}
+    {300, 11001051},
+    {600, 11001052},
+    {900, 11001053},
+    {1200, 11001054}
   },
-  WorldBossDungeonId = 7150,
-  WorldBossPreviewAward = 11001032,
+  WorldBossDungeonId = 12050,
+  WorldBossPreviewAward = 20110130,
   WorldBossMatchFillProfession = {1},
-  WorldBossMonsterId = 20004,
+  WorldBossMonsterId = 1205001,
   WorldBossOpenTimerId = 220,
   WorldBossPreOpenTimerId = 221,
   WorldBossAwardResetTimerId = 222,
@@ -40,19 +34,19 @@ local WorldBossGlobalConfig = {
   WorldBossStageMailId = 1212,
   WorldBossMatchMaxTime = 300,
   WorldBossTankScorePara = {
-    0.5,
-    1,
+    2.5,
+    0,
     0
   },
   WorldBossDpsScorePara = {
     1,
-    0.2,
+    0,
     0
   },
   WorldBossHealerScorePara = {
-    0.5,
-    0.2,
-    0.5
+    1,
+    0,
+    0.12
   },
   WorldBossOpenChat = {8009002, 8009006}
 }

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+import "enum_e_body_size.proto";
+
+message MatchPlayerShowInfo {
+    string name = 1;
+    int32 gender = 2;
+    zproto.EBodySize bodySize = 3;
+    int32 level = 4;
+    zproto.AvatarInfo avatarInfo = 5;
+}

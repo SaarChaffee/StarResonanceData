@@ -10,6 +10,11 @@ end
 function Tips_underlineView:OnActive()
   self:initFunc()
   self.togList_ = {}
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   Z.CoroUtil.create_coro_xpcall(function()
     self:asyncInitSkillTags()
   end)()
@@ -19,6 +24,7 @@ function Tips_underlineView:OnDeActive()
   for i = 1, #self.togList_ do
     self.togList_[i].group = nil
     self.togList_[i]:RemoveAllListeners()
+    self.togList_[i].isOn = false
   end
   self.togList_ = nil
 end

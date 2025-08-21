@@ -203,6 +203,55 @@ function string.zcut(str, count, suffix)
   return str .. suffix
 end
 
+function string.zcutNormalize(str, count, suffix)
+  local l_str = tostring(str)
+  local l_count = tonumber(count)
+  if l_count == nil then
+    return l_str
+  end
+  local tCode = {}
+  local tName = {}
+  local nLenInByte = #l_str
+  local nWidth = 0
+  for i = 1, nLenInByte do
+    local curByte = string.byte(l_str, i)
+    local byteCount = 0
+    if 0 < curByte and curByte < 128 then
+      byteCount = 1
+    elseif 192 <= curByte and curByte < 224 then
+      byteCount = 2
+    elseif 224 <= curByte and curByte < 240 then
+      byteCount = 3
+    elseif 240 <= curByte and curByte < 248 then
+      byteCount = 4
+    end
+    local char
+    if 0 < byteCount then
+      char = string.sub(l_str, i, i + byteCount - 1)
+      i = i + byteCount - 1
+    end
+    if 1 <= byteCount then
+      nWidth = nWidth + 1
+      table.insert(tName, char)
+      table.insert(tCode, 1)
+    end
+  end
+  if l_count < nWidth then
+    local _sN = ""
+    local _len = 0
+    for i = 1, #tName do
+      _len = _len + tCode[i]
+      if l_count < _len then
+        break
+      end
+      _sN = _sN .. tName[i]
+    end
+    str = _sN
+  end
+  suffix = suffix or ""
+  return str .. suffix
+end
+
 function string.zisEmpty(str)
   local l_strType = type(str)
   if l_strType ~= "string" and l_strType ~= "number" then

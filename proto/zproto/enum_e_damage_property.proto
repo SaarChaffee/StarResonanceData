@@ -14,4 +14,3 @@ enum EDamageProperty {
     Dark = 8;
     Count = 9;
 }
-

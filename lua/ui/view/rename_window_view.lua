@@ -45,7 +45,7 @@ end
 
 function Rename_window_view:onInputChanged(str)
   self.inputName_ = str
-  if string.zlen(self.inputName_) > self.nameLimitNum_ then
+  if string.zlenNormalize(self.inputName_) > self.nameLimitNum_ then
     self.uiBinder.lab_rule.text = string.format(Lang("ErrorCodeTipString"), Lang("ErrNameSizeError"))
     self:playErrorTipsAni(true)
   else
@@ -61,7 +61,7 @@ function Rename_window_view:onCheckNameBtnClick()
   if self.inputName_ == "" then
     self.uiBinder.lab_rule.text = string.format(Lang("ErrorCodeTipString"), Lang("ErrEmptyName"))
     self:playErrorTipsAni(true)
-  elseif string.zlen(self.inputName_) > self.nameLimitNum_ then
+  elseif string.zlenNormalize(self.inputName_) > self.nameLimitNum_ then
   elseif self.inputName_ == Z.ContainerMgr.CharSerialize.charBase.name then
     self.uiBinder.lab_rule.text = Z.TipsVM.GetMessageContent(Z.PbEnum("EErrorCode", "ErrChangeSameName"))
     self:playErrorTipsAni(true)

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ShopCompensationInfo {
+    int64 entorStoreNum = 1;
+    int64 buyNum = 2;
+}

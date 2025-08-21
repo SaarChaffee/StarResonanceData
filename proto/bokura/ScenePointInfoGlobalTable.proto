@@ -8,8 +8,6 @@ message ScenePointInfoGlobalTableBase {
     int32 UId = 2028;
     number_array Position = 686;
 }
-
 message ScenePointInfoGlobalTableMgr {
-    map<int32, .bokura.ScenePointInfoGlobalTableBase> datas = 1;
+    repeated bokura.ScenePointInfoGlobalTableMgr.DatasEntry datas = 1;
 }
-

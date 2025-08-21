@@ -11,10 +11,8 @@ function ExchangeConditionLoopItem:Refresh(data)
   if data then
     local path
     if data.bResult then
-      self.uiBinder.img_icon.transform:SetSizeDelta(26, 22)
       path = self.uiBinder.prefab_cache:GetString("unlock")
     else
-      self.uiBinder.img_icon.transform:SetSizeDelta(23.4, 28.6)
       path = self.uiBinder.prefab_cache:GetString("lock")
     end
     self.uiBinder.img_icon:SetImage(path)

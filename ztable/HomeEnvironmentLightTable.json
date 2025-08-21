@@ -1,0 +1,106 @@
+{
+  "1": {
+    "Id": 1,
+    "Name": "",
+    "Type": 1,
+    "Prefab": "",
+    "Color": [],
+    "Parameter": [
+      0.8,
+      0.01,
+      2.0
+    ]
+  },
+  "2": {
+    "Id": 2,
+    "Name": "",
+    "Type": 1,
+    "Prefab": "",
+    "Color": [
+      141,
+      182,
+      255,
+      255
+    ],
+    "Parameter": [
+      1.5,
+      0.01,
+      2.0
+    ]
+  },
+  "3": {
+    "Id": 3,
+    "Name": "",
+    "Type": 1,
+    "Prefab": "",
+    "Color": [
+      255,
+      244,
+      203,
+      255
+    ],
+    "Parameter": [
+      1.5,
+      0.01,
+      2.0
+    ]
+  },
+  "4": {
+    "Id": 4,
+    "Name": "",
+    "Type": 1,
+    "Prefab": "",
+    "Color": [
+      255,
+      170,
+      141,
+      255
+    ],
+    "Parameter": [
+      1.5,
+      0.01,
+      2.0
+    ]
+  },
+  "5": {
+    "Id": 5,
+    "Name": "",
+    "Type": 1,
+    "Prefab": "",
+    "Color": [
+      59,
+      99,
+      133,
+      255
+    ],
+    "Parameter": [
+      1.5,
+      0.01,
+      2.0
+    ]
+  },
+  "7": {
+    "Id": 7,
+    "Name": "",
+    "Type": 2,
+    "Prefab": "weather_data/home_system_outdoor_001/home_system_outdoor_001_env_center",
+    "Color": [],
+    "Parameter": [
+      1.5,
+      0.01,
+      2.0
+    ]
+  },
+  "8": {
+    "Id": 8,
+    "Name": "",
+    "Type": 2,
+    "Prefab": "weather_data/home_system_outdoor_002/home_system_outdoor_002_env_center",
+    "Color": [],
+    "Parameter": [
+      1.5,
+      0.01,
+      2.0
+    ]
+  }
+}

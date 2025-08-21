@@ -57,8 +57,8 @@ function QuestCatalogueLoopItem:initQuestTpl(questId)
   if not quest then
     return
   end
-  local questVM = Z.VMMgr.GetVM("quest")
-  local goalIdx = questVM.GetUncompletedGoalIndex(questId)
+  local questGoalVM = Z.VMMgr.GetVM("quest_goal")
+  local goalIdx = questGoalVM.GetUncompletedGoalIndex(questId)
   local trackData = questData:GetGoalTrackData(quest.stepId, goalIdx)
   local toSceneId = trackData and trackData.toSceneId or 0
   local sceneName
@@ -79,12 +79,13 @@ function QuestCatalogueLoopItem:initQuestTpl(questId)
   self.tog_item_:AddListener(function(isOn)
     if isOn then
       questDetailView:SelectQuest(questId)
-      questVM.CloseQuestRed(questId)
+      Z.RedCacheContainer:GetQuestRed().CloseQuestRed(questId)
       self.uiBinder.Ref:SetVisible(self.img_dot_, false)
     end
   end)
   self.tog_item_.isOn = self.parent.uiView.selectQuest_ == questId
-  self.uiBinder.Ref:SetVisible(self.img_dot_, questVM.IsShowQuestRed(questId))
+  local isShowRedDot = Z.RedCacheContainer:GetQuestRed().IsShowQuestRed(questId)
+  self.uiBinder.Ref:SetVisible(self.img_dot_, isShowRedDot)
 end
 
 function QuestCatalogueLoopItem:OnReset()
@@ -95,8 +96,8 @@ function QuestCatalogueLoopItem:OnReset()
 end
 
 function QuestCatalogueLoopItem:refreshQuestStateIcon(questId)
-  local questDetailVM = Z.VMMgr.GetVM("questdetail")
-  local path = questDetailVM.GetStateIconByQuestId(questId)
+  local questIconVM = Z.VMMgr.GetVM("quest_icon")
+  local path = questIconVM.GetStateIconByQuestId(questId)
   local questData = Z.DataMgr.Get("quest_data")
   if questData:IsShowInTrackBar(questId) and path ~= nil and path ~= "" then
     self.uiBinder.Ref:SetVisible(self.img_state_, true)

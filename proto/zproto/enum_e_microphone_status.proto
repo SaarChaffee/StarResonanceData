@@ -7,4 +7,3 @@ enum EMicrophoneStatus {
     EMicrophoneStatusClosed = 1;
     EMicrophoneStatusOpenSpeaker = 2;
 }
-

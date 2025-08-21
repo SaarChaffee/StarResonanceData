@@ -10,6 +10,7 @@ function BattlePassData:Init()
   self.seasonTask_ = {}
   self.BattlePassLevel = 0
   self.BPCardPageIndex = 0
+  self.CurBattlePassData = {}
 end
 
 function BattlePassData:Clear()
@@ -17,6 +18,7 @@ function BattlePassData:Clear()
   self.seasonTask_ = {}
   self.BattlePassLevel = 0
   self.BPCardPageIndex = 0
+  self.CurBattlePassData = {}
 end
 
 function BattlePassData:UnInit()

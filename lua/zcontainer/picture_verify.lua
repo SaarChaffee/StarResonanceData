@@ -5,15 +5,15 @@ local mergeDataFuncs = {
     container.__data__.size = br.ReadUInt32(buffer)
     container.Watcher:MarkDirty("size", last)
   end,
-  [2] = function(container, buffer, watcherList)
-    local last = container.__data__.version
-    container.__data__.version = br.ReadInt32(buffer)
-    container.Watcher:MarkDirty("version", last)
-  end,
   [3] = function(container, buffer, watcherList)
     local last = container.__data__.ReviewStartTime
     container.__data__.ReviewStartTime = br.ReadUInt32(buffer)
     container.Watcher:MarkDirty("ReviewStartTime", last)
+  end,
+  [4] = function(container, buffer, watcherList)
+    local last = container.__data__.version
+    container.__data__.version = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("version", last)
   end
 }
 local setForbidenMt = function(t)
@@ -46,11 +46,11 @@ local resetData = function(container, pbData)
   if not pbData.size then
     container.__data__.size = 0
   end
-  if not pbData.version then
-    container.__data__.version = 0
-  end
   if not pbData.ReviewStartTime then
     container.__data__.ReviewStartTime = 0
+  end
+  if not pbData.version then
+    container.__data__.version = 0
   end
   setForbidenMt(container)
 end
@@ -96,15 +96,15 @@ local getContainerElem = function(container)
     dataType = 0,
     data = container.size
   }
-  ret.version = {
-    fieldId = 2,
-    dataType = 0,
-    data = container.version
-  }
   ret.ReviewStartTime = {
     fieldId = 3,
     dataType = 0,
     data = container.ReviewStartTime
+  }
+  ret.version = {
+    fieldId = 4,
+    dataType = 0,
+    data = container.version
   }
   return ret
 end

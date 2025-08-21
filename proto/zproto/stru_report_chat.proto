@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_chit_chat_channel_type.proto";
+
+message ReportChat {
+    zproto.ChitChatChannelType chatChannelType = 1;
+    string channelId = 2;
+    int64 chatID = 3;
+    string chatContent = 4;
+}

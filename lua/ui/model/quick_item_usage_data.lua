@@ -18,20 +18,26 @@ function QuickItemUsageData:Clear()
   self.quickItemUseageMap_ = {}
 end
 
-function QuickItemUsageData:EnItemQuickQueue(configId)
-  if self.quickItemUseageMap_[configId] ~= nil then
+function QuickItemUsageData:EnItemQuickQueue(configId, uuid)
+  if self.quickItemUseageMap_[uuid] ~= nil then
     return
   end
-  self.quickItemUseageMap_[configId] = true
-  table.insert(self.quickItemUsageQueue_, configId)
+  self.quickItemUseageMap_[uuid] = true
+  local queueData = {configId = configId, uuid = uuid}
+  table.insert(self.quickItemUsageQueue_, queueData)
 end
 
-function QuickItemUsageData:DeItemQuickQueue(configId)
-  if self.quickItemUseageMap_[configId] == nil then
+function QuickItemUsageData:DeItemQuickQueue(configId, uuid)
+  if self.quickItemUseageMap_[uuid] == nil then
     return
   end
-  self.quickItemUseageMap_[configId] = nil
-  table.zremoveOneByValue(self.quickItemUsageQueue_, configId)
+  self.quickItemUseageMap_[uuid] = nil
+  for i, v in ipairs(self.quickItemUsageQueue_) do
+    if v.configId == configId and v.uuid == uuid then
+      table.remove(self.quickItemUsageQueue_, i)
+      break
+    end
+  end
 end
 
 function QuickItemUsageData:PeekItemQuickQueue()
@@ -45,8 +51,8 @@ function QuickItemUsageData:PeekItemQuickQueue()
   return self.quickItemUsageQueue_[count]
 end
 
-function QuickItemUsageData:CheckItemVail(configId)
-  return self.quickItemUseageMap_[configId] ~= nil
+function QuickItemUsageData:CheckItemVail(configId, uuid)
+  return self.quickItemUseageMap_[uuid] ~= nil
 end
 
 function QuickItemUsageData:HasQuickUseItem()

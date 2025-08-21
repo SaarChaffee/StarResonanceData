@@ -21,4 +21,3 @@ enum EAccessType {
     AccessSex = 1000;
     AccessSeason = 1001;
 }
-

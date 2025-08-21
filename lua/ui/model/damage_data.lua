@@ -261,16 +261,16 @@ function DmgData:AttUidAndByUuidISEquail(data, weaponID)
   return false
 end
 
-function DmgData:FindSklillUuid(data, skiuid)
+function DmgData:FindSklillUuid(data, skillId)
   for key, value in pairs(data) do
-    if value.skillUuid == skiuid then
+    if value.skillId == skillId then
       return value
     end
   end
   return false
 end
 
-function DmgData:CreatDmgData(weaponId, data1)
+function DmgData:CreateDmgData(weaponId, data1)
   local tab = {}
   tab.attUuid = data1.attUuid
   tab.byAttUuid = data1.byAttUuid
@@ -278,8 +278,8 @@ function DmgData:CreatDmgData(weaponId, data1)
   tab.hitType = data1.weapon.dmgSkill.hitType
   tab.allHit = 0
   tab.data = {}
-  local weaponTab = self:CreatDWeaponTab(weaponId)
-  local skillTab = self:CreatSkillTab(data1)
+  local weaponTab = self:CreateWeaponTab(weaponId)
+  local skillTab = self:CreateSkillTab(data1)
   table.insert(weaponTab.data, skillTab)
   table.insert(tab.data, weaponTab)
   table.insert(self.DamageDatas, tab)
@@ -294,15 +294,17 @@ function DmgData:DownTimer(data)
   end
 end
 
-function DmgData:CreatSkillTab(data1)
+function DmgData:CreateSkillTab(data1)
   local skillTab = {}
   skillTab.Hit = data1.weapon.dmgSkill.hit
-  skillTab.skillUuid = data1.weapon.dmgSkill.skillUuid
+  skillTab.skillId = data1.weapon.dmgSkill.skillUuid
+  skillTab.damageId = data1.weapon.dmgSkill.damageId
   skillTab.count = data1.weapon.dmgSkill.count
   skillTab.hpLessenValue = data1.weapon.dmgSkill.hpLessenValue
   skillTab.shieldLessenValue = data1.weapon.dmgSkill.shieldLessenValue
   skillTab.sheildAndHpLessenValue = skillTab.hpLessenValue + skillTab.shieldLessenValue
   skillTab.hitSource = data1.weapon.dmgSkill.hitSource
+  skillTab.actualValue = data1.weapon.dmgSkill.actualValue
   if data1.weapon.dmgSkill.isDeda then
     skillTab.overHit = skillTab.Hit - skillTab.hpLessenValue
   else
@@ -311,7 +313,7 @@ function DmgData:CreatSkillTab(data1)
   return skillTab
 end
 
-function DmgData:CreatDWeaponTab(weaponId)
+function DmgData:CreateWeaponTab(weaponId)
   local weaponTab = {}
   weaponTab.id = weaponId
   weaponTab.time = 1
@@ -344,6 +346,7 @@ function DmgData:SetDmgData(data1, weaponId)
         end, 0.1, 50)
         local skillData = self:FindSklillUuid(datas.data, data1.weapon.dmgSkill.skillUuid)
         if skillData then
+          skillData.actualValue = skillData.actualValue + data1.weapon.dmgSkill.actualValue
           skillData.Hit = skillData.Hit + data1.weapon.dmgSkill.hit
           skillData.count = skillData.count + data1.weapon.dmgSkill.count
           skillData.hpLessenValue = skillData.hpLessenValue + data1.weapon.dmgSkill.hpLessenValue
@@ -367,13 +370,13 @@ function DmgData:SetDmgData(data1, weaponId)
             skillData.overHit = skillData.overHit + 0
           end
         else
-          local skillTab = self:CreatSkillTab(data1)
+          local skillTab = self:CreateSkillTab(data1)
           table.insert(datas.data, skillTab)
         end
       else
         do
-          local weaponTab = self:CreatDWeaponTab(weaponId)
-          local skillTab = self:CreatSkillTab(data1)
+          local weaponTab = self:CreateWeaponTab(weaponId)
+          local skillTab = self:CreateSkillTab(data1)
           table.insert(weaponTab.data, skillTab)
           table.insert(value.data, weaponTab)
         end
@@ -381,7 +384,7 @@ function DmgData:SetDmgData(data1, weaponId)
     end
   end
   if not isFlag then
-    self:CreatDmgData(weaponId, data1)
+    self:CreateDmgData(weaponId, data1)
   end
   self.NowAttUuid = data1.attUuid
   self.NowByAttUuid = data1.byAttUuid
@@ -416,7 +419,7 @@ function DmgData:FindAttack(uuid)
       return
     end
   end
-  self:CreatAttack(uuid)
+  self:CreateAttack(uuid)
 end
 
 function DmgData:FindByAttack(uuid)
@@ -435,10 +438,10 @@ function DmgData:FindByAttack(uuid)
       return
     end
   end
-  self:CreatByAttack(uuid)
+  self:CreateByAttack(uuid)
 end
 
-function DmgData:CreatByAttack(uuid)
+function DmgData:CreateByAttack(uuid)
   local byatt = {}
   byatt.uuid = uuid
   byatt.time = 1
@@ -449,7 +452,7 @@ function DmgData:CreatByAttack(uuid)
   table.insert(self.AllByAttUuid, byatt)
 end
 
-function DmgData:CreatAttack(uuid)
+function DmgData:CreateAttack(uuid)
   local att = {}
   att.uuid = uuid
   att.time = 1

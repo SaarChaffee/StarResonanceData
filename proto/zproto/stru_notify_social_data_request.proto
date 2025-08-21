@@ -5,6 +5,5 @@ package zproto;
 import "stru_social_data.proto";
 
 message NotifySocialDataRequest {
-    zproto.SocialData data = 2;
+    zproto.SocialData data = 1;
 }
-

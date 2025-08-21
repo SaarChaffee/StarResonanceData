@@ -7,9 +7,7 @@ import "stru_dirty_mask.proto";
 
 message PersonalWorldBossInfo {
     int32 score = 1;
-    map<int32, .zproto.CommonAwardInfo> scoreAwardInfo = 2;
-    map<int32, .zproto.CommonAwardInfo> bossAwardInfo = 3;
+    repeated zproto.PersonalWorldBossInfo.ScoreAwardInfoEntry scoreAwardInfo = 2;
+    repeated zproto.PersonalWorldBossInfo.BossAwardInfoEntry bossAwardInfo = 3;
     int32 uuid = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

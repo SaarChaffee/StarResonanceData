@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_home_land_task.proto";
+
+message HomeLandPlayerTaskInfo {
+    int64 nextTaskReflushTime = 1;
+    int32 curLeftTimes = 2;
+    repeated zproto.HomeLandPlayerTaskInfo.CurTaskMapEntry curTaskMap = 3;
+}

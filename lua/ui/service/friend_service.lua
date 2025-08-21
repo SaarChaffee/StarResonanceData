@@ -25,10 +25,11 @@ end
 
 function FriendService:loadFriendBaseData()
   Z.CoroUtil.create_coro_xpcall(function()
-    if Z.StageMgr.GetIsInGameScene() then
-      local friendsVm = Z.VMMgr.GetVM("friends_main")
-      friendsVm.AsyncGetFriendBaseData()
+    if not Z.StageMgr.GetIsInGameScene() then
+      return
     end
+    local friendsVm = Z.VMMgr.GetVM("friends_main")
+    friendsVm.AsyncGetFriendBaseData()
   end)()
 end
 

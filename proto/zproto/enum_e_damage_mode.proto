@@ -7,4 +7,3 @@ enum EDamageMode {
     DamagePhysical = 1;
     DamageMagical = 2;
 }
-

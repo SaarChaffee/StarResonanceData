@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message GetSummaryInfoRequest {
-    int64 targetCharId = 1;
-}
-

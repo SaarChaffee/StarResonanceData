@@ -12,8 +12,6 @@ message EntityStandardAttrTableBase {
     int_table Attack = 1316;
     int32 BodyPartMaxHp = 482;
 }
-
 message EntityStandardAttrTableMgr {
-    map<int32, .bokura.EntityStandardAttrTableBase> datas = 1;
+    repeated bokura.EntityStandardAttrTableMgr.DatasEntry datas = 1;
 }
-

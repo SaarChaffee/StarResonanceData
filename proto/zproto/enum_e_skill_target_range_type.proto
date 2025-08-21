@@ -9,4 +9,3 @@ enum ESkillTargetRangeType {
     SkillPos = 3;
     SkillSelf = 4;
 }
-

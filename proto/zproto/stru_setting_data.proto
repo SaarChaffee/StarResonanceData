@@ -5,7 +5,5 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message SettingData {
-    map<int32, string> settingMap = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.SettingData.SettingMapEntry settingMap = 1;
 }
-

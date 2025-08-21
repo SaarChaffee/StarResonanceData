@@ -8,4 +8,3 @@ message SetTeamTargetInfoRequest {
     bool autoMatch = 4;
     string desc = 5;
 }
-

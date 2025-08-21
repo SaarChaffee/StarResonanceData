@@ -8,9 +8,7 @@ import "stru_dirty_mask.proto";
 
 message SeasonMedalInfo {
     uint32 seasonId = 1;
-    map<uint32, .zproto.MedalHole> normalHoleInfos = 2;
+    repeated zproto.SeasonMedalInfo.NormalHoleInfosEntry normalHoleInfos = 2;
     zproto.MedalHole coreHoleInfo = 3;
-    map<uint32, .zproto.MedalNode> coreHoleNodeInfos = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.SeasonMedalInfo.CoreHoleNodeInfosEntry coreHoleNodeInfos = 4;
 }
-

@@ -8,4 +8,3 @@ message TakeOnRideParam {
     zproto.ERidePropertyType RideType = 1;
     int32 RideId = 2;
 }
-

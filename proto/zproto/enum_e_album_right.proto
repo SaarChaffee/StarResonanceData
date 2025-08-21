@@ -8,4 +8,3 @@ enum EAlbumRight {
     SelfAccess = 2;
     UnionAccess = 3;
 }
-

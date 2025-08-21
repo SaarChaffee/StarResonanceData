@@ -11,4 +11,3 @@ enum EDungeonState {
     DungeonStateSettlement = 5;
     DungeonStateVote = 6;
 }
-

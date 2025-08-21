@@ -15,7 +15,7 @@ local mergeDataFuncs = {
     end
     for i = 1, add do
       local dk = br.ReadUInt32(buffer)
-      local dv = br.ReadUInt64(buffer)
+      local dv = br.ReadInt64(buffer)
       container.resonances.__data__[dk] = dv
       container.Watcher:MarkMapDirty("resonances", dk, nil)
     end
@@ -27,7 +27,7 @@ local mergeDataFuncs = {
     end
     for i = 1, update do
       local dk = br.ReadUInt32(buffer)
-      local dv = br.ReadUInt64(buffer)
+      local dv = br.ReadInt64(buffer)
       local last = container.resonances.__data__[dk]
       container.resonances.__data__[dk] = dv
       container.Watcher:MarkMapDirty("resonances", dk, last)

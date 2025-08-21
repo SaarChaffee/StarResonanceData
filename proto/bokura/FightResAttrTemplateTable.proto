@@ -18,8 +18,6 @@ message FightResAttrTemplateTableBase {
     string BattleResIcon = 1652;
     int_array InnerColor = 1655;
 }
-
 message FightResAttrTemplateTableMgr {
-    map<int64, .bokura.FightResAttrTemplateTableBase> datas = 1;
+    repeated bokura.FightResAttrTemplateTableMgr.DatasEntry datas = 1;
 }
-

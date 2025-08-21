@@ -1,11 +1,43 @@
 local EquipRed = {}
 EquipRed.ItemRed = {}
 local equipGs = {}
+local equipQuality = {}
 local lockPartTab = {}
-local itemEeventConfigIds = {}
+local wearConditionTab = {}
+local refineItemEventConfigIds = {}
+local forgeItemEventConfigIds = {}
 local refineItemDic = {}
 local funcVM_ = Z.VMMgr.GetVM("gotofunc")
 local equipRefineVm = Z.VMMgr.GetVM("equip_refine")
+
+function EquipRed.getEquipQuality(configId)
+  local quality = 0
+  if equipQuality[configId] then
+    quality = equipQuality[configId]
+  else
+    local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(configId, true)
+    if itemRow then
+      equipQuality[configId] = itemRow.Quality
+      quality = itemRow.Quality
+    end
+  end
+  return quality
+end
+
+function EquipRed.getEquipGs(configId)
+  local gs = 0
+  if equipGs[configId] then
+    gs = equipGs[configId]
+  else
+    local equipData = Z.TableMgr.GetTable("EquipTableMgr").GetRow(configId, true)
+    if equipData then
+      equipGs[configId] = equipData.EquipGs
+      wearConditionTab[configId] = equipData.WearCondition
+      gs = equipData.EquipGs
+    end
+  end
+  return gs
+end
 
 function EquipRed.changePartIsShowRed(partId)
   if lockPartTab[partId] then
@@ -22,21 +54,30 @@ function EquipRed.changePartIsShowRed(partId)
   if #partEquipList == 0 then
     return
   end
-  local maxGs, equips = equipVm.GetEquipMaxGsAndProfessionEquips(partEquipList, partId)
-  local redCount = 1
-  if equipData and equipPackage.items[equipData.itemUuid] then
-    local gs = 0
-    if equipGs[equipPackage.items[equipData.itemUuid].configId] then
-      gs = equipGs[equipPackage.items[equipData.itemUuid].configId]
-    else
-      local equipTableRow = Z.TableMgr.GetTable("EquipTableMgr").GetRow(equipPackage.items[equipData.itemUuid].configId, true)
-      if equipData then
-        equipGs[equipPackage.items[equipData.itemUuid].configId] = equipTableRow.EquipGs
-        gs = equipTableRow.EquipGs
+  local maxPerfactValue = 0
+  local redCount = 0
+  local equips = 0
+  local maxGs = 0
+  local maxQuality = 0
+  if not equipData or equipData.itemUuid == 0 then
+    maxGs, equips, maxQuality = equipVm.GetEquipMaxGsAndProfessionEquips(partEquipList, partId)
+    for index, value in ipairs(partEquipList) do
+      if equips[value.item.uuid] then
+        local gs = EquipRed.getEquipGs(value.item.configId)
+        local quality = EquipRed.getEquipQuality(value.item.configId)
+        if quality == maxQuality and gs == maxGs and maxPerfactValue < value.item.equipAttr.perfectionValue then
+          maxPerfactValue = value.item.equipAttr.perfectionValue
+        end
       end
     end
-    if maxGs < gs or equips[equipData.itemUuid] and gs == maxGs then
-      redCount = 0
+    redCount = 1
+    if equipData and equipPackage.items[equipData.itemUuid] then
+      local configId = equipPackage.items[equipData.itemUuid].configId
+      local gs = EquipRed.getEquipGs(configId)
+      local quality = EquipRed.getEquipQuality(configId)
+      if maxQuality < quality and maxGs < gs or equips[equipData.itemUuid] and gs == maxGs and quality == maxQuality and maxPerfactValue <= equipPackage.items[equipData.itemUuid].equipAttr.perfectionValue then
+        redCount = 0
+      end
     end
   end
   local parentNodeId = equipVm.GetEquipPartTabRed(partId)
@@ -44,24 +85,17 @@ function EquipRed.changePartIsShowRed(partId)
     local nodeId = parentNodeId .. value.item.uuid
     Z.RedPointMgr.AddChildNodeData(parentNodeId, E.RedType.EquipItem, nodeId)
     if redCount == 0 or maxGs == 0 then
-      Z.RedPointMgr.RefreshServerNodeCount(nodeId, 0)
+      Z.RedPointMgr.UpdateNodeCount(nodeId, 0)
     elseif E.EquipPart.Weapon == partId and not equipVm.CheckEquipIsCurProfession(value.item.configId) then
-      Z.RedPointMgr.RefreshServerNodeCount(nodeId, 0)
+      Z.RedPointMgr.UpdateNodeCount(nodeId, 0)
     else
-      local gs = 0
-      if equipGs[value.item.configId] then
-        gs = equipGs[value.item.configId]
+      local gs = EquipRed.getEquipGs(value.item.configId)
+      local quality = EquipRed.getEquipQuality(value.item.configId)
+      local isUnlock = Z.ConditionHelper.CheckCondition(wearConditionTab[value.item.configId] or {})
+      if equips[value.item.uuid] and quality == maxQuality and gs == maxGs and isUnlock and value.item.equipAttr.perfectionValue == maxPerfactValue then
+        Z.RedPointMgr.UpdateNodeCount(nodeId, redCount)
       else
-        local equipData = Z.TableMgr.GetTable("EquipTableMgr").GetRow(value.item.configId, true)
-        if equipData then
-          equipGs[value.item.configId] = equipData.EquipGs
-          gs = equipData.EquipGs
-        end
-      end
-      if equips[value.item.uuid] and gs == maxGs then
-        Z.RedPointMgr.RefreshServerNodeCount(nodeId, redCount)
-      else
-        Z.RedPointMgr.RefreshServerNodeCount(nodeId, 0)
+        Z.RedPointMgr.UpdateNodeCount(nodeId, 0)
       end
     end
   end
@@ -72,6 +106,19 @@ function EquipRed.changeEquip(container, dirtys)
     for partId, value in pairs(dirtys.equipList) do
       EquipRed.changePartIsShowRed(partId)
       EquipRed.refinePart(partId)
+    end
+  end
+end
+
+function EquipRed.recastEquip(uuid)
+  local equipPackage = Z.ContainerMgr.CharSerialize.itemPackage.packages[E.BackPackItemPackageType.Equip]
+  if equipPackage then
+    local item = equipPackage.items[uuid]
+    if item then
+      local equipData = Z.TableMgr.GetTable("EquipTableMgr").GetRow(item.configId, true)
+      if equipData then
+        EquipRed.changePartIsShowRed(equipData.EquipPart)
+      end
     end
   end
 end
@@ -134,7 +181,7 @@ function EquipRed.DelEquip(item)
     local partId = equipData.EquipPart
     local equipVm = Z.VMMgr.GetVM("equip_system")
     local parentNodeId = equipVm.GetEquipPartTabRed(partId)
-    Z.RedPointMgr.RefreshServerNodeCount(parentNodeId .. item.uuid, 0)
+    Z.RedPointMgr.UpdateNodeCount(parentNodeId .. item.uuid, 0)
   end
 end
 
@@ -174,15 +221,15 @@ function EquipRed.refinePart(part)
   local oldPartUuid = refineItemDic[part]
   if not equipData or equipData.itemUuid == 0 then
     if oldPartUuid then
-      Z.RedPointMgr.RefreshServerNodeCount(equipRefineVm.GetRefineItemRedName(oldPartUuid), 0)
+      Z.RedPointMgr.UpdateNodeCount(equipRefineVm.GetRefineItemRedName(oldPartUuid), 0)
       refineItemDic[part] = nil
     end
-    Z.RedPointMgr.RefreshServerNodeCount(refinePartRedName, 0)
+    Z.RedPointMgr.UpdateNodeCount(refinePartRedName, 0)
     return
   end
   if oldPartUuid and oldPartUuid ~= equipData.itemUuid then
     local refineItemRedName = equipRefineVm.GetRefineItemRedName(oldPartUuid)
-    Z.RedPointMgr.RefreshServerNodeCount(refineItemRedName, 0)
+    Z.RedPointMgr.UpdateNodeCount(refineItemRedName, 0)
   end
   local equipSystemVm = Z.VMMgr.GetVM("equip_system")
   local parentNodeId = equipSystemVm.GetEquipPartTabRed(part)
@@ -192,30 +239,35 @@ function EquipRed.refinePart(part)
   local currentProfessionId = Z.ContainerMgr.CharSerialize.professionList.curProfessionId
   local currentLevelRefineId = equipRefineVm.GetCurRefineIdByPart(part, currentProfessionId)
   if currentLevelRefineId == nil then
-    Z.RedPointMgr.RefreshServerNodeCount(refinePartRedName, 0)
-    Z.RedPointMgr.RefreshServerNodeCount(refineItemRedName, 0)
+    Z.RedPointMgr.UpdateNodeCount(refinePartRedName, 0)
+    Z.RedPointMgr.UpdateNodeCount(refineItemRedName, 0)
     return
   end
   local data = equipCfgData.RefineTableData[currentLevelRefineId]
   if data then
     local level = Z.ContainerMgr.CharSerialize.equip.equipList[part].equipSlotRefineLevel or 0
+    if Z.Global.EquipRefineReddotLevelLimit and level >= Z.Global.EquipRefineReddotLevelLimit then
+      Z.RedPointMgr.UpdateNodeCount(refinePartRedName, 0)
+      Z.RedPointMgr.UpdateNodeCount(refineItemRedName, 0)
+      return
+    end
     local nextRefineRow = data[level + 1]
     if not nextRefineRow then
-      Z.RedPointMgr.RefreshServerNodeCount(refinePartRedName, 0)
-      Z.RedPointMgr.RefreshServerNodeCount(refineItemRedName, 0)
+      Z.RedPointMgr.UpdateNodeCount(refinePartRedName, 0)
+      Z.RedPointMgr.UpdateNodeCount(refineItemRedName, 0)
       return
     end
     local descList = Z.ConditionHelper.GetConditionDescList(nextRefineRow.Condition)
     for i, v in ipairs(descList) do
       if not v.IsUnlock then
-        Z.RedPointMgr.RefreshServerNodeCount(refinePartRedName, 0)
-        Z.RedPointMgr.RefreshServerNodeCount(refineItemRedName, 0)
+        Z.RedPointMgr.UpdateNodeCount(refinePartRedName, 0)
+        Z.RedPointMgr.UpdateNodeCount(refineItemRedName, 0)
         return
       end
     end
     if nextRefineRow and nextRefineRow.SuccessRate / 100 < Z.Global.EquipRefineRedProbabilityLimit then
-      Z.RedPointMgr.RefreshServerNodeCount(refinePartRedName, 0)
-      Z.RedPointMgr.RefreshServerNodeCount(refineItemRedName, 0)
+      Z.RedPointMgr.UpdateNodeCount(refinePartRedName, 0)
+      Z.RedPointMgr.UpdateNodeCount(refineItemRedName, 0)
       return
     end
     if nextRefineRow and Z.ConditionHelper.CheckCondition(nextRefineRow.Condition) then
@@ -238,18 +290,18 @@ function EquipRed.refinePart(part)
         end
       end
       if isShow == false then
-        Z.RedPointMgr.RefreshServerNodeCount(refineItemRedName, 0)
-        Z.RedPointMgr.RefreshServerNodeCount(refinePartRedName, 0)
+        Z.RedPointMgr.UpdateNodeCount(refineItemRedName, 0)
+        Z.RedPointMgr.UpdateNodeCount(refinePartRedName, 0)
         return
       end
     else
-      Z.RedPointMgr.RefreshServerNodeCount(refineItemRedName, 0)
-      Z.RedPointMgr.RefreshServerNodeCount(refinePartRedName, 0)
+      Z.RedPointMgr.UpdateNodeCount(refineItemRedName, 0)
+      Z.RedPointMgr.UpdateNodeCount(refinePartRedName, 0)
       return
     end
   end
-  Z.RedPointMgr.RefreshServerNodeCount(refineItemRedName, 1)
-  Z.RedPointMgr.RefreshServerNodeCount(refinePartRedName, 1)
+  Z.RedPointMgr.UpdateNodeCount(refineItemRedName, 1)
+  Z.RedPointMgr.UpdateNodeCount(refinePartRedName, 1)
 end
 
 function EquipRed.refineCheckAllPart()
@@ -266,8 +318,8 @@ function EquipRed.addRefineItemEvent(congfigId)
   if congfigId == nil then
     return
   end
-  if not table.zcontains(itemEeventConfigIds, congfigId) then
-    itemEeventConfigIds[#itemEeventConfigIds + 1] = congfigId
+  if not table.zcontains(refineItemEventConfigIds, congfigId) then
+    refineItemEventConfigIds[#refineItemEventConfigIds + 1] = congfigId
     Z.ItemEventMgr.RegisterAllChangeEvent(E.ItemAddEventType.ItemId, congfigId, EquipRed.refineItemChange)
   end
 end
@@ -277,16 +329,90 @@ function EquipRed.addRefineItemEvents(congfigIds)
     return
   end
   for congfigId, v in pairs(congfigIds) do
-    if not table.zcontains(itemEeventConfigIds, congfigId) then
-      itemEeventConfigIds[#itemEeventConfigIds + 1] = congfigId
+    if not table.zcontains(refineItemEventConfigIds, congfigId) then
+      refineItemEventConfigIds[#refineItemEventConfigIds + 1] = congfigId
       Z.ItemEventMgr.RegisterAllChangeEvent(E.ItemAddEventType.ItemId, congfigId, EquipRed.refineItemChange)
     end
   end
 end
 
 function EquipRed.removeItemEvents()
-  for _, congfigId in ipairs(itemEeventConfigIds) do
+  for _, congfigId in ipairs(refineItemEventConfigIds) do
     Z.ItemEventMgr.RemoveObjAllByEvent(E.ItemChangeType.AllChange, E.ItemAddEventType.ItemId, congfigId, EquipRed.refineItemChange)
+  end
+  for _, congfigId in ipairs(forgeItemEventConfigIds) do
+    Z.ItemEventMgr.RemoveObjAllByEvent(E.ItemChangeType.AllChange, E.ItemAddEventType.ItemId, congfigId, EquipRed.refineForgeItemChange)
+  end
+end
+
+function EquipRed.checkBreak()
+  local equipPackage = Z.ContainerMgr.CharSerialize.itemPackage.packages[E.BackPackItemPackageType.Equip]
+  if equipPackage == nil then
+    return
+  end
+  local equipList = Z.ContainerMgr.CharSerialize.equip.equipList
+  local equipVm = Z.VMMgr.GetVM("equip_system")
+  local equipCfgData = Z.DataMgr.Get("equip_config_data")
+  local itemsVM = Z.VMMgr.GetVM("items")
+  for key, equipData in pairs(equipList) do
+    local item = equipPackage.items[equipData.itemUuid]
+    if item and equipVm.CheckIsFocusEquip(item.configId) then
+      local isCanBreak = true
+      local curBreakCount = item.equipAttr.breakThroughTime
+      local levels = equipCfgData.EquipBreakIdLevelMap[item.configId] or {}
+      local rowId = levels[curBreakCount + 1]
+      if rowId then
+        local breakThroughRow = Z.TableMgr.GetRow("EquipBreakThroughTableMgr", rowId)
+        if breakThroughRow then
+          local consume = breakThroughRow.Consume
+          local isCan = true
+          for index, value in ipairs(consume) do
+            EquipRed.addForgeItemEvent(value[1])
+            if itemsVM.GetItemTotalCount(value[1]) < value[2] then
+              isCanBreak = false
+              break
+            end
+          end
+        end
+      else
+        isCanBreak = false
+      end
+      local redNum = isCanBreak and 1 or 0
+    end
+  end
+end
+
+function EquipRed.checkMake()
+  local equipCfgData = Z.DataMgr.Get("equip_config_data")
+  local equipVm = Z.VMMgr.GetVM("equip_system")
+  local itemsVM = Z.VMMgr.GetVM("items")
+  for index, value in ipairs(equipCfgData.EquipCreateTableRows) do
+    local isCanCreate = true
+    if not equipVm.CheckIsHaveEquipByConfigId(value.Id) then
+      for index, value in ipairs(value.ConsumableItems) do
+        EquipRed.addForgeItemEvent(value[1])
+        if itemsVM.GetItemTotalCount(value[1]) < value[2] then
+          isCanCreate = false
+          break
+        end
+      end
+    else
+      isCanCreate = false
+    end
+    local redNum = isCanCreate and 1 or 0
+  end
+end
+
+function EquipRed.refineForgeItemChange()
+end
+
+function EquipRed.addForgeItemEvent(congfigId)
+  if congfigId == nil then
+    return
+  end
+  if not table.zcontains(forgeItemEventConfigIds, congfigId) then
+    forgeItemEventConfigIds[#forgeItemEventConfigIds + 1] = congfigId
+    Z.ItemEventMgr.RegisterAllChangeEvent(E.ItemAddEventType.ItemId, congfigId, EquipRed.refineForgeItemChange)
   end
 end
 
@@ -311,6 +437,10 @@ function EquipRed.Init()
     EquipRed.refineCheckAllPart()
   end
   
+  function EquipRed.recastEquipFunc(uuid)
+    EquipRed.recastEquip(uuid)
+  end
+  
   function EquipRed.switchFunctionChange(functionTab)
     for functionId, isUnlock in pairs(functionTab) do
       if E.EquipFuncId.EquipRefine == functionId and isUnlock then
@@ -323,6 +453,7 @@ function EquipRed.Init()
     EquipRed.refineCheckAllPart()
   end
   
+  Z.EventMgr:Add(Z.ConstValue.Equip.EquipRecastSuccess, EquipRed.recastEquipFunc)
   Z.EventMgr:Add(Z.ConstValue.Equip.RefinePartSuccess, EquipRed.refinePartFunc)
   Z.EventMgr:Add(Z.ConstValue.SyncAllContainerData, EquipRed.initContainerDataFunc)
   Z.EventMgr:Add(Z.ConstValue.RoleLevelUp, EquipRed.roleLevelUpFunc)
@@ -349,6 +480,10 @@ function EquipRed.UnInit()
   if EquipRed.refinePartFunc then
     Z.EventMgr:Remove(Z.ConstValue.Equip.RefinePartSuccess, EquipRed.refinePartFunc)
     EquipRed.refinePartFunc = nil
+  end
+  if EquipRed.recastEquipFunc then
+    Z.EventMgr:Remove(Z.ConstValue.Equip.EquipRecastSuccess, EquipRed.recastEquipFunc)
+    EquipRed.recastEquipFunc = nil
   end
   if EquipRed.initContainerDataFunc then
     Z.EventMgr:Remove(Z.ConstValue.SyncAllContainerData, EquipRed.initContainerDataFunc)

@@ -8,5 +8,6 @@ enum LoginSdkType {
     LoginSdkTypeMSdk = 2;
     LoginSdkTypeWeGame = 3;
     LoginSdkTypeGLauncher = 4;
+    LoginSdkTypeHaoPlay = 5;
+    LoginSdkTypeApj = 6;
 }
-

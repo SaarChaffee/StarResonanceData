@@ -1,8 +1,6 @@
 local openEnvWindowView = function()
-  Z.UIMgr:OpenView("env_window")
-end
-local closeEnvWindowView = function()
-  Z.UIMgr:CloseView("env_window")
+  local weaponSkillVM = Z.VMMgr.GetVM("weapon_skill")
+  weaponSkillVM.OpenWeaponSkillView(E.SkillType.EnvironmentSkill)
 end
 local getEquipResonance = function(portIndex)
   if Z.ContainerMgr.CharSerialize.resonance.installed == nil then
@@ -27,21 +25,38 @@ local getResonanceTime = function(resonanceId)
   if time == nil then
     time = 0
   end
-  return time / 1000
+  if time == -1 then
+    return time
+  else
+    return time / 1000
+  end
 end
 local getResonanceRemainTime = function(resonanceId)
-  local expireTime = getResonanceTime(resonanceId) - Z.ServerTime:GetServerTime() / 1000
-  if expireTime < 0 then
-    expireTime = 0
+  local resonanceTime = getResonanceTime(resonanceId)
+  if resonanceTime == -1 then
+    return -1
+  else
+    local expireTime = resonanceTime - Z.ServerTime:GetServerTime() / 1000
+    if expireTime < 0 then
+      expireTime = 0
+    end
+    return math.floor(expireTime)
   end
-  return math.floor(expireTime)
+end
+local checkResonanceExpired = function(resonanceId)
+  local remainTime = getResonanceRemainTime(resonanceId)
+  if remainTime == -1 then
+    return false
+  else
+    return remainTime <= 0
+  end
 end
 local checkSkillExpired = function(pos)
   local resonanceId = getEquipResonance(pos)
   if resonanceId == 0 then
     return true
   end
-  return getResonanceRemainTime(resonanceId) <= 0
+  return checkResonanceExpired(resonanceId)
 end
 local getSkillRemainTime = function(pos)
   local resonanceId = getEquipResonance(pos)
@@ -100,6 +115,10 @@ local checkResonanceEquip = function(resonanceId)
 end
 local asyncResonanceSkill = function(handleData, cancelToken)
   local entity = Z.EntityMgr:GetEntity(handleData)
+  if entity == nil then
+    logError("entity is nil")
+    return false
+  end
   local configId = entity:GetLuaAttr(Z.PbAttrEnum("AttrId")).Value
   local resonanceTbl = Z.TableMgr.GetTable("EnvironmentResonanceTableMgr").GetRow(configId)
   local pivotVm = Z.VMMgr.GetVM("pivot")
@@ -109,6 +128,10 @@ local asyncResonanceSkill = function(handleData, cancelToken)
     Z.TipsVM.ShowTips(ret)
     return false
   else
+    if not Z.EntityMgr.PlayerEnt then
+      logError("PlayerEnt is nil")
+      return false
+    end
     Z.EntityMgr.PlayerEnt:PlayWorldEffectBySelf("effect/character/p_fx_saomiao", 1)
     Z.TipsVM.ShowTipsLang(130028)
     Z.EventMgr:Dispatch(Z.ConstValue.OnResonanceSuccess)
@@ -117,6 +140,10 @@ local asyncResonanceSkill = function(handleData, cancelToken)
 end
 local getInteractionName = function(handleData)
   local entity = Z.EntityMgr:GetEntity(handleData.uuid)
+  if entity == nil then
+    logError("entity is nil")
+    return ""
+  end
   local configId = entity:GetLuaAttr(Z.PbAttrEnum("AttrId")).Value
   local resonanceTbl = Z.TableMgr.GetTable("EnvironmentResonanceTableMgr").GetRow(configId)
   local pivotVm = Z.VMMgr.GetVM("pivot")
@@ -135,7 +162,7 @@ local getSkillState = function(resonanceId)
   local config = Z.TableMgr.GetTable("EnvironmentResonanceTableMgr").GetRow(resonanceId)
   local isUnlock = true
   local isActive = checkResonanceActive(resonanceId)
-  local isExpired = getResonanceRemainTime(resonanceId) <= 0
+  local isExpired = checkResonanceExpired(resonanceId)
   local isEquip = checkResonanceEquip(resonanceId)
   if isUnlock then
     if isActive and isExpired then
@@ -166,12 +193,12 @@ local isCanShowRedDot = function()
       return false, true
     end
   end
-  local isRedDowShown = Z.LocalUserDataMgr.GetInt(Z.ConstValue.PlayerPrefsKey.ResonanceRedDot, 0) == 1
+  local isRedDowShown = Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Character, Z.ConstValue.PlayerPrefsKey.ResonanceRedDot, 0) == 1
   if isRedDowShown then
     return false, false
   end
   for k, v in pairs(Z.ContainerMgr.CharSerialize.resonance.resonances) do
-    if checkResonanceActive(k) and 0 < getResonanceRemainTime(k) then
+    if checkResonanceActive(k) and checkResonanceExpired(k) then
       return true, false
     end
   end
@@ -180,47 +207,28 @@ end
 local checkEnvRedDot = function()
   local isCanShowRedDot, isResonanceEquip = isCanShowRedDot()
   if isResonanceEquip then
-    Z.LocalUserDataMgr.SetInt(Z.ConstValue.PlayerPrefsKey.ResonanceRedDot, 1)
+    Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Character, Z.ConstValue.PlayerPrefsKey.ResonanceRedDot, 1)
   end
   Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnResonancEnvironment, isCanShowRedDot)
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.EnvEnter1, isCanShowRedDot and 1 or 0)
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.EnvEnter2, isCanShowRedDot and 1 or 0)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.EnvSkillPageBtn, isCanShowRedDot and 1 or 0)
 end
-local checkEnvActive = function()
-  for i, v in pairs(Z.ContainerMgr.CharSerialize.resonance.resonances) do
-    local time
-    local config = Z.TableMgr.GetTable("EnvironmentResonanceTableMgr").GetRow(i)
-    if config then
-      time = config.Time
-    end
-    if time and getResonanceRemainTime(i) >= time - 2 and Z.EntityMgr.PlayerEnt then
-      Z.EntityMgr.PlayerEnt:PlayWorldEffectBySelf("effect/common_new/tips/p_fx_saomiao_2", 1)
-      Z.TipsVM.ShowTipsLang(130028)
-      Z.EventMgr:Dispatch(Z.ConstValue.OnResonanceSuccess)
-      break
-    end
+local showResonanceEffect = function()
+  if Z.EntityMgr.PlayerEnt then
+    Z.EntityMgr.PlayerEnt:PlayWorldEffectBySelf("effect/common_new/tips/p_fx_saomiao_2", 1)
+    Z.TipsVM.ShowTipsLang(130028)
+    Z.EventMgr:Dispatch(Z.ConstValue.OnResonanceSuccess)
   end
-end
-local addEnvWatcher = function()
-  local resonance = Z.ContainerMgr.CharSerialize.resonance
-  if resonance then
-    resonance.Watcher:RegWatcher(function()
-      checkEnvRedDot()
-      checkEnvActive()
-    end)
-  end
-  checkEnvRedDot()
 end
 local getScreenDistance = function(tranA, tranB)
   return Panda.LuaAsyncBridge.GetScreenDistance(tranA.position, tranB.position)
 end
 local ret = {
   OpenEnvWindowView = openEnvWindowView,
-  CloseEnvWindowView = closeEnvWindowView,
   GetSkillIdByResonance = getSkillIdByResonance,
   GetEquipResonance = getEquipResonance,
   GetResonanceTime = getResonanceTime,
   GetResonanceRemainTime = getResonanceRemainTime,
+  CheckResonanceExpired = checkResonanceExpired,
   CheckResonanceActive = checkResonanceActive,
   CheckAnyResonanceActive = checkAnyResonanceActive,
   CheckSkillEquip = checkSkillEquip,
@@ -233,8 +241,9 @@ local ret = {
   CheckSkillExpired = checkSkillExpired,
   GetSkillState = getSkillState,
   GetTrackResonanceDic = getTrackResonanceDic,
-  AddEnvWatcher = addEnvWatcher,
   IsCanShowRedDot = isCanShowRedDot,
-  GetScreenDistance = getScreenDistance
+  GetScreenDistance = getScreenDistance,
+  CheckEnvRedDot = checkEnvRedDot,
+  ShowResonanceEffect = showResonanceEffect
 }
 return ret

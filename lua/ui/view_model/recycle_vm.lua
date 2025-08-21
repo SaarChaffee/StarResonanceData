@@ -32,10 +32,16 @@ end
 
 function RecycleVM:AsyncReqRecycleItem(itemList, cancelToken)
   local ret = worldProxy.RecycleItems(itemList, cancelToken)
-  if ret ~= 0 then
-    Z.TipsVM.ShowTips(ret)
+  if ret.items ~= nil then
+    local itemShowVM = Z.VMMgr.GetVM("item_show")
+    itemShowVM.OpenItemShowViewByItems(ret.items)
   end
-  return ret
+  if ret.errCode ~= 0 then
+    Z.TipsVM.ShowTips(ret.errCode)
+    return false
+  else
+    return true
+  end
 end
 
 return RecycleVM

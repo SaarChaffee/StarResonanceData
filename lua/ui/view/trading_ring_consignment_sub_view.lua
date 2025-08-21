@@ -162,7 +162,8 @@ function Trading_ring_consignment_subView:initSellPage()
     self.uiBinder.node_diamond_consignment.rimg_recharge_icon:SetImage(self.itemVm_.GetItemIcon(self.tradeData_.DiamondItem))
   end
   self:AddAsyncClick(self.uiBinder.node_diamond_consignment.btn_recharge, function()
-    Z.TipsVM.ShowTipsLang(100102)
+    local shopVm = Z.VMMgr.GetVM("shop")
+    shopVm.OpenShopView(E.FunctionID.PayFunction)
   end)
   self:AddAsyncClick(self.uiBinder.node_diamond_consignment.btn_consignment, function()
     self.tradeVm_:AsyncExchangeSale(self.sellNum_, self.sellRate_, self.cancelSource:CreateToken())
@@ -201,8 +202,11 @@ function Trading_ring_consignment_subView:initSellPage()
     if self.sellNum_ <= 1 then
       return
     end
+    if self.sellNum_ <= Z.StallRuleConfig.SaleNumMin then
+      return
+    end
     self.sellNum_ = self.sellNum_ - 1
-    self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.btn_reduce.IsDisabled = self.sellNum_ <= 1
+    self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.btn_reduce.IsDisabled = self.sellNum_ <= Z.StallRuleConfig.SaleNumMin
     self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.btn_add.IsDisabled = false
     self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.lab_num.text = self.sellNum_
     self:refreshSellGet()
@@ -212,16 +216,21 @@ function Trading_ring_consignment_subView:initSellPage()
       return
     end
     self.sellNum_ = self.canSellMax_
+    self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.btn_reduce.IsDisabled = false
+    self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.btn_add.IsDisabled = self.sellNum_ >= self.canSellMax_
     self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.lab_num.text = self.sellNum_
     self:refreshSellGet()
   end)
   self:AddClick(self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.btn_num, function()
     self.keyPadInputType_ = keyPadInputType.SellNum
-    local max = self.canSellMax_
-    if max == 0 then
-      max = 1
+    local min = 1
+    if self.canSellMax_ == 0 then
+      min = 0
     end
-    self.keypad_:Active({min = 1, max = max}, self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.group_keypadroot)
+    self.keypad_:Active({
+      min = min,
+      max = self.canSellMax_
+    }, self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.group_keypadroot)
   end)
 end
 
@@ -294,9 +303,12 @@ function Trading_ring_consignment_subView:refreshSell()
   if self.itemVm_.GetItemTotalCount(self.tradeData_.DiamondItem) == 0 then
     self.sellNum_ = 0
   else
-    self.sellNum_ = 1
+    self.sellNum_ = Z.StallRuleConfig.SaleNumMin
   end
   self.sellRate_ = self.tradeData_.ConsignmentMinRate - 1
+  if self.sellRate_ < self.tradeData_.MinDiamondTax then
+    self.sellRate_ = self.tradeData_.MinDiamondTax
+  end
   self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.lab_num.text = self.sellNum_
   self.uiBinder.node_diamond_consignment.binder_diamond_consignment_1.binder_num_module_tpl_1.lab_num.text = self.sellRate_
   self.uiBinder.node_diamond_consignment.lab_minimum_exchange.text = Lang("min_rare_in_sell") .. self.tradeData_.ConsignmentMinRate
@@ -316,7 +328,7 @@ function Trading_ring_consignment_subView:refreshSell()
   self.uiBinder.node_diamond_consignment.binder_diamond_consignment_1.binder_num_module_tpl_1.btn_add.IsDisabled = self.sellRate_ >= self.tradeData_.MaxDiamondTax
   self.uiBinder.node_diamond_consignment.binder_diamond_consignment_1.binder_num_module_tpl_1.btn_reduce.IsDisabled = self.sellRate_ <= self.tradeData_.MinDiamondTax
   self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.btn_add.IsDisabled = self.sellNum_ >= self.canSellMax_
-  self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.btn_reduce.IsDisabled = self.sellNum_ <= 1
+  self.uiBinder.node_diamond_consignment.binder_diamond_consignment_2.binder_num_module_tpl_1.btn_reduce.IsDisabled = self.sellNum_ <= Z.StallRuleConfig.SaleNumMin
 end
 
 function Trading_ring_consignment_subView:refershMaxSellNum()
@@ -325,6 +337,9 @@ function Trading_ring_consignment_subView:refershMaxSellNum()
     self.canSellMax_ = 0
   end
   self.uiBinder.node_diamond_consignment.lab_shelf_num.text = self.canSellMax_
+  if self.canSellMax_ >= Z.StallRuleConfig.SaleNumMax then
+    self.canSellMax_ = Z.StallRuleConfig.SaleNumMax
+  end
 end
 
 function Trading_ring_consignment_subView:refreshSellGet()

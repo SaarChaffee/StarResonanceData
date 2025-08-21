@@ -6,4 +6,3 @@ message BuffEffectZoomScale {
     float zoomRatioAdd = 1;
     float zoomRatioMax = 2;
 }
-

@@ -2,8 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
+
 message TextCheckItemResult {
-    int32 errCode = 1;
+    zproto.EErrorCode errCode = 1;
     string errMsg = 2;
     int32 itemErrCode = 3;
     string itemErrMsg = 4;
@@ -14,4 +16,3 @@ message TextCheckItemResult {
     int32 lable = 9;
     string checkDesc = 10;
 }
-

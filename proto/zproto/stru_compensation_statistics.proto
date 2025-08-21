@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_compensation_season_statistics.proto";
+import "stru_dirty_mask.proto";
+
+message CompensationStatistics {
+    repeated zproto.CompensationStatistics.SeasonDataEntry seasonData = 1;
+    uint32 lastSeasonId = 2;
+    int64 curPoint = 3;
+    int64 maxPoint = 4;
+    repeated zproto.CompensationStatistics.LastWeekEntry lastWeek = 5;
+}

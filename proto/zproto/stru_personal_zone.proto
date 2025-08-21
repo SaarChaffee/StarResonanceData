@@ -11,7 +11,7 @@ import "stru_dirty_mask.proto";
 message PersonalZone {
     repeated int32 onlinePeriods = 2;
     repeated int32 tags = 3;
-    map<int32, int32> medals = 5;
+    repeated zproto.PersonalZone.MedalsEntry medals = 5;
     int32 themeId = 6;
     int32 businessCardStyleId = 7;
     int32 avatarFrameId = 8;
@@ -20,12 +20,12 @@ message PersonalZone {
     int32 titleId = 11;
     bool fashionRefreshFlag = 12;
     int32 fashionCollectPoint = 13;
-    map<int32, .zproto.FashionQualityCollectInfo> fashionCollectQualityCount = 14;
+    repeated zproto.PersonalZone.FashionCollectQualityCountEntry fashionCollectQualityCount = 14;
     repeated int32 photos = 15;
-    map<int32, int32> unlockTargetRecord = 16;
-    map<int32, bool> unlockGetRewardRecord = 17;
+    repeated zproto.PersonalZone.UnlockTargetRecordEntry unlockTargetRecord = 16;
+    repeated zproto.PersonalZone.UnlockGetRewardRecordEntry unlockGetRewardRecord = 17;
     int32 rideCollectPoint = 18;
-    map<int32, .zproto.RideQualityCollectInfo> rideCollectQualityCount = 19;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.PersonalZone.RideCollectQualityCountEntry rideCollectQualityCount = 19;
+    int32 weaponSkinCollectPoint = 20;
+    repeated zproto.PersonalZone.PhotosWallEntry photosWall = 21;
 }
-

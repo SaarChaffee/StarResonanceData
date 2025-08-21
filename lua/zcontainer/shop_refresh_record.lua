@@ -1,22 +1,46 @@
 local br = require("sync.blob_reader")
 local mergeDataFuncs = {
-  [1] = function(container, buffer, watcherList)
-    local last = container.__data__.shopId
-    container.__data__.shopId = br.ReadInt32(buffer)
-    container.Watcher:MarkDirty("shopId", last)
+  [4] = function(container, buffer, watcherList)
+    local last = container.__data__.refreshCount
+    container.__data__.refreshCount = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("refreshCount", last)
   end,
-  [2] = function(container, buffer, watcherList)
-    local count = br.ReadInt32(buffer)
-    if count == -4 then
+  [5] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
       return
     end
-    local t = {}
-    local last = container.__data__.timestamp
-    container.__data__.timestamp = t
-    for i = 1, count do
-      local v = br.ReadUInt64(buffer)
-      t[#t + 1] = v
-      container.Watcher:MarkDirty("timestamp", last)
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local v = require("zcontainer.player_refresh_shop_record").New()
+      v:MergeData(buffer, watcherList)
+      container.shopRefreshRecords.__data__[dk] = v
+      container.Watcher:MarkMapDirty("shopRefreshRecords", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.shopRefreshRecords.__data__[dk]
+      container.shopRefreshRecords.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("shopRefreshRecords", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local last = container.shopRefreshRecords.__data__[dk]
+      if last == nil then
+        logWarning("last is nil: " .. dk)
+        last = require("zcontainer.player_refresh_shop_record").New()
+        container.shopRefreshRecords.__data__[dk] = last
+      end
+      last:MergeData(buffer, watcherList)
+      container.Watcher:MarkMapDirty("shopRefreshRecords", dk, {})
     end
   end
 }
@@ -47,13 +71,23 @@ local resetData = function(container, pbData)
     return
   end
   container.__data__ = pbData
-  if not pbData.shopId then
-    container.__data__.shopId = 0
+  if not pbData.refreshTimestamp then
+    container.__data__.refreshTimestamp = 0
   end
-  if not pbData.timestamp then
-    container.__data__.timestamp = {}
+  if not pbData.refreshCount then
+    container.__data__.refreshCount = 0
+  end
+  if not pbData.shopRefreshRecords then
+    container.__data__.shopRefreshRecords = {}
   end
   setForbidenMt(container)
+  container.shopRefreshRecords.__data__ = {}
+  setForbidenMt(container.shopRefreshRecords)
+  for k, v in pairs(pbData.shopRefreshRecords) do
+    container.shopRefreshRecords.__data__[k] = require("zcontainer.player_refresh_shop_record").New()
+    container.shopRefreshRecords[k]:ResetData(v)
+  end
+  container.__data__.shopRefreshRecords = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -92,29 +126,42 @@ local getContainerElem = function(container)
     return nil
   end
   local ret = {}
-  ret.shopId = {
-    fieldId = 1,
+  ret.refreshTimestamp = {
+    fieldId = 3,
     dataType = 0,
-    data = container.shopId
+    data = container.refreshTimestamp
   }
-  if container.timestamp ~= nil then
+  ret.refreshCount = {
+    fieldId = 4,
+    dataType = 0,
+    data = container.refreshCount
+  }
+  if container.shopRefreshRecords ~= nil then
     local data = {}
-    for index, repeatedItem in pairs(container.timestamp) do
-      data[index] = {
-        fieldId = 0,
-        dataType = 0,
-        data = repeatedItem
-      }
+    for key, repeatedItem in pairs(container.shopRefreshRecords) do
+      if repeatedItem == nil then
+        data[key] = {
+          fieldId = 5,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[key] = {
+          fieldId = 5,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
     end
-    ret.timestamp = {
-      fieldId = 2,
-      dataType = 3,
+    ret.shopRefreshRecords = {
+      fieldId = 5,
+      dataType = 2,
       data = data
     }
   else
-    ret.timestamp = {
-      fieldId = 2,
-      dataType = 3,
+    ret.shopRefreshRecords = {
+      fieldId = 5,
+      dataType = 2,
       data = {}
     }
   end
@@ -125,10 +172,14 @@ local new = function()
     __data__ = {},
     ResetData = resetData,
     MergeData = mergeData,
-    GetContainerElem = getContainerElem
+    GetContainerElem = getContainerElem,
+    shopRefreshRecords = {
+      __data__ = {}
+    }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
+  setForbidenMt(ret.shopRefreshRecords)
   return ret
 end
 return {New = new}

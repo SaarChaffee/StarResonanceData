@@ -4,19 +4,26 @@ local Quest_book_windowView = class("Quest_book_windowView", super)
 local loop_list_view = require("ui/component/loop_list_view")
 local quest_book_catalogue_episode_item = require("ui.component.quest.quest_book_catalogue_episode_item")
 local quest_book_catalogue_episode_chapter_item = require("ui.component.quest.quest_book_catalogue_episode_chapter_item")
+local quest_book_chapter_item = require("ui.component.quest.quest_book_chapter_item")
 
 function Quest_book_windowView:ctor()
   self.uiBinder = nil
   super.ctor(self, "quest_book_window")
   self.questDetailVm_ = Z.VMMgr.GetVM("questdetail")
+  self.questBookManualVm_ = Z.VMMgr.GetVM("quest_book_manual")
 end
 
 function Quest_book_windowView:OnActive()
+  self.episodeAndPhasesDatas_ = {}
+  self.fadeOutEpisodeIds_ = {}
+  self.isNotSetFadeOut_ = true
+  self.unLockedChapterInfos_ = nil
+  self.isFirst_ = true
+  self:onStartAnimShow()
   self:initComp()
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
   self.uiBinder.node_loop_eff:SetEffectGoVisible(true)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
-  self.selectedEpisode_ = 0
   self.selectQuestType_ = E.QuestType.Main
   self.selectChapterId_ = nil
   self:initBtns()
@@ -32,6 +39,9 @@ function Quest_book_windowView:initComp()
   self.node_rimg_ = self.uiBinder.node_rimg
   self.rect_title_ = self.uiBinder.rect_title
   self.rect_lab_content_ = self.uiBinder.rect_lab_content
+  self.loop_chatper_ = self.uiBinder.loop_chatper
+  self.lab_chapter_name_ = self.uiBinder.lab_chapter_name
+  self.scroll_content_ = self.uiBinder.scroll_content
 end
 
 function Quest_book_windowView:initBtns()
@@ -41,6 +51,8 @@ function Quest_book_windowView:initBtns()
 end
 
 function Quest_book_windowView:initLoop()
+  self.loop_chatper_view_ = loop_list_view.new(self, self.loop_chatper_, quest_book_chapter_item, "quest_book_chapters_tab_tpl")
+  self.loop_chatper_view_:Init({})
   self.loop_catalogue_view_ = loop_list_view.new(self, self.loop_catalogue_)
   self.loop_catalogue_view_:SetGetItemClassFunc(function(data)
     if data.isEpisode then
@@ -60,90 +72,127 @@ function Quest_book_windowView:initLoop()
 end
 
 function Quest_book_windowView:OnDeActive()
+  self.episodeAndPhasesDatas_ = {}
+  self.unLockedChapterInfos_ = nil
+  self.isFirst_ = true
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_loop_eff)
   self.uiBinder.node_loop_eff:SetEffectGoVisible(false)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
-  self.selectedEpisode_ = 0
   self.loop_catalogue_view_:UnInit()
+  self.loop_chatper_view_:UnInit()
 end
 
 function Quest_book_windowView:OnRefresh()
   if self.viewData ~= nil then
   else
     self.questType_ = E.QuestType.Main
-    self.episodeList = {1}
   end
-  self:refrehsUI()
+  self:refreshChapterLoopUi()
 end
 
-function Quest_book_windowView:refrehsUI()
-  local catalogs = self.questDetailVm_.GetEpisodeOrderedChapterCatalog(self.questType_, self.episodeList)
-  if not catalogs then
+function Quest_book_windowView:refreshChapterLoopUi()
+  self.unLockedChapterInfos_ = self.questBookManualVm_.GetUnlockedChapters(self.questType_)
+  if not self.unLockedChapterInfos_ or #self.unLockedChapterInfos_ < 1 then
+    logError("Quest_book_windowView:refreshChapterLoopUi chapterInfos is nil")
     return
   end
-  local selectIndex = 0
-  selectIndex = self.questDetailVm_.GetFirstEpisodeChaterIndex(catalogs)
-  if selectIndex < 0 then
-    logError("Quest_book_windowView:refrehsUI selectIndex < 0")
-    return
-  end
-  self.loop_catalogue_view_:RefreshListView(catalogs)
-  self.loop_catalogue_view_:SetSelected(selectIndex)
+  self.loop_chatper_view_:RefreshListView(self.unLockedChapterInfos_)
+  self.loop_chatper_view_:SetSelected(#self.unLockedChapterInfos_)
 end
 
 function Quest_book_windowView:OnSelectChapter(chapterInfo)
-  self.selectChapterId_ = chapterInfo.Id
-  self.lab_content_.text = chapterInfo.TaskInfo
-  self.lab_title_.text = chapterInfo.TitleName
-  if chapterInfo.TitlePic == nil or chapterInfo.TitlePic == "0" then
+  if chapterInfo == nil then
+    logError("Quest_book_windowView:OnSelectChapter questInfoTitleTableRow is nil")
+    return
+  end
+  self.curChapterInfo_ = chapterInfo
+  local questInfoTitleTableRow = chapterInfo.questInfoTitleTableRow
+  if questInfoTitleTableRow == nil then
+    logError("Quest_book_windowView:OnSelectChapter questInfoTitleTableRow is nil")
+    return
+  end
+  self.lab_chapter_name_.text = questInfoTitleTableRow.EpisodeName
+  self:refreshEpisodeCatalogUI(self.curChapterInfo_)
+end
+
+function Quest_book_windowView:refreshEpisodeCatalogUI(chapterInfo)
+  local chapterId = chapterInfo.questInfoTitleTableRow.Id
+  self.curEpisodeAndPhasesData_ = self.episodeAndPhasesDatas_[chapterId]
+  if self.curEpisodeAndPhasesData_ == nil then
+    self.curEpisodeAndPhasesData_ = self.questBookManualVm_.GetChapterEpisodeAndPhases(chapterInfo.unlockedPhaseIds)
+    self.episodeAndPhasesDatas_[chapterId] = self.curEpisodeAndPhasesData_
+  end
+  if #self.fadeOutEpisodeIds_ < 1 and self.isNotSetFadeOut_ then
+    self.isNotSetFadeOut_ = false
+    local lastIndex = #self.curEpisodeAndPhasesData_
+    local id = self.curEpisodeAndPhasesData_[lastIndex].episodeId
+    table.insert(self.fadeOutEpisodeIds_, id)
+  end
+  self:refreshCatalogueListView()
+end
+
+function Quest_book_windowView:OnSelectPhase(questInfoTableRow)
+  if not self.isFirst_ then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+  end
+  self.isFirst_ = false
+  self.selectQuestInfoTableRow_ = questInfoTableRow
+  self.lab_content_.text = questInfoTableRow.TaskInfo
+  self.lab_title_.text = questInfoTableRow.PhaseName
+  self.scroll_content_.VerticalNormalizedPosition = 1
+  local picPath = questInfoTableRow.TitlePic
+  if picPath == nil or picPath == "0" or picPath == "" then
     self.uiBinder.Ref:SetVisible(self.node_rimg_, false)
     self.rect_title_:SetAnchorPosition(15, -22)
     self.rect_lab_content_:SetOffsetMax(-30, -88)
   else
     self.uiBinder.Ref:SetVisible(self.node_rimg_, true)
-    self.rect_title_:SetAnchorPosition(15, -610)
-    self.rect_lab_content_:SetOffsetMax(12, -676)
-    self.rimg_photo_:SetImage(chapterInfo.TitlePic)
+    self.rect_title_:SetAnchorPosition(15, -590)
+    self.rect_lab_content_:SetOffsetMax(12, -654)
+    self.rimg_photo_:SetImage(picPath)
   end
 end
 
-function Quest_book_windowView:FadeExpandEpisode(episode)
-  if table.zcontains(self.episodeList, episode) then
+function Quest_book_windowView:FadeExpandEpisode(episodeId)
+  if table.zcontains(self.fadeOutEpisodeIds_, episodeId) then
     return
   end
-  table.insert(self.episodeList, episode)
-  local catalogs = self.questDetailVm_.GetEpisodeOrderedChapterCatalog(self.questType_, self.episodeList)
-  self.loop_catalogue_view_:RefreshListView(catalogs)
-  local selectIndex = self:getIndex(catalogs)
-  if 0 < selectIndex then
-    self.loop_catalogue_view_:SetSelected(selectIndex)
-  end
+  table.insert(self.fadeOutEpisodeIds_, episodeId)
+  self:refreshCatalogueListView()
 end
 
-function Quest_book_windowView:FadeIndentEpisode(episode)
-  if not table.zcontains(self.episodeList, episode) then
+function Quest_book_windowView:FadeIndentEpisode(episodeId)
+  if not table.zcontains(self.fadeOutEpisodeIds_, episodeId) then
     return
   end
-  table.zremoveByValue(self.episodeList, episode)
-  local catalogs = self.questDetailVm_.GetEpisodeOrderedChapterCatalog(self.questType_, self.episodeList)
-  self.loop_catalogue_view_:RefreshListView(catalogs)
-  local selectIndex = self:getIndex(catalogs)
-  if 0 < selectIndex then
-    self.loop_catalogue_view_:SetSelected(selectIndex)
-  end
+  table.zremoveByValue(self.fadeOutEpisodeIds_, episodeId)
+  self:refreshCatalogueListView()
 end
 
-function Quest_book_windowView:getIndex(catalogs)
-  if self.selectChapterId_ == nil or self.selectChapterId_ == 0 then
-    local selectIndex = self.questDetailVm_.GetFirstEpisodeChaterIndex(catalogs)
-    return selectIndex
+function Quest_book_windowView:refreshCatalogueListView()
+  self.showDatas_ = self.questBookManualVm_.GetBookShowEpisodeAnPhaseDatas(self.curEpisodeAndPhasesData_, self.fadeOutEpisodeIds_)
+  self.loop_catalogue_view_:RefreshListView(self.showDatas_)
+  local index = self:getIndex()
+  self.loop_catalogue_view_:SetSelected(index)
+end
+
+function Quest_book_windowView:getIndex()
+  if self.showDatas_ == nil or #self.showDatas_ < 1 then
+    return -1
   end
-  for i, v in ipairs(catalogs) do
-    if v.isEpisode == false and v.chapterInfo.Id == self.selectChapterId_ then
+  if self.selectQuestInfoTableRow_ == nil then
+    return #self.showDatas_
+  end
+  for i, v in ipairs(self.showDatas_) do
+    if not v.isEpisode and v.phaseInfo.Id == self.selectQuestInfoTableRow_.Id then
       return i
     end
   end
   return -1
+end
+
+function Quest_book_windowView:onStartAnimShow()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Quest_book_windowView

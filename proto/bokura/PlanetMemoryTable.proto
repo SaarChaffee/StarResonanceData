@@ -18,8 +18,6 @@ message PlanetMemoryTableBase {
     int_array UnlockTime = 478;
     int_array ExtraTarget = 1329;
 }
-
 message PlanetMemoryTableMgr {
-    map<int32, .bokura.PlanetMemoryTableBase> datas = 1;
+    repeated bokura.PlanetMemoryTableMgr.DatasEntry datas = 1;
 }
-

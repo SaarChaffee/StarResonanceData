@@ -62,23 +62,21 @@ end
 function Union_member_subView:onQuitBtnClick()
   if #self.curMemberListData_ == 1 then
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("UnionDissolveDialogTips"), function()
-      local reply = self.unionVM_:AsyncReqLeaveUnion(self.unionVM_:GetPlayerUnionId(), self.unionData_.CancelSource:CreateToken())
-      if reply.errorCode == 0 then
+      local errCode = self.unionVM_:AsyncReqLeaveUnion(self.unionVM_:GetPlayerUnionId(), self.unionData_.CancelSource:CreateToken())
+      if errCode == 0 then
         self.unionData_:Clear()
         Z.UIMgr:CloseView("union_main")
       end
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   elseif self.unionVM_:IsPlayerUnionPresident() and #self.curMemberListData_ > 1 then
     Z.DialogViewDataMgr:OpenOKDialog(Lang("UnionPresidentLeaveDialogTips"))
   else
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("UnionLeaveDialogTips"), function()
-      local reply = self.unionVM_:AsyncReqLeaveUnion(self.unionVM_:GetPlayerUnionId(), self.unionData_.CancelSource:CreateToken())
-      if reply.errorCode == 0 then
+      local errCode = self.unionVM_:AsyncReqLeaveUnion(self.unionVM_:GetPlayerUnionId(), self.unionData_.CancelSource:CreateToken())
+      if errCode == 0 then
         self.unionData_:Clear()
         Z.UIMgr:CloseView("union_main")
       end
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   end
 end
@@ -197,9 +195,7 @@ function Union_member_subView:OnRefresh()
 end
 
 function Union_member_subView:startAnimatedShow()
-end
-
-function Union_member_subView:startAnimatedHide()
+  self.uiBinder.tween_main:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Union_member_subView

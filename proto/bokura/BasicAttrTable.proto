@@ -19,8 +19,6 @@ message BasicAttrTableBase {
     int_table GrowMin4 = 356;
     int_array GrowTimes4 = 1703;
 }
-
 message BasicAttrTableMgr {
-    map<int32, .bokura.BasicAttrTableBase> datas = 1;
+    repeated bokura.BasicAttrTableMgr.DatasEntry datas = 1;
 }
-

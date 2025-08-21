@@ -18,8 +18,6 @@ message AffixTableBase {
     number_table EffectTime = 1664;
     int32 GsChange = 1558;
 }
-
 message AffixTableMgr {
-    map<int32, .bokura.AffixTableBase> datas = 1;
+    repeated bokura.AffixTableMgr.DatasEntry datas = 1;
 }
-

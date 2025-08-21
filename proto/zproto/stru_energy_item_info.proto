@@ -9,6 +9,4 @@ message EnergyItemInfo {
     uint32 columnId = 2;
     uint32 refineState = 3;
     int64 gainTime = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

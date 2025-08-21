@@ -6,4 +6,3 @@ message RdCookRequest {
     repeated int32 mainMaterials = 1;
     repeated int32 cookMethods = 2;
 }
-

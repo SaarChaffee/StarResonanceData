@@ -8,4 +8,3 @@ message ExchangeCareCancelRequest {
     zproto.EExchangeItemType type = 1;
     int32 itemConfigId = 2;
 }
-

@@ -7,4 +7,3 @@ enum ESwitchSkillCloseType {
     SwitchSkillCloseRes = 1;
     SwitchSkillCloseBuff = 2;
 }
-

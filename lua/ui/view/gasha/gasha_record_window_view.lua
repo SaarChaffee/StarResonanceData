@@ -47,7 +47,7 @@ function Gasha_record_windowView:onAddListener()
     self:changePage(1)
   end)
   self.dpd_gasha_pools_:AddListener(function(index)
-    local gashaShareId = self.gashaData_:GetGashaPoolIdByIndex(index)
+    local gashaShareId = self.gashaData_:GetGashaPoolIdByIndex(index, self.viewData.openType)
     self:refreshContent(gashaShareId)
   end, true)
 end
@@ -67,10 +67,10 @@ function Gasha_record_windowView:OnRefresh()
 end
 
 function Gasha_record_windowView:refreshDropDown(gashaId)
-  local gashaPoolNames = self.gashaData_:GetAllGashPoolName()
+  local gashaPoolNames = self.gashaData_:GetAllGashPoolName(self.viewData.openType)
   self.dpd_gasha_pools_:ClearOptions()
   self.dpd_gasha_pools_:AddOptions(gashaPoolNames)
-  self.dpd_gasha_pools_.value = self.gashaData_:GetIndexByGashaPoolId(gashaId)
+  self.dpd_gasha_pools_.value = self.gashaData_:GetIndexByGashaPoolId(gashaId, self.viewData.openType)
 end
 
 function Gasha_record_windowView:refreshContent(gashaShareId)
@@ -156,7 +156,7 @@ function Gasha_record_windowView:refreshRecord(recordData, uibinder)
   local colorTag = "ItemQuality_" .. itemTableRow.Quality
   uibinder.lab_type.text = Lang(string.zconcat("GashaQuilityName_", gashaQuality))
   uibinder.lab_name.text = Z.RichTextHelper.ApplyStyleTag(itemTableRow.Name, colorTag)
-  uibinder.lab_time.text = Z.TimeTools.FormatTimeToYMDHMS(recordData.time * 1000)
+  uibinder.lab_time.text = Z.TimeFormatTools.TicksFormatTime(recordData.time * 1000, E.TimeFormatType.YMDHMS)
   uibinder.lab_number.text = recordData.count
 end
 

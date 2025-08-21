@@ -29,4 +29,18 @@ function SDKHelper.GetChildrenPrivacyUrlPath(platformType)
   return ""
 end
 
+function SDKHelper.GetThirdInfoShareUrlPath(platformType)
+  if SDK_DEFINE.CONFIG[platformType] then
+    return SDK_DEFINE.CONFIG[platformType].ThirdInfoShareUrlPath
+  end
+  return ""
+end
+
+function SDKHelper.GetCollectedInfoListUrlPath(platformType)
+  if SDK_DEFINE.CONFIG[platformType] then
+    return SDK_DEFINE.CONFIG[platformType].CollectedInfoListUrlPath
+  end
+  return ""
+end
+
 return SDKHelper

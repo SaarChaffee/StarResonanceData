@@ -14,6 +14,7 @@ end
 function Map_clock_windowView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:startAnimatedShow()
+  self.uiBinder.eff:SetEffectGoVisible(true)
   self:AddAsyncClick(self.uiBinder.btn_return, function()
     Z.VMMgr.GetVM("map_clock").CloseMapClockMapView()
   end)
@@ -45,7 +46,6 @@ function Map_clock_windowView:OnActive()
       if canReceive then
         self.mapClockVm_.AsyncGetMapReward(self.selectMapId_, self.cancelSource:CreateToken())
       end
-      Z.DialogViewDataMgr:CloseDialogView()
     end
     local labOK
     if canReceive then
@@ -62,7 +62,7 @@ function Map_clock_windowView:OnActive()
       labOK = labOK,
       itemList = itemList
     }
-    Z.DialogViewDataMgr:OpenDialogView(dialogViewData, E.EDialogViewDataType.Game)
+    Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
   end)
   self:AddAsyncClick(self.uiBinder.btn_unlock, function()
     self.mapClockVm_.AsyncGetStickerReward(self.selectMapId_, self.selectStickerId_, self.cancelSource:CreateToken())
@@ -192,6 +192,7 @@ function Map_clock_windowView:refreshStickLoop()
     end
   end)
   if self.initLoop_ then
+    self.loopListView_:ClearAllSelect()
     self.loopListView_:RefreshListView(stickerMaps)
   else
     self.loopListView_ = loopListView.new(self, self.uiBinder.loop_list, StickItem, "map_item_tpl")
@@ -264,9 +265,22 @@ function Map_clock_windowView:onStickerSelected(stickerId)
     local rewardIds = self.awardPreviewVm_.GetAllAwardPreListByIds(stickerConfig.AwardId)
     for index, value in ipairs(rewardIds) do
       local name = string.format("reward_%s", index)
+      if self.itemClassTab_[index] then
+        self.itemClassTab_[index]:UnInit()
+      else
+        self.itemClassTab_[index] = item.new(self)
+      end
       local unit = self:AsyncLoadUiUnit(self.uiBinder.prefab_cache:GetString("rewardItemUnit"), name, rewardItemRoot)
-      self:refreshRewardUnit(unit, value)
-      table.insert(self.rewardUnitNames_, name)
+      local itemData = {
+        uiBinder = unit,
+        configId = value.awardId,
+        isShowZero = false,
+        isShowOne = true,
+        isSquareItem = true,
+        PrevDropType = value.PrevDropType
+      }
+      itemData.labType, itemData.lab = self.awardPreviewVm_.GetPreviewShowNum(value)
+      self.itemClassTab_[index]:Init(itemData)
     end
     self:refreshBtn()
   end)()
@@ -318,21 +332,6 @@ function Map_clock_windowView:refreshConditionUnit(unit, taskId)
   end
 end
 
-function Map_clock_windowView:refreshRewardUnit(unit, awardData)
-  local itemClass = item.new(self)
-  local itemData = {
-    uiBinder = unit,
-    configId = awardData.awardId,
-    isShowZero = false,
-    isShowOne = true,
-    isSquareItem = true,
-    PrevDropType = awardData.PrevDropType
-  }
-  itemData.labType, itemData.lab = self.awardPreviewVm_.GetPreviewShowNum(awardData)
-  itemClass:Init(itemData)
-  table.insert(self.itemClassTab_, itemClass)
-end
-
 function Map_clock_windowView:OnDeActive()
   self.itemClass_:UnInit()
   self.loopListView_:UnInit()
@@ -363,12 +362,11 @@ function Map_clock_windowView:OnRefresh()
 end
 
 function Map_clock_windowView:startPlaySelectAnim()
+  self.uiBinder.anim_clock:Restart(Z.DOTweenAnimType.Tween_0)
 end
 
 function Map_clock_windowView:startAnimatedShow()
-end
-
-function Map_clock_windowView:startAnimatedHide()
+  self.uiBinder.anim_clock:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Map_clock_windowView

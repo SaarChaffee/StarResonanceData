@@ -6,4 +6,3 @@ message ChangeGroupRequest {
     int64 charId = 2;
     int32 targetGroupId = 3;
 }
-

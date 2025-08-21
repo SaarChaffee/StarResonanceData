@@ -5,4 +5,3 @@ package zproto;
 message ReceiveBossRewardParam {
     int32 stage = 1;
 }
-

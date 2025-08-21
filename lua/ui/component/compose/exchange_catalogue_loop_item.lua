@@ -24,12 +24,13 @@ function ExchangeCatalogueLoopItem:Refresh(data)
     return
   end
   local shopInfo_ = Z.ContainerMgr.CharSerialize.exchangeItems.exchangeInfo[self.shopId_]
-  local itemConfigId = exchangeItemRow.GetItemId
-  local curExchangeNum = shopInfo_.exchangeData[itemConfigId] and shopInfo_.exchangeData[itemConfigId].curExchangeCount or 0
+  local curExchangeNum = shopInfo_.exchangeData[self.exchangeItemData_.goodsId] and shopInfo_.exchangeData[self.exchangeItemData_.goodsId].curExchangeCount or 0
   local maxNum = exchangeItemRow.RefreshNum
   local limitType = self.vm_.GetExchangeLimitType(exchangeItemRow.Id)
   local str
-  if limitType ~= E.ExchangeLimitType.Not then
+  if maxNum >= Z.Global.ExchangeLimitHide then
+    str = ""
+  elseif limitType ~= E.ExchangeLimitType.Not then
     local haveCount = maxNum - curExchangeNum
     str = haveCount .. "/" .. maxNum
   end

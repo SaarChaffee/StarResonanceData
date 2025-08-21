@@ -23,7 +23,7 @@ function RedService:OnLogin()
         if count == nil then
           count = 0
         end
-        Z.RedPointMgr.RefreshServerNodeCount(id, count)
+        Z.RedPointMgr.UpdateNodeCount(id, count)
         if id == E.RedType.UnionHuntPorgress then
           local isRed = Z.RedPointMgr.GetRedState(E.RedType.UnionHuntTab)
           Z.EventMgr:Dispatch(Z.ConstValue.Recommendedplay.FunctionRed, E.UnionFuncId.Hunt, isRed)
@@ -59,7 +59,7 @@ end
 
 function RedService:OnSyncAllContainerData()
   for id, value in pairs(Z.ContainerMgr.CharSerialize.redDot.redDotCount) do
-    Z.RedPointMgr.RefreshServerNodeCount(id, value)
+    Z.RedPointMgr.UpdateNodeCount(id, value)
   end
 end
 

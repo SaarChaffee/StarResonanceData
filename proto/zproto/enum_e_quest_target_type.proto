@@ -10,4 +10,3 @@ enum EQuestTargetType {
     QuestTargetNum = 4;
     QuestTargetSelect = 5;
 }
-

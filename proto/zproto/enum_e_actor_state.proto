@@ -39,4 +39,3 @@ enum EActorState {
     ActorStateRideControl = 34;
     ActorStateAll = 35;
 }
-

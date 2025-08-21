@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_pay_type.proto";
+
+message PayRequest {
+    zproto.EPayType payType = 1;
+    int32 productId = 2;
+    string receipt = 3;
+    string extData = 4;
+}

@@ -1,18 +1,19 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Abnormal_stateView = class("Abnormal_stateView", super)
-local ShowBuffCountMax = 3
+local ShowBuffCountMax = 8
 local loop_list_view = require("ui.component.loop_list_view")
 local buff_item = require("ui.component.buff.buff_item")
 
 function Abnormal_stateView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "abnormal_state", "abnormal/abnormal_state", UI.ECacheLv.None)
+  super.ctor(self, "abnormal_state", "abnormal/abnormal_state", UI.ECacheLv.None, true)
 end
 
 function Abnormal_stateView:OnActive()
   self.buffDataList_ = {}
-  self.buffList_ = loop_list_view.new(self, self.uiBinder.node_buff_list, buff_item, "battle_icon_buff_tpl_new")
+  local itemPath = Z.IsPCUI and "battle_icon_buff_tpl_new_pc" or "battle_icon_buff_tpl_new"
+  self.buffList_ = loop_list_view.new(self, self.uiBinder.node_buff_list, buff_item, itemPath)
   self.buffList_:Init({})
   self:BindLuaAttrWatchers()
   if self.viewData.viewType == E.AbnormalPanelType.Boss then

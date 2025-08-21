@@ -13,8 +13,6 @@ message BattlePassCardTableBase {
     int_array PaidAward = 1100;
     int32 KeyAward = 1219;
 }
-
 message BattlePassCardTableMgr {
-    map<int32, .bokura.BattlePassCardTableBase> datas = 1;
+    repeated bokura.BattlePassCardTableMgr.DatasEntry datas = 1;
 }
-

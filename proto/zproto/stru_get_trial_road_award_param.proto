@@ -5,4 +5,3 @@ package zproto;
 message GetTrialRoadAwardParam {
     int32 targetId = 1;
 }
-

@@ -5,7 +5,5 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message CollectionBook {
-    map<uint32, bool> modBookMap = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.CollectionBook.ModBookMapEntry modBookMap = 1;
 }
-

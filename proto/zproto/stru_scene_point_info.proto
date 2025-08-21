@@ -9,4 +9,3 @@ message ScenePointInfo {
     int32 cameraId = 2;
     int32 sceneAreaId = 3;
 }
-

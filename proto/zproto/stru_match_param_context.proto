@@ -3,14 +3,19 @@ syntax = "proto3";
 package zproto;
 
 import "enum_e_match_mode.proto";
-import "stru_match_team_param.proto";
-import "stru_match_world_boss_param.proto";
+import "enum_e_match_strategy.proto";
+import "stru_match_key_info.proto";
+import "stru_match_player_info.proto";
+import "google/protobuf/any.proto";
 
 message MatchParamContext {
     zproto.EMatchMode matchMode = 1;
-    zproto.MatchTeamParam matchTeamParam = 2;
-    zproto.MatchWorldBossParam matchWorldBossParam = 3;
     string matchToken = 4;
     int64 teamId = 5;
+    zproto.EMatchStrategy matchStrategy = 6;
+    google.protobuf.Any matchStrategyParam = 7;
+    zproto.MatchKeyInfo matchKeyInfo = 8;
+    string matchGrainKey = 9;
+    zproto.MatchPlayerInfo matchPlayerInfo = 10;
+    int32 dungeonId = 11;
 }
-

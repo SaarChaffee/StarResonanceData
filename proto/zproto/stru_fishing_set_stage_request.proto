@@ -5,4 +5,3 @@ package zproto;
 message FishingSetStageRequest {
     int32 stage = 1;
 }
-

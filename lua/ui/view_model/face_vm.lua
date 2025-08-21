@@ -25,7 +25,7 @@ local openFaceCreateView = function()
   local viewConfigKey = "face_create"
   Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Creation_01, viewConfigKey, function()
     Z.UnrealSceneMgr:SwitchGroupReflection(true)
-    Z.UIMgr:OpenView(viewConfigKey)
+    Z.UIMgr:OpenView(viewConfigKey, {checkFaceDataCache = true})
   end, Z.ConstValue.UnrealSceneConfigPaths.Role)
 end
 local closeFaceCreateView = function()
@@ -33,24 +33,20 @@ local closeFaceCreateView = function()
 end
 local openFaceSystemView = function(screenX)
   local viewConfigKey = "face_system"
-  local viewData = {screenX = screenX}
-  Z.UIMgr:OpenView(viewConfigKey, viewData)
+  Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Creation_01, viewConfigKey, function()
+    Z.UnrealSceneMgr:SwitchGroupReflection(true)
+    Z.UIMgr:OpenView(viewConfigKey, {screenX = screenX, needCacheModel = true})
+  end, Z.ConstValue.UnrealSceneConfigPaths.Role)
 end
 local closeFaceSystemView = function()
   Z.UIMgr:CloseView("face_system")
 end
 local openEditView = function()
-  local args = {}
-  
-  function args.EndCallback()
-    local viewConfigKey = "face_edit"
-    Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Creation_01, viewConfigKey, function()
-      Z.UnrealSceneMgr:SwitchGroupReflection(true)
-      Z.UIMgr:OpenView(viewConfigKey)
-    end, Z.ConstValue.UnrealSceneConfigPaths.Role)
-  end
-  
-  Z.UIMgr:FadeIn(args)
+  local viewConfigKey = "face_edit"
+  Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Creation_01, viewConfigKey, function()
+    Z.UnrealSceneMgr:SwitchGroupReflection(true)
+    Z.UIMgr:OpenView(viewConfigKey)
+  end, Z.ConstValue.UnrealSceneConfigPaths.Role)
 end
 local closeEditView = function()
   Z.UIMgr:CloseView("face_edit")
@@ -332,17 +328,29 @@ local getEmotionOptions = function()
   end
   return options
 end
-local getFaceSaveCostData = function()
-  local dataList = Z.Global.FaceSaveItem
-  if #dataList == 2 then
-    local data = {
-      ItemId = dataList[1],
-      Num = dataList[2]
-    }
-    return data
-  else
-    logError("Global\232\161\168 FaceSaveItem \233\133\141\231\189\174\233\148\153\232\175\175")
+local getFaceSaveCostData = function(editorFaceInfo)
+  local item = {}
+  local mgr = Z.TableMgr.GetTable("FaceOptionTableMgr")
+  for pbum, value in pairs(editorFaceInfo) do
+    if value.isChange then
+      local config = mgr.GetRow(pbum)
+      if config then
+        item[config.Save] = true
+      end
+    end
   end
+  local data = {}
+  local dataIndex = 0
+  for _, value in ipairs(Z.Global.FaceSaveItem) do
+    if item[value[1]] then
+      dataIndex = dataIndex + 1
+      data[dataIndex] = {
+        ItemId = value[2],
+        Num = value[3]
+      }
+    end
+  end
+  return data
 end
 local getUsedLockFaceOptionList = function()
   local optionList = {}
@@ -436,7 +444,10 @@ local convertOptionDictToProtoData = function()
     local value = getOptionProtoValue(optionEnum)
     if value ~= nil then
       if type(value) == "table" then
-        ret.colorInfo[optionEnum] = value
+        local isVaild = value.x >= 0 and 0 <= value.y and 0 <= value.z and (value.x > 0 or 0 < value.y or 0 < value.z)
+        if isVaild then
+          ret.colorInfo[optionEnum] = value
+        end
       else
         ret.faceInfo[optionEnum] = value
       end
@@ -448,6 +459,16 @@ local clampValue = function(value, min, max)
   value = math.max(value, min)
   value = math.min(value, max)
   return value
+end
+local isColorEqual = function(first, second)
+  if not first or not second then
+    return false
+  end
+  if math.abs(first.h - second.h) < 1.0E-4 and 1.0E-4 > math.abs(first.s - second.s) and 1.0E-4 > math.abs(first.v - second.v) then
+    return true
+  else
+    return false
+  end
 end
 local checkUseDefaultValue = function(optionEnum, modeTableRow, faceOptionTableData, faceTableData, colorGroupTableData, faceMenuVM, templateVM, sourceValue, checkUnlock)
   local useValue = sourceValue
@@ -475,6 +496,9 @@ local checkUseDefaultValue = function(optionEnum, modeTableRow, faceOptionTableD
       end
     end
   elseif optionRow.Option == faceData.FaceDef.EOptionValueType.Float then
+    local valueMin = optionRow.Range[1] or -1
+    local valueMax = optionRow.Range[2] or 1
+    useValue = clampValue(sourceValue, valueMin, valueMax)
   elseif optionRow.Option == faceData.FaceDef.EOptionValueType.HSV and (0 < useValue.h or 0 < useValue.s or 0 < useValue.v) then
     local colorRow = colorGroupTableData.GetRow(optionRow.ColorGroup, true)
     if colorRow then
@@ -493,6 +517,12 @@ local checkUseDefaultValue = function(optionEnum, modeTableRow, faceOptionTableD
           local minV = colorRow.Value[configIndex][3] * 0.01
           local maxV = colorRow.Value[configIndex][4] * 0.01
           useValue.v = clampValue(useValue.v, minV, maxV)
+        else
+          local colorData = faceMenuVM.GetFaceColorDataByOptionEnum(optionEnum)
+          if not isColorEqual(useValue, colorData.HSV) then
+            useValue = colorData.HSV
+            useDefault = true
+          end
         end
       else
         local minS = colorRow.Saturation[1][2] * 0.01
@@ -525,6 +555,10 @@ local useFashionLuaDataWithDefaultValue = function(faceLuaData, ignoreTips, chec
   end
 end
 local updateFaceDataByContainerData = function()
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
   faceData.Gender = Z.ContainerMgr.CharSerialize.charBase.gender
   faceData.BodySize = Z.ContainerMgr.CharSerialize.charBase.bodySize
   faceData.ModelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
@@ -607,10 +641,8 @@ local loadFaceDataFromFile = function(path)
   Z.EventMgr:Dispatch(Z.ConstValue.FaceOptionAllChange)
   Z.EventMgr:Dispatch(Z.ConstValue.Face.FaceRefreshMenuView)
 end
-local saveFaceDataToLuaFile = function(path)
-  local luaFileName = faceData:GetPlayerGender() .. faceData:GetPlayerBodySize() .. Z.ServerTime:GetServerTime()
-  local path = path or Panda.Utility.PathEx.GetPathWithSaveFilePanel("save", "C:\\", luaFileName, "lua")
-  local modeTableRow = Z.TableMgr.GetTable("ModelHumanTableMgr").GetRow(faceData.ModelId)
+local getFaceDataCacheString = function()
+  local modeTableRow = Z.TableMgr.GetTable("ModelHumanTableMgr").GetRow(faceData:GetPlayerModelId())
   local faceOptionTableData = Z.TableMgr.GetTable("FaceOptionTableMgr")
   local faceTableData = Z.TableMgr.GetTable("FaceTableMgr")
   local colorGroupTableData = Z.TableMgr.GetTable("ColorGroupTableMgr")
@@ -624,11 +656,17 @@ local saveFaceDataToLuaFile = function(path)
       data[optionEnum] = value
     end
   end
-  local file = io.open(path, "w")
   local stringData = table.ztostring(data)
+  return stringData
+end
+local saveFaceDataToLuaFile = function(path)
+  local luaFileName = faceData:GetPlayerGender() .. faceData:GetPlayerBodySize() .. Z.ServerTime:GetServerTime()
+  local path = path or Panda.Utility.PathEx.GetPathWithSaveFilePanel("save", "C:\\", luaFileName, "lua")
+  local file = io.open(path, "w")
   if not file then
     return
   end
+  local stringData = getFaceDataCacheString()
   file:write("local FaceRandomData = ", stringData, [[
 
 return FaceRandomData
@@ -661,6 +699,40 @@ local stringToTable = function(faceDataStr)
     end
   end
   return faceData
+end
+local getGenderBodySizeByFaceDataString = function(faceDataStr)
+  local gender = 0
+  local bodySize = 0
+  local height = 0
+  for v in string.gmatch(faceDataStr, "%[Gender] = ([0-9]),") do
+    gender = tonumber(v)
+  end
+  for v in string.gmatch(faceDataStr, "%[BodySize] = ([0-9]),") do
+    bodySize = tonumber(v)
+  end
+  for v in string.gmatch(faceDataStr, "%[Height] = ([0-9]*),") do
+    height = tonumber(v)
+  end
+  return gender, bodySize, height
+end
+local cacheFaceData = function()
+  if Z.StageMgr.GetIsInSelectCharScene() then
+    return
+  end
+  local faceData = Z.DataMgr.Get("face_data")
+  if Z.LocalUserDataMgr.ContainsByLua(E.LocalUserDataType.Account, faceData.FaceCacheData) then
+    Z.LocalUserDataMgr.RemoveKeyByLua(E.LocalUserDataType.Account, faceData.FaceCacheData)
+  end
+  local faceVM = Z.VMMgr.GetVM("face")
+  local faceStringData = faceVM.GetFaceDataCacheString()
+  faceStringData = string.zconcat(faceStringData, [[
+
+[Gender] = ]], faceData.Gender, [[
+,
+[BodySize] = ]], faceData.BodySize, [[
+,
+[Height] =]], faceData.Height, ",")
+  Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Account, faceData.FaceCacheData, faceStringData)
 end
 local loadFashionLuaData = function()
   local path = Panda.Utility.PathEx.GetPathWithOpenFilePanel("open", "C:\\", "lua", "PandaFaceData")
@@ -762,17 +834,16 @@ end
 local upLoadResultFunc = function(url)
   Z.CoroUtil.create_coro_xpcall(function()
     local request = {faceCosUrl = url}
-    local ret = charactorProxy.UploadFaceSuccess(request, faceData.CancelSource:CreateToken())
-    if ret.errCode == 0 then
+    local errCode = charactorProxy.UploadFaceSuccess(request, faceData.CancelSource:CreateToken())
+    if errCode == 0 then
       Z.TipsVM.ShowTips(120020)
     else
-      Z.TipsVM.ShowTips(ret.errCode)
+      Z.TipsVM.ShowTips(errCode)
     end
   end)()
 end
 local onUploadFaceDataGetTmpToken = function(tmpToken, shortGuid)
-  local cosXml = Z.CosXmlRequest.Rent()
-  cosXml:InitCosXml(tmpToken.tmpSecretId, tmpToken.tmpSecretKey, tmpToken.region, tmpToken.tmpToken, tmpToken.expiredTime, function(isSuccess)
+  local func = function(isSuccess)
     if isSuccess then
       upLoadResultFunc(tmpToken.objectKey)
       if faceData.UploadFaceDataSuccess then
@@ -782,10 +853,7 @@ local onUploadFaceDataGetTmpToken = function(tmpToken, shortGuid)
     else
       Z.TipsVM.ShowTips(120021)
     end
-    cosXml:Recycle()
-  end)
-  cosXml.Bucket = tmpToken.bucket
-  cosXml.SaveKey = tmpToken.objectKey
+  end
   local faceOptionData = {}
   for optionEnum, option in pairs(faceData.FaceOptionDict) do
     local value = option:GetValue()
@@ -799,7 +867,16 @@ local onUploadFaceDataGetTmpToken = function(tmpToken, shortGuid)
     size = faceData:GetPlayerBodySize()
   }
   local content = cjson.encode(data)
-  Z.CosMgr.Instance:TransferUpLoadByte(cosXml, content)
+  local uploadParm = Z.UploadParm.New()
+  uploadParm.TmpSecretId = tmpToken.tmpSecretId
+  uploadParm.TmpSecretKey = tmpToken.tmpSecretKey
+  uploadParm.Region = tmpToken.region
+  uploadParm.TmpToken = tmpToken.tmpToken
+  uploadParm.ExpireTime = tmpToken.expiredTime
+  uploadParm.CallBackFunc = func
+  uploadParm.Bucket = tmpToken.bucket
+  uploadParm.SaveKey = tmpToken.objectKey
+  Z.UploadMgr:UploadPicture(Z.UploadPlatform.Cos, uploadParm, content)
 end
 local asyncGetFaceUploadData = function(token)
   local ret = charactorProxy.GetFaceUploadData({}, token)
@@ -882,6 +959,7 @@ local ret = {
   GetFaceOptionByAttrType = getFaceOptionByAttrType,
   SetPupilOffsetV = setPupilOffsetV,
   ResetToServerData = resetToServerData,
+  CheckLocalFaceData = checkLocalFaceData,
   GetFeatureDataByFeatureId = getFeatureDataByFeatureId,
   SaveFaceDataToFile = saveFaceDataToFile,
   LoadFaceDataFromFile = loadFaceDataFromFile,
@@ -896,7 +974,11 @@ local ret = {
   DownloadFaceData = downloadFaceData,
   AsyncGetFaceUploadData = asyncGetFaceUploadData,
   GetFaceDataUrlReply = getFaceDataUrlReply,
+  FaceDataStringToTable = stringToTable,
+  GetGenderBodySizeByFaceDataString = getGenderBodySizeByFaceDataString,
+  CacheFaceData = cacheFaceData,
   UseFashionLuaDataWithDefaultValue = useFashionLuaDataWithDefaultValue,
+  GetFaceDataCacheString = getFaceDataCacheString,
   RecordFaceEditorCommand = recordFaceEditorCommand,
   RecordFaceEditorListCommand = recordFaceEditorListCommand,
   MoveEditorOperation = moveEditorOperation,

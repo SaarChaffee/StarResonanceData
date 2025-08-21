@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+import "stru_basic_data.proto";
+import "stru_profession_data.proto";
+
+message CommunityCharBasicData {
+    zproto.BasicData basicData = 1;
+    zproto.AvatarInfo avatarInfo = 2;
+    zproto.ProfessionData professionData = 3;
+}

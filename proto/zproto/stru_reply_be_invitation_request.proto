@@ -6,4 +6,3 @@ message ReplyBeInvitationRequest {
     int64 teamId = 2;
     bool agree = 3;
 }
-

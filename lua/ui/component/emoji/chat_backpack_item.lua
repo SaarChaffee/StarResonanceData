@@ -27,7 +27,9 @@ function ChatBackpackItem:OnRefresh(data)
     isClickOpenTips = false
   }
   self.itemClass_:Init(self.itemData_)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.IsSelected)
+  if self.uiBinder.img_select then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.IsSelected)
+  end
 end
 
 function ChatBackpackItem:OnSelected(isSelected)
@@ -38,7 +40,9 @@ function ChatBackpackItem:OnSelected(isSelected)
     }
     self.tipsId_ = Z.TipsVM.ShowItemTipsView(self.uiBinder.Trans, self.itemData_.configId, self.itemData_.uuid, extraParams)
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, isSelected)
+  if self.uiBinder.img_select then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, isSelected)
+  end
 end
 
 function ChatBackpackItem:closeTips()

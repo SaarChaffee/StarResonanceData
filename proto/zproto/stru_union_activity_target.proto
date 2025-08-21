@@ -6,5 +6,5 @@ message UnionActivityTarget {
     int32 curNum = 1;
     bool hasFinished = 2;
     int64 lastRefreshTime = 3;
+    int64 nextRefreshTime = 4;
 }
-

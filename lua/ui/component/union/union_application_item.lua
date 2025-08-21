@@ -22,6 +22,7 @@ function UnionApplicationItem:OnInit()
 end
 
 function UnionApplicationItem:OnRefresh(data)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(data.socialData.basicData.isNewbie))
   self.uiBinder.lab_name.text = data.socialData.basicData.name
   self.uiBinder.lab_gs.text = data.socialData.fightPoint or 0
   self.uiBinder.lab_role_level.text = data.socialData.basicData.level
@@ -31,11 +32,13 @@ function UnionApplicationItem:OnRefresh(data)
   else
     self.uiBinder.img_icon_state:SetImage(Z.ConstValue.UnionRes.StateOffIcon)
   end
+  local personalzoneVm = Z.VMMgr.GetVM("personal_zone")
+  personalzoneVm.SetPersonalInfoBgBySocialData(data.socialData, self.uiBinder.rimg_card)
   local hasPower = self.unionVM_:CheckPlayerPower(E.UnionPowerDef.ProcessApplication)
   self.uiBinder.Ref:SetVisible(self.uiBinder.trans_btn_root, hasPower)
   playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.binder_head, data.socialData, function()
     self:onPortraitClick()
-  end)
+  end, self.parent.UIView.cancelSource:CreateToken())
 end
 
 function UnionApplicationItem:OnUnInit()

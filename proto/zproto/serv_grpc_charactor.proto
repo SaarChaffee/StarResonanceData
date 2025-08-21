@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
+import "stru_cancel_delete_char_reply.proto";
+import "stru_cancel_delete_char_request.proto";
 import "stru_create_char_reply.proto";
 import "stru_create_char_request.proto";
 import "stru_delete_char_reply.proto";
@@ -14,115 +17,86 @@ import "stru_get_face_upload_data_reply.proto";
 import "stru_get_face_upload_data_request.proto";
 import "stru_login_reply.proto";
 import "stru_login_request.proto";
+import "stru_privilege_activate_reply.proto";
+import "stru_privilege_activate_request.proto";
 import "stru_reconnect_reply.proto";
 import "stru_reconnect_request.proto";
-import "stru_report_m_sdk_reply.proto";
 import "stru_report_m_sdk_request.proto";
 import "stru_select_char_reply.proto";
 import "stru_select_char_request.proto";
-import "stru_select_run_editor_char_reply.proto";
-import "stru_select_run_editor_char_request.proto";
-import "stru_upload_face_success_reply.proto";
 import "stru_upload_face_success_request.proto";
 
 message GrpcCharactor {
     message Login_Ret {
-        uint32 ret_code = 1;
-        zproto.LoginReply ret = 2;
+        zproto.LoginReply ret = 1;
     }
-
     message Login {
         zproto.LoginRequest vRequest = 1;
     }
-
     message CreateChar_Ret {
-        uint32 ret_code = 1;
-        zproto.CreateCharReply ret = 2;
+        zproto.CreateCharReply ret = 1;
     }
-
     message CreateChar {
         zproto.CreateCharRequest vRequest = 1;
     }
-
     message SelectChar_Ret {
-        uint32 ret_code = 1;
-        zproto.SelectCharReply ret = 2;
+        zproto.SelectCharReply ret = 1;
     }
-
     message SelectChar {
         zproto.SelectCharRequest vRequest = 1;
     }
-
     message DeleteChar_Ret {
-        uint32 ret_code = 1;
-        zproto.DeleteCharReply ret = 2;
+        zproto.DeleteCharReply ret = 1;
     }
-
     message DeleteChar {
         zproto.DeleteCharRequest vRequest = 1;
     }
-
     message Reconnect_Ret {
-        uint32 ret_code = 1;
-        zproto.ReconnectReply ret = 2;
+        zproto.ReconnectReply ret = 1;
     }
-
     message Reconnect {
         zproto.ReconnectRequest vRequest = 1;
     }
-
     message ExitGame {
         zproto.ExitGameRequest vRequest = 1;
     }
-
-    message SelectRunEditorChar_Ret {
-        uint32 ret_code = 1;
-        zproto.SelectRunEditorCharReply ret = 2;
-    }
-
-    message SelectRunEditorChar {
-        zproto.SelectRunEditorCharRequest vRequest = 1;
-    }
-
     message ReportMSdk_Ret {
-        uint32 ret_code = 1;
-        zproto.ReportMSdkReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message ReportMSdk {
         zproto.ReportMSdkRequest vRequest = 1;
     }
-
     message GetFaceUpToken {
         zproto.GetFaceUpTokenRequest vRequest = 1;
     }
-
     message UploadFaceSuccess_Ret {
-        uint32 ret_code = 1;
-        zproto.UploadFaceSuccessReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message UploadFaceSuccess {
         zproto.UploadFaceSuccessRequest vRequest = 1;
     }
-
     message GetFaceUploadData_Ret {
-        uint32 ret_code = 1;
-        zproto.GetFaceUploadDataReply ret = 2;
+        zproto.GetFaceUploadDataReply ret = 1;
     }
-
     message GetFaceUploadData {
         zproto.GetFaceUploadDataRequest vRequest = 1;
     }
-
     message GetFaceDataUrl_Ret {
-        uint32 ret_code = 1;
-        zproto.GetFaceDataUrlReply ret = 2;
+        zproto.GetFaceDataUrlReply ret = 1;
     }
-
     message GetFaceDataUrl {
         zproto.GetFaceDataUrlRequest vRequest = 1;
     }
-
+    message CancelDeleteChar_Ret {
+        zproto.CancelDeleteCharReply ret = 1;
+    }
+    message CancelDeleteChar {
+        zproto.CancelDeleteCharRequest vRequest = 1;
+    }
+    message PrivilegeActivate_Ret {
+        zproto.PrivilegeActivateReply ret = 1;
+    }
+    message PrivilegeActivate {
+        zproto.PrivilegeActivateRequest vRequest = 1;
+    }
 }
-

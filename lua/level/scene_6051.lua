@@ -7,7 +7,7 @@ end
 function Scene:LoadComplete()
 end
 
-Scene.Seasons = {}
+Scene.Seasons = {1}
 
 function Scene:InitEvents()
   self.EventItems = {}
@@ -19,7 +19,7 @@ function Scene:InitEvents()
     eventId = 100491,
     count = -1,
     action = function(localSelf)
-      Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {4006})
+      Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1031})
     end
   }
 end

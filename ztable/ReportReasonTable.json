@@ -1,0 +1,87 @@
+{
+  "101": {
+    "Id": 101,
+    "Reason": "",
+    "Iffill": false
+  },
+  "102": {
+    "Id": 102,
+    "Reason": "",
+    "Iffill": false
+  },
+  "103": {
+    "Id": 103,
+    "Reason": "",
+    "Iffill": false
+  },
+  "104": {
+    "Id": 104,
+    "Reason": "",
+    "Iffill": false
+  },
+  "105": {
+    "Id": 105,
+    "Reason": "",
+    "Iffill": false
+  },
+  "106": {
+    "Id": 106,
+    "Reason": "",
+    "Iffill": false
+  },
+  "108": {
+    "Id": 108,
+    "Reason": "",
+    "Iffill": false
+  },
+  "199": {
+    "Id": 199,
+    "Reason": "",
+    "Iffill": true
+  },
+  "901": {
+    "Id": 901,
+    "Reason": "",
+    "Iffill": false
+  },
+  "999": {
+    "Id": 999,
+    "Reason": "",
+    "Iffill": true
+  },
+  "903": {
+    "Id": 903,
+    "Reason": "",
+    "Iffill": false
+  },
+  "799": {
+    "Id": 799,
+    "Reason": "",
+    "Iffill": false
+  },
+  "801": {
+    "Id": 801,
+    "Reason": "",
+    "Iffill": false
+  },
+  "802": {
+    "Id": 802,
+    "Reason": "",
+    "Iffill": false
+  },
+  "803": {
+    "Id": 803,
+    "Reason": "",
+    "Iffill": false
+  },
+  "899": {
+    "Id": 899,
+    "Reason": "",
+    "Iffill": true
+  },
+  "798": {
+    "Id": 798,
+    "Reason": "",
+    "Iffill": true
+  }
+}

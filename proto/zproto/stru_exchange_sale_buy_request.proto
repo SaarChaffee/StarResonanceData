@@ -7,4 +7,3 @@ message ExchangeSaleBuyRequest {
     int32 num = 2;
     int32 elseRate = 3;
 }
-

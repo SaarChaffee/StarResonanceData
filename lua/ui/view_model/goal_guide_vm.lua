@@ -10,6 +10,8 @@ local getLevelTableByPosType = function(posType)
     tbl = Z.TableMgr.GetTable("ZoneEntityTableMgr")
   elseif posType == Z.GoalPosType.SceneObject then
     tbl = Z.TableMgr.GetTable("SceneObjectEntityTableMgr")
+  elseif posType == Z.GoalPosType.Collection then
+    tbl = Z.TableMgr.GetTable("CollectionEntityTableMgr")
   end
   return tbl
 end
@@ -24,7 +26,7 @@ local changeGuideDataBySrcId = function(src, flagData)
     end
   end
 end
-local setGuideDataAndNotify = function(src, goalList)
+local setGuideDataAndNotify = function(src, goalList, sourceGoalList)
   local trackTbl = Z.TableMgr.GetTable("TargetTrackTableMgr")
   local trackRow = trackTbl.GetRow(src)
   if not trackRow then
@@ -32,7 +34,7 @@ local setGuideDataAndNotify = function(src, goalList)
   end
   local guideData = Z.DataMgr.Get("goal_guide_data")
   local oldGoalList = guideData:GetGuideGoalsBySource(src) or {}
-  guideData:SetGuideGoals(src, goalList)
+  guideData:SetGuideGoals(src, goalList, sourceGoalList)
   if src == E.GoalGuideSource.Quest then
     if goalList == nil then
       Z.GoalGuideMgr:SetQuestGoalGuide(nil)
@@ -60,7 +62,7 @@ local setGuideDataAndNotify = function(src, goalList)
   end
   Z.EventMgr:Dispatch(Z.ConstValue.GoalGuideChange, src, oldGoalList)
 end
-local setGuideGoals = function(src, goalList)
+local setGuideGoals = function(src, goalList, sourceGoalList)
   local trackTbl = Z.TableMgr.GetTable("TargetTrackTableMgr")
   local trackRow = trackTbl.GetRow(src)
   if not trackRow then
@@ -68,16 +70,17 @@ local setGuideGoals = function(src, goalList)
   end
   local guideData = Z.DataMgr.Get("goal_guide_data")
   if goalList == nil or #goalList == 0 then
-    setGuideDataAndNotify(src, nil)
+    setGuideDataAndNotify(src, nil, sourceGoalList)
   else
     local dict = guideData:GetAllGuideGoalsDict()
-    for k, v in pairs(dict) do
+    local tempDict = table.zclone(dict)
+    for k, _ in pairs(tempDict) do
       local row = trackTbl.GetRow(k)
       if row and row.Team == trackRow.Team then
-        setGuideDataAndNotify(k, nil)
+        setGuideDataAndNotify(k, nil, nil)
       end
     end
-    setGuideDataAndNotify(src, goalList)
+    setGuideDataAndNotify(src, goalList, sourceGoalList)
   end
   Z.EventMgr:Dispatch(Z.ConstValue.AllGoalGuideChange)
 end

@@ -8,4 +8,3 @@ message ExchangeBuyItemRequest {
     int32 num = 4;
     int32 price = 5;
 }
-

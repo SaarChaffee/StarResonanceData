@@ -6,4 +6,3 @@ message GashaDrawRequest {
     int32 count = 1;
     int32 poolId = 2;
 }
-

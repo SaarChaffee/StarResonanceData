@@ -86,7 +86,9 @@ function Bag_selectpack_popupView:refreshInfo()
   if not self.viewData.awardId then
     return
   end
-  self.useNum_ = math.min(self.viewData.ItemBatchCount, self.viewData.awardNum)
+  local itemBatchCount = self.viewData.ItemBatchCount or 1
+  local awardNum = self.viewData.awardNum or 1
+  self.useNum_ = math.min(itemBatchCount, awardNum)
   self:initSelectData()
   self:refreshTitle(itemName)
   self:refreshBtnState()
@@ -209,7 +211,7 @@ function Bag_selectpack_popupView:InputNum(num)
 end
 
 function Bag_selectpack_popupView:ChangeSelectItemNum(itemId, itemNum)
-  if not itemId then
+  if not itemId or not self.selectData_ then
     return
   end
   local idx = 0
@@ -257,6 +259,9 @@ function Bag_selectpack_popupView:refreshBtnState()
 end
 
 function Bag_selectpack_popupView:useItem()
+  if not self.selectData_ then
+    return
+  end
   local itemsVM = Z.VMMgr.GetVM("items")
   local selectData = {}
   if self.viewData.itemId then
@@ -274,18 +279,8 @@ function Bag_selectpack_popupView:useItem()
         end
       end
     end
-    local param = {}
-    param.useNum = self.selectNum_
+    local param = itemsVM.AssembleUseItemParam(self.viewData.itemId, self.viewData.itemUuid, self.selectNum_)
     param.select = selectData
-    if self.viewData.itemUuid ~= nil then
-      param.itemUuid = self.viewData.itemUuid
-    else
-      local itemData = Z.DataMgr.Get("items_data")
-      local uuidList = itemData:GetItemUuidsByConfigId(self.viewData.itemId)
-      if uuidList and 0 < #uuidList then
-        param.itemUuid = uuidList[1]
-      end
-    end
     itemsVM.AsyncUseItemByUuid(param, self.cancelSource:CreateToken())
   end
 end

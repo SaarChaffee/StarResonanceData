@@ -4,24 +4,28 @@ local Equip_refining_subView = class("Equip_refining_subView", super)
 local listSubView = require("ui.view.equip_refining_list_sub_view")
 local blessingSubView = require("ui.view.equip_blessing_sub_view")
 local consumeItem = require("ui.component.equip.equip_refine_consume_item")
+local blessingItem = require("ui.component.equip.equip_refine_blessing_loop_item")
+local addBtnItem = require("ui.component.equip.equip_refine_add_loop_item")
 local loop_list = require("ui.component.loop_list_view")
-local itemClass = require("common.item_binder")
+local addItemData = {IsAddBtn = true}
 
 function Equip_refining_subView:ctor(parent)
   self.parent_ = parent
   self.uiBinder = nil
-  super.ctor(self, "equip_refining_sub", "equip/equip_refining_sub", UI.ECacheLv.None)
+  super.ctor(self, "equip_refining_sub", "equip/equip_refining_sub", UI.ECacheLv.None, true)
   self.listSubView_ = listSubView.new(self)
   self.blessingSubView_ = blessingSubView.new(self)
   self.equipSystemVm_ = Z.VMMgr.GetVM("equip_system")
   self.equipCfgData_ = Z.DataMgr.Get("equip_config_data")
   self.equipRefineData_ = Z.DataMgr.Get("equip_refine_data")
-  self.blessingItemClass_ = itemClass.new(self)
   self.equipRefineVm_ = Z.VMMgr.GetVM("equip_refine")
   self.itemsVM_ = Z.VMMgr.GetVM("items")
 end
 
 function Equip_refining_subView:initBinders()
+  self.stateLab_ = self.uiBinder.lab_state
+  self.stateDepth_ = self.uiBinder.lab_state_depth
+  self.anim_ = self.uiBinder.anim
   self.partIcon_ = self.uiBinder.part_icon
   self.partLab_ = self.uiBinder.part_lab
   self.equipNameLab_ = self.uiBinder.lab_equip_assembly
@@ -32,7 +36,6 @@ function Equip_refining_subView:initBinders()
   self.desLab_ = self.uiBinder.lab_des
   self.successRateLab_ = self.uiBinder.lab_success_rate
   self.baseRate_ = self.uiBinder.lab_original
-  self.addBtn_ = self.uiBinder.btn_add
   self.refineBtnNode_ = self.uiBinder.node_refine
   self.loopItem_ = self.uiBinder.loop_item
   self.professionIcon_ = self.uiBinder.img_profession_icon
@@ -41,7 +44,6 @@ function Equip_refining_subView:initBinders()
   self.basicsItemNode_ = self.uiBinder.node_basics_item
   self.specialItemNode_ = self.uiBinder.node_special_item
   self.prefabCache_ = self.uiBinder.prefab_cache
-  self.blessingItem_ = self.uiBinder.equip_item_square
   self.refinepopupBtn_ = self.uiBinder.refinepopup_btn
   self.rightBottomNode_ = self.uiBinder.node_right_bottom
   self.pressNode_ = self.uiBinder.node_press
@@ -50,39 +52,32 @@ function Equip_refining_subView:initBinders()
   self.maxLevelNode_ = self.uiBinder.lab_high_level
   self.mask_ = self.uiBinder.mask
   self.pressNode_:StopCheck()
+  self.blessingLoopItem_ = self.uiBinder.loop_blessing_item
   self.parent_.uiBinder.ui_depth:AddChildDepth(self.failEffect_)
   self.parent_.uiBinder.ui_depth:AddChildDepth(self.successEffect_)
-  self.parent_.uiBinder.ui_depth:AddChildDepth(self.uiBinder.effect_equip_icon)
+  self.parent_.uiBinder.ui_depth:AddChildDepth(self.stateDepth_)
 end
 
 function Equip_refining_subView:initBtns()
   self:EventAddAsyncListener(self.pressNode_.ContainGoEvent, function(isCheck)
+    self.uiBinder.Ref:SetVisible(self.stateLab_, false)
     if self.successEffectTimer_ then
       self.timerMgr:StopTimer(self.successEffectTimer_)
       self.successEffectTimer_ = nil
+      self.anim_:ResetAniState("anim_equip_refining_sub_succeed_open")
     end
     if self.failEffectTimer_ then
       self.timerMgr:StopTimer(self.failEffectTimer_)
       self.failEffectTimer_ = nil
+      self.anim_:ResetAniState("anim_equip_refining_sub_fail_open")
     end
     self.uiBinder.Ref:SetVisible(self.mask_, false)
-    self.failEffect_:SetEffectGoVisible(false)
-    self.successEffect_:SetEffectGoVisible(false)
     self.pressNode_:StopCheck()
     if self.isSuccess_ then
       Z.TipsVM.ShowTips(150016)
     else
       Z.TipsVM.ShowTips(150017)
     end
-  end)
-  self:AddClick(self.addBtn_, function()
-    if self.equipRefineData_.CurrentSuccessRate >= 100 then
-      Z.TipsVM.ShowTips(150018)
-      return
-    end
-    self.blessingSubView_:Active({
-      part = self.selectedPart_
-    }, self.blessingSubParent_.transform)
   end)
   self:AddAsyncClick(self.refineBtnNode_.btn, function()
     if not self.refineIsUnlock_ then
@@ -107,31 +102,67 @@ function Equip_refining_subView:initBtns()
         end
       end
     end
-    self.uiBinder.Ref:SetVisible(self.mask_, true)
-    Z.AudioMgr:Play("UI_Equipment_Rebuild")
-    self.isSuccess_ = self.equipRefineVm_.AsyncRefining(self.selectedPart_, self.selectedBlessingItemId_, self.selectedBlessingItemCount_, self.cancelSource:CreateToken())
-    self.blessingItem_.Ref.UIComp:SetVisible(false)
-    self.pressNode_:StartCheck()
-    self.selectedBlessingItemId_ = nil
-    if self.isSuccess_ then
-      self.successEffect_:SetEffectGoVisible(true)
-      Z.AudioMgr:Play("UI_Equipment_Rebuild_Success")
-      self.successEffectTimer_ = self.timerMgr:StartTimer(function()
-        self.pressNode_:StopCheck()
-        self.uiBinder.Ref:SetVisible(self.mask_, false)
-        Z.TipsVM.ShowTips(150016)
-      end, 3, 1)
-    else
-      self.failEffect_:SetEffectGoVisible(true)
-      Z.AudioMgr:Play("UI_Equipment_Rebuild_Fail")
-      self.failEffect_:Play()
-      self.failEffectTimer_ = self.timerMgr:StartTimer(function()
-        self.pressNode_:StopCheck()
-        self.uiBinder.Ref:SetVisible(self.mask_, false)
-        Z.TipsVM.ShowTips(150017)
-      end, 3, 1)
+    local func = function(...)
+      self.uiBinder.Ref:SetVisible(self.mask_, true)
+      Z.AudioMgr:Play("UI_Equipment_Rebuild")
+      local itemCostList = {}
+      local index = 1
+      for key, value in pairs(self.equipRefineData_.CurSelBlessingData) do
+        itemCostList[index] = {
+          itemConfigId = value.configId,
+          itemCount = value.num
+        }
+        index = index + 1
+      end
+      self.uiBinder.Ref:SetVisible(self.successRateLab_, false)
+      self.isSuccess_ = self.equipRefineVm_.AsyncRefining(self.selectedPart_, itemCostList, self.cancelSource:CreateToken())
+      self.pressNode_:StartCheck()
+      self.uiBinder.Ref:SetVisible(self.stateLab_, true)
+      if self.isSuccess_ then
+        self.stateLab_.text = Lang("RefineSuccess")
+        self.anim_:PlayOnce("anim_equip_refining_sub_succeed_open")
+        Z.AudioMgr:Play("UI_Equipment_Rebuild_Success")
+        self.successEffectTimer_ = self.timerMgr:StartTimer(function()
+          self.pressNode_:StopCheck()
+          self.uiBinder.Ref:SetVisible(self.mask_, false)
+          Z.TipsVM.ShowTips(150016)
+        end, 3, 1, nil, function()
+          self.uiBinder.Ref:SetVisible(self.successRateLab_, true)
+        end)
+      else
+        self.stateLab_.text = Lang("RefineFail")
+        self.anim_:PlayOnce("anim_equip_refining_sub_fail_open")
+        Z.AudioMgr:Play("UI_Equipment_Rebuild_Fail")
+        self.failEffect_:Play()
+        self.failEffectTimer_ = self.timerMgr:StartTimer(function()
+          self.pressNode_:StopCheck()
+          self.uiBinder.Ref:SetVisible(self.mask_, false)
+          Z.TipsVM.ShowTips(150017)
+        end, 3, 1, nil, function()
+          self.uiBinder.Ref:SetVisible(self.successRateLab_, true)
+        end)
+      end
+      self:refreshEquipInfo()
     end
-    self:refreshEquipInfo()
+    if self.equipRefineData_.CurrentSuccessRate < 100 then
+      local val2 = self.curRefineRow_ and math.floor(self.curRefineRow_.FailCompensateRate / 100) or 0
+      local labContent = ""
+      if val2 == 0 then
+        labContent = Lang("EquipRefineSuccessRateZeroTips", {
+          val = self.equipRefineData_.CurrentSuccessRate
+        })
+      else
+        labContent = Lang("EquipRefineSuccessRateTips", {
+          val1 = self.equipRefineData_.CurrentSuccessRate,
+          val2 = val2
+        })
+      end
+      Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(labContent, function()
+        func()
+      end, nil, E.DlgPreferencesType.Login, Z.ConstValue.Equip.EquipRefineSuccessRateTips)
+    else
+      func()
+    end
   end)
   self:AddClick(self.desLab_, function()
     self.equipRefineVm_.OpenRefinePopup(self.selectedPart_)
@@ -145,21 +176,22 @@ function Equip_refining_subView:initBtns()
       self.tipsId_ = Z.TipsVM.ShowItemTipsView(self.partLab_.transform, self.partItem_.configId, self.partItem_.uuid)
     end
   end)
-  self:AddClick(self.blessingItem_.btn_minus, function()
-    self.blessingItem_.Ref.UIComp:SetVisible(false)
-    self:setSuccessRateLab(self.successRate_, 0)
-    self.selectedBlessingItemId_ = nil
-  end)
+end
+
+function Equip_refining_subView:OpenBlessingSubView()
+  if self.equipRefineData_.CurrentSuccessRate >= 100 then
+    Z.TipsVM.ShowTips(150018)
+    return
+  end
+  self.blessingSubView_:Active({
+    part = self.selectedPart_
+  }, self.blessingSubParent_.transform)
+  self.uiBinder.anim_do:Restart(Z.DOTweenAnimType.Tween_0)
 end
 
 function Equip_refining_subView:initUi()
-  local choiceItemData = {
-    uiBinder = self.blessingItem_,
-    isClickOpenTips = true,
-    isSquareItem = true
-  }
   self.uiBinder.Ref:SetVisible(self.mask_, false)
-  self.blessingItemClass_:Init(choiceItemData)
+  self.uiBinder.Ref:SetVisible(self.stateLab_, false)
   self.selectedPart_ = E.EquipPart.Weapon
   if self.viewData and self.viewData.configId then
     local equipRow = Z.TableMgr.GetRow("EquipTableMgr", self.viewData.configId, true)
@@ -167,7 +199,31 @@ function Equip_refining_subView:initUi()
       self.selectedPart_ = equipRow.EquipPart
     end
   end
-  self.loopListView_ = loop_list.new(self, self.loopItem_, consumeItem, "equip_item_tpl_3_8")
+  local assetItemPath
+  if Z.IsPCUI then
+    assetItemPath = "com_item_square_2_8_pc"
+  else
+    assetItemPath = "equip_item_tpl_3_8"
+  end
+  self.loopListView_ = loop_list.new(self, self.loopItem_, consumeItem, assetItemPath)
+  self.blessingListView_ = loop_list.new(self, self.blessingLoopItem_)
+  self.blessingListView_:SetGetItemClassFunc(function(data)
+    if data.IsAddBtn then
+      return addBtnItem
+    else
+      return blessingItem
+    end
+  end)
+  self.blessingListView_:SetGetPrefabNameFunc(function(data)
+    local assetBlessingItemPath
+    if data.IsAddBtn then
+      assetBlessingItemPath = "equip_add_btn_tpl"
+    else
+      assetBlessingItemPath = assetItemPath
+    end
+    return assetBlessingItemPath
+  end)
+  self.blessingListView_:Init({})
   self.loopListView_:Init({})
   if self.listSubView_ then
     self.listSubView_:Active({
@@ -177,44 +233,39 @@ function Equip_refining_subView:initUi()
       end
     }, self.listSubParent_.transform)
   end
-  self.failEffect_:SetEffectGoVisible(false)
-  self.successEffect_:SetEffectGoVisible(false)
   self.desLab_.text = Lang("EquipRefineNoteTips")
 end
 
 function Equip_refining_subView:OnActive()
   self.uiBinder.Trans:SetSizeDelta(0, 0)
   self:initBinders()
+  self:onStartAnimShow()
   self:initBtns()
+  self.equipRefineData_.CurSelBlessingData = {}
   self:initUi()
   self:refreshEquipInfo()
-  Z.EventMgr:Add("selectedBlessingItem", self.selectedBlessingItem, self)
-  Z.EventMgr:Add("blessingItemCountChange", self.blessingItemCountChange, self)
   Z.EventMgr:Dispatch(Z.ConstValue.Equip.RefreshEmptyState, true, "")
+  Z.EventMgr:Add(Z.ConstValue.Equip.EquipRefreshSelBlessingData, self.refreshBlessingInfo, self)
 end
 
-function Equip_refining_subView:blessingItemCountChange(itemId, count, successRatet)
-  if self.selectedBlessingItemId_ == itemId then
-    self.blessingItem_.Ref.UIComp:SetVisible(0 < count)
-    self.selectedBlessingItemCount_ = count
-    self.blessingItemClass_:SetLab(count)
-    self:setSuccessRateLab(self.successRate_, successRatet)
+function Equip_refining_subView:refreshBlessingInfo()
+  local data = {}
+  local index = 0
+  local successRatet = 0
+  for key, value in pairs(self.equipRefineData_.CurSelBlessingData) do
+    index = index + 1
+    data[index] = value
+    successRatet = successRatet + value.rate
   end
+  self:refreshBlessingList(data)
+  self:setSuccessRateLab(self.successRate_, successRatet)
 end
 
-function Equip_refining_subView:selectedBlessingItem(itemId, count, successRate)
-  self.selectedBlessingItemId_ = itemId
-  self.selectedBlessingItemCount_ = count
-  self.blessingItem_.Ref.UIComp:SetVisible(0 < count)
-  self.blessingItemClass_:RefreshByData({
-    uiBinder = self.blessingItem_,
-    configId = itemId,
-    labType = E.ItemLabType.Str,
-    lab = count,
-    isSquareItem = true
-  })
-  self.blessingItem_.Ref:SetVisible(self.blessingItem_.btn_minus, true)
-  self:setSuccessRateLab(self.successRate_, successRate)
+function Equip_refining_subView:refreshBlessingList(data)
+  if #data < Z.Global.MaxEquipEnchantItemNum then
+    data[#data + 1] = addItemData
+  end
+  self.blessingListView_:RefreshListView(data)
 end
 
 function Equip_refining_subView:refreshEquipInfo()
@@ -231,24 +282,20 @@ function Equip_refining_subView:refreshEquipInfo()
   end
   self:refreshRefineInfo()
   self:refreshRefineBtnRed()
+  self:refreshBlessingList({})
 end
 
 function Equip_refining_subView:setSuccessRateLab(baseRate, addRate)
   addRate = addRate and addRate or 0
   self.equipRefineData_:SetCurrentSuccessRate(baseRate + addRate)
-  local successRate = 0
-  if self.nextRefineRow_ then
-    successRate = self.nextRefineRow_.SuccessRate / 100
-  end
-  local str = ""
+  local str = Lang("UpgradeRate", {val = baseRate})
   self.uiBinder.Ref:SetVisible(self.baseRate_, addRate ~= 0)
   if addRate ~= 0 then
-    str = "%" .. Z.RichTextHelper.ApplyColorTag("+" .. addRate, "#FFC000")
-    str = Z.RichTextHelper.ApplySizeTag(str, 30)
+    local rateStr = Z.RichTextHelper.ApplyColorTag("+" .. addRate .. "%", "#FFC000")
+    str = str .. Z.RichTextHelper.ApplySizeTag(rateStr, 30)
   end
-  self.successRateLab_.text = Lang("UpgradeRate", {
-    val = baseRate .. str
-  })
+  self.successRateLab_.text = str
+  Z.EventMgr:Dispatch(Z.ConstValue.Equip.RefineRateChange)
 end
 
 function Equip_refining_subView:loadBasicAttr()
@@ -305,10 +352,10 @@ function Equip_refining_subView:refreshRefineInfo()
   if currentLevelRefineId == nil then
     return
   end
-  self.blessingItem_.Ref.UIComp:SetVisible(false)
   local data = self.equipCfgData_.RefineTableData[currentLevelRefineId]
   if data then
     self.nextRefineRow_ = data[self.currentLevel_ + 1]
+    self.curRefineRow_ = data[self.currentLevel_]
     self.uiBinder.Ref:SetVisible(self.nextLevelArrowNode_, self.nextRefineRow_ ~= nil)
     if self.nextRefineRow_ then
       self.uiBinder.Ref:SetVisible(self.rightBottomNode_, true)
@@ -325,6 +372,8 @@ function Equip_refining_subView:refreshRefineInfo()
       if not self.refineIsUnlock_ then
         if descData.tipsId == 1500001 then
           self.refineBtnNode_.lab_normal.text = Lang("RefineLevleInsufficientTips", descData.tipsParam)
+        else
+          self.refineBtnNode_.lab_normal.text = descData.Desc
         end
       else
         self.refineBtnNode_.lab_normal.text = Lang("EquipRefining")
@@ -396,6 +445,7 @@ function Equip_refining_subView:loadLevleEffect()
 end
 
 function Equip_refining_subView:OnDeActive()
+  self.failEffect_:Stop()
   if self.listSubView_ then
     self.listSubView_:DeActive()
   end
@@ -414,17 +464,21 @@ function Equip_refining_subView:OnDeActive()
     self.loopListView_:UnInit()
     self.loopListView_ = nil
   end
+  if self.blessingListView_ then
+    self.blessingListView_:UnInit()
+    self.blessingListView_ = nil
+  end
   self.pressNode_:StopCheck()
   self.parent_.uiBinder.ui_depth:RemoveChildDepth(self.failEffect_)
   self.parent_.uiBinder.ui_depth:RemoveChildDepth(self.failEffect_)
   Z.CommonTipsVM.CloseRichText()
-  self.blessingItemClass_:UnInit()
 end
 
 function Equip_refining_subView:selectedPart(part)
   if self.selectedPart_ == part then
     return
   end
+  self.equipRefineData_.CurSelBlessingData = {}
   self.selectedPart_ = part
   self:refreshEquipInfo()
 end
@@ -435,6 +489,10 @@ function Equip_refining_subView:refreshRefineBtnRed()
 end
 
 function Equip_refining_subView:OnRefresh()
+end
+
+function Equip_refining_subView:onStartAnimShow()
+  self.uiBinder.anim_do:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Equip_refining_subView

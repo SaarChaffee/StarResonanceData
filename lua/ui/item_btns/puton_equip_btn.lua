@@ -19,6 +19,10 @@ local checkValid = function(itemUuid, configId, data)
     if data.viewConfigKey == "backpack_main" then
       return E.ItemBtnState.Hide
     end
+    local isUnlock = Z.ConditionHelper.CheckCondition(equipTable.WearCondition)
+    if not isUnlock then
+      return E.ItemBtnState.IsDisabled
+    end
     return E.ItemBtnState.Active
   end
   return E.ItemBtnState.UnActive
@@ -27,10 +31,22 @@ local onClick = function(itemUuid, configId, data)
   local equipTableMgr = Z.TableMgr.GetTable("EquipTableMgr")
   local equipTable = equipTableMgr.GetRow(configId, false)
   if equipTable then
+    for index, value in ipairs(equipTable.WearCondition) do
+      if not Z.ConditionHelper.CheckCondition({value}) then
+        local type = value[1]
+        if type == E.ConditionType.Level then
+          Z.TipsVM.ShowTips(150032, {
+            val = value[2]
+          })
+        end
+        return
+      end
+    end
     if data.viewConfigKey == "backpack_main" then
       equipVm_.OpenEquipSystemView(equipTable.EquipPart)
     else
       if not equipVm_.CheckEquipIsCurProfession(configId) then
+        Z.TipsVM.ShowTips(7054)
         return
       end
       equipVm_.CheckPutOnEquip(equipTable.EquipPart, itemUuid, data.cancelToken)

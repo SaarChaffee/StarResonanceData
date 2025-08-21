@@ -3,18 +3,18 @@ syntax = "proto3";
 package zproto;
 
 import "stru_dungeon_affix_data.proto";
-import "stru_dungeon_community_info.proto";
 import "stru_dungeon_damage.proto";
 import "stru_dungeon_event.proto";
 import "stru_dungeon_flow_info.proto";
 import "stru_dungeon_hero_key_info.proto";
-import "stru_dungeon_homeland_info.proto";
 import "stru_dungeon_pioneer.proto";
 import "stru_dungeon_planet_memory_room.proto";
 import "stru_dungeon_player_list.proto";
+import "stru_dungeon_raid_info.proto";
 import "stru_dungeon_random_entity_config_id_info.proto";
 import "stru_dungeon_rank_list.proto";
 import "stru_dungeon_revive_info.proto";
+import "stru_dungeon_scene_info.proto";
 import "stru_dungeon_score.proto";
 import "stru_dungeon_settlement.proto";
 import "stru_dungeon_target.proto";
@@ -22,7 +22,9 @@ import "stru_dungeon_timer_info.proto";
 import "stru_dungeon_title.proto";
 import "stru_dungeon_union_info.proto";
 import "stru_dungeon_var.proto";
+import "stru_dungeon_var_all.proto";
 import "stru_dungeon_vote.proto";
+import "enum_e_error_code.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonSyncData {
@@ -42,12 +44,12 @@ message DungeonSyncData {
     zproto.DungeonScore dungeonScore = 14;
     zproto.DungeonTimerInfo timerInfo = 15;
     zproto.DungeonHeroKeyInfo heroKey = 16;
-    zproto.DungeonCommunityInfo community = 17;
-    zproto.DungeonHomelandInfo homeland = 18;
-    zproto.DungeonUnionInfo dungeonUnionInfo = 19;
-    zproto.DungeonPlayerList dungeonPlayerList = 20;
-    zproto.DungeonReviveInfo reviveInfo = 21;
-    zproto.DungeonRandomEntityConfigIdInfo randomEntityConfigIdInfo = 22;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    zproto.DungeonUnionInfo dungeonUnionInfo = 17;
+    zproto.DungeonPlayerList dungeonPlayerList = 18;
+    zproto.DungeonReviveInfo reviveInfo = 19;
+    zproto.DungeonRandomEntityConfigIdInfo randomEntityConfigIdInfo = 20;
+    zproto.DungeonSceneInfo dungeonSceneInfo = 21;
+    zproto.DungeonVarAll dungeonVarAll = 22;
+    zproto.DungeonRaidInfo dungeonRaidInfo = 23;
+    zproto.EErrorCode errCode = 24;
 }
-

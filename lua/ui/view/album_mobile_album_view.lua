@@ -4,7 +4,6 @@ local loopScrollRect = require("ui/component/loopscrollrect")
 local albumUnit = require("ui.component.album.album_newlybuild_item")
 
 function Album_mobile_albumView:ctor()
-  self.panel = nil
   self.uiBinder = nil
   super.ctor(self, "album_mobile_album")
 end
@@ -140,7 +139,7 @@ function Album_mobile_albumView:refSelectPhotoInfo()
     local allPhotoCount = self.albumMainData_:GetPhotoAllNumber()
     self.remainingQuantity.text = albumPhotoMaxNum - allPhotoCount
   end
-  self.uiBinder.Ref:SetVisible(self.labSurplus, isLabelSurplus)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.surplus_lab, isLabelSurplus)
   self.labSurplus.text = decText
 end
 
@@ -187,13 +186,14 @@ function Album_mobile_albumView:movePhoto(selectAlbumData)
   self.targetMoveCount_ = self.albumMainData_:GetSelectedAlbumNumber()
   for _, photo in pairs(photos) do
     Z.CoroUtil.create_coro_xpcall(function()
-      local ret
+      local errCode
       if self.albumMainVM_.CheckSubTypeIsUnion() then
-        ret = self.albumMainVM_.AsyncMovePhotoToUnionAlbum(photo.id, selectAlbumData.id, self.cancelSource:CreateToken())
+        errCode = self.albumMainVM_.AsyncMovePhotoToUnionAlbum(photo.id, selectAlbumData.id, self.cancelSource:CreateToken())
       else
-        ret = self.albumMainVM_.AsyncMovePhotoOtherAlbum(photo.id, selectAlbumData.id, self.cancelSource:CreateToken())
+        local ret = self.albumMainVM_.AsyncMovePhotoOtherAlbum(photo.id, selectAlbumData.id, self.cancelSource:CreateToken())
+        errCode = ret.errCode
       end
-      if ret and ret.errCode == 0 then
+      if errCode == 0 then
         self.currentMoveCount_ = self.currentMoveCount_ + 1
       end
       if self.targetMoveCount_ == self.currentMoveCount_ then
@@ -209,9 +209,9 @@ function Album_mobile_albumView:unionMoveTmpToAlbum(selectAlbumData)
   self.currentErrorCount_ = 0
   for _, photo in pairs(photos) do
     Z.CoroUtil.create_coro_xpcall(function()
-      local ret = self.albumMainVM_.AsyncMoveTmpPhotoToAlbum(photo.id, selectAlbumData.id, self.cancelSource:CreateToken())
+      local errCode = self.albumMainVM_.AsyncMoveTmpPhotoToAlbum(photo.id, selectAlbumData.id, self.cancelSource:CreateToken())
       self.currentMoveCount_ = self.currentMoveCount_ + 1
-      if not ret or ret.errCode ~= 0 then
+      if errCode ~= 0 then
         self.currentErrorCount_ = self.currentErrorCount_ + 1
       end
       if self.targetMoveCount_ == self.currentMoveCount_ then

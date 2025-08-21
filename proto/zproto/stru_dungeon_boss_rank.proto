@@ -6,7 +6,5 @@ import "stru_rank_data.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonBossRank {
-    map<int32, .zproto.RankData> bossRank = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.DungeonBossRank.BossRankEntry bossRank = 1;
 }
-

@@ -2,11 +2,11 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_mail_base.proto";
 
 message GetMailListReply {
-    map<int64, .zproto.MailBase> mailList = 2;
+    repeated zproto.GetMailListReply.MailListEntry mailList = 2;
     int32 size = 3;
-    int32 errCode = 4;
+    zproto.EErrorCode errCode = 4;
 }
-

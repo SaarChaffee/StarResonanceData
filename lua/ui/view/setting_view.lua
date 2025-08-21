@@ -9,6 +9,7 @@ function SettingView:ctor()
   self.baseModuleView = require("ui/view/basemodule_view").new()
   self.accountModuleView = require("ui/view/accountmodule_view").new()
   self.qualityView_ = require("ui/view/set_definition_sub_view").new()
+  self.gamepadView_ = require("ui/view/set_handle_key_sub_view").new()
   self.viewDict_ = {
     [E.SetFuncId.SettingControl] = self.controlView_,
     [E.SetFuncId.SettingBasic] = self.baseModuleView,
@@ -18,10 +19,12 @@ function SettingView:ctor()
   if Z.IsPCUI then
     self.keyView_ = require("ui/view/set_key_sub_view").new(self)
     self.viewDict_[E.SetFuncId.SettingKey] = self.keyView_
+    self.viewDict_[E.SetFuncId.GamepadKeyDisplay] = self.gamepadView_
   end
   self.vm = Z.VMMgr.GetVM("setting")
   self.commonVM_ = Z.VMMgr.GetVM("common")
   self.switchVm_ = Z.VMMgr.GetVM("switch")
+  self.userSupportVM_ = Z.VMMgr.GetVM("user_support")
   self:CheckFuncSwitch()
 end
 
@@ -38,6 +41,14 @@ function SettingView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:AddClick(self.uiBinder.cont_title_return.btn, function()
     self.vm.CloseSettingView()
+  end)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_service, self.userSupportVM_.CheckValid(E.UserSupportType.Setting))
+  local serviceIcon = self.userSupportVM_.GetUserSupportIcon(E.UserSupportType.Setting)
+  if serviceIcon and serviceIcon ~= "" then
+    self.uiBinder.img_service:SetImage(serviceIcon)
+  end
+  self:AddClick(self.uiBinder.btn_service, function()
+    self.userSupportVM_.OpenUserSupportWebView(E.UserSupportType.Setting)
   end)
   
   function self.onLanguageChange_()
@@ -58,7 +69,7 @@ function SettingView:OnDeActive()
   self.uiBinder.node_loop_eff:SetEffectGoVisible(false)
   self.titleDict_ = nil
   self.togDict_ = nil
-  Z.LocalUserDataMgr.SaveCurPlayerSave()
+  Z.LocalUserDataMgr.Save()
 end
 
 function SettingView:BindEvents()
@@ -78,15 +89,24 @@ end
 function SettingView:initTab()
   self.togDict_ = {
     [E.SetFuncId.SettingControl] = self.uiBinder.cont_tab.binder_tab_control,
+    [E.SetFuncId.SettingFrame] = self.uiBinder.cont_tab.binder_tab_frame,
     [E.SetFuncId.SettingBasic] = self.uiBinder.cont_tab.binder_tab_basic,
     [E.SetFuncId.SettingAccount] = self.uiBinder.cont_tab.binder_tab_account,
-    [E.SetFuncId.SettingFrame] = self.uiBinder.cont_tab.binder_tab_frame,
-    [E.SetFuncId.SettingKey] = self.uiBinder.cont_tab.binder_tab_key
+    [E.SetFuncId.SettingKey] = self.uiBinder.cont_tab.binder_tab_key,
+    [E.SetFuncId.GamepadKeyDisplay] = self.uiBinder.cont_tab.binder_tab_handle_key
   }
   for funcId, _ in pairs(self.togDict_) do
     if self.viewDict_[funcId] == nil then
       self.uiBinder.cont_tab.Ref:SetVisible(self.togDict_[funcId].Ref, false)
       self.togDict_[funcId] = nil
+    end
+  end
+  if self.viewData and self.viewData.showFuncs ~= nil then
+    for funcId, _ in pairs(self.togDict_) do
+      if not table.zcontains(self.viewData.showFuncs, funcId) then
+        self.uiBinder.cont_tab.Ref:SetVisible(self.togDict_[funcId].Ref, false)
+        self.togDict_[funcId] = nil
+      end
     end
   end
   for funcId, item in pairs(self.togDict_) do
@@ -101,9 +121,13 @@ function SettingView:initTab()
     end)
   end
   local firstSub = -1
-  for key, _ in pairs(self.togDict_) do
-    if firstSub == -1 or key < firstSub then
-      firstSub = key
+  if self.viewData and self.viewData.firstFunc then
+    firstSub = self.viewData.firstFunc
+  else
+    for key, _ in pairs(self.togDict_) do
+      if firstSub == -1 or key < firstSub then
+        firstSub = key
+      end
     end
   end
   self.togDict_[firstSub].tog_tab_select.isOn = false
@@ -118,7 +142,10 @@ function SettingView:onChangeSubView(funcId)
   local view = self.viewDict_[funcId]
   if view then
     self.uiBinder.cont_title_return.lab_title.text = self.titleDict_[funcId]
-    view:Active({parentView = self}, self.uiBinder.node_subview)
+    view:Active({
+      parentView = self,
+      isLogin = self.viewData and self.viewData.showFuncs ~= nil
+    }, self.uiBinder.node_subview)
   end
 end
 

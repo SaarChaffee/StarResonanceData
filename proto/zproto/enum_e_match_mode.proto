@@ -6,4 +6,3 @@ enum EMatchMode {
     EMatchModeSingle = 0;
     EMatchModeTeam = 1;
 }
-

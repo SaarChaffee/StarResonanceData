@@ -49,8 +49,6 @@ message SceneTableBase {
     int32 MiniMapRatio = 1608;
     string SubScene = 568;
 }
-
 message SceneTableMgr {
-    map<int32, .bokura.SceneTableBase> datas = 1;
+    repeated bokura.SceneTableMgr.DatasEntry datas = 1;
 }
-

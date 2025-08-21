@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_match_info.proto";
+
+message EnterMatchResultNtfRequest {
+    zproto.EErrorCode errCode = 1;
+    zproto.MatchInfo matchInfo = 2;
+    bool isReEnter = 3;
+}

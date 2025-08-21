@@ -5,7 +5,6 @@ package zproto;
 import "enum_e_microphone_status.proto";
 
 message NotifyTeamMemMicrophoneStatusChangeRequest {
-    int64 memberId = 2;
-    zproto.EMicrophoneStatus microphoneStatus = 3;
+    int64 memberId = 1;
+    zproto.EMicrophoneStatus microphoneStatus = 2;
 }
-

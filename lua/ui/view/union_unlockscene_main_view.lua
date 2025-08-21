@@ -104,7 +104,7 @@ function Union_unlockscene_mainView:refreshMemberList()
       else
         Z.CoroUtil.create_coro_xpcall(function()
           local idCardVM = Z.VMMgr.GetVM("idcard")
-          idCardVM.AsyncGetCardData(d.basicAvatarData.charId, self.cancelSource:CreateToken())
+          idCardVM.AsyncGetCardData(d.basicAvatarData.basicData.charID, self.cancelSource:CreateToken())
         end)()
       end
     end)
@@ -137,6 +137,7 @@ function Union_unlockscene_mainView:getAvatarImgBySocialData(item, socialData)
   viewData.id = textureId
   viewData.modelId = modelId
   viewData.charId = socialData.basicData.charID
+  viewData.token = self.cancelSource:CreateToken()
   playerPortraitMgr.InsertNewPortrait(item, viewData)
 end
 
@@ -164,7 +165,7 @@ function Union_unlockscene_mainView:refreshUnlockInfo()
           local nowTimes = math.floor(Z.TimeTools.Now() / 1000)
           local time = leftTime - nowTimes
           if 0 < time then
-            self.uiBinder.lab_time.text = Lang("UnionSenceUnlock") .. Z.TimeTools.FormatToDHMS(time, true)
+            self.uiBinder.lab_time.text = Lang("UnionSenceUnlock") .. Z.TimeFormatTools.FormatToDHMS(time, true)
           else
             self.timerMgr:StopTimer(self.countTimer_)
             self.countTimer_ = nil
@@ -176,7 +177,7 @@ function Union_unlockscene_mainView:refreshUnlockInfo()
     end
   else
     self:SetUIVisible(self.uiBinder.btn_attend, hasAttend == false)
-    self.uiBinder.lab_time.text = Lang("UnionSenceUnlock") .. Z.TimeTools.FormatToDHMS(Z.Global.UnionunlocksceneBuildingTime, true)
+    self.uiBinder.lab_time.text = Lang("UnionSenceUnlock") .. Z.TimeFormatTools.FormatToDHMS(Z.Global.UnionunlocksceneBuildingTime, true)
   end
   self:SetUIVisible(self.uiBinder.node_label, isEnough == false or hasAttend == false)
   self:SetUIVisible(self.uiBinder.node_share, hasAttend)

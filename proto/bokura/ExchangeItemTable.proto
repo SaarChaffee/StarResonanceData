@@ -17,8 +17,6 @@ message ExchangeItemTableBase {
     int32 SexLimit = 794;
     int32 Sort = 1643;
 }
-
 message ExchangeItemTableMgr {
-    map<int32, .bokura.ExchangeItemTableBase> datas = 1;
+    repeated bokura.ExchangeItemTableMgr.DatasEntry datas = 1;
 }
-

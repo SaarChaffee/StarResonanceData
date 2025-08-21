@@ -13,8 +13,6 @@ message CocktailRecipeTableBase {
     string Model = 421;
     bool IsVisible = 1044;
 }
-
 message CocktailRecipeTableMgr {
-    map<int32, .bokura.CocktailRecipeTableBase> datas = 1;
+    repeated bokura.CocktailRecipeTableMgr.DatasEntry datas = 1;
 }
-

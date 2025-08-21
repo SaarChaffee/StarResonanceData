@@ -43,6 +43,11 @@ end
 
 function Union_scene_unlock_popupView:initComponent()
   self.uiBinder.scenemask_bg:SetSceneMaskByKey(self.SceneMaskKey)
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   self:AddClick(self.uiBinder.btn_mask, function()
     Z.UIMgr:CloseView(self.viewConfigKey)
   end)
@@ -50,7 +55,7 @@ end
 
 function Union_scene_unlock_popupView:refreshTimeLab(time)
   self.uiBinder.lab_time.text = Lang("UnionSceneUnlockDesc", {
-    val = Z.TimeTools.FormatToDHMS(time, true)
+    val = Z.TimeFormatTools.FormatToDHMS(time, true)
   })
 end
 

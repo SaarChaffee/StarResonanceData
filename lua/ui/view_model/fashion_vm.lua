@@ -14,7 +14,8 @@ local resType2WearDataAttr = {
   [E.FashionResType.FaceWear] = Z.ModelAttr.EModelHeadFaceWearWearData,
   [E.FashionResType.MouthWear] = Z.ModelAttr.EModelHeadMouthWearWearData,
   [E.FashionResType.Earrings] = Z.ModelAttr.EModelHeadEarsWearData,
-  [E.FashionResType.Tail] = Z.ModelAttr.EModelCMountTailWearData
+  [E.FashionResType.Tail] = Z.ModelAttr.EModelCMountTailWearData,
+  [E.FashionResType.Back] = Z.ModelAttr.EModelCMountBackWearData
 }
 local openFashionSystemView = function(fashionData)
   local funcVM = Z.VMMgr.GetVM("gotofunc")
@@ -46,20 +47,21 @@ end
 local closeFashionFaceView = function()
   Z.UIMgr:CloseView("fashion_face_window")
 end
-local getFashionUuid = function(fashionId)
-  if Z.StageMgr.GetIsInLogin() then
+local getFashionIsUnlock = function(fashionId, ignoreLogin)
+  if Z.StageMgr.GetIsInLogin() and not ignoreLogin then
     return
   end
   local package = Z.ContainerMgr.CharSerialize.itemPackage.packages[E.BackPackItemPackageType.Fashion]
-  for uuid, item in pairs(package.items) do
+  for _, item in pairs(package.items) do
     local itemRow = itemTbl.GetRow(item.configId)
     if itemRow then
       local relatedFashion = itemRow.CorrelationId
       if fashionId == relatedFashion then
-        return uuid
+        return true
       end
     end
   end
+  return false
 end
 local getFashionRegion = function(fashionId)
   local itemRow = itemTbl.GetRow(fashionId)
@@ -69,23 +71,57 @@ local getFashionRegion = function(fashionId)
     return 0
   end
 end
-local createStyleDataList = function(fashionIdList)
+local getFashionAdvanced = function(fashionId)
+  if fashionId == nil then
+    return nil
+  end
+  local row = Z.TableMgr.GetTable("FashionAdvancedTableMgr").GetRow(fashionId, true)
+  return row
+end
+local getServerUsingFashionId = function(originalFashionId)
+  local info = Z.ContainerMgr.CharSerialize.fashion.fashionAdvance[originalFashionId]
+  if not info or info.usingAdvanceId == 0 then
+    return originalFashionId
+  else
+    return info.usingAdvanceId
+  end
+end
+local getClientUsingFashionId = function(originalFashionId)
+  local fashionId = fashionData:GetAdvanceSelectData(originalFashionId)
+  if fashionId then
+    return fashionId
+  end
+end
+local createStyleDataList = function(region, fashionIdList)
   local dataList = {}
   local tempDataDict = {}
+  local selectFashion = fashionData:GetWear(region)
   for _, fashionId in ipairs(fashionIdList) do
+    local wearFashionId = fashionId
+    if selectFashion and selectFashion.wearFashionId and selectFashion.fashionId == fashionId then
+      wearFashionId = selectFashion.wearFashionId
+    else
+      local clientUsingFashionId = getClientUsingFashionId(fashionId)
+      if clientUsingFashionId then
+        wearFashionId = clientUsingFashionId
+      else
+        wearFashionId = getServerUsingFashionId(fashionId)
+      end
+    end
     local styleData = {}
     styleData.fashionId = fashionId
+    styleData.wearFashionId = wearFashionId
     tempDataDict[fashionId] = styleData
     table.insert(dataList, styleData)
   end
   if not Z.StageMgr.GetIsInLogin() then
     local package = Z.ContainerMgr.CharSerialize.itemPackage.packages[E.BackPackItemPackageType.Fashion]
-    for uuid, item in pairs(package.items) do
+    for _, item in pairs(package.items) do
       local itemData = itemTbl.GetRow(item.configId)
       if itemData then
         local relatedFashion = itemData.CorrelationId
         if tempDataDict[relatedFashion] then
-          tempDataDict[relatedFashion].uuid = uuid
+          tempDataDict[relatedFashion].isUnlock = true
         end
       end
     end
@@ -93,10 +129,10 @@ local createStyleDataList = function(fashionIdList)
   return dataList
 end
 local sortStyleData = function(left, right)
-  if left.uuid == nil and right.uuid ~= nil then
+  if not left.isUnlock and right.isUnlock then
     return false
   end
-  if left.uuid ~= nil and right.uuid == nil then
+  if left.isUnlock and not right.isUnlock then
     return true
   end
   local leftFashionRow = fashionTbl.GetRow(left.fashionId)
@@ -106,8 +142,8 @@ local sortStyleData = function(left, right)
   end
   return leftFashionRow.Id > rightFashionRow.Id
 end
-local checkStyleVisible = function(fashionRow)
-  if fashionRow.IsHide == 1 then
+local checkStyleVisible = function(fashionRow, isShowAllFashion)
+  if not isShowAllFashion and fashionRow.IsHide == 1 then
     return false
   end
   local faceData = Z.DataMgr.Get("face_data")
@@ -118,28 +154,64 @@ local checkStyleVisible = function(fashionRow)
   end
   return true
 end
+local getOriginalFashionId = function(fashionId)
+  local row = getFashionAdvanced(fashionId)
+  if not row then
+    return fashionId
+  end
+  return row.FashionId
+end
+local checkNotUnlockShow = function(fashionRow, isShowAllFashion)
+  if isShowAllFashion then
+    return true
+  end
+  if fashionRow.NotUnlock <= 0 then
+    return true
+  end
+  if getFashionIsUnlock(fashionRow.Id) then
+    return true
+  end
+  return false
+end
 local getStyleDataListByRegion = function(region)
   local dataList = {}
   local nullData = {}
   nullData.fashionId = 0
   table.insert(dataList, nullData)
+  local fashionId
   local wornFashion = fashionData:GetServerFashionWear(region)
   if wornFashion then
-    local wornData = {}
-    wornData.fashionId = wornFashion
-    wornData.uuid = getFashionUuid(wornFashion)
-    table.insert(dataList, wornData)
+    fashionId = getOriginalFashionId(wornFashion)
+    local selectFashion = fashionData:GetWear(region)
+    if selectFashion and fashionId == selectFashion.fashionId then
+      table.insert(dataList, selectFashion)
+    else
+      local wearFashionId = wornFashion
+      local clientUsingFashionId = getClientUsingFashionId(fashionId)
+      if clientUsingFashionId then
+        wearFashionId = clientUsingFashionId
+      end
+      local wornData = {}
+      wornData.fashionId = fashionId
+      wornData.isUnlock = true
+      wornData.wearFashionId = wearFashionId
+      table.insert(dataList, wornData)
+    end
   end
   local fashionIdList = {}
   for fashionId, fashionRow in pairs(fashionTbl.GetDatas()) do
-    if fashionId ~= wornFashion then
-      local itemRow = itemTbl.GetRow(fashionId, true)
-      if itemRow and itemRow.Type == region and checkStyleVisible(fashionRow) then
-        table.insert(fashionIdList, fashionId)
+    local row = getFashionAdvanced(fashionId)
+    if not row then
+      local wornFashionId = getOriginalFashionId(wornFashion)
+      if fashionId ~= wornFashion and fashionId ~= wornFashionId then
+        local itemRow = itemTbl.GetRow(fashionId, true)
+        if itemRow and itemRow.Type == region and checkStyleVisible(fashionRow, fashionData.IsShowAllFashion) and checkNotUnlockShow(fashionRow, fashionData.IsShowAllFashion) then
+          table.insert(fashionIdList, fashionId)
+        end
       end
     end
   end
-  local needSortList = createStyleDataList(fashionIdList)
+  local needSortList = createStyleDataList(region, fashionIdList)
   table.sort(needSortList, sortStyleData)
   for _, data in ipairs(needSortList) do
     table.insert(dataList, data)
@@ -153,6 +225,9 @@ local wearDataListToZList = function(dataList)
     wearData.FashionID = data.FashionId
     if data.ColorZList then
       wearData.BaseColor = data.ColorZList
+    end
+    if data.AttachmentColor then
+      wearData.AttachmentColor = data.AttachmentColor
     end
     zList:Add(wearData)
   end
@@ -171,7 +246,7 @@ local colorListToZList = function(colorList)
 end
 local getFashionDefaultColorByArea = function(fashionId, targetArea)
   local hsv = Z.ColorHelper.GetDefaultHSV()
-  local fashionRow = fashionTbl.GetRow(fashionId)
+  local fashionRow = fashionTbl.GetRow(fashionId, true)
   if not fashionRow then
     return hsv
   end
@@ -197,7 +272,7 @@ end
 local getFashionColorZList = function(fashionId)
   local colorList = {}
   local colorDict = fashionData:GetColor(fashionId)
-  for area = 1, 4 do
+  for area = 1, fashionData.AreaCount do
     local hsv = {}
     if not colorDict[area] then
       hsv = getFashionDefaultColorByArea(fashionId, area)
@@ -214,15 +289,23 @@ local getFashionColorZList = function(fashionId)
   zList:Insert(0, Vector3.zero)
   return zList
 end
-local getFashionDefaultColorZList = function(fashionId)
+local getFashionAttachmentColorZList = function(fashionId)
   local colorList = {}
-  for area = 1, 4 do
-    local hsv = getFashionDefaultColorByArea(fashionId, area)
-    table.insert(colorList, {
-      h = hsv.h / 360,
-      s = hsv.s / 100,
-      v = hsv.v / 100
-    })
+  local hsv = fashionData:GetFashionAreaColor(fashionId, fashionData.SocksAreaIndex)
+  hsv = hsv or Z.ColorHelper.GetDefaultHSV()
+  local color = {
+    h = hsv.h / 360,
+    s = hsv.s / 100,
+    v = hsv.v / 100
+  }
+  local zeroColor = {
+    h = 0,
+    s = 0,
+    v = 0
+  }
+  colorList[#colorList + 1] = color
+  for i = 2, fashionData.AreaCount do
+    colorList[#colorList + 1] = zeroColor
   end
   local zList = colorListToZList(colorList)
   zList:Insert(0, Vector3.zero)
@@ -232,11 +315,12 @@ local refreshWearAttr = function()
   local dataList = {}
   for _, region in pairs(E.FashionRegion) do
     local styleData = fashionData:GetWear(region)
-    if styleData then
-      local fashionId = styleData.fashionId
+    if styleData and styleData.wearFashionId and region ~= E.FashionRegion.WeapoonSkin then
+      local fashionId = styleData.wearFashionId
       local data = {}
       data.FashionId = fashionId
       data.ColorZList = getFashionColorZList(fashionId)
+      data.AttachmentColor = getFashionAttachmentColorZList(fashionId)
       table.insert(dataList, data)
     end
   end
@@ -250,8 +334,41 @@ local nowSelectPartIsHide = function(region)
     Z.TipsVM.ShowTipsLang(120003)
   end
 end
-local setFashionWear = function(region, styleData)
-  if styleData and styleData.fashionId > 0 then
+local clearOptionList = function()
+  fashionData:ClearOptionList()
+end
+local recordFashionChange = function(isSource)
+  local cacheData = {
+    wearDict = {},
+    colorDict = {}
+  }
+  local wearDict = fashionData:GetWears()
+  if wearDict then
+    for region, fashionStyleData in pairs(wearDict) do
+      cacheData.wearDict[region] = table.zclone(fashionStyleData)
+    end
+  end
+  local colorDict = fashionData:GetColors()
+  if colorDict then
+    for fashionId, colorData in pairs(colorDict) do
+      cacheData.colorDict[fashionId] = {}
+      for area, hsv in pairs(colorData) do
+        cacheData.colorDict[fashionId][area] = table.zclone(hsv)
+      end
+    end
+  end
+  if isSource then
+    fashionData:AddOptionData(cacheData)
+  else
+    fashionData:SetCurOptionTargetData(cacheData)
+  end
+  Z.EventMgr:Dispatch(Z.ConstValue.Fashion.FashionOptionStateChange)
+end
+local setFashionWear = function(region, styleData, ignoreRecord)
+  if not ignoreRecord then
+    recordFashionChange(true)
+  end
+  if styleData and styleData.wearFashionId and styleData.wearFashionId > 0 then
     fashionData:SetWear(region, styleData)
     if region == E.FashionRegion.Suit then
       fashionData:SetWear(E.FashionRegion.UpperClothes, nil)
@@ -265,17 +382,40 @@ local setFashionWear = function(region, styleData)
   end
   nowSelectPartIsHide(region)
   refreshWearAttr()
+  if not ignoreRecord then
+    recordFashionChange(false)
+  end
+end
+local refreshFashionHideRegion = function()
+  fashionData.HideRegionList = {}
+  local tableData = Z.TableMgr.GetTable("FashionTableMgr")
+  local wearDict = fashionData:GetWears()
+  local settingVM = Z.VMMgr.GetVM("fashion_setting")
+  local regionDict = settingVM.GetCurFashionSettingRegionDict()
+  for _, data in pairs(wearDict) do
+    if data.fashionId and data.fashionId > 0 then
+      local row = tableData.GetRow(data.fashionId, true)
+      if row and 0 < table.zcount(row.HidePart) then
+        for i = 1, #row.HidePart do
+          local isHide = regionDict[row.Type] == 2
+          fashionData.HideRegionList[row.HidePart[i]] = not isHide
+        end
+      end
+    end
+  end
 end
 local revertFashionWearByRegion = function(region)
   local fashionId = fashionData:GetServerFashionWear(region)
   if fashionId then
     local styleData = {}
-    styleData.fashionId = fashionId
-    styleData.uuid = getFashionUuid(fashionId)
+    styleData.fashionId = getOriginalFashionId(fashionId)
+    styleData.isUnlock = true
+    styleData.wearFashionId = fashionId
     setFashionWear(region, styleData)
   else
     setFashionWear(region, nil)
   end
+  Z.EventMgr:Dispatch(Z.ConstValue.Fashion.FashionWearChange)
 end
 local revertFashionColorByFashionIdAndArea = function(fashionId, area)
   local hsv = fashionData:GetServerFashionColor(fashionId, area)
@@ -288,7 +428,10 @@ local revertAllFashionWear = function()
   refreshWearAttr()
   Z.EventMgr:Dispatch(Z.ConstValue.FashionWearRevert)
 end
-local setFashionColor = function(fashionId, area, hsv, ignoreGm)
+local setFashionColor = function(fashionId, area, hsv, ignoreGm, ignoreRecord)
+  if not ignoreRecord then
+    recordFashionChange(true)
+  end
   fashionData:SetColor(fashionId, area, hsv)
   local fashionRow = fashionTbl.GetRow(fashionId)
   if fashionRow then
@@ -305,6 +448,7 @@ local setFashionColor = function(fashionId, area, hsv, ignoreGm)
         local wearData = Panda.ZGame.SingleWearData.Rent()
         wearData.FashionID = fashionId
         wearData.BaseColor = getFashionColorZList(fashionId)
+        wearData.AttachmentColor = getFashionAttachmentColorZList(fashionId)
         Z.EventMgr:Dispatch(Z.ConstValue.FashionAttrChange, attrType, wearData)
       end
     end
@@ -312,13 +456,35 @@ local setFashionColor = function(fashionId, area, hsv, ignoreGm)
   if not ignoreGm then
     Z.EventMgr:Dispatch(Z.ConstValue.GM.GMFashionView, fashionId)
   end
+  if not ignoreRecord then
+    recordFashionChange(false)
+  end
 end
-local setFashionWearByFashionId = function(fashionId)
-  local fashionRow = Z.TableMgr.GetRow("FashionTableMgr", fashionId)
+local showFashionColor = function(fashionId)
+  local fashionRow = fashionTbl.GetRow(fashionId)
   if not fashionRow then
     return
   end
-  local styleData = {fashionId = fashionId}
+  local attrType = resType2WearDataAttr[fashionRow.FashionType]
+  if not attrType then
+    return
+  end
+  local wearData = Panda.ZGame.SingleWearData.Rent()
+  wearData.FashionID = fashionId
+  wearData.BaseColor = getFashionColorZList(fashionId)
+  wearData.AttachmentColor = getFashionAttachmentColorZList(fashionId)
+  Z.EventMgr:Dispatch(Z.ConstValue.FashionAttrChange, attrType, wearData)
+end
+local setFashionWearByFashionId = function(wearFashionId, orginalFashionId)
+  local fashionRow = Z.TableMgr.GetRow("FashionTableMgr", wearFashionId, true)
+  if not fashionRow then
+    return
+  end
+  local fashionId = wearFashionId
+  if orginalFashionId then
+    fashionId = orginalFashionId
+  end
+  local styleData = {fashionId = fashionId, wearFashionId = wearFashionId}
   local region = fashionRow.Type
   if styleData and styleData.fashionId > 0 then
     fashionData:SetWear(region, styleData)
@@ -339,9 +505,9 @@ local asyncSendFashionWear = function(cancelToken)
   local fashionIds = {}
   for _, region in pairs(E.FashionRegion) do
     local styleData = fashionData:GetWear(region)
-    if styleData and styleData.uuid then
-      table.insert(wear, styleData.uuid)
-      table.insert(fashionIds, styleData.fashionId)
+    if styleData then
+      table.insert(wear, styleData.wearFashionId)
+      table.insert(fashionIds, styleData.wearFashionId)
     else
       table.insert(unwear, region)
     end
@@ -354,7 +520,7 @@ local asyncSendFashionWear = function(cancelToken)
       Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnFashionWearChange, fashionId)
     end
   else
-    logError("[Fashion] FashionWear Fail, error = {0}", ret)
+    Z.TipsVM.ShowTipsLang(ret)
   end
 end
 local convertHSVToProtoVector = function(fashionId, area)
@@ -372,7 +538,7 @@ local convertHSVToProtoVector = function(fashionId, area)
       x = -1,
       y = -1,
       z = -1
-    }
+    }, true
   end
   local hIndex = 0
   local fashionRow = Z.TableMgr.GetTable("FashionTableMgr").GetRow(fashionId)
@@ -381,6 +547,12 @@ local convertHSVToProtoVector = function(fashionId, area)
     if colorRow then
       if colorRow.Type == E.EHueModifiedMode.Board then
         hIndex = hsv.h
+        local minS = colorRow.Saturation[1][2]
+        local maxS = colorRow.Saturation[1][3]
+        hsv.s = Mathf.Clamp(hsv.s, minS, maxS)
+        local minV = colorRow.Value[1][2]
+        local maxV = colorRow.Value[1][3]
+        hsv.v = Mathf.Clamp(hsv.v, minV, maxV)
       else
         for _, hueArray in ipairs(colorRow.Hue) do
           local intH = hsv.h
@@ -399,17 +571,32 @@ local convertHSVToProtoVector = function(fashionId, area)
   }
 end
 local asyncSendFashionColor = function(fashionId, cancelToken)
+  local socksColorValue, socksColorReset = convertHSVToProtoVector(fashionId, fashionData.SocksAreaIndex)
+  local attachmentColor = {
+    [1] = socksColorValue
+  }
+  local attachmentReset = {
+    [1] = socksColorReset
+  }
   local protoColorDict = {}
-  for area = 1, 4 do
-    protoColorDict[area] = convertHSVToProtoVector(fashionId, area)
+  local resetDictData = {}
+  for area = 1, fashionData.AreaCount do
+    local colorValue, colorReset = convertHSVToProtoVector(fashionId, area)
+    protoColorDict[area] = colorValue
+    resetDictData[area] = colorReset
   end
   local worldproxy = require("zproxy.world_proxy")
-  local ret = worldproxy.FashionSetColor(fashionId, {colorDict = protoColorDict}, cancelToken)
+  local ret = worldproxy.FashionSetColor(fashionId, {
+    colorDict = protoColorDict,
+    resetDict = resetDictData,
+    attachmentColor = attachmentColor,
+    attachmentReset = attachmentReset
+  }, cancelToken)
   if ret == 0 then
     Z.TipsVM.ShowTipsLang(120002)
     Z.EventMgr:Dispatch(Z.ConstValue.FashionColorSave, fashionId)
   else
-    logError("[Fashion] FashionSetColor Fail, error = {0}", ret)
+    Z.TipsVM.ShowTipsLang(ret)
   end
 end
 local asyncUnlockFashionColor = function(fashionId, colorIndex, cancelToken)
@@ -419,7 +606,7 @@ local asyncUnlockFashionColor = function(fashionId, colorIndex, cancelToken)
     Z.TipsVM.ShowTipsLang(120010)
     Z.EventMgr:Dispatch(Z.ConstValue.FashionColorUnlock, fashionId, colorIndex)
   else
-    logError("[Fashion] UnlockColor Fail, error = {0}, fashionId = {1}", ret, fashionId)
+    Z.TipsVM.ShowTipsLang(ret)
   end
 end
 local asyncSaveAllFashion = function(cancelSource)
@@ -427,12 +614,15 @@ local asyncSaveAllFashion = function(cancelSource)
   local saveVM = Z.VMMgr.GetVM("fashion_save_tips")
   local wears = fashionData:GetWears()
   for _, styleData in pairs(wears) do
-    local fashionId = styleData.fashionId
-    local areaColorDict = fashionData:GetColor(fashionId)
-    for area, hsv in pairs(areaColorDict) do
-      if not saveVM.GetFashionAreaColorIsSaved(fashionId, area, hsv) then
-        asyncSendFashionColor(fashionId, cancelSource:CreateToken())
-        break
+    local row = getFashionAdvanced(styleData.wearFashionId)
+    if not row then
+      local fashionId = styleData.wearFashionId
+      local areaColorDict = fashionData:GetColor(fashionId)
+      for area, hsv in pairs(areaColorDict) do
+        if not saveVM.GetFashionAreaColorIsSaved(fashionId, area, hsv) then
+          asyncSendFashionColor(fashionId, cancelSource:CreateToken())
+          break
+        end
       end
     end
   end
@@ -448,6 +638,16 @@ end
 local checkIsFashion = function(itemid)
   local fashionTableRow = Z.TableMgr.GetTable("FashionTableMgr").GetRow(itemid, true)
   if not fashionTableRow then
+    return false
+  end
+  return checkStyleVisible(fashionTableRow)
+end
+local checkIsFashionPreview = function(itemid)
+  local fashionTableRow = Z.TableMgr.GetTable("FashionTableMgr").GetRow(itemid, true)
+  if not fashionTableRow then
+    return false
+  end
+  if fashionTableRow.NotUnlock > 0 then
     return false
   end
   return checkStyleVisible(fashionTableRow)
@@ -473,6 +673,7 @@ local gotoFashionListView = function(fashionIdList, viewKey)
   end
   local data = {}
   data.FashionId = fashionIdList[1]
+  data.FashionIdList = fashionIdList
   data.Reason = E.FashionTipsReason.UnlockedWear
   openFashionSystemView(data)
 end
@@ -482,7 +683,7 @@ local saveFashionDataToFile = function()
     Color = {}
   }
   for region, styleData in pairs(fashionData:GetWears()) do
-    data.Wear[tostring(region)] = styleData.fashionId
+    data.Wear[tostring(region)] = styleData.wearFashionId
   end
   for fashionId, areaColorDict in pairs(fashionData:GetColors()) do
     local temp = {}
@@ -505,7 +706,7 @@ local loadFashionDataFromFile = function(path)
     local region = tonumber(k)
     local fashionId = math.floor(v + 0.5)
     if 0 < fashionId then
-      fashionData:SetWear(region, {fashionId = fashionId})
+      fashionData:SetWear(region, {fashionId = fashionId, wearFashionId = fashionId})
     end
   end
   for k1, areaColorDict in pairs(data.Color) do
@@ -521,6 +722,99 @@ local asyncRefreshPersonalZoneFashionScore = function()
   local worldProxy = require("zproxy.world_proxy")
   worldProxy.RefreshPersonalZoneFashionScore()
 end
+local applyFashionOptionData = function(cacheData)
+  if not cacheData then
+    return
+  end
+  fashionData:SetAllWear({})
+  if cacheData.wearDict then
+    for region, fashionStyleData in pairs(cacheData.wearDict) do
+      setFashionWear(region, fashionStyleData, true)
+    end
+  end
+  Z.EventMgr:Dispatch(Z.ConstValue.Fashion.FashionWearChange)
+  fashionData:SetAllColor({})
+  if cacheData.colorDict then
+    for fashionId, colorData in pairs(cacheData.colorDict) do
+      for area, hsv in pairs(colorData) do
+        setFashionColor(fashionId, area, hsv, false, true)
+      end
+    end
+  end
+  refreshWearAttr()
+end
+local moveEditorOperation = function()
+  local list = fashionData:GetOptionList()
+  if fashionData.OptionIndex >= #list then
+    return
+  end
+  local optionData = fashionData:GetOptionData(fashionData.OptionIndex + 1)
+  if not optionData then
+    return
+  end
+  applyFashionOptionData(optionData.targetData)
+  fashionData.OptionIndex = fashionData.OptionIndex + 1
+  Z.EventMgr:Dispatch(Z.ConstValue.Fashion.FashionOptionStateChange)
+  Z.EventMgr:Dispatch(Z.ConstValue.Fashion.FashionViewRefresh)
+end
+local returnEditorOperation = function()
+  if fashionData.OptionIndex <= 0 then
+    return
+  end
+  local optionData = fashionData:GetOptionData(fashionData.OptionIndex)
+  applyFashionOptionData(optionData.sourceData)
+  fashionData.OptionIndex = fashionData.OptionIndex - 1
+  Z.EventMgr:Dispatch(Z.ConstValue.Fashion.FashionOptionStateChange)
+  Z.EventMgr:Dispatch(Z.ConstValue.Fashion.FashionViewRefresh)
+end
+local unlockAdvanceFashion = function(fashionId, cancelToken)
+  local worldproxy = require("zproxy.world_proxy")
+  local ret = worldproxy.UnlockAdvanceFashion(fashionId, cancelToken)
+  if ret == 0 then
+    Z.TipsVM.ShowTips(120024)
+    return true
+  else
+    Z.TipsVM.ShowTips(ret)
+    return false
+  end
+end
+local getFashionAdvancedIsUnlock = function(originalFashionId, advancedFashionId)
+  local info = Z.ContainerMgr.CharSerialize.fashion.fashionAdvance[originalFashionId]
+  if info and info.advanceIds then
+    for _, id in pairs(info.advanceIds) do
+      if advancedFashionId == id then
+        return true
+      end
+    end
+  end
+  return false
+end
+local isFashionAdvancedCanUnlock = function(row)
+  local itemsVM = Z.VMMgr.GetVM("items")
+  for i = 1, #row.Consume do
+    local count = itemsVM.GetItemTotalCount(row.Consume[i][1])
+    if not count or count < row.Consume[i][2] then
+      return false
+    end
+  end
+  return true
+end
+local setModelAutoLookatCamera = function(model)
+  Z.ModelHelper.SetLookAtTransform(model, Z.CameraMgr.MainCamTrans, true)
+  model:SetLuaAttrLookAtIgnoreOverLimitPoint(true)
+  model:SetLuaAttrLookAtWeightSpeed(0.15)
+  model:SetLuaAttrLookAtPosSpeed(0.15)
+  model:SetLuaAttrLookAtPosSpeedEnd(0.025)
+  model:SetLuaAttrLookAtWeightSpeedEnd(0.015)
+  model:SetLuaAttrLookAtEyeOpen(true)
+  model:SetLuaAttrLookAtGlobalMode(true)
+  model:SetLuaAttrLookAtGlobalModeHeadRate(0.5)
+end
+local asyncSaveFashionTryOn = function(fashionId, advanceFashionId, token)
+  local worldproxy = require("zproxy.world_proxy")
+  local ret = worldproxy.SaveFashionTryOn(fashionId, advanceFashionId, token)
+  return ret
+end
 local ret = {
   OpenFashionSystemView = openFashionSystemView,
   CloseFashionSystemView = closeFashionSystemView,
@@ -532,13 +826,17 @@ local ret = {
   AsyncUnlockFashionColor = asyncUnlockFashionColor,
   GetFashionDefaultColorByArea = getFashionDefaultColorByArea,
   IsDefaultFashionAreaColor = isDefaultFashionAreaColor,
-  GetFashionUuid = getFashionUuid,
+  GetFashionIsUnlock = getFashionIsUnlock,
   GetFashionRegion = getFashionRegion,
   GetStyleDataListByRegion = getStyleDataListByRegion,
   GetRegionName = getRegionName,
   SetFashionColor = setFashionColor,
+  ShowFashionColor = showFashionColor,
   SetFashionWear = setFashionWear,
+  GetOriginalFashionId = getOriginalFashionId,
+  GetFashionAdvanced = getFashionAdvanced,
   WearDataListToZList = wearDataListToZList,
+  RefreshFashionHideRegion = refreshFashionHideRegion,
   RevertFashionWearByRegion = revertFashionWearByRegion,
   RevertFashionColorByFashionIdAndArea = revertFashionColorByFashionIdAndArea,
   RevertAllFashionWear = revertAllFashionWear,
@@ -546,10 +844,21 @@ local ret = {
   LoadFashionDataFromFile = loadFashionDataFromFile,
   RefreshWearAttr = refreshWearAttr,
   CheckIsFashion = checkIsFashion,
+  CheckIsFashionPreview = checkIsFashionPreview,
   GotoFashionView = gotoFashionView,
   GotoFashionListView = gotoFashionListView,
   CheckStyleVisible = checkStyleVisible,
   AsyncRefreshPersonalZoneFashionScore = asyncRefreshPersonalZoneFashionScore,
-  SetFashionWearByFashionId = setFashionWearByFashionId
+  SetFashionWearByFashionId = setFashionWearByFashionId,
+  GetFashionAdvancedIsUnlock = getFashionAdvancedIsUnlock,
+  IsFashionAdvancedCanUnlock = isFashionAdvancedCanUnlock,
+  ClearOptionList = clearOptionList,
+  RecordFashionChange = recordFashionChange,
+  MoveEditorOperation = moveEditorOperation,
+  ReturnEditorOperation = returnEditorOperation,
+  UnlockAdvanceFashion = unlockAdvanceFashion,
+  SetModelAutoLookatCamera = setModelAutoLookatCamera,
+  GetServerUsingFashionId = getServerUsingFashionId,
+  AsyncSaveFashionTryOn = asyncSaveFashionTryOn
 }
 return ret

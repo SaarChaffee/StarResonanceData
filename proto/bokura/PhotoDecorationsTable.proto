@@ -8,8 +8,6 @@ message PhotoDecorationsTableBase {
     int32 Sequence = 831;
     string Res = 1275;
 }
-
 message PhotoDecorationsTableMgr {
-    map<int32, .bokura.PhotoDecorationsTableBase> datas = 1;
+    repeated bokura.PhotoDecorationsTableMgr.DatasEntry datas = 1;
 }
-

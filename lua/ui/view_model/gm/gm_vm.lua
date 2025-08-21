@@ -100,7 +100,7 @@ end
 local setHistoryInfoToLocal = function()
   local data = Z.DataMgr.Get("gm_data")
   data:SetHistoryName(data.NowInputContent)
-  Z.LocalUserDataMgr.SetString("GM_HISTORY", data.HistoryNames, 0, true)
+  Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Device, "GM_HISTORY", data.HistoryNames)
 end
 local asyncSendCmd = function(curCmdInfo, pTbl, cancelToken, targetCharId)
   if Z.IsBlockGM then
@@ -323,7 +323,7 @@ local getCurCmdTbl = function(group)
 end
 local initHistoryInfo = function()
   local data = Z.DataMgr.Get("gm_data")
-  local hisInfo = Z.LocalUserDataMgr.GetString("GM_HISTORY", "", 0, true)
+  local hisInfo = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Device, "GM_HISTORY", "")
   if hisInfo then
     Z.DataMgr.Get("gm_data"):SetHistoryName(hisInfo)
   end
@@ -347,6 +347,9 @@ local onInputActions = function(inputActionEventData)
     Z.LuaBridge.OnLowMemory()
   end
   if inputActionEventData.actionId == Z.RewiredActionsConst.HideUI then
+    if not Z.PlayerInputController:IsGamepadComboValidForAction(inputActionEventData) then
+      return
+    end
     local rootGo = Z.UIRoot.Instance.RootCanvas.gameObject
     rootGo:SetActive(not rootGo.activeInHierarchy)
   end

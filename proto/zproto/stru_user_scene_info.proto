@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message UserSceneInfo {
+    int32 sceneId = 1;
+    string sceneGuid = 2;
+    int32 lineId = 3;
+}

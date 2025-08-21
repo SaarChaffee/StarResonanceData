@@ -1,13 +1,6 @@
 local closeTooltipView = function()
-  Z.UIMgr:CloseView("thunder_elemental_tooltip_window")
 end
 local openTooltipView = function()
-  local thunderElementalData = Z.DataMgr.Get("thunder_elemental_tooltip_data")
-  if thunderElementalData.DungeonHideTag and thunderElementalData.MainViewHideTag then
-    Z.UIMgr:OpenView("thunder_elemental_tooltip_window")
-  elseif Z.UIMgr:IsActive("thunder_elemental_tooltip_window") then
-    Z.UIMgr:GetView("thunder_elemental_tooltip_window"):Hide()
-  end
 end
 local setMainViewHideTag = function(isVisible)
   local thunderElementalData = Z.DataMgr.Get("thunder_elemental_tooltip_data")

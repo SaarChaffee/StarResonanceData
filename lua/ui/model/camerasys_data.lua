@@ -4,6 +4,7 @@ local CamerasysData = class("CamerasysData", super)
 function CamerasysData:ctor()
   super.ctor(self)
   self.TopTagIndex = 1
+  self.secondaryTabLogicIndex_ = -1
   self.ActionTagIndex = 1
   self.DecorateTagIndex = 1
   self.SettingTagIndex = 1
@@ -61,12 +62,17 @@ function CamerasysData:ctor()
   self.IsHeadFollow = false
   self.IsEyeFollow = false
   self.IsFreeFollow = false
+  self.EyesFollowPos = Vector3.zero
+  self.HeadFollowPos = Vector3.zero
+  self.EyesLock = false
+  self.HeadLock = false
+  self.IsControlEveryOne = false
   self.DecoreateNum = 0
   self.DecoreateTextMaxLength = -1
   self.decoreteTextFontSize = -1
   self.decoreteMaxNum = -1
   self.decorativeText = -1
-  self.CameraPatternType = E.CameraState.Default
+  self.CameraPatternType = E.TakePhotoSate.Default
   self.CameraSchemeInfo = {}
   self.CameraSchemeTempInfo = {}
   self.CameraSchemeSelectInfo = {}
@@ -81,19 +87,34 @@ function CamerasysData:ctor()
   self.isSchemeParamUpdated = false
   self.IsDecorateAddViewSliderShow = false
   self.UnrealSceneModeSubType = E.UnionCameraSubType.Body
+  self.unionModel_ = nil
   self.HeadImgOriSize = nil
   self.BodyImgOriSize = nil
   self.HeadImgOriPos = nil
   self.BodyImgOriPos = nil
   self.IsHideSelfModel = false
+  self.IsHideCameraMember = false
   self.CameraEntityVisible = {}
-  self.IsBlockTakePhotoAction = false
+  self.MobileMainViewBtnEnum = {
+    LookAt = 1,
+    Action = 2,
+    Decoration = 3,
+    Setting = 4,
+    Album = 5
+  }
+  self.LookAtShowText = {
+    Lang("Default"),
+    Lang("Lens"),
+    Lang("PhotoFree")
+  }
+  self.faceDataCameraModelInfo_ = {}
   self.funcTbDefault = {
     {
       E.CamerasysFuncType.CommonAction,
       E.CamerasysFuncType.LoopAction,
       E.CamerasysFuncType.Emote,
-      E.CamerasysFuncType.LookAt
+      E.CamerasysFuncType.LookAt,
+      E.CamerasysFuncType.Fishing
     },
     {
       E.CamerasysFuncType.Frame,
@@ -180,182 +201,206 @@ function CamerasysData:InitShowCfg()
   self.ShowEntityAllCfg = {
     {
       name = "stranger",
-      type = E.CamerasysShowEntityType.Stranger,
+      type = E.CameraSystemShowEntityType.Stranger,
       txt = Lang("Stranger"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "npc",
-      type = E.CamerasysShowEntityType.FriendlyNPCS,
+      type = E.CameraSystemShowEntityType.FriendlyNPCS,
       txt = Lang("Photograph_Display_NPC"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "monster",
-      type = E.CamerasysShowEntityType.Enemy,
+      type = E.CameraSystemShowEntityType.Enemy,
       txt = Lang("Enemy"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "weapons",
-      type = E.CamerasysShowEntityType.WeaponsAppearance,
+      type = E.CameraSystemShowEntityType.WeaponsAppearance,
       txt = Lang("WeaponsAppearance"),
       state = true
     },
     {
       name = "self",
-      type = E.CamerasysShowEntityType.Oneself,
+      type = E.CameraSystemShowEntityType.Oneself,
       txt = Lang("Self"),
       state = true
     },
     {
       name = "friend",
-      type = E.CamerasysShowEntityType.Chum,
+      type = E.CameraSystemShowEntityType.Chum,
       txt = Lang("Friend"),
       state = true
     },
     {
       name = "team",
-      type = E.CamerasysShowEntityType.Team,
+      type = E.CameraSystemShowEntityType.Team,
       txt = Lang("Team"),
       state = true
     },
     {
       name = "union",
-      type = E.CamerasysShowEntityType.Union,
+      type = E.CameraSystemShowEntityType.Union,
       txt = Lang("Union"),
+      state = true
+    },
+    {
+      name = "collection",
+      type = E.CameraSystemShowEntityType.Collection,
+      txt = Lang("Collection"),
       state = true
     }
   }
   self.ShowEntitySelfPhotoCfg = {
     {
       name = "stranger",
-      type = E.CamerasysShowEntityType.Stranger,
+      type = E.CameraSystemShowEntityType.Stranger,
       txt = Lang("Stranger"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "npc",
-      type = E.CamerasysShowEntityType.FriendlyNPCS,
+      type = E.CameraSystemShowEntityType.FriendlyNPCS,
       txt = Lang("Photograph_Display_NPC"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "monster",
-      type = E.CamerasysShowEntityType.Enemy,
+      type = E.CameraSystemShowEntityType.Enemy,
       txt = Lang("Enemy"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "weapons",
-      type = E.CamerasysShowEntityType.WeaponsAppearance,
+      type = E.CameraSystemShowEntityType.WeaponsAppearance,
       txt = Lang("WeaponsAppearance"),
       state = true
     },
     {
       name = "friend",
-      type = E.CamerasysShowEntityType.Chum,
+      type = E.CameraSystemShowEntityType.Chum,
       txt = Lang("Friend"),
       state = true
     },
     {
       name = "team",
-      type = E.CamerasysShowEntityType.Team,
+      type = E.CameraSystemShowEntityType.Team,
       txt = Lang("Team"),
       state = true
     },
     {
       name = "union",
-      type = E.CamerasysShowEntityType.Union,
+      type = E.CameraSystemShowEntityType.Union,
       txt = Lang("Union"),
+      state = true
+    },
+    {
+      name = "collection",
+      type = E.CameraSystemShowEntityType.Collection,
+      txt = Lang("Collection"),
       state = true
     }
   }
   self.ShowEntityARCfg = {
     {
       name = "stranger",
-      type = E.CamerasysShowEntityType.Stranger,
+      type = E.CameraSystemShowEntityType.Stranger,
       txt = Lang("Stranger"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "npc",
-      type = E.CamerasysShowEntityType.FriendlyNPCS,
+      type = E.CameraSystemShowEntityType.FriendlyNPCS,
       txt = Lang("Photograph_Display_NPC"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "monster",
-      type = E.CamerasysShowEntityType.Enemy,
+      type = E.CameraSystemShowEntityType.Enemy,
       txt = Lang("Enemy"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "friend",
-      type = E.CamerasysShowEntityType.Chum,
+      type = E.CameraSystemShowEntityType.Chum,
       txt = Lang("Friend"),
       state = true
     },
     {
       name = "team",
-      type = E.CamerasysShowEntityType.Team,
+      type = E.CameraSystemShowEntityType.Team,
       txt = Lang("Team"),
       state = true
     },
     {
       name = "union",
-      type = E.CamerasysShowEntityType.Union,
+      type = E.CameraSystemShowEntityType.Union,
       txt = Lang("Union"),
+      state = true
+    },
+    {
+      name = "collection",
+      type = E.CameraSystemShowEntityType.Collection,
+      txt = Lang("Collection"),
       state = true
     }
   }
   self.ShowEntityCfg = {
     {
       name = "self",
-      type = E.CamerasysShowEntityType.Oneself,
+      type = E.CameraSystemShowEntityType.Oneself,
       txt = Lang("Self"),
       state = true
     },
     {
       name = "stranger",
-      type = E.CamerasysShowEntityType.Stranger,
+      type = E.CameraSystemShowEntityType.Stranger,
       txt = Lang("Stranger"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "npc",
-      type = E.CamerasysShowEntityType.FriendlyNPCS,
+      type = E.CameraSystemShowEntityType.FriendlyNPCS,
       txt = Lang("Photograph_Display_NPC"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "monster",
-      type = E.CamerasysShowEntityType.Enemy,
+      type = E.CameraSystemShowEntityType.Enemy,
       txt = Lang("Enemy"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "weapons",
-      type = E.CamerasysShowEntityType.WeaponsAppearance,
+      type = E.CameraSystemShowEntityType.WeaponsAppearance,
       txt = Lang("WeaponsAppearance"),
       state = not self.IsOfficialPhotoTask
     },
     {
       name = "friend",
-      type = E.CamerasysShowEntityType.Chum,
+      type = E.CameraSystemShowEntityType.Chum,
       txt = Lang("Friend"),
       state = true
     },
     {
       name = "team",
-      type = E.CamerasysShowEntityType.Team,
+      type = E.CameraSystemShowEntityType.Team,
       txt = Lang("Team"),
       state = true
     },
     {
       name = "union",
-      type = E.CamerasysShowEntityType.Union,
+      type = E.CameraSystemShowEntityType.Union,
       txt = Lang("Union"),
+      state = true
+    },
+    {
+      name = "collection",
+      type = E.CameraSystemShowEntityType.Collection,
+      txt = Lang("Collection"),
       state = true
     }
   }
@@ -408,6 +453,7 @@ function CamerasysData:InitTagIndex()
   self.ActionTagIndex = 1
   self.DecorateTagIndex = 1
   self.SettingTagIndex = 1
+  self.secondaryTabLogicIndex_ = -1
   if self.IsOfficialPhotoTask then
     self.SettingTagIndex = 2
   end
@@ -421,6 +467,14 @@ function CamerasysData:SetNodeTagIndex(index)
   elseif E.CamerasysTopType.Setting == self.TopTagIndex then
     self.SettingTagIndex = index
   end
+end
+
+function CamerasysData:SetSettingViewSecondaryLogicIndex(index)
+  self.secondaryTabLogicIndex_ = index
+end
+
+function CamerasysData:GetSettingViewSecondaryLogicIndex()
+  return self.secondaryTabLogicIndex_
 end
 
 function CamerasysData:GetTagIndex()
@@ -686,9 +740,7 @@ function CamerasysData:GetCameraSelfHorizontalRange()
   end
   local groupStr = Z.Global.Photograph_SelfCameraHorizontalRange
   self:initCameraSettingParamRange(groupStr, self.CameraSelfHorizontalRange)
-  if not self.CameraSelfHorizontalRange.value then
-    self.CameraSelfHorizontalRange.value = self.CameraSelfHorizontalRange.define
-  end
+  self.CameraSelfHorizontalRange.value = self.CameraSelfHorizontalRange.define
   return self.CameraSelfHorizontalRange
 end
 
@@ -698,11 +750,8 @@ function CamerasysData:GetCameraFOVRange()
   end
   local groupStr = Z.Global.Photograph_CameraVFOVRange
   self:initCameraSettingParamRange(groupStr, self.CameraFOVRange)
-  self.CameraFOVRange.define = Z.CameraFrameCtrl:GetDefineFov()
   self.CameraFOVRange.type = "GetCameraFOVRange"
-  if not self.CameraFOVRange.value then
-    self.CameraFOVRange.value = self.CameraFOVRange.define
-  end
+  self.CameraFOVRange.value = self.CameraFOVRange.define
   return self.CameraFOVRange
 end
 
@@ -713,9 +762,7 @@ function CamerasysData:GetCameraFOVSelfRange()
   local groupStr = Z.Global.Photograph_SelfCameraVFOVRange
   self:initCameraSettingParamRange(groupStr, self.CameraFOVSelfRange)
   self.CameraFOVSelfRange.type = "GetCameraFOVSelfRange"
-  if not self.CameraFOVSelfRange.value then
-    self.CameraFOVSelfRange.value = self.CameraFOVSelfRange.define
-  end
+  self.CameraFOVSelfRange.value = self.CameraFOVSelfRange.define
   return self.CameraFOVSelfRange
 end
 
@@ -726,9 +773,7 @@ function CamerasysData:GetCameraFOVARRange()
   local groupStr = Z.Global.Photograph_ARCameraVFOVRange
   self:initCameraSettingParamRange(groupStr, self.CameraFOVARRange)
   self.CameraFOVARRange.type = "GetCameraFOVARRange"
-  if not self.CameraFOVARRange.value then
-    self.CameraFOVARRange.value = self.CameraFOVARRange.define
-  end
+  self.CameraFOVARRange.value = self.CameraFOVARRange.define
   return self.CameraFOVARRange
 end
 
@@ -763,9 +808,21 @@ function CamerasysData:GetCameraDecorateScaleRange()
   local groupStr = Z.Global.Photograph_DecorateScaleRange
   self:initCameraSettingParamRange(groupStr, self.CameraDecorateScaleRange)
   if not self.CameraDecorateScaleRange.value then
-    self.CameraDecorateScaleRange.value = self.CameraDecorateScaleRange.define
+    self.CameraDecorateScaleRange.values = self.CameraDecorateScaleRange.define
   end
   return self.CameraDecorateScaleRange
+end
+
+function CamerasysData:GetCameraDecorateScaleRangeByType(stickType)
+  stickType = stickType and math.floor(stickType)
+  if stickType == E.CameraStickType.Middle then
+    local groupStr = Z.Global.PhotographDecorateScaleRangeLarge
+    local scaleRange = {}
+    self:initCameraSettingParamRange(groupStr, scaleRange)
+    scaleRange.value = scaleRange.value == nil and scaleRange.define or scaleRange.value
+    return scaleRange
+  end
+  return self:GetCameraDecorateScaleRange()
 end
 
 function CamerasysData:GetDecoreateTextMaxLength()
@@ -836,11 +893,11 @@ end
 
 function CamerasysData:SetShowEntityState(typeE, state, type)
   local showData = self.ShowEntityData
-  if type == E.CameraState.Default then
+  if type == E.TakePhotoSate.Default then
     showData = self.ShowEntityData
-  elseif type == E.CameraState.SelfPhoto then
+  elseif type == E.TakePhotoSate.SelfPhoto then
     showData = self.ShowEntitySelfPhotoData
-  elseif type == E.CameraState.AR then
+  elseif type == E.TakePhotoSate.AR then
     showData = self.ShowEntityARData
   end
   if not showData or not next(showData) then
@@ -896,11 +953,11 @@ function CamerasysData:GetSchemeInfoDatas()
   local temp = {}
   temp[1] = self:GetCameraDefineSchemeInfo()
   for _, value in pairs(self.CameraSchemeInfo) do
-    if self.CameraPatternType == E.CameraState.UnrealScene then
-      if value.cameraPatternType == E.CameraState.UnrealScene then
+    if self.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
+      if value.cameraPatternType == E.TakePhotoSate.UnionTakePhoto then
         temp[#temp + 1] = value
       end
-    elseif value.cameraPatternType ~= E.CameraState.UnrealScene then
+    elseif value.cameraPatternType ~= E.TakePhotoSate.UnionTakePhoto then
       temp[#temp + 1] = value
     end
   end
@@ -950,15 +1007,15 @@ function CamerasysData:GetCameraSchemeInfo()
   schemeInfo.worldTime = self.WorldTime
   local showEntityCfg = {}
   schemeInfo.showEntityDicts = {}
-  if self.CameraPatternType == E.CameraState.Default then
+  if self.CameraPatternType == E.TakePhotoSate.Default then
     showEntityCfg = self:GetShowEntityData()
     schemeInfo.horizontal = self.CameraHorizontalRange.value
     schemeInfo.vertical = self.CameraVerticalRange.value
-  elseif self.CameraPatternType == E.CameraState.SelfPhoto then
+  elseif self.CameraPatternType == E.TakePhotoSate.SelfPhoto then
     showEntityCfg = self:GetShowEntitySelfPhotoData()
     schemeInfo.horizontal = self.CameraSelfHorizontalRange.value
     schemeInfo.vertical = self.CameraSelfVerticalRange.value
-  elseif self.CameraPatternType == E.CameraState.AR then
+  elseif self.CameraPatternType == E.TakePhotoSate.AR then
     showEntityCfg = self:GetShowEntityARData()
   end
   for _, value in pairs(showEntityCfg) do
@@ -976,7 +1033,7 @@ end
 
 function CamerasysData:GetCameraDefineSchemeInfo()
   local schemeInfo = {}
-  schemeInfo.cameraPatternType = E.CameraState.Default
+  schemeInfo.cameraPatternType = E.TakePhotoSate.Default
   schemeInfo.cameraSchemeType = E.CameraSchemeType.DefaultScheme
   schemeInfo.schemeName = Lang("DefaultPlan")
   schemeInfo.schemeTime = 0
@@ -997,10 +1054,10 @@ function CamerasysData:GetCameraDefineSchemeInfo()
   schemeInfo.isEyeFollow = false
   schemeInfo.worldTime = -1
   schemeInfo.showEntityDicts = {
-    [E.CamerasysShowEntityType.Oneself] = true,
-    [E.CamerasysShowEntityType.Stranger] = true,
-    [E.CamerasysShowEntityType.FriendlyNPCS] = true,
-    [E.CamerasysShowEntityType.Enemy] = true
+    [E.CameraSystemShowEntityType.Oneself] = true,
+    [E.CameraSystemShowEntityType.Stranger] = true,
+    [E.CameraSystemShowEntityType.FriendlyNPCS] = true,
+    [E.CameraSystemShowEntityType.Enemy] = true
   }
   schemeInfo.showUIDicts = {
     [E.CamerasysShowUIType.Name] = true
@@ -1031,8 +1088,10 @@ function CamerasysData:Clear()
   self.HeadImgOriPos = nil
   self.BodyImgOriPos = nil
   self.IsHideSelfModel = false
+  self.IsHideCameraMember = false
   self.CameraEntityVisible = {}
-  self.IsBlockTakePhotoAction = false
+  self.secondaryTabLogicIndex_ = -1
+  self:ClearFaceModelInfo()
 end
 
 function CamerasysData:ResetMainCameraPhotoData()
@@ -1063,6 +1122,77 @@ function CamerasysData:ResetHeadAndEyesFollow()
   self.IsHeadFollow = false
   self.IsEyeFollow = false
   self.IsFreeFollow = false
+  self.EyesFollowPos = Vector3.zero
+  self.HeadFollowPos = Vector3.zero
+end
+
+function CamerasysData:GetCurCameraFovRange()
+  local tempFov = self:GetCameraFOVRange()
+  if self.CameraPatternType == E.TakePhotoSate.SelfPhoto then
+    tempFov = self:GetCameraFOVSelfRange()
+  elseif self.CameraPatternType == E.TakePhotoSate.AR then
+    tempFov = self:GetCameraFOVARRange()
+  end
+  return tempFov
+end
+
+function CamerasysData:GetPcSliderStepVal(type)
+  local tabData = Z.Global.PhotoPCSliderStepSize
+  return tabData[type][2]
+end
+
+function CamerasysData:ResetCameraSetting()
+  self.DOFFocalLengthRange = {}
+  self.DOFApertureFactorRange = {}
+  self.NearBlendRange = {}
+  self.FarBlendRange = {}
+  self.DOFFocalLengthRange = {}
+  self.ScreenBrightnessRange = {}
+  self.ScreenContrastRange = {}
+  self.ScreenSaturationRange = {}
+  self.CameraAngleRange = {}
+  self.CameraFontSizeRange = {}
+  self.CameraDecorateScaleRange = {}
+  self.CameraFOVRange = {}
+  self.CameraFOVSelfRange = {}
+  self.CameraFOVARRange = {}
+  self.CameraVerticalRange = {}
+  self.CameraHorizontalRange = {}
+  self.CameraSelfVerticalRange = {}
+  self.CameraSelfHorizontalRange = {}
+  self.IsDepthTag = false
+  self.IsFocusTag = false
+end
+
+function CamerasysData:SetUnionModel(model)
+  self.unionModel_ = model
+end
+
+function CamerasysData:GetUnionModel()
+  return self.unionModel_
+end
+
+function CamerasysData:SetFaceModelInfo(gender, size, modelId)
+  self.faceDataCameraModelInfo_.gender = gender
+  self.faceDataCameraModelInfo_.size = size
+  self.faceDataCameraModelInfo_.modelId = modelId
+end
+
+function CamerasysData:GetFaceModelInfo()
+  return self.faceDataCameraModelInfo_
+end
+
+function CamerasysData:ClearFaceModelInfo()
+  self.faceDataCameraModelInfo_ = {}
+end
+
+function CamerasysData:GetGender()
+  local gender = Z.ContainerMgr.CharSerialize.charBase.gender
+  if self.CameraPatternType == E.TakePhotoSate.UnionTakePhoto and self.UnrealSceneModeSubType == E.UnionCameraSubType.Fashion then
+    local faceModelData = self:GetFaceModelInfo()
+    gender = faceModelData.gender
+  end
+  return gender
 end
 
 return CamerasysData

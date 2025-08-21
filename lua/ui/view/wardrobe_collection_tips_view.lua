@@ -18,10 +18,8 @@ function Wardrobe_collection_tipsView:OnActive()
     end
   end, nil, nil)
   self.uiBinder.presscheck:StartCheck()
-  local num = 0
-  if self.viewData.personalZone then
-    num = self.viewData.personalZone.fashionCollectPoint
-  end
+  local collectionVM = Z.VMMgr.GetVM("collection")
+  local num = collectionVM.GetFashionCollectionPoints(self.viewData)
   local allParam = {val = num}
   self.uiBinder.lab_title.text = Lang("FashionCollectionTitle", allParam)
   local suitYellowCount = 0

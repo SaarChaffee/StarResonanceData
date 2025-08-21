@@ -19,8 +19,6 @@ message FaceTableBase {
     int32 FaceShapeId = 345;
     int32 Number = 1714;
 }
-
 message FaceTableMgr {
-    map<int32, .bokura.FaceTableBase> datas = 1;
+    repeated bokura.FaceTableMgr.DatasEntry datas = 1;
 }
-

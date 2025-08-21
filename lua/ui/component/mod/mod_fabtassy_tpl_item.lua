@@ -93,7 +93,7 @@ function ModFabtassyTplItem:RefreshTpl(uibinder, effectId, successsTime, view, i
       val = self.curConfig_.Level
     })
     uibinder.lab_numerical.text = self.modVM_.ParseModEffectDesc(effectId, self.curConfig_.Level) .. " " .. text
-    ModGlossaryItemTplItem.RefreshTpl(uibinder.mod_glossary_item_tpl, effectId, self.curConfig_.Level)
+    ModGlossaryItemTplItem.RefreshTpl(uibinder.mod_glossary_item_tpl, effectId)
     if self.curConfig_.IsNegative then
       uibinder.img_base:SetImage(MOD_DEFINE.ModEffectIsNegative[2])
     else

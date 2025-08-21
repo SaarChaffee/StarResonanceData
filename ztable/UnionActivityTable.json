@@ -1,0 +1,87 @@
+{
+  "1": {
+    "Id": 1,
+    "FunctionId": 500151,
+    "SeasonId": 1,
+    "Type": 1,
+    "Sort": 1,
+    "Name": "",
+    "LabelPic": "ui/atlas/union_activelist/union_activelist_img_bg_08",
+    "BackGroundPic": "ui/background/seasonact/activity_unionhunt",
+    "Label": 2,
+    "Condition": [
+      [
+        30,
+        1,
+        1
+      ],
+      [
+        36,
+        100
+      ]
+    ],
+    "OpenCost": [],
+    "TimerId": 251,
+    "ActDes": "",
+    "RecommendNum": "",
+    "Time": "",
+    "PreviewAward": 20500300,
+    "OpenSoonTimerId": 253,
+    "HelpId": 30060,
+    "TreasureChest": [
+      [
+        40,
+        20500600
+      ],
+      [
+        70,
+        20500610
+      ],
+      [
+        100,
+        20500620
+      ]
+    ],
+    "CounterId": 4,
+    "QuickJumpType": 6,
+    "QuickJumpParam": [
+      2
+    ]
+  },
+  "2": {
+    "Id": 2,
+    "FunctionId": 900200,
+    "SeasonId": 1,
+    "Type": 2,
+    "Sort": 2,
+    "Name": "",
+    "LabelPic": "ui/atlas/union_activelist/union_activelist_img_bg_09",
+    "BackGroundPic": "ui/background/seasonact/activity_zhanwu",
+    "Label": 2,
+    "Condition": [
+      [
+        30,
+        1,
+        1
+      ],
+      [
+        36,
+        100
+      ]
+    ],
+    "OpenCost": [],
+    "TimerId": 500,
+    "ActDes": "",
+    "RecommendNum": "",
+    "Time": "",
+    "PreviewAward": 20500700,
+    "OpenSoonTimerId": 501,
+    "HelpId": 500200,
+    "TreasureChest": [],
+    "CounterId": 24,
+    "QuickJumpType": 6,
+    "QuickJumpParam": [
+      1
+    ]
+  }
+}

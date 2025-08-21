@@ -1,0 +1,52 @@
+{
+  "13001": {
+    "DungeonId": 13001,
+    "Difficult": 1,
+    "SeasonId": 1,
+    "MatchPic": "",
+    "BossId": [],
+    "PassAward": [
+      16000091
+    ],
+    "MonsterShowTexture": "ui/textures/roid/raid_easy_monster",
+    "DiffBgTexture": "ui/textures/roid/raid_easy_bg",
+    "TitleBgTexture": "ui/textures/roid/raid_title_easy",
+    "Desc": ""
+  },
+  "13002": {
+    "DungeonId": 13002,
+    "Difficult": 2,
+    "SeasonId": 1,
+    "MatchPic": "",
+    "BossId": [
+      102104,
+      102450,
+      102720
+    ],
+    "PassAward": [
+      16000092
+    ],
+    "MonsterShowTexture": "ui/textures/roid/raid_difficulty_monster",
+    "DiffBgTexture": "ui/textures/roid/raid_difficulty_bg",
+    "TitleBgTexture": "ui/textures/roid/raid_title_difficulty",
+    "Desc": ""
+  },
+  "13003": {
+    "DungeonId": 13003,
+    "Difficult": 3,
+    "SeasonId": 1,
+    "MatchPic": "",
+    "BossId": [
+      102105,
+      102451,
+      102721
+    ],
+    "PassAward": [
+      16000093
+    ],
+    "MonsterShowTexture": "ui/textures/roid/raid_nightmare_monster",
+    "DiffBgTexture": "ui/textures/roid/raid_nightmare_bg",
+    "TitleBgTexture": "ui/textures/roid/raid_title_nightmare",
+    "Desc": ""
+  }
+}

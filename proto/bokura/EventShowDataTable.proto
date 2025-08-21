@@ -15,8 +15,6 @@ message EventShowDataTableBase {
     int32 EventType = 1355;
     string_table ParamList = 1310;
 }
-
 message EventShowDataTableMgr {
-    map<int64, .bokura.EventShowDataTableBase> datas = 1;
+    repeated bokura.EventShowDataTableMgr.DatasEntry datas = 1;
 }
-

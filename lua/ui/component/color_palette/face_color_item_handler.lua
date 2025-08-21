@@ -2,7 +2,8 @@ local super = require("ui/component/color_palette/color_item_handler_base")
 local ColorPaletteHandler = class("ColorPaletteHandler", super)
 
 function ColorPaletteHandler:GetItemAddress()
-  return GetLoadAssetPath("FaceColorItem")
+  local colorItem = Z.IsPCUI and "FaceColorItemPC" or "FaceColorItem"
+  return GetLoadAssetPath(colorItem)
 end
 
 function ColorPaletteHandler:GetToggleWidget(container)

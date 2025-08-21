@@ -45,9 +45,9 @@ end
 function Explore_monster_level_popupView:rereshLevelInfo()
   local level_ = self.vm_.GetMonsterHuntLevel()
   local frontLevel = level_ - 1
-  self.uiBinder.lab_level_front.text = Lang("Lv") .. frontLevel
+  self.uiBinder.lab_level_front.text = Lang("Level", {val = frontLevel})
   self.uiBinder.lab_grade_front.text = frontLevel
-  self.uiBinder.lab_lv.text = Lang("Lv") .. level_
+  self.uiBinder.lab_lv.text = Lang("Level", {val = level_})
   self.uiBinder.lab_grade.text = level_
 end
 

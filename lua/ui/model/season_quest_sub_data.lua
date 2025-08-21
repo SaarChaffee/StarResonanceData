@@ -20,17 +20,12 @@ function QuestSeasonData:Clear()
   self.taskTable_ = {}
   self.taskDayTable_ = nil
   self.taskDayArray_ = nil
-  self.startServerTime_ = 0
   self.curShowDay_ = 0
   self.taskCfgs = nil
   if self.dayTimeMgr then
     self.dayTimeMgr:Clear()
   end
   self.dayTimeMgr = Z.TimerMgr.new()
-  local cfg = Z.Global.SeasonTargetStartServerTime
-  if cfg then
-    self.startServerTime_ = math.floor(Z.TimeTools.Format2Tp(cfg) / 1000)
-  end
 end
 
 function QuestSeasonData:UnInit()
@@ -112,7 +107,7 @@ end
 
 function QuestSeasonData:getPreTaskInfo(taskcfg, dictTask, deepCount)
   deepCount = deepCount + 1
-  if taskcfg.PreTargetId > 0 and deepCount < 20 then
+  if taskcfg ~= nil and taskcfg.PreTargetId > 0 and deepCount < 20 then
     local preTask = dictTask[taskcfg.PreTargetId]
     local preCfg = Z.TableMgr.GetTable("SeasonTaskTableMgr").GetRow(taskcfg.PreTargetId)
     if preTask == nil then
@@ -155,7 +150,7 @@ function QuestSeasonData:GetTaskList(rebuild)
 end
 
 function QuestSeasonData:GetStartServerTime()
-  return self.startServerTime_
+  return Z.ContainerMgr.CharSerialize.charBase.createTime
 end
 
 function QuestSeasonData:SetShowDay(day)

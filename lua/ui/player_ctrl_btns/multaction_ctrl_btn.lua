@@ -1,10 +1,11 @@
 local super = require("ui.player_ctrl_btns.player_ctrl_btn_base")
 local MultActionCtrlBtn = class("MultActionCtrlBtn", super)
-local keyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 
 function MultActionCtrlBtn:ctor(key, panel)
   self.uiBinder = nil
   super.ctor(self, key, panel)
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function MultActionCtrlBtn:GetUIUnitPath()
@@ -16,11 +17,12 @@ function MultActionCtrlBtn:OnActive()
   self:AddListener()
   Z.EventMgr:Add("CancelMulAction", self.btnFuncCall, self)
   Z.GuideMgr:SetSteerIdByComp(self.uiBinder.steer_item, E.DynamicSteerType.KeyBoardId, 26)
-  keyIconHelper.InitKeyIcon(self, self.uiBinder.binder_key, 26)
+  self.inputKeyDescComp_:Init(26, self.uiBinder.binder_key)
 end
 
 function MultActionCtrlBtn:OnDeActive()
   Z.EventMgr:Remove("CancelMulAction", self.btnFuncCall, self)
+  self.inputKeyDescComp_:UnInit()
 end
 
 function MultActionCtrlBtn:AddListener()

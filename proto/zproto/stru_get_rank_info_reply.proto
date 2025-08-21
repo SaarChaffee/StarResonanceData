@@ -2,10 +2,12 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_fish_rank_list.proto";
 
 message GetRankInfoReply {
-    int32 errCode = 1;
-    map<int32, .zproto.FishRankList> records = 2;
+    int32 fishId = 1;
+    int32 fishRankType = 2;
+    zproto.FishRankList rankList = 3;
+    zproto.EErrorCode errCode = 4;
 }
-

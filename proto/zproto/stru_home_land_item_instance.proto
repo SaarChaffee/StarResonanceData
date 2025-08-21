@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message HomeLandItemInstance {
+    int64 InstanceId = 1;
+    int32 ConfigId = 2;
+    repeated zproto.HomeLandItemInstance.OwnerToStackMapEntry ownerToStackMap = 3;
+}

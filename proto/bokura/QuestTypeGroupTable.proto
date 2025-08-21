@@ -11,8 +11,6 @@ message QuestTypeGroupTableBase {
     string TypeGroupUIColor = 42;
     int32 DisplayOrder = 582;
 }
-
 message QuestTypeGroupTableMgr {
-    map<int32, .bokura.QuestTypeGroupTableBase> datas = 1;
+    repeated bokura.QuestTypeGroupTableMgr.DatasEntry datas = 1;
 }
-

@@ -7,13 +7,9 @@ import "stru_text_check_request.proto";
 
 message HttpPlatform {
     message TextCheck_Ret {
-        uint32 ret_code = 1;
-        zproto.TextCheckReply ret = 2;
+        zproto.TextCheckReply ret = 1;
     }
-
     message TextCheck {
         zproto.TextCheckRequest vRequest = 1;
     }
-
 }
-

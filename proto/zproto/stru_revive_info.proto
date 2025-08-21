@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message ReviveInfo {
-    map<int32, int32> reviveCount = 1;
+    repeated zproto.ReviveInfo.ReviveCountEntry reviveCount = 1;
 }
-

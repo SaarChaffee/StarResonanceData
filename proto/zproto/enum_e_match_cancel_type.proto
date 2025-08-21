@@ -9,5 +9,5 @@ enum EMatchCancelType {
     EMatchCancelTypeUnReady = 3;
     EMatchCancelTypeTeamMemberJoin = 4;
     EMatchCancelTypeTeamMemberLeave = 5;
+    EMatchCancelTypeEnterDungeon = 6;
 }
-

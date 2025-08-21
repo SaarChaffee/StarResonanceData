@@ -12,8 +12,8 @@ function ExpressionRed.AddNewRed(itemType, itemId, emoteTableType)
   Z.RedPointMgr.AddChildNodeData(E.RedType.ExpressionMain, E.RedType.ExpressionItem, E.RedType.ExpressionMain .. itemType .. emoteTableType)
   table.insert(ExpressionRed.itemType[itemType], itemId)
   Z.RedPointMgr.AddChildNodeData(E.RedType.ExpressionMain .. itemType .. emoteTableType, E.RedType.ExpressionAction, E.RedType.ExpressionMain .. itemType .. emoteTableType .. itemId)
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.ExpressionMain .. itemType .. emoteTableType, #ExpressionRed.itemType[itemType])
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.ExpressionMain .. itemType .. emoteTableType .. itemId, 1)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.ExpressionMain .. itemType .. emoteTableType, #ExpressionRed.itemType[itemType])
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.ExpressionMain .. itemType .. emoteTableType .. itemId, 1)
   ExpressionRed.refreshExpressionRed()
 end
 
@@ -22,15 +22,15 @@ function ExpressionRed.refreshExpressionRed()
   for _, value in pairs(ExpressionRed.itemType) do
     count = count + #value
   end
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.ExpressionMain, count)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.ExpressionMain, count)
 end
 
 function ExpressionRed.RemoveRed(itemId, emoteTableType)
   for key, value in pairs(ExpressionRed.itemType) do
     if table.zcontains(value, itemId) then
       table.zremoveOneByValue(value, itemId)
-      Z.RedPointMgr.RefreshServerNodeCount(E.RedType.ExpressionMain .. key .. emoteTableType, #value)
-      Z.RedPointMgr.RefreshServerNodeCount(E.RedType.ExpressionMain .. key .. emoteTableType .. itemId, 0)
+      Z.RedPointMgr.UpdateNodeCount(E.RedType.ExpressionMain .. key .. emoteTableType, #value)
+      Z.RedPointMgr.UpdateNodeCount(E.RedType.ExpressionMain .. key .. emoteTableType .. itemId, 0)
       ExpressionRed.refreshExpressionRed()
     end
   end

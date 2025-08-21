@@ -2,10 +2,21 @@ local ItemBinder = class("ItemBinder")
 local itemTableMgr_ = Z.TableMgr.GetTable("ItemTableMgr")
 local itemsVm = Z.VMMgr.GetVM("items")
 local MOD_DEFINE = require("ui.model.mod_define")
+local normalEffAnimName = {
+  [E.ItemQuality.Purple] = "anim_item_light_purple_tpl_ordinary",
+  [E.ItemQuality.Yellow] = "anim_item_light_yellow_tpl_ordinary",
+  [E.ItemQuality.Red] = "anim_item_light_red_tpl_ordinary"
+}
+local perfectEffAnimName = {
+  [E.ItemQuality.Purple] = "anim_item_light_purple_tpl_perfect",
+  [E.ItemQuality.Yellow] = "anim_item_light_yellow_tpl_perfect",
+  [E.ItemQuality.Red] = "anim_item_light_red_tpl_perfect"
+}
 
 function ItemBinder:ctor(parent)
   self.parentView_ = parent
   self.equipVm_ = Z.VMMgr.GetVM("equip_system")
+  self.equipCfgData_ = Z.DataMgr.Get("equip_config_data")
 end
 
 function ItemBinder:Init(itemData)
@@ -42,7 +53,10 @@ function ItemBinder:BtnTempClick()
         isHideSource = self.itemData_.isHideSource,
         goToCallFunc = self.itemData_.goToCallFunc,
         tipsBindPressCheckComp = self.itemData_.tipsBindPressCheckComp,
-        isBind = self.itemData_.isBind
+        isBind = self.itemData_.isBind,
+        isIgnoreItemClick = self.itemData_.isIgnoreItemClick,
+        isOpenSource = self.itemData_.isOpenSource,
+        isHideMaterial = self.itemData_.isHideMaterial
       }
       if self.tipsId_ then
         Z.TipsVM.CloseItemTipsView(self.tipsId_)
@@ -64,13 +78,7 @@ function ItemBinder:InitCircleItem(itemBinder, configId, itemUuid, quaity, isSho
   if itemTableBase == nil then
     return
   end
-  if not quaity then
-    quaity = itemTableBase.Quality
-    if itemUuid then
-      local itemdata = itemsVm.GetItemInfobyItemId(itemUuid, configId)
-      quaity = itemdata.quality
-    end
-  end
+  quaity = quaity or itemTableBase.Quality
   self:setImg(self.uiBinder.rimg_icon, itemsVm.GetItemIcon(configId))
   if self.uiBinder.btn_bg then
     if quaityBgPath then
@@ -106,6 +114,7 @@ function ItemBinder:refresh()
   if self.itemData_.isSquareItem and self.itemData_.ShowTag and self.itemData_.PrevDropType and self.itemData_.PrevDropType == E.AwardPrevDropType.Probability then
     self:SetNodeVisible(self.uiBinder.img_prob, true)
   end
+  self:initUi()
   self:initIcon()
   self:initFlags()
   if self.itemData_.lab == nil then
@@ -117,16 +126,37 @@ function ItemBinder:refresh()
   self:setName()
   self:refreshReceiveInfo()
   self:refreshLightInfo()
+  self:refreshAssistFightInfo()
   self:setEquipInfo()
   self:SetNodeVisible(self.uiBinder.btn_temp, self.itemData_.isClickOpenTips ~= false)
+  self:setLuckyEffect()
+end
+
+function ItemBinder:initUi()
+  self:SetNodeVisible(self.uiBinder.img_lattice, self.itemData_.isShowLattice == true)
+  self:SetNodeVisible(self.uiBinder.node_info, not self.itemData_.isShowLattice == true)
+  self:SetNodeVisible(self.uiBinder.node_first, self.itemData_.isShowFirstNode == true)
 end
 
 function ItemBinder:setEquipInfo()
-  if self.itemData_.itemInfo and self.itemData_.itemInfo.equipAttr then
-    local equipVm = Z.VMMgr.GetVM("equip_system")
-    if equipVm.CheckCanRecast(self.itemData_.uuid, self.itemData_.configId) then
-      self:setEquipEffect(self.itemData_.itemInfo.quality, self.itemData_.itemInfo.equipAttr.perfectionValue >= Z.Global.GoodEquipPerfectVal)
-    end
+  if self.itemData_.configId == nil then
+    self:setEquipEffect(nil, false)
+    return
+  end
+  local equipRow = Z.TableMgr.GetTable("EquipTableMgr").GetRow(self.itemData_.configId, true)
+  if equipRow == nil then
+    self:setEquipEffect(nil, false)
+    return
+  end
+  local itemTableBase = itemTableMgr_.GetRow(self.itemData_.configId, true)
+  if itemTableBase == nil then
+    return
+  end
+  self:setEquipEffect(itemTableBase.Quality, equipRow.QualitychiIdType ~= 0)
+  if self.itemData_.itemInfo and Z.ContainerMgr.CharSerialize.equip.equipEnchant[self.itemData_.uuid] then
+    self:SetNodeVisible(self.uiBinder.img_gemstone, true)
+  else
+    self:SetNodeVisible(self.uiBinder.img_gemstone, false)
   end
 end
 
@@ -172,6 +202,13 @@ function ItemBinder:refreshLightInfo()
   end
 end
 
+function ItemBinder:refreshAssistFightInfo()
+  local isShowAssistFight = self.itemData_.isShowAssistFight or false
+  if self.uiBinder.item_assistfight then
+    self:SetNodeVisible(self.uiBinder.item_assistfight, isShowAssistFight)
+  end
+end
+
 function ItemBinder:HideUi()
   self:SetNodeVisible(self.uiBinder.img_quality, false)
   self:SetNodeVisible(self.uiBinder.rimg_icon, false)
@@ -204,9 +241,14 @@ function ItemBinder:HideUi()
   self:SetNodeVisible(self.uiBinder.img_empty, false)
   self:SetNodeVisible(self.uiBinder.img_new, false)
   self:SetNodeVisible(self.uiBinder.img_forbidden, false)
-  self:SetNodeVisible(self.uiBinder.node_eff3, false)
-  self:SetNodeVisible(self.uiBinder.node_eff4, false)
-  self:SetNodeVisible(self.uiBinder.node_eff5, false)
+  self:SetNodeVisible(self.uiBinder.img_unlock_life, false)
+  self:SetNodeVisible(self.uiBinder.lab_life_num, false)
+  self:SetNodeVisible(self.uiBinder.img_lattice, false)
+  self:SetNodeVisible(self.uiBinder.img_lucky, false)
+  self:SetNodeVisible(self.uiBinder.img_super_lucky, false)
+  self:SetNodeVisible(self.uiBinder.item_light_tpl_ordinary, false)
+  self:SetNodeVisible(self.uiBinder.item_light_tpl_perfect, false)
+  self:SetNodeVisible(self.uiBinder.node_first, false)
   self:SetNodeVisible(self.uiBinder.anim_select, false)
   self:SetNodeVisible(self.uiBinder.trans_time_flags, false)
   self:SetNodeVisible(self.uiBinder.img_selected_green, false)
@@ -215,23 +257,57 @@ function ItemBinder:HideUi()
   self:SetNodeVisible(self.uiBinder.img_receive, false)
   self:SetNodeVisible(self.uiBinder.trans_effect, false)
   self:SetNodeVisible(self.uiBinder.node_effect, false)
+  self:SetNodeVisible(self.uiBinder.img_ask, false)
+  self:SetNodeVisible(self.uiBinder.img_gemstone, false)
   if self.uiBinder.anim_item then
   end
+  if self.uiBinder.uisteer then
+    self.uiBinder.uisteer:ClearSteerList()
+  end
   self:SetSelected(false)
-  self:hideAllQualityEffect()
 end
 
-function ItemBinder:hideAllQualityEffect()
-  if self.uiBinder.node_quality_effect then
-    for index, value in pairs(E.ItemQuality) do
-      local unit1 = self.uiBinder.node_quality_effect["quality" .. value .. 1]
-      local unit2 = self.uiBinder.node_quality_effect["quality" .. value .. 3]
-      if unit1 then
-        self.uiBinder.node_quality_effect.Ref:SetVisible(unit1, false)
+function ItemBinder:setLuckyEffect()
+  if not self.itemData_.isShowLuckyEff then
+    return
+  end
+  local itemRow = Z.TableMgr.GetRow("ItemTableMgr", self.itemData_.configId)
+  if itemRow == nil then
+    return
+  end
+  local equipRow = Z.TableMgr.GetRow("EquipTableMgr", self.itemData_.configId, true)
+  if equipRow then
+    if equipRow.QualitychiIdType ~= 0 then
+      self:SetNodeVisible(self.uiBinder.img_super_lucky, true)
+      self:SetNodeAnimVisible(self.uiBinder.img_super_lucky)
+    elseif E.ItemQuality.Purple == itemRow.Quality then
+      local curPutEquipGs = 0
+      local item = self.equipVm_.GetItemByPartId(equipRow.EquipPart)
+      if item then
+        local curEquipRow = Z.TableMgr.GetRow("EquipTableMgr", item.configId, true)
+        if curEquipRow then
+          curPutEquipGs = curEquipRow.EquipGs
+        end
       end
-      if unit2 then
-        self.uiBinder.node_quality_effect.Ref:SetVisible(unit2, false)
+      if curPutEquipGs >= equipRow.EquipGs then
+        self:SetNodeVisible(self.uiBinder.img_lucky, true)
+        self:SetNodeAnimVisible(self.uiBinder.img_lucky)
+      else
+        self:SetNodeVisible(self.uiBinder.img_super_lucky, true)
+        self:SetNodeAnimVisible(self.uiBinder.img_super_lucky)
       end
+    elseif E.ItemQuality.Purple < itemRow.Quality then
+      self:SetNodeVisible(self.uiBinder.img_super_lucky, true)
+      self:SetNodeAnimVisible(self.uiBinder.img_super_lucky)
+    end
+  else
+    self:SetNodeVisible(self.uiBinder.img_lucky, itemRow.LuckyTag == 1)
+    self:SetNodeVisible(self.uiBinder.img_super_lucky, itemRow.LuckyTag == 2)
+    if itemRow.LuckyTag == 2 then
+      self:SetNodeAnimVisible(self.uiBinder.img_super_lucky)
+    end
+    if itemRow.LuckyTag == 1 then
+      self:SetNodeAnimVisible(self.uiBinder.img_lucky)
     end
   end
 end
@@ -239,6 +315,12 @@ end
 function ItemBinder:SetNodeVisible(node, isShow)
   if node then
     self.uiBinder.Ref:SetVisible(node, isShow)
+  end
+end
+
+function ItemBinder:SetNodeAnimVisible(node)
+  if node then
+    node:Restart(Z.DOTweenAnimType.Open)
   end
 end
 
@@ -251,29 +333,30 @@ function ItemBinder:setQuality(path)
 end
 
 function ItemBinder:showQualityEffect()
-  if self.itemData_.configId == 0 or self.itemData_.configId == nil then
+  if self.itemData_.configId == 0 or self.itemData_.configId == nil or self.uiBinder.item_light_tpl_ordinary == nil or self.uiBinder.item_light_tpl_perfect == nil then
     return
   end
-  if not self.uiBinder.node_quality_effect then
+  local itemTableBase = itemTableMgr_.GetRow(self.itemData_.configId, true)
+  if itemTableBase == nil then
     return
   end
-  local quality = 0
-  local qualityType = 1
-  if self.itemData_.itemInfo then
-    if self.itemData_.itemInfo.equipAttr and self.equipVm_.CheckCanRecast(nil, self.itemData_.configId) and self.itemData_.itemInfo.equipAttr.perfectionValue >= Z.Global.GoodEquipPerfectVal then
-      qualityType = 3
+  local quality = itemTableBase.Quality
+  local isPerfect = false
+  if self.itemData_.itemInfo and self.itemData_.itemInfo.equipAttr and self.equipVm_.CheckCanRecast(nil, self.itemData_.configId) and self.itemData_.itemInfo.equipAttr.perfectionValue >= Z.Global.GoodEquipPerfectVal then
+    isPerfect = true
+  end
+  if isPerfect then
+    local animName = perfectEffAnimName[quality]
+    if animName then
+      self:SetNodeVisible(self.uiBinder.item_light_tpl_perfect, true)
+      self.uiBinder.item_light_tpl_perfect:PlayByTime(animName, -1)
     end
-    quality = self.itemData_.itemInfo.quality
   else
-    local itemTableBase = itemTableMgr_.GetRow(self.itemData_.configId, true)
-    if itemTableBase == nil then
-      return
+    local animName = normalEffAnimName[quality]
+    if animName then
+      self:SetNodeVisible(self.uiBinder.item_light_tpl_ordinary, true)
+      self.uiBinder.item_light_tpl_ordinary:PlayByTime(animName, -1)
     end
-    quality = itemTableBase.Quality
-  end
-  local unit = self.uiBinder.node_quality_effect["quality" .. quality .. qualityType]
-  if unit then
-    self.uiBinder.node_quality_effect.Ref:SetVisible(unit, true)
   end
 end
 
@@ -287,7 +370,7 @@ end
 
 function ItemBinder:initIcon()
   if self.itemData_.iconPath and self.itemData_.qualityPath then
-    self:setIcon(self.itemData_.iconPath)
+    self:SetIcon(self.itemData_.iconPath)
     self:setQuality(self.itemData_.qualityPath)
     return
   end
@@ -303,16 +386,13 @@ function ItemBinder:initIcon()
   if itemData == nil and self.itemData_.uuid then
     itemData = itemsVm.GetItemInfobyItemId(self.itemData_.uuid, self.itemData_.configId)
   end
-  if itemData then
-    if itemData.quality then
-      quaity = itemData.quality
-    end
+  if itemData and itemData.uuid ~= 0 then
     local serverTime = Z.ServerTime:GetServerTime() / 1000
     local coolDownTime = itemData.coolDownExpireTime or 0
     self:SetNodeVisible(self.uiBinder.lab_cold, serverTime < coolDownTime)
   end
   local itemVm = Z.VMMgr.GetVM("items")
-  self:setIcon(itemVm.GetItemIcon(self.itemData_.configId))
+  self:SetIcon(itemVm.GetItemIcon(self.itemData_.configId))
   local path = ""
   if self.itemData_.isSquareItem then
     path = Z.ConstValue.Item.SquareItemQualityPath .. quaity
@@ -323,7 +403,7 @@ function ItemBinder:initIcon()
   self:SetNodeVisible(self.uiBinder.img_mask, self.itemData_.isShowMask)
 end
 
-function ItemBinder:setIcon(iconPath)
+function ItemBinder:SetIcon(iconPath)
   if iconPath == nil or iconPath == "" then
     return
   end
@@ -339,7 +419,7 @@ function ItemBinder:refreshEquipFlag(itemData)
     local equipList = Z.ContainerMgr.CharSerialize.equip.equipList
     for key, value in pairs(equipList) do
       if value.itemUuid == itemData.uuid then
-        self:SetNodeVisible(self.uiBinder.img_use, true)
+        self:setImg(self.uiBinder.img_use, Z.ConstValue.Equip.UseIconPath)
         return
       end
     end
@@ -347,8 +427,7 @@ function ItemBinder:refreshEquipFlag(itemData)
     local modVM = Z.VMMgr.GetVM("mod")
     local isEquip, pos = modVM.IsModEquip(itemData.uuid)
     if isEquip then
-      self:SetNodeVisible(self.uiBinder.img_use, true)
-      self.uiBinder.img_use:SetImage(MOD_DEFINE.ModSlotItemIconPath[pos])
+      self:setImg(self.uiBinder.img_use, MOD_DEFINE.ModSlotItemIconPath[pos])
     end
   end
 end
@@ -419,7 +498,7 @@ function ItemBinder:isShowEquipGs()
 end
 
 function ItemBinder:refreshItemCountUi()
-  if self.itemData_.ShowTag and self.itemData_.PrevDropType and self.itemData_.PrevDropType == E.AwardPrevDropType.Probability then
+  if self.itemData_.ShowTag or self.itemData_.PrevDropType and self.itemData_.PrevDropType == E.AwardPrevDropType.Probability then
     return
   end
   local str = ""
@@ -430,7 +509,8 @@ function ItemBinder:refreshItemCountUi()
   else
     str = tonumber(self.itemData_.lab)
     if str then
-      if self.itemData_.isSquareItem and str == 1 then
+      str = math.floor(str + 0.5)
+      if self.itemData_.isSquareItem and str == 1 and not self.itemData_.isShowOne then
         str = ""
       elseif str == 0 and not self.itemData_.isShowZero then
         str = ""
@@ -466,6 +546,16 @@ function ItemBinder:initItemLab()
   local equipCfgData = equipTabCfgData.GetRow(self.itemData_.configId, true)
   if equipCfgData then
     self:refreshEquipGS(equipCfgData.EquipGs)
+    local levels = self.equipCfgData_.EquipBreakIdLevelMap[self.itemData_.configId]
+    if levels then
+      local rowId = levels[itemData.equipAttr.breakThroughTime]
+      if rowId then
+        local breakThroughRow = Z.TableMgr.GetRow("EquipBreakThroughTableMgr", rowId)
+        if breakThroughRow then
+          self:refreshEquipGS(breakThroughRow.EquipGs)
+        end
+      end
+    end
   else
     self.itemData_.lab = itemData.count
     self:refreshItemCountUi()
@@ -509,7 +599,7 @@ end
 function ItemBinder:RefreshItemCdUi(cdTime, useCD)
   if cdTime and 0 < cdTime and 0 < useCD and self.uiBinder.img_cd then
     self:SetNodeVisible(self.uiBinder.img_cd, true)
-    local time = Z.TimeTools.FormatCdTime(cdTime)
+    local time = Z.TimeTools.GetCdTimeByEndStamp(cdTime)
     if time then
       if 0 < time.day then
         self:setLabText(self.uiBinder.lab_cd, time.day .. "day")
@@ -579,7 +669,13 @@ function ItemBinder:SetSelected(isSelected, isPlayEff)
 end
 
 function ItemBinder:setEquipEffect(quality, isShow)
-  self:SetNodeVisible(self.uiBinder["node_eff" .. quality], isShow)
+  self:SetNodeVisible(self.uiBinder.item_light_tpl_perfect, isShow)
+  if isShow then
+    local animName = perfectEffAnimName[quality]
+    if animName then
+      self.uiBinder.item_light_tpl_perfect:PlayByTime(animName, -1)
+    end
+  end
 end
 
 function ItemBinder:SetExchangeComplete(isComplete)
@@ -589,6 +685,26 @@ end
 
 function ItemBinder:SetImgLockState(state)
   self:SetNodeVisible(self.uiBinder.img_lock, state)
+end
+
+function ItemBinder:SetImgTradeState(state)
+  self:SetNodeVisible(self.uiBinder.img_easy, state)
+end
+
+function ItemBinder:SetImgAskState(state)
+  self:SetNodeVisible(self.uiBinder.img_ask, state)
+  self:SetNodeVisible(self.uiBinder.rimg_icon, not state)
+  local path = ""
+  if state then
+    if self.itemData_.isSquareItem then
+      path = Z.ConstValue.Item.SquareItemQualityPath .. 0
+    else
+      path = Z.ConstValue.Item.ItemQualityPath .. 0
+    end
+    self:setQuality(path)
+  end
+  self:SetNodeVisible(self.uiBinder.img_lab_bg, not state)
+  self:SetNodeVisible(self.uiBinder.lab_content, not state)
 end
 
 function ItemBinder:AsyncPlayClickAnim(token)

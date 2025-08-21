@@ -5,4 +5,3 @@ package zproto;
 message SetPersonalZoneThemeRequest {
     int32 themeId = 1;
 }
-

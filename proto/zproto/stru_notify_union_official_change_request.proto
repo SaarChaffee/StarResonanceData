@@ -8,4 +8,3 @@ message NotifyUnionOfficialChangeRequest {
     zproto.UnionOfficial unionOfficial = 1;
     int32 changeType = 2;
 }
-

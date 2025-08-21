@@ -129,6 +129,9 @@ local resetData = function(container, pbData)
   if not pbData.publicCd then
     container.__data__.publicCd = 0
   end
+  if not pbData.changeVersion then
+    container.__data__.changeVersion = 0
+  end
   setForbidenMt(container)
   container.itemCd.__data__ = pbData.itemCd
   setForbidenMt(container.itemCd)
@@ -242,6 +245,11 @@ local getContainerElem = function(container)
     fieldId = 5,
     dataType = 0,
     data = container.publicCd
+  }
+  ret.changeVersion = {
+    fieldId = 6,
+    dataType = 0,
+    data = container.changeVersion
   }
   return ret
 end

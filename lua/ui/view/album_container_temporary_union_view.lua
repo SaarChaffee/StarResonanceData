@@ -6,7 +6,7 @@ local album_photo_item = require("ui.component.album.album_photo_item")
 
 function Album_container_union_temporaryView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "album_container_union_temporary", "photograph/album_container_temporary_union_sub", UI.ECacheLv.None, parent)
+  super.ctor(self, "album_container_union_temporary", "photograph/album_container_temporary_union_sub", UI.ECacheLv.None)
 end
 
 function Album_container_union_temporaryView:OnActive()
@@ -73,7 +73,6 @@ function Album_container_union_temporaryView:onDeleteBtnClick()
     self:updateItemList()
     self:toggleMultipleState(false, E.AlbumSelectType.Select, true)
     Z.TipsVM.ShowTipsLang(1000008)
-    Z.DialogViewDataMgr:CloseDialogView()
   end)
 end
 

@@ -5,6 +5,5 @@ package zproto;
 import "stru_user_summary_data.proto";
 
 message NotifyApplyBeLeaderRequest {
-    zproto.UserSummaryData memData = 2;
+    zproto.UserSummaryData memData = 1;
 }
-

@@ -14,8 +14,6 @@ message TransferTableBase {
     bool IsOn = 20;
     int32 SceneTag = 131;
 }
-
 message TransferTableMgr {
-    map<int32, .bokura.TransferTableBase> datas = 1;
+    repeated bokura.TransferTableMgr.DatasEntry datas = 1;
 }
-

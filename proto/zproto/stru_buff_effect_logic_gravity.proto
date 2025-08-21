@@ -7,11 +7,11 @@ import "enum_e_gravitational_type.proto";
 message BuffEffectLogicGravity {
     zproto.EGravitationalType type = 1;
     float strength = 2;
-    float internalRadius = 3;
-    float externalRadius = 4;
-    int32 entityType = 5;
-    int32 campTargetType = 6;
-    bool isImpactHover = 7;
-    bool isUseWeightFactor = 8;
+    float strengthLow = 3;
+    float internalRadius = 4;
+    float externalRadius = 5;
+    int32 entityType = 6;
+    int32 campTargetType = 7;
+    bool isImpactHover = 8;
+    bool isUseWeightFactor = 9;
 }
-

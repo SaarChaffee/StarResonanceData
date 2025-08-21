@@ -7,8 +7,6 @@ import "stru_gasha_info.proto";
 import "stru_dirty_mask.proto";
 
 message GashaData {
-    map<uint32, .zproto.GashaInfo> gashaInfos = 1;
-    map<uint32, .zproto.GashaGuaranteeInfo> gashaGuaranteeInfos = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.GashaData.GashaInfosEntry gashaInfos = 1;
+    repeated zproto.GashaData.GashaGuaranteeInfosEntry gashaGuaranteeInfos = 2;
 }
-

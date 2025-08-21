@@ -1,0 +1,32 @@
+{
+  "1": {
+    "Id": 1,
+    "LvUpKillNum": 0,
+    "ExtraBuffContent": "",
+    "StageAward": 0
+  },
+  "2": {
+    "Id": 2,
+    "LvUpKillNum": 99999999,
+    "ExtraBuffContent": "",
+    "StageAward": 11001041
+  },
+  "3": {
+    "Id": 3,
+    "LvUpKillNum": 99999999,
+    "ExtraBuffContent": "",
+    "StageAward": 11001042
+  },
+  "4": {
+    "Id": 4,
+    "LvUpKillNum": 99999999,
+    "ExtraBuffContent": "",
+    "StageAward": 11001043
+  },
+  "5": {
+    "Id": 5,
+    "LvUpKillNum": 99999999,
+    "ExtraBuffContent": "",
+    "StageAward": 11001044
+  }
+}

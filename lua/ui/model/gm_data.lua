@@ -19,7 +19,6 @@ function GMData:ctor()
   self.SendServerCallLog = {}
   self.IsOpenGm = true
   self.IsOpenBug = true
-  self.IsOpenWateMark = true
 end
 
 function GMData:Init()

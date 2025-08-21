@@ -1,13 +1,6 @@
 local closeTooltipView = function()
-  Z.UIMgr:CloseView("flux_revolt_tooltip_window")
 end
 local openTooltipView = function()
-  local fluxData = Z.DataMgr.Get("flux_revolt_tooltip_data")
-  if fluxData.DungeonHideTag and fluxData.MainViewHideTag then
-    Z.UIMgr:OpenView("flux_revolt_tooltip_window")
-  elseif Z.UIMgr:IsActive("flux_revolt_tooltip_window") then
-    Z.UIMgr:GetView("flux_revolt_tooltip_window"):Hide()
-  end
 end
 local setMainViewHideTag = function(isVisible)
   local fluxData = Z.DataMgr.Get("flux_revolt_tooltip_data")

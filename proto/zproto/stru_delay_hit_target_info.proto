@@ -9,4 +9,3 @@ message DelayHitTargetInfo {
     zproto.Vec3 hitPos = 2;
     float delayTime = 3;
 }
-

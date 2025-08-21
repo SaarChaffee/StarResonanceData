@@ -1,11 +1,10 @@
-local constStr_switchGetInt = "BKL_VOLSWITCH_%d"
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local BasemoduleView = class("BasemoduleView", super)
 
 function BasemoduleView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "set_basic_sub", "set/set_basic_sub", UI.ECacheLv.None, parent)
+  super.ctor(self, "set_basic_sub", "set/set_basic_sub", UI.ECacheLv.None)
   self.settingVM_ = Z.VMMgr.GetVM("setting")
   self.settingData_ = Z.DataMgr.Get("setting_data")
   self.switchVm_ = Z.VMMgr.GetVM("switch")
@@ -25,11 +24,12 @@ function BasemoduleView:OnActive()
   self:initVoice()
   self:initLangVoiceItem()
   self:initLangItem()
+  self:initClearCache()
+  self:refreshAllSettingVisible()
 end
 
 function BasemoduleView:initConfig()
   self.langNamesArray_ = Z.LocalizationMgr:GetLanNames()
-  self.audioLangNamesArray_ = Z.LocalizationMgr:GetAudioLanNames()
   local showLangsTmp = Z.LocalizationMgr:GetShowLans()
   local showAudioLangsTmp = Z.LocalizationMgr:GetShowAudioLans()
   self.showLangs_ = {}
@@ -39,6 +39,16 @@ function BasemoduleView:initConfig()
   end
   for i = 0, showAudioLangsTmp.Length - 1 do
     table.insert(self.showAudioLangs_, showAudioLangsTmp[i])
+  end
+end
+
+function BasemoduleView:refreshAllSettingVisible()
+  local settingVisibleData = Z.DataMgr.Get("setting_visible_data")
+  for k, v in pairs(self.containerList) do
+    local show = settingVisibleData:CheckVisible(k)
+    if not show then
+      v.Ref.UIComp:SetVisible(show)
+    end
   end
 end
 
@@ -108,12 +118,7 @@ end
 function BasemoduleView:setVoiceSwitch()
   for k, v in pairs(self.switchList) do
     local volTag = self.settingData_.VcaTags[k]
-    local settingCfg = Z.TableMgr.GetTable("SettingsTableMgr").GetRow(k)
-    local isAll = false
-    if settingCfg and settingCfg.DataStorage == self.settingData_.DataStorage.onlyClinetData then
-      isAll = true
-    end
-    local isOn = Z.LocalUserDataMgr.GetInt(string.format(constStr_switchGetInt, k), 1, 0, isAll) == 1
+    local isOn = self.settingVM_.GetSwitchIsOn(k)
     local alphaValue = isOn and 1 or 0.3
     v.IsOn = isOn
     self.sliderList[k].interactable = isOn
@@ -121,10 +126,9 @@ function BasemoduleView:setVoiceSwitch()
     self:AddClick(v, function(isOpen)
       self.sliderList[k].interactable = isOpen
       alphaValue = isOpen and 1 or 0.3
-      local tag = isOpen and self.settingData_.CanOpen.open or self.settingData_.CanOpen.close
       self.sliderCanvasGroupList[k].alpha = alphaValue
       local volume = isOpen and self.sliderList[k].value or 0
-      Z.LocalUserDataMgr.SetInt(string.format(constStr_switchGetInt, k), tag, 0, isAll)
+      self.settingVM_.SetSwitchIsOn(k, isOpen)
       Z.AudioMgr:SetVcaVolume(volume, volTag, false)
       if k == E.SettingID.PlayerVoiceReceptionVolume then
         Z.VoiceBridge.SetSpeakerVolume(volume / 100)
@@ -164,9 +168,10 @@ function BasemoduleView:initVoice()
 end
 
 function BasemoduleView:initLangVoiceItem()
-  if self.switchVm_.CheckFuncSwitch(E.SetFuncId.SettingLanguage) then
+  if self.switchVm_.CheckFuncSwitch(E.SetFuncId.SettingLanguageVoice) then
     self.uiBinder.Ref:SetVisible(self.uiBinder.cont_languagevoice.Ref, true)
     self.curLanguageVoiceIdx_ = Z.LocalizationMgr:GetCurrentLanguageVoice()
+    self.audioLangNamesArray_ = Z.LocalizationMgr:GetAudioLanNames()
     self.uiBinder.cont_languagevoice.Ref.UIComp:SetVisible(#self.showAudioLangs_ > 1)
     if #self.showAudioLangs_ > 1 then
       Z.CoroUtil.create_coro_xpcall(function()
@@ -215,7 +220,7 @@ function BasemoduleView:setLangVoiceItemSelect(languageIdx, showTip)
 end
 
 function BasemoduleView:initLangItem()
-  if self.switchVm_.CheckFuncSwitch(E.SetFuncId.SettingLanguage) then
+  if self.switchVm_.CheckFuncSwitch(E.SetFuncId.SettingLanguage) and not Z.GameContext.IsPreviewEnvironment() then
     self.uiBinder.Ref:SetVisible(self.uiBinder.cont_language.Ref, true)
     self.curLanguageIdx_ = Z.LocalizationMgr:GetCurrentLanguage()
     self.uiBinder.Ref:SetVisible(self.uiBinder.cont_language.Ref, #self.showLangs_ > 1)
@@ -264,10 +269,22 @@ function BasemoduleView:setLangItemSelect(languageIdx, showTip)
       })
     end
     Z.DataMgr.OnLanguageChange()
-    Z.UIMgr:DeActiveAll(false, "setting")
-    Z.UIMgr:OpenView(Z.ConstValue.MainViewName)
+    if not self.viewData or not self.viewData.isLogin then
+      Z.UIMgr:DeActiveAll(false, "setting")
+      Z.UIMgr:OpenView(Z.ConstValue.MainViewName)
+    end
+    self:initLangVoiceItem()
     Z.EventMgr:Dispatch(Z.ConstValue.LanguageChange)
   end
+end
+
+function BasemoduleView:initClearCache()
+  self:AddClick(self.uiBinder.cont_cache.btn_clear, function()
+    Z.DialogViewDataMgr:OpenNormalDialog(Lang("CustomIdcardResourceCleaning"), function()
+      Z.LuaBridge.DeleteDirectoryByPath({"snapshot"})
+      Z.TipsVM.ShowTips(1044023)
+    end)
+  end)
 end
 
 return BasemoduleView

@@ -13,8 +13,6 @@ message CookRecipeTableBase {
     int32 BadDishCondition = 614;
     int32 UnlockCondition = 1014;
 }
-
 message CookRecipeTableMgr {
-    map<int32, .bokura.CookRecipeTableBase> datas = 1;
+    repeated bokura.CookRecipeTableMgr.DatasEntry datas = 1;
 }
-

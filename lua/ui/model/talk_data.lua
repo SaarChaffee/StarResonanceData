@@ -114,16 +114,17 @@ function TalkData:GetPlayFlowCount()
 end
 
 function TalkData:ClearPlayFlowInfo()
+  logGreen("[TalkData] ClearPlayFlowInfo")
+  Z.EPFlowBridge.StopAllFlow()
   if self.curPlayFlowInfos_ == nil then
     self.curPlayFlowInfos_ = {}
     return
   end
   local talkVM = Z.VMMgr.GetVM("talk")
   for key, value in pairs(self.curPlayFlowInfos_) do
+    logGreen("[TalkData] ClearPlayFlowInfo flowId = " .. key .. " state = " .. tostring(value.state))
     if value.state == E.FlowPlayStateEnum.WaitNpc then
       talkVM.EndTalkState()
-    else
-      Z.EPFlowBridge.StopFlow(key)
     end
   end
   self.curPlayFlowInfos_ = {}

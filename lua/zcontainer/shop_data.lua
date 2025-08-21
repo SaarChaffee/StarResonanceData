@@ -69,6 +69,15 @@ local resetData = function(container, pbData)
   if not pbData.refreshList then
     container.__data__.refreshList = {}
   end
+  if not pbData.normalShopRecords then
+    container.__data__.normalShopRecords = {}
+  end
+  if not pbData.seasonShopRecords then
+    container.__data__.seasonShopRecords = {}
+  end
+  if not pbData.compensationItemData then
+    container.__data__.compensationItemData = {}
+  end
   setForbidenMt(container)
   container.refreshList.__data__ = {}
   setForbidenMt(container.refreshList)
@@ -77,6 +86,22 @@ local resetData = function(container, pbData)
     container.refreshList[k]:ResetData(v)
   end
   container.__data__.refreshList = nil
+  container.normalShopRecords.__data__ = {}
+  setForbidenMt(container.normalShopRecords)
+  for k, v in pairs(pbData.normalShopRecords) do
+    container.normalShopRecords.__data__[k] = require("zcontainer.player_buy_record").New()
+    container.normalShopRecords[k]:ResetData(v)
+  end
+  container.__data__.normalShopRecords = nil
+  container.seasonShopRecords.__data__ = {}
+  setForbidenMt(container.seasonShopRecords)
+  for k, v in pairs(pbData.seasonShopRecords) do
+    container.seasonShopRecords.__data__[k] = require("zcontainer.player_buy_record").New()
+    container.seasonShopRecords[k]:ResetData(v)
+  end
+  container.__data__.seasonShopRecords = nil
+  container.compensationItemData:ResetData(pbData.compensationItemData)
+  container.__data__.compensationItemData = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -144,6 +169,77 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  if container.normalShopRecords ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.normalShopRecords) do
+      if repeatedItem == nil then
+        data[key] = {
+          fieldId = 2,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[key] = {
+          fieldId = 2,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
+    end
+    ret.normalShopRecords = {
+      fieldId = 2,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.normalShopRecords = {
+      fieldId = 2,
+      dataType = 2,
+      data = {}
+    }
+  end
+  if container.seasonShopRecords ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.seasonShopRecords) do
+      if repeatedItem == nil then
+        data[key] = {
+          fieldId = 3,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[key] = {
+          fieldId = 3,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
+    end
+    ret.seasonShopRecords = {
+      fieldId = 3,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.seasonShopRecords = {
+      fieldId = 3,
+      dataType = 2,
+      data = {}
+    }
+  end
+  if container.compensationItemData == nil then
+    ret.compensationItemData = {
+      fieldId = 4,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.compensationItemData = {
+      fieldId = 4,
+      dataType = 1,
+      data = container.compensationItemData:GetContainerElem()
+    }
+  end
   return ret
 end
 local new = function()
@@ -154,11 +250,20 @@ local new = function()
     GetContainerElem = getContainerElem,
     refreshList = {
       __data__ = {}
-    }
+    },
+    normalShopRecords = {
+      __data__ = {}
+    },
+    seasonShopRecords = {
+      __data__ = {}
+    },
+    compensationItemData = require("zcontainer.shop_compensation_data").New()
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.refreshList)
+  setForbidenMt(ret.normalShopRecords)
+  setForbidenMt(ret.seasonShopRecords)
   return ret
 end
 return {New = new}

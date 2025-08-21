@@ -21,12 +21,24 @@ function QuickUseItemBarComp:Init(itemUIBinder, type)
   self.parentView_:AddAsyncClick(self.itemUIBinder_.btn_item, function()
     self:btnItmeCallFunc()
   end)
-  Z.EventMgr:Add(Z.ConstValue.SyncAllContainerData, self.onSyncAllContainerData, self)
-  Z.EventMgr:Add(Z.ConstValue.Backpack.ItemCountChange, self.onItemCountChange, self)
-  Z.EventMgr:Add(Z.ConstValue.Backpack.AddItem, self.onAddItem, self)
-  Z.EventMgr:Add(Z.ConstValue.Backpack.DelItem, self.onDelItem, self)
-  if type ~= E.ShortcutsItemType.Quest then
+  if type == E.ShortcutsItemType.Shortcuts then
+    Z.EventMgr:Add(Z.ConstValue.Backpack.CloseShortcutsPopup, self.onCloseShortcutsPopup, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.TakeMedicineBagChangeRefreshMain, self.bagMedicineChange, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.TakeMedicineAddItemPc, self.bagMedicineChange, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.TakeMedicineDelItemPc, self.bagMedicineChange, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.TakeMedicineChangeItemPc, self.bagMedicineChange, self)
     Z.EventMgr:Add(Z.ConstValue.Backpack.ChangeQuickBar, self.SetItemConfigId, self)
+  elseif type == E.ShortcutsItemType.Other then
+    Z.EventMgr:Add(Z.ConstValue.SyncAllContainerData, self.onSyncAllContainerData, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.ItemCountChange, self.onItemCountChange, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.AddItem, self.onAddItem, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.DelItem, self.onDelItem, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.ChangeQuickBar, self.SetItemConfigId, self)
+  elseif type == E.ShortcutsItemType.Quest then
+    Z.EventMgr:Add(Z.ConstValue.SyncAllContainerData, self.onSyncAllContainerData, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.ItemCountChange, self.onItemCountChange, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.AddItem, self.onAddItem, self)
+    Z.EventMgr:Add(Z.ConstValue.Backpack.DelItem, self.onDelItem, self)
   end
   
   function self.onPackageChangedFunc_(container, dirty)
@@ -47,7 +59,9 @@ function QuickUseItemBarComp:Init(itemUIBinder, type)
     package.Watcher:RegWatcher(self.onPackageChangedFunc_)
   end
   Z.ContainerMgr.CharSerialize.itemPackage.Watcher:RegWatcher(self.onGropCdChangedFunc_)
-  if type ~= E.ShortcutsItemType.Quest then
+  if type == E.ShortcutsItemType.Shortcuts then
+    self:bagMedicineChange()
+  elseif type == E.ShortcutsItemType.Other then
     local configId = Z.ContainerMgr.CharSerialize.itemPackage.quickBar or 0
     self:SetItemConfigId(configId)
   end
@@ -71,7 +85,6 @@ function QuickUseItemBarComp:InitShortcuts()
   self.parentView_:AddClick(self.itemUIBinder_.btn_arrow_up, function()
     self:setItemPopShow(true)
   end)
-  Z.EventMgr:Add(Z.ConstValue.Backpack.CloseShortcutsPopup, self.onCloseShortcutsPopup, self)
 end
 
 function QuickUseItemBarComp:UnInit()
@@ -287,6 +300,27 @@ function QuickUseItemBarComp:onDelItem(item)
   if item.configId == self.configId_ then
     self:refreshItemCount()
     self:refreshItemCd()
+  end
+end
+
+function QuickUseItemBarComp:bagMedicineChange()
+  local medicineData = Z.DataMgr.Get("take_medicine_bag_data"):GetMedicineList()
+  local isExist = false
+  for _, configId in ipairs(medicineData) do
+    if configId == self.configId_ then
+      isExist = true
+      break
+    end
+  end
+  if isExist then
+    self:refreshAll()
+  elseif medicineData[1] then
+    self:SetItemConfigId(medicineData[1])
+    Z.CoroUtil.create_coro_xpcall(function()
+      self.itemsVM_.AsyncSetQuickBar(medicineData[1], self.parentView_.cancelSource:CreateToken())
+    end)()
+  else
+    self:SetItemConfigId(0)
   end
 end
 

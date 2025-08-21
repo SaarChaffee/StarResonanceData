@@ -35,7 +35,7 @@ function Hero_dungeon_praise_windowView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294965247, true)
   self.praiseTab_ = {}
   self.isPlanetmemory_ = false
-  self.allSlider_ = {}
+  self.allPraiseLab_ = {}
   self.allUIModel = {}
   local dungeonVm = Z.VMMgr.GetVM("dungeon")
   local dungeonType = dungeonVm.GetCurrDungeonType()
@@ -69,7 +69,6 @@ function Hero_dungeon_praise_windowView:creatPlayerInfo()
         memberCount = memberCount + 1
       end
     end
-    local vUserPos = self.dungeonData_.TeamDisplayData.vUserPos
     for i = 1, #teamMembers do
       local memberInfo = teamMembers[i]
       if not memberInfo.isAi then
@@ -98,30 +97,29 @@ function Hero_dungeon_praise_windowView:creatPlayerInfo()
                 return titkeA.Weight > titkeB.Weight
               end
             end)
-            playItem.lab_name_01.Ref.UIComp:SetVisible(dungeonTitles[1] ~= nil)
-            playItem.lab_name_02.Ref.UIComp:SetVisible(dungeonTitles[2] ~= nil)
+            playItem.node_title1.Ref.UIComp:SetVisible(dungeonTitles[1] ~= nil)
+            playItem.node_title2.Ref.UIComp:SetVisible(dungeonTitles[2] ~= nil)
             for index, titleInfo in ipairs(dungeonTitles) do
               if index < 3 then
                 local dungeonTitle = titleTab.GetRow(titleInfo.titleId)
                 if dungeonTitle then
                   do
-                    local node = playItem["lab_name_0" .. index]
+                    local node = playItem["node_title" .. index]
                     local color = titleColor[dungeonTitle.Id]
                     if color then
-                      node.lab_name.text = string.format("<color=#%s>%s</color>", color, dungeonTitle.Name)
+                      node.lab_title.text = string.format("<color=#%s>%s</color>", color, dungeonTitle.Name)
                     else
-                      node.lab_name.text = dungeonTitle.Name
+                      node.lab_title.text = dungeonTitle.Name
                     end
-                    self:AddClick(node.lab_name_btn, function()
-                      self:openTitleTips(node.lab_name_trans, dungeonTitle)
+                    self:AddClick(node.btn_title, function()
+                      self:openTitleTips(node.Trans, dungeonTitle)
                     end)
                   end
                 end
               end
             end
-            playItem.slider_praise.maxValue = memberCount - 1
-            self.allSlider_[charId] = playItem.slider_praise
-            self.allSlider_[charId].value = 0
+            self.allPraiseLab_[charId] = playItem.lab_praise
+            self.allPraiseLab_[charId].text = ""
             local isFriend = true
             if charId ~= Z.ContainerMgr.CharSerialize.charId then
               isFriend = self.friendMainData_:IsFriendByCharId(charId)
@@ -129,22 +127,8 @@ function Hero_dungeon_praise_windowView:creatPlayerInfo()
               playItem.Ref:SetVisible(playItem.btn_praise, 1 < memberCount)
             end
             playItem.Ref:SetVisible(playItem.btn_friend, not isFriend)
-            local v3 = Vector3.zero
-            if vUserPos and vUserPos[charId] then
-              v3.x = vUserPos[charId].pos.x
-              v3.y = vUserPos[charId].pos.y
-              v3.z = vUserPos[charId].pos.z
-            else
-              v3 = enit:GetLocalAttrVirtualPos()
-            end
-            local v2 = ZTransformUtility.WorldToScreenPoint(v3, false, nil)
-            local _, pos = ZTransformUtility.ScreenPointToLocalPointInRectangle(playItem.Trans, Vector2.New(v2.x, v2.y), nil)
-            v3.x, v3.y, v3.z = pos.x, 0, 0
-            playItem.Trans.localPosition = v3
-            playItem.effect_praise:SetEffectGoVisible(false)
             self:AddAsyncClick(playItem.btn_praise, function()
               if self.praiseTab_[uuid] == nil then
-                playItem.effect_praise:SetEffectGoVisible(true)
                 self.praiseTab_[uuid] = uuid
                 self.vm_.AsyncDungeonVote(uuid, self.cancelSource)
               end
@@ -169,8 +153,8 @@ function Hero_dungeon_praise_windowView:syncVote()
   local allVotes = Z.ContainerMgr.DungeonSyncData.vote.vote
   for key, value in pairs(allVotes) do
     local charId = self.entityVM_.UuidToEntId(key - self.entChar_)
-    if self.allSlider_[charId] then
-      self.allSlider_[charId].value = value
+    if self.allPraiseLab_[charId] then
+      self.allPraiseLab_[charId].text = "+" .. value
       for k, v in pairs(tab) do
         if value == tonumber(v[1]) then
           self:playAnim(charId, tonumber(v[2]))
@@ -187,7 +171,7 @@ function Hero_dungeon_praise_windowView:openTitleTips(playItem, titleData)
 end
 
 function Hero_dungeon_praise_windowView:playAnim(charId, animaId)
-  if charId == Z.EntityMgr.PlayerEnt.EntId then
+  if Z.EntityMgr.PlayerEnt and charId == Z.EntityMgr.PlayerEnt.EntId then
     Z.ZAnimActionPlayMgr:PlayAction(animaId, true)
   end
 end
@@ -196,8 +180,8 @@ function Hero_dungeon_praise_windowView:updatePraiseEvent(voteData)
   local tab = self.vm_.GetLikedAction()
   for key, value in pairs(voteData) do
     local charId = self.entityVM_.UuidToEntId(key - self.entChar_)
-    if self.allSlider_[charId] then
-      self.allSlider_[charId].value = value
+    if self.allPraiseLab_[charId] then
+      self.allPraiseLab_[charId].text = "+" .. value
       for k, v in pairs(tab) do
         if value == tonumber(v[1]) then
           self:playAnim(charId, tonumber(v[2]))

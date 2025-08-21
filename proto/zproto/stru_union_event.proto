@@ -7,4 +7,3 @@ message UnionEvent {
     uint64 eventTime = 2;
     repeated string eventParam = 3;
 }
-

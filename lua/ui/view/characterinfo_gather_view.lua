@@ -60,6 +60,10 @@ function Characterinfo_gatherView:OnActive()
     [2] = 1979.8,
     [3] = 1979.5
   }
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
   local modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
   local modelHumanData = Z.TableMgr.GetTable("ModelHumanTableMgr").GetRow(modelId)
   if modelHumanData then
@@ -128,7 +132,7 @@ function Characterinfo_gatherView:hideSelectTag()
   self.panel.common_btn_return.btn_return_bg.ZLayout:ForceRebuildLayoutImmediate()
   self.panel.bodmod_tab_bg:SetVisible(false)
   if self.playerZModel_ then
-    Z.ModelHelper.SetAlpha(self.playerZModel_, Z.ModelRenderType.All, 0, Panda.ZGame.EModelAlphaSourceType.EUI, false)
+    Z.ModelHelper.SetAlpha(self.playerZModel_, Z.ModelRenderMask.All, 0, Panda.ZGame.EModelAlphaSourceType.EUI, false)
   end
 end
 
@@ -136,7 +140,7 @@ function Characterinfo_gatherView:showSelectTag()
   self.returnLab.text = Lang("role")
   self.panel.common_btn_return.btn_return_bg.ZLayout:ForceRebuildLayoutImmediate()
   if self.playerZModel_ then
-    Z.ModelHelper.SetAlpha(self.playerZModel_, Z.ModelRenderType.All, 0.5, Panda.ZGame.EModelAlphaSourceType.EUI, false)
+    Z.ModelHelper.SetAlpha(self.playerZModel_, Z.ModelRenderMask.All, 0.5, Panda.ZGame.EModelAlphaSourceType.EUI, false)
   end
   self.panel.bodmod_tab_bg:SetVisible(true)
 end
@@ -212,6 +216,10 @@ function Characterinfo_gatherView:onchangeSubView(subViewType, force)
 end
 
 function Characterinfo_gatherView:showPlayerModel()
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
   self.playerZModel_ = Z.UnrealSceneMgr:CloneModelByLua(self.playerZModel_, Z.EntityMgr.PlayerEnt.Model)
   self.playerZModel_:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
   self.playerZModel_:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
@@ -239,13 +247,13 @@ function Characterinfo_gatherView:ChangeHeroModel(subViewType)
   self.playerZModel_:SetLuaAttr(Z.ModelAttr.EModelDynamicBoneEnabled, false)
   local height = self.playerZModel_:GetAttrGoNormalHeight()
   if subViewType == E.CharacterViewType.ERoleInfo or subViewType == E.CharacterViewType.EEquip then
-    Z.ModelHelper.SetAlpha(self.playerZModel_, Z.ModelRenderType.All, 1, Panda.ZGame.EModelAlphaSourceType.EUI, false)
+    Z.ModelHelper.SetAlpha(self.playerZModel_, Z.ModelRenderMask.All, 1, Panda.ZGame.EModelAlphaSourceType.EUI, false)
     self.playerZModel_:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, 140, 0)))
     self.playerZModel_:SetAttrGoPosition(Vector3.New(99.5, 2000, 100))
     self.playerZModel_:SetLuaAttrGoScale(1)
     self.playerZModel_:SetLuaAttr(Z.ModelAttr.EModelDynamicBoneEnabled, true)
   elseif subViewType == E.CharacterViewType.EWeaponHero then
-    Z.ModelHelper.SetAlpha(self.playerZModel_, Z.ModelRenderType.All, 0.5, Panda.ZGame.EModelAlphaSourceType.EUI, false)
+    Z.ModelHelper.SetAlpha(self.playerZModel_, Z.ModelRenderMask.All, 0.5, Panda.ZGame.EModelAlphaSourceType.EUI, false)
     local delaytime = 0
     if self.init_ then
       delaytime = 0.2

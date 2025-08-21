@@ -11,6 +11,4 @@ message SeasonActivationTarget {
     int32 rewardRate = 4;
     int32 progress = 5;
     int32 completedTimes = 6;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

@@ -53,14 +53,32 @@ function Filter_type_eliminate_tipsView:clearUnits()
 end
 
 function Filter_type_eliminate_tipsView:refreshUnit(unit, type, key)
-  if type == self.helper_.FilterType.ModType then
+  if type == E.CommonFilterType.ModType then
     unit.lab_name.text = Lang("ModType_" .. key)
-  elseif type == self.helper_.FilterType.ModQuality then
+  elseif type == E.CommonFilterType.ModQuality then
     unit.lab_name.text = Lang("ModQuality_" .. key)
-  elseif type == self.helper_.FilterType.ModEffectSelect then
+  elseif type == E.CommonFilterType.ModEffectSelect then
     local config = self.mod_data_:GetEffectTableConfig(key, 0)
     unit.lab_name.text = config.EffectName
+  elseif type == E.CommonFilterType.SeasonEquip then
+    unit.lab_name.text = Lang("EquipBreakThroughFilterSeasonNum", {val = key})
+  elseif type == E.CommonFilterType.EquipGs then
+    unit.lab_name.text = Lang("ValueGSEqual", {
+      val = Z.Global.EquipScreenGS[key][3]
+    })
+  elseif type == E.CommonFilterType.UnlockProfession then
+    local professionRow = Z.TableMgr.GetRow("ProfessionSystemTableMgr", key)
+    if professionRow then
+      unit.lab_name.text = professionRow.Name
+    end
+  elseif type == E.CommonFilterType.ResonanceSkillRarity then
+    unit.lab_name.text = Lang("ResonanceSkillRarityDesc_" .. key)
+  elseif type == E.CommonFilterType.ResonanceSkillType then
+    unit.lab_name.text = Lang("ShowSkillType_" .. key)
+  elseif type == E.CommonFilterType.ResonanceHave then
+    unit.lab_name.text = Lang("ResonanceHaveState_" .. key)
   end
+  unit.Trans:SetWidth(unit.lab_name.preferredWidth + 10)
 end
 
 return Filter_type_eliminate_tipsView

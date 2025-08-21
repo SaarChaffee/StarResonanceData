@@ -2,10 +2,12 @@ syntax = "proto3";
 
 package zproto;
 
-message UnionRemoveItemRequest {
-    int32 removeType = 2;
-    int32 removeResult = 3;
-    int64 unionId = 4;
-    int32 code = 5;
-}
+import "enum_e_error_code.proto";
 
+message UnionRemoveItemRequest {
+    int64 unionId = 4;
+    zproto.EErrorCode errCode = 5;
+    string unionName = 6;
+    repeated int32 itemIds = 7;
+    repeated int32 itemNum = 8;
+}

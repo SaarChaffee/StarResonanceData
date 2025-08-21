@@ -7,8 +7,6 @@ message CGTableBase {
     string CGName = 1264;
     string ResPath = 548;
 }
-
 message CGTableMgr {
-    map<int32, .bokura.CGTableBase> datas = 1;
+    repeated bokura.CGTableMgr.DatasEntry datas = 1;
 }
-

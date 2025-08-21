@@ -270,6 +270,44 @@ local mergeDataFuncs = {
       last:MergeData(buffer, watcherList)
       container.Watcher:MarkMapDirty("rideCollectQualityCount", dk, {})
     end
+  end,
+  [20] = function(container, buffer, watcherList)
+    local last = container.__data__.weaponSkinCollectPoint
+    container.__data__.weaponSkinCollectPoint = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("weaponSkinCollectPoint", last)
+  end,
+  [21] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt32(buffer)
+      container.photosWall.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("photosWall", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.photosWall.__data__[dk]
+      container.photosWall.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("photosWall", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt32(buffer)
+      local last = container.photosWall.__data__[dk]
+      container.photosWall.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("photosWall", dk, last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -350,6 +388,12 @@ local resetData = function(container, pbData)
   if not pbData.rideCollectQualityCount then
     container.__data__.rideCollectQualityCount = {}
   end
+  if not pbData.weaponSkinCollectPoint then
+    container.__data__.weaponSkinCollectPoint = 0
+  end
+  if not pbData.photosWall then
+    container.__data__.photosWall = {}
+  end
   setForbidenMt(container)
   container.medals.__data__ = pbData.medals
   setForbidenMt(container.medals)
@@ -376,6 +420,9 @@ local resetData = function(container, pbData)
     container.rideCollectQualityCount[k]:ResetData(v)
   end
   container.__data__.rideCollectQualityCount = nil
+  container.photosWall.__data__ = pbData.photosWall
+  setForbidenMt(container.photosWall)
+  container.__data__.photosWall = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -675,6 +722,32 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  ret.weaponSkinCollectPoint = {
+    fieldId = 20,
+    dataType = 0,
+    data = container.weaponSkinCollectPoint
+  }
+  if container.photosWall ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.photosWall) do
+      data[key] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.photosWall = {
+      fieldId = 21,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.photosWall = {
+      fieldId = 21,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -698,6 +771,9 @@ local new = function()
     },
     rideCollectQualityCount = {
       __data__ = {}
+    },
+    photosWall = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
@@ -707,6 +783,7 @@ local new = function()
   setForbidenMt(ret.unlockTargetRecord)
   setForbidenMt(ret.unlockGetRewardRecord)
   setForbidenMt(ret.rideCollectQualityCount)
+  setForbidenMt(ret.photosWall)
   return ret
 end
 return {New = new}

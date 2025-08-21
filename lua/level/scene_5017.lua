@@ -18,7 +18,7 @@ function Scene:InitEvents()
     eventId = 55,
     count = -1,
     action = function(localSelf)
-      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, true)
+      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, true, localSelf.eventId)
       Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
         3,
         4,
@@ -35,7 +35,7 @@ function Scene:InitEvents()
         25,
         26,
         27
-      }, true)
+      }, true, localSelf.eventId)
     end
   }
   self.EventItems[65] = {
@@ -45,7 +45,7 @@ function Scene:InitEvents()
     eventId = 65,
     count = -1,
     action = function(localSelf)
-      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1)
+      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1, localSelf.eventId)
     end
   }
 end

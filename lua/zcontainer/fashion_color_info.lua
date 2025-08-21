@@ -42,6 +42,44 @@ local mergeDataFuncs = {
       last:MergeData(buffer, watcherList)
       container.Watcher:MarkMapDirty("colors", dk, {})
     end
+  end,
+  [3] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local v = require("zcontainer.int_vec3").New()
+      v:MergeData(buffer, watcherList)
+      container.attachmentColor.__data__[dk] = v
+      container.Watcher:MarkMapDirty("attachmentColor", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.attachmentColor.__data__[dk]
+      container.attachmentColor.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("attachmentColor", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local last = container.attachmentColor.__data__[dk]
+      if last == nil then
+        logWarning("last is nil: " .. dk)
+        last = require("zcontainer.int_vec3").New()
+        container.attachmentColor.__data__[dk] = last
+      end
+      last:MergeData(buffer, watcherList)
+      container.Watcher:MarkMapDirty("attachmentColor", dk, {})
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -77,6 +115,9 @@ local resetData = function(container, pbData)
   if not pbData.colors then
     container.__data__.colors = {}
   end
+  if not pbData.attachmentColor then
+    container.__data__.attachmentColor = {}
+  end
   setForbidenMt(container)
   container.colors.__data__ = {}
   setForbidenMt(container.colors)
@@ -85,6 +126,13 @@ local resetData = function(container, pbData)
     container.colors[k]:ResetData(v)
   end
   container.__data__.colors = nil
+  container.attachmentColor.__data__ = {}
+  setForbidenMt(container.attachmentColor)
+  for k, v in pairs(pbData.attachmentColor) do
+    container.attachmentColor.__data__[k] = require("zcontainer.int_vec3").New()
+    container.attachmentColor[k]:ResetData(v)
+  end
+  container.__data__.attachmentColor = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -157,6 +205,35 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  if container.attachmentColor ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.attachmentColor) do
+      if repeatedItem == nil then
+        data[key] = {
+          fieldId = 3,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[key] = {
+          fieldId = 3,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
+    end
+    ret.attachmentColor = {
+      fieldId = 3,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.attachmentColor = {
+      fieldId = 3,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -167,11 +244,15 @@ local new = function()
     GetContainerElem = getContainerElem,
     colors = {
       __data__ = {}
+    },
+    attachmentColor = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.colors)
+  setForbidenMt(ret.attachmentColor)
   return ret
 end
 return {New = new}

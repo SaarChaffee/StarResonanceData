@@ -42,6 +42,11 @@ local mergeDataFuncs = {
       last:MergeData(buffer, watcherList)
       container.Watcher:MarkMapDirty("markInfoMap", dk, {})
     end
+  end,
+  [3] = function(container, buffer, watcherList)
+    local last = container.__data__.markUuid
+    container.__data__.markUuid = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("markUuid", last)
   end
 }
 local setForbidenMt = function(t)
@@ -76,6 +81,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.markInfoMap then
     container.__data__.markInfoMap = {}
+  end
+  if not pbData.markUuid then
+    container.__data__.markUuid = 0
   end
   setForbidenMt(container)
   container.markInfoMap.__data__ = {}
@@ -157,6 +165,11 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  ret.markUuid = {
+    fieldId = 3,
+    dataType = 0,
+    data = container.markUuid
+  }
   return ret
 end
 local new = function()

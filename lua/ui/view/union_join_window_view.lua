@@ -27,6 +27,7 @@ function Union_join_windowView:ctor()
 end
 
 function Union_join_windowView:initComponent()
+  self:startAnimatedShow()
   self.unionTabBinderDict_ = {
     [TabType.List] = self.uiBinder.binder_tab_list,
     [TabType.Collection] = self.uiBinder.binder_tab_collection
@@ -118,7 +119,7 @@ function Union_join_windowView:initToggle()
     v.tog_tab_select:AddListener(function(isOn)
       if isOn then
         self.commonVM_.CommonPlayTogAnim(v.anim_tog, self.cancelSource:CreateToken())
-        self:switchTab(k)
+        self:switchTab(k, true)
       end
     end)
     v.tog_tab_select.OnPointClickEvent:AddListener(function()
@@ -127,6 +128,10 @@ function Union_join_windowView:initToggle()
       v.tog_tab_select.IsToggleCanSwitch = isFuncOpen
     end)
   end
+end
+
+function Union_join_windowView:startAnimatedShow()
+  self.uiBinder.anim_main:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Union_join_windowView:switchOnOpen()
@@ -140,7 +145,7 @@ function Union_join_windowView:switchOnOpen()
   end
 end
 
-function Union_join_windowView:switchTab(tabType)
+function Union_join_windowView:switchTab(tabType, playAnim)
   if self.curTabType_ and self.curTabType_ == tabType then
     return
   end
@@ -161,6 +166,9 @@ function Union_join_windowView:switchTab(tabType)
     self:refreshListData()
     self:refreshListUI(true)
     self:refreshCollectionTab()
+  end
+  if playAnim then
+    self.uiBinder.anim_main:Restart(Z.DOTweenAnimType.Tween_0)
   end
 end
 
@@ -199,6 +207,10 @@ function Union_join_windowView:onOneKeyJoinBtnClick()
         break
       end
     end
+  end
+  if #unionIds == 0 then
+    Z.TipsVM.ShowTips(1000586)
+    return
   end
   local reply = self.unionVM_:AsyncReqJoinUnions(unionIds, true, self.cancelSource:CreateToken())
   if reply.errCode == 0 then
@@ -284,7 +296,8 @@ function Union_join_windowView:refreshListTab()
     self:AsyncGetUnionList()
   end)()
   local noUnion = self.unionVM_:GetPlayerUnionId() == 0
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_create, noUnion)
+  local isCreateUnionUnlock = Z.VMMgr.GetVM("gotofunc").CheckFuncCanUse(E.UnionFuncId.Create, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_create, noUnion and isCreateUnionUnlock)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_join, noUnion)
 end
 
@@ -394,7 +407,7 @@ function Union_join_windowView:refreshSimpleList()
 end
 
 function Union_join_windowView:onUnionListReply(reply)
-  if reply.errorCode == 0 then
+  if reply.errCode == 0 then
     self.unionData_:SetLastServerQueryTime(E.UnionServerQueryTimeKey.UnionList)
     self.unionData_.CacheUnionList = reply.unionList
   end
@@ -406,7 +419,7 @@ end
 function Union_join_windowView:onReqJoinUnionsReply(unionsRetList)
   local success = false
   for i = 1, #unionsRetList do
-    if unionsRetList[i].errorCode == 0 then
+    if unionsRetList[i].errCode == 0 then
       success = true
       local unionId = unionsRetList[i].unionId
       if self.allUnionDictData_[unionId] then
@@ -418,7 +431,7 @@ function Union_join_windowView:onReqJoinUnionsReply(unionsRetList)
           break
         end
       end
-    elseif unionsRetList[i].errorCode == Z.PbErrCode("ErrUnionFull") then
+    elseif unionsRetList[i].errCode == Z.PbErrCode("ErrUnionFull") then
       local unionId = unionsRetList[i].unionId
       if self.allUnionDictData_[unionId] then
         self.allUnionDictData_[unionId].baseInfo.num = self.allUnionDictData_[unionId].baseInfo.maxNum
@@ -491,7 +504,7 @@ function Union_join_windowView:searchUnion(content)
     Z.TipsVM.ShowTipsLang(100000)
     return
   end
-  local charNum = string.zlen(content)
+  local charNum = string.zlenNormalize(content)
   local searchMinLimit = Z.Global.UnionSearchMinLimit
   local searchMaxLimit = Z.Global.UnionSearchMaxLimit
   if charNum < searchMinLimit or charNum > searchMaxLimit then
@@ -505,7 +518,7 @@ function Union_join_windowView:searchUnion(content)
     self:showSearchingUI(true)
     local reply = self.unionVM_:AsyncSearchUnionList(content, self.cancelSource:CreateToken())
     self:showSearchingUI(false)
-    if reply.errorCode ~= 0 then
+    if reply.errCode ~= 0 then
       self.searchUnionListData_ = {}
       self:showEmptyUI()
     elseif reply.unionList == nil or #reply.unionList == 0 then
@@ -546,7 +559,7 @@ function Union_join_windowView:AsyncGetUnionList(isRefresh)
     return
   end
   local reply = self.unionVM_:AsyncReqUnionList(self.cancelSource:CreateToken())
-  if reply.errorCode == 0 then
+  if reply.errCode == 0 then
     self.unionData_:SetLastServerQueryTime(E.UnionServerQueryTimeKey.UnionList)
     self.unionData_.CacheUnionList = reply.unionList
   end

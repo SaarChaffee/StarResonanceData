@@ -7,4 +7,3 @@ enum ESlotType {
     PressTimeSlot = 1;
     StageHasLongPressSlot = 2;
 }
-

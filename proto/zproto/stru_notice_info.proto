@@ -11,4 +11,3 @@ message NoticeInfo {
     string contentText = 6;
     int64 endTime = 7;
 }
-

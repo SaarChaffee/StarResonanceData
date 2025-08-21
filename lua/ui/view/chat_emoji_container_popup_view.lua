@@ -9,33 +9,29 @@ local chat_emoji_item = require("ui.component.emoji.chat_emoji_item")
 local chat_backpack_item = require("ui.component.emoji.chat_backpack_item")
 local chat_rich_item = require("ui.component.emoji.chat_rich_item")
 local chat_record_item = require("ui.component.emoji.chat_record_item")
-E.EChantStickType = {
-  EStandardEmoji = 1,
-  EEmoji = 2,
-  EPicture = 3
-}
-local emojiPath = "ui/atlas/chat/emoji/"
+local chat_quick_message_item = require("ui.component.emoji.chat_quick_message_item")
+local emojiPath = "ui/atlas/chat_emoji/"
 
 function Chat_emoji_container_popupView:ctor()
   self.uiBinder = nil
   super.ctor(self, "chat_emoji_container_popup")
-  self.chat_input_boxView_ = chat_input_boxView.new()
-  self.emojiCount_ = 63
-  
-  function self.onInputAction_(inputActionEventData)
-    self:OnInputBack()
-  end
 end
 
 function Chat_emoji_container_popupView:OnActive()
-  self.funcList_ = loop_grid_view.new(self, self.uiBinder.node_func_list, chat_func_item, "chat_emoji_func_toggle_tpl")
+  self.commonVM_ = Z.VMMgr.GetVM("common")
+  if not self.viewData or not self.viewData.isHideChatInputBox then
+    self.chat_input_boxView_ = chat_input_boxView.new()
+  end
+  self.emojiCount_ = 63
+  self:startAnimatedShow()
+  self.funcList_ = loop_grid_view.new(self, self.uiBinder.node_func_list, chat_func_item, "chat_emoji_func_toggle_tpl", true)
   self.funcList_:Init({})
-  self.tabList_ = loop_list_view.new(self, self.uiBinder.node_tab_list, chat_tab_item, "chat_emoji_tab_tpl_new")
+  self.tabList_ = loop_list_view.new(self, self.uiBinder.node_tab_list, chat_tab_item, "chat_emoji_tab_tpl_new", true)
   self.tabList_:Init({})
   self.gridList_ = loop_grid_view.new(self, self.uiBinder.node_grid_content)
   self.gridList_:SetGetItemClassFunc(function(data)
     if self.curFuncType_ == E.ChatFuncType.Emoji then
-      if self.curGroupId_ == E.EChantStickType.EStandardEmoji then
+      if self.curGroupId_ == 1 then
         return chat_rich_item
       else
         return chat_emoji_item
@@ -44,32 +40,39 @@ function Chat_emoji_container_popupView:OnActive()
       return chat_backpack_item
     elseif self.curFuncType_ == E.ChatFuncType.Record then
       return chat_record_item
+    elseif self.curFuncType_ == E.ChatFuncType.QuickMessage then
+      return chat_quick_message_item
     end
   end)
   self.gridList_:SetGetPrefabNameFunc(function(data)
+    local prefabName = "chat_emoji_standard_item_tpl"
     if self.curFuncType_ == E.ChatFuncType.Emoji then
       if self.curGroupId_ == 1 then
-        return "chat_emoji_standard_item_tpl"
+        prefabName = "chat_emoji_standard_item_tpl"
       else
-        return "chat_emoji_small_item_tpl"
+        prefabName = "chat_emoji_small_item_tpl"
       end
     elseif self.curFuncType_ == E.ChatFuncType.Backpack then
-      return "com_item_long_1"
+      prefabName = "com_item_long_1"
     elseif self.curFuncType_ == E.ChatFuncType.Record then
-      return "chat_emoji_standard_item_tpl"
+      prefabName = "chat_emoji_standard_item_tpl"
+    elseif self.curFuncType_ == E.ChatFuncType.QuickMessage then
+      prefabName = "chat_shortcut_tpl"
     end
+    if Z.IsPCUI then
+      prefabName = string.zconcat(prefabName, "_pc")
+    end
+    return prefabName
   end)
   self.gridList_:Init({})
-  self.loopList_ = loop_list_view.new(self, self.uiBinder.node_list_content, chat_record_item, "chat_record_tpl")
+  self.loopList_ = loop_list_view.new(self, self.uiBinder.node_list_content, chat_record_item, "chat_record_tpl", true)
   self.loopList_:Init({})
-  self:startAnimatedShow()
   self:setInputBox(true)
   self:onInitData()
   self:onInitFunc()
-  Z.EventMgr:Add(Z.ConstValue.Chat.ChatHistoryRefresh, self.refreshHistory, self)
+  Z.EventMgr:Add(Z.ConstValue.Chat.ChatHistoryRefresh, self.refreshContent, self)
   Z.EventMgr:Add(Z.ConstValue.Chat.ClearItemShare, self.clearItemShare, self)
   self:refreshFirstFunc()
-  self:RegisterInputActions()
 end
 
 function Chat_emoji_container_popupView:OnDeActive()
@@ -77,13 +80,10 @@ function Chat_emoji_container_popupView:OnDeActive()
   self.tabList_:UnInit()
   self.gridList_:UnInit()
   self.loopList_:UnInit()
-  self:UnRegisterInputActions()
   self:setInputBox(false)
-  if self.viewData and self.viewData.parentView then
+  if self.viewData and self.viewData.parentView and self.viewData.parentView.OnEmojiViewClose then
     self.viewData.parentView:OnEmojiViewClose()
   end
-  Z.EventMgr:Remove(Z.ConstValue.Chat.ChatHistoryRefresh, self.refreshHistory, self)
-  Z.EventMgr:Remove(Z.ConstValue.Chat.ClearItemShare, self.clearItemShare, self)
 end
 
 function Chat_emoji_container_popupView:OnRefresh()
@@ -120,11 +120,16 @@ function Chat_emoji_container_popupView:OnSelectFuncTab(funcType, funcId)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_grid_content, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_list_content, false)
     local list = {}
-    for groupId, iconName in pairs(Z.Global.ChatStickersSort) do
-      list[#list + 1] = {
-        id = groupId,
-        icon = string.zconcat(emojiPath, iconName)
-      }
+    for _, data in ipairs(Z.Global.ChatStickersSort) do
+      local info = string.zsplit(data, "=")
+      if info[2] ~= nil and info[2] ~= "" then
+        list[#list + 1] = {
+          id = tonumber(info[1]),
+          raw_icon = string.zconcat(Z.ConstValue.Emoji.EmojiPath, info[2]),
+          showSpecial = info[3] or 0,
+          emoji = true
+        }
+      end
     end
     self.tabList_:RefreshListView(list, false)
     self.tabList_:ClearAllSelect()
@@ -133,7 +138,21 @@ function Chat_emoji_container_popupView:OnSelectFuncTab(funcType, funcId)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_grid_content, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_list_content, true)
-    self:refreshHistory()
+    self:refreshContent(true)
+  elseif funcType == E.ChatFuncType.QuickMessage then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_grid_content, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_list_content, false)
+    self.uiBinder.node_grid_ref:SetOffsetMin(20, 20)
+    self.uiBinder.node_grid_ref:SetOffsetMax(0, -20)
+    local width = self.uiBinder.node_grid_ref.rect.width
+    local count = math.floor(width / 362)
+    self.gridList_:SetGridFixedGroupCount(Z.GridFixedType.ColumnCountFixed, count)
+    local itemHeight = Z.IsPCUI and 32 or 52
+    self.gridList_:SetItemSize(Vector2.New(362, itemHeight))
+    self.gridList_:SetItemPadding(Vector2.New(18, 18))
+    local list = self.chatData_:GetGroupSpriteByType(E.EChatStickersType.EQuickMessage)
+    self.gridList_:RefreshListView(list, false)
   elseif funcType == E.ChatFuncType.Backpack then
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_grid_content, true)
@@ -149,12 +168,15 @@ function Chat_emoji_container_popupView:OnSelectFuncTab(funcType, funcId)
     if table.zcount(itemPackageData.Classify) == 0 then
       local contentList = self:getItemListByBackpackType(backpackId, -1)
       local width = self.uiBinder.node_grid_ref.rect.width
-      local count = math.floor(width / 146)
+      local itemWidth = Z.IsPCUI and 64 or 146
+      local itemHeight = Z.IsPCUI and 64 or 189
+      local count = math.floor(width / (itemWidth + 6))
       self.gridList_:SetGridFixedGroupCount(Z.GridFixedType.ColumnCountFixed, count)
-      self.gridList_:SetItemSize(Vector2.New(146, 189))
+      self.gridList_:SetItemSize(Vector2.New(itemWidth, itemHeight))
+      self.gridList_:SetItemPadding(Vector2.New(6, 6))
       self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab, false)
-      self.uiBinder.node_grid_ref:SetOffsetMin(0, 20)
-      self.uiBinder.node_grid_ref:SetOffsetMax(0, -20)
+      self.uiBinder.node_grid_ref:SetOffsetMin(20, 20)
+      self.uiBinder.node_grid_ref:SetOffsetMax(-20, -20)
       self.gridList_:ClearAllSelect()
       self.gridList_:RefreshListView(contentList, false)
     else
@@ -174,7 +196,7 @@ function Chat_emoji_container_popupView:OnSelectFuncTab(funcType, funcId)
       list[1].name = Lang("All")
       list[1].tag = -1
       self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab, true)
-      self.uiBinder.node_grid_ref:SetOffsetMin(0, 20)
+      self.uiBinder.node_grid_ref:SetOffsetMin(20, 20)
       self.uiBinder.node_grid_ref:SetOffsetMax(0, -70)
       self.tabList_:RefreshListView(list, false)
       self.tabList_:ClearAllSelect()
@@ -210,7 +232,7 @@ function Chat_emoji_container_popupView:getFilterData(tag)
   local data = {}
   data.filterMask = E.ItemFilterType.ItemType + E.ItemFilterType.ItemRare
   data.itemType = tag
-  data.filterTgas = {}
+  data.filterTags = {}
   return data
 end
 
@@ -227,27 +249,37 @@ function Chat_emoji_container_popupView:getItemListByBackpackType(backpackId, ta
 end
 
 function Chat_emoji_container_popupView:OnSelectSecondTab(groupId, tag)
+  if Z.IsPCUI then
+    self.uiBinder.node_grid_ref:SetOffsetMin(14, 10)
+    self.uiBinder.node_grid_ref:SetOffsetMax(-14, -46)
+  else
+    self.uiBinder.node_grid_ref:SetOffsetMin(20, 20)
+    self.uiBinder.node_grid_ref:SetOffsetMax(0, -76)
+  end
+  self.gridList_:SetItemPadding(Vector2.New(6, 6))
   self.curGroupId_ = groupId
   local contentList = {}
   local width = self.uiBinder.node_grid_ref.rect.width
   local count = 1
   if self.curFuncType_ == E.ChatFuncType.Emoji then
     if self.curGroupId_ == 1 then
-      self.gridList_:SetItemSize(Vector2.New(80, 80))
-      count = math.floor(width / 80)
+      local itemSize = Z.IsPCUI and 64 or 80
+      self.gridList_:SetItemSize(Vector2.New(itemSize, itemSize))
+      count = math.floor(width / (itemSize + 6))
     else
-      self.gridList_:SetItemSize(Vector2.New(132, 132))
-      count = math.floor(width / 132)
+      local itemSize = Z.IsPCUI and 64 or 132
+      self.gridList_:SetItemSize(Vector2.New(itemSize, itemSize))
+      count = math.floor(width / (itemSize + 6))
     end
     contentList = self:getEmojiList(groupId)
   elseif self.curFuncType_ == E.ChatFuncType.Backpack then
-    self.gridList_:SetItemSize(Vector2.New(146, 189))
-    count = math.floor(width / 146)
+    local itemWidth = Z.IsPCUI and 64 or 138
+    local itemHeight = Z.IsPCUI and 64 or 180
+    self.gridList_:SetItemSize(Vector2.New(itemWidth, itemHeight))
+    count = math.floor(width / (itemWidth + 6))
     local backpackId = self:getBackpackTypeByFuncId(self.curFunctionId_)
     contentList = self:getItemListByBackpackType(backpackId, tag)
   end
-  self.uiBinder.node_grid_ref:SetOffsetMin(20, 20)
-  self.uiBinder.node_grid_ref:SetOffsetMax(0, -76)
   self.gridList_:SetGridFixedGroupCount(Z.GridFixedType.ColumnCountFixed, count)
   self.gridList_:ClearAllSelect()
   self.gridList_:RefreshListView(contentList, false)
@@ -256,17 +288,25 @@ function Chat_emoji_container_popupView:OnSelectSecondTab(groupId, tag)
 end
 
 function Chat_emoji_container_popupView:OnSelectBackpackItem(item)
-  self.chat_input_boxView_:InputItem(item)
+  self.viewData.parentView:InputItem(item)
+  if self.chat_input_boxView_ then
+    self.chat_input_boxView_:RefreshChatDraft()
+  end
 end
 
 function Chat_emoji_container_popupView:setInputBox(isShow)
+  if self.viewData.isHideChatInputBox then
+    return
+  end
   if isShow then
-    local inputViewData = {}
-    inputViewData.parentView = self
-    inputViewData.windowType = self.viewData.windowType
-    inputViewData.channelId = self.viewData.channelId
-    inputViewData.showInputBg = true
-    inputViewData.isEmojiInput = true
+    local inputViewData = {
+      parentView = self,
+      windowType = self.viewData.windowType,
+      channelId = self.viewData.channelId,
+      charId = self.viewData.charId,
+      showInputBg = true,
+      isEmojiInput = true
+    }
     self.chat_input_boxView_:Active(inputViewData, self.uiBinder.node_chat_input)
   elseif self.chat_input_boxView_ then
     self.chat_input_boxView_:DeActive()
@@ -282,14 +322,19 @@ function Chat_emoji_container_popupView:onInitData()
 end
 
 function Chat_emoji_container_popupView:onInitFunc()
-  self:AddClick(self.uiBinder.btn_popup_close, function()
-    self.chat_input_boxView_:DelMsg()
-    self:RefreshBackSpaceBtn()
-    self:RefreshParentInput()
-  end)
+  if self.uiBinder.btn_popup_close then
+    self:AddClick(self.uiBinder.btn_popup_close, function()
+      self.viewData.parentView:DelMsg()
+      if self.chat_input_boxView_ then
+        self.chat_input_boxView_:RefreshChatDraft()
+      end
+      self:RefreshBackSpaceBtn()
+      self:RefreshParentInput()
+    end)
+  end
   self.uiBinder.presscheck_tipspress:StartCheck()
   self:EventAddAsyncListener(self.uiBinder.presscheck_tipspress.ContainGoEvent, function(isContain)
-    if isContain then
+    if not isContain then
       self.uiBinder.presscheck_tipspress:StopCheck()
       Z.UIMgr:CloseView("chat_emoji_container_popup")
     end
@@ -300,26 +345,51 @@ function Chat_emoji_container_popupView:RefreshParentInput()
   self.viewData.parentView:RefreshChatDraft(true)
 end
 
-function Chat_emoji_container_popupView:refreshHistory()
-  if self.curFuncType_ == E.ChatFuncType.Record then
-    local list = {}
-    local recordList = self.chatData_:GetMsgHistory()
-    for i = 1, #recordList do
-      table.insert(list, {
-        content = recordList[i],
-        width = self.uiBinder.node_list_ref.rect.width
-      })
-    end
-    self.loopList_:RefreshListView(list, false)
+function Chat_emoji_container_popupView:refreshContent(selectTab)
+  if not selectTab and self.curFuncType_ ~= E.ChatFuncType.Record then
+    return
   end
+  local list = {}
+  local recordList = self.chatData_:GetMsgHistory()
+  for i = 1, #recordList do
+    table.insert(list, {
+      content = recordList[i],
+      width = self.uiBinder.node_list_ref.rect.width
+    })
+  end
+  self.loopList_:RefreshListView(list, false)
 end
 
 function Chat_emoji_container_popupView:clearItemShare()
   self.gridList_:ClearAllSelect()
 end
 
+local sortFunc = function(left, right)
+  local chatMainVM = Z.VMMgr.GetVM("chat_main")
+  local leftUnlock = true
+  if left.UnlockItem > 0 then
+    leftUnlock = chatMainVM.GetChatEmojiUnlock(left.Id)
+  end
+  local rightUnlock = true
+  if right.UnlockItem > 0 then
+    rightUnlock = chatMainVM.GetChatEmojiUnlock(right.Id)
+  end
+  if leftUnlock then
+    if rightUnlock then
+      return left.Id < right.Id
+    else
+      return true
+    end
+  elseif rightUnlock then
+    return false
+  else
+    return left.Id < right.Id
+  end
+  return left.Id < right.Id
+end
+
 function Chat_emoji_container_popupView:getEmojiList(groupId)
-  if groupId == E.EChantStickType.EStandardEmoji then
+  if groupId == 1 then
     if not self.richList_ then
       self.richList_ = {}
       for i = 1, self.emojiCount_ do
@@ -328,25 +398,30 @@ function Chat_emoji_container_popupView:getEmojiList(groupId)
     end
     return self.richList_
   else
-    return self.chatData_:GetGroupSprite(groupId)
+    local list = self.chatData_:GetGroupSprite(groupId)
+    table.sort(list, sortFunc)
+    return list
   end
 end
 
 function Chat_emoji_container_popupView:InputEmoji(data)
-  self.chat_input_boxView_:InputEmoji(data, false)
+  self.viewData.parentView:InputEmoji(data, false)
+  if self.chat_input_boxView_ then
+    self.chat_input_boxView_:RefreshChatDraft()
+  end
 end
 
 function Chat_emoji_container_popupView:SendMessage(msg, chitChatMsgType, configId)
   Z.CoroUtil.create_coro_xpcall(function()
-    self.chatMainVm_.AsyncSendMessage(self.viewData.channelId, msg, chitChatMsgType, configId, self.cancelSource:CreateToken())
+    self.chatMainVm_.AsyncSendMessage(self.viewData.channelId, self.viewData.charId, msg, chitChatMsgType, configId, self.cancelSource:CreateToken())
   end)()
 end
 
 function Chat_emoji_container_popupView:RefreshBackSpaceBtn()
-  if not self.chatData_ or not self.uiBinder then
+  if not (self.chatData_ and self.uiBinder) or not self.uiBinder.node_backspace then
     return
   end
-  local chatDraft = self.chatData_:GetChatDraft(self.viewData.channelId, self.viewData.windowType)
+  local chatDraft = self.chatData_:GetChatDraft(self.viewData.channelId, self.viewData.windowType, self.viewData.charId)
   if not (chatDraft and chatDraft.msg) or chatDraft.msg == "" then
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_backspace, false)
   else
@@ -359,15 +434,9 @@ function Chat_emoji_container_popupView:startAnimatedShow()
 end
 
 function Chat_emoji_container_popupView:startAnimatedHide()
-  self.uiBinder.anim_emoji_container:Restart(Z.DOTweenAnimType.Close)
-end
-
-function Chat_emoji_container_popupView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Chat)
-end
-
-function Chat_emoji_container_popupView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Chat)
+  self.commonVM_.CommonDotweenPlay(self.uiBinder.anim_emoji_container, Z.DOTweenAnimType.Close, function()
+    self:Hide()
+  end)
 end
 
 return Chat_emoji_container_popupView

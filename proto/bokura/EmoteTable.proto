@@ -14,8 +14,6 @@ message EmoteTableBase {
     string IsShow = 822;
     string_array Emote = 587;
 }
-
 message EmoteTableMgr {
-    map<int32, .bokura.EmoteTableBase> datas = 1;
+    repeated bokura.EmoteTableMgr.DatasEntry datas = 1;
 }
-

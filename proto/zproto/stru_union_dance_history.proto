@@ -8,6 +8,4 @@ message UnionDanceHistory {
     int64 danceEndTime = 1;
     bool sentDanceAward = 2;
     bool drawnDanceAward = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

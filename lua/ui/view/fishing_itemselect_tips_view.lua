@@ -59,6 +59,7 @@ function Fishing_itemselect_tipsView:OnActive()
     self:DeActive()
   end)
   self:initLoopListView()
+  Z.UIMgr:AddShowMouseView("fishing_itemselect_tips_view")
 end
 
 function Fishing_itemselect_tipsView:OnDeActive()
@@ -67,6 +68,7 @@ function Fishing_itemselect_tipsView:OnDeActive()
   end
   self.uiBinder.presscheck:StopCheck()
   self:unInitLoopListView()
+  Z.UIMgr:RemoveShowMouseView("fishing_itemselect_tips_view")
 end
 
 function Fishing_itemselect_tipsView:OnRefresh()

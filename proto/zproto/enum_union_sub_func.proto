@@ -6,4 +6,3 @@ enum UnionSubFunc {
     UnionSubFuncTypeNode = 0;
     UnionSubFuncScene = 1;
 }
-

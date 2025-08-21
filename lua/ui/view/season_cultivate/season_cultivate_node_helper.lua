@@ -68,7 +68,10 @@ end
 
 function cls:OnLevelUpNodeEffShow()
   Z.AudioMgr:Play("UI_Event_Magic_C")
-  self.view_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder_.node_eff_level_up)
+  local parentUIDepth = self.view_:GetParentUIDepth()
+  if parentUIDepth then
+    parentUIDepth:AddChildDepth(self.uiBinder_.node_eff_level_up)
+  end
   self.uiBinder_.node_eff_level_up:SetEffectGoVisible(true)
 end
 

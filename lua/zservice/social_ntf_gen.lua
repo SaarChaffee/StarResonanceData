@@ -8,10 +8,7 @@ cJson.encode_sparse_array(true)
 local OnCallStub = function(call)
   xpcall(function()
     if call:GetMethodId() == 1 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.SocialNtf.NotifySocialData", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(625772963, 1, cJson.encode(pbMsg), pbData, true)

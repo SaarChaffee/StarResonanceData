@@ -5,4 +5,3 @@ package zproto;
 message CancelRedDotParam {
     int32 redDotId = 1;
 }
-

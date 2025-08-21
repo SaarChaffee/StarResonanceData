@@ -43,6 +43,7 @@ end
 
 function RoleLevelData:InitCfgData()
   self.PlayerLevelTableDatas = Z.TableMgr.GetTable("PlayerLevelTableMgr").GetDatas()
+  self.MaxPlayerLevel = #self.PlayerLevelTableDatas
 end
 
 function RoleLevelData:OnLanguageChange()
@@ -54,7 +55,7 @@ function RoleLevelData:Clear()
   self.refresServerRedLevel_ = 0
 end
 
-function RoleLevelData:SetRoleLevle(level)
+function RoleLevelData:SetRoleLevel(level)
   self.roleLeve_ = level
 end
 
@@ -68,6 +69,16 @@ end
 
 function RoleLevelData:GetRedLevel()
   return self.refresServerRedLevel_
+end
+
+function RoleLevelData:GetMaxLevel()
+  local max = 0
+  for k, v in pairs(self.PlayerLevelTableDatas) do
+    if max < v.Level then
+      max = v.Level
+    end
+  end
+  return max
 end
 
 function RoleLevelData:UnInit()

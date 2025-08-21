@@ -10,4 +10,3 @@ message PrivateChatTargetInfo {
     bool isTop = 3;
     zproto.ChitChatMsg latestMsg = 4;
 }
-

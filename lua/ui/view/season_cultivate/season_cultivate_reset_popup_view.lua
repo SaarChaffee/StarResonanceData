@@ -42,7 +42,8 @@ function SeasonCultivateReset:OnRefresh()
           unit = unit,
           configId = itemId,
           isShowZero = true,
-          lab = count
+          lab = count,
+          isShowOne = true
         }
         self.itemClass_[itemId] = ItemClass.new(self)
         self.itemClass_[itemId]:Init(datas)

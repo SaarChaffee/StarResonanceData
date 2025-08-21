@@ -11,36 +11,36 @@ local super = require("ui.ui_subview_base")
 local Dungeon_trackView = class("Dungeon_trackView", super)
 
 function Dungeon_trackView:ctor(parent)
-  self.panel = nil
-  local assetPath = Z.IsPCUI and "main/track/task_pace_tpl_pc" or "main/track/task_pace_tpl"
-  super.ctor(self, "task_pace_tpl", assetPath, UI.ECacheLv.None)
+  self.uiBinder = nil
+  super.ctor(self, "task_pace_tpl", "main/track/task_pace_tpl", UI.ECacheLv.None, true)
+  self.parentView_ = parent
   self.dungeonTrackVm_ = Z.VMMgr.GetVM("dungeon_track")
   self.trialroadVM_ = Z.VMMgr.GetVM("trialroad")
   self.stepId_ = 1
   self.targetItemDic_ = {}
   self.targetItemTrialRoadDic_ = {}
   self.targetShowDic_ = {}
-  self.finishQuestId = {}
 end
 
 function Dungeon_trackView:OnActive()
-  self.layout_ = self.panel.layout_task
-  self.parentPanel = self.viewData
   self.bShowAnim = false
   self:BindEvents()
 end
 
 function Dungeon_trackView:showPanel()
+  local isDungeonStage = Z.StageMgr.IsDungeonStage()
   self.isShow_ = false
-  if Z.StageMgr.GetCurrentStageType() == Z.EStageType.Dungeon or Z.StageMgr.GetCurrentStageType() == Z.EStageType.MirrorDungeon then
-    local dungeonId = Z.StageMgr.GetCurrentDungeonId()
-    local dungeonsTable = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
-    local targetDataDic = Z.ContainerMgr.DungeonSyncData.target.targetData
-    if dungeonsTable and #dungeonsTable.DungeonTarget > 0 and 0 < table.zcount(targetDataDic) then
-      self.isShow_ = true
-    end
+  if isDungeonStage and self:CheckDungeonTargetsAvailable() then
+    self.isShow_ = true
   end
   self:showTrackView()
+end
+
+function Dungeon_trackView:CheckDungeonTargetsAvailable()
+  local dungeonId = Z.StageMgr.GetCurrentDungeonId()
+  local dungeonsTable = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
+  local targetDataDic = Z.ContainerMgr.DungeonSyncData.target.targetData
+  return dungeonsTable and #dungeonsTable.DungeonTarget > 0 and 0 < table.zcount(targetDataDic)
 end
 
 function Dungeon_trackView:OnDeActive()
@@ -50,29 +50,28 @@ end
 
 function Dungeon_trackView:showTrackView()
   if not self.isShow_ then
-    self.panel.layout_task:SetVisible(false)
-    self:ClearAllUnits()
+    self:clearAndHide()
     return
   end
   local dungeonData = Z.DataMgr.Get("dungeon_data")
   self.stepId_ = dungeonData:GetDungeonTargetData("step")
   if self.stepId_ == -1 then
-    self.panel.layout_task:SetVisible(false)
-    self:ClearAllUnits()
+    self:clearAndHide()
     return
   end
-  self.panel.layout_task:SetVisible(dungeonData.TrackViewShow)
+  self:SetUIVisible(self.uiBinder.rebuilder_layout, dungeonData.TrackViewShow)
   self:showTargetDataView()
+end
+
+function Dungeon_trackView:clearAndHide()
+  self:SetUIVisible(self.uiBinder.rebuilder_layout, false)
+  self:ClearAllUnits()
 end
 
 function Dungeon_trackView:showTargetDataView()
   self:ClearAllUnits()
   Z.CoroUtil.create_coro_xpcall(function()
-    if self.trialroadVM_.IsTrialRoad() then
-      self:loadTrackTrialRoadBinder()
-    else
-      self:loadTrackUnit()
-    end
+    self:loadTrackUnit(self.trialroadVM_.IsTrialRoad())
   end)()
 end
 
@@ -89,7 +88,7 @@ end
 
 function Dungeon_trackView:SetViewVisible()
   local dungeonData = Z.DataMgr.Get("dungeon_data")
-  self.layout_:SetVisible(dungeonData.TrackViewShow)
+  self:SetUIVisible(self.uiBinder.rebuilder_layout, dungeonData.TrackViewShow)
 end
 
 function Dungeon_trackView:ClearAllUnitFlag()
@@ -109,21 +108,22 @@ function Dungeon_trackView:ClearAllUnitFlag()
 end
 
 function Dungeon_trackView:UnInitNoUsedUnit()
-  if self.units ~= nil then
-    for targetId, _ in pairs(self.targetShowDic_) do
-      if self.targetShowDic_[targetId] == false then
-        local unitName = self:GetUnitName(targetId)
-        self:RemoveUiUnit(unitName)
-        if self.targetItemDic_[targetId] then
-          self.targetItemDic_[targetId]:UnInit()
-          self.targetItemDic_[targetId] = nil
-        end
-        if self.targetItemTrialRoadDic_[targetId] then
-          self.targetItemTrialRoadDic_[targetId]:UnInit()
-          self.targetItemTrialRoadDic_[targetId] = nil
-        end
-        self.targetShowDic_[targetId] = nil
+  if not self.units or table.zcount(self.units) == 0 then
+    return
+  end
+  for targetId, _ in pairs(self.targetShowDic_) do
+    if self.targetShowDic_[targetId] == false then
+      local unitName = self:GetUnitName(targetId)
+      self:RemoveUiUnit(unitName)
+      if self.targetItemDic_[targetId] then
+        self.targetItemDic_[targetId]:UnInit()
+        self.targetItemDic_[targetId] = nil
       end
+      if self.targetItemTrialRoadDic_[targetId] then
+        self.targetItemTrialRoadDic_[targetId]:UnInit()
+        self.targetItemTrialRoadDic_[targetId] = nil
+      end
+      self.targetShowDic_[targetId] = nil
     end
   end
 end
@@ -134,11 +134,11 @@ function Dungeon_trackView:UnInitAllUnit()
     self:RemoveUiUnit(unitName)
   end
   self.targetShowDic_ = {}
-  for targetId, item in pairs(self.targetItemDic_) do
+  for _, item in pairs(self.targetItemDic_) do
     item:UnInit()
   end
   self.targetItemDic_ = {}
-  for targetId, item in pairs(self.targetItemTrialRoadDic_) do
+  for _, item in pairs(self.targetItemTrialRoadDic_) do
     item:UnInit()
   end
   self.targetItemTrialRoadDic_ = {}
@@ -151,103 +151,80 @@ end
 function Dungeon_trackView:UpdateTargetItemByContain()
   self:ClearAllUnitFlag()
   Z.CoroUtil.create_coro_xpcall(function()
-    if self.trialroadVM_.IsTrialRoad() then
-      self:loadTrackTrialRoadBinder()
-    else
-      self:loadTrackUnit()
-    end
+    self:loadTrackUnit(self.trialroadVM_.IsTrialRoad())
   end)()
 end
 
-function Dungeon_trackView:loadTrackTrialRoadBinder()
+function Dungeon_trackView:loadTrackUnit(isTrialRoad)
   local targetDataDic = Z.ContainerMgr.DungeonSyncData.target.targetData
   if table.zcount(targetDataDic) == 0 then
     return
   end
   local dungeonId = Z.StageMgr.GetCurrentDungeonId()
   local dungeonsTable = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
-  local targetArray
-  if dungeonsTable == nil then
+  if not dungeonsTable then
     return
   end
-  targetArray = dungeonsTable.DungeonTarget[1]
-  for i = 1, #targetArray do
-    local targetId = targetArray[i]
-    local targetData = targetDataDic[targetId]
-    local targetCfg = Z.TableMgr.GetTable("TargetTableMgr").GetRow(targetId)
-    if targetCfg == nil then
-      return
-    end
-    local unitName = self:GetUnitName(targetId)
-    local mainUnit = self.units[unitName]
-    local targetItem = self.targetItemTrialRoadDic_[targetId]
-    if mainUnit == nil then
-      local path = Z.IsPCUI and UnitPath.TrialRoadPC or UnitPath.TrialRoad
-      mainUnit = self:AsyncLoadUiUnit(path, unitName, self.panel.layout_task.Trans)
-      if mainUnit == nil then
-        return
-      end
-      targetItem = trackTargetTrialroadItem.new()
-      targetItem:Init(mainUnit, self)
-      self.targetItemTrialRoadDic_[targetId] = targetItem
-    end
-    self.targetShowDic_[targetId] = true
-    targetItem:SetData(targetData)
+  local stepId = isTrialRoad == true and 1 or self.stepId_
+  local targetArray = dungeonsTable.DungeonTarget[stepId]
+  for _, targetId in ipairs(targetArray) do
+    self:processTarget(targetId, targetDataDic, isTrialRoad)
   end
-  self.layout_.ZLayout:ForceRebuildLayoutImmediate()
+  self.uiBinder.rebuilder_layout:ForceRebuildLayoutImmediate()
   if 0 < #targetArray and not self.bShowAnim then
     self.bShowAnim = true
-    self.parentPanel.node_parent.TweenContainer:Rewind(Panda.ZUi.DOTweenAnimType.Open)
-    self.parentPanel.node_parent.TweenContainer:Restart(Panda.ZUi.DOTweenAnimType.Open)
+    self:playTweenAnimation()
   end
   self:UnInitNoUsedUnit()
 end
 
-function Dungeon_trackView:loadTrackUnit()
-  local targetDataDic = Z.ContainerMgr.DungeonSyncData.target.targetData
-  if table.zcount(targetDataDic) == 0 then
+function Dungeon_trackView:processTarget(targetId, targetDataDic, isTrialRoad)
+  local targetData = targetDataDic[targetId]
+  local targetCfg = Z.TableMgr.GetTable("TargetTableMgr").GetRow(targetId)
+  if not targetCfg then
     return
   end
-  local dungeonId = Z.StageMgr.GetCurrentDungeonId()
-  local dungeonsTable = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
-  local targetArray
-  if dungeonsTable == nil then
+  if not targetData then
+    local dungeonId = Z.StageMgr.GetCurrentDungeonId()
+    logError("dungeonId = {0}, targetId = {1}, isTrialRoad = {2}", dungeonId, targetId, isTrialRoad)
+    logError(table.ztostring(targetDataDic))
     return
   end
-  targetArray = dungeonsTable.DungeonTarget[self.stepId_]
-  for i = 1, #targetArray do
-    local targetId = targetArray[i]
-    local targetData = targetDataDic[targetId]
-    local targetCfg = Z.TableMgr.GetTable("TargetTableMgr").GetRow(targetId)
-    if targetCfg == nil then
-      return
-    end
-    local unitName = self:GetUnitName(targetId)
-    local mainUnit = self.units[unitName]
-    local targetItem = self.targetItemDic_[targetId]
-    if mainUnit == nil then
-      if targetItem then
-        targetItem:UnInit()
-      end
-      local path = Z.IsPCUI and UnitPath.MainPC or UnitPath.Main
-      mainUnit = self:AsyncLoadUiUnit(path, unitName, self.panel.layout_task.Trans)
-      if mainUnit == nil then
-        return
-      end
-      targetItem = trackTargetItem.new()
-      targetItem:Init(mainUnit, self)
-      self.targetItemDic_[targetId] = targetItem
-    end
+  local unitName = self:GetUnitName(targetId)
+  local mainUnit = self.units[unitName]
+  local targetItem = isTrialRoad and self.targetItemTrialRoadDic_[targetId] or self.targetItemDic_[targetId]
+  if not mainUnit then
+    self:loadNewUnit(targetId, unitName, targetData, targetItem, isTrialRoad)
+  else
     self.targetShowDic_[targetId] = true
-    targetItem:SetData(targetData, nil)
+    if targetItem then
+      targetItem:SetData(targetData)
+    end
   end
-  self.layout_.ZLayout:ForceRebuildLayoutImmediate()
-  if 0 < #targetArray and not self.bShowAnim then
-    self.bShowAnim = true
-    self.parentPanel.node_parent.TweenContainer:Rewind(Panda.ZUi.DOTweenAnimType.Open)
-    self.parentPanel.node_parent.TweenContainer:Restart(Panda.ZUi.DOTweenAnimType.Open)
+end
+
+function Dungeon_trackView:loadNewUnit(targetId, unitName, targetData, targetItem, isTrialRoad)
+  if targetItem then
+    targetItem:UnInit()
   end
-  self:UnInitNoUsedUnit()
+  local path = Z.IsPCUI and UnitPath.MainPC or UnitPath.Main
+  local targetItemDict = isTrialRoad and self.targetItemTrialRoadDic_ or self.targetItemDic_
+  if isTrialRoad then
+    path = Z.IsPCUI and UnitPath.TrialRoadPC or UnitPath.TrialRoad
+  end
+  local mainUnit = self:AsyncLoadUiUnit(path, unitName, self.uiBinder.rebuilder_layout.transform)
+  if not mainUnit then
+    return
+  end
+  targetItem = isTrialRoad and trackTargetTrialroadItem.new() or trackTargetItem.new()
+  targetItem:Init(mainUnit, self)
+  targetItemDict[targetId] = targetItem
+  self.targetShowDic_[targetId] = true
+  targetItem:SetData(targetData)
+end
+
+function Dungeon_trackView:playTweenAnimation()
+  self.parentView_:ReplayOpenAnim()
 end
 
 function Dungeon_trackView:resetTrackView()
@@ -259,7 +236,7 @@ function Dungeon_trackView:resetTrackView()
       self.isShow_ = true
     end
   end
-  self.panel.layout_task:SetVisible(self.isShow_)
+  self:SetUIVisible(self.uiBinder.rebuilder_layout, self.isShow_)
   if not self.isShow_ then
     self:ClearAllUnits()
     return
@@ -272,15 +249,12 @@ function Dungeon_trackView:updateTrackViewBySever()
   local dungeonData = Z.DataMgr.Get("dungeon_data")
   self.stepId_ = dungeonData:GetDungeonTargetData("step")
   if self.stepId_ == -1 and not self.trialroadVM_.IsTrialRoad() then
-    self.panel.layout_task:SetVisible(false)
+    self:SetUIVisible(self.uiBinder.rebuilder_layout, false)
     self:ClearAllUnits()
     return
   end
-  self.panel.layout_task:SetVisible(dungeonData.TrackViewShow)
+  self:SetUIVisible(self.uiBinder.rebuilder_layout, dungeonData.TrackViewShow)
   self:UpdateTargetItemByContain()
-end
-
-function Dungeon_trackView:BindLuaAttrWatchers()
 end
 
 function Dungeon_trackView:OnRefresh()

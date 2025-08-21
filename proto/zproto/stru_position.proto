@@ -9,6 +9,4 @@ message Position {
     float y = 2;
     float z = 3;
     float dir = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

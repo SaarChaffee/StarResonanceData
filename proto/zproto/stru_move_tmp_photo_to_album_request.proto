@@ -7,4 +7,3 @@ message MoveTmpPhotoToAlbumRequest {
     uint32 tmpPhotoId = 2;
     uint32 albumId = 3;
 }
-

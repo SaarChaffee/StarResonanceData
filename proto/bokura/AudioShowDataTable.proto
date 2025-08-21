@@ -13,8 +13,6 @@ message AudioShowDataTableBase {
     bool Loop = 1929;
     string EventName = 1263;
 }
-
 message AudioShowDataTableMgr {
-    map<int64, .bokura.AudioShowDataTableBase> datas = 1;
+    repeated bokura.AudioShowDataTableMgr.DatasEntry datas = 1;
 }
-

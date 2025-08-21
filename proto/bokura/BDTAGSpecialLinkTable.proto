@@ -10,8 +10,6 @@ message BDTAGSpecialLinkTableBase {
     int32 TargetNodeType = 1957;
     int32 TargetNodeID = 1587;
 }
-
 message BDTAGSpecialLinkTableMgr {
-    map<int32, .bokura.BDTAGSpecialLinkTableBase> datas = 1;
+    repeated bokura.BDTAGSpecialLinkTableMgr.DatasEntry datas = 1;
 }
-

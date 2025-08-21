@@ -20,7 +20,7 @@ function PersonalzoneMedalLoopItem:OnRefresh(data)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, self.data_.Id == self.view_.selectMedalId_)
   local hasMedal = self.personalZoneVM_.HasMedal(self.data_.Id)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_lock, not hasMedal)
-  self.uiBinder.img_icon:SetColor(Color.New(1, 1, 1, hasMedal and 1 or 0.1))
+  self.uiBinder.img_icon:SetColor(Color.New(1, 1, 1, hasMedal and 1 or 0.39215686274509803))
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_reddot, self.personalZoneVM_.CheckSingleRedDot(self.data_.Id))
 end
 

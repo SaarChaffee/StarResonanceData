@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_warehouse_grid.proto";
+
+message NotifyHomelandWarehouseGridChangeRequest {
+    repeated zproto.CommunityWarehouseGrid itemInfos = 1;
+}

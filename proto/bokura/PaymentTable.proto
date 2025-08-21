@@ -17,8 +17,6 @@ message PaymentTableBase {
     int32 Platform = 1857;
     int32 IsSale = 1626;
 }
-
 message PaymentTableMgr {
-    map<int32, .bokura.PaymentTableBase> datas = 1;
+    repeated bokura.PaymentTableMgr.DatasEntry datas = 1;
 }
-

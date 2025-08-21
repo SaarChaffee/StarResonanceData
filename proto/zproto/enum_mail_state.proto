@@ -8,5 +8,5 @@ enum MailState {
     MailStateRead = 2;
     MailStateGet = 3;
     MailStateDelete = 4;
+    MailStateHide = 5;
 }
-

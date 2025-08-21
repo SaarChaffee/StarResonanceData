@@ -40,7 +40,7 @@ function ItemClass:UnInit()
   self.itemData_ = nil
 end
 
-function ItemClass:InitCircleItem(itemUnit, configId, itemUuid, quaity, isShowEquip)
+function ItemClass:InitCircleItem(itemUnit, configId, itemUuid, quality, isShowEquip)
   if itemUnit == nil then
     return
   end
@@ -52,16 +52,10 @@ function ItemClass:InitCircleItem(itemUnit, configId, itemUuid, quaity, isShowEq
   if itemTableRow == nil then
     return
   end
-  if not quaity then
-    quaity = itemTableRow.Quality
-    if itemUuid then
-      local itemdata = itemsVm.GetItemInfobyItemId(itemUuid, configId)
-      quaity = itemdata.quality
-    end
-  end
+  quality = quality or itemTableRow.Quality
   local itemsVm = Z.VMMgr.GetVM("items")
   itemUnit.rimg_icon.RImg:SetImage(itemsVm.GetItemIcon(configId))
-  itemUnit.btn_bg.Img:SetImage(Z.ConstValue.QualityImgCircleBg .. quaity)
+  itemUnit.btn_bg.Img:SetImage(Z.ConstValue.QualityImgCircleBg .. quality)
   if not itemUnit.img_equip then
     return
   end
@@ -199,19 +193,13 @@ function ItemClass:initIcon()
   if itemTableRow == nil then
     return
   end
-  local quaity = itemTableRow.Quality
-  if self.itemData_.uuid then
-    local itemdata = itemsVm.GetItemInfobyItemId(self.itemData_.uuid, self.itemData_.configId)
-    if itemdata then
-      quaity = itemdata.quality
-    end
-  end
+  local quality = itemTableRow.Quality
   self:setIcon(itemsVm.GetItemIcon(self.itemData_.configId))
   local path = ""
   if self.itemData_.isSquareItem then
-    path = qualityPathPre .. quaity
+    path = qualityPathPre .. quality
   else
-    path = Z.ConstValue.QualityImgBg .. quaity
+    path = Z.ConstValue.Item.ItemQualityPath .. quality
   end
   self:setQuality(path)
   self.itemData_.unit.cont_info.img_mask:SetVisible(self.itemData_.isShowMask)
@@ -372,7 +360,7 @@ end
 function ItemClass:RefreshItemCdUi(cdTime, useCD)
   if cdTime and 0 < cdTime and 0 < useCD then
     self.itemData_.unit.cont_info.img_cd:SetVisible(true)
-    local time = Z.TimeTools.FormatCdTime(cdTime)
+    local time = Z.TimeTools.GetCdTimeByEndStamp(cdTime)
     if time then
       if 0 < time.day then
         self.itemData_.unit.cont_info.lab_cd.TMPLab.text = time.day .. "day"

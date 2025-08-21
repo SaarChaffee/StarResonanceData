@@ -9,8 +9,6 @@ message MainUiTableBase {
     string Comment = 11;
     int_array MainIcon = 1283;
 }
-
 message MainUiTableMgr {
-    map<int32, .bokura.MainUiTableBase> datas = 1;
+    repeated bokura.MainUiTableMgr.DatasEntry datas = 1;
 }
-

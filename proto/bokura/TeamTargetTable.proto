@@ -17,8 +17,6 @@ message TeamTargetTableBase {
     int32 Sort = 1643;
     string Icon = 1153;
 }
-
 message TeamTargetTableMgr {
-    map<int32, .bokura.TeamTargetTableBase> datas = 1;
+    repeated bokura.TeamTargetTableMgr.DatasEntry datas = 1;
 }
-

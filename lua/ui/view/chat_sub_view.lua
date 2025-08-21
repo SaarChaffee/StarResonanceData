@@ -7,12 +7,6 @@ local chat_input_boxView = require("ui.view.chat_input_box_view")
 local chat_dialogue_tpl_view = require("ui.view.chat_dialogue_tpl_view")
 local super = require("ui.ui_subview_base")
 local Chat_subView = class("Chat_subView", super)
-E.EChatRightChannelBtnFunctionId = {
-  EExpand = 102128,
-  EPop = 102129,
-  ESetting = 102130,
-  ERotate = 102131
-}
 
 function Chat_subView:ctor()
   self.uiBinder = nil
@@ -25,6 +19,7 @@ function Chat_subView:OnActive()
   self.chatData_ = Z.DataMgr.Get("chat_main_data")
   self.chatVm_ = Z.VMMgr.GetVM("chat_main")
   self.socialVm_ = Z.VMMgr.GetVM("socialcontact_main")
+  self.gotoFuncVm_ = Z.VMMgr.GetVM("gotofunc")
   self:startAnimatedShow()
   self:onInitData()
   self:onInitProp()
@@ -40,6 +35,7 @@ function Chat_subView:OnDeActive()
   self:setMsg(false)
   self:stopTimer()
   self.channelScrollRect_:ClearCells()
+  Z.Voice.StopPlayback()
 end
 
 function Chat_subView:BindEvents()
@@ -140,7 +136,7 @@ function Chat_subView:onMiniClickBtn()
 end
 
 function Chat_subView:onSettingClickBtn()
-  Z.UIMgr:OpenView("chat_setting_popup")
+  self.chatVm_.OpenChatSettingPopupView()
 end
 
 function Chat_subView:refreshRightChannelBtn(channelId)
@@ -154,7 +150,7 @@ function Chat_subView:refreshRightChannelBtn(channelId)
     for i = #configData.ChannelFunc, 1, -1 do
       local functionId = configData.ChannelFunc[i]
       local functionData = funcTable.GetRow(tonumber(functionId))
-      if functionData and functionData.OnOff == 0 then
+      if functionData and functionData.OnOff == 0 and self.gotoFuncVm_.CheckFuncCanUse(functionId, true) then
         local item = self:AsyncLoadUiUnit(channelBtnPath, functionId, self.uiBinder.node_up_icon)
         if item then
           item.img_icon:SetImage(functionData.Icon)
@@ -179,11 +175,13 @@ function Chat_subView:rightChannelBtnAddFunc(functionId, item)
         self.chatData_:SetScaleStatus(false)
         self.uiBinder.node_main_view_container:SetOffsetMin(0, 0)
         self.uiBinder.anim_main_view:Restart(Z.DOTweenAnimType.Tween_0)
+        self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab_second, true)
         item.img_icon_ref:SetScale(1, 1)
       else
         self.chatData_:SetScaleStatus(true)
         self.uiBinder.node_main_view_container:SetOffsetMin(-136, 0)
         self.uiBinder.anim_main_view:Restart(Z.DOTweenAnimType.Tween_1)
+        self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab_second, false)
         item.img_icon_ref:SetScale(-1, 1)
       end
     end)
@@ -219,8 +217,8 @@ function Chat_subView:onKeyBoardOKClickBtn()
 end
 
 function Chat_subView:onKeyBoardDelClickBtn()
-  local len = string.zlen(self.editStr_)
-  self.editStr_ = string.zcut(self.editStr_, len - 1)
+  local len = string.zlenNormalize(self.editStr_)
+  self.editStr_ = string.zcutNormalize(self.editStr_, len - 1)
   self.uiBinder.input_channel.text = self.editStr_
 end
 
@@ -255,7 +253,7 @@ function Chat_subView:onRefreshGroupTxt()
   self.uiBinder.Ref:SetVisible(self.uiBinder.input_channel, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_edit, true)
   self.editStr_ = ""
-  self.uiBinder.input_channel.text = self.chatData_:GetShowWorldGroupChannel() or ""
+  self.uiBinder.input_channel.text = self.chatData_:GetWorldGroupId() or ""
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_small_keyboard, false)
   self:refreshWorldChannelState()
 end
@@ -265,16 +263,11 @@ function Chat_subView:refreshWorldChannelState()
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_world_channel_state, false)
     return
   end
-  local curNum = self.chatData_:GetWorldNum()
-  local curMaxNum = self.chatData_:GetWorldMaxNum()
-  if curMaxNum == 0 then
-    return
-  end
-  local numPre = curNum / curMaxNum * 100
-  if numPre >= Z.Global.ChatWorldGreenNum[1] and numPre <= Z.Global.ChatWorldGreenNum[2] then
+  local state = self.chatData_:GetWorldChannelState()
+  if state <= E.EWorldChannelState.Low then
     self.uiBinder.img_world_channel_state:SetColorByHex("#74d782")
     self.uiBinder.lab_world_channel_state.text = Z.RichTextHelper.ApplyStyleTag(Lang("world_channel_state_green"), E.TextStyleTag.ChannelGuild)
-  elseif numPre >= Z.Global.ChatWorldOrangeNum[1] and numPre <= Z.Global.ChatWorldOrangeNum[2] then
+  elseif state == E.EWorldChannelState.Hot then
     self.uiBinder.img_world_channel_state:SetColorByHex("#ffc777")
     self.uiBinder.lab_world_channel_state.text = Z.RichTextHelper.ApplyStyleTag(Lang("world_channel_state_orange"), E.TextStyleTag.ChannelFriend)
   else
@@ -330,17 +323,18 @@ end
 
 function Chat_subView:setInputBox(isShowInput)
   if isShowInput then
-    local inputViewData = {}
-    inputViewData.parentView = self
-    inputViewData.windowType = E.ChatWindow.Main
-    inputViewData.showInputBg = false
-    inputViewData.isShowVoice = true
-    
-    function inputViewData.onEmojiViewChange(isShowEmoji)
-      self:onEmojiViewShow(isShowEmoji)
-    end
-    
-    self.chat_input_box_view_:Active(inputViewData, self.uiBinder.node_bottom_container, self.uiBinder)
+    self.inputViewData_ = {
+      parentView = self,
+      windowType = E.ChatWindow.Main,
+      showInputBg = false,
+      isShowVoice = true,
+      activeInputActions = true,
+      channelId = self.chatData_:GetChannelId(),
+      onEmojiViewChange = function(isShowEmoji)
+        self:onEmojiViewShow(isShowEmoji)
+      end
+    }
+    self.chat_input_box_view_:Active(self.inputViewData_, self.uiBinder.node_bottom_container, self.uiBinder)
   elseif self.chat_input_box_view_ then
     self.chat_input_box_view_:DeActive()
   end
@@ -374,10 +368,12 @@ end
 
 function Chat_subView:setMsg(isShow)
   if isShow then
-    local chatDialogueViewData = {}
-    chatDialogueViewData.parentView = self
-    chatDialogueViewData.windowType = E.ChatWindow.Main
-    self.chat_dialogue_tpl_view_:Active(chatDialogueViewData, self.uiBinder.node_dialogue_parent, self.uiBinder)
+    self.chatDialogueViewData_ = {
+      parentView = self,
+      channelId = E.ChatChannelType.EComprehensive,
+      windowType = E.ChatWindow.Main
+    }
+    self.chat_dialogue_tpl_view_:Active(self.chatDialogueViewData_, self.uiBinder.node_dialogue_parent, self.uiBinder)
   elseif self.chat_dialogue_tpl_view_ then
     self.chat_dialogue_tpl_view_:DeActive()
     self.chat_dialogue_tpl_view_ = nil
@@ -400,12 +396,10 @@ function Chat_subView:SwitchChannel(Id)
   else
     self.uiBinder.node_dialogue_parent:SetOffsetMin(1, 117)
   end
-  if self.chat_dialogue_tpl_view_ and self.chat_dialogue_tpl_view_.IsActive and self.chat_dialogue_tpl_view_.IsLoaded then
-    self.chat_dialogue_tpl_view_:SwitchChannelId(Id)
-  end
-  if self.chat_input_box_view_ and self.chat_input_box_view_.IsActive and self.chat_input_box_view_.IsLoaded then
-    self.chat_input_box_view_:SwitchChannelId(Id)
-  end
+  self.chatDialogueViewData_.channelId = Id
+  self.chat_dialogue_tpl_view_:Active(self.chatDialogueViewData_, self.uiBinder.node_dialogue_parent, self.uiBinder)
+  self.inputViewData_.channelId = Id
+  self.chat_input_box_view_:Active(self.inputViewData_, self.uiBinder.node_bottom_container, self.uiBinder)
 end
 
 function Chat_subView:OnChatBubble(chatMsgData)

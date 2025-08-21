@@ -14,8 +14,6 @@ message ChannelTableBase {
     int32 Sort = 1643;
     string_array ChannelFunc = 794;
 }
-
 message ChannelTableMgr {
-    map<int32, .bokura.ChannelTableBase> datas = 1;
+    repeated bokura.ChannelTableMgr.DatasEntry datas = 1;
 }
-

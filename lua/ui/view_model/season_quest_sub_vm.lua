@@ -11,43 +11,62 @@ local getAllTaskConfig = function()
   local data = Z.DataMgr.Get("season_quest_sub_data")
   return data:GetAllTaskCfg()
 end
-local getWeekEndTime = function()
-  local time = Z.ContainerMgr.CharSerialize.seasonQuestList.refreshTimeStamp
-  local now = math.floor(Z.TimeTools.Now() / 1000)
-  return time - now
-end
 local getCurDay = function()
   local startServerTime = Z.DataMgr.Get("season_quest_sub_data"):GetStartServerTime()
-  local t = math.floor(Z.TimeTools.Now() / 1000) - startServerTime
-  if t < 0 then
+  local curStamp = math.floor(Z.TimeTools.Now() / 1000)
+  if curStamp - startServerTime < 0 then
     return 0
   end
-  return math.floor(t / 86400) + 1
+  local timerConfigItem = Z.DIServiceMgr.ZCfgTimerService:GetZCfgTimerItem(901)
+  local hour = timerConfigItem.Offset[0] / 3600
+  local startDateTime = os.date("*t", startServerTime)
+  local startDataTime5Stamp = os.time({
+    year = startDateTime.year,
+    month = startDateTime.month,
+    day = startDateTime.day,
+    hour = hour,
+    min = 0,
+    sec = 0
+  })
+  local sub5Stamp = curStamp - startDataTime5Stamp
+  local subDay = math.floor(sub5Stamp / 86400) + 1
+  if hour > startDateTime.hour then
+    return subDay + 1
+  else
+    return subDay
+  end
 end
 local getTaskList = function(rebuild)
   local dataMgr = Z.DataMgr.Get("season_quest_sub_data")
   return dataMgr:GetTaskList(rebuild)
 end
 local asyncGetTaskAward = function(id, cancelSource)
-  local getAwardTag = true
   local proxy = require("zproxy.world_proxy")
   local ret = proxy.GetSeasonQuestAward(id, cancelSource:CreateToken())
-  if 0 < ret then
-    getAwardTag = false
+  if ret.items ~= nil then
+    local itemShowVM = Z.VMMgr.GetVM("item_show")
+    itemShowVM.OpenItemShowViewByItems(ret.items)
   end
-  return getAwardTag
+  if ret.errCode == 0 then
+    return true
+  else
+    Z.TipsVM.ShowTips(ret.errCode)
+    return false
+  end
 end
 local asyncGetAllTaskAward = function(cancelSource)
-  local getAwardTag = true
   local proxy = require("zproxy.world_proxy")
   local ret = proxy.GetSeasonQuestAward(0, cancelSource:CreateToken())
-  if 0 < ret then
-    getAwardTag = nil
+  if ret.items ~= nil then
+    local itemShowVM = Z.VMMgr.GetVM("item_show")
+    itemShowVM.OpenItemShowViewByItems(ret.items)
   end
-end
-local getRefreshWeek = function()
-  local week = Z.ContainerMgr.CharSerialize.seasonQuestList.RefreshWeek
-  return week
+  if ret.errCode == 0 then
+    return true
+  else
+    Z.TipsVM.ShowTips(ret.errCode)
+    return false
+  end
 end
 local getDayEndTime = function()
   local startServerTime = Z.DataMgr.Get("season_quest_sub_data"):GetStartServerTime()
@@ -66,17 +85,6 @@ local checkAwardGetAll = function()
 end
 local openWindow = function()
   Z.VMMgr.GetVM("season").OpenSeasonMainView()
-end
-local onDataChanged = function()
-  Z.EventMgr:Dispatch(Z.ConstValue.SeasonWeekData)
-end
-local addTaskDataChangedListener = function()
-  local container = Z.ContainerMgr.CharSerialize.seasonQuestList
-  container.Watcher:RegWatcher(onDataChanged)
-end
-local removeTaskDataChangedListener = function()
-  local container = Z.ContainerMgr.CharSerialize.seasonQuestList
-  container.Watcher:UnregWatcher(onDataChanged)
 end
 local checkRedpointByDay = function(day)
   local cur = getCurDay()
@@ -109,7 +117,7 @@ end
 local function onDayChanged()
   local day = getCurDay()
   local datas = Z.DataMgr.Get("season_quest_sub_data"):GetTaskList()
-  if datas and datas[day] and table.zcount(datas[day]) > 0 then
+  if datas and datas[day] and next(datas[day]) then
     onDataChangedWhole()
   end
   local t = getDayEndTime()
@@ -159,30 +167,61 @@ local getFinishCountByTaskId = function(day)
   local taskList_ = getTaskList()
   local finishCount_ = 0
   local taskCount_ = 0
-  local seasontaskdataList_ = Z.TableMgr.GetTable("SeasonTaskTableMgr").GetDatas()
-  for _, cfg_ in pairs(seasontaskdataList_) do
-    if cfg_.OpenDay == day and cfg_.tab == E.SevenDayStargetType.Manual then
-      local taskData = taskList_[day][cfg_.TargetId]
-      if taskData and taskData.award == awardState.hasGet then
-        finishCount_ = finishCount_ + 1
+  if taskList_ and next(taskList_) ~= nil then
+    local seasontaskdataList_ = Z.TableMgr.GetTable("SeasonTaskTableMgr").GetDatas()
+    for _, cfg_ in pairs(seasontaskdataList_) do
+      if cfg_.OpenDay == day and cfg_.tab == E.SevenDayStargetType.Manual then
+        local taskData = taskList_[day][cfg_.TargetId]
+        if taskData and taskData.award == awardState.hasGet then
+          finishCount_ = finishCount_ + 1
+        end
+        taskCount_ = taskCount_ + 1
       end
-      taskCount_ = taskCount_ + 1
     end
   end
   return finishCount_, taskCount_
+end
+local checkHasSevenDayShow = function()
+  local isShow = false
+  local switchVm = Z.VMMgr.GetVM("switch")
+  local pageFuncOpen = switchVm.CheckFuncSwitch(E.FunctionID.SevendayTargetTitlePage)
+  if pageFuncOpen then
+    local taskCfgs = getAllTaskConfig()
+    local taskList = getTaskList()
+    for _, cfg in pairs(taskCfgs) do
+      if cfg.tab == E.SevenDayStargetType.TitlePage and taskList[cfg.OpenDay] and taskList[cfg.OpenDay][cfg.TargetId] then
+        local taskData = taskList[cfg.OpenDay][cfg.TargetId]
+        if taskData.award ~= awardState.hasGet then
+          isShow = true
+        end
+      end
+    end
+    if isShow then
+      return isShow
+    end
+  end
+  local manualFuncOpen = switchVm.CheckFuncSwitch(E.FunctionID.SevendayTargetManual)
+  if manualFuncOpen then
+    local dataMgr = Z.DataMgr.Get("season_quest_sub_data")
+    local dayArray = dataMgr:GetDayArray()
+    for _, v in ipairs(dayArray) do
+      local finishCount, taskCount = getFinishCountByTaskId(v)
+      if finishCount < taskCount then
+        isShow = true
+        break
+      end
+    end
+  end
+  return isShow
 end
 local ret = {
   GetTaskList = getTaskList,
   AsyncGetTaskAward = asyncGetTaskAward,
   AsyncGetAllTaskAward = asyncGetAllTaskAward,
-  GetRefreshWeek = getRefreshWeek,
-  GetWeekEndTime = getWeekEndTime,
   GetTaskConfig = getTaskConfig,
   GetTaskTargetConfig = getTaskTargetConfig,
   GetAllTaskConfig = getAllTaskConfig,
   OpenWindow = openWindow,
-  AddTaskDataChangedListener = addTaskDataChangedListener,
-  RemoveTaskDataChangedListener = removeTaskDataChangedListener,
   CheckAwardGetAll = checkAwardGetAll,
   AwardState = awardState,
   GetCurDay = getCurDay,
@@ -192,6 +231,7 @@ local ret = {
   InitQuestSeason = initQuestSeason,
   OpenSevenDayWindow = openSevenDayWindow,
   CloseSevenDayWindow = closeSevenDayWindow,
-  GetFinishCountByTaskId = getFinishCountByTaskId
+  GetFinishCountByTaskId = getFinishCountByTaskId,
+  CheckHasSevenDayShow = checkHasSevenDayShow
 }
 return ret

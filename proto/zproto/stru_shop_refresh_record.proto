@@ -2,11 +2,11 @@ syntax = "proto3";
 
 package zproto;
 
+import "stru_player_refresh_shop_record.proto";
 import "stru_dirty_mask.proto";
 
 message ShopRefreshRecord {
-    int32 shopId = 1;
-    repeated uint64 timestamp = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    int64 refreshTimestamp = 3;
+    int32 refreshCount = 4;
+    repeated zproto.ShopRefreshRecord.ShopRefreshRecordsEntry shopRefreshRecords = 5;
 }
-

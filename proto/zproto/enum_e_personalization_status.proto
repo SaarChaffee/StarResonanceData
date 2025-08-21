@@ -10,4 +10,3 @@ enum EPersonalizationStatus {
     EStatusPhoto = 4;
     EStatusRecruit = 5;
 }
-

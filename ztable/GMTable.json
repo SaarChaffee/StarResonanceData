@@ -1,0 +1,5102 @@
+{
+  "1001": {
+    "Id": 1001,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "enterScene",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697345395,
+      697345396
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1002": {
+    "Id": 1002,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "enterDungeon",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697346484,
+      697346485
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1003": {
+    "Id": 1003,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "moveSelf",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697347573,
+      697347574
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1004": {
+    "Id": 1004,
+    "GMGroup": 1,
+    "Type": 2,
+    "Command": "requming",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697348662
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1005": {
+    "Id": 1005,
+    "GMGroup": 1,
+    "Type": 2,
+    "Command": "skiptoquming",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697349751
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1006": {
+    "Id": 1006,
+    "GMGroup": 1,
+    "Type": 1,
+    "Command": "clearIgnoreData",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697350840
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1007": {
+    "Id": 1007,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "moveToTarget",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697351929,
+      697351930
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1008": {
+    "Id": 1008,
+    "GMGroup": 1,
+    "Type": 2,
+    "Command": "infiniteEnergy",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697353018
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1009": {
+    "Id": 1009,
+    "GMGroup": 1,
+    "Type": 2,
+    "Command": "ProfessionAll",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697354107
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1010": {
+    "Id": 1010,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "setSkillNoneCD",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697380243,
+      697380244
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1011": {
+    "Id": 1011,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "clearGMAttr",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697381332
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1012": {
+    "Id": 1012,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "addGMTempAttr",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697382421,
+      697382422,
+      697382423,
+      697382424
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1013": {
+    "Id": 1013,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "addMonster",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697383510,
+      697383511
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1014": {
+    "Id": 1014,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "addBuff",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697384599,
+      697384600
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1015": {
+    "Id": 1015,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "addTalentEffect",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697385688,
+      697385689
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1016": {
+    "Id": 1016,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "changeProfession",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697386777,
+      697386778
+    ],
+    "AuToClose": true,
+    "OnOff": false
+  },
+  "1017": {
+    "Id": 1017,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "addNpc",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697387866,
+      697387867
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1018": {
+    "Id": 1018,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "addItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697388955,
+      697388956
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1019": {
+    "Id": 1019,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "addEntity",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697390044,
+      697390045
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1020": {
+    "Id": 1020,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "delBuff",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697416180,
+      697416181
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1021": {
+    "Id": 1021,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "useSkill",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697417269,
+      697417270
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1022": {
+    "Id": 1022,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "killNpc",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697418358,
+      697418359
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1023": {
+    "Id": 1023,
+    "GMGroup": 1,
+    "Type": 1,
+    "Command": "openUI 888888",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697419447
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1024": {
+    "Id": 1024,
+    "GMGroup": 1,
+    "Type": 1,
+    "Command": "openUI 666666",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697420536
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1025": {
+    "Id": 1025,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "enterVisualLayer",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697421625
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1026": {
+    "Id": 1026,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "leaveVisualLayer",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697422714
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1027": {
+    "Id": 1027,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "putOnAllBestEquip",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697423803
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1028": {
+    "Id": 1028,
+    "GMGroup": 1,
+    "Type": 1,
+    "Command": "openDebugGUI",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697424892
+    ],
+    "AuToClose": true,
+    "OnOff": false
+  },
+  "1029": {
+    "Id": 1029,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "addAiBot",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1030": {
+    "Id": 1030,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "randomPos",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697452117
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1031": {
+    "Id": 1031,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "moveToScenePos",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697453206
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1032": {
+    "Id": 1032,
+    "GMGroup": 1,
+    "Type": 2,
+    "Command": "getBodyLevel",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697454295
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1033": {
+    "Id": 1033,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "unlockAllFunctions",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697455384
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1034": {
+    "Id": 1034,
+    "GMGroup": 1,
+    "Type": 2,
+    "Command": "functionquest",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697456473
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1035": {
+    "Id": 1035,
+    "GMGroup": 1,
+    "Type": 2,
+    "Command": "ProfessionAll",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697457562
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1036": {
+    "Id": 1036,
+    "GMGroup": 1,
+    "Type": 2,
+    "Command": "addTalent",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697458651
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1037": {
+    "Id": 1037,
+    "GMGroup": 1,
+    "Type": 3,
+    "Command": "addEquipRecast",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697459740
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "1038": {
+    "Id": 1038,
+    "GMGroup": 1,
+    "Type": 2,
+    "Command": "AoyiAll",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      697460829
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2001": {
+    "Id": 2001,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "unlockAll",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736480788
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2002": {
+    "Id": 2002,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "unlockTpAndResonance",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736481877
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2003": {
+    "Id": 2003,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "AoyiAll",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736482966
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2004": {
+    "Id": 2004,
+    "GMGroup": 2,
+    "Type": 3,
+    "Command": "fashionOpt 4,0,0,0",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736484055
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2005": {
+    "Id": 2005,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "getcbtitemscurrency",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736485144
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2006": {
+    "Id": 2006,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "getcbtitemsmaterial",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736486233
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2007": {
+    "Id": 2007,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "getcbtitemsequip",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736487322
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2008": {
+    "Id": 2008,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "getcbtitemspeofession",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736488411
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2009": {
+    "Id": 2009,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "getcbtitemstalents",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736489500
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2010": {
+    "Id": 2010,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "getallcuisine",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736515636
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2011": {
+    "Id": 2011,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "addAllVehicle",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736516725
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2012": {
+    "Id": 2012,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "addALLToys",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736517814
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2013": {
+    "Id": 2013,
+    "GMGroup": 2,
+    "Type": 3,
+    "Command": "unlockAllEmoteAction",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736518903
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2014": {
+    "Id": 2014,
+    "GMGroup": 2,
+    "Type": 3,
+    "Command": "GMStartVehicle",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736519992
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2015": {
+    "Id": 2015,
+    "GMGroup": 2,
+    "Type": 3,
+    "Command": "GMStopVehicle",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736521081
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2016": {
+    "Id": 2016,
+    "GMGroup": 2,
+    "Type": 3,
+    "Command": "GMSummonVehicle",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736522170
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2017": {
+    "Id": 2017,
+    "GMGroup": 2,
+    "Type": 3,
+    "Command": "GMStartRideVehicle",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736523259
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2018": {
+    "Id": 2018,
+    "GMGroup": 2,
+    "Type": 3,
+    "Command": "GMStopRideVehicle",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736524348
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2019": {
+    "Id": 2019,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "getexchangeitem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736525437
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2020": {
+    "Id": 2020,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "addAllCookChemistryMaterial",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736551573
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2021": {
+    "Id": 2021,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "openUI 888888",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736552662
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2022": {
+    "Id": 2022,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "openUI 999999",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736553751
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2023": {
+    "Id": 2023,
+    "GMGroup": 2,
+    "Type": 3,
+    "Command": "startFirework",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736554840
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2024": {
+    "Id": 2024,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "stopFirework",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736555929
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2025": {
+    "Id": 2025,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "single",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736557018
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2026": {
+    "Id": 2026,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "whosyourdaddy",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736558107
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2027": {
+    "Id": 2027,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "openfunction",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736559196
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2028": {
+    "Id": 2028,
+    "GMGroup": 2,
+    "Type": 3,
+    "Command": "deleteSelf",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736560285
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2029": {
+    "Id": 2029,
+    "GMGroup": 2,
+    "Type": 1,
+    "Command": "hudGmSwitch",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736561374
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2030": {
+    "Id": 2030,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "magicA",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736587510
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2031": {
+    "Id": 2031,
+    "GMGroup": 2,
+    "Type": 3,
+    "Command": "revive",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736588599
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2032": {
+    "Id": 2032,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "JutaBoss",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736589688
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2033": {
+    "Id": 2033,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "tinaboss",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736590777
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2034": {
+    "Id": 2034,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "longzhuaboss",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2035": {
+    "Id": 2035,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "gebulinBOSS",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2036": {
+    "Id": 2036,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "danfoboss",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2037": {
+    "Id": 2037,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "tinaEntrance",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2038": {
+    "Id": 2038,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "jutaEntrance",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2039": {
+    "Id": 2039,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip10",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2040": {
+    "Id": 2040,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip11",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2041": {
+    "Id": 2041,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip12",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2042": {
+    "Id": 2042,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip13",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2043": {
+    "Id": 2043,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip14",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2044": {
+    "Id": 2044,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip15",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2045": {
+    "Id": 2045,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip16",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2046": {
+    "Id": 2046,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip17",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2047": {
+    "Id": 2047,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip18",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2048": {
+    "Id": 2048,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip19",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2049": {
+    "Id": 2049,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip20",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2050": {
+    "Id": 2050,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip21",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2051": {
+    "Id": 2051,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip22",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2052": {
+    "Id": 2052,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip23",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2053": {
+    "Id": 2053,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip24",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2054": {
+    "Id": 2054,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip25",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2055": {
+    "Id": 2055,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip26",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2056": {
+    "Id": 2056,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip27",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2057": {
+    "Id": 2057,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip28",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2058": {
+    "Id": 2058,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip29",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2059": {
+    "Id": 2059,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip30",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2060": {
+    "Id": 2060,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip31",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2061": {
+    "Id": 2061,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip32",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2062": {
+    "Id": 2062,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip33",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2063": {
+    "Id": 2063,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip34",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2064": {
+    "Id": 2064,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip35",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2065": {
+    "Id": 2065,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip36",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2066": {
+    "Id": 2066,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip37",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2067": {
+    "Id": 2067,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip38",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2068": {
+    "Id": 2068,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip39",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2069": {
+    "Id": 2069,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip40",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2070": {
+    "Id": 2070,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip41",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2071": {
+    "Id": 2071,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip42",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2072": {
+    "Id": 2072,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip43",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2073": {
+    "Id": 2073,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip44",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2074": {
+    "Id": 2074,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip45",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2075": {
+    "Id": 2075,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip46",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2076": {
+    "Id": 2076,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip47",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2077": {
+    "Id": 2077,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip48",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2078": {
+    "Id": 2078,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip49",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2079": {
+    "Id": 2079,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip50",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2080": {
+    "Id": 2080,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip51",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2081": {
+    "Id": 2081,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip52",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2082": {
+    "Id": 2082,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip53",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2083": {
+    "Id": 2083,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip54",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2084": {
+    "Id": 2084,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip55",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2085": {
+    "Id": 2085,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip56",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2086": {
+    "Id": 2086,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "cbtequip57",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "2087": {
+    "Id": 2087,
+    "GMGroup": 2,
+    "Type": 2,
+    "Command": "singleplus",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      736774818
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3001": {
+    "Id": 3001,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "addMonsterUseSkill",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775616181,
+      775616182
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3002": {
+    "Id": 3002,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "addMonster",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775617270,
+      775617271
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3003": {
+    "Id": 3003,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "addBuff",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775618359,
+      775618360
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3004": {
+    "Id": 3004,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "delBuff",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775619448,
+      775619449
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3005": {
+    "Id": 3005,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "addGMAttr",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775620537,
+      775620538,
+      775620539,
+      775620540
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3006": {
+    "Id": 3006,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "killSelf",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775621626
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3007": {
+    "Id": 3007,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "gmKillAllUser",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775622715
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3008": {
+    "Id": 3008,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "gmKillAllMonster",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775623804
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3009": {
+    "Id": 3009,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "gmSetFightResource 13001,",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775624893,
+      775624894
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3010": {
+    "Id": 3010,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "banAi",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775651029
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3011": {
+    "Id": 3011,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "showAttr",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775652118,
+      775652119,
+      775652120,
+      775652121
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3012": {
+    "Id": 3012,
+    "GMGroup": 3,
+    "Type": 2,
+    "Command": "q1checkgm1",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775653207
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3013": {
+    "Id": 3013,
+    "GMGroup": 3,
+    "Type": 2,
+    "Command": "greedisgood",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775654296
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3014": {
+    "Id": 3014,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "setInOverdrive",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775655385,
+      775655386
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3015": {
+    "Id": 3015,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "setSkillNoneCD",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775656474,
+      775656475
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3016": {
+    "Id": 3016,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "useSkill",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775657563,
+      775657564
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3017": {
+    "Id": 3017,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "changeProfession",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775658652,
+      775658653
+    ],
+    "AuToClose": true,
+    "OnOff": false
+  },
+  "3018": {
+    "Id": 3018,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "killNpc",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775659741,
+      775659742
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3019": {
+    "Id": 3019,
+    "GMGroup": 3,
+    "Type": 1,
+    "Command": "addBuff 620301 0 1 0",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775660830
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3020": {
+    "Id": 3020,
+    "GMGroup": 3,
+    "Type": 2,
+    "Command": "ProfessionAll",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775686966
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3021": {
+    "Id": 3021,
+    "GMGroup": 3,
+    "Type": 2,
+    "Command": "whosyourdaddy",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775688055
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3022": {
+    "Id": 3022,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "addProfession",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775689144
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3023": {
+    "Id": 3023,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "addShield",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775690233,
+      775690234,
+      775690235
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3024": {
+    "Id": 3024,
+    "GMGroup": 3,
+    "Type": 1,
+    "Command": "openUI",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775691322,
+      775691323
+    ],
+    "AuToClose": true,
+    "OnOff": false
+  },
+  "3025": {
+    "Id": 3025,
+    "GMGroup": 3,
+    "Type": 2,
+    "Command": "single",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775692411
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3026": {
+    "Id": 3026,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "monsterForceUseSkill",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775693500,
+      775693501
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3027": {
+    "Id": 3027,
+    "GMGroup": 3,
+    "Type": 3,
+    "Command": "revive",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775694589
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3028": {
+    "Id": 3028,
+    "GMGroup": 3,
+    "Type": 2,
+    "Command": "lockhp",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775695678
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3029": {
+    "Id": 3029,
+    "GMGroup": 3,
+    "Type": 2,
+    "Command": "justSkill",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775696767
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3030": {
+    "Id": 3030,
+    "GMGroup": 3,
+    "Type": 2,
+    "Command": "clearWudi",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775722903
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "3031": {
+    "Id": 3031,
+    "GMGroup": 3,
+    "Type": 1,
+    "Command": "switchEntityShowState",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      775723992,
+      775723993
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4001": {
+    "Id": 4001,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "changeDungeonNextState",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814751574
+    ],
+    "AuToClose": true,
+    "OnOff": false
+  },
+  "4002": {
+    "Id": 4002,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "addSwitchSceneLayer",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814752663
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4003": {
+    "Id": 4003,
+    "GMGroup": 4,
+    "Type": 2,
+    "Command": "goToDina",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814753752
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4004": {
+    "Id": 4004,
+    "GMGroup": 4,
+    "Type": 2,
+    "Command": "runspeed",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814754841
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4005": {
+    "Id": 4005,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "changeDungeonStateEnd",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814755930,
+      814755931,
+      814755932
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4006": {
+    "Id": 4006,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "openMemoryDungeon",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814757019
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4007": {
+    "Id": 4007,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "dungeonSetStageTarget",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814758108
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4008": {
+    "Id": 4008,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "affixClear",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814759197
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4009": {
+    "Id": 4009,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "affixClearBuff",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814760286
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4010": {
+    "Id": 4010,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "affixRerandom",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814786422,
+      814786423
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4011": {
+    "Id": 4011,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "affixRerandomShow",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814787511,
+      814787512
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4012": {
+    "Id": 4012,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "affixActorEnterScene",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814788600,
+      814788601
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4013": {
+    "Id": 4013,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "affixFireEvent",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814789689
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4014": {
+    "Id": 4014,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "runSceneAction",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814790778
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4015": {
+    "Id": 4015,
+    "GMGroup": 4,
+    "Type": 1,
+    "Command": "showCutscene",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814791867,
+      814791868
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4016": {
+    "Id": 4016,
+    "GMGroup": 4,
+    "Type": 1,
+    "Command": "stopCutscene",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814792956,
+      814792957
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4017": {
+    "Id": 4017,
+    "GMGroup": 4,
+    "Type": 1,
+    "Command": "triggerOptionSelect",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814794045
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4018": {
+    "Id": 4018,
+    "GMGroup": 4,
+    "Type": 2,
+    "Command": "xinshouBoss",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814795134
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "4019": {
+    "Id": 4019,
+    "GMGroup": 4,
+    "Type": 3,
+    "Command": "triggerSceneCustomEvent",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      814796223
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5001": {
+    "Id": 5001,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "addEquip",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853886967,
+      853886968
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5002": {
+    "Id": 5002,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "washAttr",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853888056
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5003": {
+    "Id": 5003,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "confirmWashAttr",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853889145
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5004": {
+    "Id": 5004,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "putonEquip",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853890234,
+      853890235,
+      853890236
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5005": {
+    "Id": 5005,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "takeoffEquip",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853891323,
+      853891324
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5006": {
+    "Id": 5006,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "setDurability",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853892412,
+      853892413
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5007": {
+    "Id": 5007,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "equipCopy",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853893501
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5008": {
+    "Id": 5008,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "equipBreach",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853894590,
+      853894591
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5009": {
+    "Id": 5009,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "equipDecompose",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853895679
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5010": {
+    "Id": 5010,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "modDecompose",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853921815
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5011": {
+    "Id": 5011,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "dropItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853922904,
+      853922905
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5012": {
+    "Id": 5012,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "addItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853923993,
+      853923994
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5013": {
+    "Id": 5013,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "arrangeItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853925082,
+      853925083
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5014": {
+    "Id": 5014,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "useItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853926171,
+      853926172
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5015": {
+    "Id": 5015,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "consumeItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853927260
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5016": {
+    "Id": 5016,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "addItem 1010001 999",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853928349
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5017": {
+    "Id": 5017,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "showGMAttr",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853929438,
+      853929439,
+      853929440
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5018": {
+    "Id": 5018,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "activeProfessionTalent",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853930527
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5019": {
+    "Id": 5019,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "clearProfessionTalent",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853931616
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5020": {
+    "Id": 5020,
+    "GMGroup": 5,
+    "Type": 2,
+    "Command": "gashaCoin",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853957752
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5021": {
+    "Id": 5021,
+    "GMGroup": 5,
+    "Type": 2,
+    "Command": "HairUnlockAll",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853958841
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5022": {
+    "Id": 5022,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "setDropValue",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853959930,
+      853959931
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5023": {
+    "Id": 5023,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "setAwardValue",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853961019,
+      853961020
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5024": {
+    "Id": 5024,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "getDropValue",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853962108,
+      853962109
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5025": {
+    "Id": 5025,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "setLuckyValue",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853963197,
+      853963198
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5026": {
+    "Id": 5026,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "getLuckyValue",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853964286,
+      853964287
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "5027": {
+    "Id": 5027,
+    "GMGroup": 5,
+    "Type": 3,
+    "Command": "luckyValueConvert",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      853965375,
+      853965376
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6001": {
+    "Id": 6001,
+    "GMGroup": 6,
+    "Type": 1,
+    "Command": "openUI 666666",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893022360
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6002": {
+    "Id": 6002,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "addQuest",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893023449,
+      893023450
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6003": {
+    "Id": 6003,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "finishQuest",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893024538,
+      893024539
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6004": {
+    "Id": 6004,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "removeQuest",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893025627,
+      893025628
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6005": {
+    "Id": 6005,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "finishToQuest",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893026716,
+      893026717
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6006": {
+    "Id": 6006,
+    "GMGroup": 6,
+    "Type": 2,
+    "Command": "whosyourdaddy",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893027805
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6007": {
+    "Id": 6007,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "enterVisualLayer",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893028894
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6008": {
+    "Id": 6008,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "leaveVisualLayer",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893029983
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6009": {
+    "Id": 6009,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "moveToActorUid",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893031072,
+      893031073,
+      893031074,
+      893031075,
+      893031076,
+      893031077,
+      893031078
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6010": {
+    "Id": 6010,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "enterScene",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893057208,
+      893057209
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6011": {
+    "Id": 6011,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "setUserLevel",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6012": {
+    "Id": 6012,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "enterDungeon",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893059386,
+      893059387
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6013": {
+    "Id": 6013,
+    "GMGroup": 6,
+    "Type": 1,
+    "Command": "showCutscene",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893060475,
+      893060476
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6014": {
+    "Id": 6014,
+    "GMGroup": 6,
+    "Type": 1,
+    "Command": "stopCutscene",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893061564,
+      893061565
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6015": {
+    "Id": 6015,
+    "GMGroup": 6,
+    "Type": 1,
+    "Command": "startFlow",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893062653,
+      893062654
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6016": {
+    "Id": 6016,
+    "GMGroup": 6,
+    "Type": 1,
+    "Command": "stopFlow",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893063742,
+      893063743
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6017": {
+    "Id": 6017,
+    "GMGroup": 6,
+    "Type": 1,
+    "Command": "addBuff 620601 0 0",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893064831
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6018": {
+    "Id": 6018,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "unLockInvestigate",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893065920
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6019": {
+    "Id": 6019,
+    "GMGroup": 6,
+    "Type": 1,
+    "Command": "finishCurQuest",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893067009
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6020": {
+    "Id": 6020,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "skipQuestLimit",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893093145
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6021": {
+    "Id": 6021,
+    "GMGroup": 6,
+    "Type": 2,
+    "Command": "saijiExp",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6022": {
+    "Id": 6022,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "setSeasonRank",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893095323,
+      893095324
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6023": {
+    "Id": 6023,
+    "GMGroup": 6,
+    "Type": 3,
+    "Command": "refreshSeasonDungeon",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893096412
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6024": {
+    "Id": 6024,
+    "GMGroup": 6,
+    "Type": 2,
+    "Command": "ultiRank",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893097501
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6025": {
+    "Id": 6025,
+    "GMGroup": 6,
+    "Type": 2,
+    "Command": "caiji",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893098590
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6026": {
+    "Id": 6026,
+    "GMGroup": 6,
+    "Type": 2,
+    "Command": "shaguai",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893099679
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6027": {
+    "Id": 6027,
+    "GMGroup": 6,
+    "Type": 2,
+    "Command": "putongshaguai",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893100768
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6028": {
+    "Id": 6028,
+    "GMGroup": 6,
+    "Type": 2,
+    "Command": "diaoyu",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893101857
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6029": {
+    "Id": 6029,
+    "GMGroup": 6,
+    "Type": 2,
+    "Command": "weituo",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893102946
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "6030": {
+    "Id": 6030,
+    "GMGroup": 6,
+    "Type": 2,
+    "Command": "pengren",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      893129082
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7001": {
+    "Id": 7001,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "addFaceData",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932157753,
+      932157754
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7002": {
+    "Id": 7002,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "controlSwitch",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932158842,
+      932158843
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7003": {
+    "Id": 7003,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "sendAward",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932159931,
+      932159932
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7004": {
+    "Id": 7004,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "showMessage",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932161020,
+      932161021
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7005": {
+    "Id": 7005,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "showCharGs",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932162109
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7006": {
+    "Id": 7006,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "changeProfile",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932163198,
+      932163199
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7007": {
+    "Id": 7007,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "startFlow",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932164287,
+      932164288
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7008": {
+    "Id": 7008,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "stopFlow",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932165376,
+      932165377
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7009": {
+    "Id": 7009,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "addQuestTargetNum",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932166465,
+      932166466
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7010": {
+    "Id": 7010,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "changeName",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932192601,
+      932192602
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7011": {
+    "Id": 7011,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "setQuestTrackingId",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932193690,
+      932193691
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7012": {
+    "Id": 7012,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "fashionOpt 4,0,0,0",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932194779
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7013": {
+    "Id": 7013,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "setResolution",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932195868,
+      932195869,
+      932195870
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7014": {
+    "Id": 7014,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "setIsPCUI",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932196957
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7015": {
+    "Id": 7015,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "dropItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932198046,
+      932198047
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7016": {
+    "Id": 7016,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "arrangeItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932199135,
+      932199136
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7017": {
+    "Id": 7017,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "useItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932200224,
+      932200225
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7018": {
+    "Id": 7018,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "consumeItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932201313
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7019": {
+    "Id": 7019,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "playerWayPoint",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932202402
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7020": {
+    "Id": 7020,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "discardPlayerWayPoint",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932228538
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7021": {
+    "Id": 7021,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "lockCamera",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932229627
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7022": {
+    "Id": 7022,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "unlockCamera",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932230716
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7023": {
+    "Id": 7023,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "saveFaceData",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932231805
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7024": {
+    "Id": 7024,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "loadFaceData",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932232894,
+      932232895
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7025": {
+    "Id": 7025,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "saveFashionData",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932233983
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7026": {
+    "Id": 7026,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "loadFashionData",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932235072,
+      932235073
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7027": {
+    "Id": 7027,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "showGuide",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932236161,
+      932236162,
+      932236163
+    ],
+    "AuToClose": true,
+    "OnOff": false
+  },
+  "7028": {
+    "Id": 7028,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "closeDamage",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932237250
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7029": {
+    "Id": 7029,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "clearGuide",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932238339
+    ],
+    "AuToClose": true,
+    "OnOff": false
+  },
+  "7030": {
+    "Id": 7030,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "cleanPackage",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932264475,
+      932264476,
+      932264477,
+      932264478,
+      932264479,
+      932264480,
+      932264481
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7031": {
+    "Id": 7031,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "activeAllTransferPoint",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932265564,
+      932265565,
+      932265566,
+      932265567,
+      932265568,
+      932265569
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7032": {
+    "Id": 7032,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "finishQuestionnaire",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932266653,
+      932266654
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7033": {
+    "Id": 7033,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "saveFaceLuaData",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932267742
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7034": {
+    "Id": 7034,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "loadFashionLuaData",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932268831
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7035": {
+    "Id": 7035,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "loadFashionLuaDataWithPath",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932269920
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7036": {
+    "Id": 7036,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "closeEffect",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932271009
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7037": {
+    "Id": 7037,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "closeHud",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932272098
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7038": {
+    "Id": 7038,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "unionActivity 1,1,30",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932273187
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7039": {
+    "Id": 7039,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "unionScore",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932274276
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7040": {
+    "Id": 7040,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "unionProgress",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932300412
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7041": {
+    "Id": 7041,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "godSwitch",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932301501
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7042": {
+    "Id": 7042,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "addClientBuff",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932302590
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7043": {
+    "Id": 7043,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "delClientBuff",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932303679
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7044": {
+    "Id": 7044,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "setGashaXY",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7045": {
+    "Id": 7045,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "QueryGashaXY",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932305857
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7046": {
+    "Id": 7046,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "saveFaceLuaDataWithPath",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932306946
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7047": {
+    "Id": 7047,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "loadFashionLuaDataWithFilePath",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932308035
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7048": {
+    "Id": 7048,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "useKcpNetwork",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932309124
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7049": {
+    "Id": 7049,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "addTargetNum",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932310213
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7050": {
+    "Id": 7050,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "unionUnlockScene",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932336349
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7051": {
+    "Id": 7051,
+    "GMGroup": 7,
+    "Type": 2,
+    "Command": "unionadditem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932337438
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7052": {
+    "Id": 7052,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "addItem 10010003,100",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7053": {
+    "Id": 7053,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "payment",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932339616
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7054": {
+    "Id": 7054,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "refreshPayment",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932340705
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7055": {
+    "Id": 7055,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "idipCloseServerFunction 800890,1",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932341794
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7056": {
+    "Id": 7056,
+    "GMGroup": 7,
+    "Type": 3,
+    "Command": "idipCloseServerFunction 800891,1",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932342883
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7057": {
+    "Id": 7057,
+    "GMGroup": 7,
+    "Type": 2,
+    "Command": "Couponsadditem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932343972
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7058": {
+    "Id": 7058,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "switchAsyncLoadEffect",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932345061
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7059": {
+    "Id": 7059,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "switchEffectCountMonitor",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932346150
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7060": {
+    "Id": 7060,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "setShowAllFashion",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932372286
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7061": {
+    "Id": 7061,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "addMemoryPressure",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932373375
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "7062": {
+    "Id": 7062,
+    "GMGroup": 7,
+    "Type": 1,
+    "Command": "setSavePowerOpen",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      932374464
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8001": {
+    "Id": 8001,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "setRpcTimeOut",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971293146
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8002": {
+    "Id": 8002,
+    "GMGroup": 8,
+    "Type": 3,
+    "Command": "reloadLua",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971294235
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8003": {
+    "Id": 8003,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "exitLogout",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971295324
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8004": {
+    "Id": 8004,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "showStreamingDebuger",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971296413
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8005": {
+    "Id": 8005,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "luaDoString",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8006": {
+    "Id": 8006,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "luaDoFile",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971298591
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8007": {
+    "Id": 8007,
+    "GMGroup": 8,
+    "Type": 3,
+    "Command": "showDailyGs",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971299680
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8008": {
+    "Id": 8008,
+    "GMGroup": 8,
+    "Type": 3,
+    "Command": "setSeasonData",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971300769,
+      971300770
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8009": {
+    "Id": 8009,
+    "GMGroup": 8,
+    "Type": 3,
+    "Command": "gmSetTime 0,1",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971301858
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8010": {
+    "Id": 8010,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "openZoneDebug",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971327994
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8011": {
+    "Id": 8011,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "closeZoneDebug",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971329083
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8012": {
+    "Id": 8012,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "switchEventLog",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971330172
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8013": {
+    "Id": 8013,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "showDebugLogWind",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971331261
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8014": {
+    "Id": 8014,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "addLocalModel",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971332350
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8015": {
+    "Id": 8015,
+    "GMGroup": 8,
+    "Type": 3,
+    "Command": "debugShowTable",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971333439
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8016": {
+    "Id": 8016,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "setSeason",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971334528
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8017": {
+    "Id": 8017,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "clearPrefs",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971335617
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8018": {
+    "Id": 8018,
+    "GMGroup": 8,
+    "Type": 1,
+    "Command": "switchIdLogin",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971336706
+    ],
+    "AuToClose": true,
+    "OnOff": false
+  },
+  "8019": {
+    "Id": 8019,
+    "GMGroup": 8,
+    "Type": 3,
+    "Command": "printFightPoint",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971337795
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8020": {
+    "Id": 8020,
+    "GMGroup": 8,
+    "Type": 3,
+    "Command": "testAllFight",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971363931
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8021": {
+    "Id": 8021,
+    "GMGroup": 8,
+    "Type": 3,
+    "Command": "testAllSceneEvent",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971365020
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8022": {
+    "Id": 8022,
+    "GMGroup": 8,
+    "Type": 3,
+    "Command": "getTime",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971366109
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "8023": {
+    "Id": 8023,
+    "GMGroup": 8,
+    "Type": 3,
+    "Command": "addTimeOffset",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      971367198
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "9001": {
+    "Id": 9001,
+    "GMGroup": 9,
+    "Type": 3,
+    "Command": "addFriend",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1010428539,
+      1010428540
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "9002": {
+    "Id": 9002,
+    "GMGroup": 9,
+    "Type": 3,
+    "Command": "addFriendshipExp",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1010429628,
+      1010429629
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "9003": {
+    "Id": 9003,
+    "GMGroup": 9,
+    "Type": 3,
+    "Command": "upgradeFriendshipLevel",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1010430717,
+      1010430718
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "9004": {
+    "Id": 9004,
+    "GMGroup": 9,
+    "Type": 3,
+    "Command": "unlockChallengeDungeon",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1010431806
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "9005": {
+    "Id": 9005,
+    "GMGroup": 9,
+    "Type": 1,
+    "Command": "enterFunctionDungeon",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1010432895
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10001": {
+    "Id": 10001,
+    "GMGroup": 10,
+    "Type": 1,
+    "Command": "addBuff 510601 0 1 0",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537477123
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10002": {
+    "Id": 10002,
+    "GMGroup": 10,
+    "Type": 1,
+    "Command": "addBuff 510701 0 1 0",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537478212
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10003": {
+    "Id": 10003,
+    "GMGroup": 10,
+    "Type": 1,
+    "Command": "addBuff 510801 0 1 0",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537479301
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10004": {
+    "Id": 10004,
+    "GMGroup": 10,
+    "Type": 3,
+    "Command": "addSceneObject",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537480390,
+      1537480391
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10005": {
+    "Id": 10005,
+    "GMGroup": 10,
+    "Type": 3,
+    "Command": "addPersonalEntity",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537481479
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10006": {
+    "Id": 10006,
+    "GMGroup": 10,
+    "Type": 3,
+    "Command": "removePersonalEntity",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537482568
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10007": {
+    "Id": 10007,
+    "GMGroup": 10,
+    "Type": 1,
+    "Command": "addBuff 620601 0 0",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537483657
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10008": {
+    "Id": 10008,
+    "GMGroup": 10,
+    "Type": 1,
+    "Command": "addBuff 630601 0 0",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537484746
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10009": {
+    "Id": 10009,
+    "GMGroup": 10,
+    "Type": 3,
+    "Command": "activeAllResonance",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537485835
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10010": {
+    "Id": 10010,
+    "GMGroup": 10,
+    "Type": 3,
+    "Command": "activeAllTransferPoint",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537511971
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10011": {
+    "Id": 10011,
+    "GMGroup": 10,
+    "Type": 3,
+    "Command": "activeAllSettingoff",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537513060
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10012": {
+    "Id": 10012,
+    "GMGroup": 10,
+    "Type": 3,
+    "Command": "addALLWorldEvent",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537514149
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "10013": {
+    "Id": 10013,
+    "GMGroup": 10,
+    "Type": 2,
+    "Command": "addALLToys",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1537515238
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "11001": {
+    "Id": 11001,
+    "GMGroup": 11,
+    "Type": 3,
+    "Command": "enterCommunity",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1576612516,
+      1576612517
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "11002": {
+    "Id": 11002,
+    "GMGroup": 11,
+    "Type": 3,
+    "Command": "useCommunityField",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1576613605,
+      1576613606
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "11003": {
+    "Id": 11003,
+    "GMGroup": 11,
+    "Type": 3,
+    "Command": "enterHomeland",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1576614694,
+      1576614695
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "11004": {
+    "Id": 11004,
+    "GMGroup": 11,
+    "Type": 2,
+    "Command": "addHousingItem",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [],
+    "AuToClose": false,
+    "OnOff": false
+  },
+  "11005": {
+    "Id": 11005,
+    "GMGroup": 11,
+    "Type": 1,
+    "Command": "saveHomeLocalData",
+    "ParameterOrContent": [],
+    "OptionalParameter": [],
+    "ParameterCheck": [],
+    "ButtonShow": "",
+    "CommandOrParameterRemark": [
+      1576616872
+    ],
+    "AuToClose": false,
+    "OnOff": false
+  }
+}

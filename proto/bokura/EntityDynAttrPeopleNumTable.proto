@@ -5,8 +5,6 @@ package bokura;
 message EntityDynAttrPeopleNumTableBase {
     int32 Id = 1463;
 }
-
 message EntityDynAttrPeopleNumTableMgr {
-    map<int32, .bokura.EntityDynAttrPeopleNumTableBase> datas = 1;
+    repeated bokura.EntityDynAttrPeopleNumTableMgr.DatasEntry datas = 1;
 }
-

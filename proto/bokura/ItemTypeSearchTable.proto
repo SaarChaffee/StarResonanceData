@@ -9,8 +9,6 @@ message ItemTypeSearchTableBase {
     int_table FunctionId = 149;
     int_table HideFunctionId = 389;
 }
-
 message ItemTypeSearchTableMgr {
-    map<int32, .bokura.ItemTypeSearchTableBase> datas = 1;
+    repeated bokura.ItemTypeSearchTableMgr.DatasEntry datas = 1;
 }
-

@@ -10,11 +10,12 @@ import "stru_union_official.proto";
 message UnionInfo {
     zproto.UnionBaseData baseInfo = 1;
     repeated zproto.UnionEvent unionEvents = 3;
-    map<int32, .zproto.UnionOfficial> officials = 4;
+    repeated zproto.UnionInfo.OfficialsEntry officials = 4;
     bool autoPass = 5;
     int64 createTime = 6;
     int64 changeNameTime = 7;
     int64 joinCrowFundNum = 8;
     zproto.DanceBall danceBall = 9;
+    string groupId = 10;
+    int32 groupType = 11;
 }
-

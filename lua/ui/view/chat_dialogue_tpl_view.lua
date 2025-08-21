@@ -1,21 +1,24 @@
 local UI = Z.UI
 local loop_list_view = require("ui/component/loop_list_view")
 local chat_mini_bubble_item = require("ui.component.chat.chat_mini_bubble_item")
-local chat_bubble_union_tips = require("ui.component.chat.chat_bubble_union_tips")
 local chat_bubble_system_notice = require("ui.component.chat.chat_bubble_system_notice")
 local chat_bubble_channel_notice = require("ui.component.chat.chat_bubble_channel_notice")
 local chat_bubble_content = require("ui.component.chat.chat_bubble_content")
 local chat_bubble_voice = require("ui.component.chat.chat_bubble_voice")
 local chat_bubble_picture = require("ui.component.chat.chat_bubble_picture")
 local chat_bubble_union = require("ui.component.chat.chat_bubble_union")
-local chat_bubble_union_new = require("ui.component.chat.chat_bubble_union_new")
+local reportDefine = require("ui.model.report_define")
 local super = require("ui.ui_subview_base")
 local Chat_dialogue_tplView = class("Chat_dialogue_tplView", super)
-E.ChatDialogueFuncType = {CopyType = 1, VoiceType = 2}
+E.ChatDialogueFuncType = {
+  None = 0,
+  CopyType = 1,
+  VoiceType = 2
+}
 
 function Chat_dialogue_tplView:ctor()
   self.uiBinder = nil
-  super.ctor(self, "chat_dialogue_tpl", "chat/chat_dialogue_tpl", UI.ECacheLv.None)
+  super.ctor(self, "chat_dialogue_tpl", "chat/chat_dialogue_tpl", UI.ECacheLv.None, true)
 end
 
 function Chat_dialogue_tplView:OnActive()
@@ -23,14 +26,12 @@ function Chat_dialogue_tplView:OnActive()
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.unReadCount_ = 0
+  self.reportVM_ = Z.VMMgr.GetVM("report")
   self.chatMainVM_ = Z.VMMgr.GetVM("chat_main")
   self.chatData_ = Z.DataMgr.Get("chat_main_data")
   self:onInitData()
-  if self.viewData.chatChannelId then
-    self.chatChannelId_ = self.viewData.chatChannelId
-  else
-    self.chatChannelId_ = self.chatData_:GetChannelId()
-  end
+  self.channelId_ = self.viewData.channelId
+  self.charId_ = self.viewData.charId
   self.uiBinder.node_list_event_trigger.onBeginDrag:AddListener(function(go, eventData)
     self.dragPos_ = eventData.position
     self.startDrag_ = true
@@ -70,11 +71,16 @@ function Chat_dialogue_tplView:OnDeActive()
   if self.checkDataListTimer_ then
     self.timerMgr:StopTimer(self.checkDataListTimer_)
   end
-  if self.chatData_.ChatLinkTips and #self.chatData_.ChatLinkTips > 0 then
-    for i = 1, #self.chatData_.ChatLinkTips do
-      Z.TipsVM.CloseItemTipsView(self.chatData_.ChatLinkTips[i])
-    end
+  if self.chatData_.ChatLinkTipsId then
+    Z.TipsVM.CloseItemTipsView(self.chatData_.ChatLinkTipsId)
+    self.chatData_.ChatLinkTipsId = nil
   end
+end
+
+function Chat_dialogue_tplView:OnRefresh()
+  self.channelId_ = self.viewData.channelId
+  self.charId_ = self.viewData.charId
+  self:RefreshMsgList(true)
 end
 
 function Chat_dialogue_tplView:BindEvents()
@@ -105,7 +111,11 @@ function Chat_dialogue_tplView:asyncGetRecord()
     return
   end
   Z.CoroUtil.create_coro_xpcall(function()
-    self.chatMainVM_.AsyncGetRecord(self.chatChannelId_)
+    if self.channelId_ == E.ChatChannelType.EComprehensive then
+      self.chatMainVM_.AsyncGetComprehensiveRecord()
+    else
+      self.chatMainVM_.AsyncGetRecord(self.channelId_, self.charId_)
+    end
   end)()
 end
 
@@ -117,11 +127,6 @@ function Chat_dialogue_tplView:onEndDrag()
   if isEnd then
     self:UnReadMsg()
   end
-end
-
-function Chat_dialogue_tplView:SwitchChannelId(channelId)
-  self.chatChannelId_ = channelId
-  self:RefreshMsgList(true)
 end
 
 function Chat_dialogue_tplView:ResetListView()
@@ -158,14 +163,14 @@ function Chat_dialogue_tplView:OnMsgRefresh()
 end
 
 function Chat_dialogue_tplView:OnMsgRefreshFromEnd(chatChannelId)
-  if chatChannelId and self.chatChannelId_ ~= chatChannelId then
+  if chatChannelId and self.channelId_ ~= chatChannelId then
     return
   end
   self:RefreshMsgList(true)
 end
 
 function Chat_dialogue_tplView:OnMsgRecord(chatChannelId)
-  if self.viewData and self.chatChannelId_ ~= chatChannelId and self.chatChannelId_ ~= E.ChatChannelType.EComprehensive then
+  if self.viewData and self.channelId_ ~= chatChannelId and self.channelId_ ~= E.ChatChannelType.EComprehensive then
     return
   end
   self:OnMsgRefresh()
@@ -203,10 +208,10 @@ function Chat_dialogue_tplView:UnReadMsg()
 end
 
 function Chat_dialogue_tplView:checkChatDataList()
-  local dataFlg = self.chatData_:GetChatDataFlg(self.chatChannelId_, self.viewData.windowType)
+  local dataFlg = self.chatData_:GetChatDataFlg(self.channelId_, self.viewData.windowType, self.charId_)
   if dataFlg and dataFlg.flg then
     self:checkChatBubble(dataFlg.isRecord)
-    self.chatData_:SetChatDataFlg(self.chatChannelId_, self.viewData.windowType, false, false)
+    self.chatData_:SetChatDataFlg(self.channelId_, self.viewData.windowType, false, false, self.charId_)
   end
 end
 
@@ -219,7 +224,8 @@ function Chat_dialogue_tplView:onInitData()
       return chat_bubble_channel_notice
     else
       local msgType = Z.ChatMsgHelper.GetMsgType(data)
-      if msgType == E.ChitChatMsgType.EChatMsgTextMessage or msgType == E.ChitChatMsgType.EChatMsgTextNotice then
+      local content = Z.ChatMsgHelper.GetEmojiText(data)
+      if msgType == E.ChitChatMsgType.EChatMsgTextMessage or msgType == E.ChitChatMsgType.EChatMsgTextNotice or content ~= "" then
         return chat_bubble_content
       elseif msgType == E.ChitChatMsgType.EChatMsgVoice then
         return chat_bubble_voice
@@ -233,12 +239,8 @@ function Chat_dialogue_tplView:onInitData()
           return chat_bubble_system_notice
         elseif linkType == E.ChatHyperLinkShowType.UnionTips then
           return chat_bubble_channel_notice
-        elseif linkType == E.ChatHyperLinkShowType.NpcHeadTips then
-          return chat_bubble_union_tips
-        elseif linkType == E.ChatHyperLinkShowType.PictureBtnTips then
+        elseif linkType == E.ChatHyperLinkShowType.NpcHeadTips or linkType == E.ChatHyperLinkShowType.PictureBtnTips or linkType == E.ChatHyperLinkShowType.PictureBtnTipsNew then
           return chat_bubble_union
-        elseif linkType == E.ChatHyperLinkShowType.PictureBtnTipsNew then
-          return chat_bubble_union_new
         else
           return chat_bubble_content
         end
@@ -246,59 +248,58 @@ function Chat_dialogue_tplView:onInitData()
     end
   end)
   self.msgScrollRect_:SetGetPrefabNameFunc(function(data)
+    local bubbleItemName = "chat_bubble_other_content"
     if self.viewData.windowType == E.ChatWindow.Mini then
-      return "chat_mini_lab_bubble_tpl"
+      bubbleItemName = "chat_mini_lab_bubble_tpl"
     elseif Z.ChatMsgHelper.GetChannelId(data) == E.ChatChannelType.ESystem then
-      return "chat_bubble_channel_notice"
+      bubbleItemName = "chat_bubble_channel_notice"
     else
       local msgType = Z.ChatMsgHelper.GetMsgType(data)
+      local content = Z.ChatMsgHelper.GetEmojiText(data)
       local isSelfMessage = Z.ChatMsgHelper.GetIsSelfMessage(data)
-      if msgType == E.ChitChatMsgType.EChatMsgTextMessage or msgType == E.ChitChatMsgType.EChatMsgTextNotice then
+      if msgType == E.ChitChatMsgType.EChatMsgTextMessage or msgType == E.ChitChatMsgType.EChatMsgTextNotice or content ~= "" then
         if isSelfMessage then
-          return "chat_bubble_self_content"
+          bubbleItemName = "chat_bubble_self_content"
         else
-          return "chat_bubble_other_content"
+          bubbleItemName = "chat_bubble_other_content"
         end
       elseif msgType == E.ChitChatMsgType.EChatMsgVoice then
         if isSelfMessage then
-          return "chat_bubble_self_voice"
+          bubbleItemName = "chat_bubble_self_voice"
         else
-          return "chat_bubble_other_voice"
+          bubbleItemName = "chat_bubble_other_voice"
         end
       elseif msgType == E.ChitChatMsgType.EChatMsgPictureEmoji then
         if isSelfMessage then
-          return "chat_bubble_self_picture"
+          bubbleItemName = "chat_bubble_self_picture"
         else
-          return "chat_bubble_other_picture"
+          bubbleItemName = "chat_bubble_other_picture"
         end
       elseif msgType == E.ChitChatMsgType.EChatMsgMultiLangNotice then
-        return "chat_bubble_system_notice"
+        bubbleItemName = "chat_bubble_system_notice"
       else
         local linkType = Z.ChatMsgHelper.GetChatHyperLinkShowType(data)
         if linkType == E.ChatHyperLinkShowType.SystemTips then
-          return "chat_bubble_system_notice"
+          bubbleItemName = "chat_bubble_system_notice"
         elseif linkType == E.ChatHyperLinkShowType.UnionTips then
-          return "chat_bubble_channel_notice"
-        elseif linkType == E.ChatHyperLinkShowType.NpcHeadTips then
-          return "chat_bubble_other_union_01"
-        elseif linkType == E.ChatHyperLinkShowType.PictureBtnTips then
+          bubbleItemName = "chat_bubble_channel_notice"
+        elseif linkType == E.ChatHyperLinkShowType.NpcHeadTips or linkType == E.ChatHyperLinkShowType.PictureBtnTips or linkType == E.ChatHyperLinkShowType.PictureBtnTipsNew then
           if isSelfMessage then
-            return "chat_bubble_self_union"
+            bubbleItemName = "chat_bubble_self_union"
           else
-            return "chat_bubble_other_union"
-          end
-        elseif linkType == E.ChatHyperLinkShowType.PictureBtnTipsNew then
-          if isSelfMessage then
-            return "chat_bubble_self_union_crowdfunding"
-          else
-            return "chat_bubble_union_crowdfunding"
+            bubbleItemName = "chat_bubble_other_union"
           end
         elseif isSelfMessage then
-          return "chat_bubble_self_content"
+          bubbleItemName = "chat_bubble_self_content"
         else
-          return "chat_bubble_other_content"
+          bubbleItemName = "chat_bubble_other_content"
         end
       end
+    end
+    if Z.IsPCUI then
+      return string.zconcat(bubbleItemName, "_pc")
+    else
+      return bubbleItemName
     end
   end)
   self:UnReadMsg()
@@ -307,20 +308,21 @@ function Chat_dialogue_tplView:onInitData()
 end
 
 function Chat_dialogue_tplView:IsComprehensive()
-  return self.chatChannelId_ == E.ChatChannelType.EComprehensive
+  return self.channelId_ == E.ChatChannelType.EComprehensive
 end
 
 function Chat_dialogue_tplView:updateSelfMsgList()
-  self.msgList_ = self.chatData_:GetChannelQueueByChannelId(self.chatChannelId_, nil, true, self.viewData.windowType == E.ChatWindow.Mini)
+  self.msgList_ = self.chatData_:GetChannelQueueByChannelId(self.channelId_, self.charId_, true, self.viewData.windowType == E.ChatWindow.Mini)
   if not self.msgList_ then
     self.msgList_ = {}
   end
 end
 
-function Chat_dialogue_tplView:OpenChatTips(parent, funcType, copyFunc)
+function Chat_dialogue_tplView:OpenChatTips(parent, funcType, copyFunc, isSelf, chatData)
   self:closeChatTips()
   Z.CoroUtil.create_coro_xpcall(function()
-    local item = self:AsyncLoadUiUnit(GetLoadAssetPath(Z.ConstValue.Chat.PressItem), "chatTips", self.uiBinder.node_chat_tips)
+    local item = Z.IsPCUI and Z.ConstValue.Chat.PressItemPC or Z.ConstValue.Chat.PressItem
+    local item = self:AsyncLoadUiUnit(GetLoadAssetPath(item), "chatTips", self.uiBinder.node_chat_tips)
     self:AddClick(item.btn_copy, function()
       copyFunc()
       self:closeChatTips()
@@ -328,10 +330,24 @@ function Chat_dialogue_tplView:OpenChatTips(parent, funcType, copyFunc)
     self.uiBinder.node_chat_tips:SetPos(parent.position)
     self.chatTips_ = item
     self.uiBinder.presscheck_tipspress:AddGameObject(item.btn_copy.gameObject)
+    self.uiBinder.presscheck_tipspress:AddGameObject(item.btn_report.gameObject)
     self.uiBinder.presscheck_tipspress:StartCheck()
+    item.img_bg_ref.localScale = isSelf and self.chatData_:GetChatBubblePressBgSelfScale() or self.chatData_:GetChatBubblePressBgOtherScale()
+    item.node_ref.pivot = isSelf and Vector2.New(1, 0.5) or Vector2.New(0, 0.5)
+    item.node_ref.localPosition = Vector3.zero
     item.img_bg:Restart(Z.DOTweenAnimType.Open)
     item.Ref:SetVisible(item.img_copy_icon, funcType == E.ChatDialogueFuncType.CopyType)
     item.Ref:SetVisible(item.img_voice_icon, funcType == E.ChatDialogueFuncType.VoiceType)
+    item.Ref:SetVisible(item.btn_copy, funcType ~= E.ChatDialogueFuncType.None)
+    item.Ref:SetVisible(item.btn_report, self.reportVM_.IsReportOpen(true) and not isSelf)
+    self:AddAsyncClick(item.btn_report, function()
+      local param = {
+        chatChannelType = chatData.ChannelId,
+        channelId = chatData.ChitChatMsg.msgInfo.targetId,
+        chatID = chatData.ChitChatMsg.msgId
+      }
+      self.reportVM_.OpenReportPop(reportDefine.ReportScene.Chat, chatData.ChitChatMsg.sendCharInfo.name, chatData.ChitChatMsg.sendCharInfo.charID, param)
+    end)
   end)()
 end
 

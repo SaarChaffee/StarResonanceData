@@ -17,19 +17,13 @@ local UnionActivityConfig = {
   },
   HuntDungeonScore = {
     {
-      12011,
+      12015,
       5,
       5,
       2
     },
     {
-      12012,
-      2,
-      2,
-      1
-    },
-    {
-      12013,
+      12014,
       2,
       2,
       1
@@ -39,9 +33,8 @@ local UnionActivityConfig = {
   HuntListAwardNum = 5,
   HuntListAwardText = "\231\139\169\231\140\142\229\133\136\233\148\139",
   HuntDungeonCount = {
-    {12011, 5},
-    {12012, 6},
-    {12013, 7}
+    {12015, 5},
+    {12014, 6}
   },
   HuntPvxQuestID = 12023650,
   HuntPvxDungeonID = 12013,
@@ -51,9 +44,8 @@ local UnionActivityConfig = {
   HuntUnionAwardCounter = 4,
   NewUnionActLimitTime = 0,
   HuntActivityId = {
-    {12012, 1},
-    {12011, 1},
-    {12013, 1}
+    {12014, 1},
+    {12015, 1}
   },
   HuntAwardLeaveTimeLimit = 0,
   HuntCameraID = {4012}

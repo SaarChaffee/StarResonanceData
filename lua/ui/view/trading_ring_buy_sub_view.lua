@@ -27,6 +27,7 @@ function Trading_ring_buy_subView:OnActive()
   self.equipVm_ = Z.VMMgr.GetVM("equip_system")
   self.tradeData_ = Z.DataMgr.Get("trade_data")
   self.itemsData_ = Z.DataMgr.Get("items_data")
+  self.funcVm_ = Z.VMMgr.GetVM("gotofunc")
   self.allStallDetails_ = Z.TableMgr.GetTable("StallDetailTableMgr").GetDatas()
   self.selectItemId_ = 0
   self.mainTypeTogs_ = {}
@@ -36,7 +37,9 @@ function Trading_ring_buy_subView:OnActive()
   self.selectCategory_ = 0
   self.selectSubCategory_ = 0
   self.selectSubCategoryIndex_ = 1
-  self.onlyInStock_ = false
+  if self.onlyInStock_ == nil then
+    self.onlyInStock_ = false
+  end
   self.isNotice_ = self.viewData.isNotice
   if self.isNotice_ then
     self.userDataStringName_ = "BKL_TRADE_SEARCH_1"
@@ -61,9 +64,17 @@ function Trading_ring_buy_subView:OnActive()
     self.uiBinder.node_purchase_sub.lab_income_num.text = math.floor(count * self.selectExchangeItemData_.price)
   end)
   self:AddAsyncClick(self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.btn_add, function()
+    if self.isNotice_ then
+      Z.TipsVM.ShowTips(1000805)
+      return
+    end
     self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.value = self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.value + 1
   end)
   self:AddAsyncClick(self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.btn_reduce, function()
+    if self.isNotice_ then
+      Z.TipsVM.ShowTips(1000805)
+      return
+    end
     if self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.value == 1 then
       return
     end
@@ -73,16 +84,23 @@ function Trading_ring_buy_subView:OnActive()
     self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.value = self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.maxValue
   end)
   self:AddAsyncClick(self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.btn_num, function()
+    if self.isNotice_ then
+      Z.TipsVM.ShowTips(1000805)
+      return
+    end
     self.keypad_:Active({
       max = self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.maxValue
     }, self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.group_keypadroot)
   end)
   self:AddAsyncClick(self.uiBinder.node_purchase_sub.btn_shelf, function()
+    if not self.isMinPrice_ then
+      Z.TipsVM.ShowTips(6488)
+      return
+    end
     local packageIsFull = self.itemVm_.CheckItemPackageIsFull(self.selectExchangeItemData_.itemInfo.configId)
     if packageIsFull then
       Z.DialogViewDataMgr:OpenNormalDialog(Lang("BackPackFull"), function()
         Z.VMMgr.GetVM("backpack").OpenBagView()
-        Z.DialogViewDataMgr:CloseDialogView()
       end)
       return
     end
@@ -98,7 +116,6 @@ function Trading_ring_buy_subView:OnActive()
         })
         Z.DialogViewDataMgr:OpenNormalDialog(desc, function()
           self.tradeVm_:AsyncExchangeBuyItem(self.selectExchangeItemData_.guid, self.selectItemId_, count, self.selectExchangeItemData_.price, self.cancelSource:CreateToken())
-          Z.DialogViewDataMgr:CloseDialogView()
         end)
       end
     else
@@ -113,11 +130,13 @@ function Trading_ring_buy_subView:OnActive()
     if not self.tradeVm_:CheckItemIsPreOrder(self.selectItemId_, self.selectExchangeItemData_.guid) then
       Z.DialogViewDataMgr:OpenNormalDialog(Lang("StallPreOrderDialogTips"), function()
         self.tradeVm_:AsyncExchangeNoticeBuyItem(self.selectItemId_, self.selectExchangeItemData_.guid, self.cancelSource:CreateToken())
-        Z.DialogViewDataMgr:CloseDialogView()
       end)
     else
-      self.tradeVm_:AsyncExchangeNoticeBuyItem(self.selectItemId_, self.selectExchangeItemData_.guid, self.cancelSource:CreateToken())
+      Z.TipsVM.ShowTips(6472)
     end
+  end)
+  self:AddAsyncClick(self.uiBinder.node_purchase_sub.btn_goto_buy, function()
+    self.tradeVm_.OpenTradeMainView(self.selectItemId_)
   end)
   self:AddAsyncClick(self.uiBinder.node_purchase_sub.btn_left, function()
     self:onPageChange(false)
@@ -139,16 +158,32 @@ function Trading_ring_buy_subView:OnActive()
   self:AddAsyncClick(self.uiBinder.node_buy_sub.btn_refresh, function()
     local data
     if self.isNotice_ then
-      data = self.tradeData_.ExchangeNoticeRefreshClickCD
+      if self.isFoces_ then
+      else
+        data = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeNoticeRefreshClickCD)
+      end
+    elseif self.isFoces_ then
     else
-      data = self.tradeData_.ExchangeRefreshClickCD
+      data = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeRefreshClickCD)
     end
     if data and 0 < data then
       return
     end
-    self.tradeData_:SetClickRefreshCD(self.isNotice_)
-    self:refreshSellItemLoop()
-    self:refreshExchangeItemCd()
+    if self.itemFilter_ then
+      self.filterTags_ = {}
+      self.itemFilter_:DeActive()
+    end
+    self.tradeData_:SetClickRefreshCD(self.isNotice_, false, self.isFoces_)
+    if self.isFoces_ then
+      self:refreshFocusItem()
+    else
+      self:refreshSellItemLoop()
+    end
+  end)
+  self:AddAsyncClick(self.uiBinder.node_purchase_sub.btn_refresh, function()
+    self.tradeData_:SetClickRefreshCD(nil, true)
+    self:forceGetServerData(true)
+    self:refreshPurchaseItemCd()
   end)
   self:AddAsyncClick(self.uiBinder.btn_screening, function()
     self:openItemFilter()
@@ -161,7 +196,7 @@ function Trading_ring_buy_subView:OnActive()
     self:refreshSellItemLoop()
   end)
   self:AddAsyncClick(self.uiBinder.node_buy_sub.btn_delect, function()
-    Z.LocalUserDataMgr.RemoveKey(self.userDataStringName_)
+    Z.LocalUserDataMgr.RemoveKeyByLua(E.LocalUserDataType.Character, self.userDataStringName_)
     self:showSearchHistory()
   end)
   self.uiBinder.node_buy_sub.input_search:RemoveAllListeners()
@@ -203,7 +238,7 @@ function Trading_ring_buy_subView:BindEvent()
   local buySuccessRefresh = function(self)
     self:forceGetServerData(true)
   end
-  Z.EventMgr:Add(Z.ConstValue.Trade.ExchangeBuyItemSuccess, buySuccessRefresh, self)
+  Z.EventMgr:Add(Z.ConstValue.Trade.ExchangeBuyItem, buySuccessRefresh, self)
   Z.EventMgr:Add(Z.ConstValue.ItemFilterConfirm, self.selectedFilterTags, self)
 end
 
@@ -215,7 +250,7 @@ function Trading_ring_buy_subView:InputNum(num)
 end
 
 function Trading_ring_buy_subView:showSearchHistory()
-  local nowCacheString = Z.LocalUserDataMgr.GetString(self.userDataStringName_)
+  local nowCacheString = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Character, self.userDataStringName_)
   local ids = string.split(nowCacheString, "|")
   local itemRows = {}
   for _, value in ipairs(ids) do
@@ -281,21 +316,18 @@ end
 
 function Trading_ring_buy_subView:OnSearchItem(configId)
   configId = tostring(configId)
-  local nowCacheString = Z.LocalUserDataMgr.GetString(self.userDataStringName_)
+  local nowCacheString = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Character, self.userDataStringName_)
   local ids = string.split(nowCacheString, "|")
   if table.zcontains(ids, configId) then
     table.zremoveByValue(ids, configId)
-    table.insert(ids, 1, configId)
-  else
-    table.insert(ids, configId)
   end
-  local cacheStr = ""
+  local cacheStr = configId
   for _, value in ipairs(ids) do
     if not string.zisEmpty(value) then
-      cacheStr = tostring(value) .. "|" .. cacheStr
+      cacheStr = cacheStr .. "|" .. tostring(value)
     end
   end
-  Z.LocalUserDataMgr.SetString(self.userDataStringName_, cacheStr)
+  Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Character, self.userDataStringName_, cacheStr)
   Z.CoroUtil.create_coro_xpcall(function()
     local serverData = {}
     if not self.isNotice_ then
@@ -315,6 +347,7 @@ function Trading_ring_buy_subView:OnSearchItem(configId)
     self.uiBinder.node_buy_sub.Ref:SetVisible(self.uiBinder.node_buy_sub.btn_close, false)
     self.uiBinder.node_buy_sub.Ref:SetVisible(self.uiBinder.node_buy_sub.img_find_bg, false)
     self.selectItemId_ = tonumber(configId)
+    self.tradeVm_.OpenTradeMainView(configId)
     self:forceGetServerData()
   end)()
 end
@@ -325,7 +358,6 @@ function Trading_ring_buy_subView:refreshUI()
     self:refreshFocusItem()
     return
   end
-  self.uiBinder.node_buy_sub.Ref:SetVisible(self.uiBinder.node_buy_sub.node_top, true)
   self.selectCategory_ = self.viewData.selectType
   if self.isNotice_ then
     self.selectCategory_ = self.viewData.selectType
@@ -407,7 +439,6 @@ end
 
 function Trading_ring_buy_subView:refreshFocusItem()
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_screening, false)
-  self.uiBinder.node_buy_sub.Ref:SetVisible(self.uiBinder.node_buy_sub.node_top, false)
   self.uiBinder.node_buy_sub.Ref.UIComp:SetVisible(true)
   self.uiBinder.node_purchase_sub.Ref.UIComp:SetVisible(false)
   Z.CoroUtil.create_coro_xpcall(function()
@@ -416,6 +447,7 @@ function Trading_ring_buy_subView:refreshFocusItem()
       type = E.EExchangeItemType.ExchangeItemTypeNoticeShopItem
     end
     local allFocusItem = self.tradeVm_:AsyncExchangeCareList(type, self.cancelSource:CreateToken())
+    self:refreshExchangeItemCd()
     if allFocusItem == nil then
       return
     end
@@ -504,7 +536,7 @@ function Trading_ring_buy_subView:refreshSellItemLoop(filterFuncs, filterParam)
     end
     local data = {}
     for _, value in pairs(self.allStallDetails_) do
-      if value.Category == self.selectCategory_ and value.Subcategory == self.selectSubCategory_ then
+      if value.Category == self.selectCategory_ and value.Subcategory == self.selectSubCategory_ and not value.HideItem then
         local temp = {}
         temp.config = value
         if self.isNotice_ then
@@ -526,7 +558,7 @@ function Trading_ring_buy_subView:refreshSellItemLoop(filterFuncs, filterParam)
         end
         if passFilter then
           if self.onlyInStock_ then
-            if temp.serverData then
+            if temp.serverData and 0 < temp.serverData.num then
               table.insert(data, temp)
             end
           else
@@ -543,7 +575,11 @@ function Trading_ring_buy_subView:refreshSellItemLoop(filterFuncs, filterParam)
     self.uiBinder.node_buy_sub.Ref:SetVisible(self.uiBinder.node_buy_sub.scrollview_item, true)
     self.uiBinder.node_buy_sub.Ref:SetVisible(self.uiBinder.node_buy_sub.node_empty_left, false)
     table.sort(data, function(a, b)
-      return a.config.ItemID < b.config.ItemID
+      if a.config.Index == b.config.Index then
+        return a.config.ItemID < b.config.ItemID
+      else
+        return a.config.Index < b.config.Index
+      end
     end)
     if self.sellItemLoop_ == nil then
       local path = "trading_ring_item_tpl"
@@ -560,21 +596,22 @@ function Trading_ring_buy_subView:refreshSellItemLoop(filterFuncs, filterParam)
       self:trySelectShopItem(self.viewData.configId)
       self.viewData.configId = nil
     end
+    self:refreshExchangeItemCd()
   end)()
 end
 
 function Trading_ring_buy_subView:trySelectShopItem(configId)
-  if self.tradeData_.ExchangeNoticeItemDict[configId] == nil then
+  if self.tradeData_.ExchangeItemDict[configId] == nil or self.tradeData_.ExchangeItemDict[configId].num == 0 then
     Z.TipsVM.ShowTips(1000802)
     return
   end
   local stallDetailRow = Z.TableMgr.GetTable("StallDetailTableMgr").GetRow(configId)
-  if stallDetailRow then
+  if stallDetailRow == nil then
     return
   end
   local data = {
     config = stallDetailRow,
-    serverData = self.tradeData_.ExchangeNoticeItemDict[configId]
+    serverData = self.tradeData_.ExchangeItemDict[configId]
   }
   self:OnShopSellItemSelect(data)
 end
@@ -622,6 +659,7 @@ function Trading_ring_buy_subView:refreshPurchaseItem(uiBinder, data, index)
     itemData.labType = E.ItemLabType.Num
     itemData.lab = data.num
   end
+  data.itemInfo.count = data.num
   itemData.isSquareItem = true
   itemData.isClickOpenTips = true
   itemData.itemInfo = data.itemInfo
@@ -650,10 +688,18 @@ function Trading_ring_buy_subView:refreshPurchaseItem(uiBinder, data, index)
     end
     local now = Z.TimeTools.Now() / 1000
     local delta = math.floor(data.noticeTime - now)
-    uiBinder.lab_publicity.text = Z.TimeTools.S2HMFormat(delta)
+    uiBinder.lab_publicity.text = Z.TimeFormatTools.FormatToDHMS(delta)
     self.itemSellTimer_[index] = self.timerMgr:StartTimer(function()
       delta = delta - 1
-      uiBinder.lab_publicity.text = Z.TimeTools.S2HMFormat(delta)
+      if delta < 0 then
+        uiBinder.lab_publicity.text = ""
+        if self.itemSellTimer_[index] then
+          self.timerMgr:StopTimer(self.itemSellTimer_[index])
+          self.itemSellTimer_[index] = nil
+        end
+        return
+      end
+      uiBinder.lab_publicity.text = Z.TimeFormatTools.FormatToDHMS(delta)
     end, 1, delta + 1)
   end
   self:AddAsyncClick(uiBinder.btn_select, function()
@@ -777,6 +823,10 @@ function Trading_ring_buy_subView:forceGetServerData(isSetMaxNum)
   Z.CoroUtil.create_coro_xpcall(function()
     local nextPage = false
     self.pageIndex_ = 1
+    for _, value in ipairs(self.item_unit_names_) do
+      self:RemoveUiUnit(value)
+    end
+    self.item_unit_names_ = {}
     if not self.isNotice_ then
       self.tradeVm_:AsyncExchangeItem(self.selectItemId_, self.filter_, nextPage, self.cancelSource:CreateToken())
     else
@@ -807,6 +857,7 @@ function Trading_ring_buy_subView:OnPurchaseSelect(exchangePriceItemData)
   self.selectExchangeItemData_ = exchangePriceItemData
   self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.node_right, true)
   self:refreshPurchaseSub()
+  self:refreshPurchaseItemCd()
 end
 
 function Trading_ring_buy_subView:refreshPurchaseSub()
@@ -817,6 +868,22 @@ function Trading_ring_buy_subView:refreshPurchaseSub()
   local itemSellRow = Z.TableMgr.GetTable("StallDetailTableMgr").GetRow(self.selectItemId_)
   if itemSellRow == nil then
     return
+  end
+  self.uiBinder.node_purchase_sub.btn_shelf.IsDisabled = false
+  self.isMinPrice_ = true
+  self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.node_have, true)
+  self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.node_nothave, false)
+  if itemSellRow.BottomBuyLimit == 1 then
+    if self.isNotice_ then
+      local minPrice = self.tradeData_.ExchangeNoticeMinPriceList[self.selectItemId_]
+      if minPrice ~= 0 and minPrice < self.selectExchangeItemData_.price then
+        self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.node_have, false)
+        self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.node_nothave, true)
+      end
+    elseif self.selectExchangeItemData_.price ~= self.tradeData_.ExchangePriceItemList[self.selectItemId_][1].price then
+      self.uiBinder.node_purchase_sub.btn_shelf.IsDisabled = true
+      self.isMinPrice_ = false
+    end
   end
   local itemTypeTableRow = Z.TableMgr.GetTable("ItemTypeTableMgr").GetRow(itemRow.Type)
   if itemTypeTableRow then
@@ -834,18 +901,22 @@ function Trading_ring_buy_subView:refreshPurchaseSub()
   self.uiBinder.node_purchase_sub.lab_name.text = itemRow.Name
   local itemCount = self.itemVm_.GetItemTotalCount(self.selectItemId_)
   self.uiBinder.node_purchase_sub.lab_own_num.text = string.format(Lang("SeasonShopOwn"), itemCount)
-  self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.value = 1
   local maxNum = self.selectExchangeItemData_.num
   if maxNum > itemSellRow.OnceLimit then
     maxNum = itemSellRow.OnceLimit
   end
   self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.maxValue = maxNum
+  local defaultNum = 1
+  if self.isNotice_ then
+    defaultNum = self.selectExchangeItemData_.num
+  end
+  self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.value = defaultNum
   if maxNum == 1 then
     self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.minValue = 0
     self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.interactable = false
   else
     self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.minValue = 1
-    self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.interactable = true
+    self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.interactable = not self.isNotice_
   end
   self.uiBinder.node_purchase_sub.lab_income_num.text = math.floor(self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.value * self.selectExchangeItemData_.price)
   self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.lab_num.text = math.floor(self.uiBinder.node_purchase_sub.binder_num_module_tpl_1.slider_temp.value)
@@ -857,14 +928,25 @@ function Trading_ring_buy_subView:refreshPurchaseSub()
   end
   self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.btn_shelf, not self.isNotice_)
   self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.btn_advance, self.isNotice_)
+  local isFuncOn = self.funcVm_.CheckFuncCanUse(E.FunctionID.TradePreorder, true)
+  if not isFuncOn and self.isNotice_ then
+    self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.node_nothave, false)
+    self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.node_have, false)
+  end
 end
 
 function Trading_ring_buy_subView:refreshExchangeItemCd()
   local nowcd = 0
   if self.isNotice_ then
-    nowcd = self.tradeData_.ExchangeNoticeRefreshClickCD
+    if self.isFoces_ then
+      nowcd = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeFocusNoticeRefreshClickCD)
+    else
+      nowcd = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeNoticeRefreshClickCD)
+    end
+  elseif self.isFoces_ then
+    nowcd = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeFocusRefreshClickCD)
   else
-    nowcd = self.tradeData_.ExchangeRefreshClickCD
+    nowcd = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeRefreshClickCD)
   end
   self.uiBinder.node_buy_sub.Ref:SetVisible(self.uiBinder.node_buy_sub.img_refreshcd, false)
   if 0 < nowcd then
@@ -888,6 +970,33 @@ function Trading_ring_buy_subView:refreshExchangeItemCd()
     self.uiBinder.node_buy_sub.btn_refresh.IsDisabled = false
     self.uiBinder.node_buy_sub.Ref:SetVisible(self.uiBinder.node_buy_sub.btn_refresh, true)
     self.uiBinder.node_buy_sub.Ref:SetVisible(self.uiBinder.node_buy_sub.img_refreshcd, false)
+  end
+end
+
+function Trading_ring_buy_subView:refreshPurchaseItemCd()
+  local nowcd = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.PurchaseRefreshClickCD)
+  self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.img_refreshcd, false)
+  if 0 < nowcd then
+    self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.btn_refresh, false)
+    self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.img_refreshcd, true)
+    self.uiBinder.node_purchase_sub.lab_refresh_cd.text = nowcd
+    self.uiBinder.node_purchase_sub.btn_refresh.IsDisabled = true
+    if self.refreshCdTimer_ then
+      self.timerMgr:StopTimer(self.refreshCdTimer_)
+    end
+    self.refreshCdTimer_ = self.timerMgr:StartTimer(function()
+      nowcd = nowcd - 1
+      self.uiBinder.node_purchase_sub.lab_refresh_cd.text = nowcd
+      if nowcd < 0 then
+        self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.btn_refresh, true)
+        self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.img_refreshcd, false)
+        self.uiBinder.node_purchase_sub.btn_refresh.IsDisabled = false
+      end
+    end, 1, nowcd + 1)
+  else
+    self.uiBinder.node_purchase_sub.btn_refresh.IsDisabled = false
+    self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.btn_refresh, true)
+    self.uiBinder.node_purchase_sub.Ref:SetVisible(self.uiBinder.node_purchase_sub.img_refreshcd, false)
   end
 end
 
@@ -948,14 +1057,14 @@ function Trading_ring_buy_subView:openItemFilter()
   self.itemFilter_:Active(viewData, self.uiBinder.filter_root)
 end
 
-function Trading_ring_buy_subView:selectedFilterTags(filterTgas)
-  if table.zcount(filterTgas) < 1 then
+function Trading_ring_buy_subView:selectedFilterTags(filterTags)
+  if table.zcount(filterTags) < 1 then
     self.filter_ = {}
     self.filterTags_ = {}
     self.filterFuncs_ = {}
     self.filterParams_ = {}
   end
-  for type, value in pairs(filterTgas) do
+  for type, value in pairs(filterTags) do
     for index, _ in pairs(value) do
       local filter = {}
       filter.type = type
@@ -963,21 +1072,21 @@ function Trading_ring_buy_subView:selectedFilterTags(filterTgas)
       table.insert(self.filter_, filter)
     end
   end
-  self.filterTags_ = filterTgas
+  self.filterTags_ = filterTags
   if self.isBuyType_ then
     self.pageIndex_ = 1
     self:forceGetServerData()
   else
-    self:refreshListLoopByFilter(filterTgas)
+    self:refreshListLoopByFilter(filterTags)
   end
 end
 
-function Trading_ring_buy_subView:refreshListLoopByFilter(filterTgas)
+function Trading_ring_buy_subView:refreshListLoopByFilter(filterTags)
   local item_filter_factory = Z.VMMgr.GetVM("item_filter_factory")
-  if filterTgas and table.zcount(filterTgas) > 0 then
+  if filterTags and table.zcount(filterTags) > 0 then
     local filterTypes = {}
     local filterParams = {}
-    for filterType, value in ipairs(filterTgas) do
+    for filterType, value in ipairs(filterTags) do
       table.insert(filterTypes, filterType)
       for filterParam, _ in pairs(value) do
         if filterParams[filterType] == nil then

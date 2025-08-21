@@ -41,8 +41,6 @@ message SceneObjectEntityTableBase {
     int_table InteractionTemplate = 1682;
     string_array InteractionEvent = 1343;
 }
-
 message SceneObjectEntityTableMgr {
-    map<int32, .bokura.SceneObjectEntityTableBase> datas = 1;
+    repeated bokura.SceneObjectEntityTableMgr.DatasEntry datas = 1;
 }
-

@@ -24,5 +24,6 @@ enum EMoveType {
     MoveRunEndToIdle = 18;
     MoveEightDir = 19;
     MoveByForce = 20;
+    MoveSitRotate = 21;
+    MoveJumpEndToIdle = 22;
 }
-

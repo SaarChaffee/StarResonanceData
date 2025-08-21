@@ -21,20 +21,6 @@ function Item_filtersView:ctor(parent)
     [E.ItemQuality.Yellow] = E.ItemQuality.Yellow,
     [E.ItemQuality.Red] = E.ItemQuality.Red
   }
-  self.modQualityParam_ = {
-    [E.ItemQuality.Blue] = E.ItemQuality.Blue,
-    [E.ItemQuality.Purple] = E.ItemQuality.Purple,
-    [E.ItemQuality.Yellow] = E.ItemQuality.Yellow
-  }
-  self.modEffectTypeParam_ = {
-    [MOD_DEFINE.ModEffectType.One] = MOD_DEFINE.ModEffectType.One,
-    [MOD_DEFINE.ModEffectType.Two] = MOD_DEFINE.ModEffectType.Two,
-    [MOD_DEFINE.ModEffectType.Three] = MOD_DEFINE.ModEffectType.Three
-  }
-  self.modEffectSuccessTimesParam_ = {}
-  for key, effectSuccess in ipairs(Z.Global.ModFilterCriteria) do
-    self.modEffectSuccessTimesParam_[key] = effectSuccess
-  end
 end
 
 function Item_filtersView:OnActive()
@@ -92,6 +78,9 @@ function Item_filtersView:OnRefresh()
       end
     end
     self.uiBinder.layout_filteruitems:ForceRebuildLayoutImmediate()
+    local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
+    coro(2, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
+    self.uiBinder.scrollview.verticalNormalizedPosition = 1
     self:refreshSelectUnit()
     self:SetVisible(true)
     local hasSelect = false
@@ -143,20 +132,6 @@ function Item_filtersView.loadFilterType_1(Item_filters, filterType)
   itemRareContent.layout_content:ForceRebuildLayoutImmediate()
 end
 
-function Item_filtersView.loadFilterType_2(Item_filters, filterType)
-  local groupTitle = Item_filters.uiBinder.prefab_cache:GetString("filter_group_unit")
-  local path = Item_filters.uiBinder.prefab_cache:GetString("filter_unit")
-  local modTypeContent = Item_filters:AsyncLoadUiUnit(groupTitle, "modTypeContent", Item_filters.typeParent_, Item_filters.cancelSource:CreateToken())
-  modTypeContent.lab_name.text = modTypeName
-  local root = modTypeContent.content
-  local fantasyTypeConfig = Z.TableMgr.GetTable("FantasyTypeTableMgr").GetDatas()
-  for i, value in pairs(fantasyTypeConfig) do
-    local unit = Item_filters:AsyncLoadUiUnit(path, "modTypeUnit_" .. i, root, Item_filters.cancelSource:CreateToken())
-    Item_filters:setFilterTagItemUnit(unit, filterType, i, value.Name, value.TypeTips)
-  end
-  modTypeContent.layout_content:ForceRebuildLayoutImmediate()
-end
-
 function Item_filtersView.loadFilterType_8(Item_filters, filterType)
   local groupTitle = Item_filters.uiBinder.prefab_cache:GetString("filter_group_unit")
   local path = Item_filters.uiBinder.prefab_cache:GetString("filter_unit")
@@ -171,48 +146,6 @@ function Item_filtersView.loadFilterType_8(Item_filters, filterType)
     Item_filters:setFilterTagItemUnit(unit, filterType, value, str_)
   end
   modTypeContent.layout_content:ForceRebuildLayoutImmediate()
-end
-
-function Item_filtersView.loadFilterType_16(Item_filters, filterType)
-  local groupTitle = Item_filters.uiBinder.prefab_cache:GetString("filter_group_unit")
-  local path = Item_filters.uiBinder.prefab_cache:GetString("filter_unit")
-  local itemRareContent = Item_filters:AsyncLoadUiUnit(groupTitle, "itemRareContent", Item_filters.typeParent_, Item_filters.cancelSource:CreateToken())
-  itemRareContent.lab_name.text = rareTypeName
-  local root = itemRareContent.content
-  local name = "mod_rare_"
-  if Item_filters.modQualityParam_ and Item_filters.modQualityParam_[filterType] then
-    for _, value in ipairs(Item_filters.modQualityParam_[filterType]) do
-      local unit = Item_filters:AsyncLoadUiUnit(path, "modRareUnit_" .. value, root, Item_filters.cancelSource:CreateToken())
-      Item_filters:setFilterTagItemUnit(unit, filterType, value, Lang(name .. value))
-    end
-  else
-    for i = 2, 4 do
-      local unit = Item_filters:AsyncLoadUiUnit(path, "modRareUnit_" .. i, root, Item_filters.cancelSource:CreateToken())
-      Item_filters:setFilterTagItemUnit(unit, filterType, i, Lang(name .. i))
-    end
-  end
-  itemRareContent.layout_content:ForceRebuildLayoutImmediate()
-end
-
-function Item_filtersView.loadFilterType_32(Item_filters, filterType)
-  local groupTitle = Item_filters.uiBinder.prefab_cache:GetString("filter_group_unit")
-  local path = Item_filters.uiBinder.prefab_cache:GetString("filter_unit")
-  local itemRareContent = Item_filters:AsyncLoadUiUnit(groupTitle, "modEffectTypeContent", Item_filters.typeParent_, Item_filters.cancelSource:CreateToken())
-  itemRareContent.lab_name.text = modEffectName
-  local root = itemRareContent.content
-  local name = "mod_effect_type_"
-  if Item_filters.modQualityParam_ and Item_filters.modQualityParam_[filterType] then
-    for _, value in ipairs(Item_filters.modQualityParam_[filterType]) do
-      local unit = Item_filters:AsyncLoadUiUnit(path, "modEffectTypeUnit_" .. value, root, Item_filters.cancelSource:CreateToken())
-      Item_filters:setFilterTagItemUnit(unit, filterType, value, Lang(name .. value))
-    end
-  else
-    for i = 1, 3 do
-      local unit = Item_filters:AsyncLoadUiUnit(path, "modEffectTypeUnit_" .. i, root, Item_filters.cancelSource:CreateToken())
-      Item_filters:setFilterTagItemUnit(unit, filterType, i, Lang(name .. i))
-    end
-  end
-  itemRareContent.layout_content:ForceRebuildLayoutImmediate()
 end
 
 function Item_filtersView.loadFilterType_64(Item_filters, filterType)
@@ -249,27 +182,6 @@ function Item_filtersView.loadFilterType_128(Item_filters, filterType)
   resonanceSkillContent.layout_content:ForceRebuildLayoutImmediate()
 end
 
-function Item_filtersView.loadFilterType_256(Item_filters, filterType)
-  local groupTitle = Item_filters.uiBinder.prefab_cache:GetString("filter_group_unit")
-  local path = Item_filters.uiBinder.prefab_cache:GetString("filter_unit")
-  local itemRareContent = Item_filters:AsyncLoadUiUnit(groupTitle, "modEffectSuccessContent", Item_filters.typeParent_, Item_filters.cancelSource:CreateToken())
-  itemRareContent.lab_name.text = modEffectSuccessName
-  local root = itemRareContent.content
-  local name = "mod_effect_success_"
-  if Item_filters.modQualityParam_ and Item_filters.modQualityParam_[filterType] then
-    for _, value in ipairs(Item_filters.modQualityParam_[filterType]) do
-      local unit = Item_filters:AsyncLoadUiUnit(path, "modEffectSuccessUnit_" .. value, root, Item_filters.cancelSource:CreateToken())
-      Item_filters:setFilterTagItemUnit(unit, filterType, value, Lang(name .. value))
-    end
-  else
-    for i = 1, 3 do
-      local unit = Item_filters:AsyncLoadUiUnit(path, "modEffectSuccessUnit_" .. i, root, Item_filters.cancelSource:CreateToken())
-      Item_filters:setFilterTagItemUnit(unit, filterType, i, Lang(name .. i))
-    end
-  end
-  itemRareContent.layout_content:ForceRebuildLayoutImmediate()
-end
-
 function Item_filtersView.loadFilterType_512(Item_filters, filterType)
   local groupTitle = Item_filters.uiBinder.prefab_cache:GetString("filter_group_unit")
   local path = Item_filters.uiBinder.prefab_cache:GetString("filter_unit")
@@ -289,7 +201,9 @@ function Item_filtersView.loadFilterType_1024(Item_filters, filterType)
   local root = itemRareContent.content
   for k, v in ipairs(Z.Global.EquipScreenGS) do
     local unit = Item_filters:AsyncLoadUiUnit(path, "gs" .. k, root, Item_filters.cancelSource:CreateToken())
-    Item_filters:setFilterTagItemUnit(unit, filterType, k, v[3])
+    Item_filters:setFilterTagItemUnit(unit, filterType, k, Lang("ValueGSEqual", {
+      val = v[3]
+    }))
   end
   itemRareContent.layout_content:ForceRebuildLayoutImmediate()
 end
@@ -300,9 +214,15 @@ function Item_filtersView.loadFilterType_2048(Item_filters, filterType)
   local itemRareContent = Item_filters:AsyncLoadUiUnit(groupTitle, "recast", Item_filters.typeParent_, Item_filters.cancelSource:CreateToken())
   itemRareContent.lab_name.text = Lang("RacastCount")
   local root = itemRareContent.content
+  local count = #Z.Global.EquipScreenType
   for k, v in ipairs(Z.Global.EquipScreenType) do
     local unit = Item_filters:AsyncLoadUiUnit(path, "recast" .. k, root, Item_filters.cancelSource:CreateToken())
-    Item_filters:setFilterTagItemUnit(unit, filterType, k, v[3])
+    local labContent = count == k and Lang("MoreThan", {
+      val = v[3]
+    }) or Lang("Frequencys", {
+      val = v[3]
+    })
+    Item_filters:setFilterTagItemUnit(unit, filterType, k, labContent)
   end
   itemRareContent.layout_content:ForceRebuildLayoutImmediate()
 end
@@ -315,7 +235,9 @@ function Item_filtersView.loadFilterType_4096(Item_filters, filterType)
   local root = itemRareContent.content
   for k, v in ipairs(Z.Global.EquipScreenPerfectVal) do
     local unit = Item_filters:AsyncLoadUiUnit(path, "perfect" .. k, root, Item_filters.cancelSource:CreateToken())
-    Item_filters:setFilterTagItemUnit(unit, filterType, k, v[3])
+    Item_filters:setFilterTagItemUnit(unit, filterType, k, Lang("Between", {
+      val = v[3]
+    }))
   end
   itemRareContent.layout_content:ForceRebuildLayoutImmediate()
 end
@@ -422,8 +344,8 @@ function Item_filtersView:asyncLoadSelectedTag(filterType, tagsId, filterTagName
 end
 
 function Item_filtersView:removeSelectedTag(filterType, tagsId)
-  local name = self.selectedTagUnits_[filterType][tagsId]
-  if name then
+  if self.selectedTagUnits_ and self.selectedTagUnits_[filterType] and self.selectedTagUnits_[filterType][tagsId] then
+    local name = self.selectedTagUnits_[filterType][tagsId]
     self:RemoveUiUnit(name)
   end
 end

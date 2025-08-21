@@ -39,7 +39,7 @@ end
 function ModService:checkModRedDot()
   local modVM = Z.VMMgr.GetVM("mod")
   local red, mods = modVM.IsHaveRedDot()
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.ModTab, red and 1 or 0)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.ModTab, red and 1 or 0)
 end
 
 function ModService:onItemChange(item)

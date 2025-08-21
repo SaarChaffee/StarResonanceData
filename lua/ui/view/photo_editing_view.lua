@@ -169,7 +169,7 @@ function Photo_editingView:initBtnEvents()
     self.photoEditorData_:ActiveData(nil)
     self.decorate_subView:ActiveDecorateUnit(nil)
     Z.UIRoot:SetClickEffectIsShow(false)
-    local normalScreenSize = 1.7777777777777777
+    local normalScreenSize = Z.UIRoot.DESIGNSIZE_WIDTH / Z.UIRoot.DESIGNSIZE_HEIGHT
     local photoWidth = Z.UIRoot.CurScreenSize.x
     local photoHeight = Z.UIRoot.CurScreenSize.y
     local screenSize = photoWidth / photoHeight
@@ -178,9 +178,10 @@ function Photo_editingView:initBtnEvents()
     else
       photoHeight = photoWidth / normalScreenSize
     end
+    photoWidth = math.floor(photoWidth)
+    photoHeight = math.floor(photoHeight)
     Z.CoroUtil.create_coro_xpcall(function()
-      local asyncCall = Z.CoroUtil.async_to_sync(Z.LuaBridge.TakeScreenShotByAspect)
-      local effectId = asyncCall(photoWidth, photoHeight, self.cancelSource:CreateToken(), E.NativeTextureCallToken.Camera_photo_secondary_editingView2)
+      local effectId = self:asyncTakePhotoByRect()
       local effectThumbId = Z.LuaBridge.ResizeTextureSizeForAlbum(effectId, E.NativeTextureCallToken.Camera_photo_secondary_editingView2, THUMB_WIDTH, THUMB_HEIGHT)
       local tempPhotoPath = Z.CameraFrameCtrl:SaveToCacheAlbum(E.CachePhotoType.CacheEffectPhoto, effectId)
       local tempThumbPhoto = Z.CameraFrameCtrl:SaveToCacheAlbum(E.CachePhotoType.CacheThumbPhoto, effectThumbId)
@@ -198,6 +199,18 @@ function Photo_editingView:initBtnEvents()
       Z.UIRoot:SetClickEffectIsShow(true)
     end)()
   end)
+end
+
+function Photo_editingView:asyncTakePhotoByRect()
+  local rectTransform = self.uiBinder.node_img_icon
+  local asyncCall = Z.CoroUtil.async_to_sync(Z.LuaBridge.TakeScreenShotByAspectWithRect)
+  local offset = Vector2.New(Z.UIRoot.CurCanvasSize.x / 2, Z.UIRoot.CurCanvasSize.y / 2)
+  local rectPosX = -rectTransform.rect.width / 2 + rectTransform.anchoredPosition.x + offset.x
+  local rectPosY = -rectTransform.rect.height / 2 + rectTransform.anchoredPosition.y + offset.y
+  local widthScale = Z.UIRoot.CurScreenSize.x / Z.UIRoot.CurCanvasSize.x
+  local heightScale = Z.UIRoot.CurScreenSize.y / Z.UIRoot.CurCanvasSize.y
+  local effectId = asyncCall(Z.UIRoot.CurScreenSize.x, Z.UIRoot.CurScreenSize.y, self.cancelSource:CreateToken(), E.NativeTextureCallToken.CamerasysView, rectPosX * widthScale, rectPosY * heightScale, rectTransform.rect.width * widthScale, rectTransform.rect.height * heightScale)
+  return effectId
 end
 
 function Photo_editingView:SetUIShow(show)
@@ -262,6 +275,7 @@ function Photo_editingView:removeDecorate(name)
   self.decorate_subView:ActiveDecorateUnit(nil)
   self.photoEditorData_:RemoveDecorate(name)
   self.decorate_subView:RemoveUnit(name)
+  Z.EventMgr:Dispatch(Z.ConstValue.Camera.DecorateNumberUpdate)
 end
 
 function Photo_editingView:changeAlpha(name, alpha)

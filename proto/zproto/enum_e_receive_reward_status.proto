@@ -7,4 +7,3 @@ enum EReceiveRewardStatus {
     EReceiveRewardStatusCanReceive = 1;
     EReceiveRewardStatusReceived = 2;
 }
-

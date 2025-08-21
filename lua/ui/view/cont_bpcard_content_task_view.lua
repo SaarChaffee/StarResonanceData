@@ -72,12 +72,12 @@ function Cont_bpcard_content_taskView:bindWatchers()
   end
   
   Z.ContainerMgr.CharSerialize.seasonCenter.bpQuestList.Watcher:RegWatcher(self.refreshQuestData_)
-  Z.ContainerMgr.CharSerialize.seasonCenter.battlePass.Watcher:RegWatcher(self.refreshQuestData_)
+  Z.ContainerMgr.CharSerialize.battlePassData.Watcher:RegWatcher(self.refreshQuestData_)
 end
 
 function Cont_bpcard_content_taskView:unBindWatchers()
   Z.ContainerMgr.CharSerialize.seasonCenter.bpQuestList.Watcher:UnregWatcher(self.refreshQuestData_)
-  Z.ContainerMgr.CharSerialize.seasonCenter.battlePass.Watcher:UnregWatcher(self.refreshQuestData_)
+  Z.ContainerMgr.CharSerialize.battlePassData.Watcher:UnregWatcher(self.refreshQuestData_)
 end
 
 function Cont_bpcard_content_taskView:initWeekLoopScroll()

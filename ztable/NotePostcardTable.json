@@ -1,0 +1,101 @@
+{
+  "1210001": {
+    "Id": 1210001,
+    "Episode": 1210001,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_yxc",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_yxc",
+    "IsHide": false
+  },
+  "1210002": {
+    "Id": 1210002,
+    "Episode": 1210002,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_jtyj",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_jtyj",
+    "IsHide": false
+  },
+  "1210003": {
+    "Id": 1210003,
+    "Episode": 1210003,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_yxbl",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_yxbl",
+    "IsHide": false
+  },
+  "1210004": {
+    "Id": 1210004,
+    "Episode": 1210004,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_adlyz",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_adlyz",
+    "IsHide": false
+  },
+  "1210005": {
+    "Id": 1210005,
+    "Episode": 1210005,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_adldlzyz",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_adldlzyz",
+    "IsHide": false
+  },
+  "1210006": {
+    "Id": 1210006,
+    "Episode": 1210006,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_adldxsd",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_adldxsd",
+    "IsHide": false
+  },
+  "1210007": {
+    "Id": 1210007,
+    "Episode": 1210007,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_msthe",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_msthe",
+    "IsHide": false
+  },
+  "1210008": {
+    "Id": 1210008,
+    "Episode": 1210008,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_knmblrk",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_knmblrk",
+    "IsHide": false
+  },
+  "1210009": {
+    "Id": 1210009,
+    "Episode": 1210009,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_zlyst",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_zlyst",
+    "IsHide": false
+  },
+  "1210010": {
+    "Id": 1210010,
+    "Episode": 1210010,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_adlfd",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_adlfd",
+    "IsHide": false
+  },
+  "1210011": {
+    "Id": 1210011,
+    "Episode": 1210011,
+    "Name": "",
+    "DictionaryDes": "",
+    "ListResources": "ui/textures/handbook_postcard/list_icons_notepostcard_image_aybl",
+    "Resources": "ui/textures/handbook_postcard/notepostcard_image_aybl",
+    "IsHide": false
+  }
+}

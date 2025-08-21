@@ -9,4 +9,3 @@ message TeamMemRealTimeVoiceInfo {
     zproto.EMicrophoneStatus microphoneStatus = 1;
     zproto.ESpeakStatus speakStatus = 2;
 }
-

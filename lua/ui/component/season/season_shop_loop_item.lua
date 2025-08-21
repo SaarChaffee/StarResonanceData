@@ -6,24 +6,22 @@ local propState = {
   count = 2,
   level = 3,
   have = 4,
-  lock = 5
+  lock = 5,
+  condition = 6,
+  conditionShowPrice = 7
 }
 local labelEnum = {
   none = 0,
   discount = 1,
   cfg = 2
 }
-local qualityAnim = {
-  [5] = Z.DOTweenAnimType.Open,
-  [4] = Z.DOTweenAnimType.Tween_1,
-  [3] = Z.DOTweenAnimType.Tween_2
-}
 local bgImgStr_ = "ui/atlas/season/seasonshop_item_quality_%d"
-local labImgStr_ = "ui/atlas/season/seasonshop_item_lab_quality_%d"
 
 function SeasonShopLoopItem:ctor()
-  self.vm = Z.VMMgr.GetVM("season_shop")
+  self.fashionVM = Z.VMMgr.GetVM("fashion")
   self.shopData = Z.DataMgr.Get("shop_data")
+  self.itemsVM_ = Z.VMMgr.GetVM("items")
+  self.shopVM_ = Z.VMMgr.GetVM("shop")
 end
 
 function SeasonShopLoopItem:initZWidget()
@@ -53,33 +51,46 @@ function SeasonShopLoopItem:initZWidget()
     self.uiBinder.img_day_bg
   }
   self.lastRedId_ = nil
+  self.qualityAnim_ = {
+    [E.ItemQuality.Yellow] = self.uiBinder.anim_quality
+  }
 end
 
 function SeasonShopLoopItem:OnInit()
   self:initZWidget()
   self.quality_btn_:AddListener(function()
-    if not self.parent.UIView.IsFashionShop then
-      local d = self:GetCurData()
-      if self.curPropState == propState.count then
-        Z.VMMgr.GetVM("all_tips").OpenMessageView({configId = 1000720})
-        return
-      end
-      if self.curPropState == propState.level then
-        Z.VMMgr.GetVM("all_tips").OpenMessageView({configId = 1000725})
-        return
-      end
-      if self.curPropState == propState.have then
-        Z.TipsVM.ShowTips(1000748)
-        return
-      end
-      self.parent.UIView:OpenBuyPopup(d, self.Index)
+    if self.parent.UIView.IsFashionShop then
+      self.parent.UIView:SetSelected(self.data_, self.Index)
     else
-      self.parent.UIView:SetSelected(self.Index)
+      self:onSelectNormalShopItem()
     end
   end)
 end
 
+function SeasonShopLoopItem:onSelectNormalShopItem()
+  if self.curPropState == propState.count then
+    Z.VMMgr.GetVM("all_tips").OpenMessageView({configId = 1000720})
+    return
+  end
+  if self.curPropState == propState.level then
+    Z.VMMgr.GetVM("all_tips").OpenMessageView({configId = 1000725})
+    return
+  end
+  if self.curPropState == propState.have then
+    Z.TipsVM.ShowTips(1000748)
+    return
+  end
+  if self.curPropState == propState.lock then
+    if self.curLockTipId then
+      Z.TipsVM.ShowTips(self.curLockTipId)
+    end
+    return
+  end
+  self.parent.UIView:OpenBuyPopup(self:GetCurData(), self.Index)
+end
+
 function SeasonShopLoopItem:OnRefresh(data)
+  self.data_ = data
   if self.lastRedId_ then
     Z.RedPointMgr.RemoveNodeItem(self.lastRedId_)
     self.lastRedId_ = nil
@@ -87,24 +98,16 @@ function SeasonShopLoopItem:OnRefresh(data)
   if data == nil then
     return
   end
-  if data.shopType == E.EShopType.Shop then
-    local mallItemCfgData = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(data.itemId)
-    if mallItemCfgData then
-      local mallCfgData = self.shopData.MallTableDatas[mallItemCfgData.FunctionId]
-      if mallCfgData then
-        if mallCfgData.HasFatherType == 0 then
-          self.lastRedId_ = string.zconcat(E.RedType.Shop, E.RedType.ShopOneTab, mallCfgData.Id, E.RedType.ShopItem, data.itemId)
-        else
-          self.lastRedId_ = string.zconcat(E.RedType.Shop, E.RedType.ShopTwoTab, mallCfgData.Id, E.RedType.ShopItem, data.itemId)
-        end
-      end
-    end
-  elseif data.shopType == E.EShopType.SeasonShop then
-    local mallItemCfgData = Z.TableMgr.GetTable("SeasonShopItemTableMgr").GetRow(data.itemId)
-    if mallItemCfgData then
-      local mallCfgData = self.shopData.SeasonShopTableDatas[mallItemCfgData.FunctionId]
-      if mallCfgData then
+  local mallItemCfgData = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(data.itemId)
+  if mallItemCfgData then
+    local mallCfgData = self.shopData.MallTableDatas[mallItemCfgData.FunctionId]
+    if mallCfgData then
+      if mallCfgData.ShowType == E.EShopType.SeasonShop then
         self.lastRedId_ = string.zconcat(E.RedType.SeasonShop, E.RedType.SeasonShopOneTab, mallCfgData.Id, E.RedType.SeasonShopItem, data.itemId)
+      elseif mallCfgData.HasFatherType == 0 then
+        self.lastRedId_ = string.zconcat(E.RedType.Shop, E.RedType.ShopOneTab, mallCfgData.Id, E.RedType.ShopItem, data.itemId)
+      else
+        self.lastRedId_ = string.zconcat(E.RedType.Shop, E.RedType.ShopTwoTab, mallCfgData.Id, E.RedType.ShopItem, data.itemId)
       end
     end
   end
@@ -122,14 +125,18 @@ function SeasonShopLoopItem:OnRefresh(data)
   self:showBuyState(data.cfg)
   self:refreshLockState(data.cfg)
   self:showPropState()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.IsSelected)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.parent.UIView.IsFashionShop and self.IsSelected)
 end
 
 function SeasonShopLoopItem:OnSelected(isSelected)
   if isSelected then
-    self.parent.UIView:OpenBuyPopup(self:GetCurData(), self.Index)
+    if self.parent.UIView.IsFashionShop then
+      self.parent.UIView:OpenBuyPopup(self:GetCurData(), self.Index, self.curPropState)
+    else
+      self:onSelectNormalShopItem()
+    end
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, isSelected)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.parent.UIView.IsFashionShop and isSelected)
 end
 
 function SeasonShopLoopItem:OnUnInit()
@@ -137,6 +144,11 @@ function SeasonShopLoopItem:OnUnInit()
     Z.RedPointMgr.RemoveNodeItem(self.lastRedId_)
     self.lastRedId_ = nil
   end
+  self:clearTimerCall()
+end
+
+function SeasonShopLoopItem:OnRecycle()
+  self:clearTimerCall()
 end
 
 function SeasonShopLoopItem:showItem(cfg)
@@ -173,13 +185,18 @@ function SeasonShopLoopItem:showCost(cfg)
     if id ~= 0 then
       self.uiBinder.Ref:SetVisible(self.price_old_, true)
       self.price_old_.text = Z.NumTools.FormatNumberWithCommas(num)
+      break
     end
-    break
   end
-  if cost == 0 then
-    cost = Lang("Free")
+  local showPrice = cost
+  if self.parent.UIView.IsFashionShop then
+    showPrice = self.shopVM_.GetShopMallItemPrice(cfg)
   end
-  self.price_new_.text = Z.NumTools.FormatNumberWithCommas(cost)
+  if showPrice == 0 then
+    self.price_new_.text = Lang("Free")
+  else
+    self.price_new_.text = Z.NumTools.FormatNumberWithCommas(showPrice)
+  end
   self:showTag(cfg, cost)
 end
 
@@ -196,7 +213,7 @@ function SeasonShopLoopItem:showTag(cfg, cost)
         self.uiBinder.Ref:SetVisible(self.discount_, false)
       elseif cfg.OriginalPrice[self.currencyId_] then
         self.uiBinder.Ref:SetVisible(self.discount_, true)
-        self.discount_label_.text = string.format("%d%%", math.floor(cost / cfg.OriginalPrice[self.currencyId_] * 100))
+        self.discount_label_.text = string.format("%d%%", -math.floor((cfg.OriginalPrice[self.currencyId_] - cost) / cfg.OriginalPrice[self.currencyId_] * 100))
       else
         self.uiBinder.Ref:SetVisible(self.discount_, false)
       end
@@ -218,7 +235,7 @@ function SeasonShopLoopItem:showCountLimit(data)
     local num, index = 0, 1
     local countTab = {}
     for id, _ in pairs(data.buyCount) do
-      if id ~= self.vm.SeasonShopRefreshType.none then
+      if id ~= E.ESeasonShopRefreshType.None then
         countTab[#countTab + 1] = id
       end
     end
@@ -235,7 +252,7 @@ function SeasonShopLoopItem:showCountLimit(data)
       local limit_Tab_ = self.limit_tab_[index]
       local limit_Img_ = self.limit_img_[index]
       self.uiBinder.Ref:SetVisible(limit_Img_, true)
-      self.uiBinder.img_week_bg:SetImage(string.format(labImgStr_, itemCfg.Quality))
+      self.uiBinder.img_week_bg:SetColor(self.shopData.ShopQualityLab[itemCfg.Quality])
       limit_Tab_.text = Lang("SeasonShopCanBuyCountTitle") .. count.canBuyCount .. "/" .. count.purchasedCount + count.canBuyCount
       if self.curPropState == propState.none and num <= 0 then
         self.curPropState = propState.count
@@ -244,9 +261,9 @@ function SeasonShopLoopItem:showCountLimit(data)
       limit_Tab_ = self.limit_tab_[index]
       limit_Img_ = self.limit_img_[index]
       local str_ = ""
-      if id == self.vm.SeasonShopRefreshType.daily then
+      if id == E.ESeasonShopRefreshType.Daily then
         str_ = Lang("SeasonShopDayTitle")
-      elseif id == self.vm.SeasonShopRefreshType.week then
+      elseif id == E.ESeasonShopRefreshType.Week then
         str_ = Lang("SeasonShopWeekTitle")
       end
       self.uiBinder.Ref:SetVisible(limit_Img_, true)
@@ -260,29 +277,34 @@ function SeasonShopLoopItem:showCountLimit(data)
         num = count.maxBuyCount - count.canBuyCount
         local limit_Tab_ = self.limit_tab_[index]
         local limit_Img_ = self.limit_img_[index]
-        self.uiBinder.img_week_bg:SetImage(string.format(labImgStr_, itemCfg.Quality))
-        if countTab[i] == self.vm.SeasonShopRefreshType.daily then
+        self.uiBinder.img_week_bg:SetColor(self.shopData.ShopQualityLab[itemCfg.Quality])
+        if countTab[i] == E.ESeasonShopRefreshType.Daily then
           str_ = Lang("SeasonShopDayTitle")
           if num == count.maxBuyCount and self.curPropState == propState.none then
             self.curPropState = propState.count
           end
-        elseif countTab[i] == self.vm.SeasonShopRefreshType.week then
+        elseif countTab[i] == E.ESeasonShopRefreshType.Week then
           str_ = Lang("SeasonShopWeekTitle")
           if num == count.maxBuyCount and self.curPropState == propState.none then
             self.curPropState = propState.count
           end
-        elseif countTab[i] == self.vm.SeasonShopRefreshType.month then
+        elseif countTab[i] == E.ESeasonShopRefreshType.Month then
           str_ = Lang("SeasonShopMonthTitle")
           if num == count.maxBuyCount and self.curPropState == propState.none then
             self.curPropState = propState.count
           end
-        elseif countTab[i] == self.vm.SeasonShopRefreshType.season then
+        elseif countTab[i] == E.ESeasonShopRefreshType.Season then
           num = count.purchasedCount
           if data.shopType == 0 then
             str_ = Lang("ShopSeasonLimitTitle")
           else
             str_ = Lang("SeasonShopSeasonLimitTitle")
           end
+          if num == count.maxBuyCount and self.curPropState == propState.none then
+            self.curPropState = propState.count
+          end
+        elseif countTab[i] == E.ESeasonShopRefreshType.Compensate or countTab[i] == E.ESeasonShopRefreshType.Permanent then
+          str_ = Lang("ShopSeasonLimitTitle")
           if num == count.maxBuyCount and self.curPropState == propState.none then
             self.curPropState = propState.count
           end
@@ -299,14 +321,24 @@ function SeasonShopLoopItem:showTimeLimit(data)
   if data.startTime == 0 then
     self.uiBinder.Ref:SetVisible(self.time_lock_, false)
   else
-    local t = Z.TimeTools.Now()
-    if t < data.startTime then
-      self.uiBinder.Ref:SetVisible(self.time_lock_, true)
+    local t = Z.TimeTools.Now() * 0.001
+    local checkTime = 0
+    if t < self.data_.startTime then
+      self.rigestTimerCall_ = true
+      checkTime = self.data_.startTime
       if self.curPropState == propState.none then
         self.curPropState = propState.time
       end
-      self.curTime_ = math.floor((data.startTime - Z.TimeTools.Now()) / 1000)
-      self.parent.UIView:RigestTimerCall(data.itemId, function()
+    elseif t < self.data_.endTime then
+      self.rigestTimerCall_ = true
+      checkTime = self.data_.endTime
+    else
+      self.rigestTimerCall_ = false
+    end
+    if self.rigestTimerCall_ then
+      self.uiBinder.Ref:SetVisible(self.time_lock_, true)
+      self.curTime_ = math.floor(checkTime - t)
+      self.parent.UIView:RigestTimerCall(self.data_.itemId, function()
         self:updateTime()
       end)
       self:updateTime()
@@ -318,7 +350,7 @@ end
 
 function SeasonShopLoopItem:showLevelLimit(data)
   local levelLimit = data.cfg.ShowLimitType
-  if not levelLimit[1] and not levelLimit[1][2] then
+  if not levelLimit[1] or not levelLimit[1][2] then
     return
   end
   local bool = Z.ConditionHelper.CheckCondition(levelLimit)
@@ -329,21 +361,45 @@ function SeasonShopLoopItem:showLevelLimit(data)
 end
 
 function SeasonShopLoopItem:showBuyState(cfg)
-  local itemTableCfgData = Z.TableMgr.GetTable("ItemTableMgr").GetRow(cfg.ItemId)
-  if not itemTableCfgData then
-    return
-  end
-  local itemTypeTableCfgData = Z.TableMgr.GetTable("ItemTypeTableMgr").GetRow(itemTableCfgData.Type)
-  if not itemTypeTableCfgData then
-    return
-  end
-  if not itemTypeTableCfgData.UpperLlimit or itemTypeTableCfgData.UpperLlimit <= 0 then
-    return
-  end
-  local itemsVm = Z.VMMgr.GetVM("items")
-  local count = itemsVm.GetItemTotalCount(cfg.ItemId)
-  if count >= itemTypeTableCfgData.UpperLlimit then
-    self.curPropState = propState.have
+  if self.parent.UIView.IsFashionShop then
+    local have = false
+    if cfg.GoodsType == E.EShopGoodsType.EFashion then
+      if cfg.GoodsGroup and #cfg.GoodsGroup > 0 then
+        for i = 1, #cfg.GoodsGroup do
+          local mallRow = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(cfg.GoodsGroup[i], true)
+          if mallRow and self.shopVM.CheckUnlockCondition(mallRow.UnlockConditions) then
+            have = self.fashionVM.GetFashionIsUnlock(mallRow.ItemId)
+            if not have then
+              break
+            end
+          end
+        end
+      else
+        have = self.fashionVM.GetFashionIsUnlock(cfg.ItemId)
+      end
+    elseif cfg.GoodsType == E.EShopGoodsType.EMount then
+      have = 0 < self.itemsVM_.GetItemTotalCount(cfg.ItemId)
+    end
+    if have then
+      self.curPropState = propState.have
+    end
+  else
+    local itemTableCfgData = Z.TableMgr.GetTable("ItemTableMgr").GetRow(cfg.ItemId)
+    if not itemTableCfgData then
+      return
+    end
+    local itemTypeTableCfgData = Z.TableMgr.GetTable("ItemTypeTableMgr").GetRow(itemTableCfgData.Type)
+    if not itemTypeTableCfgData then
+      return
+    end
+    if not itemTypeTableCfgData.UpperLlimit or 0 >= itemTypeTableCfgData.UpperLlimit then
+      return
+    end
+    local itemsVm = Z.VMMgr.GetVM("items")
+    local count = itemsVm.GetItemTotalCount(cfg.ItemId)
+    if count >= itemTypeTableCfgData.UpperLlimit then
+      self.curPropState = propState.have
+    end
   end
 end
 
@@ -352,7 +408,7 @@ function SeasonShopLoopItem:updateTime()
   if self.curTime_ <= 0 then
     self.parent.UIView:UpdateProp()
   else
-    self.time_lock_label_.text = Z.TimeTools.FormatToDHMS(self.curTime_)
+    self.time_lock_label_.text = Z.TimeFormatTools.FormatToDHMS(self.curTime_)
     if self.curPropState == propState.time then
       self.buy_state_label_.text = self.time_lock_label_.text
     end
@@ -362,27 +418,52 @@ end
 function SeasonShopLoopItem:refreshLockState(cfg)
   local check = Z.ConditionHelper.CheckCondition(cfg.UnlockConditions)
   if check == false then
-    local desc
-    local r = Z.ConditionHelper.GetConditionDescList(cfg.UnlockConditions, true)
+    local desc, showLock, lockTipId, conditionLimit
+    local r = Z.ConditionHelper.GetConditionDescList(cfg.UnlockConditions)
     for _, value in ipairs(r) do
       if value.IsUnlock == false then
-        desc = value.showPurview
+        if value.showLock then
+          desc = value.showPurview
+        else
+          desc = value.Desc
+        end
+        showLock = value.showLock
+        lockTipId = value.tipsId
+        conditionLimit = true
         break
       end
     end
-    self.curPropState = propState.lock
-    self.uiBinder.lab_unlock_conditions.text = desc
-    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_unlock_conditions, true)
+    if showLock then
+      self.curPropState = propState.lock
+      self.buy_state_label_.text = desc
+      self.uiBinder.lab_unlock_conditions.text = ""
+      self.curLockTipId = lockTipId
+    else
+      self.curPropState = propState.condition
+      self.uiBinder.lab_unlock_conditions.text = desc
+    end
+    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_unlock_conditions, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_condition_no_bg, conditionLimit)
+    self.uiBinder.canvas_bg.alpha = conditionLimit and 0.3 or 1
+    if conditionLimit and not cfg.NotPurchaseConditionsIsShow then
+      self.curPropState = propState.conditionShowPrice
+    end
     return
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_condition_no_bg, false)
+    self.uiBinder.canvas_bg.alpha = 1
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.lab_unlock_conditions, false)
 end
 
 function SeasonShopLoopItem:showPropState()
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_lock, true)
-  if self.curPropState == propState.none then
+  if self.curPropState == propState.none or self.curPropState == propState.conditionShowPrice then
     self.uiBinder.Ref:SetVisible(self.buy_state_root_, false)
     self.uiBinder.Ref:SetVisible(self.price_root_, true)
+  elseif self.curPropState == propState.lock then
+    self.uiBinder.Ref:SetVisible(self.buy_state_root_, false)
+    self.uiBinder.Ref:SetVisible(self.price_root_, false)
   else
     self.uiBinder.Ref:SetVisible(self.buy_state_root_, true)
     self.uiBinder.Ref:SetVisible(self.price_root_, false)
@@ -394,19 +475,27 @@ function SeasonShopLoopItem:showPropState()
       self.buy_state_label_.text = Lang("SeasonShopSellDone")
     elseif self.curPropState == propState.have then
       self.buy_state_label_.text = Lang("SeasonShopSellLimit")
-    elseif self.curPropState == propState.lock then
+    elseif self.curPropState == propState.condition then
       self.buy_state_label_.text = ""
       self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_lock, false)
     end
   end
 end
 
-function SeasonShopLoopItem:onStartAnimShow(index)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_light_red, index == 5)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_light_yellow, index == 4)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_light_purple, index == 3)
-  if 3 <= index then
-    self.uiBinder.anim:Restart(qualityAnim[index])
+function SeasonShopLoopItem:onStartAnimShow(quality)
+  for index, anim in pairs(self.qualityAnim_) do
+    self.uiBinder.Ref:SetVisible(anim, quality == index)
+    anim:Stop()
+    if index == quality then
+      anim:PlayLoop("anim_item_shop_light_tpl")
+    end
+  end
+end
+
+function SeasonShopLoopItem:clearTimerCall()
+  if self.rigestTimerCall_ then
+    self.parent.UIView:UnrigestTimerCall(self.data_.itemId)
+    self.rigestTimerCall_ = false
   end
 end
 

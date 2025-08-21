@@ -2,6 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
-message AceSdkNtf {
-}
+import "stru_notify_login_anti_data_request.proto";
 
+message AceSdkNtf {
+    message NotifyLoginAntiData {
+        zproto.NotifyLoginAntiDataRequest vRequest = 1;
+    }
+}

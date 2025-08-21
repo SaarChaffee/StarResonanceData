@@ -277,7 +277,7 @@ function Hero_dungeon_tips_popupView:setItem(rollItem, rollInfo)
   end
   rollItem.lab_info_content.text = headStr
   local socialData = self.socialVm_.AsyncGetSocialData(0, rollInfo.charId, self.cancelSource:CreateToken())
-  playerPortraitHgr.InsertNewPortraitBySocialData(rollItem.cont_head_30_item, socialData)
+  playerPortraitHgr.InsertNewPortraitBySocialData(rollItem.cont_head_30_item, socialData, nil, self.cancelSource:CreateToken())
 end
 
 function Hero_dungeon_tips_popupView:isBeginRoll(rollInfo, isGet)

@@ -19,8 +19,8 @@ function Parkour_count_down_tplView:DeActive()
   self.timerMgr:Clear()
 end
 
-function Parkour_count_down_tplView:CountDownFunc(timeNumber, limitTime, timeFinishFunc, timeCallFunc, timeLimitFunc, isEndShow)
-  local detailTime = timeNumber
+function Parkour_count_down_tplView:CountDownFunc(timeInfo)
+  local detailTime = timeInfo.timeNumber
   if detailTime <= 0 then
     return
   end
@@ -34,29 +34,32 @@ function Parkour_count_down_tplView:CountDownFunc(timeNumber, limitTime, timeFin
       self.unit.Ref:SetVisible(true)
     end
     detailTime = detailTime - 1
-    if limitTime ~= nil and detailTime <= limitTime and isFirst then
+    if timeInfo.limitTime ~= nil and detailTime <= timeInfo.limitTime and isFirst then
       isFirst = false
-      if timeLimitFunc then
-        timeLimitFunc()
+      if timeInfo.timeLimitFunc then
+        timeInfo.timeLimitFunc()
       end
     end
-    if timeCallFunc then
-      timeCallFunc()
+    if timeInfo.timeCallFunc then
+      timeInfo.timeCallFunc()
     end
     self:SetNumberImg(detailTime)
     self.unit.node_time.Audio:PlayByTrigger(Panda.ZUi.UIAudioTrigger.commonAudio_1)
     self.unit.anim_parkour.anim:PlayOnce("ui_anim_parkour_count_down_tpl_countdown_2")
-  end, 0.5, detailTime, true, function()
-    if isEndShow == nil or isEndShow == false then
+  end, 1, detailTime, true, function()
+    if timeInfo.isEndShow == nil or timeInfo.isEndShow == false then
       self.unit.Ref:SetVisible(false)
     end
-    if timeFinishFunc then
-      timeFinishFunc()
+    if timeInfo.timeFinishFunc then
+      timeInfo.timeFinishFunc()
     end
   end)
 end
 
 function Parkour_count_down_tplView:SetNumberImg(path)
+  if path == 0 then
+    return
+  end
   self.img_num.Img:SetImage(self.unit.Ref.PrefabCacheData:GetString(path))
 end
 

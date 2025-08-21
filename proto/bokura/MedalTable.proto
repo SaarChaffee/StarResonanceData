@@ -11,8 +11,6 @@ message MedalTableBase {
     mlstring UnlockDes = 1991;
     string Image = 958;
 }
-
 message MedalTableMgr {
-    map<int32, .bokura.MedalTableBase> datas = 1;
+    repeated bokura.MedalTableMgr.DatasEntry datas = 1;
 }
-

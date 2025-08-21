@@ -1,67 +1,57 @@
-local super = require("ui.component.loopscrollrectitem")
+local super = require("ui.component.loop_list_view_item")
 local playerPortraitMgr = require("ui.component.role_info.common_player_portrait_item_mgr")
 local FriendFrameItem = class("FriendFrameItem", super)
 
-function FriendFrameItem:ctor()
-  self.uiBinder = nil
+function FriendFrameItem:OnInit()
   self.friendMainData_ = Z.DataMgr.Get("friend_main_data")
   self.chatMainData_ = Z.DataMgr.Get("chat_main_data")
   self.friendsMainVm_ = Z.VMMgr.GetVM("friends_main")
   self.socialVm_ = Z.VMMgr.GetVM("social")
-end
-
-function FriendFrameItem:OnInit()
-end
-
-function FriendFrameItem:Refresh()
-  local index = self.component.Index + 1
-  self.data_ = self.parent:GetDataByIndex(index)
-  if self.data_:GetIsGroup() then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_head, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_content, true)
-    self.uiBinder.lab_label.text = self.friendMainData_:GetGroupName(self.data_:GetGroupId())
-    self.uiBinder.btn_item.interactable = true
-    self:refreshArrow()
-    self:refreshOnlineNum()
-  else
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, true)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_head, true)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_content, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, self.isSelected_)
-    self.uiBinder.btn_item.interactable = false
-    if self.uiBinder == nil then
-      return
-    end
-    self:refreshPlayerInfo()
-    self:EventAddAsyncListener(self.uiBinder.btn_item.OnLongPressEvent, function()
+  self.loopListViewItem.OnLongPressEvent:AddListener(function()
+    Z.CoroUtil.create_coro_xpcall(function()
       local isFriend = not self.chatMainData_:IsInBlack(self.data_:GetCharId())
-      self.parent.uiView:ShowBtnFunctionTips(self.data_:GetCharId(), self.uiBinder.node_tips.position, false, isFriend)
-    end)
-    self:AddAsyncClick(self.uiBinder.img_bg, function()
+      self.parent.UIView:AsyncShowBtnFunctionTips(self.data_:GetCharId(), self.uiBinder.node_tips.position, false, isFriend)
+    end)()
+  end)
+  self.uiBinder.img_bg:AddListener(function()
+    Z.CoroUtil.create_coro_xpcall(function()
       local idCardVM = Z.VMMgr.GetVM("idcard")
-      idCardVM.AsyncGetCardData(self.data_:GetCharId(), self.parent.uiView.cancelSource:CreateToken())
-    end)
-  end
-  self:AddClick(self.uiBinder.btn_item, function()
-    self:onSelectedGroup()
+      idCardVM.AsyncGetCardData(self.data_:GetCharId(), self.parent.UIView.cancelSource:CreateToken())
+    end)()
   end)
 end
 
-function FriendFrameItem:OnPointerClick()
+function FriendFrameItem:OnRefresh(data)
+  self.data_ = data
+  if self.data_:GetIsGroup() then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_head, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_content, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, false)
+    self.uiBinder.lab_label.text = self.friendMainData_:GetGroupName(self.data_:GetGroupId())
+    self:refreshArrow()
+    self:refreshOnlineNum()
+    self.uiBinder.Trans:SetHeight(70)
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_head, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_content, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, self.IsSelected)
+    self:refreshPlayerInfo()
+    self.uiBinder.Trans:SetHeight(124)
+  end
+  self.loopListView:OnItemSizeChanged(self.Index)
 end
 
-function FriendFrameItem:Selected(isSelected)
+function FriendFrameItem:OnSelected(isSelected, isClick)
   if self.data_:GetIsGroup() then
-    return
+    if isClick then
+      self:onSelectedGroup()
+    end
+  else
+    self:onSelectedFriend(isSelected)
   end
-  self:onSelectedFriend(isSelected)
 end
 
 function FriendFrameItem:onSelectedGroup()
-  if not self.data_:GetIsGroup() then
-    return
-  end
   local isShow = self.data_:GetIsGroupShow()
   if isShow == 0 then
     self.data_:SetIsGroupShow(1)
@@ -69,7 +59,7 @@ function FriendFrameItem:onSelectedGroup()
     self.data_:SetIsGroupShow(0)
   end
   self:refreshArrow()
-  self.parent.uiView:RefreshFriendsData()
+  self.parent.UIView:RefreshFriendsData()
 end
 
 function FriendFrameItem:refreshArrow()
@@ -96,29 +86,26 @@ end
 function FriendFrameItem:onSelectedFriend(isSelected)
   self.data_:SetIsSelect(isSelected)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, isSelected)
-  self.isSelected_ = isSelected
-  if true == isSelected then
+  if isSelected then
     if self.friendMainData_:GetAddressSelectCharId() == self.data_:GetCharId() then
       local rightList = self.friendMainData_:GetRightSubViewList()
       if table.zcount(rightList) > 0 then
-        self.parent.uiView:ShowRightNodeByCacheList()
+        self.parent.UIView:ShowRightNodeByCacheList()
         return
       end
     end
     self.friendMainData_:SetAddressSelectCharId(self.data_:GetCharId())
     if self.chatMainData_:IsInBlack(self.data_:GetCharId()) then
-      Z.CoroUtil.create_coro_xpcall(function()
-        self.friendsMainVm_.AsyncRefreshBlacks({
-          self.data_:GetCharId()
-        })
-      end)()
-      self.parent.uiView:ShowNodeRightSubView(E.FriendFunctionViewType.None, {}, true)
+      self.parent.UIView:ShowNodeRightSubView(E.FriendFunctionViewType.None, {}, true)
     else
       local viewData = {}
       viewData.IsNeedReturn = false
       viewData.CharId = self.data_:GetCharId()
-      self.parent.uiView:ShowNodeRightSubView(E.FriendFunctionViewType.SendMessage, viewData, true)
+      self.parent.UIView:ShowNodeRightSubView(E.FriendFunctionViewType.SendMessage, viewData, true)
     end
+    Z.CoroUtil.create_coro_xpcall(function()
+      self:asyncInitInfo()
+    end)()
   end
 end
 
@@ -164,7 +151,7 @@ function FriendFrameItem:refreshShowState(offTime, scenenId, personalState)
 end
 
 function FriendFrameItem:refreshHead(socialData)
-  playerPortraitMgr.InsertNewPortraitBySocialData(self.uiBinder.cont_friend_select_head_tpl, socialData)
+  playerPortraitMgr.InsertNewPortraitBySocialData(self.uiBinder.cont_friend_select_head_tpl, socialData, nil, self.parent.UIView.cancelSource:CreateToken())
 end
 
 function FriendFrameItem:asyncInitInfo()
@@ -172,6 +159,7 @@ function FriendFrameItem:asyncInitInfo()
   self.friendsMainVm_.AsyncInitInfo(self.data_)
   self:checkBlackOffTime(oldTime, self.data_:GetPlayerOffLineTime())
   self:refreshPlayerInfo()
+  Z.EventMgr:Dispatch(Z.ConstValue.Chat.SocialDataUpdata)
 end
 
 function FriendFrameItem:refreshPlayerInfo()
@@ -184,14 +172,6 @@ function FriendFrameItem:refreshPlayerInfo()
   self:refreshName(name)
   self:refreshShowState(self.data_:GetPlayerOffLineTime(), self.data_:GetPlayerSceneId(), self.data_:GetPlayerPersonalState())
   self:refreshHead(self.data_:GetSocialData())
-end
-
-function FriendFrameItem:OnUnInit()
-  self.isSelected_ = false
-end
-
-function FriendFrameItem:OnReset()
-  self.isSelected_ = false
 end
 
 return FriendFrameItem

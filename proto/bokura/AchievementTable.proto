@@ -15,8 +15,6 @@ message AchievementTableBase {
     int_table award = 149;
     string icon = 1210;
 }
-
 message AchievementTableMgr {
-    map<int32, .bokura.AchievementTableBase> datas = 1;
+    repeated bokura.AchievementTableMgr.DatasEntry datas = 1;
 }
-

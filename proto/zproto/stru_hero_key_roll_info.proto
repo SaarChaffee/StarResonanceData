@@ -12,6 +12,4 @@ message HeroKeyRollInfo {
     string name = 3;
     zproto.AvatarInfo avatar = 4;
     uint32 rollValue = 5;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

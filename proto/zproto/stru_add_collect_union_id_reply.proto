@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_union_list_data.proto";
 
 message AddCollectUnionIdReply {
-    int32 errCode = 1;
-    zproto.UnionListData briefUnionIfo = 2;
+    zproto.UnionListData briefUnionIfo = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

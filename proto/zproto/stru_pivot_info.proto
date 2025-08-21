@@ -9,6 +9,4 @@ message PivotInfo {
     repeated int32 breakPoint = 2;
     repeated int32 rewardStage = 3;
     int32 rewardFullState = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

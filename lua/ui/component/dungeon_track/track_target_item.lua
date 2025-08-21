@@ -78,20 +78,20 @@ function TrackTargetItem:efreshEffect(isComplete)
 end
 
 function TrackTargetItem:RefreshContent(isComplete, targetCfg, targetData)
-  if targetCfg.TargetDes and targetCfg.TargetDes ~= "" then
-    self.unit_.lab_task_content.Go:SetActive(true)
-    local contentNum = Lang("dungeonTargetValue", {
-      val1 = targetData.nums,
-      val2 = targetCfg.Num
-    })
-    local content = contentNum .. "  " .. targetCfg.TargetDes
-    if isComplete then
-      content = Z.RichTextHelper.ApplyStyleTag(content, E.TextStyleTag.JobNotActive)
-    end
-    self.unit_.lab_task_content.TMPLab.text = content
-  else
+  if not targetCfg.TargetDes or targetCfg.TargetDes == "" then
     self.unit_.lab_task_content.Go:SetActive(false)
+    return
   end
+  self.unit_.lab_task_content.Go:SetActive(true)
+  local contentNum = Lang("dungeonTargetValue", {
+    val1 = targetData.nums,
+    val2 = targetCfg.Num
+  })
+  local content = contentNum .. "  " .. targetCfg.TargetDes
+  if isComplete then
+    content = Z.RichTextHelper.ApplyStyleTag(content, E.TextStyleTag.JobNotActive)
+  end
+  self.unit_.lab_task_content.TMPLab.text = content
 end
 
 function TrackTargetItem:SetProgress(targetCfg, targetData)
@@ -148,11 +148,11 @@ function TrackTargetItem:ResetUnit()
 end
 
 function TrackTargetItem:ClearUiUnit()
-  for k, v in pairs(self.subUnitToken_) do
-    Z.CancelSource.ReleaseToken(v)
+  for _, token in pairs(self.subUnitToken_) do
+    Z.CancelSource.ReleaseToken(token)
   end
   self.subUnitToken_ = {}
-  for varName, unitName in pairs(self.subUnitDic_) do
+  for _, unitName in pairs(self.subUnitDic_) do
     self.parentView_:RemoveUiUnit(unitName)
   end
   self.subUnitDic_ = {}

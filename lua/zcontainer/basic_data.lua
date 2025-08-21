@@ -7,7 +7,7 @@ local mergeDataFuncs = {
   end,
   [2] = function(container, buffer, watcherList)
     local last = container.__data__.showId
-    container.__data__.showId = br.ReadUInt32(buffer)
+    container.__data__.showId = br.ReadInt64(buffer)
     container.Watcher:MarkDirty("showId", last)
   end,
   [3] = function(container, buffer, watcherList)
@@ -78,6 +78,26 @@ local mergeDataFuncs = {
     local last = container.__data__.registerChannel
     container.__data__.registerChannel = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("registerChannel", last)
+  end,
+  [15] = function(container, buffer, watcherList)
+    local last = container.__data__.charState
+    container.__data__.charState = br.ReadUInt64(buffer)
+    container.Watcher:MarkDirty("charState", last)
+  end,
+  [16] = function(container, buffer, watcherList)
+    local last = container.__data__.onlineTime
+    container.__data__.onlineTime = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("onlineTime", last)
+  end,
+  [17] = function(container, buffer, watcherList)
+    local last = container.__data__.sumSaveDiamond
+    container.__data__.sumSaveDiamond = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("sumSaveDiamond", last)
+  end,
+  [18] = function(container, buffer, watcherList)
+    local last = container.__data__.isNewbie
+    container.__data__.isNewbie = br.ReadBoolean(buffer)
+    container.Watcher:MarkDirty("isNewbie", last)
   end
 }
 local setForbidenMt = function(t)
@@ -148,6 +168,18 @@ local resetData = function(container, pbData)
   end
   if not pbData.registerChannel then
     container.__data__.registerChannel = 0
+  end
+  if not pbData.charState then
+    container.__data__.charState = 0
+  end
+  if not pbData.onlineTime then
+    container.__data__.onlineTime = 0
+  end
+  if not pbData.sumSaveDiamond then
+    container.__data__.sumSaveDiamond = 0
+  end
+  if not pbData.isNewbie then
+    container.__data__.isNewbie = false
   end
   setForbidenMt(container)
 end
@@ -273,6 +305,26 @@ local getContainerElem = function(container)
     fieldId = 14,
     dataType = 0,
     data = container.registerChannel
+  }
+  ret.charState = {
+    fieldId = 15,
+    dataType = 0,
+    data = container.charState
+  }
+  ret.onlineTime = {
+    fieldId = 16,
+    dataType = 0,
+    data = container.onlineTime
+  }
+  ret.sumSaveDiamond = {
+    fieldId = 17,
+    dataType = 0,
+    data = container.sumSaveDiamond
+  }
+  ret.isNewbie = {
+    fieldId = 18,
+    dataType = 0,
+    data = container.isNewbie
   }
   return ret
 end

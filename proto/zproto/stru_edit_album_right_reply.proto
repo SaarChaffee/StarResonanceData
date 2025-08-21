@@ -3,10 +3,10 @@ syntax = "proto3";
 package zproto;
 
 import "enum_e_album_right.proto";
+import "enum_e_error_code.proto";
 
 message EditAlbumRightReply {
-    int32 errCode = 2;
     uint32 albumId = 3;
     zproto.EAlbumRight access = 4;
+    zproto.EErrorCode errCode = 5;
 }
-

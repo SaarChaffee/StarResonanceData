@@ -57,44 +57,6 @@ local mergeDataFuncs = {
       container.Watcher:MarkMapDirty("professionList", dk, {})
     end
   end,
-  [6] = function(container, buffer, watcherList)
-    local add = br.ReadInt32(buffer)
-    local remove = 0
-    local update = 0
-    if add == -4 then
-      return
-    end
-    if add == -1 then
-      add = br.ReadInt32(buffer)
-    else
-      remove = br.ReadInt32(buffer)
-      update = br.ReadInt32(buffer)
-    end
-    for i = 1, add do
-      local dk = br.ReadInt32(buffer)
-      local v = require("zcontainer.profession_skin_info").New()
-      v:MergeData(buffer, watcherList)
-      container.skinList.__data__[dk] = v
-      container.Watcher:MarkMapDirty("skinList", dk, nil)
-    end
-    for i = 1, remove do
-      local dk = br.ReadInt32(buffer)
-      local last = container.skinList.__data__[dk]
-      container.skinList.__data__[dk] = nil
-      container.Watcher:MarkMapDirty("skinList", dk, last)
-    end
-    for i = 1, update do
-      local dk = br.ReadInt32(buffer)
-      local last = container.skinList.__data__[dk]
-      if last == nil then
-        logWarning("last is nil: " .. dk)
-        last = require("zcontainer.profession_skin_info").New()
-        container.skinList.__data__[dk] = last
-      end
-      last:MergeData(buffer, watcherList)
-      container.Watcher:MarkMapDirty("skinList", dk, {})
-    end
-  end,
   [7] = function(container, buffer, watcherList)
     local add = br.ReadInt32(buffer)
     local remove = 0
@@ -218,9 +180,6 @@ local resetData = function(container, pbData)
   if not pbData.professionList then
     container.__data__.professionList = {}
   end
-  if not pbData.skinList then
-    container.__data__.skinList = {}
-  end
   if not pbData.aoyiSkillInfoMap then
     container.__data__.aoyiSkillInfoMap = {}
   end
@@ -241,13 +200,6 @@ local resetData = function(container, pbData)
     container.professionList[k]:ResetData(v)
   end
   container.__data__.professionList = nil
-  container.skinList.__data__ = {}
-  setForbidenMt(container.skinList)
-  for k, v in pairs(pbData.skinList) do
-    container.skinList.__data__[k] = require("zcontainer.profession_skin_info").New()
-    container.skinList[k]:ResetData(v)
-  end
-  container.__data__.skinList = nil
   container.aoyiSkillInfoMap.__data__ = {}
   setForbidenMt(container.aoyiSkillInfoMap)
   for k, v in pairs(pbData.aoyiSkillInfoMap) do
@@ -355,35 +307,6 @@ local getContainerElem = function(container)
       data = {}
     }
   end
-  if container.skinList ~= nil then
-    local data = {}
-    for key, repeatedItem in pairs(container.skinList) do
-      if repeatedItem == nil then
-        data[key] = {
-          fieldId = 6,
-          dataType = 1,
-          data = nil
-        }
-      else
-        data[key] = {
-          fieldId = 6,
-          dataType = 1,
-          data = repeatedItem:GetContainerElem()
-        }
-      end
-    end
-    ret.skinList = {
-      fieldId = 6,
-      dataType = 2,
-      data = data
-    }
-  else
-    ret.skinList = {
-      fieldId = 6,
-      dataType = 2,
-      data = {}
-    }
-  end
   if container.aoyiSkillInfoMap ~= nil then
     local data = {}
     for key, repeatedItem in pairs(container.aoyiSkillInfoMap) do
@@ -463,9 +386,6 @@ local new = function()
     professionList = {
       __data__ = {}
     },
-    skinList = {
-      __data__ = {}
-    },
     aoyiSkillInfoMap = {
       __data__ = {}
     },
@@ -476,7 +396,6 @@ local new = function()
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.professionList)
-  setForbidenMt(ret.skinList)
   setForbidenMt(ret.aoyiSkillInfoMap)
   setForbidenMt(ret.talentList)
   return ret

@@ -1,10 +1,12 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Team_mineView = class("Team_mineView", super)
+local playerPortraitHgr = require("ui.component.role_info.common_player_portrait_item_mgr")
 local paths = {
   team_icon_branching = "ui/atlas/mainui/team/team_icon_branching",
   team_icon_scene = "ui/atlas/mainui/team/team_icon_no_scene"
 }
+local grayColorKey = "#ababab"
 local modelActionName = {
   [100001] = "as_m_base_idle",
   [100002] = "as_f_base_team_fsidle01",
@@ -14,33 +16,32 @@ local modelActionName = {
   [100006] = "as_f_base_skt_akimboidle_loop"
 }
 local selfIndex = 100
-local modelPos = {
-  Vector3.New(-0.5, 0.0, 1.5),
-  Vector3.New(0.1, 0.0, 3),
-  Vector3.New(0.7, 0.0, 3.5)
-}
 local rotateY = {
   176,
-  161,
-  160,
+  165,
+  170,
+  176,
   [selfIndex] = 180
 }
 local playerRotateY = {
   160,
   180,
   190,
+  190,
   [selfIndex] = 165
 }
 
 function Team_mineView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "team_mine_add_sub", "team/team_mine_add_sub", UI.ECacheLv.None, parent)
+  super.ctor(self, "team_mine_add_sub", "team/team_mine_add_sub", UI.ECacheLv.None)
   self.teamVM_ = Z.VMMgr.GetVM("team")
   self.itemSourceVm_ = Z.VMMgr.GetVM("item_source")
   self.teamData_ = Z.DataMgr.Get("team_data")
   self.socialVm_ = Z.VMMgr.GetVM("social")
   self.matchData_ = Z.DataMgr.Get("match_data")
+  self.matchTeamData_ = Z.DataMgr.Get("match_team_data")
   self.matchVm_ = Z.VMMgr.GetVM("match")
+  self.matchTeamVm_ = Z.VMMgr.GetVM("match_team")
 end
 
 function Team_mineView:initBinder()
@@ -58,12 +59,26 @@ function Team_mineView:initBinder()
   self.anim_ = self.uiBinder.anim
   self.match_lab_tips_ = self.uiBinder.match_lab_tips
   self.self_nodemember = self.uiBinder.node_member_tpl2
-  self.node_members_ = {}
-  self.node_members_[1] = self.uiBinder.node_member_tpl1
-  self.node_members_[2] = self.uiBinder.node_member_tpl3
-  self.node_members_[3] = self.uiBinder.node_member_tpl4
+  self.node_members_ = {
+    self.uiBinder.node_member_tpl1,
+    self.uiBinder.node_member_tpl3,
+    self.uiBinder.node_member_tpl4,
+    self.uiBinder.node_member_tpl5
+  }
+  self.teamNode20_ = self.uiBinder.node_20team
+  self.memberGroupNodes20_ = {}
+  for i = 1, 4 do
+    self.memberGroupNodes20_[i] = {}
+    for j = 1, 5 do
+      self.memberGroupNodes20_[i][j] = self.teamNode20_["group_" .. i]["team_20team_add_tpl_" .. j]
+    end
+  end
+  self.copyNode_ = self.teamNode20_.node_drag
+  self.copyItem_ = self.teamNode20_.team_20team_add_drag
   self.prefab_cache_ = self.uiBinder.prefab_cache
   self.targetBtn_ = self.uiBinder.btn_target
+  self.switch20Node_ = self.uiBinder.node_20_switch
+  self.switch20_ = self.uiBinder.switch_20
 end
 
 function Team_mineView:initBtns()
@@ -72,6 +87,41 @@ function Team_mineView:initBtns()
       local quickjumpVm = Z.VMMgr.GetVM("quick_jump")
       quickjumpVm.DoJumpByConfigParam(self.teamTargetCfg_.QuickJumpType, self.teamTargetCfg_.QuickJumpParam)
     end
+  end)
+  self:AddAsyncClick(self.switch20_, function(isOn)
+    local teamMemberType = isOn and E.ETeamMemberType.Twenty or E.ETeamMemberType.Five
+    if self.teamMaxMemberType_ == teamMemberType then
+      return
+    end
+    local targetId = self.teamData_.TeamInfo.baseInfo.targetId
+    if targetId ~= E.TeamTargetId.Costume then
+      return
+    end
+    if not self.teamVM_.GetYouIsLeader() then
+      return
+    end
+    local refreshCd = self.teamData_:GetTeamSimpleTime("teamTypeCD")
+    if not refreshCd or refreshCd == 0 then
+    else
+      Z.TipsVM.ShowTips(1000650)
+      self.switch20_.IsOn = not self.switch20_.IsOn
+      return
+    end
+    local teamMembers = self.teamVM_.GetTeamMemData()
+    if isOn then
+      local isSuccess = self.teamVM_.AsyncChangeTeamMemberType(E.ETeamMemberType.Twenty, targetId)
+      if not isSuccess then
+        self.switch20_:SetIsOnWithoutNotify(false)
+      end
+    else
+      if 5 < #teamMembers then
+        self.switch20_.IsOn = true
+        Z.TipsVM.ShowTips(1000651)
+        return
+      end
+      self.teamVM_.AsyncChangeTeamMemberType(E.ETeamMemberType.Five, targetId)
+    end
+    self.teamVM_.SetTeamTargetTime()
   end)
   self:AddAsyncClick(self.btn_apply_, function()
     local teamRequestVM = Z.VMMgr.GetVM("team_request")
@@ -100,7 +150,7 @@ function Team_mineView:initBtns()
       return
     end
     local members = self.teamVM_.GetTeamMemData()
-    if 4 <= #members then
+    if #members >= self.teamData_:GetTeamMaxMember() then
       Z.TipsVM.ShowTipsLang(1000619)
       return
     end
@@ -112,10 +162,189 @@ function Team_mineView:initBtns()
       Z.TipsVM.ShowTips(1000750)
       return
     end
-    self.matchVm_.AsyncBeginMatchNew(E.MatchType.Team, {}, true, self.cancelSource:CreateToken())
+    local teamTargetRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetId)
+    if not teamTargetRow then
+      return
+    end
+    self.matchVm_.RequestBeginMatch(E.MatchType.Team, teamTargetRow.RelativeDungeonId, self.cancelSource:CreateToken())
   end)
   self:AddAsyncClick(self.btn_leave_, function()
-    self.matchVm_.AsyncCancelMatchNew(E.MatchType.Team, true, self.cancelSource:CreateToken())
+    self.matchVm_.AsyncCancelMatch()
+  end)
+  for groupId, value in ipairs(self.memberGroupNodes20_) do
+    for index, item in ipairs(value) do
+      item.Ref:SetVisible(item.img_mark, false)
+      local func = function()
+        self.onEnterDic_ = {
+          {},
+          {},
+          {},
+          {}
+        }
+        self:onBeginDrag(groupId, index)
+      end
+      local endFunc = function()
+        self:onEndDrag()
+      end
+      local onEnterFunc = function()
+        self:onEnter(groupId, index)
+      end
+      local onExitFunc = function()
+        self:onExit(groupId, index)
+      end
+      local onClickEvent = function()
+        self:onClick(groupId, index)
+      end
+      self:initDraw(item, func, endFunc, onEnterFunc, onExitFunc, onClickEvent)
+    end
+  end
+end
+
+function Team_mineView:onClick(groupId, index)
+  local memberInfo = self.teamGroupMemberInfos_[groupId][index]
+  if memberInfo == nil then
+    local teamInviteVM = Z.VMMgr.GetVM("team_invite_popup")
+    teamInviteVM.OpenInviteView()
+  else
+    local idCardVM = Z.VMMgr.GetVM("idcard")
+    idCardVM.AsyncGetCardData(memberInfo.charId, self.cancelSource:CreateToken())
+  end
+end
+
+function Team_mineView:onEnter(groupId, index)
+  self.onEnterDic_[groupId][index] = true
+  local items = {}
+  for groupId, indexs in pairs(self.onEnterDic_) do
+    for index, v in pairs(indexs) do
+      local item = self.memberGroupNodes20_[groupId][index]
+      if item then
+        items[#items + 1] = item
+      end
+    end
+  end
+  if #items == 1 then
+    local item = items[1]
+    item.Ref:SetVisible(item.img_frame, true)
+  else
+  end
+end
+
+function Team_mineView:onExit(groupId, index)
+  self.onEnterDic_[groupId][index] = nil
+  local item = self.memberGroupNodes20_[groupId][index]
+  if item then
+    item.Ref:SetVisible(item.img_frame, false)
+  end
+end
+
+function Team_mineView:onBeginDrag(groupId, index)
+  self.isDraw_ = false
+  local memberInfo = self.teamGroupMemberInfos_[groupId][index]
+  if not memberInfo then
+    return
+  end
+  if not self.teamVM_.GetYouIsLeader() then
+    return
+  end
+  local item = self.memberGroupNodes20_[groupId][index]
+  if item == nil then
+    return
+  end
+  item.Ref:SetVisible(item.img_mark, true)
+  self.drawGroupId_ = groupId
+  self.drawIndex_ = index
+  self.isDraw_ = true
+  playerPortraitHgr.InsertNewPortraitBySocialData(self.copyItem_, memberInfo.socialData, nil, self.cancelSource:CreateToken())
+end
+
+function Team_mineView:onEndDrag()
+  local items = {}
+  local exchangeGroupId = 0
+  local exchangeIndex = 0
+  for groupId, indexs in pairs(self.onEnterDic_) do
+    for index, v in pairs(indexs) do
+      local item = self.memberGroupNodes20_[groupId][index]
+      if item then
+        exchangeGroupId = groupId
+        exchangeIndex = index - 1
+        items[#items + 1] = item
+        break
+      end
+    end
+  end
+  local item = self.memberGroupNodes20_[self.drawGroupId_][self.drawIndex_]
+  if item then
+    item.Ref:SetVisible(item.img_mark, false)
+  end
+  if #items == 1 then
+    local item = items[1]
+    item.Ref:SetVisible(item.img_frame, false)
+    local memberInfo = self.teamGroupMemberInfos_[self.drawGroupId_][self.drawIndex_]
+    if memberInfo then
+      Z.CoroUtil.create_coro_xpcall(function()
+        self.teamVM_.AsyncUpdateTeamGroup(exchangeGroupId, memberInfo.charId, exchangeIndex)
+      end)()
+    end
+  else
+  end
+end
+
+function Team_mineView:initDraw(skillItem, initDataFunc, endDragFunc, onEnterFunc, onExitFunc, onClickEvent)
+  skillItem.trigger_img.onBeginDrag:AddListener(function(go, pointerData)
+    if initDataFunc then
+      initDataFunc()
+    end
+    if not self.isDraw_ then
+      return
+    end
+    self.copyItem_.Trans:SetParent(skillItem.Trans)
+    self.copyItem_.Trans.localScale = Vector3.one
+    self.copyItem_.Trans.localPosition = Vector3.zero
+    self.copyItem_.Trans.localRotation = Quaternion.identity
+    self.copyItem_.Trans:SetParent(self.copyNode_.transform)
+    self.teamNode20_.Ref:SetVisible(self.copyNode_, true)
+  end)
+  skillItem.trigger_img.onDrag:AddListener(function(go, pointerData)
+    if not self.isDraw_ then
+      return
+    end
+    local trans_ = self.copyItem_.Trans
+    local ison, uiPos = ZTransformUtility.ScreenPointToLocalPointInRectangle(trans_, pointerData.position, nil)
+    local posX, posY = trans_:GetAnchorPosition(nil, nil)
+    posX = posX + uiPos.x
+    posY = posY + uiPos.y
+    trans_:SetAnchorPosition(posX, posY)
+  end)
+  skillItem.trigger_img.onEndDrag:AddListener(function(go, pointerData)
+    if not self.isDraw_ then
+      return
+    end
+    self.teamNode20_.Ref:SetVisible(self.copyNode_, false)
+    self.isDraw_ = false
+    if endDragFunc then
+      Z.CoroUtil.create_coro_xpcall(function()
+        endDragFunc()
+      end)()
+    end
+  end)
+  skillItem.trigger_img.onEnter:AddListener(function(go, pointerData)
+    if not self.isDraw_ then
+      return
+    end
+    if onEnterFunc then
+      onEnterFunc()
+    end
+  end)
+  skillItem.trigger_img.onExit:AddListener(function(go, pointerData)
+    if not self.isDraw_ then
+      return
+    end
+    if onExitFunc then
+      onExitFunc()
+    end
+  end)
+  self:AddAsyncClick(skillItem.trigger_img.onClick, function()
+    onClickEvent()
   end)
 end
 
@@ -124,6 +353,12 @@ function Team_mineView:OnActive()
   self.isRefreshTeamInfo_ = false
   self:initBinder()
   self:initBtns()
+  self.modelPos_ = {
+    Vector3.New(-0.5, 0.0, 1.5),
+    Vector3.New(0.1, 0.0, 3),
+    Vector3.New(0.7, 0.0, 3.5),
+    Vector3.New(1, 0.0, 3.5)
+  }
   Z.RedPointMgr.LoadRedDotItem(E.RedType.TeamApplyButton, self, self.node_apply_.transform)
   self.uiBinder.Trans:SetOffsetMin(130, 0)
   self.uiBinder.Trans:SetOffsetMax(0, 0)
@@ -132,7 +367,6 @@ function Team_mineView:OnActive()
   self.effectUuidTab_ = {}
   self.chariId_ = Z.ContainerMgr.CharSerialize.charBase.charId
   self.anim_:Restart(Z.DOTweenAnimType.Open)
-  self:setCompActive()
   self:setTeamSetting()
   self:initMemberItems()
   self:BindEvents()
@@ -142,10 +376,11 @@ function Team_mineView:setCompActive()
   local teamInfo = self.teamData_.TeamInfo.baseInfo
   local selfIsLeader = teamInfo.leaderId == self.chariId_
   local matchType = self.matchData_:GetMatchType()
-  local matching = teamInfo.matching and matchType == E.MatchType.Team
+  local matching = matchType == E.MatchType.Team and self.teamTargetCfg_.RelativeDungeonId == self.matchTeamData_:GetCurMatchingDungeonId()
+  local canMatch = self.matchTeamVm_.IsShowMatchBtn(self.teamTargetCfg_.RelativeDungeonId)
   self.uiBinder.Ref:SetVisible(self.match_lab_tips_, matching)
-  self.uiBinder.Ref:SetVisible(self.btn_leave_, selfIsLeader and matching)
-  self.uiBinder.Ref:SetVisible(self.btn_match_, selfIsLeader and not matching)
+  self.uiBinder.Ref:SetVisible(self.btn_leave_, selfIsLeader and matching and canMatch)
+  self.uiBinder.Ref:SetVisible(self.btn_match_, selfIsLeader and not matching and canMatch)
   self.uiBinder.Ref:SetVisible(self.btn_apply_, selfIsLeader)
 end
 
@@ -171,6 +406,12 @@ function Team_mineView:setTeamSetting()
   self.lab_desc_.text = teamInfo.desc
   self.uiBinder.Ref:SetVisible(self.img_target_1_, not teamInfo.hallShow)
   self.uiBinder.Ref:SetVisible(self.img_target_2_, teamInfo.hallShow)
+  self:setCompActive()
+end
+
+function Team_mineView:setTeamDes()
+  local teamInfo = self.teamData_.TeamInfo.baseInfo
+  self.lab_desc_.text = teamInfo.desc
 end
 
 function Team_mineView:initMeberItem(memberItem, index)
@@ -188,6 +429,7 @@ function Team_mineView:initMemberItems()
   end
   self:initMeberItem(self.self_nodemember, selfIndex)
   self.self_nodemember.Ref:SetVisible(self.self_nodemember.node_empty, false)
+  self.self_nodemember.Ref:SetVisible(self.self_nodemember.img_scene, false)
   self:setTeamInfo()
 end
 
@@ -249,7 +491,7 @@ function Team_mineView:loadMode(unit, member, index)
   if modelClone ~= nil then
     if modelActionName[modelId] then
       local clipNames = ZUtil.Pool.Collections.ZList_string.Rent()
-      modelClone:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent(modelActionName[modelId]))
+      modelClone:SetLuaAnimBase(Z.AnimBaseData.Rent(modelActionName[modelId]))
       clipNames:Recycle()
     end
     if not self.teamData_.TeamInfo.members[member.charId] then
@@ -269,7 +511,7 @@ function Team_mineView:loadMode(unit, member, index)
       self.teamPosEffect_ = Z.UnrealSceneMgr:CreatEffect("common_new/env/p_fx_juese_zhanwei_tishi", "team_pos" .. index)
       y = playerRotateY[selfIndex]
     else
-      worldPosition = worldPosition + modelPos[index]
+      worldPosition = worldPosition + self.modelPos_[index]
     end
     modelClone:SetAttrGoPosition(worldPosition)
     modelClone:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, y, 0)))
@@ -281,6 +523,7 @@ function Team_mineView:setMemberItem(item, memberInfo, index)
   if memberInfo == nil then
     return
   end
+  self.teamItem_[memberInfo.charId] = item
   local charId = memberInfo.charId
   local isLeader = self.teamData_.TeamInfo.baseInfo.leaderId == charId
   item.Ref:SetVisible(item.img_on, isLeader)
@@ -294,35 +537,64 @@ function Team_mineView:setMemberItem(item, memberInfo, index)
   if self.teamModelList_[index] == nil or self.teamModelList_[index] ~= charId then
     self.teamModelList_[index] = charId
     Z.Delay(0.2, self.cancelSource:CreateToken())
+    item.Ref:SetVisible(item.lab_area, false)
     self:loadMode(item, memberInfo, index)
     self:changeSceneGuid(memberInfo.socialData)
+    local isOnLine = memberInfo.socialData.basicData.offlineTime == 0
+    item.Ref:SetVisible(item.img_break, not isOnLine)
     item.Ref:SetVisible(item.group_play_info, true)
     item.Ref:SetVisible(item.img_icon, false)
-    item.lab_name.text = memberInfo.socialData.basicData.name
     local professionId = 0
     if not memberInfo.isAi then
-      item.lab_gs.text = Lang("LvFormatSymbol", {
-        val = memberInfo.socialData.basicData.level
-      })
+      local score = 0
+      local master_dungeon_score_text = score
+      if memberInfo.socialData.masterModeDungeonData then
+        score = memberInfo.socialData.masterModeDungeonData.seasonScore
+        local scoreText = Z.VMMgr.GetVM("hero_dungeon_main").GetPlayerSeasonMasterDungeonTotalScoreWithColor(score)
+        master_dungeon_score_text = scoreText
+        if memberInfo.socialData.masterModeDungeonData.isShow then
+          master_dungeon_score_text = Lang("Hidden")
+          item.Ref:SetVisible(item.layout_lab, true)
+        else
+          item.Ref:SetVisible(item.layout_lab, 0 < score)
+        end
+      else
+        item.Ref:SetVisible(item.layout_lab, false)
+      end
+      if not isOnLine then
+        item.lab_name.text = Z.RichTextHelper.ApplyColorTag(memberInfo.socialData.basicData.name, grayColorKey)
+        item.lab_gs.text = Z.RichTextHelper.ApplyColorTag(Lang("LvFormatSymbol", {
+          val = memberInfo.socialData.basicData.level
+        }), grayColorKey)
+        item.lab_master_dungeon_score.text = Z.RichTextHelper.ApplyColorTag(master_dungeon_score_text, grayColorKey)
+      else
+        local name = memberInfo.socialData.basicData.name
+        if memberInfo.charId == Z.ContainerMgr.CharSerialize.charId then
+          name = Z.RichTextHelper.ApplyColorTag(name, "#ffd100")
+        end
+        item.lab_name.text = name
+        item.lab_gs.text = Lang("LvFormatSymbol", {
+          val = memberInfo.socialData.basicData.level
+        })
+        item.lab_master_dungeon_score.text = master_dungeon_score_text
+      end
       self:AddAsyncClick(item.btn_card, function()
         local idCardVM = Z.VMMgr.GetVM("idcard")
         idCardVM.AsyncGetCardData(memberInfo.charId, self.cancelSource:CreateToken())
       end)
       professionId = memberInfo.socialData.professionData.professionId
+      item.Ref:SetVisible(item.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(memberInfo.socialData.basicData.isNewbie))
     else
-      local selfInfo = self.teamData_.TeamInfo.members[self.chariId_]
-      if selfInfo then
-        item.lab_gs.text = Lang("LvFormatSymbol", {
-          val = selfInfo.socialData.basicData.level
-        })
-      else
-        item.lab_gs.text = ""
-      end
+      item.Ref:SetVisible(item.lab_master_dungeon_score, false)
+      local leaderLevel = self.teamData_:GetLeaderLevel()
+      item.lab_gs.text = Lang("LvFormatSymbol", {val = leaderLevel})
       local botAiId = memberInfo.socialData.basicData.botAiId
       local botAITableRow = Z.TableMgr.GetRow("BotAITableMgr", botAiId)
       if botAITableRow then
+        item.lab_name.text = botAITableRow.Name
         professionId = botAITableRow.Duty
       end
+      item.Ref:SetVisible(item.img_newbie, false)
     end
     if professionId ~= 0 then
       local professionSystemTableRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
@@ -330,6 +602,47 @@ function Team_mineView:setMemberItem(item, memberInfo, index)
         item.img_icon:SetImage(professionSystemTableRow.Icon)
         item.Ref:SetVisible(item.img_icon, true)
       end
+    end
+  end
+end
+
+function Team_mineView:setOnlineState(memberInfo)
+  if self.teamMaxMemberType_ == E.ETeamMemberType.Twenty then
+    local clientMemberInfo = self.teamData_.TeamInfo.members[memberInfo.basicData.charID]
+    self:setTwentyMemberItem(self.teamItem_[memberInfo.basicData.charID], clientMemberInfo)
+    return
+  end
+  local memberItem = self:getMemberItemAndMemberDataByCharId(memberInfo.basicData.charID)
+  if memberItem then
+    local isOnLine = memberInfo.basicData.offlineTime == 0
+    memberItem.Ref:SetVisible(memberItem.img_break, not isOnLine)
+    local score = 0
+    local master_dungeon_score_text = score
+    if memberInfo.masterModeDungeonData then
+      score = memberInfo.masterModeDungeonData.seasonScore
+      local scoreText = Z.VMMgr.GetVM("hero_dungeon_main").GetPlayerSeasonMasterDungeonTotalScoreWithColor(score)
+      master_dungeon_score_text = scoreText
+      if memberInfo.masterModeDungeonData.isShow then
+        master_dungeon_score_text = Lang("Hidden")
+        memberItem.Ref:SetVisible(memberItem.layout_lab, true)
+      else
+        memberItem.Ref:SetVisible(memberItem.layout_lab, 0 < score)
+      end
+    else
+      memberItem.Ref:SetVisible(memberItem.layout_lab, false)
+    end
+    if not isOnLine then
+      memberItem.lab_name.text = Z.RichTextHelper.ApplyColorTag(memberInfo.basicData.name, grayColorKey)
+      memberItem.lab_gs.text = Z.RichTextHelper.ApplyColorTag(Lang("LvFormatSymbol", {
+        val = memberInfo.basicData.level
+      }), grayColorKey)
+      memberItem.lab_master_dungeon_score.text = Z.RichTextHelper.ApplyColorTag(master_dungeon_score_text, grayColorKey)
+    else
+      memberItem.lab_name.text = memberInfo.basicData.name
+      memberItem.lab_gs.text = Lang("LvFormatSymbol", {
+        val = memberInfo.basicData.level
+      })
+      memberItem.lab_master_dungeon_score.text = master_dungeon_score_text
     end
   end
 end
@@ -342,36 +655,149 @@ function Team_mineView:setMemberItemAddImg(selfIndex)
   end
 end
 
-function Team_mineView:setTeamInfo()
-  self.isEndLoad_ = false
-  Z.CoroUtil.create_coro_xpcall(function()
-    local teamInfo = self.teamData_.TeamInfo.baseInfo
-    local selfIsLeader = teamInfo.leaderId == self.chariId_
-    self.uiBinder.Ref:SetVisible(self.btn_setting_, selfIsLeader)
-    local members, index = self.teamVM_.GetMemDataNotContainSelf()
-    self:setMemberItemAddImg(index)
-    for i, memberItem in ipairs(self.node_members_) do
-      local memberInfo = members[i]
-      local havInfo = memberInfo and true or false
-      memberItem.Ref:SetVisible(memberItem.node_empty, not havInfo)
-      memberItem.Ref:SetVisible(memberItem.btn_card, havInfo)
-      if memberInfo then
-        self:setMemberItem(memberItem, memberInfo, i)
-      else
-        memberItem.Ref:SetVisible(memberItem.group_play_info, false)
-        self.teamModelList_[i] = nil
-        self:clearModel(i)
-        self:cleaEffect(i)
+function Team_mineView:onMatchStateChange()
+  self:setCompActive()
+end
+
+function Team_mineView:getGroupIndexByCharId(group, charId)
+  local teamInfo = self.teamData_.TeamInfo
+  local groupInfos = teamInfo.baseInfo.teamMemberGroupInfos[group]
+  if groupInfos then
+    for index, value in pairs(groupInfos.charIds) do
+      if value == charId then
+        return index
       end
     end
-    local selfInfo = self.teamData_.TeamInfo.members[self.chariId_]
-    self:setMemberItem(self.self_nodemember, selfInfo, selfIndex)
-    if self.isRefreshTeamInfo_ then
-      self.isRefreshTeamInfo_ = false
-      self:setTeamInfo()
+  end
+  return 0
+end
+
+function Team_mineView:getTeamGroupMemberInfo()
+  self.teamGroupMemberInfos_ = {
+    {},
+    {},
+    {},
+    {}
+  }
+  local teamInfo = self.teamData_.TeamInfo
+  if teamInfo.baseInfo.teamMemberType == E.ETeamMemberType.Five then
+    return
+  end
+  for index, value in pairs(teamInfo.members) do
+    if self.teamGroupMemberInfos_[value.groupId] then
+      local groupIndex = self:getGroupIndexByCharId(value.groupId, value.charId)
+      self.teamGroupMemberInfos_[value.groupId][groupIndex] = value
     end
+  end
+end
+
+function Team_mineView:setTeamInfo()
+  self.teamItem_ = {}
+  local teamInfo = self.teamData_.TeamInfo.baseInfo
+  self.teamNode20_.Ref:SetVisible(self.copyNode_, false)
+  self.teamMaxMemberType_ = teamInfo.teamMemberType or 0
+  self.uiBinder.Ref:SetVisible(self.layout_content_, self.teamMaxMemberType_ == E.ETeamMemberType.Five)
+  self.teamNode20_.Ref.UIComp:SetVisible(self.teamMaxMemberType_ == E.ETeamMemberType.Twenty)
+  local showswitch20Node = false
+  if teamInfo.targetId == E.TeamTargetId.Costume then
+    if Z.VMMgr.GetVM("gotofunc").CheckFuncCanUse(E.FunctionID.TeamTwenty, true) then
+      showswitch20Node = true
+    elseif self.teamMaxMemberType_ == E.ETeamMemberType.Twenty then
+      showswitch20Node = true
+    end
+  end
+  self.uiBinder.Ref:SetVisible(self.switch20Node_, showswitch20Node and self.teamVM_.GetYouIsLeader())
+  self.switch20_.IsOn = self.teamMaxMemberType_ == E.ETeamMemberType.Twenty
+  if self.teamMaxMemberType_ == E.ETeamMemberType.Five then
+    self.isEndLoad_ = false
+    Z.CoroUtil.create_coro_xpcall(function()
+      self.teamModelList_ = {}
+      local teamInfo = self.teamData_.TeamInfo.baseInfo
+      local selfIsLeader = teamInfo.leaderId == self.chariId_
+      self.uiBinder.Ref:SetVisible(self.btn_setting_, selfIsLeader)
+      local members, index = self.teamVM_.GetMemDataNotContainSelf()
+      self:setMemberItemAddImg(index)
+      for i, memberItem in ipairs(self.node_members_) do
+        local memberInfo = members[i]
+        local havInfo = memberInfo and true or false
+        memberItem.Ref:SetVisible(memberItem.node_empty, not havInfo)
+        memberItem.Ref:SetVisible(memberItem.btn_card, havInfo)
+        if memberInfo then
+          self:setMemberItem(memberItem, memberInfo, i)
+        else
+          memberItem.Ref:SetVisible(memberItem.group_play_info, false)
+          self.teamModelList_[i] = nil
+          self:clearModel(i)
+          self:cleaEffect(i)
+        end
+      end
+      local selfInfo = self.teamData_.TeamInfo.members[self.chariId_]
+      self:setMemberItem(self.self_nodemember, selfInfo, selfIndex)
+      if self.isRefreshTeamInfo_ then
+        self.isRefreshTeamInfo_ = false
+        self:setTeamInfo()
+      end
+      self.isEndLoad_ = true
+    end)()
+  else
     self.isEndLoad_ = true
-  end)()
+    self:clearAllMod()
+    self:getTeamGroupMemberInfo()
+    for groupId, items in ipairs(self.memberGroupNodes20_) do
+      for index, item in ipairs(items) do
+        local memberInfo = self.teamGroupMemberInfos_[groupId][index]
+        if memberInfo then
+          self:setTwentyMemberItem(item, memberInfo)
+        else
+          item.Ref:SetVisible(item.img_profession, false)
+          item.Ref:SetVisible(item.img_team, false)
+          item.Ref:SetVisible(item.img_empty, true)
+        end
+      end
+    end
+  end
+end
+
+function Team_mineView:setTwentyMemberItem(item, memberInfo)
+  if not item or not memberInfo then
+    return
+  end
+  self.teamItem_[memberInfo.charId] = item
+  local name = memberInfo.socialData.basicData.name
+  local isOnLine = memberInfo.socialData.basicData.offlineTime == 0
+  if memberInfo.charId == Z.ContainerMgr.CharSerialize.charId then
+    name = Z.RichTextHelper.ApplyColorTag(name, "#ffd100")
+  end
+  local sceneName = ""
+  local sceneData = Z.TableMgr.GetRow("SceneTableMgr", memberInfo.sceneId)
+  if sceneData then
+    sceneName = sceneData.Name
+  end
+  if not isOnLine then
+    item.lab_name.text = Z.RichTextHelper.ApplyColorTag(name, grayColorKey)
+    item.lab_level.text = Z.RichTextHelper.ApplyColorTag(Lang("LvFormatSymbol", {
+      val = memberInfo.socialData.basicData.level
+    }), grayColorKey)
+    item.lab_area.text = Z.RichTextHelper.ApplyColorTag(sceneName, grayColorKey)
+  else
+    item.lab_name.text = name
+    item.lab_level.text = Lang("LvFormatSymbol", {
+      val = memberInfo.socialData.basicData.level
+    })
+    item.lab_area.text = sceneName
+  end
+  local teamInfo = self.teamData_.TeamInfo.baseInfo
+  local isLeader = teamInfo.leaderId == memberInfo.charId
+  item.Ref:SetVisible(item.img_leader, isLeader)
+  playerPortraitHgr.InsertNewPortraitBySocialData(item.node_head_51_item, memberInfo.socialData, nil, self.cancelSource:CreateToken())
+  item.Ref:SetVisible(item.img_team, true)
+  item.Ref:SetVisible(item.img_empty, false)
+  local professionId = memberInfo.socialData.professionData.professionId
+  local professionSystemTableRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
+  if professionSystemTableRow then
+    item.img_profession:SetImage(professionSystemTableRow.Icon)
+    item.Ref:SetVisible(item.img_profession, true)
+  end
 end
 
 function Team_mineView:clearModel(i)
@@ -388,20 +814,21 @@ function Team_mineView:cleaEffect(index)
   self.effectUuidTab_[index] = nil
 end
 
+function Team_mineView:getMemberItemAndMemberDataByCharId(charId)
+  local members = self.teamVM_.GetMemDataNotContainSelf()
+  for index, member in ipairs(members) do
+    if member.charId == charId then
+      return self.node_members_[index], member
+    end
+  end
+  return nil, nil
+end
+
 function Team_mineView:changeSceneGuid(memberInfo)
   if memberInfo == nil then
     return
   end
-  local memberItem
-  local members = self.teamVM_.GetMemDataNotContainSelf()
-  local teamMember
-  for index, member in ipairs(members) do
-    if member.charId == memberInfo.charId then
-      memberItem = self.node_members_[index]
-      teamMember = member
-      break
-    end
-  end
+  local memberItem, teamMember = self:getMemberItemAndMemberDataByCharId(memberInfo.charId)
   if memberItem == nil then
     return
   end
@@ -424,9 +851,11 @@ function Team_mineView:changeSceneGuid(memberInfo)
   if selfSocialData.basicData.sceneId ~= memberInfo.basicData.sceneId then
     iconPath = paths.team_icon_scene
     memberItem.Ref:SetVisible(memberItem.lab_area, true)
-    local sceneRow = Z.TableMgr.GetTable("SceneTableMgr").GetRow(memberInfo.basicData.sceneId)
+    local sceneRow = Z.TableMgr.GetTable("SceneTableMgr").GetRow(memberInfo.basicData.sceneId, true)
     if sceneRow then
       memberItem.lab_area.text = sceneRow.Name
+    else
+      memberItem.lab_area.text = ""
     end
   else
     memberItem.Ref:SetVisible(memberItem.lab_area, false)
@@ -439,6 +868,15 @@ function Team_mineView:changeSceneGuid(memberInfo)
   end
 end
 
+function Team_mineView:clearAllMod()
+  if self.allUIModel then
+    for i, v in pairs(self.allUIModel) do
+      Z.UnrealSceneMgr:ClearModel(v)
+    end
+    self.allUIModel = {}
+  end
+end
+
 function Team_mineView:OnDeActive()
   Z.UnrealSceneMgr:ClearEffect(self.teamPosEffect_)
   if self.effectUuidTab_ then
@@ -447,12 +885,7 @@ function Team_mineView:OnDeActive()
     end
     self.effectUuidTab_ = nil
   end
-  if self.allUIModel then
-    for i, v in pairs(self.allUIModel) do
-      Z.UnrealSceneMgr:ClearModel(v)
-    end
-    self.allUIModel = nil
-  end
+  self:clearAllMod()
   self.anim_:Play(Z.DOTweenAnimType.Close)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.TeamApplyButton)
 end
@@ -471,10 +904,13 @@ end
 function Team_mineView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Team.Refresh, self.refreshTeam, self)
   Z.EventMgr:Add(Z.ConstValue.Team.MatchWaitTimeOut, self.setCompActive, self)
-  Z.EventMgr:Add(Z.ConstValue.Team.RefreshMatchingStatus, self.setCompActive, self)
+  Z.EventMgr:Add(Z.ConstValue.Match.MatchStateChange, self.setCompActive, self)
   Z.EventMgr:Add(Z.ConstValue.Team.RefreshSetting, self.setTeamSetting, self)
+  Z.EventMgr:Add(Z.ConstValue.Team.RefreshSettingDes, self.setTeamDes, self)
   Z.EventMgr:Add(Z.ConstValue.Team.ChangeSceneGuid, self.changeSceneGuid, self)
   Z.EventMgr:Add(Z.ConstValue.Team.ChangeSceneId, self.changeSceneGuid, self)
+  Z.EventMgr:Add(Z.ConstValue.Team.OnLineState, self.setOnlineState, self)
+  Z.EventMgr:Add(Z.ConstValue.Match.MatchStateChange, self.onMatchStateChange, self)
 end
 
 return Team_mineView

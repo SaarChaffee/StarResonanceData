@@ -1,7 +1,7 @@
 local qte_weapon_sf = class("qte_weapon_sf")
 local QteInfo = require("ui.component.qte.qte_info")
 
-function qte_weapon_sf:ctor(id, fighterview, panel)
+function qte_weapon_sf:ctor(id, fighterview, uiBinder)
   self.timerMgr = Z.TimerMgr.new()
   self.Info_ = QteInfo.new(id)
   if self.Info_ == nil then
@@ -10,7 +10,7 @@ function qte_weapon_sf:ctor(id, fighterview, panel)
   self.key_ = "qte_" .. id
   self.uuid_ = 0
   self.view_ = fighterview
-  self.panel_ = panel
+  self.uiBinder_ = uiBinder
   self.qteId_ = id
   self.uiObj_ = nil
   self.curTime_ = 0
@@ -28,7 +28,7 @@ function qte_weapon_sf:registerEvent()
 end
 
 function qte_weapon_sf:onUIViewHide(viewConfigKey, visible)
-  if viewConfigKey == self.panel_.viewConfigKey then
+  if viewConfigKey == self.view_.viewConfigKey then
     self.uiObj_.bg.ZEff:SetEffectGoVisible(visible)
   end
 end
@@ -43,7 +43,7 @@ function qte_weapon_sf:Load()
     self.cancelSource = Z.CancelSource.Rent()
     local cancelSource = self.cancelSource:CreateToken()
     if not self.uiObj_ then
-      self.uiObj_ = self.view_:AsyncLoadUiUnit(uipath, self.key_, self.panel_.sf_qte_pos.Trans)
+      self.uiObj_ = self.view_:AsyncLoadUiUnit(uipath, self.key_, self.uiBinder_.sf_qte_pos.Trans)
       if Z.CancelSource.IsCanceled(cancelSource) or not self.uiObj_ then
         Z.QteMgr.OnQteClosed(self.uuid_)
         return

@@ -6,4 +6,3 @@ message DepositWarehouseRequest {
     int64 itemUuid = 1;
     int64 itemNum = 3;
 }
-

@@ -15,8 +15,6 @@ message StaticInteractiveObjectTableBase {
     string_array InteractionEvent = 1343;
     int32 SourceType = 380;
 }
-
 message StaticInteractiveObjectTableMgr {
-    map<int32, .bokura.StaticInteractiveObjectTableBase> datas = 1;
+    repeated bokura.StaticInteractiveObjectTableMgr.DatasEntry datas = 1;
 }
-

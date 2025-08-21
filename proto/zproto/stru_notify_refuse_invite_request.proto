@@ -3,7 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message NotifyRefuseInviteRequest {
-    string inviteesName = 2;
-    int64 inviteesId = 3;
+    string inviteesName = 1;
+    int64 inviteesId = 2;
 }
-

@@ -15,25 +15,6 @@ function Friends_group_subView:OnActive()
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.uiBinder.Trans:SetWidth(766)
-  self:BindLuaAttrWatchers()
-  self:BindEvents()
-end
-
-function Friends_group_subView:OnDeActive()
-end
-
-function Friends_group_subView:BindEvents()
-  Z.EventMgr:Add(Z.ConstValue.Friend.FriendGroupRefresh, self.refreshGroup, self)
-end
-
-function Friends_group_subView:BindLuaAttrWatchers()
-  Z.EventMgr:Remove(Z.ConstValue.Friend.FriendGroupRefresh, self.refreshGroup, self)
-end
-
-function Friends_group_subView:OnRefresh()
-  self.isChangeGroupSort_ = false
-  self.funcOnInteractableChange_ = {}
-  self:changeInteractable(false)
   self:AddClick(self.uiBinder.btn_startsort, function()
     self:changeInteractable(true)
   end)
@@ -50,6 +31,25 @@ function Friends_group_subView:OnRefresh()
   self:AddClick(self.uiBinder.btn_small_round, function()
     self:createGroup()
   end)
+  self:BindEvents()
+end
+
+function Friends_group_subView:OnDeActive()
+  self:UnBindEvents()
+end
+
+function Friends_group_subView:BindEvents()
+  Z.EventMgr:Add(Z.ConstValue.Friend.FriendGroupRefresh, self.refreshGroup, self)
+end
+
+function Friends_group_subView:UnBindEvents()
+  Z.EventMgr:Remove(Z.ConstValue.Friend.FriendGroupRefresh, self.refreshGroup, self)
+end
+
+function Friends_group_subView:OnRefresh()
+  self.isChangeGroupSort_ = false
+  self.funcOnInteractableChange_ = {}
+  self:changeInteractable(false)
   self:refreshGroup()
 end
 
@@ -62,10 +62,10 @@ function Friends_group_subView:createGroup()
         return
       end
       self.isCreating_ = true
-      local ret = self.friendsMainVm_.AsyncCreateGroup(name, self.cancelSource:CreateToken())
-      if ret.errorCode == Z.PbEnum("EErrorCode", "ErrIllegalCharacter") then
+      local errCode = self.friendsMainVm_.AsyncCreateGroup(name, self.cancelSource:CreateToken())
+      if errCode == Z.PbEnum("EErrorCode", "ErrIllegalCharacter") then
         self.isCreating_ = false
-        return ret.errorCode
+        return errCode
       end
       self.isCreating_ = false
     end,
@@ -121,20 +121,18 @@ function Friends_group_subView:refreshGroupItemUnit(unit, groupId)
       else
         Z.DialogViewDataMgr:OpenNormalDialog(Lang("delectFriendGroup"), function()
           self.friendsMainVm_.AsyncDelectGroup(groupId, self.cancelSource:CreateToken())
-          Z.DialogViewDataMgr:CloseDialogView()
         end)
       end
     end
   end, nil, nil)
-  local limitNum = Z.Global.PlayerNameLimit
   self:AddClick(unit.img_edit, function()
     local data = {
       title = Lang("FriendChangeGroupName"),
       inputContent = self.friendsMainData_:GetGroupName(groupId),
       onConfirm = function(name)
-        local ret = self.friendsMainVm_.AsyncChangeGroupName(groupId, name, self.cancelSource:CreateToken())
-        if ret.errorCode == Z.PbEnum("EErrorCode", "ErrIllegalCharacter") then
-          return ret.errorCode
+        local errCode = self.friendsMainVm_.AsyncChangeGroupName(groupId, name, self.cancelSource:CreateToken())
+        if errCode == Z.PbEnum("EErrorCode", "ErrIllegalCharacter") then
+          return errCode
         end
       end,
       stringLengthLimitNum = Z.Global.PlayerNameLimit,

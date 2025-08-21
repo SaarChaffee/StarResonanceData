@@ -2,9 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
-message FishingRodReply {
-    int32 errCode = 1;
-    int32 fishId = 2;
-    int32 waitMills = 3;
-}
+import "enum_e_error_code.proto";
 
+message FishingRodReply {
+    int32 fishId = 1;
+    int32 waitMills = 2;
+    zproto.EErrorCode errCode = 3;
+}

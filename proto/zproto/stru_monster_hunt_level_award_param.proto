@@ -5,4 +5,3 @@ package zproto;
 message MonsterHuntLevelAwardParam {
     int32 level = 1;
 }
-

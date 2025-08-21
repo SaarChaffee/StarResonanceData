@@ -34,12 +34,28 @@ local setFashionRegionIsHide = function(regionHideDict)
   data[SETTING_KEY] = str
   Z.VMMgr.GetVM("setting").AsyncSaveSetting(data)
   Z.EventMgr:Dispatch(Z.ConstValue.FashionAttrChange, Z.LocalAttr.EWearSetting, str)
-  Z.EventMgr:Dispatch(Z.ConstValue.FashionSettingChange, regionDict)
+end
+local checkFashionRegionWear = function(region, isHide)
+  if isHide then
+    return
+  end
+  local data = Z.DataMgr.Get("fashion_data")
+  local styleData = data:GetWear(region)
+  if not styleData or styleData.fashionId <= 0 then
+    return
+  end
+  local colorData = data:GetColor(styleData.fashionId)
+  if not colorData then
+    return
+  end
+  local fashionVM = Z.VMMgr.GetVM("fashion")
+  fashionVM.ShowFashionColor(styleData.fashionId)
 end
 local setSingleFashionRegionIsHide = function(region, isHide)
   local regionHideDict = {}
   regionHideDict[region] = isHide
   setFashionRegionIsHide(regionHideDict)
+  checkFashionRegionWear(region, isHide)
   local fashionVM = Z.VMMgr.GetVM("fashion")
   local param = {
     str = fashionVM.GetRegionName(region)

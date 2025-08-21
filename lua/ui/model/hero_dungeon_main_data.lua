@@ -20,6 +20,7 @@ function HeroDungeonData:ctor()
   self.keyItemUuid_ = 0
   self.TeamDisplayData = {}
   self.DunegonEndTime = 0
+  self.masterDungeonScore = {}
 end
 
 function HeroDungeonData:Init()
@@ -45,6 +46,7 @@ end
 function HeroDungeonData:Clear()
   self.AffixDic = {}
   self.ExtremeSpaceAffixDict_ = {}
+  self.masterDungeonScore = {}
 end
 
 function HeroDungeonData:SetBeginCount(min, max)
@@ -122,6 +124,60 @@ end
 
 function HeroDungeonData:GetUseKeyData()
   return self.keyItemUuid_
+end
+
+function HeroDungeonData:GetMasterDungeonScore(seasonId)
+  if seasonId == nil then
+    seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+  end
+  if self.masterDungeonScore[seasonId] == nil then
+    self.masterDungeonScore[seasonId] = {}
+    local seasonMasterDungeonInfo = Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.masterModeDungeonInfo[seasonId]
+    local masterChallengeDungeonTableData = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr"):GetDatas()
+    for _, value in pairs(masterChallengeDungeonTableData) do
+      if value.SeasonId == seasonId then
+        if self.masterDungeonScore[seasonId][value.DungeonId] == nil then
+          self.masterDungeonScore[seasonId][value.DungeonId] = {
+            score = 0,
+            time = 0,
+            diff = 1,
+            dungeonId = value.DungeonId,
+            masterChallengeDungeonId = value.DungeonId * 100 + 1
+          }
+        end
+        if seasonMasterDungeonInfo then
+          local seasonMasterDiffInfo = seasonMasterDungeonInfo.masterModeDiffInfo
+          if seasonMasterDiffInfo and seasonMasterDiffInfo[value.DungeonId] and seasonMasterDiffInfo[value.DungeonId].dungeonInfo then
+            local dungeonInfo = seasonMasterDiffInfo[value.DungeonId].dungeonInfo[value.Difficulty]
+            if dungeonInfo and dungeonInfo.score > self.masterDungeonScore[seasonId][value.DungeonId].score then
+              self.masterDungeonScore[seasonId][value.DungeonId].score = dungeonInfo.score
+              self.masterDungeonScore[seasonId][value.DungeonId].time = dungeonInfo.passTime
+            end
+          end
+        end
+      end
+    end
+  end
+  return self.masterDungeonScore[seasonId]
+end
+
+function HeroDungeonData:UpdateMasterDungeonScore(dungeonId)
+  local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+  if self.masterDungeonScore[seasonId] == nil then
+    self:GetMasterDungeonScore(seasonId)
+  end
+  local seasonMasterDungeonInfo = Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.masterModeDungeonInfo[seasonId]
+  if seasonMasterDungeonInfo and seasonMasterDungeonInfo.masterModeDiffInfo and seasonMasterDungeonInfo.masterModeDiffInfo[dungeonId] then
+    for diff, dungenData in pairs(seasonMasterDungeonInfo.masterModeDiffInfo[dungeonId].dungeonInfo) do
+      if self.masterDungeonScore[seasonId][dungeonId].score < dungenData.score then
+        self.masterDungeonScore[seasonId][dungeonId].score = dungenData.score
+        self.masterDungeonScore[seasonId][dungeonId].time = dungenData.passTime
+        self.masterDungeonScore[seasonId][dungeonId].diff = diff
+        self.masterDungeonScore[seasonId][dungeonId].masterChallengeDungeonId = dungeonId * 100 + diff
+      end
+    end
+  end
+  Z.EventMgr:Dispatch(Z.ConstValue.Dungeon.UpdateMasterDungeonScore)
 end
 
 return HeroDungeonData

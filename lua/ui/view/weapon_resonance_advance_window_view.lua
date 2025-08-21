@@ -3,8 +3,8 @@ local super = require("ui.ui_view_base")
 local Weapon_resonance_advance_windowView = class("Weapon_resonance_advance_windowView", super)
 local loopListView = require("ui.component.loop_list_view")
 local weapon_resonance_tab_item = require("ui.component.weapon.weapon_resonance_tab_loop_item")
-local common_reward_loop_list_item = require("ui.component.common_reward_loop_list_item")
-local MAT_ID = 1009
+local weaponResonanceSkillTipsView = require("ui.view.weapon_resonance_skill_tips_view")
+local ResonanceSkillDefine = require("ui.model.resonance_skill_define")
 
 function Weapon_resonance_advance_windowView:ctor()
   self.uiBinder = nil
@@ -14,6 +14,7 @@ function Weapon_resonance_advance_windowView:ctor()
   self.skillVM_ = Z.VMMgr.GetVM("skill")
   self.itemsVM_ = Z.VMMgr.GetVM("items")
   self.commonVM = Z.VMMgr.GetVM("common")
+  self.professionVM_ = Z.VMMgr.GetVM("profession")
   self.skillAoyiTableMgr_ = Z.TableMgr.GetTable("SkillAoyiTableMgr")
 end
 
@@ -35,11 +36,8 @@ function Weapon_resonance_advance_windowView:OnDeActive()
   self:unInitDragEvent()
   self:unInitLoopListView()
   self:clearMonsterModel()
-  self:unLoadAttrItem()
-  self:unLoadEffectItem()
-  self:closeLabelTips()
   self:closeSourceTips()
-  self:unLoadRedDotItem()
+  self:closeTipsSubView()
 end
 
 function Weapon_resonance_advance_windowView:OnRefresh()
@@ -62,21 +60,20 @@ function Weapon_resonance_advance_windowView:initData()
   self.curResonanceConfig_ = self.skillAoyiTableMgr_.GetRow(self.curSkillId_)
   self.curAdvanceConfigList_ = self.weaponSkillVM_:GetResonanceSkillRemodelLevelList(self.curSkillId_)
   self.curServerAdvanceLevel_ = self.weaponSkillVM_:GetSkillRemodelLevel(self.curSkillId_)
-  self.attrItemBinders_ = {}
-  self.effectItemBinders_ = {}
   self.curShowModelRotEuler_ = Vector3.New(0, 0, 0)
+  self.tempModelEffectScale_ = nil
+  self.tempModelScale_ = nil
 end
 
 function Weapon_resonance_advance_windowView:initComponent()
   self:AddClick(self.uiBinder.btn_close, function()
     Z.UIMgr:CloseView(self.viewConfigKey)
   end)
-  self:AddAsyncClick(self.uiBinder.binder_tips.btn_operate, function()
-    self:onOperateBtnClick()
-  end)
   self.uiBinder.lab_title.text = self.commonVM.GetTitleByConfig({
     E.FunctionID.WeaponAoyiSkill
   })
+  self.weaponResonanceSkillTips_ = weaponResonanceSkillTipsView.new(self)
+  self:showTipsSubView()
 end
 
 function Weapon_resonance_advance_windowView:initDragEvent()
@@ -93,6 +90,19 @@ function Weapon_resonance_advance_windowView:unInitDragEvent()
   self.uiBinder.event_trigger.onDrag:RemoveAllListeners()
 end
 
+function Weapon_resonance_advance_windowView:showTipsSubView()
+  local viewData = {
+    skillId = self.weaponSkillVM_:GetOriginSkillId(self.curSkillId_),
+    professionId = self.professionVM_:GetContainerProfession(),
+    advanceLevel = self.curSelectAdvanceLevel_
+  }
+  self.weaponResonanceSkillTips_:Active(viewData, self.uiBinder.tips_root)
+end
+
+function Weapon_resonance_advance_windowView:closeTipsSubView()
+  self.weaponResonanceSkillTips_:DeActive()
+end
+
 function Weapon_resonance_advance_windowView:setSelectLevel()
   local maxLevel = #self.curAdvanceConfigList_
   if maxLevel <= self.curServerAdvanceLevel_ then
@@ -104,10 +114,7 @@ end
 
 function Weapon_resonance_advance_windowView:initLoopListView()
   self.loopTabView_ = loopListView.new(self, self.uiBinder.loop_tab, weapon_resonance_tab_item, "item_tab")
-  self.loopCostView_ = loopListView.new(self, self.uiBinder.binder_tips.loop_item, common_reward_loop_list_item, "item_prop")
   self.loopTabView_:Init(self.curAdvanceConfigList_)
-  local costList = {}
-  self.loopCostView_:Init(costList)
 end
 
 function Weapon_resonance_advance_windowView:refreshTabLoopListView()
@@ -117,160 +124,48 @@ function Weapon_resonance_advance_windowView:refreshTabLoopListView()
   self.loopTabView_:SetSelected(self.curSelectAdvanceLevel_)
 end
 
-function Weapon_resonance_advance_windowView:refreshCostLoopListView(costTbl)
-  self.isCostEnough_ = true
-  self.notEnoughItem_ = nil
-  local dataList = {}
-  for i, v in ipairs(costTbl) do
-    local itemId = v[1]
-    local num = v[2]
-    dataList[i] = {ItemId = itemId, Num = num}
-    local haveNum = self.itemsVM_.GetItemTotalCount(itemId)
-    if num > haveNum then
-      self.isCostEnough_ = false
-      self.notEnoughItem_ = itemId
-    end
-  end
-  self.loopCostView_:RefreshListView(dataList)
-  self.uiBinder.binder_tips.btn_operate.IsDisabled = not self.isCostEnough_
-end
-
 function Weapon_resonance_advance_windowView:unInitLoopListView()
   self.loopTabView_:UnInit()
-  self.loopCostView_:UnInit()
   self.loopTabView_ = nil
-  self.loopCostView_ = nil
 end
 
 function Weapon_resonance_advance_windowView:refreshTotalInfo()
   self:showMonsterModel()
-  self:refreshTipsInfo()
+  self:showTipsSubView()
 end
 
 function Weapon_resonance_advance_windowView:showMonsterModel()
   if self.curShowModel_ then
+    if self.curShowModel_.Loaded then
+      self:createModelEffect(self.curShowModel_)
+    end
     return
   end
   local monsterId = self.curResonanceConfig_.MonsterId
   local monsterRow = Z.TableMgr.GetTable("MonsterTableMgr").GetRow(monsterId)
   local modelPos = Vector3.New(-0.4, 0, 0)
   local modelRot = Quaternion.Euler(Vector3.New(0, 160, 0))
-  local intensityValue = 2
-  local fresnelColor = Color.New(0, 0.11372549019607843 * intensityValue, 0.7490196078431373 * intensityValue, 1)
-  local fresnelEffect = Vector4.New(-0.7, 1, 1, 1)
   self.curShowModel_ = Z.UnrealSceneMgr:GenModelByLua(self.curShowModel_, monsterRow.ModelID, function(model)
     model:SetAttrGoPosition(Z.UnrealSceneMgr:GetTransPos("pos") + modelPos)
     model:SetAttrGoRotation(modelRot)
+    if self.curResonanceConfig_.ModelAnim ~= "" then
+      model:SetLuaAttrModelPreloadClip(self.curResonanceConfig_.ModelAnim)
+      model:SetLuaAnimBase(Z.AnimBaseData.Rent(self.curResonanceConfig_.ModelAnim))
+    else
+      model:SetLuaAnimBase(Z.AnimBaseData.Rent(Panda.ZAnim.EAnimBase.EIdle))
+    end
   end, nil, function(model)
-    model.RenderComp:SetFresnelEffect(1, fresnelColor, fresnelEffect, Z.ModelRenderType.All)
-  end, nil, false)
-  self.curShowModel_:SetLuaAttrGoScale(self.curResonanceConfig_.ModelRatio)
+    self:createModelEffect(model)
+  end)
+  self.curShowModel_:SetLuaAttrGoScale(self.tempModelScale_ or self.curResonanceConfig_.ModelRatio)
 end
 
 function Weapon_resonance_advance_windowView:clearMonsterModel()
+  self:clearModelEffect()
   if self.curShowModel_ then
+    self.curShowModel_.RenderComp:SetUIResonanceOutline(false)
     Z.UnrealSceneMgr:ClearModel(self.curShowModel_)
     self.curShowModel_ = nil
-  end
-end
-
-function Weapon_resonance_advance_windowView:refreshTipsInfo()
-  local binderTips = self.uiBinder.binder_tips
-  local curAdvanceConfig = self.curAdvanceConfigList_[self.curSelectAdvanceLevel_]
-  if curAdvanceConfig == nil then
-    return
-  end
-  local isAdvanced = self.curServerAdvanceLevel_ >= self.curSelectAdvanceLevel_
-  local isOverLevel = self.curSelectAdvanceLevel_ > self.curServerAdvanceLevel_ + 1
-  local isMaxLevel = self.curServerAdvanceLevel_ >= #self.curAdvanceConfigList_
-  binderTips.lab_advance_level.text = Lang("AdvanceLevel", {
-    val = self.curSelectAdvanceLevel_
-  })
-  local attrDescList, buffDescList = self.weaponSkillVM_:ParseResonanceSkillDesc(self.curSkillId_, self.curSelectAdvanceLevel_, false, true)
-  Z.CoroUtil.create_coro_xpcall(function()
-    binderTips.Ref:SetVisible(binderTips.group_desc, false)
-    self:loadAttrItem(attrDescList)
-    self:loadEffectItem(buffDescList)
-    self.uiBinder.binder_tips.Ref:SetVisible(self.uiBinder.binder_tips.img_line, 0 < #attrDescList and 0 < #buffDescList)
-    self.timerMgr:StartFrameTimer(function()
-      binderTips.rebuild_layout:ForceRebuildLayoutImmediate()
-      binderTips.Ref:SetVisible(binderTips.group_desc, true)
-    end, 1, 1)
-  end)()
-  binderTips.btn_operate_binder.Ref:SetVisible(binderTips.btn_operate_binder.img_icon, false)
-  binderTips.Ref:SetVisible(binderTips.group_cost, not isAdvanced)
-  if not isAdvanced then
-    self:refreshCostLoopListView(curAdvanceConfig.UpgradeCost)
-    local conditionEnough = Z.ConditionHelper.CheckCondition(curAdvanceConfig.UlockSkillLevel)
-    if not conditionEnough then
-      for _, condition in ipairs(curAdvanceConfig.UlockSkillLevel) do
-        if condition[1] == E.ConditionType.Level then
-          binderTips.btn_operate_binder.lab_normal.text = string.format(Lang("rolelv_skill_remodel"), condition[2])
-          binderTips.btn_operate_binder.Ref:SetVisible(binderTips.btn_operate_binder.img_icon, true)
-          break
-        end
-      end
-    end
-  end
-  binderTips.lab_had_advanced.text = isMaxLevel and Lang("ResonanceMaxLevel") or Lang("ResonanceAdvanceTip1")
-  binderTips.Ref:SetVisible(binderTips.group_cost, not isAdvanced)
-  binderTips.Ref:SetVisible(binderTips.btn_operate, not isAdvanced and not isOverLevel)
-  binderTips.Ref:SetVisible(binderTips.lab_had_advanced, isAdvanced)
-  binderTips.Ref:SetVisible(binderTips.lab_advance_tip, isOverLevel)
-  self:loadRedDotItem()
-end
-
-function Weapon_resonance_advance_windowView:loadAttrItem(descList)
-  self:unLoadAttrItem()
-  for index, info in ipairs(descList) do
-    local itemPath = self.uiBinder.prefab_cache:GetString("desc_item")
-    local itemName = "attr_item_" .. index
-    local itemBinder = self:AsyncLoadUiUnit(itemPath, itemName, self.uiBinder.binder_tips.node_normal_desc)
-    self.attrItemBinders_[itemName] = itemBinder
-    itemBinder.lab_value.text = info.title
-    Z.RichTextHelper.SetTmpLabTextWithCommonLinkNew(itemBinder.lab_value, info.desc)
-  end
-end
-
-function Weapon_resonance_advance_windowView:unLoadAttrItem()
-  for itemName, itemBinder in pairs(self.attrItemBinders_) do
-    self:RemoveUiUnit(itemName)
-  end
-  self.attrItemBinders_ = {}
-end
-
-function Weapon_resonance_advance_windowView:loadEffectItem(specialEffectList)
-  self:unLoadEffectItem()
-  for index, info in ipairs(specialEffectList) do
-    local itemPath = self.uiBinder.prefab_cache:GetString("desc_item")
-    local itemName = "special_effect_item_" .. index
-    local itemBinder = self:AsyncLoadUiUnit(itemPath, itemName, self.uiBinder.binder_tips.node_special_desc)
-    self.effectItemBinders_[itemName] = itemBinder
-    itemBinder.lab_value.text = info.title
-    Z.RichTextHelper.SetTmpLabTextWithCommonLinkNew(itemBinder.lab_value, info.desc)
-  end
-end
-
-function Weapon_resonance_advance_windowView:unLoadEffectItem()
-  for itemName, itemBinder in pairs(self.effectItemBinders_) do
-    self:RemoveUiUnit(itemName)
-  end
-  self.effectItemBinders_ = {}
-end
-
-function Weapon_resonance_advance_windowView:loadRedDotItem()
-  local advanceNodeId = self.weaponSkillVM_:GetResonanceAdvanceRedDotId(self.curSkillId_)
-  if self.advanceNodeId_ and self.advanceNodeId_ ~= advanceNodeId then
-    self:unLoadRedDotItem()
-  end
-  self.advanceNodeId_ = advanceNodeId
-  Z.RedPointMgr.LoadRedDotItem(self.advanceNodeId_, self, self.uiBinder.binder_tips.btn_operate.transform)
-end
-
-function Weapon_resonance_advance_windowView:unLoadRedDotItem()
-  if self.advanceNodeId_ then
-    Z.RedPointMgr.RemoveNodeItem(self.advanceNodeId_, self)
-    self.advanceNodeId_ = nil
   end
 end
 
@@ -295,8 +190,69 @@ function Weapon_resonance_advance_windowView:onDrag(eventData)
   self.curShowModel_:SetAttrGoRotation(Quaternion.Euler(self.curShowModelRotEuler_))
 end
 
-function Weapon_resonance_advance_windowView:closeLabelTips()
-  Z.CommonTipsVM.CloseRichText()
+function Weapon_resonance_advance_windowView:createModelEffect(model)
+  self:clearModelEffect()
+  local curAdvanceConfig = self.curAdvanceConfigList_[self.curSelectAdvanceLevel_]
+  if curAdvanceConfig == nil or #curAdvanceConfig.ModelPointScale == 0 then
+    return
+  end
+  if model == nil then
+    return
+  end
+  local qualityConfig = Z.Global.SkillAoyiModelSkin1
+  if self.curResonanceConfig_.RarityType > 1 then
+    qualityConfig = Z.Global.SkillAoyiModelSkin2
+  end
+  local fresnelColor, effectQuality
+  for i, v in ipairs(qualityConfig) do
+    local minLv = v[1]
+    local maxLv = v[2]
+    local quality = v[3]
+    if minLv <= self.curSelectAdvanceLevel_ and maxLv >= self.curSelectAdvanceLevel_ then
+      effectQuality = quality
+    end
+  end
+  if 4 <= effectQuality then
+    local intensityValue = 1.1375
+    fresnelColor = Color.New(0.7490196078431373 * intensityValue, 0.21568627450980393 * intensityValue, 0, 1)
+  else
+    local intensityValue = 2.2
+    fresnelColor = Color.New(0, 0.08627450980392157 * intensityValue, 0.7490196078431373 * intensityValue, 1)
+  end
+  if effectQuality == nil then
+    return
+  end
+  local effectPathConfig = ResonanceSkillDefine.Model_Effect_Path_Config[effectQuality]
+  if effectPathConfig == nil then
+    return
+  end
+  self.curEffectList_ = {}
+  for index, scale in ipairs(curAdvanceConfig.ModelPointScale) do
+    if self.tempModelEffectScale_ and self.tempModelEffectScale_[index] then
+      scale = self.tempModelEffectScale_[index]
+    end
+    local config = ResonanceSkillDefine.Model_Effect_Config[index]
+    if config and 0 < scale then
+      local effectPath = string.format(effectPathConfig, config.MountPointKey)
+      local effectPoint = config.MountPointName
+      local effectScale = Vector3.New(scale, scale, scale)
+      local effectUuid = Z.UnrealSceneMgr:CreateEffectOnModelPoint(model, effectPath, effectPoint, Vector3.zero, Vector3.zero, effectScale, true, -1)
+      table.insert(self.curEffectList_, effectUuid)
+    end
+  end
+  local fresnelEffect = Vector4.New(-0.7, 1, 1, 1)
+  model.RenderComp:SetFresnelEffect(1, fresnelColor, fresnelEffect, Z.ModelRenderMask.All)
+  local headFresnelEffect = Vector4.New(0.15, 1, 1, 1)
+  model.RenderComp:SetFresnelEffect(1, fresnelColor, headFresnelEffect, Z.ModelRenderMask.Hair)
+end
+
+function Weapon_resonance_advance_windowView:clearModelEffect()
+  if self.curEffectList_ then
+    for i, uuid in ipairs(self.curEffectList_) do
+      Z.UnrealSceneMgr:ClearEffect(uuid)
+    end
+    self.curEffectList_ = nil
+  end
 end
 
 function Weapon_resonance_advance_windowView:closeSourceTips()

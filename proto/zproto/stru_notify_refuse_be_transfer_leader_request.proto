@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message NotifyRefuseBeTransferLeaderRequest {
-    int64 memId = 2;
+    int64 memId = 1;
 }
-

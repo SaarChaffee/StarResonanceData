@@ -13,7 +13,7 @@ function UnionBuildItem:OnRefresh(data)
   self.uiBinder.lab_content_normal.text = buildName
   self.uiBinder.lab_content_select.text = buildName
   self.uiBinder.lab_content_lock.text = buildName
-  local buildLv = Lang("Lv") .. curLv
+  local buildLv = Lang("Level", {val = curLv})
   self.uiBinder.lab_grade_normal.text = buildLv
   self.uiBinder.lab_grade_select.text = buildLv
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_arrow, isUpgrading)

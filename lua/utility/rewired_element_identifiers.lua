@@ -85,6 +85,13 @@ local mouseElementIdentifiers = {
     type = 0
   }
 }
+local modifierKeyMap = {
+  [0] = "",
+  [1] = "Ctrl",
+  [2] = "Alt",
+  [3] = "Shift",
+  [4] = "Command"
+}
 local getMouseKeyIdByElementId = function(elementId)
   for _, element in ipairs(mouseElementIdentifiers) do
     if element.id == elementId then
@@ -101,5 +108,17 @@ local getMouseKeyIdByElementName = function(elementName)
   end
   return nil
 end
-local ret = {GetMouseKeyIdByElementId = getMouseKeyIdByElementId, GetMouseKeyIdByElementName = getMouseKeyIdByElementName}
+local getModifierKeyDes = function(modifierKeyEnum)
+  local index = modifierKeyEnum:ToInt()
+  local ret = modifierKeyMap[index]
+  if ret == nil then
+    return ""
+  end
+  return ret
+end
+local ret = {
+  GetMouseKeyIdByElementId = getMouseKeyIdByElementId,
+  GetMouseKeyIdByElementName = getMouseKeyIdByElementName,
+  GetModifierKeyDes = getModifierKeyDes
+}
 return ret

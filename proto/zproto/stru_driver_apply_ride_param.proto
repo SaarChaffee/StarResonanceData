@@ -6,4 +6,3 @@ message DriverApplyRideParam {
     int64 applyId = 1;
     string applyName = 2;
 }
-

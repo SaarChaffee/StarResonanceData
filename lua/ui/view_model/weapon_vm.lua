@@ -1,10 +1,18 @@
 local opneWeaponRoleView = function()
-  if Z.StatusSwitchMgr:CheckSwitchEnable(Z.EStatusSwitch.StatusEquipMenu) then
-    Z.UIMgr:OpenView("weapon_role_main")
+  if Z.StatusSwitchMgr:TrySwitchToState(Z.EStatusSwitch.StatusEquipMenu) then
+    local path = "weapon_role_main"
+    if Z.IsPCUI then
+      path = "weapon_role_main_pc"
+    end
+    Z.UIMgr:OpenView(path)
   end
 end
 local closeWeaponRoleView = function()
-  Z.UIMgr:CloseView("weapon_role_main")
+  local path = "weapon_role_main"
+  if Z.IsPCUI then
+    path = "weapon_role_main_pc"
+  end
+  Z.UIMgr:CloseView(path)
 end
 local openUpgradeView = function(viewData)
   Z.UIMgr:OpenView("weaponhero_upgrade_popup", viewData)
@@ -250,11 +258,13 @@ local switchEntityShow = function(show)
     Z.CameraMgr:OpenCullingMask(Panda.Utility.ZLayerUtils.LAYER_MASK_CHARACTER)
     Z.CameraMgr:OpenCullingMask(Panda.Utility.ZLayerUtils.LAYER_MASK_MONSTER)
     Z.CameraMgr:OpenCullingMask(Panda.Utility.ZLayerUtils.LAYER_MASK_BOSS)
+    Z.CameraMgr:OpenCullingMask(Panda.Utility.ZLayerUtils.LAYER_MASK_NPC)
     Z.LuaBridge.SetHudSwitch(true)
   else
     Z.CameraMgr:CloseCullingMask(Panda.Utility.ZLayerUtils.LAYER_MASK_CHARACTER)
     Z.CameraMgr:CloseCullingMask(Panda.Utility.ZLayerUtils.LAYER_MASK_MONSTER)
     Z.CameraMgr:CloseCullingMask(Panda.Utility.ZLayerUtils.LAYER_MASK_BOSS)
+    Z.CameraMgr:CloseCullingMask(Panda.Utility.ZLayerUtils.LAYER_MASK_NPC)
     Z.LuaBridge.SetHudSwitch(false)
   end
 end

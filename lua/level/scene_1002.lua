@@ -11,32 +11,79 @@ Scene.Seasons = {}
 
 function Scene:InitEvents()
   self.EventItems = {}
-  self.EventItems[1280] = {
-    eventType = E.LevelEventType.OnOptionSelect,
+  self.EventItems[1369] = {
+    eventType = E.LevelEventType.OnZoneExitClient,
     enable = true,
     group = 0,
-    eventId = 1280,
-    count = -1,
-    selectedStr = "sitdown",
-    action = function(localSelf)
-      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
-        0,
-        3,
-        4,
-        5,
-        10
-      }, true)
+    eventId = 1369,
+    count = 1,
+    entity = {actorType = 5, tableUid = 1064},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      Z.LevelMgr.FireSceneEvent({
+        eventType = 1,
+        strParams = {"2000121", ""}
+      })
     end
   }
-  self.EventItems[1281] = {
-    eventType = E.LevelEventType.OnCutsceneEnd,
+  self.EventItems[1372] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
     enable = true,
-    cutsceneId = 10104011,
     group = 0,
-    eventId = 1281,
-    count = -1,
-    action = function(localSelf)
-      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1)
+    eventId = 1372,
+    count = 1,
+    entity = {actorType = 5, tableUid = 1064},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      do
+        local entityData = {actorType = 2, groupId = 85}
+        if entityData.groupId then
+          Z.LevelMgr.FireSceneEvent({
+            eventType = 24,
+            intParams = {
+              entityData.groupId
+            }
+          })
+        else
+          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
+        end
+      end
+    end
+  }
+  self.EventItems[1371] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 1371,
+    count = 1,
+    entity = {actorType = 5, tableUid = 1063},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      do
+        local entityData = {actorType = 2, groupId = 85}
+        if entityData.groupId then
+          Z.LevelMgr.FireSceneEvent({
+            eventType = 25,
+            intParams = {
+              entityData.groupId
+            }
+          })
+        else
+          Panda.ZGame.ZClientEntityMgr.Instance:RemoveClientEntityLua(entityData.tableUid, entityData.actorType)
+        end
+      end
     end
   }
   self.EventItems[1294] = {
@@ -44,62 +91,116 @@ function Scene:InitEvents()
     enable = true,
     group = 0,
     eventId = 1294,
-    count = -1,
+    count = 1,
     entity = {actorType = 5, tableUid = 969},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      Panda.ZGame.ZEventParser.PreLoadCutscene(10104012)
+      do
+        local entityData = {actorType = 3, tableUid = 949}
+        if entityData.groupId then
+          Z.LevelMgr.FireSceneEvent({
+            eventType = 24,
+            intParams = {
+              entityData.groupId
+            }
+          })
+        else
+          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
+        end
+      end
+    end
+  }
+  self.EventItems[1426] = {
+    eventType = E.LevelEventType.OnCutsceneEnd,
+    enable = true,
+    cutsceneId = 1103,
+    group = 0,
+    eventId = 1426,
+    count = 1,
+    action = function(localSelf)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
       Z.LevelMgr.FireSceneEvent({
-        eventType = 26,
-        intParams = {
-          2,
-          1,
-          15,
-          16,
-          17,
-          18,
-          19,
-          20,
-          21,
-          22,
-          23,
-          25,
-          30,
-          32,
-          33,
-          35,
-          36,
-          37,
-          43,
-          47,
-          48,
-          49,
-          51,
-          52,
-          53,
-          54,
-          55,
-          56,
-          57,
-          58,
-          59,
-          61,
-          62,
-          67,
-          68,
-          29,
-          138,
-          139,
-          12,
-          152,
-          154,
-          155,
-          156
-        },
-        floatParams = {
-          0.13,
-          0.13,
-          0.13,
-          1.0
-        }
+        eventType = 1,
+        strParams = {"2000145", ""}
+      })
+      Z.LevelMgr.FireSceneEvent({
+        eventType = 1,
+        strParams = {"2000146", ""}
+      })
+    end
+  }
+  self.EventItems[1395] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 1395,
+    count = 1,
+    entity = {actorType = 5, tableUid = 1018},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      do
+        local entityData = {actorType = 3, tableUid = 949}
+        if entityData.groupId then
+          Z.LevelMgr.FireSceneEvent({
+            eventType = 25,
+            intParams = {
+              entityData.groupId
+            }
+          })
+        else
+          Panda.ZGame.ZClientEntityMgr.Instance:RemoveClientEntityLua(entityData.tableUid, entityData.actorType)
+        end
+      end
+    end
+  }
+  self.EventItems[1309] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 1309,
+    count = 1,
+    entity = {actorType = 5, tableUid = 982},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      Z.LevelMgr.FireSceneEvent({
+        eventType = 4,
+        intParams = {1037}
+      })
+    end
+  }
+  self.EventItems[1421] = {
+    eventType = E.LevelEventType.OnCutsceneEnd,
+    enable = true,
+    cutsceneId = 1037,
+    group = 0,
+    eventId = 1421,
+    count = 1,
+    action = function(localSelf)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      Z.LevelMgr.FireSceneEvent({
+        eventType = 1,
+        strParams = {"2000149", ""}
       })
     end
   }
@@ -111,7 +212,7 @@ function Scene:InitEvents()
     count = -1,
     entity = {actorType = 5, tableUid = 536},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, true)
+      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, true, localSelf.eventId)
       Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
         3,
         4,
@@ -123,7 +224,7 @@ function Scene:InitEvents()
         24,
         26,
         27
-      }, true)
+      }, true, localSelf.eventId)
       Panda.ZGame.CameraManager.Instance:CameraInvoke(12, true, {5003}, false)
       Panda.ZGame.CameraManager.Instance:SwitchCameraTemplate({
         1,
@@ -137,7 +238,7 @@ function Scene:InitEvents()
         5002,
         5004,
         5005
-      }, -1)
+      }, 12)
     end
   }
   self.EventItems[1075] = {
@@ -147,7 +248,7 @@ function Scene:InitEvents()
     eventId = 1075,
     count = -1,
     action = function(localSelf)
-      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1)
+      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1, localSelf.eventId)
       Panda.ZGame.CameraManager.Instance:CameraInvoke(12, false, {0}, false)
       Panda.ZGame.CameraManager.Instance:SwitchCameraTemplate({
         0,
@@ -161,7 +262,9 @@ function Scene:InitEvents()
         5002,
         5004,
         5005
-      }, -1)
+      }, 12)
+      Panda.ZGame.CameraManager.Instance:CameraInvoke(0, true, {2032}, false)
+      Panda.ZGame.CameraManager.Instance:SwitchCameraTemplate({0}, {2030}, 0)
     end
   }
   self.EventItems[1271] = {
@@ -172,7 +275,7 @@ function Scene:InitEvents()
     count = -1,
     entity = {actorType = 5, tableUid = 536},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, false)
+      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, false, localSelf.eventId)
       Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
         3,
         4,
@@ -181,8 +284,10 @@ function Scene:InitEvents()
         17,
         19,
         20,
-        24
-      }, false)
+        24,
+        26,
+        27
+      }, false, localSelf.eventId)
       Panda.ZGame.CameraManager.Instance:CameraInvoke(12, false, {0}, false)
       Panda.ZGame.CameraManager.Instance:SwitchCameraTemplate({
         0,
@@ -196,7 +301,7 @@ function Scene:InitEvents()
         5002,
         5004,
         5005
-      }, -1)
+      }, 12)
     end
   }
   self.EventItems[1284] = {
@@ -213,6 +318,91 @@ function Scene:InitEvents()
         localSelf.count = localSelf.count - 1
       end
       Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1018})
+    end
+  }
+  self.EventItems[1427] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 1427,
+    count = 1,
+    action = function(localSelf)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(1, false)
+    end
+  }
+  self.EventItems[1428] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 1428,
+    count = 1,
+    action = function(localSelf)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(2, false)
+    end
+  }
+  self.EventItems[1429] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 1429,
+    count = 1,
+    action = function(localSelf)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(1, true)
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(2, true)
+    end
+  }
+  self.EventItems[1388] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 1388,
+    count = 1,
+    entity = {actorType = 5, tableUid = 1073},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
+        5,
+        10,
+        18
+      }, true, localSelf.eventId)
+    end
+  }
+  self.EventItems[1390] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 1390,
+    count = 1,
+    action = function(localSelf)
+      if localSelf.count == 0 then
+        return
+      else
+        localSelf.count = localSelf.count - 1
+      end
+      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
+        5,
+        10,
+        18
+      }, false, localSelf.eventId)
     end
   }
 end

@@ -6,4 +6,3 @@ message GetRoomAwardParam {
     int32 roomId = 1;
     int32 targetId = 2;
 }
-

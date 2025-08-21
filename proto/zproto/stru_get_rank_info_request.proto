@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message GetRankInfoRequest {
+    int32 fishId = 1;
+    int32 fishRankType = 2;
 }
-

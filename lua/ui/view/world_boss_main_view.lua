@@ -23,7 +23,10 @@ function World_boss_mainView:OnActive()
   local awardId = Z.WorldBoss.WorldBossPreviewAward
   self:RefreshRewardList(awardId)
   self:RefreshRightInfo()
-  self:RefreshMatchState(E.MatchType.WorldBoss)
+  self:RefreshMatchState()
+  local switchVm = Z.VMMgr.GetVM("switch")
+  local isWorldBossScheduleOpen = switchVm.CheckFuncSwitch(E.FunctionID.WorldBossSchedule)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_schedule, isWorldBossScheduleOpen)
 end
 
 function World_boss_mainView:OnDeActive()
@@ -56,9 +59,17 @@ end
 function World_boss_mainView:initBtnFunc()
   self:AddAsyncClick(self.btnGo_, function()
     local func = function()
-      local param = {}
-      local teamVM_ = Z.VMMgr.GetVM("team")
-      self.matchVm_.AsyncBeginMatchNew(E.MatchType.WorldBoss, param, teamVM_.CheckIsInTeam(), self.cancelSource:CreateToken())
+      local recommendedPlayData_ = Z.DataMgr.Get("recommendedplay_data")
+      local seasonActTableRow = recommendedPlayData_:GetRecommendedPlayConfigByFunctionId(E.FunctionID.WorldBoss)
+      if seasonActTableRow == nil then
+        return
+      end
+      self.matchVm_.RequestBeginMatch(E.MatchType.Activity, seasonActTableRow.Id, self.cancelSource:CreateToken())
+    end
+    local teamVm = Z.VMMgr.GetVM("team")
+    if teamVm.CheckIsInTeam() and not teamVm.GetYouIsLeader() then
+      Z.TipsVM.ShowTips(16002048)
+      return
     end
     local countID = Z.WorldBoss.WorldBossAwardCountId
     local limtCount = Z.CounterHelper.GetCounterLimitCount(countID)
@@ -70,8 +81,7 @@ function World_boss_mainView:initBtnFunc()
     end
   end)
   self:AddAsyncClick(self.uiBinder.btn_cancel, function()
-    local matchData = Z.DataMgr.Get("match_data")
-    self.matchVm_.AsyncCancelMatchNew(E.MatchType.WorldBoss, false, matchData.CancelSource:CreateToken())
+    self.matchVm_.AsyncCancelMatch()
   end)
   self:AddClick(self.uiBinder.btn_team, function()
     self.teamMainVM_.OpenTeamMainView(self.teamTargetId_)
@@ -111,6 +121,7 @@ end
 
 function World_boss_mainView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Match.MatchStartTimeChange, self.RefreshMatchState, self)
+  Z.EventMgr:Add(Z.ConstValue.Match.MatchStateChange, self.RefreshMatchState, self)
   Z.EventMgr:Add(Z.ConstValue.WorldBoss.WorldBossActivityEnd, self.onActivityEnd, self)
 end
 
@@ -124,6 +135,11 @@ end
 
 function World_boss_mainView:RefreshActivityState(ret)
   self.uiBinder.lab_num.text = ret.bossStage
+  local bossSwitchID = ret.bossCfgId
+  local worldBossSwitchTableRow = Z.TableMgr.GetTable("WorldBossSwitchTableMgr").GetRow(bossSwitchID)
+  if worldBossSwitchTableRow then
+    self.imgBG:SetImage(worldBossSwitchTableRow.MainPic)
+  end
 end
 
 function World_boss_mainView:RefreshRightInfo()
@@ -141,21 +157,25 @@ function World_boss_mainView:RefreshRightInfo()
   self.labTitle_.text = actConfig.Name
   self.labInfo_.text = actConfig.ActDes
   self.labTime_.text = actConfig.OtherDes
-  local startTimeList, endTimeList = Z.TimeTools.GetCycleTimeDataByTimeId(timeId)
+  local startTimeList, endTimeList = Z.TimeTools.GetCycleTimeListByTimeId(timeId)
   local strTable = {}
   for _, value in ipairs(startTimeList) do
-    local strResult = Z.TimeTools.FormatToWDHM(value)
+    local weekStrRow = Z.Global.WeekText
+    local weekDayStr = weekStrRow[value.wday]
+    local hour = value.hour
+    local min = value.min
+    local strResult = string.format("%s %02d:%02d", weekDayStr, hour, min)
     table.insert(strTable, strResult)
   end
   local timeStr_ = table.zconcat(strTable, ",")
   local str = timeStr_ .. Lang("WorldBossOpenTime")
   self.labCompanion_.text = str
-  local leftTime_, beforeLeftTime = Z.TimeTools.GetTimeLeftInSpecifiedTime(timeId)
+  local leftTime_, beforeLeftTime = Z.TimeTools.GetLeftTimeByTimerId(timeId)
   local curLeftTime = beforeLeftTime
   local func = function()
     curLeftTime = curLeftTime - 1
     if 0 <= curLeftTime then
-      local timeStr_ = Z.TimeTools.FormatToDHMSStr(curLeftTime)
+      local timeStr_ = Z.TimeFormatTools.FormatToDHMS(curLeftTime)
       str = Lang("remainderLimit", {str = timeStr_})
       self.uiBinder.lab_start_time.text = str
     else
@@ -190,29 +210,32 @@ function World_boss_mainView:onActivityEnd()
   self:SetUIVisible(self.uiBinder.lab_start_time, not self.isOpen_)
 end
 
-function World_boss_mainView:RefreshMatchState(matchType)
+function World_boss_mainView:RefreshMatchState()
   if self.isOpen_ == false then
     return
   end
-  if matchType ~= E.MatchType.WorldBoss then
+  local matchData = Z.DataMgr.Get("match_data")
+  local curMatchType = matchData:GetMatchType()
+  if curMatchType ~= E.MatchType.Activity then
     return
   end
   local matchData_ = Z.DataMgr.Get("match_data")
   local time = matchData_:GetMatchStartTime()
-  local isMatching = 0 < time
+  local matchActivityData = Z.DataMgr.Get("match_activity_data")
+  local isMatching = matchActivityData:GetCurMatchActivityType() == E.MatchActivityType.WorldBoseActivity and matchData_:GetMatchStartTime() > 0
   self:SetUIVisible(self.uiBinder.lab_matching, isMatching)
   self:SetUIVisible(self.uiBinder.btn_cancel, isMatching)
-  self:SetUIVisible(self.uiBinder.node_btn_list, isMatching == false)
+  self:SetUIVisible(self.uiBinder.node_btn_list, not isMatching)
   if self.timer_ then
     self.timerMgr:StopTimer(self.timer_)
     self.timer_ = nil
   end
   if isMatching then
     local time2 = (Z.TimeTools.Now() - time) / 1000
-    self.uiBinder.lab_matching.text = Lang("Matchmaking") .. Z.TimeTools.S2HMSFormat(time2)
+    self.uiBinder.lab_matching.text = Lang("Matchmaking") .. Z.TimeFormatTools.FormatToDHMS(time2, true)
     self.timer_ = self.timerMgr:StartTimer(function()
       local time1 = (Z.TimeTools.Now() - time) / 1000
-      self.uiBinder.lab_matching.text = Lang("Matchmaking") .. Z.TimeTools.S2HMSFormat(time1)
+      self.uiBinder.lab_matching.text = Lang("Matchmaking") .. Z.TimeFormatTools.FormatToDHMS(time1, true)
     end, 1, -1)
   end
 end

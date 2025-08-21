@@ -9,4 +9,3 @@ message CreateUnionAlbumRequest {
     string name = 2;
     zproto.EAlbumRight access = 3;
 }
-

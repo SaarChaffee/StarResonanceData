@@ -3,7 +3,6 @@ local super = require("ui.ui_subview_base")
 local Mail_windowView = class("Mail_windowView", super)
 local MailQuantityMax = Z.Global.MailQuantityMax
 local WorldProxy = require("zproxy.world_proxy")
-local loopScrollRect = require("ui/component/loopscrollrect")
 local mailItemLoop = require("ui.component.mail.mail_loop_item")
 local loopListView = require("ui.component.loop_list_view")
 local mailRewardItemLoop = require("ui.component.mail.mail_reaward_loop_item")
@@ -11,143 +10,192 @@ local itemSortFactoryVm = Z.VMMgr.GetVM("item_sort_factory")
 
 function Mail_windowView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "mail_window_view", "mail/mail_window", UI.ECacheLv.None)
+  super.ctor(self, "mail_window_view", "mail/mail_window", UI.ECacheLv.None, true)
+end
+
+function Mail_windowView:OnActive()
+  self:initVMData()
+  self:initFunc()
+  self:onInitRed()
+  self:initMailData()
+  self:BindLuaAttrWatchers()
+  self:startAnimatedShow()
+end
+
+function Mail_windowView:OnDeActive()
+  self.mailLoopList_:UnInit()
+  self.mailRewardList_:UnInit()
+  self:clearRed()
+  self:clearTogFunc()
+end
+
+function Mail_windowView:initMailData()
+  self.uiBinder.tog_system:SetIsOnWithoutCallBack(true)
+  self.uiBinder.tog_collect:SetIsOnWithoutCallBack(false)
+  self:refreshLeftView(true)
+  self:showMailEmptyState()
+  self:asyncInitMailData()
+end
+
+function Mail_windowView:initVMData()
   self.mailData_ = Z.DataMgr.Get("mail_data")
   self.MailVm_ = Z.VMMgr.GetVM("mail")
   self.helpsysVM_ = Z.VMMgr.GetVM("helpsys")
   self.awardPreviewVM_ = Z.VMMgr.GetVM("awardpreview")
-end
-
-function Mail_windowView:OnActive()
-  self:initFunc()
-  self:initMailData()
-  self:onInitRed()
-  self:BindLuaAttrWatchers()
-  self:startAnimatedShow()
-  self.mailData_:SortAllMailData()
-  self:refreshMailLoopData()
-end
-
-function Mail_windowView:OnDeActive()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.group_mail_normal, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.group_mail_content, false)
-  self.mailScrollRect_:ClearCells()
-  self:clearRed()
-  self.mailRewardList_:UnInit()
-end
-
-function Mail_windowView:OnRefresh()
-end
-
-function Mail_windowView:initMailData()
-  self.uiBinder.Trans:SetOffsetMin(-92, 0)
-  self.uiBinder.Trans:SetOffsetMax(0, 0)
+  self.mainUIData_ = Z.DataMgr.Get("mainui_data")
   self.NowSelectMailItemData = nil
-  self.selectItemIndex_ = 0
-  self.uiBinder.lab_max.text = "/" .. MailQuantityMax
-  self.mailScrollRect_ = loopScrollRect.new(self.uiBinder.loopscroll_mail, self, mailItemLoop)
-  self.mailRewardList_ = loopListView.new(self, self.uiBinder.node_reward_list, mailRewardItemLoop, "com_item_square_8")
-  self.mailRewardList_:Init({})
-  self.uiBinder.tog_important.group = self.uiBinder.group_top
-  self.uiBinder.tog_normal.group = self.uiBinder.group_top
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, false)
-  local importantUnReadList = self.mailData_:GetImportantUnReadList()
-  local normalUnReadList = self.mailData_:GetNormalUnReadList()
-  if 0 < table.zcount(importantUnReadList) or table.zcount(normalUnReadList) == 0 then
-    self.uiBinder.tog_important.isOn = true
-    self.mailData_:SetIsImportant(true)
-    self:clickImportantAnimatedShow()
-    self:onClickImportRed()
-  else
-    self.uiBinder.tog_normal.isOn = true
-    self.mailData_:SetIsImportant(false)
-    self.MailVm_.ClearMailRed(false)
-    self:onClickNormalRed()
+  self.selectItemIndex_ = 1
+  self.isSystem_ = true
+  self.mainUIData_.MainUIPCShowMail = false
+  if not Z.IsPCUI then
+    self.uiBinder.Trans:SetOffsetMin(-92, 0)
+    self.uiBinder.Trans:SetOffsetMax(0, 0)
   end
-  Z.CoroUtil.create_coro_xpcall(function()
-    if not self.mailData_:GetIsInit() then
-      self.MailVm_.AsyncGetMailList(self.cancelSource)
+end
+
+function Mail_windowView:initFunc()
+  self.uiBinder.tog_system.group = self.uiBinder.group_top
+  self.uiBinder.tog_collect.group = self.uiBinder.group_top
+  self.uiBinder.tog_system:AddListener(function(isOn)
+    self.isSystem_ = isOn
+    self:refreshLeftView(isOn)
+    self:refreshMailLoopData()
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_quick_pick, function()
+    self.MailVm_.GetAllMailAppendix(self.cancelSource)
+  end)
+  self:AddClick(self.uiBinder.btn_delete_left, function()
+    Z.DialogViewDataMgr:OpenNormalDialog(Lang("DeleAllEmail"), function()
+      self.MailVm_.DeleteAllReadMail(self.cancelSource:CreateToken())
+    end)
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_recept, function()
+    local mailTab = {}
+    mailTab[1] = self.NowSelectMailItemData.mailUuid
+    self.MailVm_.GetMailAppendix(mailTab, self.cancelSource:CreateToken())
+  end)
+  self:AddClick(self.uiBinder.btn_com_check, function()
+    if self.NowSelectMailItemData.isHaveAward then
+      local definitelyList = self.awardPreviewVM_.GetAllAwardPreListByIds(self.NowSelectMailItemData.awardIds)
+      self.awardPreviewVM_.OpenRewardDetailViewByListData(definitelyList)
+    else
+      self.awardPreviewVM_.OpenRewardDetailViewByItemList(self.NowSelectMailItemData.appendix)
     end
-    local newMailList = self.mailData_:GetNewMailList()
-    if 0 < #newMailList then
-      self.MailVm_.AsyncCheckNewMailList(self.cancelSource)
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_delete, function()
+    if not self.NowSelectMailItemData then
+      return
     end
-  end)()
+    if self.NowSelectMailItemData.isCollect then
+      Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("MailDeleteConfirmTips"), function()
+        self:asyncDeleteCurMail()
+      end, nil, E.DlgPreferencesType.Day, E.DlgPreferencesKeyType.MailDeleteConfirmTips)
+    else
+      self:asyncDeleteCurMail()
+    end
+  end)
+  if not Z.IsPCUI then
+    self:AddClick(self.uiBinder.btn_return, function()
+      Z.VMMgr.GetVM("socialcontact_main").CloseSocialContactView()
+    end)
+    self:AddClick(self.uiBinder.btn_tips, function()
+      self.helpsysVM_.OpenFullScreenTipsView(30002)
+    end)
+  end
+  self:AddAsyncClick(self.uiBinder.btn_collect, function()
+    if not self.NowSelectMailItemData or self.NowSelectMailItemData.isCollect then
+      return
+    end
+    local ret = self.MailVm_.AsyncAddMailCollect(self.NowSelectMailItemData.mailUuid, self.cancelSource:CreateToken())
+    if ret == 0 then
+      self.NowSelectMailItemData.isCollect = true
+      self.mailLoopList_:UpDateByIndex(self.selectItemIndex_, self.NowSelectMailItemData)
+      self:refreshRightView()
+    else
+      Z.TipsVM.ShowTips(ret.errCode)
+    end
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_collect_cancel, function()
+    if not self.NowSelectMailItemData or not self.NowSelectMailItemData.isCollect then
+      return
+    end
+    local ret = self.MailVm_.AsyncCancelMailCollect(self.NowSelectMailItemData.mailUuid, self.cancelSource:CreateToken())
+    if ret == 0 then
+      self.NowSelectMailItemData.isCollect = false
+      self.mailLoopList_:UpDateByIndex(self.selectItemIndex_, self.NowSelectMailItemData)
+      self:refreshRightView()
+    else
+      Z.TipsVM.ShowTips(ret.errCode)
+    end
+  end)
   Z.RichTextHelper.ClickLink(self.uiBinder.lab_txt_mail_content, function(linkType, linkContent, text)
     if linkType == E.ELinkType.Recordclick then
       local str = string.zconcat(self.NowSelectMailItemData.mailUuid, "|", self.NowSelectMailItemData.mailConfigId, "|", self.NowSelectMailItemData.mailTitle, "|", text, "|", linkContent)
       WorldProxy.UploadTLogBody("MailClickUrlFlow", str)
     end
   end)
+  self.mailLoopList_ = loopListView.new(self, self.uiBinder.loop_mail, mailItemLoop, "mail_tpl", true)
+  self.mailLoopList_:Init({})
+  self.mailRewardList_ = loopListView.new(self, self.uiBinder.node_reward_list, mailRewardItemLoop, "com_item_square_8", true)
+  self.mailRewardList_:Init({})
+  self.uiBinder.lab_max.text = "/" .. MailQuantityMax
 end
 
-function Mail_windowView:initFunc()
-  self.uiBinder.tog_important:AddListener(function(isOn)
-    if self.mailData_:GetIsImportant() == isOn then
-      return
+function Mail_windowView:clearTogFunc()
+  self.uiBinder.tog_collect.group = nil
+  self.uiBinder.tog_system.group = nil
+  self.uiBinder.tog_collect:RemoveAllListeners()
+  self.uiBinder.tog_system:RemoveAllListeners()
+  self.uiBinder.tog_collect.isOn = false
+  self.uiBinder.tog_system.isOn = false
+end
+
+function Mail_windowView:refreshLeftView(isSystemMail)
+  self.selectItemIndex_ = 1
+  self.mailData_:SortMailData()
+  if isSystemMail then
+    self:clickNormalAnimatedShow()
+    self.MailVm_.ClearMailRed()
+    self:onClickNormalRed()
+  else
+    self:clickImportantAnimatedShow()
+  end
+end
+
+function Mail_windowView:showMailEmptyState()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_login, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.group_mail_normal, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.group_mail_content, false)
+end
+
+function Mail_windowView:asyncInitMailData()
+  if self.mailData_:GetIsInit() or self.mailData_:GetServerMailNum() == 0 then
+    self.mailData_:SetIsInit()
+    self:onInitMailList()
+  else
+    self.MailVm_.AsyncInitMailList(self.cancelSource)
+  end
+end
+
+function Mail_windowView:onInitMailList()
+  Z.CoroUtil.create_coro_xpcall(function()
+    local curServerTime = Z.ServerTime:GetServerTime() / 1000
+    if self.mailData_:GetMailNum() == 0 and curServerTime - self.mailData_.LastGetMailListTime > 5 then
+      self.MailVm_.AsyncCheckMailList()
+      self.mailData_.LastGetMailListTime = Z.ServerTime:GetServerTime() / 1000
     end
-    self.mailData_:SetIsImportant(isOn)
-    self.selectItemIndex_ = 0
-    if isOn then
-      self:clickImportantAnimatedShow()
-      self:onClickImportRed()
-      self.mailData_:SortMailData(false)
-    else
-      self.MailVm_.ClearMailRed(false)
-      self:onClickNormalRed()
-      self:clickNormalAnimatedShow()
-      self.mailData_:SortMailData(true)
+    local newMailList = self.mailData_:GetNewMailList()
+    if 0 < #newMailList then
+      self.MailVm_.AsyncCheckNewMailList(self.cancelSource)
     end
+    self.MailVm_.CheckMailTimeOut()
     self:refreshMailLoopData()
-  end)
-  self:AddAsyncClick(self.uiBinder.btn_quick_pick, function()
-    self.MailVm_.GetAllMailAppendix(self.cancelSource:CreateToken())
-  end)
-  self:AddClick(self.uiBinder.btn_delete_left, function()
-    Z.DialogViewDataMgr:OpenNormalDialog(Lang("DeleAllEmail"), function()
-      self.MailVm_.DeleteAllReadMail(self.cancelSource:CreateToken())
-      Z.DialogViewDataMgr:CloseDialogView()
-    end)
-  end)
-  self:AddClick(self.uiBinder.btn_recept, function()
-    local mailTab = {}
-    mailTab[1] = self.NowSelectMailItemData.mailUuid
-    self.MailVm_.GetMailAppendix(mailTab)
-  end)
-  self:AddClick(self.uiBinder.btn_com_check, function()
-    local awardList_ = self.NowSelectMailItemData.awardIds
-    if table.zcount(awardList_) > 0 then
-      local definitelyList = self.awardPreviewVM_.GetAllAwardPreListByIds(awardList_)
-      self.awardPreviewVM_.OpenRewardDetailViewByListData(definitelyList)
-    else
-      self.awardPreviewVM_.OpenRewardDetailViewByItemList(self.NowSelectMailItemData.appendix)
-    end
-  end)
-  self:AddClick(self.uiBinder.btn_tips, function()
-    self.helpsysVM_.OpenFullScreenTipsView(30002)
-  end)
-  self:AddAsyncClick(self.uiBinder.btn_delete, function()
-    local mailTab = {}
-    table.insert(mailTab, self.NowSelectMailItemData.mailUuid)
-    local ret = self.MailVm_.DeleteMail(mailTab, self.cancelSource:CreateToken())
-    if ret.errCode == 0 then
-      self.NowSelectMailItemData = nil
-      self.selectItemIndex_ = 0
-      self:refreshMailLoopData()
-    end
-  end)
-  self:AddClick(self.uiBinder.btn_return, function()
-    Z.VMMgr.GetVM("socialcontact_main").CloseSocialContactView()
-  end)
+  end)()
 end
 
 function Mail_windowView:onInitRed()
-  Z.RedPointMgr.LoadRedDotItem(E.RedType.MailImport, self, self.uiBinder.node_red_import)
-  Z.RedPointMgr.LoadRedDotItem(E.RedType.MailNormal, self, self.uiBinder.node_red_normal)
-end
-
-function Mail_windowView:onClickImportRed()
-  Z.RedPointMgr.OnClickRedDot(E.RedType.MailImport)
+  Z.RedPointMgr.LoadRedDotItem(E.RedType.MailNormal, self, self.uiBinder.node_red_system)
 end
 
 function Mail_windowView:onClickNormalRed()
@@ -155,26 +203,14 @@ function Mail_windowView:onClickNormalRed()
 end
 
 function Mail_windowView:clearRed()
-  Z.RedPointMgr.RemoveNodeItem(E.RedType.MailImport)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.MailNormal)
 end
 
-function Mail_windowView:mailType()
-  if not self.mailData_:GetIsImportant() then
-    self:refreshBtn()
-  else
-    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_delete_left, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_quick_pick, false)
-  end
-end
-
 function Mail_windowView:SelectMailItem(itemIndex, mailData)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.group_mail_normal, mailData == nil and true or false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.group_mail_content, mailData ~= nil and true or false)
-  if mailData == nil then
-    return
-  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.group_mail_normal, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.group_mail_content, true)
   self.selectItemIndex_ = itemIndex
+  self.NowSelectMailItemData = mailData
   local mailTab
   if mailData.mailConfigId then
     mailTab = Z.TableMgr.GetTable("MailTableMgr").GetRow(mailData.mailConfigId, true)
@@ -187,9 +223,8 @@ function Mail_windowView:SelectMailItem(itemIndex, mailData)
   end
   self.uiBinder.lab_mail_title.text = title
   self.uiBinder.lab_txt_mail_content.text = mailBody
-  local timeStrYMD = Z.TimeTools.FormatTimeToYMD(mailData.createTime)
-  local timeStrHMS = Z.TimeTools.FormatTimeToHMS(mailData.createTime)
-  self.uiBinder.lab_time.text = string.format("%s %s", timeStrYMD, timeStrHMS)
+  local timeStrYMDHMS = Z.TimeFormatTools.TicksFormatTime(mailData.createTime, E.TimeFormatType.YMDHMS)
+  self.uiBinder.lab_time.text = timeStrYMDHMS
   if mailData.sendName == "" then
     if mailTab then
       self.uiBinder.lab_send.text = mailTab.NpcName
@@ -199,10 +234,8 @@ function Mail_windowView:SelectMailItem(itemIndex, mailData)
   else
     self.uiBinder.lab_send.text = mailData.sendName
   end
-  self.NowSelectMailItemData = mailData
-  local hasAward = 0 < table.zcount(mailData.awardIds)
-  local hasItem = 0 < table.zcount(mailData.appendix)
-  self:isRewardMail(hasAward or hasItem)
+  self:isRewardMail(mailData.isHaveAward or mailData.isHaveAppendix)
+  self:refreshRightView()
 end
 
 function Mail_windowView:isRewardMail(flag)
@@ -212,10 +245,9 @@ function Mail_windowView:isRewardMail(flag)
   if flag then
     local bGetReward = self.NowSelectMailItemData.mailState == Z.PbEnum("MailState", "MailStateGet")
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_recept, not bGetReward)
-    local awardIds = self.NowSelectMailItemData.awardIds
     self.itemList_ = {}
-    if table.zcount(awardIds) > 0 then
-      local awardList = self.awardPreviewVM_.GetAllAwardPreListByIds(awardIds)
+    if self.NowSelectMailItemData.isHaveAward then
+      local awardList = self.awardPreviewVM_.GetAllAwardPreListByIds(self.NowSelectMailItemData.awardIds)
       for _, v in pairs(awardList) do
         local awardData_ = v
         local labType, lab = self.awardPreviewVM_.GetPreviewShowNum(awardData_)
@@ -225,7 +257,7 @@ function Mail_windowView:isRewardMail(flag)
           lab = lab,
           isShowZero = false,
           isShowOne = true,
-          isShowReceive = awardData_.beGet ~= nil and awardData_.beGet,
+          isShowReceive = bGetReward,
           isSquareItem = true,
           PrevDropType = awardData_.PrevDropType
         }
@@ -240,7 +272,7 @@ function Mail_windowView:isRewardMail(flag)
           labType = E.ItemLabType.Num,
           lab = reward[i].count,
           itemInfo = reward[i],
-          isShowReceive = self.NowSelectMailItemData.mailState == Z.PbEnum("MailState", "MailStateGet"),
+          isShowReceive = bGetReward,
           isSquareItem = true
         }
         table.insert(self.itemList_, itemData)
@@ -255,72 +287,112 @@ function Mail_windowView:isRewardMail(flag)
   end
 end
 
-function Mail_windowView:loadingMailData()
-  local data = self.mailData_:GetIsImportant() and self.mailData_:GetImportantMailList() or self.mailData_:GetNormalMailList()
-  if table.zcount(data) > 0 then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_login, true)
+function Mail_windowView:asyncDeleteCurMail()
+  local ret = self.MailVm_.DeleteMail({
+    self.NowSelectMailItemData.mailUuid
+  }, self.cancelSource:CreateToken())
+  if ret.errCode == 0 then
+    self.NowSelectMailItemData = nil
+    self.selectItemIndex_ = 1
+    self:refreshMailLoopData()
+  else
+    Z.TipsVM.ShowTips(ret.errCode)
   end
 end
 
 function Mail_windowView:refreshMailLoopData()
-  local data = self.mailData_:GetIsImportant() and self.mailData_:GetImportantMailList() or self.mailData_:GetNormalMailList()
-  local isEmpty = table.zcount(data) == 0
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, isEmpty)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.group_mail_normal, isEmpty)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.group_mail_content, not isEmpty)
-  self:refreshBtn()
-  if isEmpty then
-    self.uiBinder.loopscroll_mail_ref:SetOffsetMin(0, 86)
+  self.mailData_:CheckMailVaild()
+  local data = self.mailData_:GetMailList()
+  self.curList_ = {}
+  if self.isSystem_ then
+    self.curList_ = data
   else
-    self.uiBinder.loopscroll_mail_ref:SetOffsetMin(0, 168)
+    for i = 1, #data do
+      if data[i].isCollect then
+        self.curList_[#self.curList_ + 1] = data[i]
+      end
+    end
   end
-  self.mailScrollRect_:SetSelected(self.selectItemIndex_)
-  if 0 < self.selectItemIndex_ then
-    self.mailScrollRect_:RefreshData(data)
+  local isShowBtn, isShowMail = self:refreshBtnState()
+  if isShowBtn then
+    if Z.IsPCUI then
+      self.uiBinder.loop_mail_ref:SetOffsetMin(0, 130)
+    else
+      self.uiBinder.loop_mail_ref:SetOffsetMin(0, 168)
+    end
+  elseif Z.IsPCUI then
+    self.uiBinder.loop_mail_ref:SetOffsetMin(0, 80)
   else
-    self.mailScrollRect_:SetData(data)
+    self.uiBinder.loop_mail_ref:SetOffsetMin(0, 110)
   end
-  self:mailType()
-  self:setMailnum()
+  if isShowMail then
+    self.mailLoopList_:RefreshListView(self.curList_, false)
+    self.mailLoopList_:ClearAllSelect()
+    if self.selectItemIndex_ > #self.curList_ then
+      self:showMailEmptyState()
+    else
+      self.mailLoopList_:SetSelected(self.selectItemIndex_)
+    end
+  else
+    self.mailLoopList_:RefreshListView({}, false)
+    self:showMailEmptyState()
+  end
+  self.uiBinder.lab_current.text = self.mailData_:GetMailNum()
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_login, false)
 end
 
-function Mail_windowView:refreshBtn()
-  local data = self.mailData_:GetIsImportant() and self.mailData_:GetImportantMailList() or self.mailData_:GetNormalMailList()
-  local isEmpty = table.zcount(data) == 0
-  local isShowBtn = not isEmpty and not self.mailData_:GetIsImportant()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_delete_left, not isEmpty and not self.mailData_:GetIsImportant())
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_quick_pick, not isEmpty and not self.mailData_:GetIsImportant())
-  self.uiBinder.node_bottom:SetHeight(isShowBtn and 158 or 100)
+function Mail_windowView:refreshBtnState()
+  local isShowMail = #self.curList_ > 0
+  local isShowBtn = isShowMail and self.isSystem_
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_delete_left, isShowBtn)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_quick_pick, isShowBtn)
+  if Z.IsPCUI then
+    self.uiBinder.node_bottom:SetHeight(isShowBtn and 130 or 80)
+  else
+    self.uiBinder.node_bottom:SetHeight(isShowBtn and 158 or 100)
+  end
+  return isShowBtn, isShowMail
 end
 
-function Mail_windowView:setMailnum()
-  self.uiBinder.lab_current.text = self.mailData_:GetImportantMailNum() + self.mailData_:GetNormalMailNum()
+function Mail_windowView:refreshRightView()
+  if not self.NowSelectMailItemData then
+    return
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_collect, not self.NowSelectMailItemData.isCollect)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_collect_cancel, self.NowSelectMailItemData.isCollect)
 end
 
 function Mail_windowView:BindLuaAttrWatchers()
-  Z.EventMgr:Add(Z.ConstValue.Mail.RefreshMailBtn, self.refreshBtn, self)
+  Z.EventMgr:Add(Z.ConstValue.Mail.RefreshMailBtn, self.refreshBtnState, self)
   Z.EventMgr:Add(Z.ConstValue.Mail.RefreshMailLoopData, self.refreshMailLoopData, self)
-  Z.EventMgr:Add(Z.ConstValue.Mail.LoadingMail, self.loadingMailData, self)
   Z.EventMgr:Add(Z.ConstValue.Mail.ReceiveNewMal, self.ReceiveNewMal, self)
+  Z.EventMgr:Add(Z.ConstValue.Mail.InitMailList, self.onInitMailList, self)
 end
 
 function Mail_windowView:ReceiveNewMal(mailUuid)
   Z.CoroUtil.create_coro_xpcall(function()
     self.MailVm_.AsyncGetNewMailByUuid(mailUuid, self.cancelSource:CreateToken())
+    self.mainUIData_.MainUIPCShowMail = false
   end)()
 end
 
 function Mail_windowView:clickImportantAnimatedShow()
-  self.uiBinder.anim_mail:Restart(Z.DOTweenAnimType.Tween_1)
+  if Z.IsPCUI then
+  else
+    self.uiBinder.anim_mail:Restart(Z.DOTweenAnimType.Tween_1)
+  end
 end
 
 function Mail_windowView:clickNormalAnimatedShow()
-  self.uiBinder.anim_mail:Restart(Z.DOTweenAnimType.Tween_2)
+  if Z.IsPCUI then
+  else
+    self.uiBinder.anim_mail:Restart(Z.DOTweenAnimType.Tween_2)
+  end
 end
 
 function Mail_windowView:startAnimatedShow()
-  if self.viewData.isFirstOpen then
+  if Z.IsPCUI then
+  elseif self.viewData.isFirstOpen then
     self.uiBinder.anim_mail:Restart(Z.DOTweenAnimType.Open)
   end
 end

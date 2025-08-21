@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_personal_info.proto";
 
 message GetPersonalInfoReply {
-    int32 errCode = 2;
-    zproto.PersonalInfo info = 3;
+    zproto.PersonalInfo info = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

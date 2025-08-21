@@ -51,8 +51,9 @@ function ItemBtnUnit:refresh()
   self.view_:AddAsyncClick(self.btn_, function()
     local data = self.data_
     data.cancelToken = self.data_.cancelSource:CreateToken()
-    Z.ItemOperatBtnMgr.OnClick(self.btnInfo_.key, self.itemUuId_, self.configId_, data)
+    Z.ItemOperatBtnMgr.OnClick(self.btnInfo_.key, self.itemUuId_, self.configId_, data, self.view_.cancelSource:CreateToken())
   end, nil, nil)
+  self.btn_.IsDisabled = self.btnInfo_.state == E.ItemBtnState.IsDisabled
   self.btnBinder_.lab_content.text = Z.ItemOperatBtnMgr.GetBtnName(self.btnInfo_.key, self.itemUuId_, self.configId_, self.data_)
 end
 
@@ -66,6 +67,7 @@ function ItemBtnUnit:UnInit()
   if self.btn_ then
     self.btn_:RemoveAllListeners()
   end
+  Z.RedPointMgr.RemoveChildernNodeItem(self.uiBinder_.Trans, self.view_)
   self.view_ = nil
   self.btnInfo_ = nil
   self.btnBinder_ = nil

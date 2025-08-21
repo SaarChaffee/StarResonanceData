@@ -2,9 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
-message QueryChatMuteReply {
-    int32 errCode = 2;
-    bool isBan = 3;
-    int64 endTimestamp = 4;
-}
+import "enum_e_error_code.proto";
 
+message QueryChatMuteReply {
+    bool isBan = 1;
+    int64 endTimestamp = 2;
+    zproto.EErrorCode errCode = 3;
+}

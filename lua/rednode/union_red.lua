@@ -11,7 +11,7 @@ function UnionRed.InitUnionActiveItemRed()
       count_ = 1
     end
     Z.RedPointMgr.AddChildNodeData(E.RedType.UnionActiveTab, E.RedType.UnionActiveItem, childRedId)
-    Z.RedPointMgr.RefreshServerNodeCount(childRedId, count_)
+    Z.RedPointMgr.UpdateNodeCount(childRedId, count_)
   end
 end
 
@@ -54,8 +54,9 @@ end
 function UnionRed.RefreshUnionActiveItemRed()
   local unionVM = Z.VMMgr.GetVM("union")
   local unionId = unionVM:GetPlayerUnionId()
+  local isShowRed = false
   if unionId == 0 then
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.UnionActiveTab, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.UnionActiveTab, 0)
   else
     local redDataList = UnionRed.GetUnionActiveRedDataList()
     for id, redData in pairs(redDataList) do
@@ -63,10 +64,12 @@ function UnionRed.RefreshUnionActiveItemRed()
       local count = 0
       if redData.isCanGet then
         count = 1
+        isShowRed = true
       end
-      Z.RedPointMgr.RefreshServerNodeCount(childRedId, count)
+      Z.RedPointMgr.UpdateNodeCount(childRedId, count)
     end
   end
+  Z.EventMgr:Dispatch(Z.ConstValue.Recommendedplay.FunctionRed, E.UnionFuncId.Active, isShowRed)
 end
 
 function UnionRed.LoadUnionActiveItem(awardId, view, parentTrans)
@@ -85,7 +88,7 @@ function UnionRed.InitUnionBuildingItemRed()
     end
     Z.RedPointMgr.AddChildNodeData(E.RedType.UnionBuildTab, E.RedType.UnionBuildItem, childRedId)
     Z.RedPointMgr.AddChildNodeData(childRedId, E.RedType.UnionBuildUpgradeBtn, childRedBtnId)
-    Z.RedPointMgr.RefreshServerNodeCount(childRedBtnId, count_)
+    Z.RedPointMgr.UpdateNodeCount(childRedBtnId, count_)
   end
 end
 
@@ -128,7 +131,7 @@ function UnionRed.RefreshUnionBuildingItemRed(sceneUnlock)
   local unionVM = Z.VMMgr.GetVM("union")
   local unionId = unionVM:GetPlayerUnionId()
   if unionId == 0 then
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.UnionBuildTab, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.UnionBuildTab, 0)
   else
     local redDataList = UnionRed.GetUnionBuildingRedDataList(sceneUnlock)
     for id, redData in pairs(redDataList) do
@@ -138,7 +141,7 @@ function UnionRed.RefreshUnionBuildingItemRed(sceneUnlock)
       if redData.showRed then
         count = 1
       end
-      Z.RedPointMgr.RefreshServerNodeCount(childRedBtnId, count)
+      Z.RedPointMgr.UpdateNodeCount(childRedBtnId, count)
     end
   end
 end
@@ -160,7 +163,8 @@ function UnionRed.RefreshUnionHuntRed()
   local unionId = unionVM:GetPlayerUnionId()
   local isRed = false
   if unionId == 0 or not unionVM:CheckUnionHuntUnlock() then
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.UnionBuildTab, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.UnionBuildTab, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.UnionHuntCount, 0)
   else
     local huntActDunDonIds = {}
     for _, value in ipairs(Z.UnionActivityConfig.HuntActivityId) do
@@ -187,7 +191,7 @@ function UnionRed.RefreshUnionHuntRed()
       local childHuntRedId = "union_hunt_red_" .. value
       Z.RedPointMgr.AddChildNodeData(E.RedType.UnionHuntCount, E.RedType.UnionHuntCount, childHuntRedId)
       local activityChecked = UnionRed.UnionHuntRedChecked()
-      Z.RedPointMgr.RefreshServerNodeCount(E.RedType.UnionHuntCount, not activityChecked and isInTime and normalAwardCount or 0)
+      Z.RedPointMgr.UpdateNodeCount(E.RedType.UnionHuntCount, not activityChecked and isInTime and normalAwardCount or 0)
       if isInTime and 0 < normalAwardCount then
         isRed = true
       end
@@ -239,7 +243,7 @@ function UnionRed.RefreshUnionWarDanceRed(isInTime)
   local normalAwardCount = Z.CounterHelper.GetCounterResidueLimitCount(countID, limtCount)
   local activityChecked = UnionRed.UnionWarDanceRedChecked()
   isRed = 0 < normalAwardCount and not activityChecked and isInTime
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.UnionDanceCount, isRed and normalAwardCount or 0)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.UnionDanceCount, isRed and normalAwardCount or 0)
   return isRed
 end
 
@@ -275,7 +279,7 @@ function UnionRed.CheckUnionSceneUnlockRed()
   local isHaveUnion = unionVM:GetPlayerUnionId() ~= 0
   local isUnlock, curState = unionVM:GetUnionSceneIsUnlock()
   local isShowRed = isHaveUnion and not isUnlock and curState == E.UnionUnlockState.IsCrowding and not unionVM:GetHasJoinUnionSceneUnlock()
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.UnionSceneUnlockBtnRed, isShowRed and 1 or 0)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.UnionSceneUnlockBtnRed, isShowRed and 1 or 0)
 end
 
 function UnionRed.Init()

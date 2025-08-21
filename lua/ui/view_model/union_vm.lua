@@ -1,13 +1,16 @@
 local worldProxy = require("zproxy.world_proxy")
 local enterdungeonsceneVm = Z.VMMgr.GetVM("ui_enterdungeonscene")
+local entChar = Z.PbEnum("EEntityType", "EntChar")
+local SettlementNodeIndex = Panda.ZGame.SettlementNodeIndex
 local UnionVM = {}
-local Wait_Msg_Id = {CreateUnion = 1, SetUnionName = 2}
 local Ignore_Error_Msg_Id = {
   [4408] = true,
   [4430] = true,
   [4433] = true
 }
-local UnionSceneID = 12000
+local TENCENT_DEFINE = require("ui.model.tencent_define")
+local SDK_GROUP_CHANNEL = Bokura.Plugins.Tencent.Group.GroupChannel
+local cjson = require("cjson")
 
 function UnionVM:CachePlayerUnionInfo(unionInfo, recruitInfo)
   local unionData = Z.DataMgr.Get("union_data")
@@ -18,7 +21,7 @@ function UnionVM:CachePlayerUnionInfo(unionInfo, recruitInfo)
     if recruitInfo ~= nil then
       unionData.RecruitInfo = recruitInfo
     end
-    self.HandleUnionOfficals(unionData.UnionInfo.officials)
+    self:HandleUnionOfficials()
   end
 end
 
@@ -34,6 +37,7 @@ function UnionVM:CacheUnionMember(memberList, memberSocialList)
   end
   Z.LuaDataMgr:SyncAllUnionMemberCharId(zCharIdList)
   ZUtil.Pool.Collections.ZList_long.Return(zCharIdList)
+  self:CheckApplyRedNum()
 end
 
 function UnionVM:CacheBuildInfo(unionBuildingInfos)
@@ -60,11 +64,13 @@ end
 
 function UnionVM:CacheResourceInfo(unionResourceLib, isShowTip)
   local unionData = Z.DataMgr.Get("union_data")
+  local itemsData = Z.DataMgr.Get("items_data")
   if unionResourceLib ~= nil then
     for id, unionResource in pairs(unionResourceLib) do
       local lastCount = self:GetUnionResourceCount(id)
       local changeCount = unionResource.sumNum - lastCount
       unionData.ResourceDict[id] = unionResource
+      itemsData:SetItemTotalCount(id, unionResource.sumNum)
       if isShowTip and 0 < changeCount then
         self:AddUnionResourceChangeTip(id, changeCount)
       end
@@ -73,19 +79,12 @@ function UnionVM:CacheResourceInfo(unionResourceLib, isShowTip)
 end
 
 function UnionVM:AddUnionResourceChangeTip(configId, changeCount)
-  local itemTableRow = Z.TableMgr.GetRow("ItemTableMgr", configId)
-  if not itemTableRow or itemTableRow.GetTips == 1 then
-    return
-  end
-  local tipsData = Z.DataMgr.Get("tips_data")
-  local itemGetTipsData = {ItemConfigId = configId, ChangeCount = changeCount}
-  tipsData:AddSystemTipInfo(E.ESystemTipInfoType.ItemInfo, itemGetTipsData.ItemConfigId, itemGetTipsData.ChangeCount)
-  local itemsData = Z.DataMgr.Get("items_data")
-  if itemsData:GetIgnoreItemTips() then
-    return
-  end
-  tipsData:PushAcquireItemInfo(itemGetTipsData)
-  Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.ItemGet, "acquiretip")
+  local itemData = {
+    uuid = 0,
+    configId = configId,
+    count = changeCount
+  }
+  Z.ItemEventMgr.AddItemGetTipsData(itemData)
 end
 
 function UnionVM:HandleActiveRewardInfo(receivedAwardIdList, isResetData)
@@ -100,7 +99,7 @@ function UnionVM:HandleActiveRewardInfo(receivedAwardIdList, isResetData)
   end
 end
 
-function UnionVM:HandleUnionOfficals()
+function UnionVM:HandleUnionOfficials()
   local unionData = Z.DataMgr.Get("union_data")
   for id, officialData in pairs(unionData.UnionInfo.officials) do
     local config = Z.TableMgr.GetTable("UnionManageTableMgr").GetRow(id)
@@ -116,18 +115,25 @@ function UnionVM:HandleUnionOfficals()
       end
     end
   end
+  self:CheckApplyRedNum()
 end
 
 function UnionVM:UpdateUnionOfficials(officials)
   local unionData = Z.DataMgr.Get("union_data")
-  for index, officialData in pairs(officials) do
+  for _, officialData in pairs(officials) do
+    if officialData.Name == "" then
+      local config = Z.TableMgr.GetRow("UnionManageTableMgr", officialData.officialId)
+      officialData.Name = config and config.Position or ""
+    end
     unionData.UnionInfo.officials[officialData.officialId] = officialData
   end
+  self:CheckApplyRedNum()
 end
 
 function UnionVM:UpdateUnionOfficialsByNotify(officialData)
   local unionData = Z.DataMgr.Get("union_data")
   unionData.UnionInfo.officials[officialData.officialId] = officialData
+  self:CheckApplyRedNum()
 end
 
 function UnionVM:CanPowerModify(officialId, powerId)
@@ -235,6 +241,9 @@ function UnionVM:CheckPlayerPower(powerId)
     return false
   end
   local officialsData = unionData.UnionInfo.officials
+  if officialsData[officialId] == nil then
+    return false
+  end
   local powers = officialsData[officialId].power
   if powers[powerId] == nil then
     return false
@@ -300,7 +309,7 @@ function UnionVM:CheckUnionHuntUnlock()
   if unionActRow == nil or unionActRow.TimerId == nil then
     return false
   end
-  return Z.TimeTools.CheckTimeInSpecifiedTime(unionActRow.TimerId)
+  return Z.TimeTools.CheckIsInTimeByTimeId(unionActRow.TimerId)
 end
 
 function UnionVM:GetUnionResourceCount(configId)
@@ -656,12 +665,12 @@ function UnionVM:GetHasJoinUnionSceneUnlock()
   return result
 end
 
-local CheckErrorCode = function(errorCode)
-  if errorCode and errorCode ~= 0 then
-    if not Ignore_Error_Msg_Id[errorCode] then
-      logError("[Union]ErrorCode=" .. errorCode)
+local CheckErrorCode = function(errCode)
+  if errCode and errCode ~= 0 then
+    if not Ignore_Error_Msg_Id[errCode] then
+      logError("[Union]ErrorCode=" .. errCode)
     end
-    Z.TipsVM.ShowTips(errorCode)
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   return true
@@ -710,8 +719,18 @@ function UnionVM:OnNotifyUpdateMember(vRequest)
     local totalCount = #vRequest.memberInfoList
     local zCharIdList = ZUtil.Pool.Collections.ZList_long.Rent(totalCount)
     for index, memberData in ipairs(vRequest.memberInfoList) do
-      local socialData = unionData.MemberDict[memberData.memId].socialData
-      zCharIdList:Add(socialData.basicData.charID)
+      local unionMemberData = unionData.MemberDict[memberData.memId]
+      if not unionMemberData then
+        logError("unionMemberData is Empty , memberId = {0}", memberData.memId)
+        ZUtil.Pool.Collections.ZList_long.Return(zCharIdList)
+        return
+      end
+      if not unionMemberData.socialData then
+        logError("socialData is Empty , memberId = {0}", memberData.memId)
+        ZUtil.Pool.Collections.ZList_long.Return(zCharIdList)
+      else
+        zCharIdList:Add(unionMemberData.socialData.basicData.charID)
+      end
       unionData.MemberDict[memberData.memId] = nil
     end
     Z.LuaDataMgr:SyncUnionMemberCharId(zCharIdList, false)
@@ -725,52 +744,23 @@ function UnionVM:OnNotifyUpdateMember(vRequest)
   else
     logError("\230\156\170\229\174\154\228\185\137\231\154\132\229\141\143\228\188\154\233\128\154\231\159\165\231\177\187\229\158\139:" .. vRequest.type)
   end
+  self:CheckApplyRedNum()
   Z.EventMgr:Dispatch(Z.ConstValue.UnionActionEvt.UpdateMemberData)
 end
 
 function UnionVM:OnNotifyRequestListNum(vRequest)
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.UnionApplyButton, vRequest.num)
+  local unionData = Z.DataMgr.Get("union_data")
+  unionData.ApplyNum = vRequest.num
+  self:CheckApplyRedNum()
 end
 
-function UnionVM:OnNotifyUnionChangeName(vRequest)
-  Z.NetWaitHelper.RemoveSyncMsgId(Z.ConstValue.WaitMsgMainKey.Union, Wait_Msg_Id.SetUnionName)
-  if vRequest.errorCode == Z.PbEnum("EErrorCode", "ErrUnionChangeNameCD") then
-    local param = {
-      val = Z.TimeTools.FormatTimeToYMDHMS(vRequest.passTimeMs * 1000)
-    }
-    Z.TipsVM.ShowTipsLang(1000521, param)
-    return
+function UnionVM:CheckApplyRedNum()
+  local unionData = Z.DataMgr.Get("union_data")
+  local count = 0
+  if self:CheckPlayerPower(E.UnionPowerDef.ProcessApplication) then
+    count = unionData.ApplyNum
   end
-  if CheckErrorCode(vRequest.errorCode) then
-    self:UpdateUnionBase(vRequest.data)
-    Z.TipsVM.ShowTips(1000549)
-  end
-end
-
-function UnionVM:OnNotifyCreateUnionResult(vRequest)
-  Z.NetWaitHelper.RemoveSyncMsgId(Z.ConstValue.WaitMsgMainKey.Union, Wait_Msg_Id.CreateUnion)
-  if vRequest and vRequest.nextJoinTime > 0 then
-    local currentTime = math.floor(Z.ServerTime:GetServerTime() / 1000)
-    local leftTime = vRequest.nextJoinTime - currentTime
-    if 0 < leftTime then
-      Z.TipsVM.ShowTips(1000571, {
-        val = Z.TimeTools.FormatToDHMSStr(leftTime)
-      })
-    end
-    return
-  end
-  if CheckErrorCode(vRequest.errorCode) == false then
-    return
-  end
-  local unionInfo = vRequest.info
-  self:CachePlayerUnionInfo(unionInfo)
-  local param = {
-    guild = {
-      name = self:GetPlayerUnionName()
-    }
-  }
-  Z.TipsVM.ShowTipsLang(1000520, param)
-  Z.EventMgr:Dispatch(Z.ConstValue.UnionActionEvt.CreateUnion)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.UnionApplyButton, count)
 end
 
 function UnionVM:AsyncReqUnionInfo(unionId, cancelToken)
@@ -778,7 +768,7 @@ function UnionVM:AsyncReqUnionInfo(unionId, cancelToken)
   local request = {}
   request.unionId = unionId
   local reply = worldProxy.ReqUnionInfo(request, cancelToken)
-  if CheckErrorCode(reply.errorCode) then
+  if CheckErrorCode(reply.errCode) then
     self:CachePlayerUnionInfo(reply.info, reply.recruitInfo)
     if reply.info and reply.info.baseInfo.Id ~= 0 then
       self:CacheBuildInfo(reply.unionBuildings)
@@ -797,7 +787,7 @@ function UnionVM:AsyncReqOtherUnionInfo(unionId, cancelToken)
   local request = {}
   request.unionId = unionId
   local reply = worldProxy.ReqUnionInfo(request, cancelToken)
-  CheckErrorCode(reply.errorCode)
+  CheckErrorCode(reply.errCode)
   return reply
 end
 
@@ -805,14 +795,14 @@ function UnionVM:AsyncBatchReqOtherUnionInfo(unionIdList, cancelToken)
   local request = {}
   request.unionIdList = unionIdList
   local reply = worldProxy.BatchSearchUnionList(request, cancelToken)
-  CheckErrorCode(reply.errorCode)
+  CheckErrorCode(reply.errCode)
   return reply
 end
 
 function UnionVM:AsyncReqUnionList(cancelToken)
   local request = {}
   local reply = worldProxy.UnionList(request, cancelToken)
-  CheckErrorCode(reply.errorCode)
+  CheckErrorCode(reply.errCode)
   return reply
 end
 
@@ -830,11 +820,11 @@ function UnionVM:AsyncReqJoinUnions(unionIds, isOneKeyJoin, cancelToken)
     local leftTime = reply.nextJoinTime - currentTime
     if 0 < leftTime then
       Z.TipsVM.ShowTips(1000571, {
-        val = Z.TimeTools.FormatToDHMSStr(leftTime)
+        val = Z.TimeFormatTools.FormatToDHMS(leftTime)
       })
     end
   elseif #reply.unionsRet == 1 then
-    local isSuccess = CheckErrorCode(reply.unionsRet[1].errorCode)
+    local isSuccess = CheckErrorCode(reply.unionsRet[1].errCode)
     if isSuccess then
       Z.TipsVM.ShowTips(1000507)
     end
@@ -846,15 +836,15 @@ end
 
 function UnionVM:AsyncReqRefuseUnionInvite(inviteId, cancelToken)
   local request = {InviteId = inviteId}
-  local reply = worldProxy.ReJectUnionInvite(request, cancelToken)
-  CheckErrorCode(reply.errorCode)
+  local errCode = worldProxy.ReJectUnionInvite(request, cancelToken)
+  CheckErrorCode(errCode)
 end
 
 function UnionVM:AsyncSearchUnionList(inputStr, cancelToken)
   local request = {}
   request.searchContent = inputStr
   local reply = worldProxy.SearchUnionList(request, cancelToken)
-  CheckErrorCode(reply.errorCode)
+  CheckErrorCode(reply.errCode)
   return reply
 end
 
@@ -865,8 +855,29 @@ function UnionVM:AsyncCreateUnion(name, manifesto, isAutoJoin, logoData, tagList
   request.autoApproval = isAutoJoin
   request.unionIcon = logoData
   request.tags = tagList
-  Z.NetWaitHelper.AddSyncMsgId(Z.ConstValue.WaitMsgMainKey.Union, Wait_Msg_Id.CreateUnion)
-  worldProxy.CreateUnion(request, cancelToken)
+  local reply = worldProxy.CreateUnion(request, cancelToken)
+  if reply and reply.nextJoinTime > 0 then
+    local currentTime = math.floor(Z.ServerTime:GetServerTime() / 1000)
+    local leftTime = reply.nextJoinTime - currentTime
+    if 0 < leftTime then
+      Z.TipsVM.ShowTips(1000571, {
+        val = Z.TimeFormatTools.FormatToDHMS(leftTime)
+      })
+    end
+    return
+  end
+  if CheckErrorCode(reply.errCode) == false then
+    return
+  end
+  local unionInfo = reply.info
+  self:CachePlayerUnionInfo(unionInfo)
+  local param = {
+    guild = {
+      name = self:GetPlayerUnionName()
+    }
+  }
+  Z.TipsVM.ShowTipsLang(1000520, param)
+  Z.EventMgr:Dispatch(Z.ConstValue.UnionActionEvt.CreateUnion)
 end
 
 function UnionVM:AsyncSetUnionIcon(unionId, logoData, cancelToken)
@@ -874,7 +885,7 @@ function UnionVM:AsyncSetUnionIcon(unionId, logoData, cancelToken)
   request.unionId = unionId
   request.Icon = logoData
   local reply = worldProxy.SetUnionIcon(request, cancelToken)
-  if CheckErrorCode(reply.errorCode) then
+  if CheckErrorCode(reply.errCode) then
     self:UpdateUnionBase(reply.data)
   end
   return reply
@@ -885,7 +896,7 @@ function UnionVM:AsyncSetUnionDeclaration(unionId, unionDeclaration, cancelToken
   request.unionId = unionId
   request.declaration = unionDeclaration
   local reply = worldProxy.SetUnionDeclaration(request, cancelToken)
-  if CheckErrorCode(reply.errorCode) then
+  if CheckErrorCode(reply.errCode) then
     self:UpdateUnionBase(reply.data)
   end
   return reply
@@ -895,8 +906,18 @@ function UnionVM:AsyncSetUnionName(unionId, unionName, cancelToken)
   local request = {}
   request.unionId = unionId
   request.name = unionName
-  Z.NetWaitHelper.AddSyncMsgId(Z.ConstValue.WaitMsgMainKey.Union, Wait_Msg_Id.SetUnionName)
-  worldProxy.SetUnionName(request, cancelToken)
+  local reply = worldProxy.SetUnionName(request, cancelToken)
+  if reply.errCode == Z.PbEnum("EErrorCode", "ErrUnionChangeNameCD") then
+    local param = {
+      val = Z.TimeFormatTools.TicksFormatTime(reply.passTimeMs * 1000, E.TimeFormatType.YMDHMS)
+    }
+    Z.TipsVM.ShowTipsLang(1000521, param)
+    return
+  end
+  if CheckErrorCode(reply.errCode) then
+    self:UpdateUnionBase(reply.data)
+    Z.TipsVM.ShowTips(1000549)
+  end
 end
 
 function UnionVM:AsyncSetUnionTag(unionId, tagList, cancelToken)
@@ -915,7 +936,7 @@ function UnionVM:AsyncSetUnionAutoPass(unionId, autoPass, cancelToken)
   request.unionId = unionId
   request.autoPass = autoPass
   local reply = worldProxy.SetUnionAutoPass(request, cancelToken)
-  if CheckErrorCode(reply.errorCode) then
+  if CheckErrorCode(reply.errCode) then
     self:GetPlayerUnionInfo().autoPass = reply.autoPass
   end
   return reply
@@ -925,7 +946,7 @@ function UnionVM:AsyncReqUnionMemsList(unionId, cancelToken)
   local request = {}
   request.unionId = unionId
   local reply = worldProxy.ReqUnionMemsList(request, cancelToken)
-  if CheckErrorCode(reply.errorCode) then
+  if CheckErrorCode(reply.errCode) then
     self:CacheUnionMember(reply.memList, reply.memSocialList)
   end
   return reply
@@ -935,23 +956,23 @@ function UnionVM:AsyncReqLeaveUnion(unionId, cancelToken)
   local unionName = self:GetPlayerUnionName()
   local request = {}
   request.unionId = unionId
-  local reply = worldProxy.ReqLeaveUnion(request, cancelToken)
-  if CheckErrorCode(reply.errorCode) then
+  local errCode = worldProxy.ReqLeaveUnion(request, cancelToken)
+  if CheckErrorCode(errCode) then
     local param = {
       guild = {name = unionName}
     }
     Z.TipsVM.ShowTips(1000526, param)
   end
-  return reply
+  return errCode
 end
 
 function UnionVM:AsyncReqKickOut(unionId, charIds, cancelToken)
   local request = {}
   request.unionId = unionId
   request.vKickIds = charIds
-  local reply = worldProxy.ReqKickOut(request, cancelToken)
-  CheckErrorCode(reply.errorCode)
-  return reply
+  local errCode = worldProxy.ReqKickOut(request, cancelToken)
+  CheckErrorCode(errCode)
+  return errCode
 end
 
 function UnionVM:AsyncInviteRequestInfo(myCharId, myCharName, unionId, unionName, inviteeCharId, cancelToken)
@@ -961,15 +982,15 @@ function UnionVM:AsyncInviteRequestInfo(myCharId, myCharName, unionId, unionName
   request.unionId = unionId
   request.unionName = unionName
   request.charid = inviteeCharId
-  local reply = worldProxy.InviteJoinUnion(request, cancelToken)
-  CheckErrorCode(reply.errCode)
+  local errCode = worldProxy.InviteJoinUnion(request, cancelToken)
+  CheckErrorCode(errCode)
 end
 
 function UnionVM:AsyncGetRequestList(unionId, cancelToken)
   local request = {}
   request.unionId = unionId
   local reply = worldProxy.GetRequestList(request, cancelToken)
-  CheckErrorCode(reply.errorCode)
+  CheckErrorCode(reply.errCode)
   return reply
 end
 
@@ -978,7 +999,7 @@ function UnionVM:AsyncApprovalRequest(unionId, operationList, cancelToken)
   request.unionId = unionId
   request.vApprovalList = operationList
   local reply = worldProxy.ApprovalRequest(request, cancelToken)
-  CheckErrorCode(reply.errorCode)
+  CheckErrorCode(reply.errCode)
   return reply
 end
 
@@ -988,7 +1009,7 @@ function UnionVM:AsyncReqChangeOfficials(unionId, changeType, officialDataList, 
   request.changeType = changeType
   request.changeOfficials = officialDataList
   local reply = worldProxy.ReqChangeOfficials(request, cancelToken)
-  if CheckErrorCode(reply.errorCode) then
+  if CheckErrorCode(reply.errCode) then
     self:UpdateUnionOfficials(reply.changeOfficials)
   end
   return reply
@@ -998,9 +1019,9 @@ function UnionVM:AsyncReqChangeOfficialMembers(unionId, changedMemberDict, cance
   local request = {}
   request.unionId = unionId
   request.changeOfficials = changedMemberDict
-  local reply = worldProxy.ReqChangeOfficialMembers(request, cancelToken)
-  CheckErrorCode(reply.errorCode)
-  return reply
+  local errCode = worldProxy.ReqChangeOfficialMembers(request, cancelToken)
+  CheckErrorCode(errCode)
+  return errCode
 end
 
 function UnionVM:AsyncReqTransferPresident(unionId, charId, cancelToken)
@@ -1008,7 +1029,7 @@ function UnionVM:AsyncReqTransferPresident(unionId, charId, cancelToken)
   request.unionId = unionId
   request.vNewPresidentId = charId
   local reply = worldProxy.ReqTransferPresident(request, cancelToken)
-  if CheckErrorCode(reply.errorCode) and reply.info ~= nil and reply.info.baseInfo.Id ~= 0 then
+  if CheckErrorCode(reply.errCode) and reply.info ~= nil and reply.info.baseInfo.Id ~= 0 then
     self:CachePlayerUnionInfo(reply.info)
   end
   return reply
@@ -1021,12 +1042,12 @@ function UnionVM:AsyncSetUnionRecruit(level, slogan, instruction, cancelToken)
   request.unionId = self:GetPlayerUnionId()
   request.recruitInfo = recruitInfo
   request.slogan = slogan
-  local reply = worldProxy.SetRecruitInfo(request, cancelToken)
-  if CheckErrorCode(reply.errCode) then
+  local errCode = worldProxy.SetRecruitInfo(request, cancelToken)
+  if CheckErrorCode(errCode) then
     unionData.RecruitInfo = recruitInfo
     unionData.UnionInfo.baseInfo.slogan = slogan
   end
-  return reply
+  return errCode
 end
 
 function UnionVM:AsyncCollectUnion(unionId, cancelToken)
@@ -1046,13 +1067,13 @@ function UnionVM:AsyncCancelCollectUnion(unionId, cancelToken)
   local unionData = Z.DataMgr.Get("union_data")
   local request = {}
   request.unionId = unionId
-  local reply = worldProxy.CancelCollectedUnionId(request, cancelToken)
-  if CheckErrorCode(reply.errCode) then
+  local errCode = worldProxy.CancelCollectedUnionId(request, cancelToken)
+  if CheckErrorCode(errCode) then
     Z.TipsVM.ShowTips(1000591)
     unionData:RemoveCollectUnion(unionId)
     Z.EventMgr:Dispatch(Z.ConstValue.UnionActionEvt.CollectionUnionChange)
   end
-  return reply
+  return errCode
 end
 
 function UnionVM:AsyncGetCollectUnionList(cancelToken)
@@ -1084,6 +1105,10 @@ function UnionVM:AsyncGetActiveAward(awardId, cancelToken)
   request.unionId = self:GetPlayerUnionId()
   request.awardId = awardId
   local reply = worldProxy.ReceiveUnionActivityAward(request, cancelToken)
+  if reply.items ~= nil then
+    local itemShowVM = Z.VMMgr.GetVM("item_show")
+    itemShowVM.OpenItemShowViewByItems(reply.items)
+  end
   if CheckErrorCode(reply.errCode) then
     self:HandleActiveRewardInfo(reply.receivedPointAwardIds)
     Z.EventMgr:Dispatch(Z.ConstValue.UnionActionEvt.UnionActiveRewardInfoChange)
@@ -1097,6 +1122,9 @@ function UnionVM:AsyncGetUnionHuntProgressInfo(activityId, cancelToken)
   request.unionId = unionData.UnionInfo.baseInfo.Id
   request.activityId = activityId
   local reply = worldProxy.ReqUnionActivityProgressInfo(request, cancelToken)
+  if reply.errCode == 4463 then
+    return reply
+  end
   if CheckErrorCode(reply.errCode) then
     unionData:SetUnionHuntProgressInfo(reply.progressInfo)
   end
@@ -1109,11 +1137,11 @@ function UnionVM:AsyncGetUnionHuntProgressAward(activityId, progress, cancelToke
   request.unionId = unionData.UnionInfo.baseInfo.Id
   request.activityId = activityId
   request.progress = progress
-  local reply = worldProxy.ReqGetUnionActivityAward(request, cancelToken)
-  if CheckErrorCode(reply.errCode) then
+  local errCode = worldProxy.ReqGetUnionActivityAward(request, cancelToken)
+  if CheckErrorCode(errCode) then
     unionData:SetUnionHuntProgressInfoByID(activityId, progress)
   end
-  return reply
+  return errCode
 end
 
 function UnionVM:OnNotifyHuntProgressAward(vRequest)
@@ -1209,8 +1237,8 @@ function UnionVM:AsyncEnterUnionScene(cancelToken)
   local vRequest = {}
   vRequest.unionId = unionId
   vRequest.enterType = Z.PbEnum("UnionEnterScene", "UnionEnterSceneNormal")
-  local errrCode = worldProxy.EnterUnionScene(vRequest, cancelToken)
-  CheckErrorCode(errrCode)
+  local errCode = worldProxy.EnterUnionScene(vRequest, cancelToken)
+  CheckErrorCode(errCode)
 end
 
 function UnionVM:EnterUnionSceneHunt()
@@ -1243,8 +1271,8 @@ function UnionVM:EnterUnionSceneHunt()
   vRequest.enterType = Z.PbEnum("UnionEnterScene", "UnionEnterSceneHunt")
   Z.CoroUtil.create_coro_xpcall(function()
     local unionData = Z.DataMgr.Get("union_data")
-    local errrCode = worldProxy.EnterUnionScene(vRequest, unionData.CancelSource:CreateToken())
-    CheckErrorCode(errrCode)
+    local errCode = worldProxy.EnterUnionScene(vRequest, unionData.CancelSource:CreateToken())
+    CheckErrorCode(errCode)
   end)()
 end
 
@@ -1320,16 +1348,52 @@ function UnionVM:AsyncCancelEffectBuff(buffId, buffSlotIndex, cancelToken)
   request.unionId = self:GetPlayerUnionId()
   request.effectBuffPos = buffSlotIndex - 1
   request.effectBuffId = buffId
-  local reply = worldProxy.CancelEffectBuff(request, cancelToken)
-  if CheckErrorCode(reply.errCode) then
+  local errCode = worldProxy.CancelEffectBuff(request, cancelToken)
+  if CheckErrorCode(errCode) then
     unionData.BuildBuffInfo[buffSlotIndex] = nil
     Z.EventMgr:Dispatch(Z.ConstValue.UnionActionEvt.UnionBuildBuffInfoChange)
   end
-  return reply
+  return errCode
 end
 
 function UnionVM:AsyncStartEnterDungeon(functionID, dungeonId, affix, cancelSource, selectType, heroKeyItemUuid)
   enterdungeonsceneVm.AsyncCreateLevel(functionID, dungeonId, cancelSource:CreateToken(), affix, nil, selectType, heroKeyItemUuid)
+end
+
+function UnionVM:AsyncBindGroupWithTencent(groupType, groupId, cancelToken)
+  local request = {}
+  request.unionId = self:GetPlayerUnionId()
+  request.groupType = groupType
+  request.groupId = groupId
+  local reply = worldProxy.BindGroupWithTencent(request, cancelToken)
+  if reply then
+    if CheckErrorCode(reply.errCode) and reply.unionInfo then
+      self:CachePlayerUnionInfo(reply.unionInfo)
+    end
+    return reply.errCode
+  end
+end
+
+function UnionVM:AsyncUnBindGroupWithTencent(cancelToken)
+  local request = {}
+  request.unionId = self:GetPlayerUnionId()
+  local reply = worldProxy.UnBindGroupWithTencent(request, cancelToken)
+  if reply then
+    if CheckErrorCode(reply.errCode) and reply.unionInfo then
+      self:CachePlayerUnionInfo(reply.unionInfo)
+    end
+    return reply.errCode
+  end
+end
+
+function UnionVM:AsyncInviteJoinGroupWithTencent(content, cancelToken)
+  local request = {}
+  request.unionId = self:GetPlayerUnionId()
+  request.desc = content
+  request.url = ""
+  local errCode = worldProxy.InviteJoinGroupWithTencent(request, cancelToken)
+  CheckErrorCode(errCode)
+  return errCode
 end
 
 function UnionVM:GetRGBColorById(colorGroupId, hsvIndex)
@@ -1522,18 +1586,20 @@ function UnionVM:ShowLeaveUnionTips()
   end
   local unionData = Z.DataMgr.Get("union_data")
   Z.DialogViewDataMgr:OpenOKDialog(Lang("LeaveUnionTips"), function()
-    Z.DialogViewDataMgr:CloseDialogView()
     worldProxy.LeaveScene(unionData.CancelSource:CreateToken())
   end)
 end
 
+function UnionVM:IsUnionPhotoWallOpen()
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.UnionPhotoWall, true)
+  return isOn
+end
+
 function UnionVM:OpenUnionMainView()
   Z.CoroUtil.create_coro_xpcall(function()
-    local unionId = self:GetPlayerUnionId()
-    if unionId == 0 then
-      local unionData = Z.DataMgr.Get("union_data")
-      self:AsyncReqUnionInfo(0, unionData.CancelSource:CreateToken())
-    end
+    local unionData = Z.DataMgr.Get("union_data")
+    self:AsyncReqUnionInfo(0, unionData.CancelSource:CreateToken())
     if self:GetPlayerUnionId() ~= 0 then
       Z.UIMgr:OpenView("union_main")
     else
@@ -1593,6 +1659,8 @@ end
 function UnionVM:OpenUnionApplicationPopup(cancelToken)
   self:AsyncReqUnionInfo(self:GetPlayerUnionId(), cancelToken)
   Z.UIMgr:OpenView("union_application_popup")
+  local unionData = Z.DataMgr.Get("union_data")
+  unionData.ApplyNum = 0
   Z.RedPointMgr.OnClickRedDot(E.RedType.UnionApplyButton)
 end
 
@@ -1667,6 +1735,10 @@ function UnionVM:OpenUnionBuildViewById(buildId)
   Z.UIMgr:OpenView("union_upgrade_main", {BuildId = buildId})
 end
 
+function UnionVM:OpenUnionDeviceView()
+  Z.UIMgr:OpenView("union_device_main")
+end
+
 function UnionVM:OpenUnionBuildFunctionViewById(buildId, uuid, ...)
   if not self:IsUnionBuildUnlock(buildId, true) then
     return
@@ -1675,7 +1747,11 @@ function UnionVM:OpenUnionBuildFunctionViewById(buildId, uuid, ...)
     ...
   }
   if buildId == E.UnionBuildId.Buff then
-    Z.UIMgr:OpenView("union_device_main")
+    local functionId = E.UnionFuncId.Buff
+    if functionId then
+      local funcVM = Z.VMMgr.GetVM("gotofunc")
+      funcVM.GoToFunc(functionId, uuid)
+    end
   elseif buildId == E.UnionBuildId.Mall then
     local functionId = tonumber(params[1])
     if functionId then
@@ -1683,6 +1759,11 @@ function UnionVM:OpenUnionBuildFunctionViewById(buildId, uuid, ...)
       funcVM.GoToFunc(functionId, uuid)
     end
   elseif buildId == E.UnionBuildId.Screen then
+    local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+    local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.UnionPhotoWall)
+    if not isOn then
+      return
+    end
     local albumData_ = Z.DataMgr.Get("album_main_data")
     albumData_.EScreenId = tonumber(params[2])
     Z.UIMgr:OpenView("album_main", E.AlbumOpenSource.UnionElectronicScreen)
@@ -1714,6 +1795,7 @@ function UnionVM:CloseUnionUnlockSceneSuccessView()
 end
 
 local playCallFunc = function(cutId, tab, teamMembers)
+  local entityVM = Z.VMMgr.GetVM("entity")
   local teamEntData = {}
   Z.UITimelineDisplay:Play(cutId)
   Z.UITimelineDisplay:SetGoPosByCutsceneId(cutId, Vector3.New(tab.ResultCurscenePos.X, tab.ResultCurscenePos.Y, tab.ResultCurscenePos.Z))
@@ -1732,16 +1814,28 @@ local playCallFunc = function(cutId, tab, teamMembers)
         if not value.isAi then
           count = count + 1
           local data = {}
-          data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(showCount - 1, count - 1)
-          data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(showCount - 1, count - 1)
+          local nodeCountType = SettlementNodeIndex.IntToEnum(showCount - 2)
+          data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(nodeCountType, count - 1)
+          data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(nodeCountType, count - 1)
           teamEntData[value.charId] = data
+          local uuid = entityVM.EntIdToUuid(Z.ContainerMgr.CharSerialize.charId, entChar)
+          local entity = Z.EntityMgr:GetEntity(uuid)
+          if entity then
+            entity.Model:SetLuaAttr(Z.ModelAttr.EModelAnimIKClose, true)
+          end
         end
       end
     else
       local data = {}
-      data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(0, 0)
-      data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(0, 0)
+      local indexType = SettlementNodeIndex.IntToEnum(0)
+      data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(indexType, 0)
+      data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(indexType, 0)
       teamEntData[Z.EntityMgr.PlayerEnt.EntId] = data
+      local uuid = entityVM.EntIdToUuid(Z.ContainerMgr.CharSerialize.charId, entChar)
+      local entity = Z.EntityMgr:GetEntity(uuid)
+      if entity then
+        entity.Model:SetLuaAttr(Z.ModelAttr.EModelAnimIKClose, true)
+      end
     end
   end
   local ret = {}
@@ -1793,6 +1887,185 @@ function UnionVM:OpenSettlementFailWindow()
   end
   Z.UIMgr:GotoMainView()
   Z.UIMgr:OpenView("trialroad_battle_failure_window")
+end
+
+function UnionVM:CheckSDKGroupValid()
+  local accountData = Z.DataMgr.Get("account_data")
+  return accountData.LoginType and (accountData.LoginType == E.LoginType.QQ or accountData.LoginType == E.LoginType.WeChat)
+end
+
+function UnionVM:MemberJoinGroup()
+  if not self:IsBindGroup() then
+    Z.TipsVM.ShowTips(1000575)
+  elseif Z.GameContext.IsPlayInMobile and self:CheckSDKGroupValid() then
+    if not self:IsJoinGroup() then
+      self:CallJoinGroup()
+    else
+      Z.TipsVM.ShowTips(1000576)
+    end
+  else
+    local curGroupType = self:GetBindGroupType()
+    if curGroupType == TENCENT_DEFINE.GROUP_CHANNEL.QQ then
+      local unionInfo = self:GetPlayerUnionInfo()
+      if unionInfo.groupId ~= "" then
+        Z.LuaBridge.SystemCopy(unionInfo.groupId)
+        Z.TipsVM.ShowTips(1000577)
+      elseif self.unionData_.SDKGroupInfo.GroupId ~= "" then
+        Z.LuaBridge.SystemCopy(self.unionData_.SDKGroupInfo.GroupId)
+        Z.TipsVM.ShowTips(1000577)
+      else
+        logError("[Union SDK Group] Unexpected error")
+      end
+    elseif curGroupType == TENCENT_DEFINE.GROUP_CHANNEL.WeChat then
+      Z.TipsVM.ShowTips(1000578)
+    end
+  end
+end
+
+function UnionVM:IsBindGroup()
+  local unionInfo = self:GetPlayerUnionInfo()
+  local unionData = Z.DataMgr.Get("union_data")
+  if unionInfo.groupType ~= TENCENT_DEFINE.GROUP_CHANNEL.None and unionInfo.groupId ~= "" then
+    return true
+  else
+    return unionData.SDKGroupInfo.BindState == 1
+  end
+end
+
+function UnionVM:IsJoinGroup()
+  local unionData = Z.DataMgr.Get("union_data")
+  return self:IsBindGroup() and unionData.SDKGroupInfo.GroupRelation >= 1 and unionData.SDKGroupInfo.GroupRelation <= 3
+end
+
+function UnionVM:GetBindGroupType()
+  local unionInfo = self:GetPlayerUnionInfo()
+  if unionInfo.groupType ~= TENCENT_DEFINE.GROUP_CHANNEL.None and unionInfo.groupId ~= "" then
+    return unionInfo.groupType
+  else
+    local unionData = Z.DataMgr.Get("union_data")
+    if not self:IsBindGroup() then
+      return TENCENT_DEFINE.GROUP_CHANNEL.None
+    elseif unionData.SDKGroupInfo.GroupId == "" then
+      return TENCENT_DEFINE.GROUP_CHANNEL.WeChat
+    else
+      return TENCENT_DEFINE.GROUP_CHANNEL.QQ
+    end
+  end
+end
+
+function UnionVM:CallGetGroupState()
+  local unionInfo = self:GetPlayerUnionInfo()
+  local accountData = Z.DataMgr.Get("account_data")
+  local serverData = Z.DataMgr.Get("server_data")
+  local unionId = tostring(unionInfo.baseInfo.Id)
+  if accountData.LoginType == E.LoginType.QQ then
+    local zoneId = tostring(serverData:GetCurrentZoneId())
+    local extraJson = cjson.encode({areaID = zoneId})
+    Z.SDKTencent.GetGroupState(SDK_GROUP_CHANNEL.QQ, unionId, zoneId, extraJson)
+  elseif accountData.LoginType == E.LoginType.WeChat then
+    Z.SDKTencent.GetGroupState(SDK_GROUP_CHANNEL.WeChat, unionId)
+  end
+end
+
+function UnionVM:CallGetGroupRelation()
+  local unionInfo = self:GetPlayerUnionInfo()
+  local accountData = Z.DataMgr.Get("account_data")
+  local unionData = Z.DataMgr.Get("union_data")
+  if accountData.LoginType == E.LoginType.QQ then
+    local groupId = unionData.SDKGroupInfo.GroupId
+    Z.SDKTencent.GetGroupRelation(SDK_GROUP_CHANNEL.QQ, groupId)
+  elseif accountData.LoginType == E.LoginType.WeChat then
+    local unionId = tostring(unionInfo.baseInfo.Id)
+    Z.SDKTencent.GetGroupRelation(SDK_GROUP_CHANNEL.WeChat, unionId)
+  end
+end
+
+function UnionVM:CallCreateGroup()
+  local unionInfo = self:GetPlayerUnionInfo()
+  local accountData = Z.DataMgr.Get("account_data")
+  local serverData = Z.DataMgr.Get("server_data")
+  local unionId = tostring(unionInfo.baseInfo.Id)
+  local unionName = unionInfo.baseInfo.Name
+  local playerName = Z.ContainerMgr.CharSerialize.charBase.name
+  if accountData.LoginType == E.LoginType.QQ then
+    local zoneId = tostring(serverData:GetCurrentZoneId())
+    local charId = tostring(Z.ContainerMgr.CharSerialize.charBase.charId)
+    local extraJson = cjson.encode({areaID = zoneId})
+    Z.SDKTencent.CreateGroup(SDK_GROUP_CHANNEL.QQ, unionId, unionName, playerName, zoneId, charId, extraJson)
+  elseif accountData.LoginType == E.LoginType.WeChat then
+    Z.SDKTencent.CreateGroup(SDK_GROUP_CHANNEL.WeChat, unionId, unionName, playerName)
+  end
+end
+
+function UnionVM:CallJoinGroup()
+  local unionInfo = self:GetPlayerUnionInfo()
+  local unionData = Z.DataMgr.Get("union_data")
+  local accountData = Z.DataMgr.Get("account_data")
+  local serverData = Z.DataMgr.Get("server_data")
+  local unionId = tostring(unionInfo.baseInfo.Id)
+  if accountData.LoginType == E.LoginType.QQ then
+    local zoneId = tostring(serverData:GetCurrentZoneId())
+    local charId = tostring(Z.ContainerMgr.CharSerialize.charBase.charId)
+    local groupId = unionData.SDKGroupInfo.GroupId
+    local extraJson = cjson.encode({areaID = zoneId})
+    Z.SDKTencent.JoinGroup(SDK_GROUP_CHANNEL.QQ, unionId, zoneId, charId, groupId, extraJson)
+  elseif accountData.LoginType == E.LoginType.WeChat then
+    Z.SDKTencent.JoinGroup(SDK_GROUP_CHANNEL.WeChat, unionId)
+  end
+end
+
+function UnionVM:CallBindGroup()
+  local accountData = Z.DataMgr.Get("account_data")
+  if accountData.LoginType ~= E.LoginType.QQ then
+    return
+  end
+  local unionInfo = self:GetPlayerUnionInfo()
+  local unionData = Z.DataMgr.Get("union_data")
+  local serverData = Z.DataMgr.Get("server_data")
+  local unionId = tostring(unionInfo.baseInfo.Id)
+  local zoneId = tostring(serverData:GetCurrentZoneId())
+  local charId = tostring(Z.ContainerMgr.CharSerialize.charBase.charId)
+  local groupId = unionData.SDKGroupInfo.GroupId
+  local groupName = unionData.SDKGroupInfo.GroupName
+  local extraJson = cjson.encode({areaID = zoneId})
+  Z.SDKTencent.BindGroup(SDK_GROUP_CHANNEL.QQ, unionId, zoneId, charId, groupId, groupName, extraJson)
+end
+
+function UnionVM:CallUnbindGroup()
+  local accountData = Z.DataMgr.Get("account_data")
+  local serverData = Z.DataMgr.Get("server_data")
+  local unionInfo = self:GetPlayerUnionInfo()
+  local unionId = tostring(unionInfo.baseInfo.Id)
+  if accountData.LoginType == E.LoginType.QQ then
+    local unionName = unionInfo.baseInfo.Name
+    local zoneId = tostring(serverData:GetCurrentZoneId())
+    local charId = tostring(Z.ContainerMgr.CharSerialize.charBase.charId)
+    local extraJson = cjson.encode({areaID = zoneId})
+    Z.SDKTencent.UnbindGroup(SDK_GROUP_CHANNEL.QQ, unionId, unionName, zoneId, charId, extraJson)
+  elseif accountData.LoginType == E.LoginType.WeChat then
+    Z.SDKTencent.UnbindGroup(SDK_GROUP_CHANNEL.WeChat, unionId)
+  end
+end
+
+function UnionVM:AsyncUnionGetAllBossData(cancelToken)
+  local unionId = self:GetPlayerUnionId()
+  local unionGetAllBossDataRequest = {unionId = unionId}
+  local reply = worldProxy.UnionGetAllBossData(unionGetAllBossDataRequest, cancelToken)
+  if CheckErrorCode(reply.errCode) then
+    local unionData = Z.DataMgr.Get("union_data")
+    unionData:SetUnionAllRiadBossData(reply.bossDatas)
+  end
+  return nil
+end
+
+function UnionVM:AsyncGetRaidDungeonPassInfo(bossId, cancelToken)
+  local unionId = self:GetPlayerUnionId()
+  local unionGetKillBossDataRequest = {unionId = unionId, bossId = bossId}
+  local reply = worldProxy.UnionGetKillBossData(unionGetKillBossDataRequest, cancelToken)
+  if CheckErrorCode(reply.errCode) then
+    return reply
+  end
+  return nil
 end
 
 return UnionVM

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_bulletin_board.proto";
+import "enum_e_error_code.proto";
+
+message GetHomelandBulletinBoardsReply {
+    repeated zproto.CommunityBulletinBoard bulletinBoards = 1;
+    zproto.EErrorCode errCode = 2;
+}

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_home_land_item_instance.proto";
+
+message HomelandPlayerWarehouseInfo {
+    repeated zproto.HomelandPlayerWarehouseInfo.FurnitureItemsEntry furnitureItems = 1;
+}

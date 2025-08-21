@@ -140,6 +140,7 @@ end
 
 function TrialRoadRoomLoopItem:timerUILoopEnd()
   self.showUnLockTime_ = false
+  self:SetCanSelect(self.data.IsUnLockTime)
   self:refreshUnLock()
   if self.restTimer then
     self.parentUIView:StopTrialroadTimer(self.restTimer)
@@ -148,9 +149,6 @@ function TrialRoadRoomLoopItem:timerUILoopEnd()
 end
 
 function TrialRoadRoomLoopItem:setStar(group)
-  if not self.data.IsUnLockTime then
-    return
-  end
   local targetCount = #self.data.ListRoomTarget
   group.node_star1.Ref.UIComp:SetVisible(1 <= targetCount)
   group.node_star2.Ref.UIComp:SetVisible(2 <= targetCount)

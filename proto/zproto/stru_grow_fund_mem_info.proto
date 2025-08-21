@@ -8,4 +8,3 @@ message GrowFundMemInfo {
     int32 fundPos = 1;
     zproto.UserSummaryData basicAvatarData = 2;
 }
-

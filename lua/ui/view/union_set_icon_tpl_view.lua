@@ -7,7 +7,7 @@ local colorItem = require("ui/component/union/common_color_loop_item")
 local logoItem = require("ui/component/union/union_logo_item")
 local LOGO_ITEM_NAME = "logo"
 local SIZE_NORMAL = 473
-local SIZE_EXTEND = 580
+local SIZE_EXTEND = 568
 
 function Union_set_icon_tplView:ctor(parent)
   self.uiBinder = nil
@@ -203,6 +203,7 @@ function Union_set_icon_tplView:refreshUnionLogo()
       local itemPath = GetLoadAssetPath(Z.ConstValue.UnionLoadPathKey.LogoItem)
       local binderItem = self:AsyncLoadUiUnit(itemPath, LOGO_ITEM_NAME, self.uiBinder.trans_preview)
       self.logoUnit_:Init(binderItem.Go)
+      binderItem.Trans:SetSizeDelta(225, 225)
       self.logoUnit_:SetLogo(logoData)
     elseif self.logoUnit_.uiBinder ~= nil then
       self.logoUnit_:SetLogo(logoData)
@@ -270,7 +271,7 @@ function Union_set_icon_tplView:onClickConfirm()
   icon[4] = self.colorTab_[2]
   icon[5] = self.iconTab_[3]
   local reply = self.unionVM_:AsyncSetUnionIcon(self.unionVM_:GetPlayerUnionId(), icon, self.cancelSource:CreateToken())
-  if reply.errorCode == 0 then
+  if reply.errCode == 0 then
     Z.TipsVM.ShowTips(1000549)
     if self.parentView_ then
       self.parentView_:EnableOrDisableByModify(false)

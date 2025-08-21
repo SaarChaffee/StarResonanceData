@@ -230,7 +230,7 @@ local showPioneerTaskSort = function(valueData, dungeonId)
     return left.sort < right.sort
   end)
 end
-local asyncCreateLevel = function(functionId, dungeonId, cancelToken, affix, roomId, selectType, heroKeyItemUuid)
+local asyncCreateLevel = function(functionId, dungeonId, cancelToken, affix, roomId, selectType, heroKeyItemUuid, masterModeDiff)
   local dungeonData = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
   if dungeonData then
     local isOpen = Z.ConditionHelper.CheckCondition(dungeonData.Condition, true)
@@ -244,7 +244,8 @@ local asyncCreateLevel = function(functionId, dungeonId, cancelToken, affix, roo
     affix = affix,
     roomId = roomId,
     selectType = selectType or 0,
-    heroKeyItemUuid = heroKeyItemUuid or 0
+    heroKeyItemUuid = heroKeyItemUuid or 0,
+    masterModeDiff = masterModeDiff or 0
   }
   local proxy = require("zproxy.world_proxy")
   local ret = proxy.StartEnterDungeon(parm, cancelToken)

@@ -9,8 +9,6 @@ message PlanetMemorySeasonConfigTableBase {
     string Id = 1463;
     mlstring Value = 616;
 }
-
 message PlanetMemorySeasonConfigTableMgr {
-    map<int32, .bokura.PlanetMemorySeasonConfigTableBase> datas = 1;
+    repeated bokura.PlanetMemorySeasonConfigTableMgr.DatasEntry datas = 1;
 }
-

@@ -9,8 +9,6 @@ message ConditionTableBase {
     string Example = 522;
     string RefreshNum = 1376;
 }
-
 message ConditionTableMgr {
-    map<int32, .bokura.ConditionTableBase> datas = 1;
+    repeated bokura.ConditionTableMgr.DatasEntry datas = 1;
 }
-

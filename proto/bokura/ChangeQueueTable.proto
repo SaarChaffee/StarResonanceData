@@ -14,8 +14,6 @@ message ChangeQueueTableBase {
     int_table Condition = 1634;
     int_array WaitTime = 106;
 }
-
 message ChangeQueueTableMgr {
-    map<int32, .bokura.ChangeQueueTableBase> datas = 1;
+    repeated bokura.ChangeQueueTableMgr.DatasEntry datas = 1;
 }
-

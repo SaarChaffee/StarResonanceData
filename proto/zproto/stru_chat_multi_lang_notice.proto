@@ -6,4 +6,3 @@ message ChatMultiLangNotice {
     uint32 configId = 1;
     repeated string args = 2;
 }
-

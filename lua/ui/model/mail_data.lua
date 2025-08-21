@@ -1,5 +1,7 @@
 local super = require("ui.model.data_base")
 local MailData = class("MailData", super)
+local mailReadState = Z.PbEnum("MailState", "MailStateRead")
+local mailGetState = Z.PbEnum("MailState", "MailStateGet")
 
 function MailData:ctor()
   super.ctor(self)
@@ -24,16 +26,13 @@ end
 
 function MailData:ResetData()
   self.isInit_ = false
-  self.isImportant_ = true
-  self.normalMailNum_ = 0
-  self.normalUnReadList_ = {}
-  self.normalMailList_ = {}
-  self.normalSort_ = false
-  self.importantMailNum_ = 0
-  self.importUnReadList_ = {}
-  self.importantMaiList_ = {}
-  self.importantSort_ = false
-  self.newMailList_ = {}
+  self.LastGetMailListTime = 0
+  self.serverNum_ = 0
+  self.mailPage_ = 0
+  self.mailPageList_ = {}
+  self.unReadUuIdList_ = {}
+  self.newUuidList_ = {}
+  self.list_ = {}
 end
 
 function MailData:GetIsInit()
@@ -44,212 +43,160 @@ function MailData:SetIsInit()
   self.isInit_ = true
 end
 
-function MailData:GetIsImportant()
-  return self.isImportant_
+function MailData:SetServerMailNum(num)
+  self.serverNum_ = num
 end
 
-function MailData:SetIsImportant(isImportant)
-  self.isImportant_ = isImportant
+function MailData:GetServerMailNum()
+  return self.serverNum_
 end
 
-function MailData:GetNormalMailNum()
-  return self.normalMailNum_
+function MailData:SetMailPage(page)
+  self.mailPage_ = page
 end
 
-function MailData:SetNormalMailNum(num)
-  self.normalMailNum_ = num
+function MailData:GetMailPage()
+  return self.mailPage_
 end
 
-function MailData:ChangeNormalMailNum(num)
-  self.normalMailNum_ = self.normalMailNum_ + num
+function MailData:AddMailPageId(pageId)
+  table.insert(self.mailPageList_, pageId)
 end
 
-function MailData:GetNormalUnReadList()
-  return self.normalUnReadList_
+function MailData:GetMailPageIdCount()
+  return #self.mailPageList_
 end
 
-function MailData:ClearNormalUnReadList()
-  self.normalUnReadList_ = {}
+function MailData:SetMailUnReadList(list)
+  self.unReadUuIdList_ = list
 end
 
-function MailData:SetNormalUnReadList(list)
-  self.normalUnReadList_ = list
+function MailData:GetMailUnReadList()
+  return self.unReadUuIdList_
 end
 
-function MailData:AddNormalUnRead(mailId)
-  self.normalUnReadList_[#self.normalUnReadList_ + 1] = mailId
-  self.normalMailNum_ = self.normalMailNum_ + 1
+function MailData:AddMailUnRead(uuid)
+  table.insert(self.unReadUuIdList_, uuid)
 end
 
-function MailData:ClearNormalMailList()
-  self.normalMailList_ = {}
-end
-
-function MailData:GetNormalMailList()
-  return self.normalMailList_
-end
-
-function MailData:GetImportantMailNum()
-  return self.importantMailNum_
-end
-
-function MailData:SetImportantMailNum(num)
-  self.importantMailNum_ = num
-end
-
-function MailData:ChangeImportantMailNum(num)
-  self.importantMailNum_ = self.importantMailNum_ + num
-end
-
-function MailData:GetImportantUnReadList()
-  return self.importUnReadList_
-end
-
-function MailData:ClearImportantUnReadList()
-  self.importUnReadList_ = {}
-end
-
-function MailData:SetImportantUnReadList(list)
-  self.importUnReadList_ = list
-end
-
-function MailData:AddImportantUnRead(mailId)
-  self.importUnReadList_[#self.importUnReadList_ + 1] = mailId
-  self.importantMailNum_ = self.importantMailNum_ + 1
-end
-
-function MailData:ClearImportantMailList()
-  self.importantMaiList_ = {}
-end
-
-function MailData:GetImportantMailList()
-  return self.importantMaiList_
-end
-
-function MailData:AddImportantMail(mail)
-  self.importantMaiList_[#self.importantMaiList_ + 1] = mail
-end
-
-function MailData:SetSort(isImport)
-  if isImport then
-    self.importantSort_ = false
-  else
-    self.normalSort_ = false
-  end
-end
-
-local isHaveRead = function(data)
-  if table.zcount(data.awardIds) > 0 or 0 < table.zcount(data.appendix) then
-    if data.mailState == Z.PbEnum("MailState", "MailStateGet") then
-      return true
-    else
-      return false
-    end
-  else
-    return data.mailState == Z.PbEnum("MailState", "MailStateRead")
-  end
-end
-local sortFunc = function(left, right)
-  if isHaveRead(left) then
-    if isHaveRead(right) then
-      return left.createTime > right.createTime
-    else
-      return false
-    end
-  elseif isHaveRead(right) then
-    return true
-  else
-    return left.createTime > right.createTime
-  end
-end
-
-function MailData:SortAllMailData()
-  table.sort(self.importantMaiList_, sortFunc)
-  table.sort(self.normalMailList_, sortFunc)
-end
-
-function MailData:SortMailData(Important)
-  if Important then
-    if self.importantSort_ == true or #self.importantMaiList_ == 0 then
-      return
-    end
-  elseif self.normalSort_ == true or #self.normalMailList_ == 0 then
-    return
-  end
-  if Important then
-    self.importantSort_ = true
-    table.sort(self.importantMaiList_, sortFunc)
-  else
-    self.normalSort_ = true
-    table.sort(self.normalMailList_, sortFunc)
-  end
-end
-
-function MailData:DelMailData(isImportant, uuid)
-  local list
-  if isImportant then
-    list = self.importantMaiList_
-  else
-    list = self.normalMailList_
-  end
-  if list and 1 < #list then
-    for i = #list, 1 do
-      if list[i].mailUuid == uuid then
-        table.remove(list, i)
-        break
-      end
-    end
-  end
-end
-
-function MailData:AddMailData(mail)
-  local list
-  if mail.importance > 0 then
-    list = self.importantMaiList_
-  else
-    list = self.normalMailList_
-  end
-  if list and 0 < #list then
-    for i = 1, #list do
-      if list[i].mailUuid == mail.mailUuid then
-        list[i] = mail
-        return
-      end
-    end
-  end
-  list[#list + 1] = mail
-end
-
-function MailData:RemoveUnRead(mailUuid, isImportant)
-  local list
-  if isImportant then
-    list = self.importUnReadList_
-  else
-    list = self.normalUnReadList_
-  end
-  if 0 < #list then
-    for i = #list, 1, -1 do
-      if list[i] == mailUuid then
-        table.remove(list, i)
+function MailData:RemoveUnRead(mailUuid)
+  if #self.unReadUuIdList_ > 0 then
+    for i = #self.unReadUuIdList_, 1, -1 do
+      if self.unReadUuIdList_[i] == mailUuid then
+        table.remove(self.unReadUuIdList_, i)
       end
     end
   end
 end
 
 function MailData:AddNewMailUuid(mailUuid)
-  self.newMailList_[#self.newMailList_ + 1] = mailUuid
+  table.insert(self.newUuidList_, mailUuid)
 end
 
 function MailData:RemoveNewMailUuid(mailUuid)
-  for i = #self.newMailList_, 1, -1 do
-    if self.newMailList_[i] == mailUuid then
-      table.remove(self.newMailList_, i)
+  table.zremoveByValue(self.newUuidList_, mailUuid)
+end
+
+function MailData:GetNewMailList()
+  return self.newUuidList_
+end
+
+function MailData:GetNewMailCount()
+  return #self.newUuidList_
+end
+
+function MailData:CheckMailVaild()
+  for i = #self.list_, 1, -1 do
+    if self.list_[i].mailUuid == 0 or not self.list_[i].mailUuid then
+      table.remove(self.list_, i)
     end
   end
 end
 
-function MailData:GetNewMailList()
-  return self.newMailList_
+function MailData:GetMailList()
+  return self.list_
+end
+
+function MailData:ClearMailList()
+  self.list_ = {}
+end
+
+function MailData:AddMailData(mail, isNew)
+  if self.list_ and #self.list_ > 0 then
+    for i = 1, #self.list_ do
+      if self.list_[i].mailUuid == mail.mailUuid then
+        return
+      end
+    end
+  end
+  mail.isHaveAward = mail.awardIds and 0 < #mail.awardIds
+  mail.isHaveAppendix = mail.appendix and 0 < #mail.appendix
+  if isNew then
+    table.insert(self.list_, 1, mail)
+  else
+    self.list_[#self.list_ + 1] = mail
+  end
+end
+
+function MailData:RemoveMailBaseByIndex(index)
+  table.remove(self.list_, index)
+end
+
+function MailData:RemoveMailByUuid(uuid)
+  if self.list_ and #self.list_ > 1 then
+    for i = #self.list_, 1, -1 do
+      if self.list_[i].mailUuid == uuid then
+        table.remove(self.list_, i)
+        break
+      end
+    end
+  end
+end
+
+function MailData:IsHaveMaillByUuid(uuid)
+  if self.list_ and #self.list_ > 1 then
+    for i = #self.list_, 1, -1 do
+      if self.list_[i].mailUuid == uuid then
+        return true
+      end
+    end
+  end
+  return false
+end
+
+function MailData:GetMailNum()
+  return #self.list_
+end
+
+local getSortValue = function(data)
+  local sortValue = 0
+  if data.isCollect then
+    sortValue = 1
+  end
+  if data.isHaveAward or data.isHaveAppendix then
+    if data.mailState ~= mailGetState then
+      sortValue = sortValue + 10
+    end
+  elseif data.mailState ~= mailReadState then
+    sortValue = sortValue + 10
+  end
+  return sortValue
+end
+local sortFunc = function(left, right)
+  local leftSortValue = getSortValue(left)
+  local rightSortValue = getSortValue(right)
+  if leftSortValue == rightSortValue then
+    return left.createTime > right.createTime
+  else
+    return leftSortValue > rightSortValue
+  end
+end
+
+function MailData:SortMailData()
+  if not self.list_ or #self.list_ == 0 then
+    return
+  end
+  table.sort(self.list_, sortFunc)
 end
 
 return MailData

@@ -14,4 +14,3 @@ enum EClimbType {
     BottomBraceUp = 22;
     BottomBraceDown = 23;
 }
-

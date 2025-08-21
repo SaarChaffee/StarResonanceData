@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_life_profession_alchemy_info.proto";
+import "stru_life_profession_basic.proto";
+import "stru_life_profession_recipe.proto";
+import "stru_life_profession_target_info.proto";
+import "stru_dirty_mask.proto";
+
+message LifeProfession {
+    repeated zproto.LifeProfession.ProfessionInfoEntry professionInfo = 1;
+    repeated zproto.LifeProfession.LifeTargetInfoEntry lifeTargetInfo = 2;
+    repeated zproto.LifeProfession.LifeProfessionRecipeEntry lifeProfessionRecipe = 3;
+    zproto.LifeProfessionAlchemyInfo lifeProfessionAlchemyInfo = 4;
+    repeated zproto.LifeProfession.SpareEnergyEntry spareEnergy = 5;
+    int32 point = 6;
+}

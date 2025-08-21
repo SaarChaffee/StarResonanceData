@@ -9,4 +9,3 @@ message ReqUnionActivityRankRequest {
     int32 activityId = 3;
     zproto.EUnionActivityRankType rankType = 4;
 }
-

@@ -8,4 +8,3 @@ enum ERideStage {
     ERiding = 2;
     ERideDown = 3;
 }
-

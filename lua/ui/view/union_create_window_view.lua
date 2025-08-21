@@ -35,12 +35,12 @@ function Union_create_windowView:onOkBtnClick()
   end
   local name = self.uiBinder.input_name.text
   local manifesto = self.uiBinder.input_announce.text
-  local nameLength = string.zlen(name)
+  local nameLength = string.zlenNormalize(name)
   if nameLength < Z.Global.UnionNameLengthMinLimit or nameLength > Z.Global.UnionNameLengthMaxLimit then
     Z.TipsVM.ShowTipsLang(1000503)
     return
   end
-  local manifestoLength = string.zlen(manifesto)
+  local manifestoLength = string.zlenNormalize(manifesto)
   if manifestoLength < Z.Global.UnionNoticeLengthMinLimit or manifestoLength > Z.Global.UnionNoticeLengthMaxLimit then
     Z.TipsVM.ShowTipsLang(1000515)
     return
@@ -65,18 +65,18 @@ function Union_create_windowView:onOkBtnClick()
 end
 
 function Union_create_windowView:onNameInputChanged()
-  local length = string.zlen(self.uiBinder.input_name.text)
+  local length = string.zlenNormalize(self.uiBinder.input_name.text)
   if length > self.nameLimitMax_ then
-    self.uiBinder.input_name.text = string.zcut(self.uiBinder.input_name.text, self.nameLimitMax_)
+    self.uiBinder.input_name.text = string.zcutNormalize(self.uiBinder.input_name.text, self.nameLimitMax_)
   else
     self.uiBinder.lab_digit_name.text = string.zconcat(length, "/", self.nameLimitMax_)
   end
 end
 
 function Union_create_windowView:onAnnounceInputChanged()
-  local length = string.zlen(self.uiBinder.input_announce.text)
+  local length = string.zlenNormalize(self.uiBinder.input_announce.text)
   if length > self.announceLimitMax_ then
-    self.uiBinder.input_announce.text = string.zcut(self.uiBinder.input_announce.text, self.announceLimitMax_)
+    self.uiBinder.input_announce.text = string.zcutNormalize(self.uiBinder.input_announce.text, self.announceLimitMax_)
   else
     self.uiBinder.lab_digit_announce.text = string.zconcat(length, "/", self.announceLimitMax_)
   end
@@ -272,13 +272,11 @@ function Union_create_windowView:OnRefresh()
 end
 
 function Union_create_windowView:onSelectAnim()
-  self.uiBinder.tween_main:Restart(Z.DOTweenAnimType.Tween_0)
+  self.uiBinder.anim_main:Restart(Z.DOTweenAnimType.Tween_0)
 end
 
 function Union_create_windowView:startAnimatedShow()
-end
-
-function Union_create_windowView:startAnimatedHide()
+  self.uiBinder.anim_main:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Union_create_windowView:initTagItem()

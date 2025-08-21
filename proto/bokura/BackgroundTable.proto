@@ -7,8 +7,6 @@ message BackgroundTableBase {
     int32 Sequence = 831;
     string Res = 1275;
 }
-
 message BackgroundTableMgr {
-    map<int32, .bokura.BackgroundTableBase> datas = 1;
+    repeated bokura.BackgroundTableMgr.DatasEntry datas = 1;
 }
-

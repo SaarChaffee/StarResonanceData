@@ -9,4 +9,3 @@ message NotifyRideIsAgreeParam {
     string charName = 2;
     zproto.EApplyRideResult result = 3;
 }
-

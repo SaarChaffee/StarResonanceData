@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message httpCachePhotoInfo {
-    map<string, string> httpCachePhotoInfoDict = 1;
+    repeated zproto.httpCachePhotoInfo.HttpCachePhotoInfoDictEntry httpCachePhotoInfoDict = 1;
 }
-

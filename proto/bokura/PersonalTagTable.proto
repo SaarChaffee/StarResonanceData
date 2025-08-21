@@ -9,8 +9,6 @@ message PersonalTagTableBase {
     int32 Type = 673;
     int32 Sequence = 831;
 }
-
 message PersonalTagTableMgr {
-    map<int32, .bokura.PersonalTagTableBase> datas = 1;
+    repeated bokura.PersonalTagTableMgr.DatasEntry datas = 1;
 }
-

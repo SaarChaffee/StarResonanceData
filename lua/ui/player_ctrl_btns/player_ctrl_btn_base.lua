@@ -29,7 +29,7 @@ function PlayerCtrlBtnBase:Create(parent)
   end
   Z.CoroUtil.create_coro_xpcall(function()
     if not self.uiBinder and self.parent_ then
-      self.uiBinder = self.panel_:AsyncLoadUiUnit(self:GetUIUnitPath(), self.key_, self.parent_.Trans)
+      self.uiBinder = self.panel_:AsyncLoadUiUnit(self:GetUIUnitPath(), self.key_, self.parent_.transform)
     end
     if not self.uiBinder then
       return

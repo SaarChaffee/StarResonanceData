@@ -6,4 +6,3 @@ message WorldBossRankInfo {
     int64 charId = 1;
     int32 score = 2;
 }
-

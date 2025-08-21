@@ -23,8 +23,6 @@ message FunctionTableBase {
     mlstring PreviewText = 826;
     int32 OpenTips = 1023;
 }
-
 message FunctionTableMgr {
-    map<int32, .bokura.FunctionTableBase> datas = 1;
+    repeated bokura.FunctionTableMgr.DatasEntry datas = 1;
 }
-

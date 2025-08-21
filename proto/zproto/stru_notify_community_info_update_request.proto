@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_bulletin_board.proto";
+import "stru_community_invitation_info.proto";
+import "stru_community_player_info.proto";
+import "stru_community_quit_cohabitant.proto";
+
+message NotifyCommunityInfoUpdateRequest {
+    int64 houseOwnerCharId = 1;
+    int64 homelandId = 2;
+    repeated int64 removeGroups = 3;
+    repeated zproto.NotifyCommunityInfoUpdateRequest.AddBulletinBoardsEntry addBulletinBoards = 4;
+    repeated int64 removeBulletinBoards = 5;
+    repeated zproto.NotifyCommunityInfoUpdateRequest.AddCohabitantEntry addCohabitant = 6;
+    repeated int64 removeCohabitant = 7;
+    repeated zproto.NotifyCommunityInfoUpdateRequest.AddInvitationListEntry addInvitationList = 8;
+    repeated int64 removeInvitationList = 9;
+    repeated zproto.CommunityQuitCohabitant addQuitCohabitant = 10;
+    repeated zproto.CommunityQuitCohabitant removeQuitCohabitant = 11;
+}

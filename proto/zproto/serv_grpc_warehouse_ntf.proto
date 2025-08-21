@@ -12,22 +12,16 @@ message GrpcWarehouseNtf {
     message NotifyWarehouseInvite {
         zproto.NotifyWarehouseInviteRequest request = 1;
     }
-
     message NotifyWarehouseGridChange {
         zproto.NotifyWarehouseGridChangeRequest request = 1;
     }
-
     message NotifyWarehousePassiveExist {
         zproto.NotifyWarehousePassiveExistRequest request = 1;
     }
-
     message NotifyWarehouseNewJoiner {
         zproto.NotifyWarehouseNewJoinerRequest request = 1;
     }
-
     message NotifyWarehouseRefuseToJoin {
         zproto.NotifyWarehouseRefuseToJoinRequest request = 1;
     }
-
 }
-

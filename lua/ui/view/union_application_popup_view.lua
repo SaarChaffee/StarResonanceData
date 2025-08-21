@@ -152,7 +152,7 @@ end
 function Union_application_popupView:asyncQueryApplicationList()
   Z.CoroUtil.create_coro_xpcall(function()
     local reply = self.unionVM_:AsyncGetRequestList(self.unionVM_:GetPlayerUnionId(), self.cancelSource:CreateToken())
-    if reply.errorCode == 0 then
+    if reply.errCode == 0 then
       if reply.reqList then
         self.applicantDataList_ = self:sortList(reply.reqList)
       else

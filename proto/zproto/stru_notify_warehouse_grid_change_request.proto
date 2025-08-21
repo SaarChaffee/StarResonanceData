@@ -9,4 +9,3 @@ message NotifyWarehouseGridChangeRequest {
     int64 takeOutCharId = 2;
     int64 depositCharId = 3;
 }
-

@@ -33,6 +33,8 @@ function RecommendedplayThreeLoopItem:OnSelected(isSelected)
   if isSelected then
     self.uiView_:selectThreeTag(self.data_.Id, self.Index)
     self.commonVM_.CommonDotweenPlay(self.uiBinder.anim, Z.DOTweenAnimType.Open, nil)
+  else
+    self.uiBinder.anim:Rewind()
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_off, not isSelected)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_on, isSelected)

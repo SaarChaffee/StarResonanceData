@@ -11,8 +11,6 @@ message FunctionSearchTableBase {
     int_array QuickJumpParam = 1617;
     int32 IsHide = 1851;
 }
-
 message FunctionSearchTableMgr {
-    map<int32, .bokura.FunctionSearchTableBase> datas = 1;
+    repeated bokura.FunctionSearchTableMgr.DatasEntry datas = 1;
 }
-

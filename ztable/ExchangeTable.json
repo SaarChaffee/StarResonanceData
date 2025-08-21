@@ -1,0 +1,418 @@
+{
+  "233": {
+    "Id": 233,
+    "ShopName": "",
+    "SystemId": 100233,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "234": {
+    "Id": 234,
+    "ShopName": "",
+    "SystemId": 100234,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [
+      20003
+    ],
+    "CameraTemplateId": [
+      4007
+    ],
+    "ExchangeBtnName": "",
+    "Trace": true,
+    "Screen": 0
+  },
+  "235": {
+    "Id": 235,
+    "ShopName": "",
+    "SystemId": 100235,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "237": {
+    "Id": 237,
+    "ShopName": "",
+    "SystemId": 100237,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "238": {
+    "Id": 238,
+    "ShopName": "",
+    "SystemId": 100238,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "239": {
+    "Id": 239,
+    "ShopName": "",
+    "SystemId": 100239,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [
+      20003
+    ],
+    "CameraTemplateId": [
+      4008
+    ],
+    "ExchangeBtnName": "",
+    "Trace": true,
+    "Screen": 0
+  },
+  "240": {
+    "Id": 240,
+    "ShopName": "",
+    "SystemId": 100240,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4009
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "244": {
+    "Id": 244,
+    "ShopName": "",
+    "SystemId": 100244,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4010
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "245": {
+    "Id": 245,
+    "ShopName": "",
+    "SystemId": 100245,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4011
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 1
+  },
+  "247": {
+    "Id": 247,
+    "ShopName": "",
+    "SystemId": 100247,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4015
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "248": {
+    "Id": 248,
+    "ShopName": "",
+    "SystemId": 100248,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4011
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 1
+  },
+  "249": {
+    "Id": 249,
+    "ShopName": "",
+    "SystemId": 100249,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4011
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 1
+  },
+  "250": {
+    "Id": 250,
+    "ShopName": "",
+    "SystemId": 100250,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4016
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "251": {
+    "Id": 251,
+    "ShopName": "",
+    "SystemId": 100251,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4017
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "252": {
+    "Id": 252,
+    "ShopName": "",
+    "SystemId": 100252,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4018
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "253": {
+    "Id": 253,
+    "ShopName": "",
+    "SystemId": 100253,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4019
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "254": {
+    "Id": 254,
+    "ShopName": "",
+    "SystemId": 100254,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4020
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "255": {
+    "Id": 255,
+    "ShopName": "",
+    "SystemId": 100255,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4021
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "256": {
+    "Id": 256,
+    "ShopName": "",
+    "SystemId": 100256,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4022
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "257": {
+    "Id": 257,
+    "ShopName": "",
+    "SystemId": 100257,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4023
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "258": {
+    "Id": 258,
+    "ShopName": "",
+    "SystemId": 100258,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4024
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "259": {
+    "Id": 259,
+    "ShopName": "",
+    "SystemId": 100259,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4032
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 1
+  },
+  "261": {
+    "Id": 261,
+    "ShopName": "",
+    "SystemId": 100261,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4026
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "262": {
+    "Id": 262,
+    "ShopName": "",
+    "SystemId": 100262,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4025
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "263": {
+    "Id": 263,
+    "ShopName": "",
+    "SystemId": 100263,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4029
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "264": {
+    "Id": 264,
+    "ShopName": "",
+    "SystemId": 100264,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4030
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "265": {
+    "Id": 265,
+    "ShopName": "",
+    "SystemId": 100265,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4031
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 0
+  },
+  "266": {
+    "Id": 266,
+    "ShopName": "",
+    "SystemId": 100266,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4011
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 1
+  },
+  "267": {
+    "Id": 267,
+    "ShopName": "",
+    "SystemId": 100267,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4011
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 1
+  },
+  "268": {
+    "Id": 268,
+    "ShopName": "",
+    "SystemId": 100268,
+    "Npc": "",
+    "ShowType": 0,
+    "CurrencyDisplay": [],
+    "CameraTemplateId": [
+      4032
+    ],
+    "ExchangeBtnName": "",
+    "Trace": false,
+    "Screen": 1
+  }
+}

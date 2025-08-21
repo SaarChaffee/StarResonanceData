@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message PlayActionParam {
+    int32 actionId = 1;
+    bool isUpper = 2;
+    bool IsDanceTogether = 3;
+    int32 mountId = 4;
+    int32 mountSize = 5;
+}

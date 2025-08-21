@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_photo_graph_show.proto";
 
 message GetTmpAlbumPhotosReply {
-    int32 errCode = 1;
-    repeated zproto.PhotoGraphShow photoGraphs = 2;
-    int32 curUploadTimes = 3;
-    int32 maxUploadTimes = 4;
+    repeated zproto.PhotoGraphShow photoGraphs = 1;
+    int32 curUploadTimes = 2;
+    int32 maxUploadTimes = 3;
+    zproto.EErrorCode errCode = 4;
 }
-

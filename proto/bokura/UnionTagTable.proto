@@ -10,8 +10,6 @@ message UnionTagTableBase {
     int32 ShowSort = 1506;
     int32 IsHide = 1851;
 }
-
 message UnionTagTableMgr {
-    map<int32, .bokura.UnionTagTableBase> datas = 1;
+    repeated bokura.UnionTagTableMgr.DatasEntry datas = 1;
 }
-

@@ -7,4 +7,3 @@ message ChatVoice {
     string text = 2;
     uint32 seconds = 3;
 }
-

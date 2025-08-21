@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message BubbleInfo {
+    uint32 bubbleScore = 1;
+    uint32 bubbleAwardCount = 2;
+    repeated uint64 additionalTargetUuidList = 3;
+    int64 lastRefreshTime = 4;
+}

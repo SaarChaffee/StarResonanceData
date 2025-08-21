@@ -1,0 +1,3422 @@
+{
+  "50000": {
+    "FishingTemplateId": 50000,
+    "Name": "",
+    "SuitType": [
+      [
+        0,
+        1094001,
+        1094002
+      ],
+      [
+        1,
+        1,
+        5
+      ]
+    ],
+    "BiteTime": [
+      5.0,
+      -2000.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "50001": {
+    "FishingTemplateId": 50001,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      5.0,
+      -2000.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      500
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "50002": {
+    "FishingTemplateId": 50002,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      1000.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      1000
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "50003": {
+    "FishingTemplateId": 50003,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      2000
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "50004": {
+    "FishingTemplateId": 50004,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      -2000.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      1500
+    ],
+    "OffSpeed": [
+      0,
+      -2000
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "50005": {
+    "FishingTemplateId": 50005,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      5.0,
+      -2000.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      500
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "50006": {
+    "FishingTemplateId": 50006,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      1000.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      1000
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "50007": {
+    "FishingTemplateId": 50007,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      2000
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "50008": {
+    "FishingTemplateId": 50008,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      -2000.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      1500
+    ],
+    "OffSpeed": [
+      0,
+      -2000
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "60001": {
+    "FishingTemplateId": 60001,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "60002": {
+    "FishingTemplateId": 60002,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      500
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "60003": {
+    "FishingTemplateId": 60003,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      -2000
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      -2000
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      -2000
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      -2000
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40001": {
+    "FishingTemplateId": 40001,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40002": {
+    "FishingTemplateId": 40002,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.2,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40003": {
+    "FishingTemplateId": 40003,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.3,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40004": {
+    "FishingTemplateId": 40004,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.4,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40005": {
+    "FishingTemplateId": 40005,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40006": {
+    "FishingTemplateId": 40006,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.2,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40007": {
+    "FishingTemplateId": 40007,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.3,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40008": {
+    "FishingTemplateId": 40008,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.4,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40009": {
+    "FishingTemplateId": 40009,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40010": {
+    "FishingTemplateId": 40010,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.1,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40011": {
+    "FishingTemplateId": 40011,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.2,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40012": {
+    "FishingTemplateId": 40012,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.3,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40013": {
+    "FishingTemplateId": 40013,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40014": {
+    "FishingTemplateId": 40014,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      2000
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      2000
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40015": {
+    "FishingTemplateId": 40015,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      3500
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      3500
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40016": {
+    "FishingTemplateId": 40016,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      5000
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      5000
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40017": {
+    "FishingTemplateId": 40017,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40018": {
+    "FishingTemplateId": 40018,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      -1,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40019": {
+    "FishingTemplateId": 40019,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      -2,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40020": {
+    "FishingTemplateId": 40020,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      -3,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40021": {
+    "FishingTemplateId": 40021,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40022": {
+    "FishingTemplateId": 40022,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      -2,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      -2,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40023": {
+    "FishingTemplateId": 40023,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      -3,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      -3,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40024": {
+    "FishingTemplateId": 40024,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      -5,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      -5,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40025": {
+    "FishingTemplateId": 40025,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40026": {
+    "FishingTemplateId": 40026,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      -2,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      -2,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40027": {
+    "FishingTemplateId": 40027,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      -3,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      -3,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40028": {
+    "FishingTemplateId": 40028,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      -5,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      -5,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40029": {
+    "FishingTemplateId": 40029,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40030": {
+    "FishingTemplateId": 40030,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      -1000.0
+    ],
+    "Describe": ""
+  },
+  "40031": {
+    "FishingTemplateId": 40031,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      -1750.0
+    ],
+    "Describe": ""
+  },
+  "40032": {
+    "FishingTemplateId": 40032,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      -2500.0
+    ],
+    "Describe": ""
+  },
+  "40033": {
+    "FishingTemplateId": 40033,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40034": {
+    "FishingTemplateId": 40034,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      -1,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40035": {
+    "FishingTemplateId": 40035,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      -2,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40036": {
+    "FishingTemplateId": 40036,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      -3,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40037": {
+    "FishingTemplateId": 40037,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40038": {
+    "FishingTemplateId": 40038,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.1,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40039": {
+    "FishingTemplateId": 40039,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.2,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40040": {
+    "FishingTemplateId": 40040,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.3,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40041": {
+    "FishingTemplateId": 40041,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      0
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40042": {
+    "FishingTemplateId": 40042,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      2000
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      2000
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40043": {
+    "FishingTemplateId": 40043,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      3500
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      3500
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  },
+  "40044": {
+    "FishingTemplateId": 40044,
+    "Name": "",
+    "SuitType": [
+      [
+        1,
+        1,
+        2,
+        5
+      ]
+    ],
+    "BiteTime": [
+      0.0,
+      0.0
+    ],
+    "OffHookTime": [
+      0.0,
+      0.0
+    ],
+    "OffTime": [
+      0.0,
+      0.0
+    ],
+    "DrawSpeed": [
+      0,
+      5000
+    ],
+    "OffSpeed": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "DiffDirectionSpeedWithDraw": [
+      0,
+      0
+    ],
+    "SameDirectionSpeedWithDraw": [
+      0,
+      5000
+    ],
+    "SameDirectionSpeedWithoutDraw": [
+      0,
+      0
+    ],
+    "FishPathInterval": [
+      0.0,
+      0.0
+    ],
+    "FishStayInterval": [
+      0.0,
+      0.0
+    ],
+    "FishSpeed": [
+      0.0,
+      0.0
+    ],
+    "Describe": ""
+  }
+}

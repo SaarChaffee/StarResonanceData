@@ -9,9 +9,9 @@ function WarehouseFirstClassLoopItem:OnInit()
   self.data_ = Z.DataMgr.Get("warehouse_data")
 end
 
-function WarehouseFirstClassLoopItem:Refresh()
+function WarehouseFirstClassLoopItem:Refresh(data)
   self.isSelected = false
-  local type = self.data_:GetWarehouseTypeByIndex(self.index)
+  local type = data
   if type and type ~= -1 then
     local row = Z.TableMgr.GetTable("WarehouseTableMgr").GetRow(type)
     if row then

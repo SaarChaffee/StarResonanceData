@@ -5,4 +5,3 @@ package zproto;
 message DanceBegin {
     int64 unionId = 1;
 }
-

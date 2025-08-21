@@ -15,16 +15,46 @@ function Talk_mainView:OnActive()
 end
 
 function Talk_mainView:OnRefresh()
-  for _, data in ipairs(self.viewData.SpeakerList) do
-    if data.SpeakerId == self.talkData_:GetTalkingNpcId() then
-      Z.NpcBehaviourMgr:ChangeTalkingAction(data.ActionId)
-      Z.NpcBehaviourMgr:ChangeTalkingEmote(data.NewEmotionId)
-    end
-  end
+  self:handleEntTalking()
   self.talkVM_.OpenCommonTalkDialog(self.viewData.DialogData)
   if self.viewData.IsLast then
     self:openQuestOptionInNpcDefaultFlow()
   end
+end
+
+function Talk_mainView:handleEntTalking()
+  for _, data in ipairs(self.viewData.SpeakerList) do
+    self:handleNpcTalking(data)
+    self:handlePlayerTalking(data)
+  end
+end
+
+function Talk_mainView:handleNpcTalking(data)
+  if data.SpeakerId ~= self.talkData_:GetTalkingNpcId() then
+    return
+  end
+  if data.AnimList ~= nil and #data.AnimList > 0 then
+    Z.NpcBehaviourMgr:TalkingNpcPlayAnims(data.AnimList)
+  else
+    Z.NpcBehaviourMgr:ChangeTalkingAction(data.ActionId)
+  end
+  Z.NpcBehaviourMgr:ChangeTalkingEmote(data.NewEmotionId)
+end
+
+function Talk_mainView:handlePlayerTalking(data)
+  if data.SpeakerId ~= 0 then
+    return
+  end
+  if data.AnimList ~= nil and 0 < #data.AnimList then
+    Z.ZAnimActionPlayMgr:ResetAction()
+    if not Z.QuestMgr:CheckPlayerCanPlayTalkingAnims() then
+      return
+    end
+    Z.QuestMgr:PlayerPlayAnims(data.AnimList)
+  else
+    Z.ZAnimActionPlayMgr:PlayAction(data.ActionId)
+  end
+  Z.ZAnimActionPlayMgr:PlayEmote(data.NewEmotionId)
 end
 
 function Talk_mainView:OnDeActive()

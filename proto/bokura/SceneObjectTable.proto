@@ -30,8 +30,6 @@ message SceneObjectTableBase {
     int_table ShowStatusInfo = 1473;
     int_table ShowStatusTransition = 1771;
 }
-
 message SceneObjectTableMgr {
-    map<int32, .bokura.SceneObjectTableBase> datas = 1;
+    repeated bokura.SceneObjectTableMgr.DatasEntry datas = 1;
 }
-

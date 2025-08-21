@@ -6,4 +6,3 @@ enum ESkillCDType {
     ESkillCDNormal = 0;
     ESkillCDCharge = 1;
 }
-

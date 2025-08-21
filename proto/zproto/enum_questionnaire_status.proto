@@ -7,4 +7,3 @@ enum QuestionnaireStatus {
     QuestionnaireAnswered = 1;
     QuestionnaireEmailed = 2;
 }
-

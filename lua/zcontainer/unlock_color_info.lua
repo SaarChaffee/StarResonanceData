@@ -32,6 +32,39 @@ local mergeDataFuncs = {
       container.colorInfoMap.__data__[dk] = dv
       container.Watcher:MarkMapDirty("colorInfoMap", dk, last)
     end
+  end,
+  [2] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadBoolean(buffer)
+      container.colorBlockInfoMap.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("colorBlockInfoMap", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.colorBlockInfoMap.__data__[dk]
+      container.colorBlockInfoMap.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("colorBlockInfoMap", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadBoolean(buffer)
+      local last = container.colorBlockInfoMap.__data__[dk]
+      container.colorBlockInfoMap.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("colorBlockInfoMap", dk, last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -64,10 +97,16 @@ local resetData = function(container, pbData)
   if not pbData.colorInfoMap then
     container.__data__.colorInfoMap = {}
   end
+  if not pbData.colorBlockInfoMap then
+    container.__data__.colorBlockInfoMap = {}
+  end
   setForbidenMt(container)
   container.colorInfoMap.__data__ = pbData.colorInfoMap
   setForbidenMt(container.colorInfoMap)
   container.__data__.colorInfoMap = nil
+  container.colorBlockInfoMap.__data__ = pbData.colorBlockInfoMap
+  setForbidenMt(container.colorBlockInfoMap)
+  container.__data__.colorBlockInfoMap = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -127,6 +166,27 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  if container.colorBlockInfoMap ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.colorBlockInfoMap) do
+      data[key] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.colorBlockInfoMap = {
+      fieldId = 2,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.colorBlockInfoMap = {
+      fieldId = 2,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -137,11 +197,15 @@ local new = function()
     GetContainerElem = getContainerElem,
     colorInfoMap = {
       __data__ = {}
+    },
+    colorBlockInfoMap = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.colorInfoMap)
+  setForbidenMt(ret.colorBlockInfoMap)
   return ret
 end
 return {New = new}

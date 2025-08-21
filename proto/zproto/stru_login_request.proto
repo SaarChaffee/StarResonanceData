@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 import "stru_device_info.proto";
+import "stru_launch_param.proto";
 
 message LoginRequest {
     string openId = 2;
@@ -16,5 +17,11 @@ message LoginRequest {
     string protocolVersion = 10;
     string configVersion = 11;
     int32 areaId = 12;
+    string iOSAdServiceToken = 13;
+    string payExtData = 14;
+    string clientResourceVersion = 15;
+    zproto.LaunchParam launchParam = 18;
+    string areaIdToken = 19;
+    bool isCloudGame = 20;
+    string distinctID = 21;
 }
-

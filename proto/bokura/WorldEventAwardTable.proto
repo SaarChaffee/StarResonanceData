@@ -6,8 +6,6 @@ message WorldEventAwardTableBase {
     int32 Score = 1699;
     int32 Award = 187;
 }
-
 message WorldEventAwardTableMgr {
-    map<int32, .bokura.WorldEventAwardTableBase> datas = 1;
+    repeated bokura.WorldEventAwardTableMgr.DatasEntry datas = 1;
 }
-

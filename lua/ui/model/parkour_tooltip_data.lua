@@ -22,7 +22,7 @@ function ParkourTooltipData:GetParkourRecord(dungeonId)
     end
   end
   if recordInfo ~= nil and recordInfo.perfectTime then
-    local perfectTime = Z.TimeTools.S2MSFormat(recordInfo.perfectTime)
+    local perfectTime = Z.TimeFormatTools.FormatToDHMS(recordInfo.perfectTime, true)
     perfectTime = perfectTime or 0
     recordData = perfectTime
   end

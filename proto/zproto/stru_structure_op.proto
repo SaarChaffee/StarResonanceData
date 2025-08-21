@@ -9,4 +9,3 @@ message StructureOp {
     zproto.StructureOpType opType = 1;
     zproto.Structure structure = 2;
 }
-

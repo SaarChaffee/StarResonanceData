@@ -35,12 +35,29 @@ function ChatHyperLinkItem:RefreshShareData(text1, data, text2, playerName, char
   }
   param.string = {}
   if self.shareData_.string1 and self.shareData_.string1 ~= "" then
-    param.string[1] = self.shareData_.string1
+    param.string[1] = Z.RichTextHelper.RemoveTagsOtherThanEmojis(self.shareData_.string1)
+  else
+    param.string[1] = ""
   end
   if self.shareData_.string2 and self.shareData_.string2 ~= "" then
-    param.string[2] = self.shareData_.string2
+    param.string[2] = Z.RichTextHelper.RemoveTagsOtherThanEmojis(self.shareData_.string2)
+  else
+    param.string[2] = ""
   end
   self.shareShowContent_ = Z.Placeholder.Placeholder(self.shareContent_, param)
+  param.item.name = itemRow.Name
+  if self.chatHyperLinkRow_ and self.chatHyperLinkRow_.FunctionButtonEscape ~= "" then
+    self.mainChatShareContent_ = self.chatHyperLinkRow_.FunctionButtonEscape
+  elseif itemRow.Quality >= E.ItemQuality.Yellow then
+    self.mainChatShareContent_ = self.shareShowContent_
+  else
+    self.mainChatShareContent_ = Z.Placeholder.Placeholder(self.shareContent_, param)
+  end
+  if self.chatHyperLinkRow_ and self.chatHyperLinkRow_.HudEscape ~= "" then
+    self.hudShareContent_ = Z.Placeholder.Placeholder(self.chatHyperLinkRow_.HudEscape, param)
+  else
+    self.hudShareContent_ = self.shareShowContent_
+  end
 end
 
 function ChatHyperLinkItem:CheckShareData(text)

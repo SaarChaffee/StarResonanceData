@@ -9,4 +9,3 @@ enum EPlatformFuncType {
     EUnionPhoto = 3;
     EIdIpUnionFormalPhoto = 4;
 }
-

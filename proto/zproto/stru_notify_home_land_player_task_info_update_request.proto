@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_home_land_player_task_info.proto";
+
+message NotifyHomeLandPlayerTaskInfoUpdateRequest {
+    zproto.HomeLandPlayerTaskInfo newInfo = 1;
+}

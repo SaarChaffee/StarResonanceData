@@ -103,9 +103,14 @@ local initTypeToFunc = {
   [FaceDef.EOptionInitType.BodyParam] = getBodyParam,
   [FaceDef.EOptionInitType.HSVVector] = getHSV,
   [FaceDef.EOptionInitType.Switch] = getIsOpen,
-  [FaceDef.EOptionInitType.HairHighlightsColor] = function(row)
-    local vector = row.HairHighlight == 1 and row.HairColor[2] or row.HairColor[1]
-    return colorVectorToHSV(vector)
+  [FaceDef.EOptionInitType.HairHighlightsColor] = function(row, index)
+    local isOpen = getIsOpen(row, "HairHighlight")
+    if isOpen then
+      local vector = row.HairColor[index] or row.HairColor[1]
+      return colorVectorToHSV(vector)
+    else
+      return colorVectorToHSV(row.HairColor[1])
+    end
   end,
   [FaceDef.EOptionInitType.HairGradualColor] = function(row)
     local isOpen = getIsOpen(row, "HairGradient", 1)

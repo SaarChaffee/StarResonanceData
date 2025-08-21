@@ -1,23 +1,20 @@
 local UI = Z.UI
 local dataMgr = require("ui.model.data_manager")
-local keyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 local super = require("ui.ui_subview_base")
 local MinimapView = class("MinimapView", super)
 
-function MinimapView:ctor()
+function MinimapView:ctor(parent)
   self.uiBinder = nil
-  if Z.IsPCUI then
-    super.ctor(self, "main_minimap_sub", "main/main_minimap_pc_sub", UI.ECacheLv.High)
-  else
-    super.ctor(self, "main_minimap_sub", "main/main_minimap_sub", UI.ECacheLv.High)
-  end
+  super.ctor(self, "main_minimap_sub", "main/main_minimap_sub", UI.ECacheLv.High, true)
+  self.parent_ = parent
   self.mapFlagsComp_ = require("ui/component/map/map_flags_comp").new(self, false)
   self.mapVM_ = Z.VMMgr.GetVM("map")
   self.miniMapVM_ = Z.VMMgr.GetVM("minimap")
   self.mapData_ = Z.DataMgr.Get("map_data")
-  self.planetmemoryVm = Z.VMMgr.GetVM("planetmemory")
   self.trialroadData = Z.DataMgr.Get("trialroad_data")
   self.weeklyHuntData_ = Z.DataMgr.Get("weekly_hunt_data")
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function MinimapView:OnActive()
@@ -34,10 +31,7 @@ function MinimapView:OnActive()
 end
 
 function MinimapView:OnDeActive()
-  if Z.IsPCUI then
-    keyIconHelper.UnInitKeyIcon(self.uiBinder.com_icon_key_map)
-    keyIconHelper.UnInitKeyIcon(self.uiBinder.com_icon_key_insight)
-  end
+  self.inputKeyDescComp_:UnInit()
   self:clearMaskData()
   self.mapFlagsComp_:UnInit()
   Z.TipsVM.CloseItemTipsView(self.affixTipsId_)
@@ -77,13 +71,17 @@ function MinimapView:initComp()
   self:AddAsyncClick(self.uiBinder.btn_pionner, function()
     self.miniMapVM_.OpenDungeonMainWindow()
   end)
-  keyIconHelper.InitKeyIcon(self.uiBinder.com_icon_key_map, self.uiBinder.com_icon_key_map, 101)
+  self.inputKeyDescComp_:Init(101, self.uiBinder.com_icon_key_map)
   self.mapFlagsComp_:Init()
   self.uiBinder.comp_mini_map_base:ChangeMapTex()
 end
 
 function MinimapView:OnRefresh()
   self:refreshPionnerProgressView()
+end
+
+function MinimapView:IsWorldMap()
+  return false
 end
 
 function MinimapView:GetCurSceneId()
@@ -120,14 +118,12 @@ end
 function MinimapView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.MapSettingChange, self.onMapSettingRefresh, self)
   Z.EventMgr:Add(Z.ConstValue.MiniMapSettingChange, self.onMiniMapSettingChange, self)
-  Z.EventMgr:Add(Z.ConstValue.MapFollowFinish, self.onFollowFinish, self)
   Z.EventMgr:Add(Z.ConstValue.MapResLoaded, self.onMapResLoaded, self)
-  Z.EventMgr:Add(Z.ConstValue.PlanetMemory.TipsChange, self.planetmemoryTipsChange, self)
-  Z.EventMgr:Add(Z.ConstValue.PlanetMemory.FlowInfoChange, self.planetmemoryFlowInfoChange, self)
   Z.EventMgr:Add(Z.ConstValue.InsightEvent, self.insightBtnClick, self)
   Z.EventMgr:Add(Z.ConstValue.RefreshFunctionBtnState, self.refreshInsightState, self)
   Z.EventMgr:Add(Z.ConstValue.Pivot.OnPivotUnlock, self.setMapAreaMask, self)
   Z.EventMgr:Add(Z.ConstValue.UIClose, self.onUIClose, self)
+  Z.EventMgr:Add(Z.ConstValue.Screen.UIResolutionChange, self.onScreenResolutionChange, self)
 end
 
 function MinimapView:onMapResLoaded(isMiniMap)
@@ -142,10 +138,12 @@ end
 function MinimapView:setMapAreaMask()
   Z.CoroUtil.create_coro_xpcall(function()
     self:SetUIVisible(self.uiBinder.rimg_map_bg, false)
+    self.uiBinder.rimg_cloud.enabled = false
     self.uiBinder.rimg_mapbg_mask.enabled = false
     local sceneId = self:GetCurSceneId()
     local mapInfoTableRow = Z.TableMgr.GetRow("MapInfoTableMgr", sceneId, true)
     if mapInfoTableRow and mapInfoTableRow.IsShowMask then
+      self:adjustCloudSizeDelta()
       local pivotVM = Z.VMMgr.GetVM("pivot")
       local lockList, unlockList, unlockingList = pivotVM.GetScenePivotAreaState(sceneId, true)
       self.lockIndex_:Clear()
@@ -162,6 +160,12 @@ function MinimapView:setMapAreaMask()
       end
       local coro = Z.CoroUtil.async_to_sync(self.uiBinder.comp_mini_map_base.SetMapMask)
       coro(self.uiBinder.comp_mini_map_base, sceneId, self.unlockingIndex_, self.lockIndex_, self.unlockIndex_)
+      if not self.IsActive then
+        return
+      end
+      local isAllUnlock = #lockList == 0
+      self.uiBinder.comp_mini_map_base:SetCloudUnlockState(isAllUnlock)
+      self.uiBinder.rimg_cloud.enabled = true
     end
     self:SetUIVisible(self.uiBinder.rimg_map_bg, true)
   end)()
@@ -170,14 +174,6 @@ end
 function MinimapView:onUIClose(viewConfigKey)
   if viewConfigKey and viewConfigKey == "map_main" then
     self:setMapAreaMask()
-  end
-end
-
-function MinimapView:onFollowFinish(id)
-  local flagData = self.mapFlagsComp_:GetFlagDataByFlagId(id)
-  if flagData and self.mapVM_.CheckIsTracingFlagBySrcAndFlagData(E.GoalGuideSource.MapFlag, self:GetCurSceneId(), flagData) then
-    local guideVM = Z.VMMgr.GetVM("goal_guide")
-    guideVM.SetGuideGoals(E.GoalGuideSource.MapFlag, nil)
   end
 end
 
@@ -190,8 +186,49 @@ function MinimapView:onMiniMapSettingChange()
   self:refreshSetting()
 end
 
+function MinimapView:adjustCloudSizeDelta()
+  if self.uiBinder.rimg_map_bg.texture == nil then
+    return
+  end
+  local designSize = Z.UIRoot.ScreenDesignSize.x
+  local uiRootWidth = Z.UIRoot.CurCanvasSize.x
+  local uiRootHeight = Z.UIRoot.CurCanvasSize.y
+  local uiRootRatio = uiRootWidth / uiRootHeight
+  local outSideRatio
+  if uiRootRatio < 1 then
+    outSideRatio = uiRootHeight / designSize
+  else
+    outSideRatio = uiRootWidth / designSize
+  end
+  local realSize = designSize * outSideRatio
+  local mainMapSizeDelta
+  local canvasWidth = self.parent_.uiBinder.Trans.rect.width
+  local canvasHeight = self.parent_.uiBinder.Trans.rect.height
+  local textureWidth = self.uiBinder.rimg_map_bg.texture.width
+  local textureHeight = self.uiBinder.rimg_map_bg.texture.height
+  local widthRatio = (canvasWidth - 10) / textureWidth
+  local heightRatio = (canvasHeight - 10) / textureHeight
+  if widthRatio > heightRatio then
+    mainMapSizeDelta = Vector2.New(textureWidth * heightRatio, textureHeight * heightRatio)
+  else
+    mainMapSizeDelta = Vector2.New(textureWidth * widthRatio, textureHeight * widthRatio)
+  end
+  local ratioX = realSize / mainMapSizeDelta.x
+  local ratioY = realSize / mainMapSizeDelta.y
+  local currentWidth, currentHeight = self.uiBinder.rimg_map_bg.transform:GetSizeDelta(nil, nil)
+  self.uiBinder.rimg_cloud.transform:SetSizeDelta(currentWidth * ratioX, currentHeight * ratioY)
+  self.uiBinder.comp_relative_uv:SetMatBound(true)
+end
+
+function MinimapView:onScreenResolutionChange()
+  local sceneId = self:GetCurSceneId()
+  local mapInfoTableRow = Z.TableMgr.GetRow("MapInfoTableMgr", sceneId, true)
+  if mapInfoTableRow and mapInfoTableRow.IsShowMask then
+    self:adjustCloudSizeDelta()
+  end
+end
+
 function MinimapView:initInsightBtn()
-  keyIconHelper.InitKeyIcon(self.uiBinder.com_icon_key_insight, self.uiBinder.com_icon_key_insight, 34)
   self:AddAsyncClick(self.uiBinder.btn_insight, function()
     self:insightBtnClick()
   end)
@@ -202,6 +239,10 @@ function MinimapView:insightBtnClick()
   local isOpen = switchVm.CheckFuncSwitch(E.FunctionID.Insight)
   if isOpen then
     Z.CoroUtil.create_coro_xpcall(function()
+      if not Z.EntityMgr.PlayerEnt then
+        logError("PlayerEnt is nil")
+        return
+      end
       local curInsightState = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrInsightFlag")).Value
       local insightVm = Z.VMMgr.GetVM("insight")
       if curInsightState ~= 1 then
@@ -271,38 +312,26 @@ function MinimapView:refreshPionnerProgress(isChanged)
     local pioneerInfo = data.PioneerInfos[dungenid]
     local progress = pioneerInfo.progress
     self:SetUIVisible(self.uiBinder.cont_pionner, true)
+    local pionnerFormat = string.format("%s%s", Lang("Explore"), ":{0}%")
     if isChanged then
-      self.uiBinder.comp_text_num_anim:SetIntNumTextAnim(progress, string.format("%s%s", Lang("Explore"), ":{0}%"))
+      self.uiBinder.comp_text_num_anim:SetIntNumTextAnim(progress, pionnerFormat)
     else
-      self.uiBinder.lab_pionner_progress.text = string.format("%s%s", Lang("Explore"), progress .. "%")
+      self.uiBinder.comp_text_num_anim:SetNumTextWithNoAnim(progress, pionnerFormat)
     end
     self.uiBinder.comp_img_clip_anim:SetFilled(progress / 100, true)
   end)()
 end
 
 function MinimapView:initAffixAndMonsterFunction()
-  local dungeonVm_ = Z.VMMgr.GetVM("dungeon")
-  local showMonsterOrAffixBtn_ = dungeonVm_.CheckMonsterAndAffixTipShow()
-  self:SetUIVisible(self.uiBinder.btn_monster, showMonsterOrAffixBtn_)
+  local dungeonVM = Z.VMMgr.GetVM("dungeon")
+  local showMonsterOrAffixBtn = dungeonVM.CheckMonsterAndAffixTipShow()
+  self:SetUIVisible(self.uiBinder.btn_monster, showMonsterOrAffixBtn)
   self:SetUIVisible(self.uiBinder.icon_on_monster, false)
   self:AddClick(self.uiBinder.btn_monster, function()
-    local dungeonVm_ = Z.VMMgr.GetVM("dungeon")
-    dungeonVm_.OpenMonsterAndAffixTip(self.uiBinder.btn_monster.transform)
+    dungeonVM.OpenMonsterAndAffixTip(self.uiBinder.btn_monster.transform)
   end)
-end
-
-function MinimapView:planetmemoryTipsChange(eventData)
-  if not self.planetmemoryVm.IsPlanetmemory() then
-    return
-  end
-  if eventData.type == E.PlanetMemoryTipsType.Monster then
-    self:SetUIVisible(self.uiBinder.icon_on_monster, eventData.state)
-  end
-end
-
-function MinimapView:planetmemoryFlowInfoChange(flowInfo)
-  if flowInfo.state == E.DungeonState.DungeonStateEnd then
-    self.trialroadData:ClearPlanetCopyState()
+  if showMonsterOrAffixBtn then
+    dungeonVM.OpenMonsterAndAffixTip(self.uiBinder.btn_monster.transform, true)
   end
 end
 

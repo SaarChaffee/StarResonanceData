@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_season_center_history.proto";
 
 message SeasonCenterHistoryReply {
-    int32 errcode = 1;
-    zproto.SeasonCenterHistory history = 2;
+    zproto.SeasonCenterHistory history = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

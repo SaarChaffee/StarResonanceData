@@ -23,6 +23,8 @@ function Login_agreement_popupView:OnActive()
       Z.SDKWebView.OpenWebView(SDKHelper.GetPrivacyGuideUrlPath(self.viewData.PlatformType), false)
     elseif linkName and linkName == "children_privacy" then
       Z.SDKWebView.OpenWebView(SDKHelper.GetChildrenPrivacyUrlPath(self.viewData.PlatformType), false)
+    elseif linkName and linkName == "third_info_share" then
+      Z.SDKWebView.OpenWebView(SDKHelper.GetThirdInfoShareUrlPath(self.viewData.PlatformType), false)
     end
   end)
   self.uiBinder.lab_info.text = Lang("AgreementContent")

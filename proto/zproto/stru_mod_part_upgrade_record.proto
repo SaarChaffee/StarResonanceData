@@ -7,6 +7,4 @@ import "stru_dirty_mask.proto";
 message ModPartUpgradeRecord {
     int32 partId = 1;
     bool isSuccess = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

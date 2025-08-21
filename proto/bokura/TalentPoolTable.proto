@@ -20,8 +20,6 @@ message TalentPoolTableBase {
     int_array FantasySolutionList = 1523;
     int32 StrategyPage = 158;
 }
-
 message TalentPoolTableMgr {
-    map<int32, .bokura.TalentPoolTableBase> datas = 1;
+    repeated bokura.TalentPoolTableMgr.DatasEntry datas = 1;
 }
-

@@ -8,7 +8,11 @@ local openInsight = function(cancelToken)
   if Z.Global.ParkourInsightOriginEnergyLimit then
     insightEnergyLimit = Z.Global.ParkourInsightOriginEnergyLimit
   end
-  local isEnergyEnough = insightEnergyLimit < Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EOriginEnergy).Value
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
+  local isEnergyEnough = insightEnergyLimit < Z.EntityMgr.PlayerEnt:GetLuaOriginEnergy()
   if nowTime < lastOpenInsightTime + cdTime or not isEnergyEnough then
     Z.TipsVM.ShowTipsLang(700001)
   else

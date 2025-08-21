@@ -73,7 +73,7 @@ function BuffVM:RemoveBanFuncsByBuffId(buffId, funcIds)
   buffData:RemoveBanFuncsByBuffId(buffId, funcIds)
 end
 
-local sortFunc = function(left, right)
+local sortPriorityFunc = function(left, right)
   if left.BuffPriority == right.BuffPriority then
     return left.CreateTime < right.CreateTime
   else
@@ -81,10 +81,22 @@ local sortFunc = function(left, right)
   end
 end
 
+function BuffVM.SortCreateTimeFunc(left, right)
+  if left.CreateTime == right.CreateTime then
+    return left.BuffPriority > right.BuffPriority
+  else
+    return left.CreateTime < right.CreateTime
+  end
+end
+
 function BuffVM.initBuffData(buffConfig, buff)
   local buffTime = 0
   if buffConfig and buffConfig.DestroyParam[1] then
     buffTime = buffConfig.DestroyParam[1][2] or 0
+  end
+  local durationTime = Z.NumTools.GetPreciseDecimal(buff.Duration / 1000, 1)
+  if buffConfig and buffConfig.TimeRefreshType == 1 then
+    durationTime = 0
   end
   local buffData = {
     Layer = buff.Layer,
@@ -96,7 +108,7 @@ function BuffVM.initBuffData(buffConfig, buff)
     BuffType = buffConfig.BuffType,
     Desc = buffConfig.Desc,
     CreateTime = Z.NumTools.GetPreciseDecimal(buff.CreateTime / 1000, 1),
-    DurationTime = Z.NumTools.GetPreciseDecimal(buff.Duration / 1000, 1),
+    DurationTime = durationTime,
     BuffTime = buffTime
   }
   return buffData
@@ -111,24 +123,41 @@ function BuffVM.GetEntityBuffList(entity, showBuffCount, showPriority)
     return
   end
   local showBuffList = {}
-  local buffCount = 0
-  local deBuffCount = 0
   for i = 0, buffDataList.count - 1 do
     local buff = buffDataList[i]
     if showPriority < buff.Priority then
       local buffConfig = Z.TableMgr.GetTable("BuffTableMgr").GetRow(buffDataList[i].BuffBaseId)
       local buffData = BuffVM.initBuffData(buffConfig, buffDataList[i])
-      if buffData.BuffType == E.EBuffType.Debuff then
-        if showBuffCount > deBuffCount then
-          deBuffCount = deBuffCount + 1
-          table.insert(showBuffList, deBuffCount, buffData)
-        end
-      elseif showBuffCount > buffCount then
-        buffCount = buffCount + 1
-        table.insert(showBuffList, deBuffCount + buffCount, buffData)
+      showBuffList[#showBuffList + 1] = buffData
+      if showBuffCount <= #showBuffList then
+        break
       end
     end
   end
+  table.sort(showBuffList, sortPriorityFunc)
+  return showBuffList
+end
+
+function BuffVM.GetEntityBuffListByType(buffType, entity, sortFunc, showPriority)
+  if entity == nil then
+    return
+  end
+  local buffDataList = entity:GetLuaAttr(Z.LocalAttr.ENowBuffList).Value
+  if not buffDataList then
+    return
+  end
+  local showBuffList = {}
+  for i = 0, buffDataList.count - 1 do
+    local buff = buffDataList[i]
+    if buff.Priority == showPriority then
+      local buffConfig = Z.TableMgr.GetTable("BuffTableMgr").GetRow(buffDataList[i].BuffBaseId)
+      if buffConfig and buffConfig.BuffType == buffType then
+        local buffData = BuffVM.initBuffData(buffConfig, buffDataList[i])
+        showBuffList[#showBuffList + 1] = buffData
+      end
+    end
+  end
+  table.sort(showBuffList, sortFunc)
   return showBuffList
 end
 

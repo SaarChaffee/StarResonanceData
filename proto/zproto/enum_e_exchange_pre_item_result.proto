@@ -7,4 +7,3 @@ enum EExchangePreItemResult {
     ExchangePreItemResultSuccess = 1;
     ExchangePreItemResultFail = 2;
 }
-

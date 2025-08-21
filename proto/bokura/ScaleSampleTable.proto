@@ -10,8 +10,6 @@ message ScaleSampleTableBase {
     number_table SampleInfo = 1926;
     int32 HasChangeFlag = 1764;
 }
-
 message ScaleSampleTableMgr {
-    map<int64, .bokura.ScaleSampleTableBase> datas = 1;
+    repeated bokura.ScaleSampleTableMgr.DatasEntry datas = 1;
 }
-

@@ -12,8 +12,6 @@ message PhotoTargetTableBase {
     int32 SceneId = 1506;
     mlstring Des = 266;
 }
-
 message PhotoTargetTableMgr {
-    map<int32, .bokura.PhotoTargetTableBase> datas = 1;
+    repeated bokura.PhotoTargetTableMgr.DatasEntry datas = 1;
 }
-

@@ -8,4 +8,3 @@ message GashaRecordItemInfo {
     int64 time = 3;
     int32 quality = 4;
 }
-

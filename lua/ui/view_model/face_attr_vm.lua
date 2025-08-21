@@ -13,8 +13,8 @@ local updateAttrWithConfigTableRes = function(attrType, valueList)
     local row = Z.TableMgr.GetTable("FaceTableMgr").GetRow(id)
     if row then
       if attrType == Z.ModelAttr.EModelHeadTexEye_d then
-        Z.EventMgr:Dispatch(Z.ConstValue.FaceAttrChange, Z.ModelAttr.EModelHeadTexEye_d, row.Resource .. "_d")
-        Z.EventMgr:Dispatch(Z.ConstValue.FaceAttrChange, Z.ModelAttr.EModelHeadTexEye_id, row.Resource .. "_id")
+        Z.EventMgr:Dispatch(Z.ConstValue.FaceAttrChange, Z.ModelAttr.EModelHeadTexEye_d, row.Resource)
+        Z.EventMgr:Dispatch(Z.ConstValue.FaceAttrChange, Z.ModelAttr.EModelHeadTexEye_id, row.Resource)
       else
         Z.EventMgr:Dispatch(Z.ConstValue.FaceAttrChange, attrType, row.Resource)
       end

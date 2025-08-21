@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionBossData {
+    int32 killCnt = 1;
+}

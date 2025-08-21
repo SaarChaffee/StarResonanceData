@@ -15,8 +15,6 @@ message PayFunctionTableBase {
     int_table Label = 432;
     int32 IsSale = 1626;
 }
-
 message PayFunctionTableMgr {
-    map<int32, .bokura.PayFunctionTableBase> datas = 1;
+    repeated bokura.PayFunctionTableMgr.DatasEntry datas = 1;
 }
-

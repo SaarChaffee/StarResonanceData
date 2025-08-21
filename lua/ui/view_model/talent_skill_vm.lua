@@ -10,6 +10,8 @@ function TalentSkillVM.OpenTalentSkillMainWindow(professionId, skillId)
   local funcVm = Z.VMMgr.GetVM("gotofunc")
   if funcVm.CheckFuncCanUse(E.FunctionID.Talent) then
     Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Explore_04, "talent_skill_window", function()
+      Z.UIMgr:PreloadAsset(TalentSkillDefine.TalentWindowCharacerLeftRimg .. professionId, E.EPreloadTypeEnum.ETexture)
+      Z.UIMgr:PreloadAsset(TalentSkillDefine.TalentWindowCharacerRightRimg .. professionId, E.EPreloadTypeEnum.ETexture)
       Z.UIMgr:OpenView("talent_skill_window", {professionId = professionId, skillId = skillId})
     end)
   end
@@ -124,10 +126,10 @@ function TalentSkillVM.CheckSkillIsActive(professionId, skillId)
 end
 
 function TalentSkillVM.CheckCurTalentBDType()
-  local professionId = Z.VMMgr.GetVM("profession").GetCurProfession()
+  local professionId = Z.VMMgr.GetVM("profession").GetContainerProfession()
   local talentStageTable = Z.TableMgr.GetTable("TalentStageTableMgr").GetDatas()
   for _, value in pairs(talentStageTable) do
-    if value.WeaponType == professionId and value.TalentStage == 2 and TalentSkillVM.CheckTalentIsActive(professionId, value.RootId) then
+    if value.WeaponType == professionId and value.TalentStage == TalentSkillDefine.TalentTreeMaxStage - 1 and TalentSkillVM.CheckTalentIsActive(professionId, value.RootId) then
       return value.BdType
     end
   end
@@ -205,6 +207,13 @@ function TalentSkillVM.CheckWeaponRed()
   if not funcVm.FuncIsOn(E.FunctionID.Talent, true) then
     return false
   end
+  local funcVm = Z.VMMgr.GetVM("gotofunc")
+  if not funcVm.FuncIsOn(E.FunctionID.ProfessionLv, true) then
+    return false
+  end
+  if not TalentSkillVM.IsCanShowRedDot() then
+    return false
+  end
   local weaponVm = Z.VMMgr.GetVM("weapon")
   local professionId = weaponVm.GetCurWeapon()
   return weaponVm.CheckWeaponUp(professionId)
@@ -223,6 +232,13 @@ end
 
 function TalentSkillVM.CheckRed()
   return TalentSkillVM.CheckWeaponRed()
+end
+
+function TalentSkillVM.IsCanShowRedDot()
+  local weaponVm = Z.VMMgr.GetVM("weapon")
+  local professionId = weaponVm.GetCurWeapon()
+  local weaponInfo = weaponVm.GetWeaponInfo(professionId)
+  return weaponInfo.level < Z.Global.TalentRedDotLevelLimit
 end
 
 function TalentSkillVM.CheckTalentNodeIsSpecialNode(professionId, nodeId)
@@ -258,15 +274,32 @@ function TalentSkillVM.CheckOtherSchoolIsChoose(professionId, nodeId)
   return 1 < count and isRoot and otherIsActive
 end
 
-function TalentSkillVM.GetProfessionTalentStageBdType(professionId, stage)
+function TalentSkillVM.GetProfessionTalentStageBdType(professionId, stage, talentTreeId)
   local talentSkillData = Z.DataMgr.Get("talent_skill_data")
   local configs = talentSkillData:GetTalentStageConfigs(professionId, stage)
+  local isRoot = false
   for _, v in pairs(configs) do
+    if v.RootId == talentTreeId then
+      isRoot = true
+    end
     if TalentSkillVM.CheckTalentIsActive(professionId, v.RootId) then
-      return v.BdType
+      return v.BdType, isRoot
     end
   end
-  return 0
+  return -1, isRoot
+end
+
+function TalentSkillVM.GetCurProfessionTalentStageName()
+  local talentId = TalentSkillVM.GetCurProfessionTalentStage()
+  local talenStageRow = Z.TableMgr.GetTable("TalentStageTableMgr").GetRow(talentId)
+  if talenStageRow then
+    if #talenStageRow.Name > 1 then
+      return talenStageRow.Name[2]
+    else
+      return talenStageRow.Name[1]
+    end
+  end
+  return ""
 end
 
 function TalentSkillVM.GetCurProfessionTalentStage()
@@ -293,18 +326,33 @@ function TalentSkillVM.GetRecommendFightValue()
   local fightValue = 0
   local weaponVm = Z.VMMgr.GetVM("weapon")
   local professionId = weaponVm.GetCurWeapon()
-  local talentList = Z.ContainerMgr.CharSerialize.professionList.talentList[professionId]
-  if talentList then
-    local talentTreeMgr = Z.TableMgr.GetTable("TalentTreeTableMgr")
-    local talentMgr = Z.TableMgr.GetTable("TalentTableMgr")
-    for _, value in ipairs(talentList.talentNodeIds) do
-      local talentTreeConfig = talentTreeMgr.GetRow(value)
-      if talentTreeConfig then
-        local talentId = talentTreeConfig.TalentId
-        local talentConfig = talentMgr.GetRow(talentId)
-        if talentConfig then
-          fightValue = fightValue + talentConfig.FightValue
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.Talent, true)
+  if isOn then
+    local talentList = Z.ContainerMgr.CharSerialize.professionList.talentList[professionId]
+    if talentList then
+      local talentTreeMgr = Z.TableMgr.GetTable("TalentTreeTableMgr")
+      local talentMgr = Z.TableMgr.GetTable("TalentTableMgr")
+      for _, value in ipairs(talentList.talentNodeIds) do
+        local talentTreeConfig = talentTreeMgr.GetRow(value)
+        if talentTreeConfig then
+          local talentId = talentTreeConfig.TalentId
+          local talentConfig = talentMgr.GetRow(talentId)
+          if talentConfig then
+            fightValue = fightValue + talentConfig.FightValue
+          end
         end
+      end
+    end
+  end
+  isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.ProfessionLv, true)
+  if isOn then
+    local weaponInfo = weaponVm.GetWeaponInfo(professionId)
+    if weaponInfo then
+      local weaponData = Z.DataMgr.Get("weapon_data")
+      local TableRow = weaponData:GetWeaponAttrTableRow(professionId, weaponInfo.level)
+      if TableRow then
+        fightValue = fightValue + TableRow.FightValue
       end
     end
   end
@@ -325,9 +373,6 @@ function TalentSkillVM.UnlockWeaponSkill(professionId, skillId, cancelToken)
   request.professionId = professionId
   request.skillId = skillId
   local reply = worldProxy.ProfessionSkillActive(request, cancelToken)
-  if reply == 0 then
-    Z.EventMgr:Dispatch(Z.ConstValue.TalentSkill.UnLockSkill, skillId)
-  end
   return TalentSkillVM.CheckReply(reply)
 end
 

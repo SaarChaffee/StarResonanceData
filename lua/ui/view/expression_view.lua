@@ -2,23 +2,28 @@ local super = require("ui.ui_view_base")
 local ExpressionView = class("ExpressionView", super)
 
 function ExpressionView:ctor()
-  self.panel = nil
   self.uiBinder = nil
   super.ctor(self, "expression")
-  self.rightSubView_ = require("ui/view/camerasys_right_sub_view").new(self)
+  self.rightActionSubView_ = require("ui/view/camerasys_right_sub_view").new(self)
   self.expressionVm_ = Z.VMMgr.GetVM("expression")
   self.expressionData_ = Z.DataMgr.Get("expression_data")
   self.mainUiVm_ = Z.VMMgr.GetVM("mainui")
+  
+  function self.onInputAction_(inputActionEventData)
+    self:OnInputBack()
+  end
 end
 
 function ExpressionView:OnActive()
+  Z.AudioMgr:Play("sys_main_emo_in")
   self:startAnimatedShow()
   Z.LuaBridge.BakeMesh(false)
   self.mainUiVm_.HideMainViewArea(E.MainViewHideStyle.Right, self.viewConfigKey, true)
-  local rightViewData = {
-    OpenSourceType = E.ExpressionOpenSourceType.Expression
-  }
-  self.rightSubView_:Active(rightViewData, self.uiBinder.expression_right_bg)
+  if self.viewData and self.viewData.firstOpenIndex then
+    self:openCamerasysRightSub(self.viewData.firstOpenIndex)
+  else
+    self:openCamerasysRightSub()
+  end
   Z.EventMgr:Dispatch(Z.ConstValue.HalfScreenView.HalfScreenIsOpen, true, self.viewConfigKey)
   self:bindEvent()
   self:setTipsPosNodeVisible(false)
@@ -30,6 +35,7 @@ function ExpressionView:OnActive()
     end
     self:setTipsPosNodeVisible(false)
   end, nil, nil)
+  self:registerInputActions()
 end
 
 function ExpressionView:OnDeActive()
@@ -37,7 +43,8 @@ function ExpressionView:OnDeActive()
   Z.EventMgr:RemoveObjAll(self)
   Z.EventMgr:Dispatch(Z.ConstValue.HalfScreenView.HalfScreenIsOpen, false, self.viewConfigKey)
   self.mainUiVm_.HideMainViewArea(E.MainViewHideStyle.Right, self.viewConfigKey, false)
-  self.rightSubView_:DeActive()
+  self.rightActionSubView_:DeActive()
+  self:unRegisterInputActions()
 end
 
 function ExpressionView:startAnimatedShow()
@@ -47,6 +54,15 @@ end
 function ExpressionView:startAnimatedHide()
   local coro = Z.CoroUtil.async_to_sync(self.uiBinder.anim.CoroPlay)
   coro(self.uiBinder.anim, Panda.ZUi.DOTweenAnimType.Close)
+end
+
+function ExpressionView:openCamerasysRightSub(firstOpenIndex)
+  local rightViewData = {
+    OpenSourceType = E.ExpressionOpenSourceType.Expression,
+    ShowWheelSetting = true,
+    firstOpenIndex = firstOpenIndex
+  }
+  self.rightActionSubView_:Active(rightViewData, self.uiBinder.expression_right_bg)
 end
 
 function ExpressionView:setTipsPosNodeVisible(isShow)
@@ -111,6 +127,14 @@ function ExpressionView:onShowAnimatedShow(isShow)
   if isShow then
     self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_2)
   end
+end
+
+function ExpressionView:registerInputActions()
+  Z.FuncInputActionComp:SetActionCallback(106, self.onInputAction_)
+end
+
+function ExpressionView:unRegisterInputActions()
+  Z.FuncInputActionComp:SetActionCallback(106, nil)
 end
 
 return ExpressionView

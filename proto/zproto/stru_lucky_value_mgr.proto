@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_lucky_value_info.proto";
+import "stru_dirty_mask.proto";
+
+message LuckyValueMgr {
+    repeated zproto.LuckyValueMgr.LuckValueInfoEntry luckValueInfo = 1;
+    bool initValue = 2;
+}

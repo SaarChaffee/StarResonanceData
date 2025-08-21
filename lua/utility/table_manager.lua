@@ -73,6 +73,10 @@ local getLevelTableRow = function(tableType, sceneId, uid)
   if sceneId == Z.StageMgr.GetCurrentSceneId() then
     row = getTable(nameDict.tblName).GetRow(uid)
   else
+    local sceneVm = Z.VMMgr.GetVM("scene")
+    if not sceneVm.IsStaticScene(sceneId) then
+      return nil
+    end
     local id = sceneId * Z.ConstValue.GlobalLevelIdOffset + uid
     row = getTable(nameDict.globalTblName).GetRow(id)
   end

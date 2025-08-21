@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_boss_progress.proto";
+import "stru_dirty_mask.proto";
+
+message RaidRecord {
+    repeated zproto.RaidRecord.BossProgressEntry bossProgress = 2;
+}

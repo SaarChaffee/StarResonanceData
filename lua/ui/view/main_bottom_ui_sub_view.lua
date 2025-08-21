@@ -13,9 +13,9 @@ local QualityString = {
 
 function Main_bottom_ui_subView:ctor(parent)
   self.uiBinder = nil
-  local assetPath = Z.IsPCUI and "main/main_bottom_ui_pc_sub" or "main/main_bottom_ui_sub"
-  super.ctor(self, "main_bottom_ui_sub", assetPath, UI.ECacheLv.None)
+  super.ctor(self, "main_bottom_ui_sub", "main/main_bottom_ui_sub", UI.ECacheLv.None, true)
   self.mainUIVM_ = Z.VMMgr.GetVM("mainui")
+  self.rolelevelData_ = Z.DataMgr.Get("role_level_data")
 end
 
 function Main_bottom_ui_subView:OnActive()
@@ -59,6 +59,9 @@ function Main_bottom_ui_subView:unbindWatcher()
 end
 
 function Main_bottom_ui_subView:updateExpUI()
+  if Z.IsPCUI then
+    return
+  end
   local levelExp = self.mainUIVM_.GetPlayerExp()
   local curExp = Z.ContainerMgr.CharSerialize.roleLevel.curLevelExp or 0
   local curLevel = Z.ContainerMgr.CharSerialize.roleLevel.level or 0
@@ -69,6 +72,7 @@ function Main_bottom_ui_subView:updateExpUI()
   self.uiBinder.img_exp.fillAmount = ratio
   self.uiBinder.lab_lv.text = Lang("Level", {val = curLevel})
   self.uiBinder.lab_experience_num.text = Lang("season_achievement_progress", {val1 = curExp, val2 = levelExp})
+  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_max, curLevel == self.rolelevelData_.MaxPlayerLevel)
 end
 
 function Main_bottom_ui_subView:updateQualityUI()

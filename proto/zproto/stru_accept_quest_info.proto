@@ -6,4 +6,3 @@ message AcceptQuestInfo {
     int32 questId = 1;
     repeated int32 paramList = 2;
 }
-

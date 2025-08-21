@@ -27,7 +27,7 @@ local checkScreenWord = function(string, sceneType, cancelToken, successCallBack
   request.str = {string}
   request.sceneType = sceneType
   local ret = httpPlatformProxy.TextCheck(request, cancelToken)
-  if ret.errorCode == 0 then
+  if ret.errCode == 0 then
     if ret.checkDataResult.itemResults[1].errCode == 0 then
       Z.EventMgr:Dispatch(Z.ConstValue.ScreenWordPass)
       if successCallBack then
@@ -40,25 +40,25 @@ local checkScreenWord = function(string, sceneType, cancelToken, successCallBack
       end
     end
   else
-    Z.TipsVM.ShowTips(ret.errorCode)
+    Z.TipsVM.ShowTips(ret.errCode)
     if failCallBack then
-      failCallBack(ret.errorCode)
+      failCallBack(ret.errCode)
     end
   end
 end
-local notifyScreenWordResult = function(errcode)
-  if errcode == 0 then
+local notifyScreenWordResult = function(errCode)
+  if errCode == 0 then
     Z.EventMgr:Dispatch(Z.ConstValue.ScreenWordPass)
   else
-    Z.TipsVM.ShowTips(errcode)
+    Z.TipsVM.ShowTips(errCode)
   end
 end
-local checkScreenWordResult = function(errcode)
-  screenWordResult = errcode
+local checkScreenWordResult = function(errCode)
+  screenWordResult = errCode
   if needCheckGrpcResult then
     checkResult()
   else
-    notifyScreenWordResult(errcode)
+    notifyScreenWordResult(errCode)
   end
 end
 local checkGrpcResult = function()

@@ -5,4 +5,3 @@ package zproto;
 message BuffEffectLogicStopEffect {
     int32 effectId = 1;
 }
-

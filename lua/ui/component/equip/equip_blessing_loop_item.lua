@@ -18,6 +18,12 @@ function EquipBlessingLoopListItem:OnInit()
     uiBinder = self.uiBinder.com_item_long_76
   })
   self.parent.UIView:AddClick(self.uiBinder.cont_num_module_tpl_new.btn_add, function()
+    if self.maxUseCount_ == self.selectedCount_ then
+      Z.TipsVM.ShowTips(150031, {
+        val = self.maxUseCount_
+      })
+      return
+    end
     local count = self.selectedCount_ + 1
     self.parent:SetSelected(self.Index)
     if count > self.maxCount_ then
@@ -58,6 +64,7 @@ function EquipBlessingLoopListItem:OnInit()
       end
     end
   end)
+  Z.EventMgr:Add(Z.ConstValue.Equip.RefineRateChange, self.refineRateChange, self)
 end
 
 function EquipBlessingLoopListItem:checkRate(count)
@@ -76,11 +83,9 @@ function EquipBlessingLoopListItem:checkRate(count)
         self.selectedCount_ = count
         self:refreshNum()
         self.uiView_:StartCheck()
-        Z.DialogViewDataMgr:CloseDialogView()
       end, function()
         self.uiView_:StartCheck()
         self.uiBinder.cont_num_module_tpl_new.slider_temp.value = self.selectedCount_
-        Z.DialogViewDataMgr:CloseDialogView()
       end)
     end
   else
@@ -92,56 +97,91 @@ end
 function EquipBlessingLoopListItem:OnRefresh(data)
   self.data_ = data
   self:initUi()
+  if self.IsSelected then
+    self:SetCanSelect(false)
+  end
 end
 
 function EquipBlessingLoopListItem:initUi()
-  self.selectedCount_ = self.uiView_:GetSelectedCount(self.data_) or 0
-  local itemCount = self.itemsVm_.GetItemTotalCount(self.data_)
-  self.uiBinder.cont_num_module_tpl_new.Ref.UIComp:SetVisible(0 < itemCount)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_empty, itemCount == 0)
+  local selectedInfo = self.uiView_:GetSelectedInfo(self.data_)
+  self.selectedCount_ = selectedInfo and selectedInfo.num or 0
+  self.itemCount_ = self.itemsVm_.GetItemTotalCount(self.data_)
+  self.uiBinder.cont_num_module_tpl_new.Ref.UIComp:SetVisible(0 < self.itemCount_)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_empty, self.itemCount_ == 0)
   self.itemClass_:RefreshByData({
     uiBinder = self.uiBinder.com_item_long_76,
     configId = self.data_,
-    lab = itemCount
+    lab = self.itemCount_
   })
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.IsSelected)
-  self.selectedCount_ = self.uiView_:GetSelectedCount(self.data_) or 0
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, selectedInfo ~= nil)
+  if selectedInfo then
+  end
   local itemRow = Z.TableMgr.GetRow("ItemTableMgr", self.data_)
-  local blessingRow = Z.TableMgr.GetRow("EquipRefineBlessingTableMgr", self.data_)
   self.uiBinder.lab_name.text = itemRow.Name
-  self.rate_ = math.floor(blessingRow.EffectParameter / 100)
+  local blessingRow = Z.TableMgr.GetRow("EquipRefineBlessingTableMgr", self.data_)
+  self.maxUseCount_ = 0
+  self.rate_ = 0
+  if blessingRow then
+    self.maxUseCount_ = blessingRow.UseMaxNum
+    self.rate_ = math.floor(blessingRow.EffectParameter / 100)
+  end
   local expendCount = math.ceil((100 - self.equipRefineData_.BaseSuccessRate) / self.rate_)
-  self.maxCount_ = math.min(expendCount, itemCount)
+  self.maxCount_ = math.min(expendCount, self.itemCount_, self.maxUseCount_)
+  self.uiBinder.lab_num.text = self.selectedCount_ .. "/" .. self.maxUseCount_
   local rateStr = Z.RichTextHelper.ApplyColorTag(string.zconcat("+", self.rate_, "%"), "#cce992")
   self.uiBinder.lab_probability.text = Lang("EquipRefineBlessingProbabilityTips", {val = rateStr})
   self.uiBinder.cont_num_module_tpl_new.slider_temp.value = self.selectedCount_
-  self.uiBinder.lab_num.text = self.selectedCount_
   self.uiBinder.cont_num_module_tpl_new.slider_temp.minValue = 0
   self.uiBinder.cont_num_module_tpl_new.slider_temp.maxValue = self.maxCount_
 end
 
 function EquipBlessingLoopListItem:refreshNum()
-  self.uiBinder.lab_num.text = self.selectedCount_
+  self.uiBinder.lab_num.text = self.selectedCount_ .. "/" .. self.maxUseCount_
   if self.uiBinder.cont_num_module_tpl_new.slider_temp.value ~= self.selectedCount_ then
     self.uiBinder.cont_num_module_tpl_new.slider_temp.value = self.selectedCount_
   end
   self.uiView_:OnChangeNum(self.data_, self.selectedCount_, self.selectedCount_ * self.rate_)
+  if self.selectedCount_ == 0 then
+    self.parent:UnSelectIndex(self.Index)
+  end
 end
 
 function EquipBlessingLoopListItem:OnSelected(isSelected)
+  if table.zcount(self.equipRefineData_.CurSelBlessingData) == Z.Global.MaxEquipEnchantItemNum and not self.equipRefineData_.CurSelBlessingData[self.data_] then
+    Z.TipsVM.ShowTips(150030, {
+      val = Z.Global.MaxEquipEnchantItemNum
+    })
+    self.parent:UnSelectIndex(self.Index)
+    return
+  end
+  self:SetCanSelect(not isSelected)
   if isSelected then
     if self.maxCount_ == 0 then
       Z.TipsVM.ShowTips(150019)
       self.parent:UnSelectIndex(self.Index)
       return
     end
+    if self.selectedCount_ == 0 then
+      self.selectedCount_ = 1
+      self:refreshNum()
+    end
     self.uiView_:OnSelectedItem(self.data_, self.selectedCount_, self.selectedCount_ * self.rate_)
+  else
+    self.equipRefineData_.CurSelBlessingData[self.data_] = nil
+    Z.EventMgr:Dispatch(Z.ConstValue.Equip.EquipRefreshSelBlessingData)
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, isSelected)
 end
 
+function EquipBlessingLoopListItem:refineRateChange()
+  local expendCount = math.ceil((100 - self.equipRefineData_.CurrentSuccessRate) / self.rate_) + self.selectedCount_
+  self.maxCount_ = math.min(expendCount, self.itemCount_, self.maxUseCount_)
+  self.uiBinder.cont_num_module_tpl_new.slider_temp.maxValue = self.maxCount_
+end
+
 function EquipBlessingLoopListItem:OnUnInit()
   self.itemClass_:UnInit()
+  Z.EventMgr:Remove(Z.ConstValue.Equip.RefineRateChange, self.refineRateChange, self)
 end
 
 return EquipBlessingLoopListItem

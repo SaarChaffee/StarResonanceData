@@ -6,7 +6,7 @@ local closeRoleAttrDetailView = function()
 end
 local getAllShowAttr = function()
   local tableSkillVm = Z.VMMgr.GetVM("talent_skill")
-  local professionId = Z.VMMgr.GetVM("profession").GetCurProfession()
+  local professionId = Z.VMMgr.GetVM("profession").GetContainerProfession()
   local bdType = tableSkillVm.CheckCurTalentBDType()
   local professionRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
   local dynamicShowAttr = {}
@@ -40,7 +40,7 @@ local getAllShowAttr = function()
 end
 local getRoleMainAttr = function()
   local tableSkillVm = Z.VMMgr.GetVM("talent_skill")
-  local professionId = Z.VMMgr.GetVM("profession").GetCurProfession()
+  local professionId = Z.VMMgr.GetVM("profession").GetContainerProfession()
   local bdType = tableSkillVm.CheckCurTalentBDType()
   local professionRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
   local dynamicShowAttr = {}

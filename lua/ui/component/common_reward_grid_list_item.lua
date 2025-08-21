@@ -21,6 +21,9 @@ function CommonRewardLoopGridItem:OnRefresh(data)
   itemData.isShowReceive = data.received
   itemData.isSquareItem = true
   itemData.PrevDropType = data.PrevDropType
+  if self.parent.UIView.press then
+    itemData.tipsBindPressCheckComp = self.parent.UIView.press
+  end
   self.itemBinder_:RefreshByData(itemData)
 end
 

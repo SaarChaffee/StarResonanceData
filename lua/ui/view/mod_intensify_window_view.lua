@@ -18,6 +18,7 @@ function mod_intensify_window_view:ctor()
   self.itemsVM_ = Z.VMMgr.GetVM("items")
   self.itemSortFactoryVm_ = Z.VMMgr.GetVM("item_sort_factory")
   self.weaponVm_ = Z.VMMgr.GetVM("weapon")
+  self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
   self.itemClass_ = {}
   self.filterHelper_ = common_filter_helper.new(self)
 end
@@ -42,20 +43,17 @@ function mod_intensify_window_view:OnActive()
   end)
   self:AddClick(self.uiBinder.btn_filter, function()
     local viewData = {
-      filterRes = self.modData_.ModFilter,
-      filterFunc = function(filterRes)
-        self:onSelectFilter(filterRes)
-      end
+      filterRes = self.modData_.ModFilter
     }
     self.filterHelper_:ActiveFilterSub(viewData)
   end)
   self:AddClick(self.uiBinder.btn_recommend, function()
     local popViewData = {
       func = function(data)
-        self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect] = self.filterHelper_.filterSubView_.initFilterTypeData_3()
+        self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect] = self.filterHelper_.filterSubView_.initFilterTypeData_3()
         for _, value in pairs(data) do
-          self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect].value[value] = value
-          self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect].param[2][value] = value
+          self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect].value[value] = value
+          self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect].param[2][value] = value
         end
         local viewData = {
           filterRes = self.modData_.ModFilter,
@@ -84,22 +82,36 @@ function mod_intensify_window_view:OnActive()
       self:selectIntensityType(MOD_DEFINE.ModIntensifyType.Decompose)
     end
   end)
-  self.itemListView_ = loopListView_.new(self, self.uiBinder.loop_item, modEntryListTplItem, "mod_entry_list_tpl")
+  if Z.IsPCUI then
+    self.itemListView_ = loopListView_.new(self, self.uiBinder.loop_item, modEntryListTplItem, "mod_entry_list_tpl_pc")
+  else
+    self.itemListView_ = loopListView_.new(self, self.uiBinder.loop_item, modEntryListTplItem, "mod_entry_list_tpl")
+  end
   self.itemListView_:Init({})
-  self.itemsModDecomposeGridView_ = loopGridView_.new(self, self.uiBinder.loop_decompose_mod, modItemLongItem, "com_item_long_2")
+  if Z.IsPCUI then
+    self.itemsModDecomposeGridView_ = loopGridView_.new(self, self.uiBinder.loop_decompose_mod, modItemLongItem, "com_item_long_2_pc")
+  else
+    self.itemsModDecomposeGridView_ = loopGridView_.new(self, self.uiBinder.loop_decompose_mod, modItemLongItem, "com_item_long_2")
+  end
   self.itemsModDecomposeGridView_:Init({})
-  self.itemsDecomposeListView_ = loopListView_.new(self, self.uiBinder.loop_decompose_item, modItemLongItem, "com_item_square_8")
+  if Z.IsPCUI then
+    self.itemsDecomposeListView_ = loopListView_.new(self, self.uiBinder.loop_decompose_item, modItemLongItem, "com_item_square_8_pc")
+  else
+    self.itemsDecomposeListView_ = loopListView_.new(self, self.uiBinder.loop_decompose_item, modItemLongItem, "com_item_square_8")
+  end
   self.itemsDecomposeListView_:Init({})
   local filterTypes = {
-    common_filter_helper.FilterType.ModType,
-    common_filter_helper.FilterType.ModQuality,
-    common_filter_helper.FilterType.ModEffectSelect
+    E.CommonFilterType.ModType,
+    E.CommonFilterType.ModQuality,
+    E.CommonFilterType.ModEffectSelect
   }
-  self.filterHelper_:Init(Lang("ModFilterTitle"), filterTypes, self.uiBinder.node_filter, self.uiBinder.node_filter_s)
+  self.filterHelper_:Init(Lang("ModFilterTitle"), filterTypes, self.uiBinder.node_filter, self.uiBinder.node_filter_s, function(filterRes)
+    self:onSelectFilter(filterRes)
+  end)
   self.filterHelper_:ActiveEliminateSub(self.modData_.ModFilter)
   self.isUp_ = true
   self.isInIntensify_ = false
-  self.filterTgas_ = true
+  self.filterTags_ = true
   self.IntensifyEffectId = nil
   self.IntensifyEffects = {}
   Z.EventMgr:Add(Z.ConstValue.Mod.OnModIntensify, self.refreshModIntensify, self)
@@ -122,7 +134,7 @@ function mod_intensify_window_view:OnDeActive()
   self.itemClass_ = {}
   self.intensityType_ = nil
   self.filterHelper_:DeActive()
-  self.filterTgas_ = true
+  self.filterTags_ = true
   Z.CommonTipsVM.CloseTipsContent()
   if Z.UIMgr:IsActive("mod_item_popup") then
     Z.UIMgr:CloseView("mod_item_popup")
@@ -133,14 +145,34 @@ function mod_intensify_window_view:OnDeActive()
 end
 
 function mod_intensify_window_view:OnRefresh()
+  local intensifyIsOn = self.gotoFuncVM_.CheckFuncCanUse(E.FunctionID.ModIntensify, true)
+  local decomposeIsOn = self.gotoFuncVM_.CheckFuncCanUse(E.FunctionID.ModDecompose, true)
+  self.uiBinder.group_tab_item_1.Ref.UIComp:SetVisible(intensifyIsOn)
+  self.uiBinder.group_tab_item_2.Ref.UIComp:SetVisible(decomposeIsOn)
+  local intensifyType
   if self.viewData and self.viewData.intensifyType then
-    if self.viewData.intensifyType == MOD_DEFINE.ModIntensifyType.Intensify then
+    if MOD_DEFINE.ModIntensifyType.Intensify == self.viewData.intensifyType then
+      if intensifyIsOn then
+        intensifyType = MOD_DEFINE.ModIntensifyType.Intensify
+      else
+        intensifyType = MOD_DEFINE.ModIntensifyType.Decompose
+      end
+    elseif MOD_DEFINE.ModIntensifyType.Decompose == self.viewData.intensifyType then
+      if decomposeIsOn then
+        intensifyType = MOD_DEFINE.ModIntensifyType.Decompose
+      else
+        intensifyType = MOD_DEFINE.ModIntensifyType.Intensify
+      end
+    end
+  end
+  if intensifyType then
+    if intensifyType == MOD_DEFINE.ModIntensifyType.Intensify then
       if self.uiBinder.group_tab_item_1.tog_tab_select.isOn then
         self:selectIntensityType(MOD_DEFINE.ModIntensifyType.Intensify, self.viewData.uuid)
       else
         self.uiBinder.group_tab_item_1.tog_tab_select.isOn = true
       end
-    elseif self.viewData.intensifyType == MOD_DEFINE.ModIntensifyType.Decompose then
+    elseif intensifyType == MOD_DEFINE.ModIntensifyType.Decompose then
       if self.uiBinder.group_tab_item_2.tog_tab_select.isOn then
         self:selectIntensityType(MOD_DEFINE.ModIntensifyType.Decompose, self.viewData.uuid)
       else
@@ -172,7 +204,7 @@ function mod_intensify_window_view:refreshModDecompose()
 end
 
 function mod_intensify_window_view:refreshModLoops()
-  self.modItems_ = {}
+  local modConfigMgr = Z.TableMgr.GetTable("ModTableMgr")
   local sortType = E.EquipItemSortType.Quality
   local sortFunc = self.itemSortFactoryVm_.GetItemSortFunc(E.BackPackItemPackageType.Mod, {
     sortType = sortType,
@@ -187,16 +219,27 @@ function mod_intensify_window_view:refreshModLoops()
     self.modLoopItems_ = {}
     local awardIndex = 0
     for _, itemInfo in pairs(self.modItems_) do
-      awardIndex = awardIndex + 1
       local isSelect = false
-      if self.intensityType_ == MOD_DEFINE.ModIntensifyType.Decompose and self.selectUuids_[itemInfo.itemUuid] then
-        isSelect = true
+      local isShow = false
+      if self.intensityType_ == MOD_DEFINE.ModIntensifyType.Decompose then
+        if self.selectUuids_[itemInfo.itemUuid] then
+          isSelect = true
+        end
+        isShow = true
+      else
+        local modConfig = modConfigMgr.GetRow(itemInfo.configId)
+        if modConfig and modConfig.IsCanLink then
+          isShow = true
+        end
       end
-      self.modLoopItems_[awardIndex] = {
-        configId = itemInfo.configId,
-        uuid = itemInfo.itemUuid,
-        isSelected = isSelect
-      }
+      if isShow then
+        awardIndex = awardIndex + 1
+        self.modLoopItems_[awardIndex] = {
+          configId = itemInfo.configId,
+          uuid = itemInfo.itemUuid,
+          isSelected = isSelect
+        }
+      end
     end
     self.itemListView_:RefreshListView(self.modLoopItems_)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, false)
@@ -289,12 +332,6 @@ function mod_intensify_window_view:refreshIntensify(effectId)
                 logsIndex = logsIndex + 1
                 logs[logsIndex] = upgrade.isSuccess
               end
-            end
-          end
-          if logsIndex == 0 then
-            local tempModEffectConfig = self.modData_:GetEffectTableConfig(attr, 0)
-            if tempModEffectConfig and not tempModEffectConfig.IsNegative then
-              logs[1] = true
             end
           end
           if unit then
@@ -402,12 +439,12 @@ end
 
 function mod_intensify_window_view:onSelectFilter(filterRes)
   self.modData_.ModFilter = filterRes
-  self.filterTgas_ = true
+  self.filterTags_ = true
   self:refreshModListLoopByFilter()
 end
 
 function mod_intensify_window_view:refreshModListLoopByFilter()
-  if self.filterTgas_ then
+  if self.filterTags_ then
     local selectNeedReset = false
     if self.intensityType_ == MOD_DEFINE.ModIntensifyType.Intensify then
       selectNeedReset = true
@@ -420,24 +457,24 @@ function mod_intensify_window_view:refreshModListLoopByFilter()
       local byFiltering = true
       local tempFilterRes = {}
       local effectValueCount = 0
-      if self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect] and self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect].value then
-        effectValueCount = table.zcount(self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect].value)
+      if self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect] and self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect].value then
+        effectValueCount = table.zcount(self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect].value)
       end
       for type, data in pairs(self.modData_.ModFilter) do
         tempFilterRes[type] = true
-        if type == common_filter_helper.FilterType.ModType then
+        if type == E.CommonFilterType.ModType then
           tempFilterRes[type] = false
           if data.value[modConfig.ModType] then
             tempFilterRes[type] = true
           end
         end
-        if type == common_filter_helper.FilterType.ModQuality then
+        if type == E.CommonFilterType.ModQuality then
           tempFilterRes[type] = false
           if data.value[itemConfig.Quality] then
             tempFilterRes[type] = true
           end
         end
-        if type == common_filter_helper.FilterType.ModEffectSelect and 0 < effectValueCount then
+        if type == E.CommonFilterType.ModEffectSelect and 0 < effectValueCount then
           local itemInfo = self.itemsVM_.GetItemInfo(item.uuid, E.BackPackItemPackageType.Mod)
           tempFilterRes[type] = false
           local needCount = 1
@@ -518,7 +555,6 @@ function mod_intensify_window_view:confirmDecompose()
   end
   if highQualityMod then
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("ModDecomposeHighQualityCertain"), function()
-      Z.DialogViewDataMgr:CloseDialogView()
       hightQualityCertainFunc()
     end)
   else

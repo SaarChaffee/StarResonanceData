@@ -158,6 +158,9 @@ function Steer_tips_windowView:loadMouseTpl(steerId, mouseTab)
   if not (mousePath ~= "" and mousePath) or self.tipsBgTab_[steerId] == nil then
     return
   end
+  if Z.IsPCUI then
+    mousePath = mousePath .. "_pc"
+  end
   local contrastTbl = Z.TableMgr.GetTable("SetKeyboardContrastTableMgr")
   for key, value in pairs(mouseTab) do
     local row = contrastTbl.GetRow(value)
@@ -202,26 +205,18 @@ function Steer_tips_windowView:getMouseTabAndKeyTab(guideData)
     if keyId == 0 then
       return KeyboardTab, mouseTab, keyboardArray
     end
-    local keyList = self.settKeyVm_.GetKeyCodeListByKeyId(keyId)
+    local keyList = self.settKeyVm_.GetKeyCodeDescListByKeyId(keyId)
     if keyList == nil or table.zcount(keyList) == 0 then
       return KeyboardTab, mouseTab, keyboardArray
     end
     if 1 < #keyList then
       for _, keyCode in ipairs(keyList) do
-        if self:getIsMouse(keyCode) then
-          table.insert(mouseTab, tonumber(keyCode))
-        end
-        local key = self:getKeyCodeDesc(tonumber(keyCode))
-        keyboardArray[#keyboardArray + 1] = key
-        KeyboardTab["key" .. keyCode] = key
+        keyboardArray[#keyboardArray + 1] = keyCode
+        KeyboardTab["key" .. keyCode] = keyCode
       end
     else
-      if self:getIsMouse(keyList[1]) then
-        table.insert(mouseTab, tonumber(keyList[1]))
-      end
-      local key = self:getKeyCodeDesc(keyList[1])
-      keyboardArray[#keyboardArray + 1] = key
-      KeyboardTab["key" .. keyId] = key
+      keyboardArray[#keyboardArray + 1] = keyList[1]
+      KeyboardTab["key" .. keyId] = keyList[1]
     end
   end
   return KeyboardTab, mouseTab, keyboardArray
@@ -440,12 +435,13 @@ function Steer_tips_windowView:refreshGuide(guideInfoDatas)
               self:loadLab(guideData.Id, str)
             end
           end
-          if guideData.IsShowUIFrame then
+          local IsShowUIFrame = guideData.IsShowUIFrame and (not Z.IsPCUI or not guideData.OnlyKey)
+          if IsShowUIFrame then
             self:loadCircle(guideData)
           else
             isReturn = true
           end
-          if not guideData.IsShowUIFrame and self.tipsBgTab_[guideData.Id] and str ~= "" then
+          if not IsShowUIFrame and self.tipsBgTab_[guideData.Id] and str ~= "" then
             self:showSteer(guideData)
           end
           self:setEventTriggerState()

@@ -6,4 +6,3 @@ message HateInfo {
     int64 uuid = 1;
     uint32 hateVal = 2;
 }
-

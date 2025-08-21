@@ -13,7 +13,7 @@ function ret.MakeNormalFormat(value, notApplySymbol)
   end
   local str = ret.removeTrailingZeros(value)
   if 0 < value and not notApplySymbol then
-    return string.zconcat("+", str)
+    return Lang("PositiveNumber", {val = str})
   end
   return str
 end
@@ -26,9 +26,9 @@ function ret.MarkAndPercentFormat(value, notApplySymbol)
   local str
   str = ret.removeTrailingZeros(v)
   if 0 < v and not notApplySymbol then
-    return string.zconcat("+", str, "%")
+    return Lang("PositivePercent", {val = str})
   end
-  return string.zconcat(str, "%")
+  return Lang("Percent", {val = str})
 end
 
 function ret.UnMarkAndPercentFormat(value)
@@ -38,9 +38,9 @@ function ret.UnMarkAndPercentFormat(value)
   local v = value / 100
   local str = ret.removeTrailingZeros(v)
   if 0 < v then
-    return string.zconcat(str, "%")
+    return Lang("Percent", {val = str})
   end
-  return string.zconcat(str, "%")
+  return Lang("Percent", {val = str})
 end
 
 function ret.MarkAndSecFormat(value, notApplySymbol)
@@ -50,9 +50,9 @@ function ret.MarkAndSecFormat(value, notApplySymbol)
   local v = value / 1000
   local str = ret.removeTrailingZeros(v)
   if 0 < v and not notApplySymbol then
-    return string.zconcat("+", str, Lang("EquipSecondsText"))
+    return Lang("PositiveSeconds", {val = str})
   end
-  return string.zconcat(str, Lang("EquipSecondsText"))
+  return Lang("Seconds", {val = str})
 end
 
 function ret.UnMarkAndSecFormat(value)
@@ -62,9 +62,9 @@ function ret.UnMarkAndSecFormat(value)
   local v = value / 1000
   local str = ret.removeTrailingZeros(v)
   if 0 < v then
-    return string.zconcat(str, Lang("EquipSecondsText"))
+    return Lang("Seconds", {val = str})
   end
-  return string.zconcat(str, Lang("EquipSecondsText"))
+  return Lang("Seconds", {val = str})
 end
 
 function ret.removeTrailingZeros(num)
@@ -89,15 +89,76 @@ function ret.GetPreciseDecimal(nNum, n)
 end
 
 function ret.FormatNumberWithCommas(number)
-  if number < 1000 then
+  local isNegative = number < 0
+  local absNumber = math.abs(number)
+  if absNumber < 1000 then
     return number
   end
-  local str = tostring(number):reverse():gsub("(%d%d%d)", "%1,"):reverse()
+  local str = tostring(absNumber):reverse():gsub("(%d%d%d)", "%1,"):reverse()
   local char = string.sub(str, 1, 1)
   if char == "," then
-    return string.sub(str, 2)
+    str = string.sub(str, 2)
   end
-  return str
+  return string.zconcat(isNegative and "-" or "", str)
+end
+
+function ret.FormatNumberOverTenMillion(number)
+  local isNegative = number < 0
+  local absNumber = math.abs(number)
+  if absNumber < 10000000 then
+    return ret.FormatNumberWithCommas(number)
+  end
+  local intergerPart = math.floor(absNumber / 1000000)
+  local interStr = ret.FormatNumberWithCommas(intergerPart)
+  local number2 = math.floor(absNumber % 1000000 / 100000)
+  local number3 = math.floor(absNumber % 100000 / 10000)
+  if number3 ~= 0 then
+    return string.zconcat(isNegative and "-" or "", interStr, ".", number2, number3, "M")
+  elseif number2 ~= 0 then
+    return string.zconcat(isNegative and "-" or "", interStr, ".", number2, "M")
+  else
+    return string.zconcat(isNegative and "-" or "", interStr, "M")
+  end
+end
+
+function ret.FormatNumberOverTenThousand(number)
+  if number < 10000 then
+    return number
+  end
+  if 1000000 <= number then
+    local intergerPart = math.floor(number / 1000000)
+    local number2 = math.floor(number % 1000000 / 100000)
+    if number2 ~= 0 then
+      return string.zconcat(intergerPart, ".", number2, "M")
+    end
+    return string.zconcat(intergerPart, "M")
+  end
+  local thousand = math.floor(number / 1000)
+  local number2 = math.floor(number % 1000 / 10)
+  if number2 ~= 0 then
+    return string.zconcat(thousand, ".", number2, "K")
+  end
+  return string.zconcat(thousand, "k")
+end
+
+function ret.DpsFormatNumberOverTenThousand(number)
+  if number < 10000 then
+    return number
+  end
+  if 1000000 <= number then
+    local intergerPart = math.floor(number / 1000000)
+    local number2 = math.floor(number % 1000000 / 10000)
+    if number2 ~= 0 then
+      return string.zconcat(intergerPart, ".", number2, "M")
+    end
+    return string.zconcat(intergerPart, "M")
+  end
+  local thousand = math.floor(number / 1000)
+  local number2 = math.floor(number % 1000 / 10)
+  if number2 ~= 0 then
+    return string.zconcat(thousand, ".", number2, "K")
+  end
+  return string.zconcat(thousand, "k")
 end
 
 function ret.NumberToK(num)

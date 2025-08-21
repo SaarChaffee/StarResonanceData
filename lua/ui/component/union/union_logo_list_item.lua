@@ -17,7 +17,13 @@ function UnionLogoListItem:SetLargeImg(cfgId, selectedFunc)
   if config == nil then
     return
   end
-  self.uiBinder.img_icon:SetImage(config.ShowIconRoute)
+  if config.Type == E.UnionIconType.EMascot then
+    self.uiBinder.rimg_icon:SetImage(config.ShowIconRoute)
+  else
+    self.uiBinder.img_icon:SetImage(config.ShowIconRoute)
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon, config.Type ~= E.UnionIconType.EMascot)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_icon, config.Type == E.UnionIconType.EMascot)
 end
 
 function UnionLogoListItem:HideAll()

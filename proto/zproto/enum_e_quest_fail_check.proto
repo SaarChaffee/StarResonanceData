@@ -9,4 +9,3 @@ enum EQuestFailCheck {
     EQuestFailDeath = 3;
     EQuestTime = 4;
 }
-

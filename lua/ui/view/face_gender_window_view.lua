@@ -63,25 +63,9 @@ function Face_gender_windowView:onModelLoadFinish()
     local args = {}
     
     function args.EndCallback()
-      self:checkCacheFaceData()
     end
     
     Z.UIMgr:FadeOut(args)
-  end
-end
-
-function Face_gender_windowView:checkCacheFaceData()
-  local data = Z.DataMgr.Get("player_data")
-  if self.faceData_.CanUseCacheFaceData and self.faceData_.CacheFaceDataAccountName == data.AccountName then
-    Z.DialogViewDataMgr:OpenNormalDialog(Lang("faceGenderUseCacheFaceData"), function()
-      self:useCacheFaceData()
-      Z.DialogViewDataMgr:CloseDialogView()
-    end, function()
-      self.faceData_:ResetFaceData()
-      Z.DialogViewDataMgr:CloseDialogView()
-    end)
-  else
-    self.faceData_:ResetFaceData()
   end
 end
 

@@ -5,5 +5,5 @@ package zproto;
 message GetMailListRequest {
     int32 page = 2;
     int32 importance = 3;
+    bool isCollect = 4;
 }
-

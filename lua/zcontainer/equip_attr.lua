@@ -151,6 +151,53 @@ local mergeDataFuncs = {
     local last = container.__data__.perfectionLevel
     container.__data__.perfectionLevel = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("perfectionLevel", last)
+  end,
+  [14] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt32(buffer)
+      container.rareQualityAttr.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("rareQualityAttr", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.rareQualityAttr.__data__[dk]
+      container.rareQualityAttr.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("rareQualityAttr", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt32(buffer)
+      local last = container.rareQualityAttr.__data__[dk]
+      container.rareQualityAttr.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("rareQualityAttr", dk, last)
+    end
+  end,
+  [15] = function(container, buffer, watcherList)
+    local last = container.__data__.maxPerfectionValue
+    container.__data__.maxPerfectionValue = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("maxPerfectionValue", last)
+  end,
+  [17] = function(container, buffer, watcherList)
+    container.equipAttrSet:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("equipAttrSet", {})
+  end,
+  [18] = function(container, buffer, watcherList)
+    local last = container.__data__.breakThroughTime
+    container.__data__.breakThroughTime = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("breakThroughTime", last)
   end
 }
 local setForbidenMt = function(t)
@@ -204,6 +251,18 @@ local resetData = function(container, pbData)
   if not pbData.perfectionLevel then
     container.__data__.perfectionLevel = 0
   end
+  if not pbData.rareQualityAttr then
+    container.__data__.rareQualityAttr = {}
+  end
+  if not pbData.maxPerfectionValue then
+    container.__data__.maxPerfectionValue = 0
+  end
+  if not pbData.equipAttrSet then
+    container.__data__.equipAttrSet = {}
+  end
+  if not pbData.breakThroughTime then
+    container.__data__.breakThroughTime = 0
+  end
   setForbidenMt(container)
   container.baseAttrs.__data__ = pbData.baseAttrs
   setForbidenMt(container.baseAttrs)
@@ -217,6 +276,11 @@ local resetData = function(container, pbData)
   container.recastAttr.__data__ = pbData.recastAttr
   setForbidenMt(container.recastAttr)
   container.__data__.recastAttr = nil
+  container.rareQualityAttr.__data__ = pbData.rareQualityAttr
+  setForbidenMt(container.rareQualityAttr)
+  container.__data__.rareQualityAttr = nil
+  container.equipAttrSet:ResetData(pbData.equipAttrSet)
+  container.__data__.equipAttrSet = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -359,6 +423,50 @@ local getContainerElem = function(container)
     dataType = 0,
     data = container.perfectionLevel
   }
+  if container.rareQualityAttr ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.rareQualityAttr) do
+      data[key] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.rareQualityAttr = {
+      fieldId = 14,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.rareQualityAttr = {
+      fieldId = 14,
+      dataType = 2,
+      data = {}
+    }
+  end
+  ret.maxPerfectionValue = {
+    fieldId = 15,
+    dataType = 0,
+    data = container.maxPerfectionValue
+  }
+  if container.equipAttrSet == nil then
+    ret.equipAttrSet = {
+      fieldId = 17,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.equipAttrSet = {
+      fieldId = 17,
+      dataType = 1,
+      data = container.equipAttrSet:GetContainerElem()
+    }
+  end
+  ret.breakThroughTime = {
+    fieldId = 18,
+    dataType = 0,
+    data = container.breakThroughTime
+  }
   return ret
 end
 local new = function()
@@ -378,7 +486,11 @@ local new = function()
     },
     recastAttr = {
       __data__ = {}
-    }
+    },
+    rareQualityAttr = {
+      __data__ = {}
+    },
+    equipAttrSet = require("zcontainer.equip_attr_set").New()
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
@@ -386,6 +498,7 @@ local new = function()
   setForbidenMt(ret.basicAttr)
   setForbidenMt(ret.advanceAttr)
   setForbidenMt(ret.recastAttr)
+  setForbidenMt(ret.rareQualityAttr)
   return ret
 end
 return {New = new}

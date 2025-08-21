@@ -15,8 +15,6 @@ message InvestigationsTableBase {
     string ThemePic = 1303;
     int32 Guarantee = 1155;
 }
-
 message InvestigationsTableMgr {
-    map<int32, .bokura.InvestigationsTableBase> datas = 1;
+    repeated bokura.InvestigationsTableMgr.DatasEntry datas = 1;
 }
-

@@ -8,10 +8,7 @@ cJson.encode_sparse_array(true)
 local OnCallStub = function(call)
   xpcall(function()
     if call:GetMethodId() == 1 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.GrpcWarehouseNtf.NotifyWarehouseInvite", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(1406513963, 1, cJson.encode(pbMsg), pbData, true)
@@ -20,10 +17,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 2 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.GrpcWarehouseNtf.NotifyWarehouseGridChange", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(1406513963, 2, cJson.encode(pbMsg), pbData, true)
@@ -32,10 +26,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 3 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.GrpcWarehouseNtf.NotifyWarehousePassiveExist", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(1406513963, 3, cJson.encode(pbMsg), pbData, true)
@@ -44,10 +35,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 4 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.GrpcWarehouseNtf.NotifyWarehouseNewJoiner", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(1406513963, 4, cJson.encode(pbMsg), pbData, true)
@@ -56,10 +44,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 5 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.GrpcWarehouseNtf.NotifyWarehouseRefuseToJoin", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(1406513963, 5, cJson.encode(pbMsg), pbData, true)

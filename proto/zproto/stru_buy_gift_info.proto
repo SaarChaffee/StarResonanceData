@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_activity_reward_limit_times.proto";
+
+message BuyGiftInfo {
+    uint32 payProductId = 1;
+    repeated zproto.ActivityRewardLimitTimes limitTimes = 2;
+}

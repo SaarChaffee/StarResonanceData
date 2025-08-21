@@ -35,6 +35,11 @@ function Set_definition_subView:OnActive()
   self:setOther()
   self:initOutDisplayOptions()
   self:initResolutionOptions()
+  self:initSettingUIDict()
+  self:setVfx()
+  self:setToy()
+  self:setInjuryDigital()
+  self:refreshAllSettingVisible()
 end
 
 function Set_definition_subView:initResolutionOptions()
@@ -132,14 +137,11 @@ function Set_definition_subView:initOutDisplayOptions()
     Z.DialogViewDataMgr:OpenCountdownOKDialog(des, function()
       self.displayUtil_.ChangeGameMainWindow(index)
       self.uiBinder.cont_definition_setting.cont_resolution.cont_dropdown.dpd.dpd.value = self.resolutionManager_.IsFullScreen and 0 or 1
-      Z.DialogViewDataMgr:CloseDialogView()
       self.isShowDisplayDialog_ = false
     end, function()
       dpdNode.value = self.displayUtil_.GetCurWindowOnScreenIndex()
-      Z.DialogViewDataMgr:CloseDialogView()
       self.isShowDisplayDialog_ = false
     end, Z.Global.SetTipsCountdown, true)
-    dpdNode:ZHide()
   end)
   dpdNode:AddOnClickListener(function(index)
     self.uiBinder.cont_definition_setting.cont_outdisplay.cont_dropdown.dpd.img_arrow_up:SetRot(-180, 0, 0)
@@ -219,10 +221,10 @@ function Set_definition_subView:refreshRenderPrecision()
   self.reMobile_ = self.uiBinder.cont_definition_setting.cont_renderer_precision
   self.resolutionTogGroup_ = self.uiBinder.cont_definition_setting.cont_renderer_precision.node_list
   self.resolutionTogs_ = {}
-  local resolutionBeginIndex = EResolution.E540:ToInt()
-  local resolutionEndIndex = EResolution.E780:ToInt()
+  local resolutionBeginIndex = EResolution.E480:ToInt()
+  local resolutionEndIndex = EResolution.E800:ToInt()
   if QualityGradeSetting.CurrentPlatform == EQualityPlatform.Emulator then
-    resolutionBeginIndex = EResolution.E660:ToInt()
+    resolutionBeginIndex = EResolution.E640:ToInt()
     resolutionEndIndex = EResolution.E960:ToInt()
   end
   local count = 1
@@ -233,9 +235,9 @@ function Set_definition_subView:refreshRenderPrecision()
     tog.group = self.resolutionTogGroup_
   end
   if QualityGradeSetting.CurrentPlatform == EQualityPlatform.Emulator then
-    self:initTogsComp(self.resolutionTogGroup_, self.resolutionTogs_, "ResolutionHeight", EResolution.E660, EResolution.E960, EResolution)
+    self:initTogsComp(self.resolutionTogGroup_, self.resolutionTogs_, "ResolutionHeight", EResolution.E640, EResolution.E960, EResolution)
   else
-    self:initTogsComp(self.resolutionTogGroup_, self.resolutionTogs_, "ResolutionHeight", EResolution.E540, EResolution.E780, EResolution)
+    self:initTogsComp(self.resolutionTogGroup_, self.resolutionTogs_, "ResolutionHeight", EResolution.E480, EResolution.E800, EResolution)
   end
 end
 
@@ -313,9 +315,10 @@ function Set_definition_subView:refreshSRSubUI()
     togs[i] = tog
     tog.group = togGroup
   end
-  togs[1].isOn = QualityGradeSetting.RenderScale == ERenderScale.E50Percent
-  togs[2].isOn = QualityGradeSetting.RenderScale == ERenderScale.E75Percent
-  togs[3].isOn = QualityGradeSetting.RenderScale == ERenderScale.E100Percent
+  local curRenderScale = QualityGradeSetting.RenderScale
+  togs[1].isOn = curRenderScale == ERenderScale.E50Percent
+  togs[2].isOn = curRenderScale == ERenderScale.E75Percent
+  togs[3].isOn = curRenderScale == ERenderScale.E100Percent
   togs[1]:AddListener(function(isOn)
     if isOn then
       if QualityGradeSetting.RenderScale == ERenderScale.E50Percent then
@@ -346,10 +349,14 @@ function Set_definition_subView:refreshFrame()
   self.framePC_ = self.uiBinder.cont_definition_setting.cont_fps_pc
   self.framePCTogGroup_ = self.uiBinder.cont_definition_setting.cont_fps_pc.node_list
   self.framePCTogs_ = {}
+  local ignoreIdx = EFrameRate.E45:ToInt()
   for i = EFrameRate.E30:ToInt(), EFrameRate.E120:ToInt() do
-    local tog = self.uiBinder.cont_definition_setting.cont_fps_pc[string.zconcat("tog_option", i + 1)]
-    self.framePCTogs_[i] = tog
-    tog.group = self.framePCTogGroup_
+    if i ~= ignoreIdx then
+      local idx = i > ignoreIdx and i - 1 or i
+      local tog = self.uiBinder.cont_definition_setting.cont_fps_pc[string.zconcat("tog_option", idx + 1)]
+      self.framePCTogs_[idx] = tog
+      tog.group = self.framePCTogGroup_
+    end
   end
   self.frameMobile_ = self.uiBinder.cont_definition_setting.cont_fps
   self.frameTogGroup_ = self.uiBinder.cont_definition_setting.cont_fps.node_list
@@ -360,7 +367,7 @@ function Set_definition_subView:refreshFrame()
     tog.group = self.frameTogGroup_
   end
   if Z.IsPCUI then
-    self:initFrameTogsComp(self.framePCTogGroup_, self.framePCTogs_, "FrameRate", EFrameRate.E30, EFrameRate.E120, EFrameRate)
+    self:initFrameTogsComp(self.framePCTogGroup_, self.framePCTogs_, "FrameRate", EFrameRate.E30, EFrameRate.E120, EFrameRate.E45, EFrameRate)
   else
     self:initTogsComp(self.frameTogGroup_, self.frameTogs_, "FrameRate", EFrameRate.E30, EFrameRate.E60, EFrameRate)
   end
@@ -417,8 +424,17 @@ end
 function Set_definition_subView:setCurTog()
   local grade = QualityGradeSetting.QualityGrade
   grade = (grade:ToInt() < EQualityGrade.ELow:ToInt() or grade:ToInt() > EQualityGrade.ECustom:ToInt()) and EQualityGrade.EVeryHigh or grade
-  local tog = self.qualityTogs_[grade:ToInt()]
-  tog.isOn = true
+  if QualityGradeSetting.IsLowMemory then
+    local tog = self.qualityTogs_[EQualityGrade.EVeryHigh:ToInt()]
+    tog.gameObject:SetActive(false)
+  end
+  if QualityGradeSetting.IsLowMemory and grade == EQualityGrade.EVeryHigh then
+    local tog = self.qualityTogs_[grade:ToInt() - 1]
+    tog.isOn = true
+  else
+    local tog = self.qualityTogs_[grade:ToInt()]
+    tog.isOn = true
+  end
 end
 
 function Set_definition_subView:saveQualityCustom()
@@ -431,6 +447,16 @@ function Set_definition_subView:saveQualityCustom()
       EffectEffectGrade = QualityGradeSetting.EffectDetailGrade:ToInt()
     }
     self.settingVM_.Set(E.ClientSettingID.Grade, data)
+  end
+end
+
+function Set_definition_subView:refreshAllSettingVisible()
+  local settingVisibleData = Z.DataMgr.Get("setting_visible_data")
+  for k, v in pairs(self.setting2UIDict_) do
+    local show = settingVisibleData:CheckVisible(k)
+    if not show then
+      v.Ref.UIComp:SetVisible(show)
+    end
   end
 end
 
@@ -454,10 +480,14 @@ function Set_definition_subView:initComp()
     end
   end
   self:initTogsComp(self.shadowTogGroup_, self.shadowTogs_, "ShadowGrade", EShadowGrade.ENone, EShadowGrade.EHigh, EShadowGrade)
-  self:initTogsComp(self.postEffctTogGroup_, self.postEffctTogs_, "PostEffectGrade", EPostEffectGrade.ELow, EPostEffectGrade.EVeryHigh, EPostEffectGrade)
-  self:initTogsComp(self.sceneDetailTogGroup_, self.sceneDetailTogs_, "SceneDetailGrade", ESceneDetailGrade.ELow, ESceneDetailGrade.EVeryHigh, ESceneDetailGrade)
-  self:initTogsComp(self.charDetailTogGroup_, self.charDetailTogs_, "CharDetailGrade", ECharDetailGrade.ELow, ECharDetailGrade.EVeryHigh, ECharDetailGrade)
-  self:initTogsComp(self.effectDetailTogGroup_, self.effectDetailTogs_, "EffectDetailGrade", EEffectDetailGrade.ELow, EEffectDetailGrade.EVeryHigh, EEffectDetailGrade)
+  local maxPostEffectGrade = QualityGradeSetting.IsLowMemory and EPostEffectGrade.EHigh or EPostEffectGrade.EVeryHigh
+  self:initTogsComp(self.postEffctTogGroup_, self.postEffctTogs_, "PostEffectGrade", EPostEffectGrade.ELow, EPostEffectGrade.EVeryHigh, EPostEffectGrade, maxPostEffectGrade)
+  local maxSceneDetailGrade = QualityGradeSetting.IsLowMemory and ESceneDetailGrade.EHigh or ESceneDetailGrade.EVeryHigh
+  self:initTogsComp(self.sceneDetailTogGroup_, self.sceneDetailTogs_, "SceneDetailGrade", ESceneDetailGrade.ELow, ESceneDetailGrade.EVeryHigh, ESceneDetailGrade, maxSceneDetailGrade)
+  local maxCharDetailGrade = QualityGradeSetting.IsLowMemory and ECharDetailGrade.EHigh or ECharDetailGrade.EVeryHigh
+  self:initTogsComp(self.charDetailTogGroup_, self.charDetailTogs_, "CharDetailGrade", ECharDetailGrade.ELow, ECharDetailGrade.EVeryHigh, ECharDetailGrade, maxCharDetailGrade)
+  local maxEffectDetailGrade = QualityGradeSetting.IsLowMemory and EEffectDetailGrade.EHigh or EEffectDetailGrade.EVeryHigh
+  self:initTogsComp(self.effectDetailTogGroup_, self.effectDetailTogs_, "EffectDetailGrade", EEffectDetailGrade.ELow, EEffectDetailGrade.EVeryHigh, EEffectDetailGrade, maxEffectDetailGrade)
   self.uiBinder.cont_set_show.cont_anti_aliasing.Ref.UIComp:SetVisible(not Z.IsPCUI)
   if not Z.IsPCUI then
     self.aliasSwitchMobile_.IsOn = QualityGradeSetting.EnableAA
@@ -493,8 +523,13 @@ function Set_definition_subView:initComp()
   end)
   local max = Z.IsPCUI and Z.Global.SameScreenNumMaxPC or Z.Global.SameScreenNumMax
   local min = Z.IsPCUI and Z.Global.SameScreenNumMinPC or Z.Global.SameScreenNumMin
+  if QualityGradeSetting.IsLowMemory then
+    max = 5
+  end
   self.manNum_Slider_.maxValue = max
   self.manNum_Slider_.minValue = min
+  QualityGradeSetting.CharLimit = math.max(QualityGradeSetting.CharLimit, min)
+  QualityGradeSetting.CharLimit = math.min(QualityGradeSetting.CharLimit, max)
   self.manNum_Slider_.value = QualityGradeSetting.CharLimit
   self.manNum_Slider_:AddListener(function()
     local val = math.floor(self.manNum_Slider_.value + 0.5)
@@ -521,14 +556,15 @@ function Set_definition_subView:gradeTogCallFunc(tog, i)
     self:rebuildLayout()
     self.parentView_:RefreshSubView(E.SetFuncId.SettingFrame)
     Z.EventMgr:Dispatch(Z.ConstValue.UserSetting.ImageQualityChanged)
+    self.settingVM_.ImageQualityChanged()
+    self:setVfx()
+    self.settingVM_.SetSettingPopupViewShowed()
   end
   if i > self.recommenGrade_ and i ~= EQualityGrade.ECustom:ToInt() then
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("SetHighQualityGrade"), function()
       tog.isOn = true
-      Z.DialogViewDataMgr:CloseDialogView()
       func()
     end, function()
-      Z.DialogViewDataMgr:CloseDialogView()
       self:setCurTog()
     end)
   else
@@ -537,53 +573,64 @@ function Set_definition_subView:gradeTogCallFunc(tog, i)
   end
 end
 
-function Set_definition_subView:initTogsComp(group, togs, setEnumStr, beginIdx, endIdx, enumType)
+function Set_definition_subView:initTogsComp(group, togs, setEnumStr, beginIdx, endIdx, enumType, maxIndex)
   for i = beginIdx:ToInt(), endIdx:ToInt() do
     local tog = togs[i]
     tog:RemoveAllListeners()
   end
+  local maxIndexValue = maxIndex and maxIndex:ToInt() or nil
   for i = beginIdx:ToInt(), endIdx:ToInt() do
     local tog = togs[i]
-    if i == QualityGradeSetting[setEnumStr]:ToInt() then
-      tog.isOn = true
-    end
-    local temp = i
-    tog:AddListener(function()
-      if tog.isOn then
-        QualityGradeSetting[setEnumStr] = enumType.IntToEnum(temp)
+    if maxIndexValue and i > maxIndexValue then
+      tog.gameObject:SetActive(false)
+    else
+      tog.gameObject:SetActive(true)
+      if i == QualityGradeSetting[setEnumStr]:ToInt() then
+        tog.isOn = true
       end
-    end)
+      do
+        local temp = i
+        tog:AddListener(function()
+          if tog.isOn then
+            QualityGradeSetting[setEnumStr] = enumType.IntToEnum(temp)
+          end
+        end)
+      end
+    end
   end
 end
 
-function Set_definition_subView:initFrameTogsComp(group, togs, setEnumStr, beginIdx, endIdx, enumType)
+function Set_definition_subView:initFrameTogsComp(group, togs, setEnumStr, beginIdx, endIdx, ignoreIdx, enumType)
   for i = beginIdx:ToInt(), endIdx:ToInt() do
-    local tog = togs[i]
-    if i == QualityGradeSetting[setEnumStr]:ToInt() then
-      tog.isOn = true
-    end
-    local temp = i
-    tog:AddListener(function()
-      if tog.isOn then
-        if QualityGradeSetting[setEnumStr]:ToInt() == temp then
-          return
-        end
-        local confirm = function()
-          QualityGradeSetting[setEnumStr] = enumType.IntToEnum(temp)
-          self.uiBinder.cont_definition_setting.cont_synchronization.switch.IsOn = false
-        end
-        local onCancel = function()
-          for k, v in pairs(togs) do
-            v:SetIsOnWithoutCallBack(k == QualityGradeSetting[setEnumStr]:ToInt())
+    if i ~= ignoreIdx:ToInt() then
+      local idx = i > ignoreIdx:ToInt() and i - 1 or i
+      local tog = togs[idx]
+      if i == QualityGradeSetting[setEnumStr]:ToInt() then
+        tog.isOn = true
+      end
+      local temp = i
+      tog:AddListener(function()
+        if tog.isOn then
+          if QualityGradeSetting[setEnumStr]:ToInt() == temp then
+            return
+          end
+          local confirm = function()
+            QualityGradeSetting[setEnumStr] = enumType.IntToEnum(temp)
+            self.uiBinder.cont_definition_setting.cont_synchronization.switch.IsOn = false
+          end
+          local onCancel = function()
+            for k, v in pairs(togs) do
+              v:SetIsOnWithoutCallBack(k == QualityGradeSetting[setEnumStr]:ToInt())
+            end
+          end
+          if QualityGradeSetting.EnableVSync then
+            Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("SettingDefintionFrameConfirm"), confirm, onCancel, E.DlgPreferencesType.Never, E.DlgPreferencesKeyType.SettingDefinitionFrameConfirm)
+          else
+            confirm()
           end
         end
-        if QualityGradeSetting.EnableVSync then
-          Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("SettingDefintionFrameConfirm"), confirm, onCancel, E.DlgPreferencesType.Never, E.DlgPreferencesKeyType.SettingDefinitionFrameConfirm)
-        else
-          confirm()
-        end
-      end
-    end)
+      end)
+    end
   end
 end
 
@@ -618,19 +665,164 @@ function Set_definition_subView:refreshQualityView()
     EffectEffectGrade = QualityGradeSetting.EffectDetailGrade:ToInt()
   } or eData
   self:refreshComp(self.shadowTogGroup_, self.shadowTogs_, "ShadowGrade", EShadowGrade.ENone, EShadowGrade.EHigh, eData.ShadowGrade, EShadowGrade)
-  self:refreshComp(self.postEffctTogGroup_, self.postEffctTogs_, "PostEffectGrade", EPostEffectGrade.ELow, EPostEffectGrade.EVeryHigh, eData.PostEffectGrade, EPostEffectGrade)
-  self:refreshComp(self.sceneDetailTogGroup_, self.sceneDetailTogs_, "SceneDetailGrade", ESceneDetailGrade.ELow, ESceneDetailGrade.EVeryHigh, eData.SceneDetailGrade, ESceneDetailGrade)
-  self:refreshComp(self.charDetailTogGroup_, self.charDetailTogs_, "CharDetailGrade", ECharDetailGrade.ELow, ECharDetailGrade.EVeryHigh, eData.CharDetailGrade, ECharDetailGrade)
-  self:refreshComp(self.effectDetailTogGroup_, self.effectDetailTogs_, "EffectDetailGrade", EEffectDetailGrade.ELow, EEffectDetailGrade.EVeryHigh, eData.EffectEffectGrade, EEffectDetailGrade)
+  local maxPostEffectGrade = QualityGradeSetting.IsLowMemory and EPostEffectGrade.EHigh or EPostEffectGrade.EVeryHigh
+  self:refreshComp(self.postEffctTogGroup_, self.postEffctTogs_, "PostEffectGrade", EPostEffectGrade.ELow, EPostEffectGrade.EVeryHigh, eData.PostEffectGrade, EPostEffectGrade, maxPostEffectGrade)
+  local maxSceneDetailGrade = QualityGradeSetting.IsLowMemory and ESceneDetailGrade.EHigh or ESceneDetailGrade.EVeryHigh
+  self:refreshComp(self.sceneDetailTogGroup_, self.sceneDetailTogs_, "SceneDetailGrade", ESceneDetailGrade.ELow, ESceneDetailGrade.EVeryHigh, eData.SceneDetailGrade, ESceneDetailGrade, maxSceneDetailGrade)
+  local maxCharDetailGrade = QualityGradeSetting.IsLowMemory and ECharDetailGrade.EHigh or ECharDetailGrade.EVeryHigh
+  self:refreshComp(self.charDetailTogGroup_, self.charDetailTogs_, "CharDetailGrade", ECharDetailGrade.ELow, ECharDetailGrade.EVeryHigh, eData.CharDetailGrade, ECharDetailGrade, maxCharDetailGrade)
+  local maxEffectDetailGrade = QualityGradeSetting.IsLowMemory and EEffectDetailGrade.EHigh or EEffectDetailGrade.EVeryHigh
+  self:refreshComp(self.effectDetailTogGroup_, self.effectDetailTogs_, "EffectDetailGrade", EEffectDetailGrade.ELow, EEffectDetailGrade.EVeryHigh, eData.EffectEffectGrade, EEffectDetailGrade, maxEffectDetailGrade)
 end
 
-function Set_definition_subView:refreshComp(group, togs, setEnumStr, beginIdx, endIdx, showEnum, enumType)
+function Set_definition_subView:refreshComp(group, togs, setEnumStr, beginIdx, endIdx, showEnum, enumType, maxIndex)
   for i = beginIdx:ToInt(), endIdx:ToInt() do
     local tog = togs[i]
-    if i == showEnum then
-      tog.isOn = true
-      QualityGradeSetting[setEnumStr] = enumType.IntToEnum(i)
+    local maxIndexValue = maxIndex and maxIndex:ToInt() or nil
+    if maxIndexValue and i > maxIndexValue then
+      tog.gameObject:SetActive(false)
+    else
+      tog.gameObject:SetActive(true)
+      if i == showEnum then
+        tog.isOn = true
+        QualityGradeSetting[setEnumStr] = enumType.IntToEnum(i)
+      end
     end
+  end
+end
+
+function Set_definition_subView:initSettingUIDict()
+  self.setting2UIDict_ = {}
+  self.setting2UIDict_[E.SettingID.EffSelf] = self.uiBinder.cont_vfx_level.cont_self
+  self.setting2UIDict_[E.SettingID.EffEnemy] = self.uiBinder.cont_vfx_level.cont_enemy
+  self.setting2UIDict_[E.SettingID.EffTeammate] = self.uiBinder.cont_vfx_level.cont_team
+  self.setting2UIDict_[E.SettingID.EffOther] = self.uiBinder.cont_vfx_level.cont_other
+  self.setting2UIDict_[E.SettingID.EffectRest] = self.uiBinder.cont_vfx_level.cont_rest
+end
+
+function Set_definition_subView:setVfx()
+  self:setVfxInternal(self.uiBinder.cont_vfx_level.cont_self, E.SettingID.EffSelf)
+  self:setVfxInternal(self.uiBinder.cont_vfx_level.cont_enemy, E.SettingID.EffEnemy)
+  self:setVfxInternal(self.uiBinder.cont_vfx_level.cont_team, E.SettingID.EffTeammate)
+  self:setVfxInternal(self.uiBinder.cont_vfx_level.cont_other, E.SettingID.EffOther)
+  self:setVfxInternal(self.uiBinder.cont_vfx_level.cont_rest, E.SettingID.EffectRest)
+end
+
+function Set_definition_subView:setVfxInternal(container, settingId)
+  local group = container.node_list
+  local toggles = {
+    [E.SettingVFXLevel.Off] = container.tog_option1,
+    [E.SettingVFXLevel.Simple] = container.tog_option2,
+    [E.SettingVFXLevel.Delicacy] = container.tog_option3,
+    [E.SettingVFXLevel.Normal] = container.tog_option4
+  }
+  local level, useDefault = self.settingVM_.GetVFXLevelEnum(settingId)
+  if useDefault then
+    self:setVfxLevelByIdx(settingId, level)
+  end
+  for idx, tog in pairs(toggles) do
+    tog:SetIsOnWithoutCallBack(false)
+  end
+  for idx, tog in pairs(toggles) do
+    tog.group = group
+    tog:AddListener(function(isOn)
+      if isOn then
+        if idx == 1 then
+          Z.DialogViewDataMgr:OpenNormalDialog(Lang("CloseVfxConfirm"), function()
+            self:setVfxLevelByIdx(settingId, idx)
+          end, function()
+            tog:SetIsOnWithoutCallBack(false)
+            toggles[level]:SetIsOnWithoutCallBack(true)
+          end)
+        else
+          self:setVfxLevelByIdx(settingId, idx)
+        end
+      end
+    end)
+  end
+  for idx, tog in pairs(toggles) do
+    tog:SetIsOnWithoutCallBack(idx == level)
+  end
+end
+
+function Set_definition_subView:setVfxLevelByIdx(settingId, idx)
+  local level = self.settingVM_.ConvertEnumToVFXLevel(idx)
+  self.settingVM_.Set(settingId, level)
+  Z.LuaBridge.ImportEffectLimitGradeConf()
+end
+
+function Set_definition_subView:setToy()
+  local roleLevel = Z.ContainerMgr.CharSerialize.roleLevel.level
+  local container = self.uiBinder.cont_vfx_level.cont_toy
+  local showToySetting = roleLevel ~= nil and roleLevel >= (Z.Global.UlockToyMask or 15)
+  container.Ref.UIComp:SetVisible(showToySetting)
+  local group = container.node_list
+  local toggles = {
+    container.tog_option1,
+    container.tog_option2,
+    container.tog_option3
+  }
+  local toySetting = self.settingVM_.Get(E.SettingID.ToyVisible)
+  for idx, tog in pairs(toggles) do
+    tog:SetIsOnWithoutCallBack(false)
+  end
+  for idx, tog in pairs(toggles) do
+    tog.group = group
+    tog:AddListener(function(isOn)
+      if isOn then
+        self.settingVM_.Set(E.SettingID.ToyVisible, idx - 1)
+      end
+    end)
+  end
+  for idx, tog in pairs(toggles) do
+    tog:SetIsOnWithoutCallBack(idx == toySetting + 1)
+  end
+end
+
+function Set_definition_subView:setInjuryDigital()
+  local container = self.uiBinder.cont_injuryDigital
+  local group = container.node_list
+  local toggles = {
+    container.tog_option1,
+    container.tog_option2,
+    container.tog_option3
+  }
+  local isClose = self.settingVM_.Get(E.SettingID.HudNumberClose)
+  local isSimple = self.settingVM_.Get(E.SettingID.HudNumberSimple)
+  for idx, tog in pairs(toggles) do
+    tog:SetIsOnWithoutCallBack(false)
+  end
+  for idx, tog in pairs(toggles) do
+    tog.group = group
+  end
+  container.tog_option1:AddListener(function(isOn)
+    if isOn then
+      self.settingVM_.Set(E.SettingID.HudNumberClose, 1)
+      Z.LuaBridge.SetHudNumberClose(true)
+    end
+  end)
+  container.tog_option2:AddListener(function(isOn)
+    if isOn then
+      self.settingVM_.Set(E.SettingID.HudNumberClose, 0)
+      self.settingVM_.Set(E.SettingID.HudNumberSimple, 1)
+      Z.LuaBridge.SetHudNumberClose(false)
+      Z.LuaBridge.SetHudNumberSimple(true)
+    end
+  end)
+  container.tog_option3:AddListener(function(isOn)
+    if isOn then
+      self.settingVM_.Set(E.SettingID.HudNumberClose, 0)
+      self.settingVM_.Set(E.SettingID.HudNumberSimple, 0)
+      Z.LuaBridge.SetHudNumberClose(false)
+      Z.LuaBridge.SetHudNumberSimple(false)
+    end
+  end)
+  if isClose then
+    container.tog_option1:SetIsOnWithoutCallBack(true)
+  elseif isSimple then
+    container.tog_option2:SetIsOnWithoutCallBack(true)
+  else
+    container.tog_option3:SetIsOnWithoutCallBack(true)
   end
 end
 

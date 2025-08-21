@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message GashaWishSelectionRequest {
+    int32 poolId = 1;
+    int32 wishId = 2;
+}

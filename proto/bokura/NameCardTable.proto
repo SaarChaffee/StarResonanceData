@@ -12,8 +12,6 @@ message NameCardTableBase {
     string Image2 = 2016;
     int32 Unlock = 1666;
 }
-
 message NameCardTableMgr {
-    map<int32, .bokura.NameCardTableBase> datas = 1;
+    repeated bokura.NameCardTableMgr.DatasEntry datas = 1;
 }
-

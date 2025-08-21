@@ -9,4 +9,3 @@ message TeamActivityDungeonInfo {
     zproto.SceneInfo sceneInfo = 1;
     zproto.Item useItem = 2;
 }
-

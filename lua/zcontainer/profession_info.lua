@@ -99,6 +99,11 @@ local mergeDataFuncs = {
       container.slotSkillInfoMap.__data__[dk] = dv
       container.Watcher:MarkMapDirty("slotSkillInfoMap", dk, last)
     end
+  end,
+  [8] = function(container, buffer, watcherList)
+    local last = container.__data__.UseSkinId
+    container.__data__.UseSkinId = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("UseSkinId", last)
   end
 }
 local setForbidenMt = function(t)
@@ -145,6 +150,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.slotSkillInfoMap then
     container.__data__.slotSkillInfoMap = {}
+  end
+  if not pbData.UseSkinId then
+    container.__data__.UseSkinId = 0
   end
   setForbidenMt(container)
   container.skillInfoMap.__data__ = {}
@@ -281,6 +289,11 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  ret.UseSkinId = {
+    fieldId = 8,
+    dataType = 0,
+    data = container.UseSkinId
+  }
   return ret
 end
 local new = function()

@@ -14,4 +14,3 @@ enum EStageType {
     EGuideNormal = 8;
     EGuideTimeUnChanged = 9;
 }
-

@@ -6,4 +6,3 @@ message PassengerInfo {
     int32 seatNum = 1;
     int64 uuid = 2;
 }
-

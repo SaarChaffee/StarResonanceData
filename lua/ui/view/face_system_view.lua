@@ -1,6 +1,5 @@
 local super = require("ui.ui_view_base")
 local Face_systemView = class("Face_systemView", super)
-local digitTogPath = "ui/prefabs/face/face_digit_tog_item_tpl"
 local leftRightBodyPath = "ui/textures/face/face_boy_adorn_right"
 local leftRightGrilPath = "ui/textures/face/face_gril_adorn_left"
 local ESecondTab = {
@@ -27,7 +26,7 @@ local FirstTabDataDict = {
   [E.FaceFirstTab.HotPhoto] = {
     NodeName = "binder_tog_template",
     FieldName = "hotPhoto",
-    IsFocus = false,
+    IsFocus = true,
     DefaultSecondTab = nil,
     SecondTabGroupName = nil
   },
@@ -56,7 +55,7 @@ local FirstTabDataDict = {
     NodeName = "binder_tog_makeup",
     FieldName = nil,
     IsFocus = true,
-    DefaultSecondTab = ESecondTab.Feature1,
+    DefaultSecondTab = ESecondTab.Eyeshadow,
     SecondTabGroupName = "group_tab2_makeup"
   }
 }
@@ -114,7 +113,7 @@ local SecondTabDataDict = {
     FieldName = "featureTwo"
   }
 }
-local modelParam = {
+local modelPositionParam = {
   [1] = {
     [1] = {
       [1] = {
@@ -227,9 +226,6 @@ local ModelClipDataClass = Panda.ZGame.ModelClipData
 function Face_systemView:ctor()
   self.uiBinder = nil
   super.ctor(self, "face_system")
-  self.faceVM_ = Z.VMMgr.GetVM("face")
-  self.faceData_ = Z.DataMgr.Get("face_data")
-  self.actionVM_ = Z.VMMgr.GetVM("action")
   self:createSubView()
 end
 
@@ -264,9 +260,12 @@ function Face_systemView:SetFocus(isOnHead)
 end
 
 function Face_systemView:OnActive()
+  self.faceVM_ = Z.VMMgr.GetVM("face")
+  self.faceData_ = Z.DataMgr.Get("face_data")
+  self.actionVM_ = Z.VMMgr.GetVM("action")
+  self.cameraVM_ = Z.VMMgr.GetVM("camerasys")
   self:startAnimatedShow()
-  Z.UnrealSceneMgr:InitSceneCamera()
-  self.curRotation_ = 180
+  Z.UnrealSceneMgr:InitSceneCamera(true)
   Z.PlayerInputController.IsCheckZoomClickingUI = false
   Z.PlayerInputController:SetCameraStretchIgnoreCheckUI(true)
   Z.UnrealSceneMgr:SetUnrealSceneCameraZoomRange(0.25, 0.91)
@@ -284,6 +283,11 @@ function Face_systemView:OnActive()
   else
     Z.UnrealSceneMgr:SetUnrealCameraScreenXY(Vector2.New(0.4, 0.5))
   end
+  if self.viewData then
+    self.needCacheModel_ = self.viewData.needCacheModel
+  else
+    self.needCacheModel_ = false
+  end
   self.isRequestCreating_ = false
   self.firstTabDict_ = FirstTabDataDict
   self.secondTabDict_ = SecondTabDataDict
@@ -293,6 +297,7 @@ function Face_systemView:OnActive()
     self:OnInputBack()
   end)
   self.preloadModelCount_ = 0
+  self:refreshCurRotation()
   self:onScreenResolutionChange()
   self:initFaceData()
   self:initModel()
@@ -312,11 +317,12 @@ function Face_systemView:OnActive()
     self:onClickFinish()
   end)
   self:AddClick(self.uiBinder.btn_fashion, function()
-    self:refreshModelEmote()
+    self:refreshModelEmote(0)
     self:showModel(self.playerModel_)
     self:hideModel(self.playerModel1_)
     self:hideModel(self.playerModel2_)
     self:hideModel(self.playerModel3_)
+    self.needCacheModel_ = true
     local vm = Z.VMMgr.GetVM("fashion")
     vm.OpenFashionFaceView()
   end)
@@ -333,6 +339,36 @@ function Face_systemView:OnActive()
   self.uiBinder.togs_tab2.AllowSwitchOff = true
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_tab2_face, self.curFirstTab_ and self.curFirstTab_ == E.FaceFirstTab.Face)
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_tab2_makeup, self.curFirstTab_ and self.curFirstTab_ == E.FaceFirstTab.Makeup)
+  self:initTabFunction()
+  self:initBg()
+  self.uiBinder.rayimg_unrealscene_drag.onDrag:AddListener(function(go, eventData)
+    if Z.TouchManager.TouchCount > 1 then
+      return
+    end
+    self:onModelDrag(eventData)
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_save_file, function()
+    self:onClickSaveFaceDataFile()
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_load_file, function()
+    self:onClickLoadFaceDataFile()
+  end)
+  self:checkCloudGameBtnIsShow()
+  self:BindEvents()
+end
+
+function Face_systemView:checkCloudGameBtnIsShow()
+  self:SetUIVisible(self.uiBinder.btn_save_file, not Z.IsPreFaceMode)
+  self:SetUIVisible(self.uiBinder.btn_load_file, true)
+  self.uiBinder.lab_content.text = Z.IsPreFaceMode and Lang("Pass") or Lang("ConfirmImage")
+end
+
+function Face_systemView:OnRefresh()
+  local attrVM = Z.VMMgr.GetVM("face_attr")
+  attrVM.UpdateAllFaceAttr()
+end
+
+function Face_systemView:initTabFunction()
   for firstTab, firstTabData in pairs(FirstTabDataDict) do
     local togNode = self.uiBinder[firstTabData.NodeName]
     togNode.tog_tab_select:RemoveAllListeners()
@@ -356,19 +392,33 @@ function Face_systemView:OnActive()
           self:startTab4PlaySelectAnim()
         end
         self:startPlaySelectAnim()
-        self.uiBinder.tog_focus.isOn = firstTabData.IsFocus
+        if firstTabData.IsFocus and self.isShowOneModel_ then
+          self.isShowOneModel_ = false
+          self.isFocus_ = true
+          self.isThreeModel_ = false
+          self:changeFocus(self.isFocus_)
+          self.uiBinder.tog_focus:SetIsOnWithoutCallBack(false)
+        elseif self.isFocus_ ~= firstTabData.IsFocus then
+          self.isFocus_ = firstTabData.IsFocus
+          self.isThreeModel_ = false
+          self:changeFocus(self.isFocus_)
+          self.uiBinder.tog_focus:SetIsOnWithoutCallBack(false)
+        end
         self.uiBinder.togs_tab2:SetAllTogglesOff()
         local fieldName = firstTabData.FieldName
         if fieldName then
           self.uiBinder.togs_tab2.AllowSwitchOff = true
           self.curSecondTab_ = nil
+          self.curSecondDefaultTab_ = nil
           self:switchShowView(self[string.zconcat(fieldName, "View_")])
         else
           self.uiBinder.togs_tab2.AllowSwitchOff = false
-          local defaultSelect = firstTabData.DefaultSecondTab
-          local secondTabCont = self.uiBinder[SecondTabDataDict[defaultSelect].NodeName]
+          self.curSecondDefaultTab_ = firstTabData.DefaultSecondTab
+          local secondTabCont = self.uiBinder[SecondTabDataDict[self.curSecondDefaultTab_].NodeName]
           secondTabCont.tog_tab.isOn = true
         end
+        self:checkTimelineAction()
+        self:refreshTogActionVisable()
         if firstTab == E.FaceFirstTab.Hair then
           Z.RedPointMgr.OnClickRedDot(E.RedType.FaceEditorHair)
         end
@@ -392,47 +442,25 @@ function Face_systemView:OnActive()
       end
       if isOn and secondTab == ESecondTab.Tooth then
         if self.playerModel_ then
-          Z.ModelHelper.PlayFacialByEmoteId(self.playerModel_, 34)
+          self:refreshModelEmote(34)
         end
       elseif self.playerModel_ then
-        Z.ModelHelper.PlayFacialByEmoteId(self.playerModel_, 0)
+        self:refreshModelEmote(0)
       end
     end)
   end
+end
+
+function Face_systemView:initBg()
   local gender = self.faceData_:GetPlayerGender()
   local bodySize = self.faceData_:GetPlayerBodySize()
   local isShowBeard = gender == Z.PbEnum("EGender", "GenderMale") and (bodySize == Z.PbEnum("EBodySize", "BodySizeM") or bodySize == Z.PbEnum("EBodySize", "BodySizeL"))
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_beard_tab_ref, isShowBeard)
-  if gender == Z.PbEnum("EGender", "GenderMale") then
+  if self.faceData_:GetPlayerGender() == Z.PbEnum("EGender", "GenderMale") then
     self.uiBinder.rimg_left:SetImage(leftRightBodyPath)
   else
     self.uiBinder.rimg_left:SetImage(leftRightGrilPath)
   end
-  if self.faceData_.FaceState == E.FaceDataState.Create then
-    self.faceData_.CanUseCacheFaceData = true
-    local data = Z.DataMgr.Get("player_data")
-    self.faceData_.CacheFaceDataAccountName = data.AccountName
-  else
-    self.faceData_.CanUseCacheFaceData = false
-  end
-  self.uiBinder.rayimg_unrealscene_drag.onDrag:AddListener(function(go, eventData)
-    if Z.TouchManager.TouchCount > 1 then
-      return
-    end
-    self:onModelDrag(eventData)
-  end)
-  self:AddAsyncClick(self.uiBinder.btn_save_file, function()
-    self:onClickSaveFaceDataFile()
-  end)
-  self:AddAsyncClick(self.uiBinder.btn_load_file, function()
-    self:onClickLoadFaceDataFile()
-  end)
-  self:BindEvents()
-end
-
-function Face_systemView:OnRefresh()
-  local attrVM = Z.VMMgr.GetVM("face_attr")
-  attrVM.UpdateAllFaceAttr()
 end
 
 function Face_systemView:onModelDrag(eventData)
@@ -442,6 +470,14 @@ function Face_systemView:onModelDrag(eventData)
     Z.UITimelineDisplay:SetGoQuaternionByCutsceneId(self.curTimelineId_, quaternion.x, quaternion.y, quaternion.z, quaternion.w)
   elseif self.playerModel_ then
     self.playerModel_:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, self.curRotation_, 0)))
+  end
+end
+
+function Face_systemView:refreshCurRotation()
+  if Z.StageMgr.GetIsInGameScene() then
+    self.curRotation_ = 180
+  else
+    self.curRotation_ = Z.ConstValue.FaceGenderRotation[self.faceData_:GetPlayerGender()]
   end
 end
 
@@ -468,87 +504,106 @@ function Face_systemView:initModel()
     local modelId = Z.ModelManager:GetModelIdByGenderAndSize(self.faceData_.Gender, self.faceData_.BodySize)
     self.playerModel_ = Z.UnrealSceneMgr:GenModelByLua(self.playerModel_, modelId, function(model)
       model:SetAttrGoPosition(Z.UnrealSceneMgr:GetTransPos("pos"))
-      model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, 180, 0)))
+      model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, self.curRotation_, 0)))
       local equipZList = self.faceVM_.GetDefaultEquipZList(self.faceData_.Gender)
       model:SetLuaAttr(Z.LocalAttr.EWearEquip, equipZList)
       equipZList:Recycle()
       local actionData = self.faceVM_.GetDefaultActionData()
       self.actionVM_:PlayAction(model, actionData)
+      model:SetLuaAttrLookAtEnable(true)
     end, self.faceData_.FaceModelName, function(model)
       self:PreloadModel(model)
+      self:OnFinishMainModelLoad(model)
+      local fashionVm = Z.VMMgr.GetVM("fashion")
+      fashionVm.SetModelAutoLookatCamera(model)
     end)
   else
     self:PreloadModel(self.playerModel_)
     Z.UnrealSceneMgr:SetModelCustomShadow(self.playerModel_, false)
+    self:OnFinishMainModelLoad(self.playerModel_)
+  end
+end
+
+function Face_systemView:OnFinishMainModelLoad(model)
+  if self.isThreeModel_ then
+    self:hideModel(model)
+  else
+    self:showModel(model)
   end
 end
 
 function Face_systemView:PreloadModel(model)
-  local pos = Z.UnrealSceneMgr:GetTransPos("pos")
-  local gender = self.faceData_:GetPlayerGender()
-  local size = self.faceData_:GetPlayerBodySize()
-  local position = modelParam[gender][size]
+  self:playerTimeline(Z.ConstValue.FaceGenderTimelineId[self.faceData_:GetPlayerGender()], model)
   if not self.playerModel1_ then
     self.playerModel1_ = Z.UnrealSceneMgr:CloneModelByLua(self.playerModel1_, model, function(model)
-      model:SetAttrGoPosition(Vector3.New(position[1].x * self.xScale_ + pos.x, position[1].y + pos.y, position[1].z + pos.z))
+      model:SetAttrGoPosition(self:getModelPosition(1))
       model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(-10, -170, 0)))
-      model:SetLuaAttr(Z.ModelAttr.EModelPinchHeight, 0)
-      model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
-      model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
+      self:hidePartModel(model)
       local zList = ZUtil.Pool.Collections.ZList_Panda_ZGame_ModelClipData.Rent()
-      zList:Add(ModelClipDataClass.New(Vector4.New(0.143, 0, 1, 1), Z.ModelRenderType.Hair))
-      zList:Add(ModelClipDataClass.New(Vector4.New(0.143, 0, 1, 1), Z.ModelRenderType.HeadWear))
-      zList:Add(ModelClipDataClass.New(Vector4.New(0.143, 0.335, 0.614, 1), Z.ModelRenderType.BODY))
+      zList:Add(ModelClipDataClass.New(Vector4.New(0.1416, 0, 1, 1), Z.ModelRenderMask.Hair))
+      zList:Add(ModelClipDataClass.New(Vector4.New(0.1416, 0, 1, 1), Z.ModelRenderMask.HeadWear))
+      zList:Add(ModelClipDataClass.New(Vector4.New(0.1416, 0.332, 0.6152, 1), Z.ModelRenderMask.BODY))
+      zList:Add(ModelClipDataClass.New(Vector4.New(1, 1, 1, 1), Z.ModelRenderMask.Back))
+      zList:Add(ModelClipDataClass.New(Vector4.New(1, 1, 1, 1), Z.ModelRenderMask.Tail))
       model:SetLuaAttr(Z.ModelAttr.EModelClipData, zList)
+      model:SetLuaAttr(Z.ModelAttr.EModelFashionEffectEnable, false)
       zList:Recycle()
       self:setModelEmotion(model, 701)
     end, nil, function(model)
       self:OnFinishModelLoad(model)
     end)
-    self.playerModel1_:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent("show_07"))
+    self.playerModel1_:SetLuaAnimBase(Z.AnimBaseData.Rent("show_07"))
   end
   if not self.playerModel2_ then
     self.playerModel2_ = Z.UnrealSceneMgr:CloneModelByLua(self.playerModel2_, model, function(model)
-      model:SetAttrGoPosition(Vector3.New(position[2].x * self.xScale_ + pos.x, position[2].y + pos.y, position[2].z + pos.z))
+      model:SetAttrGoPosition(self:getModelPosition(2))
       model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, 140, 0)))
-      model:SetLuaAttr(Z.ModelAttr.EModelPinchHeight, 0)
-      model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
-      model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
+      self:hidePartModel(model)
       local zList = ZUtil.Pool.Collections.ZList_Panda_ZGame_ModelClipData.Rent()
-      zList:Add(ModelClipDataClass.New(Vector4.New(0.639, 0, 1, 1), Z.ModelRenderType.Hair))
-      zList:Add(ModelClipDataClass.New(Vector4.New(0.639, 0, 1, 1), Z.ModelRenderType.HeadWear))
-      zList:Add(ModelClipDataClass.New(Vector4.New(0.639, 0.451, 0.6, 1), Z.ModelRenderType.BODY))
+      zList:Add(ModelClipDataClass.New(Vector4.New(0.6398, 0, 1, 1), Z.ModelRenderMask.Hair))
+      zList:Add(ModelClipDataClass.New(Vector4.New(0.6398, 0, 1, 1), Z.ModelRenderMask.HeadWear))
+      zList:Add(ModelClipDataClass.New(Vector4.New(0.6398, 0.451, 0.6, 1), Z.ModelRenderMask.BODY))
+      zList:Add(ModelClipDataClass.New(Vector4.New(1, 1, 1, 1), Z.ModelRenderMask.Back))
+      zList:Add(ModelClipDataClass.New(Vector4.New(1, 1, 1, 1), Z.ModelRenderMask.Tail))
       model:SetLuaAttr(Z.ModelAttr.EModelClipData, zList)
+      model:SetLuaAttr(Z.ModelAttr.EModelFashionEffectEnable, false)
       zList:Recycle()
       self:setModelEmotion(model, 702)
     end, nil, function(model)
       self:OnFinishModelLoad(model)
     end)
-    self.playerModel2_:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent("show_06"))
+    self.playerModel2_:SetLuaAnimBase(Z.AnimBaseData.Rent("show_06"))
   end
   if not self.playerModel3_ then
     self.playerModel3_ = Z.UnrealSceneMgr:CloneModelByLua(self.playerModel3_, model, function(model)
-      model:SetAttrGoPosition(Vector3.New(position[3].x * self.xScale_ + pos.x, position[3].y + pos.y, position[3].z + pos.z))
+      model:SetAttrGoPosition(self:getModelPosition(3))
       model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, -155.3, 0)))
-      model:SetLuaAttr(Z.ModelAttr.EModelPinchHeight, 0)
-      model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
-      model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
+      self:hidePartModel(model)
       local zList = ZUtil.Pool.Collections.ZList_Panda_ZGame_ModelClipData.Rent()
-      zList:Add(ModelClipDataClass.New(Vector4.New(0.566, 0, 1, 1), Z.ModelRenderType.Hair))
-      zList:Add(ModelClipDataClass.New(Vector4.New(0.566, 0, 1, 1), Z.ModelRenderType.HeadWear))
-      zList:Add(ModelClipDataClass.New(Vector4.New(0.566, 0.1575, 0.33, 1), Z.ModelRenderType.BODY))
+      zList:Add(ModelClipDataClass.New(Vector4.New(0.5657, 0, 1, 1), Z.ModelRenderMask.Hair))
+      zList:Add(ModelClipDataClass.New(Vector4.New(0.5657, 0, 1, 1), Z.ModelRenderMask.HeadWear))
+      zList:Add(ModelClipDataClass.New(Vector4.New(0.5657, 0.1578, 0.3298, 1), Z.ModelRenderMask.BODY))
+      zList:Add(ModelClipDataClass.New(Vector4.New(1, 1, 1, 1), Z.ModelRenderMask.Back))
+      zList:Add(ModelClipDataClass.New(Vector4.New(1, 1, 1, 1), Z.ModelRenderMask.Tail))
       model:SetLuaAttr(Z.ModelAttr.EModelClipData, zList)
+      model:SetLuaAttr(Z.ModelAttr.EModelFashionEffectEnable, false)
       zList:Recycle()
       self:setModelEmotion(model, 700)
     end, nil, function(model)
       self:OnFinishModelLoad(model)
     end)
-    self.playerModel3_:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent("show_05"))
+    self.playerModel3_:SetLuaAnimBase(Z.AnimBaseData.Rent("show_05"))
   end
 end
 
+function Face_systemView:hidePartModel(model)
+  model:SetLuaAttr(Z.ModelAttr.EModelPinchHeight, 0)
+  model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
+  model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
+end
+
 function Face_systemView:OnFinishModelLoad(model)
-  if self.isOnHead_ then
+  if self.isThreeModel_ then
     self:showModel(model)
   else
     self:hideModel(model)
@@ -563,14 +618,16 @@ function Face_systemView:showModel(playerModel)
   if not playerModel then
     return
   end
-  playerModel:SetAttrGoLayer(Panda.Utility.ZLayerUtils.LAYER_UNREALSCENE)
+  playerModel:SetLuaAttr(Z.ModelAttr.EModelRenderInvisible, false)
+  Z.ModelHelper.SetRenderLayerMaskByRenderType(playerModel, Z.ZRenderingLayerUtils.RENDERING_LAYER_MASK_DEFAULT, Z.ModelRenderMask.All)
 end
 
 function Face_systemView:hideModel(playerModel)
   if not playerModel then
     return
   end
-  playerModel:SetAttrGoLayer(Panda.Utility.ZLayerUtils.LAYER_INVISIBLE)
+  playerModel:SetLuaAttr(Z.ModelAttr.EModelRenderInvisible, true)
+  Z.ModelHelper.SetRenderLayerMaskByRenderType(playerModel, Z.ZRenderingLayerUtils.RENDERING_LAYER_MASK_INVISIBLE, Z.ModelRenderMask.All)
 end
 
 function Face_systemView:initTabSelect()
@@ -585,10 +642,19 @@ function Face_systemView:initOperateBtn()
   local actionData = self.faceVM_.GetDefaultActionData()
   self.actionVM_:PlayAction(self.playerModel_, actionData)
   self.uiBinder.tog_focus:RemoveAllListeners()
-  self.uiBinder.tog_focus.isOn = false
-  self:changeFocus(false)
+  self.uiBinder.tog_focus.isOn = true
+  self.isFocus_ = true
+  self.isThreeModel_ = true
+  self.isShowOneModel_ = true
+  self:changeFocus(true, true)
   self.uiBinder.tog_focus:AddListener(function(isOn)
-    self:changeFocus(isOn)
+    if isOn then
+      self.isThreeModel_ = true
+      self:changeFocus(true)
+    else
+      self.isThreeModel_ = false
+      self:changeFocus(self.isFocus_)
+    end
   end)
   self:initExpressionTog(self.uiBinder.tog_action, self.uiBinder.togs_action_option_press, function()
     self:loadActionOptions()
@@ -596,70 +662,98 @@ function Face_systemView:initOperateBtn()
   self:initWearHideTog()
 end
 
-function Face_systemView:changeFocus(isOnHead)
-  self.expressionType_ = isOnHead and E.ExpressionType.Emote or E.ExpressionType.Action
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_focus_to_head, not isOnHead)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_focus_to_body, isOnHead)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_left, not isOnHead)
-  self.isOnHead_ = isOnHead
+function Face_systemView:changeFocus(isOnHead, isFirstOpen)
   Z.CoroUtil.create_coro_xpcall(function()
-    if self.inputMask_ then
-      Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, self.inputMask_, false)
-      self.inputMask_ = nil
-    end
-    if isOnHead then
-      Z.UnrealSceneMgr:SetAutoChangeLook(false)
+    if self.curCameraAnim_ == 1 then
+      Z.CameraMgr:StopRunningCameraTemplate(4081)
+      Z.CameraMgr:StopRunningCameraTemplate(4082)
+      Z.CameraMgr:StopRunningCameraTemplate(4083)
+      Z.CameraMgr:StopRunningCameraTemplate(4084)
+      Z.CameraMgr:StopRunningCameraTemplate(4085)
+    elseif self.curCameraAnim_ == 2 then
+      Z.CameraMgr:StopRunningCameraTemplate(4036)
+      Z.CameraMgr:StopRunningCameraTemplate(4037)
+      Z.CameraMgr:StopRunningCameraTemplate(4038)
+      Z.CameraMgr:StopRunningCameraTemplate(4034)
+      Z.CameraMgr:StopRunningCameraTemplate(4040)
+    elseif self.curCameraAnim_ == 3 then
       Z.CameraMgr:StopRunningCameraTemplate(4036)
       Z.CameraMgr:StopRunningCameraTemplate(4037)
       Z.CameraMgr:StopRunningCameraTemplate(4038)
       Z.CameraMgr:StopRunningCameraTemplate(4039)
       Z.CameraMgr:StopRunningCameraTemplate(4040)
-      Z.UnrealSceneMgr:DoCameraAnim("faceHead")
-      local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
-      coro(1, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
-      self.uiBinder.tog_action.isOn = false
-      local gender = self.faceData_:GetPlayerGender()
-      Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background1", false)
-      Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background2", gender == 2)
-      Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background3", gender == 1)
-      self:hideModel(self.playerModel_)
-      self:showModel(self.playerModel1_)
-      self:showModel(self.playerModel2_)
-      self:showModel(self.playerModel3_)
-      self.uiBinder.Ref:SetVisible(self.uiBinder.rayimg_unrealscene_drag, false)
-      Z.PlayerInputController.InputTouchCheckOverUICount = 0
-      self.inputMask_ = 4294967295
-    else
-      Z.UnrealSceneMgr:SetAutoChangeLook(true)
-      Z.CameraMgr:StopRunningCameraTemplate(4081)
-      Z.CameraMgr:StopRunningCameraTemplate(4082)
-      Z.UnrealSceneMgr:DoCameraAnimLookAtOffset("faceFocusBody", Vector3.New(0, self.offset_.y, 0))
-      local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
-      coro(1, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
-      if self.playerModel_ then
-        self.playerModel_:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, 180, 0)))
-      end
-      Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background1", true)
-      Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background2", false)
-      Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background3", false)
-      self.uiBinder.Ref:SetVisible(self.uiBinder.rayimg_unrealscene_drag, true)
-      self:showModel(self.playerModel_)
-      self:hideModel(self.playerModel1_)
-      self:hideModel(self.playerModel2_)
-      self:hideModel(self.playerModel3_)
-      self.inputMask_ = 4294967293
     end
-    Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, self.inputMask_, true)
-    Z.PlayerInputController.InputTouchCheckOverUICount = 1
+    self.curCameraAnim_ = nil
+    Z.UnrealSceneMgr:SetAutoChangeLook(not self.isThreeModel_)
+    local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
+    coro(1, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
+    local delayChangeModel = false
+    if isOnHead then
+      if self.isThreeModel_ then
+        Z.UnrealSceneMgr:DoCameraAnim("faceThreeHead")
+        delayChangeModel = self.curCameraAnim_ ~= 1
+        self.curCameraAnim_ = 1
+        self:hideModel(self.playerModel_)
+      else
+        Z.UnrealSceneMgr:DoCameraAnimLookAtOffset("faceHead", Vector3.New(0, self.offset_.y, 0))
+        self.curCameraAnim_ = 2
+      end
+      self.uiBinder.tog_action.isOn = false
+    else
+      Z.UnrealSceneMgr:DoCameraAnimLookAtOffset("faceBody", Vector3.New(0, self.offset_.y, 0))
+      self.curCameraAnim_ = 3
+      if self.playerModel_ then
+        self.playerModel_:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, self.curRotation_, 0)))
+      end
+    end
+    if isFirstOpen then
+      Z.UIMgr:FadeOut()
+    end
+    self:asyncChangeModelShow(delayChangeModel)
   end)()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_action, not isOnHead)
+  self:refreshTogActionVisable()
+end
+
+function Face_systemView:asyncChangeModelShow(delayChangeModel)
+  if delayChangeModel then
+    Z.Delay(0.05, ZUtil.ZCancelSource.NeverCancelToken)
+  end
+  if self.inputMask_ then
+    Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, self.inputMask_, false)
+    self.inputMask_ = nil
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_left, not self.isThreeModel_)
+  if self.isThreeModel_ then
+    local gender = self.faceData_:GetPlayerGender()
+    Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background1", false)
+    Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background2", gender == 2)
+    Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background3", gender == 1)
+    self:hideModel(self.playerModel_)
+    self:showModel(self.playerModel1_)
+    self:showModel(self.playerModel2_)
+    self:showModel(self.playerModel3_)
+    self.inputMask_ = 4294967295
+    self.uiBinder.Ref:SetVisible(self.uiBinder.rayimg_unrealscene_drag, false)
+  else
+    Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background1", true)
+    Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background2", false)
+    Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background3", false)
+    self:showModel(self.playerModel_)
+    self:hideModel(self.playerModel1_)
+    self:hideModel(self.playerModel2_)
+    self:hideModel(self.playerModel3_)
+    self.inputMask_ = 4294967293
+    self.uiBinder.Ref:SetVisible(self.uiBinder.rayimg_unrealscene_drag, true)
+  end
+  Z.PlayerInputController.InputTouchCheckOverUICount = 1
+  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, self.inputMask_, true)
 end
 
 function Face_systemView:setModelEmotion(model, emotionId)
   if 0 < emotionId then
-    model:SetAttrEmoteInfo(emotionId, -1, true)
+    model:SetLuaAttrEmoteInfo(emotionId, -1, true)
   else
-    model:SetAttrEmoteInfo(0)
+    model:SetLuaAttrEmoteInfo(0)
   end
 end
 
@@ -683,13 +777,8 @@ function Face_systemView:initExpressionTog(togNode, groupNode, onFunc)
   end)
 end
 
-function Face_systemView:refreshModelEmote()
-  Z.UITimelineDisplay:Stop()
-  if self.playerModel_ then
-    self.playerModel_:ResetGoTransPositionAndRotation()
-    Z.ModelHelper.PlayFacialByEmoteId(self.playerModel_, 0)
-    self.playerModel_:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, self.curRotation_, 0)))
-  end
+function Face_systemView:refreshModelEmote(emoteId)
+  Z.ModelHelper.PlayFacialByEmoteId(self.playerModel_, emoteId)
 end
 
 function Face_systemView:loadActionOptions()
@@ -698,29 +787,63 @@ function Face_systemView:loadActionOptions()
       self.actionList_ = {}
     end
     self:asyncLoadActionBtn(1, function()
-      self.actionIndex_ = 1
-      self.curTimelineId_ = nil
-      self:refreshModelEmote()
+      self:playDefaultTimeline()
     end)
     for i = 1, #self.timelineInfoList_ do
       local timelineId = self.timelineInfoList_[i][1]
       local emoteId = self.timelineInfoList_[i][2]
       self:asyncLoadActionBtn(i + 1, function()
-        Z.UITimelineDisplay:Stop()
-        Z.UITimelineDisplay:BindModel(0, self.playerModel_)
-        Z.UITimelineDisplay:Play(timelineId)
         self.actionIndex_ = i + 1
-        self.curTimelineId_ = timelineId
-        local quaternion = Quaternion.Euler(Vector3.New(0, self.curRotation_, 0))
-        Z.UITimelineDisplay:SetGoQuaternionByCutsceneId(self.curTimelineId_, quaternion.x, quaternion.y, quaternion.z, quaternion.w)
-        Z.ModelHelper.PlayFacialByEmoteId(self.playerModel_, emoteId)
+        self:refreshModelEmote(emoteId)
+        self:playerTimeline(timelineId, self.playerModel_)
       end)
     end
-    self.units[string.zconcat("action", self.actionIndex_)].tog_digit.isOn = true
+    self.units[string.zconcat("action", self.actionIndex_)].tog_digit:SetIsOnWithoutCallBack(true)
   end)()
 end
 
+function Face_systemView:checkTimelineAction()
+  if self.curSecondDefaultTab_ ~= ESecondTab.FaceShape then
+    return
+  end
+  self:playDefaultTimeline()
+end
+
+function Face_systemView:refreshTogActionVisable()
+  if self.isThreeModel_ or self.curSecondDefaultTab_ == ESecondTab.FaceShape then
+    self.uiBinder.tog_action.isOn = false
+    self.uiBinder.Ref:SetVisible(self.uiBinder.tog_action, false)
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.tog_action, true)
+  end
+end
+
+function Face_systemView:playDefaultTimeline()
+  self.actionIndex_ = 1
+  local timelineId = Z.ConstValue.FaceGenderTimelineId[self.faceData_:GetPlayerGender()]
+  if self.curTimelineId_ == timelineId then
+    return
+  end
+  self:refreshModelEmote(0)
+  self:playerTimeline(timelineId, self.playerModel_)
+end
+
+function Face_systemView:playerTimeline(timelineId, model)
+  Z.UITimelineDisplay:Stop()
+  Z.UITimelineDisplay:BindModel(0, model)
+  if table.zcontains(Z.ConstValue.FaceGenderTimelineId, timelineId) then
+    Z.ModelHelper.SetLookAtTransform(model, Z.CameraMgr.MainCamTrans, true)
+  else
+    Z.ModelHelper.ResetLookAt(model, true)
+  end
+  Z.UITimelineDisplay:Play(timelineId)
+  self.curTimelineId_ = timelineId
+  local quaternion = Quaternion.Euler(Vector3.New(0, self.curRotation_, 0))
+  Z.UITimelineDisplay:SetGoQuaternionByCutsceneId(self.curTimelineId_, quaternion.x, quaternion.y, quaternion.z, quaternion.w)
+end
+
 function Face_systemView:asyncLoadActionBtn(index, func)
+  local digitTogPath = Z.IsPCUI and "ui/prefabs/face/face_digit_tog_item_tpl_pc" or "ui/prefabs/face/face_digit_tog_item_tpl"
   local unit = self:AsyncLoadUiUnit(digitTogPath, string.zconcat("action", index), self.uiBinder.togs_action_option_ref)
   unit.lab_digit_on.text = index
   unit.lab_digit_off.text = index
@@ -747,6 +870,9 @@ function Face_systemView:preLoadTimeline()
       Z.UITimelineDisplay:AsyncPreLoadTimeline(timelineId, self.cancelSource:CreateToken())
     end
   end
+  local gender = self.faceData_:GetPlayerGender()
+  Z.UITimelineDisplay:AsyncPreLoadTimeline(Z.ConstValue.FaceGenderTimelineId[gender], self.cancelSource:CreateToken())
+  Z.UITimelineDisplay:AsyncPreLoadTimeline(Z.ConstValue.FaceGenderTimelineIdEffect[gender], self.cancelSource:CreateToken())
 end
 
 function Face_systemView:updateFaceOperationBtnState()
@@ -759,25 +885,32 @@ function Face_systemView:onScreenResolutionChange()
   local rate = math.floor(rootCanvas.localScale.x * 100000) / 100000 / 0.00925
   local width = math.floor(Z.UIRoot.RootCanvas.transform.rect.width * 100) / 100
   local height = math.floor(Z.UIRoot.RootCanvas.transform.rect.height * 100) / 100
-  self.xScale_ = width / 1920 * rate
-  self.yScale_ = height / 1080 * rate
-  Z.UnrealSceneMgr:SetNodeScale("modelRoot/background2", self.xScale_ * 0.265, self.yScale_ * 0.265, 1)
-  Z.UnrealSceneMgr:SetNodeScale("modelRoot/background3", self.xScale_ * 0.265, self.yScale_ * 0.265, 1)
-  Z.UnrealSceneMgr:SetNodeLocalPosition("modelRoot/background2", self.xScale_ * -0.07, self.yScale_ * 0.8, 1)
-  Z.UnrealSceneMgr:SetNodeLocalPosition("modelRoot/background3", self.xScale_ * -0.07, self.yScale_ * 0.8, 1)
-  local gender = self.faceData_:GetPlayerGender()
-  local size = self.faceData_:GetPlayerBodySize()
-  local position = modelParam[gender][size]
-  local pos = Z.UnrealSceneMgr:GetTransPos("pos")
+  if 1.7777777777777777 <= width / height then
+    self.scale_ = height / 1080 * rate
+  else
+    self.scale_ = width / 1920 * rate
+  end
+  Z.UnrealSceneMgr:SetNodeScale("modelRoot/background2", 0.265, 0.265, 1)
+  Z.UnrealSceneMgr:SetNodeScale("modelRoot/background3", 0.265, 0.265, 1)
+  Z.UnrealSceneMgr:SetNodeLocalPosition("modelRoot/background2", -0.07, 0.8, 1)
+  Z.UnrealSceneMgr:SetNodeLocalPosition("modelRoot/background3", -0.07, 0.8, 1)
   if self.playerModel1_ then
-    self.playerModel1_:SetAttrGoPosition(Vector3.New(position[1].x * self.xScale_ + pos.x, position[1].y + pos.y, position[1].z + pos.z))
+    self.playerModel1_:SetAttrGoPosition(self:getModelPosition(1))
   end
   if self.playerModel2_ then
-    self.playerModel2_:SetAttrGoPosition(Vector3.New(position[2].x * self.xScale_ + pos.x, position[2].y + pos.y, position[2].z + pos.z))
+    self.playerModel2_:SetAttrGoPosition(self:getModelPosition(2))
   end
   if self.playerModel3_ then
-    self.playerModel3_:SetAttrGoPosition(Vector3.New(position[3].x * self.xScale_ + pos.x, position[3].y + pos.y, position[3].z + pos.z))
+    self.playerModel3_:SetAttrGoPosition(self:getModelPosition(3))
   end
+end
+
+function Face_systemView:getModelPosition(modelIndex)
+  local pos = Z.UnrealSceneMgr:GetTransPos("pos")
+  local gender = self.faceData_:GetPlayerGender()
+  local size = self.faceData_:GetPlayerBodySize()
+  local position = modelPositionParam[gender][size]
+  return Vector3.New(position[modelIndex].x + pos.x, position[modelIndex].y + pos.y, position[modelIndex].z * self.scale_ + pos.z)
 end
 
 function Face_systemView:initWearHideTog()
@@ -834,7 +967,7 @@ function Face_systemView:clearActionUnit()
 end
 
 function Face_systemView:OnDestory()
-  Z.UnrealSceneMgr:CloseUnrealScene("fashion_system")
+  Z.UnrealSceneMgr:CloseUnrealScene(self.ViewConfigKey)
 end
 
 function Face_systemView:OnDeActive()
@@ -846,6 +979,8 @@ function Face_systemView:OnDeActive()
   self:clearActionUnit()
   Z.PlayerInputController.InputTouchCheckOverUICount = 0
   self.preloadModelCount_ = 0
+  self.isFocus_ = nil
+  self.isShowOneModel_ = nil
   self:RemoveEvents()
   Z.PlayerInputController.IsCheckZoomClickingUI = true
   Z.PlayerInputController:SetCameraStretchIgnoreCheckUI(false)
@@ -859,6 +994,9 @@ function Face_systemView:OnDeActive()
   Z.UnrealSceneMgr:SetNodeActiveByName("modelRoot/background3", false)
   self.curFirstTab_ = nil
   self.curShowView_ = nil
+  if not self.needCacheModel_ then
+    Z.UnrealSceneMgr:ClearModel(self.playerModel_)
+  end
   self.playerModel_ = nil
   Z.UnrealSceneMgr:ClearModel(self.playerModel1_)
   self.playerModel1_ = nil
@@ -954,26 +1092,34 @@ function Face_systemView:switchFirstTab(tab)
 end
 
 function Face_systemView:OnInputBack()
-  self.faceData_.CanUseCacheFaceData = false
+  self.needCacheModel_ = false
   self.faceVM_.CloseFaceSystemView()
 end
 
 function Face_systemView:onClickRandom()
-  local randomVM = Z.VMMgr.GetVM("face_random")
+  if Z.SDKDevices.IsCloudGame then
+    self:faceRandom()
+    return
+  end
   Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("DescFaceRandomConfirm"), function()
-    self.playerModel_:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, 180, 0)))
-    self.faceVM_.RecordFaceEditorCommand()
-    randomVM.RandomFace()
-    self:playRandomTimeLine()
+    self:faceRandom()
   end, nil, E.DlgPreferencesType.Never, E.DlgPreferencesKeyType.FaceRandomPrompt)
+end
+
+function Face_systemView:faceRandom()
+  local randomVM = Z.VMMgr.GetVM("face_random")
+  self:refreshCurRotation()
+  self.playerModel_:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, self.curRotation_, 0)))
+  self.faceVM_.RecordFaceEditorCommand()
+  randomVM.RandomFace()
+  self:playRandomTimeLine()
+  self.faceVM_.CacheFaceData()
 end
 
 function Face_systemView:playRandomTimeLine()
   self.actionIndex_ = 1
-  self.curTimelineId_ = nil
-  Z.ModelHelper.PlayFacialByEmoteId(self.playerModel_, 0)
-  Z.UITimelineDisplay:Stop()
-  Z.UITimelineDisplay:Play(50000004)
+  self:refreshModelEmote(0)
+  self:playerTimeline(Z.ConstValue.FaceGenderTimelineIdEffect[self.faceData_:GetPlayerGender()], self.playerModel_)
   if self.curShowView_ == self.hotPhotoView_ then
     self.hotPhotoView_:ClearSelect()
   end
@@ -981,6 +1127,10 @@ end
 
 function Face_systemView:onClickRevert()
   if not self.faceVM_.IsAttrChange() then
+    return
+  end
+  if Z.SDKDevices.IsCloudGame then
+    self:revertFace()
     return
   end
   Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("RevertFaceData"), function()
@@ -992,6 +1142,7 @@ function Face_systemView:revertFace()
   self.faceVM_.RecordFaceEditorCommand()
   local templateVM = Z.VMMgr.GetVM("face_template")
   templateVM.UpdateOptionDictByModelId(self.faceData_.ModelId)
+  self.faceVM_.CacheFaceData()
 end
 
 function Face_systemView:refreshCameraFocus(value)
@@ -1001,23 +1152,8 @@ function Face_systemView:refreshCameraFocus(value)
 end
 
 function Face_systemView:onClickSaveFaceDataFile()
-  local ret = self.faceVM_.AsyncGetFaceUploadData(self.cancelSource:CreateToken())
-  if ret.errCode == 0 then
-    self.faceData_.FaceCosDataList = ret.faceCosDataList
-    if not ret.faceCosDataList or #ret.faceCosDataList == 0 then
-      function self.faceData_.UploadFaceDataSuccess(key)
-        self.faceData_.FaceCosDataList[1] = {shortGuid = key, fileSuffix = ".json"}
-        
-        self.faceVM_.OpenFaceShareView(E.FaceShareType.AutoShare)
-      end
-      
-      self.faceVM_.UploadFaceData()
-    else
-      self.faceVM_.OpenFaceShareView(E.FaceShareType.Share)
-    end
-  else
-    Z.TipsVM.ShowTips(ret.errCode)
-  end
+  local shareCode = Z.FaceShareHelper.CreateFaceShareCode()
+  self.cameraVM_.OpenCameraViewByUnrealWithFaceData(shareCode)
 end
 
 function Face_systemView:onClickLoadFaceDataFile()
@@ -1025,9 +1161,14 @@ function Face_systemView:onClickLoadFaceDataFile()
 end
 
 function Face_systemView:onClickFinish()
-  self:refreshModelEmote()
-  local professionVm = Z.VMMgr.GetVM("profession")
-  professionVm.OpenProfessionSelectView(true)
+  self:refreshModelEmote(0)
+  if Z.IsPreFaceMode then
+    self:onClickSaveFaceDataFile()
+  else
+    self.needCacheModel_ = false
+    local professionVm = Z.VMMgr.GetVM("profession")
+    professionVm.OpenProfessionSelectView(true)
+  end
 end
 
 function Face_systemView:startPlaySelectAnim()
@@ -1051,6 +1192,13 @@ end
 function Face_systemView:startAnimatedHide()
   self.uiBinder.node_content:Rewind(Z.DOTweenAnimType.Close)
   self.uiBinder.node_content:Restart(Z.DOTweenAnimType.Close)
+end
+
+function Face_systemView:GetCacheData()
+  local viewData = {
+    needCacheModel = self.needCacheModel_
+  }
+  return viewData
 end
 
 return Face_systemView

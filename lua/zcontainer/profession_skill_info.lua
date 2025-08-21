@@ -28,6 +28,44 @@ local mergeDataFuncs = {
     local last = container.__data__.remodelLevel
     container.__data__.remodelLevel = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("remodelLevel", last)
+  end,
+  [5] = function(container, buffer, watcherList)
+    local last = container.__data__.curSkillSkin
+    container.__data__.curSkillSkin = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("curSkillSkin", last)
+  end,
+  [6] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadBoolean(buffer)
+      container.activeSkillSkins.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("activeSkillSkins", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.activeSkillSkins.__data__[dk]
+      container.activeSkillSkins.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("activeSkillSkins", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadBoolean(buffer)
+      local last = container.activeSkillSkins.__data__[dk]
+      container.activeSkillSkins.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("activeSkillSkins", dk, last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -69,7 +107,16 @@ local resetData = function(container, pbData)
   if not pbData.remodelLevel then
     container.__data__.remodelLevel = 0
   end
+  if not pbData.curSkillSkin then
+    container.__data__.curSkillSkin = 0
+  end
+  if not pbData.activeSkillSkins then
+    container.__data__.activeSkillSkins = {}
+  end
   setForbidenMt(container)
+  container.activeSkillSkins.__data__ = pbData.activeSkillSkins
+  setForbidenMt(container.activeSkillSkins)
+  container.__data__.activeSkillSkins = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -144,6 +191,32 @@ local getContainerElem = function(container)
     dataType = 0,
     data = container.remodelLevel
   }
+  ret.curSkillSkin = {
+    fieldId = 5,
+    dataType = 0,
+    data = container.curSkillSkin
+  }
+  if container.activeSkillSkins ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.activeSkillSkins) do
+      data[key] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.activeSkillSkins = {
+      fieldId = 6,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.activeSkillSkins = {
+      fieldId = 6,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -151,10 +224,14 @@ local new = function()
     __data__ = {},
     ResetData = resetData,
     MergeData = mergeData,
-    GetContainerElem = getContainerElem
+    GetContainerElem = getContainerElem,
+    activeSkillSkins = {
+      __data__ = {}
+    }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
+  setForbidenMt(ret.activeSkillSkins)
   return ret
 end
 return {New = new}

@@ -11,6 +11,7 @@ local openOptionView = function(optionDataList, type)
 end
 local closeOptionView = function()
   Z.UIMgr:CloseView("talk_option_window")
+  Z.UIMgr:CloseView("pub_talk_option_window")
 end
 local closePubOptionView = function()
   Z.UIMgr:CloseView("pub_talk_option_window")
@@ -98,6 +99,37 @@ local creatConfrontationByFlow = function(options)
   end
   return ret
 end
+local createNpcFunctionOption = function(configData)
+  if configData == nil or #configData < 2 then
+    return nil
+  end
+  local interactionBtnId = configData[1]
+  local functionId = configData[2]
+  if functionId == nil then
+    return nil
+  end
+  local isUnLock = Z.VMMgr.GetVM("switch").CheckFuncSwitch(functionId)
+  if not isUnLock then
+    return nil
+  end
+  local interactBtnTableMgr = Z.TableMgr.GetTable("InteractBtnTableMgr")
+  local interactBtnRow = interactBtnTableMgr.GetRow(interactionBtnId)
+  if interactBtnRow == nil then
+    return nil
+  end
+  local optionFunc = function()
+    talkData.IsDelayQuit = false
+    local curFlow = talkData:GetTalkCurFlow()
+    Z.EPFlowBridge.StopFlow(curFlow)
+    closeOptionView()
+    local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+    if gotoFuncVM.CheckFuncCanUse(functionId) then
+      gotoFuncVM.GoToFunc(functionId)
+    end
+  end
+  local option = createTalkOptionData(interactBtnRow.Name, optionFunc, interactBtnRow.IconPath, E.TextStyleTag.Talk_option_yellow)
+  return option
+end
 local createNpcFunctionOptions = function(npcId)
   local ret = {}
   local npcRow = Z.TableMgr.GetTable("NpcTableMgr").GetRow(npcId)
@@ -106,29 +138,9 @@ local createNpcFunctionOptions = function(npcId)
   end
   for _, v in ipairs(npcRow.NpcFunctionID) do
     local configData = v
-    if configData and #configData == 2 then
-      local functionId = tonumber(configData[2])
-      if functionId then
-        do
-          local optionFunc = function()
-            talkData.IsDelayQuit = false
-            local curFlow = talkData:GetTalkCurFlow()
-            Z.EPFlowBridge.StopFlow(curFlow)
-            closeOptionView()
-            local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
-            if gotoFuncVM.CheckFuncCanUse(functionId) then
-              gotoFuncVM.GoToFunc(functionId, npcId)
-            end
-          end
-          local funcConfig = Z.TableMgr.GetTable("FunctionTableMgr").GetRow(functionId)
-          local iconPath
-          if funcConfig and funcConfig.DialogIcon and funcConfig.DialogIcon ~= "" then
-            iconPath = funcConfig.DialogIcon
-          end
-          local option = createTalkOptionData(configData[1], optionFunc, iconPath, E.TextStyleTag.Talk_option_yellow)
-          table.insert(ret, option)
-        end
-      end
+    local option = createNpcFunctionOption(configData)
+    if option then
+      table.insert(ret, option)
     end
   end
   return ret
@@ -150,7 +162,7 @@ local createNpcQuestOptionsForFlow = function(npcId)
     local configB = Z.TableMgr.GetTable("QuestTableMgr").GetRow(b.questId)
     return configA.QuestType < configB.QuestType
   end)
-  local questDetailVM = Z.VMMgr.GetVM("questdetail")
+  local questIconVm = Z.VMMgr.GetVM("quest_icon")
   for _, data in pairs(tempData) do
     local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(data.questId)
     if questRow then
@@ -167,7 +179,7 @@ local createNpcQuestOptionsForFlow = function(npcId)
         Z.EPFlowBridge.StopFlow(curFlow)
         Z.EPFlowBridge.StartFlow(data.talkId)
       end
-      local icon = questDetailVM.GetStateIconByQuestId(data.questId)
+      local icon = questIconVm.GetStateIconByQuestId(data.questId)
       if not icon or icon == "" then
         icon = GetLoadAssetPath(Z.ConstValue.NpcTalk.ChatQuestIconPath)
       end

@@ -9,8 +9,6 @@ message SeasonDailyTableBase {
     int32 DailyEquipLevel = 1082;
     int32 GrowRangeAdd = 1918;
 }
-
 message SeasonDailyTableMgr {
-    map<int32, .bokura.SeasonDailyTableBase> datas = 1;
+    repeated bokura.SeasonDailyTableMgr.DatasEntry datas = 1;
 }
-

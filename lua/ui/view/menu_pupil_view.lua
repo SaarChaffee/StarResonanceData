@@ -39,6 +39,7 @@ function Menu_pupilView:OnActive()
       self.curLR_ = eLR.Left
       self:refreshColorItemSelect()
     end
+    self.faceVM_.CacheFaceData()
   end)
   self.uiBinder.tog_left:AddListener(function(isOn)
     if isOn then
@@ -136,7 +137,6 @@ end
 
 function Menu_pupilView:refreshColorItemSelect()
   local hsv = self:getCurHSVByLRAndArea()
-  hsv.v = hsv.v - self.initHSV_.v
   self.colorPalette_:SelectItemByHSVWithoutNotify(hsv)
 end
 
@@ -158,9 +158,11 @@ function Menu_pupilView:switchColorPalette(isArea)
       s = self.initHSV_.s,
       v = 0
     })
+    self.colorPalette_:SetResetBtn(false)
   else
-    self.colorPalette_:RefreshPaletteByColorGroupId(self.areaColorGroupId_, true)
+    self.colorPalette_:RefreshPaletteByColorGroupId(self.areaColorGroupId_, false)
     self.colorPalette_:SetDefaultColor(self.initHSV_)
+    self.colorPalette_:SetResetBtn(true)
   end
 end
 

@@ -10,8 +10,6 @@ message ErrcodeTableBase {
     mlstring Content = 783;
     int32 MessageId = 1544;
 }
-
 message ErrcodeTableMgr {
-    map<int32, .bokura.ErrcodeTableBase> datas = 1;
+    repeated bokura.ErrcodeTableMgr.DatasEntry datas = 1;
 }
-

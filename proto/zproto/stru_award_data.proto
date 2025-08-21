@@ -8,4 +8,3 @@ message AwardData {
     int32 awardId = 1;
     repeated zproto.Item items = 2;
 }
-

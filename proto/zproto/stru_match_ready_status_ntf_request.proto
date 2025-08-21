@@ -2,11 +2,14 @@ syntax = "proto3";
 
 package zproto;
 
-import "enum_e_match_type.proto";
+import "enum_e_error_code.proto";
+import "stru_match_key_info.proto";
 import "stru_match_player_info.proto";
 
 message MatchReadyStatusNtfRequest {
-    zproto.EMatchType matchType = 1;
-    map<int64, .zproto.MatchPlayerInfo> matchPlayerInfo = 2;
+    zproto.EErrorCode errCode = 1;
+    int64 leaderCharId = 2;
+    string matchToken = 3;
+    zproto.MatchKeyInfo matchKeyInfo = 4;
+    repeated zproto.MatchPlayerInfo matchPlayerInfo = 5;
 }
-

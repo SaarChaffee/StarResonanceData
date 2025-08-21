@@ -26,8 +26,6 @@ message QuestStepTableBase {
     int32 VisualLayerCheck = 84;
     bool HideTrackBar = 235;
 }
-
 message QuestStepTableMgr {
-    map<int32, .bokura.QuestStepTableBase> datas = 1;
+    repeated bokura.QuestStepTableMgr.DatasEntry datas = 1;
 }
-

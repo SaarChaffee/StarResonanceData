@@ -10,8 +10,6 @@ message PlayNameTableBase {
     string NameKR = 1230;
     int32 Sex = 1062;
 }
-
 message PlayNameTableMgr {
-    map<int32, .bokura.PlayNameTableBase> datas = 1;
+    repeated bokura.PlayNameTableMgr.DatasEntry datas = 1;
 }
-

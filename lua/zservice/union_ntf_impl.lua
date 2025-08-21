@@ -15,13 +15,9 @@ function UnionNtfStubImpl:NotifyOfficialLimitUpdate(call, vRequest)
 end
 
 function UnionNtfStubImpl:NotifyUnionChangeName(call, vRequest)
-  local unionVM = Z.VMMgr.GetVM("union")
-  unionVM:OnNotifyUnionChangeName(vRequest)
 end
 
 function UnionNtfStubImpl:NotifyCreateUnionResult(call, vRequest)
-  local unionVM = Z.VMMgr.GetVM("union")
-  unionVM:OnNotifyCreateUnionResult(vRequest)
 end
 
 function UnionNtfStubImpl:NotifyUpdateMember(call, vRequest)
@@ -52,7 +48,7 @@ function UnionNtfStubImpl:NotifyInviteJoinUnion(call, vRequest)
   }
   local info = {
     charId = vRequest.InviteId,
-    tipsType = E.InvitationTipsType.Invite,
+    tipsType = E.InvitationTipsType.TeamInvite,
     content = Lang("RequestToJoinUnion", placeHolderParam),
     cd = Z.Global.TeamInviteLastTime,
     func = unionInviteFunc,

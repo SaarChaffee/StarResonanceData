@@ -8,4 +8,3 @@ message SortPackageParam {
     int32 packageType = 1;
     repeated zproto.SortItemParam itemParams = 2;
 }
-

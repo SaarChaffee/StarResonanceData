@@ -17,4 +17,3 @@ message ChatMsgInfo {
     zproto.ChatVoice voice = 6;
     zproto.ChatHypertext chatHypertext = 7;
 }
-

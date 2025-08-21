@@ -26,6 +26,10 @@ function Team_invite_popupView:OnActive()
   self:BindEvents()
 end
 
+function Team_invite_popupView:OnDeActive()
+  self:clearTog()
+end
+
 function Team_invite_popupView:initBinder()
   self.togGroup_ = self.uiBinder.group_tog
   self.friendTog_ = self.uiBinder.tog_friend
@@ -62,6 +66,18 @@ function Team_invite_popupView:initTog(uibinder, type)
   end)
 end
 
+function Team_invite_popupView:clearTog()
+  self.friendTog_.tog_item:RemoveAllListeners()
+  self.UnionTog_.tog_item:RemoveAllListeners()
+  self.nearbtTog_.tog_item:RemoveAllListeners()
+  self.friendTog_.tog_item.group = nil
+  self.UnionTog_.tog_item.group = nil
+  self.nearbtTog_.tog_item.group = nil
+  self.friendTog_.tog_item.isOn = false
+  self.UnionTog_.tog_item.isOn = false
+  self.nearbtTog_.tog_item.isOn = false
+end
+
 function Team_invite_popupView:initData(inviteType)
   local list = {}
   if inviteType == E.TeamInviteType.Friend then
@@ -75,6 +91,14 @@ function Team_invite_popupView:initData(inviteType)
     end
   elseif inviteType == E.TeamInviteType.Near then
     list = self.teamInviteVM_.GetNearPlayerList()
+  end
+  local members = self.teamData_.TeamInfo.members
+  if members and next(members) ~= nil then
+    for i = #list, 1, -1 do
+      if members[list[i]] then
+        table.remove(list, i)
+      end
+    end
   end
   self.inviteLoopScrollRect_:SetData(list, true, nil, 0)
   self.uiBinder.Ref:SetVisible(self.node_empty_black_, #list == 0)

@@ -5,7 +5,6 @@ local albumMainData = Z.DataMgr.Get("album_main_data")
 local album_main_vm = Z.VMMgr.GetVM("album_main")
 
 function Album_create_popupView:ctor()
-  self.panel = nil
   self.uiBinder = nil
   super.ctor(self, "album_create_popup")
   self.popupType_ = E.AlbumPopupType.Create
@@ -21,6 +20,7 @@ function Album_create_popupView:OnActive()
   self.popupType_ = E.AlbumPopupType.Create
   self.jurisType_ = E.AlbumJurisdictionType.All
   self.uiBinder.scene_mask:SetSceneMaskByKey(self.SceneMaskKey)
+  self:setIsOkBtnDisabled(false)
   self.nameInput_:AddListener(function(string)
     local inputLength = self.nameInput_:CalculatePlaces()
     self:refreshInputLimitShow(inputLength)
@@ -31,6 +31,7 @@ function Album_create_popupView:OnActive()
       Z.TipsVM.ShowTipsLang(1000006)
       return
     end
+    self:setIsOkBtnDisabled(true)
     if E.AlbumPopupType.Create == self.popupType_ then
       self:createAlbum(self.cancelSource:CreateToken())
     elseif E.AlbumPopupType.Change == self.popupType_ then
@@ -41,6 +42,11 @@ function Album_create_popupView:OnActive()
     Z.UIMgr:CloseView("album_create_popup")
   end)
   Z.EventMgr:Add(Z.ConstValue.ScreenWordAndGrpcPass, self.onScreenWordPass, self)
+end
+
+function Album_create_popupView:setIsOkBtnDisabled(IsDisabled)
+  self.okBtn_.IsDisabled = IsDisabled
+  self.okBtn_.interactable = not IsDisabled
 end
 
 function Album_create_popupView:onScreenWordPass()
@@ -107,15 +113,13 @@ function Album_create_popupView:createAlbum(token)
   local albumName = self.inputNameLab_.text
   local ret
   if album_main_vm.CheckSubTypeIsUnion() then
-    ret = album_main_vm.AsyncCreateUnionAlbum(albumName, self.jurisType_, token, function(errCode)
-      self:showErrorMsg(errCode)
-    end)
+    ret = album_main_vm.AsyncCreateUnionAlbum(albumName, self.jurisType_, token)
   else
-    ret = album_main_vm.AsyncCreateAlbum(albumName, self.jurisType_, token, function(errCode)
-      self:showErrorMsg(errCode)
-    end)
+    ret = album_main_vm.AsyncCreateAlbum(albumName, self.jurisType_, token)
   end
-  if ret and ret.errCode == 0 then
+  if ret and ret.errCode ~= 0 then
+    self:showErrorMsg(ret.errCode)
+  else
     Z.UIMgr:CloseView("album_create_popup")
   end
 end

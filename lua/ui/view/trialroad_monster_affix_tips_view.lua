@@ -41,8 +41,9 @@ end
 
 function Trialroad_monster_affix_tipsView:refreshAffix()
   if self.viewData.affixList and next(self.viewData.affixList) then
+    local path = Z.IsPCUI and GetLoadAssetPath("DungeonAffixTplPC") or GetLoadAssetPath("DungeonAffixTpl")
     for k, v in pairs(self.viewData.affixList) do
-      local unit = self:AsyncLoadUiUnit(GetLoadAssetPath("DungenonAffixtpl"), k, self.uiBinder.layout_content)
+      local unit = self:AsyncLoadUiUnit(path, k, self.uiBinder.layout_content)
       unit.uiBinder.dungeon_affix_tpl.text = v
     end
   else

@@ -4,8 +4,9 @@ local TipsData = class("TipsData", super)
 function TipsData:ctor()
   super.ctor(self)
   self.AcquireTipsInfos = {}
+  self.SpecialAcquireTipsInfos = {}
   self.itemTipsId_ = 1
-  self.itemTipsDtas_ = {}
+  self.itemTipsDatas_ = {}
   self.DlgActivePreferences = {}
   self.systemTipInfoCount_ = 0
   self.systemTipInfos_ = {}
@@ -19,6 +20,7 @@ function TipsData:Clear()
   self.systemTipInfoCount_ = 0
   self.systemTipInfos_ = {}
   self.AcquireTipsInfos = {}
+  self.SpecialAcquireTipsInfos = {}
 end
 
 function TipsData:UnInit()
@@ -37,6 +39,19 @@ function TipsData:PopAcquireItemInfo()
   return nil
 end
 
+function TipsData:PushSpecialAcquireItemInfo(itemGetTipsData)
+  table.insert(self.SpecialAcquireTipsInfos, itemGetTipsData)
+end
+
+function TipsData:PopSpecialAcquireItemInfo()
+  if #self.SpecialAcquireTipsInfos > 0 then
+    local itemInfo = self.SpecialAcquireTipsInfos[1]
+    table.remove(self.SpecialAcquireTipsInfos, 1)
+    return itemInfo
+  end
+  return nil
+end
+
 function TipsData:AddItemTipsData(data)
   if data == nil then
     return 0
@@ -45,24 +60,24 @@ function TipsData:AddItemTipsData(data)
     data.tipsId = self.itemTipsId_
     self.itemTipsId_ = self.itemTipsId_ + 1
   end
-  if self.itemTipsDtas_[data.tipsId] then
-    self:doUpdate(self.itemTipsDtas_[data.tipsId], data)
+  if self.itemTipsDatas_[data.tipsId] then
+    self:doUpdate(self.itemTipsDatas_[data.tipsId], data)
   else
-    self.itemTipsDtas_[data.tipsId] = data
+    self.itemTipsDatas_[data.tipsId] = data
   end
   return data.tipsId
 end
 
 function TipsData:GetItemTipsData()
-  return self.itemTipsDtas_
+  return self.itemTipsDatas_
 end
 
 function TipsData:RemoveItemTipsData(tipsId)
-  self.itemTipsDtas_[tipsId] = nil
+  self.itemTipsDatas_[tipsId] = nil
 end
 
 function TipsData:ClearItemTipsData()
-  self.itemTipsDtas_ = {}
+  self.itemTipsDatas_ = {}
 end
 
 function TipsData:AddSystemTipInfo(infoType, id, content, placeholderParam)

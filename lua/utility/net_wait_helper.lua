@@ -12,7 +12,8 @@ E.WaitingType = {
   Rpc = 1,
   Sync = 2,
   Connecting = 3,
-  Switching = 4
+  Switching = 4,
+  Pandora = 5
 }
 Z.RpcErrorCode = ErrorCode
 local NetWaitHelper = class("NetWaitHelper")
@@ -21,6 +22,7 @@ local syncMsgIdDic_ = {}
 local worldConnectingTag_ = false
 local gatewayConnectingTag_ = false
 local sceneSwitchingTag_ = false
+local pandoraWaitingTag_ = false
 
 function NetWaitHelper.Init()
   NetWaitHelper.Clear()
@@ -33,6 +35,7 @@ function NetWaitHelper.Clear()
   worldConnectingTag_ = false
   gatewayConnectingTag_ = false
   sceneSwitchingTag_ = false
+  pandoraWaitingTag_ = false
 end
 
 function NetWaitHelper.RegisterRpcCallBack()
@@ -113,6 +116,15 @@ function NetWaitHelper.IsSwitching()
   return sceneSwitchingTag_
 end
 
+function NetWaitHelper.SetPandoraWaitingTag(isWaiting)
+  pandoraWaitingTag_ = isWaiting
+  NetWaitHelper.checkLoadingView()
+end
+
+function NetWaitHelper.IsPandoraWaiting()
+  return pandoraWaitingTag_
+end
+
 function NetWaitHelper.checkLoadingView()
   local isWaitMsg, waitingType = NetWaitHelper.isWaitMsg()
   if isWaitMsg then
@@ -135,6 +147,9 @@ function NetWaitHelper.isWaitMsg()
   end
   if NetWaitHelper.IsSwitching() then
     return true, E.WaitingType.Switching
+  end
+  if NetWaitHelper.IsPandoraWaiting() then
+    return true, E.WaitingType.Pandora
   end
   for k, v in pairs(rpcMsgIdDic_) do
     if next(v) ~= nil then
@@ -168,8 +183,8 @@ function NetWaitHelper.LogCurrentInfo()
   if syncMsgIdDicLog ~= "" then
     logError("[WAITING_TIPS]" .. syncMsgIdDicLog)
   end
-  if gatewayConnectingTag_ == true or worldConnectingTag_ == true or sceneSwitchingTag_ == true then
-    logError(string.zconcat("[WAITING_TIPS]GateWayConnectingTag=", tostring(gatewayConnectingTag_), ", WorldConnectingTag=", tostring(worldConnectingTag_), ", SceneSwitchingTag=", tostring(sceneSwitchingTag_)))
+  if gatewayConnectingTag_ == true or worldConnectingTag_ == true or sceneSwitchingTag_ == true or pandoraWaitingTag_ == true then
+    logError(string.zconcat("[WAITING_TIPS]GateWayConnectingTag=", tostring(gatewayConnectingTag_), ", WorldConnectingTag=", tostring(worldConnectingTag_), ", SceneSwitchingTag=", tostring(sceneSwitchingTag_), ", PandoraWaitingTag=", tostring(pandoraWaitingTag_)))
   end
 end
 

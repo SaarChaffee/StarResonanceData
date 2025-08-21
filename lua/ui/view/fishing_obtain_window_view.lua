@@ -18,7 +18,7 @@ function Fishing_obtain_windowView:OnActive()
     self.fishingVM_.FishingSuccessShowEnd()
   end)
   self:AddClick(self.uiBinder.btn_return, function()
-    self.fishingVM_.QuitFishingState(self.cancelSource:CreateToken())
+    self.fishingVM_.AsyncQuitFishingState(self.cancelSource:CreateToken())
     Z.UIMgr:CloseView("fishing_obtain_window")
   end)
   self.fishingVM_.ResetEntityAndUIVisible(true)
@@ -40,6 +40,8 @@ function Fishing_obtain_windowView:refreshUI()
     self.fishingData_.ShowLevelUp = false
   end
   local newRecord_ = typeCfg_.Infoshow == 1 and self.fishingData_.TargetFish.Size > 0 and self.fishingData_.TargetFish.Size > self.fishingData_.TargetFish.OldSizeRecord
+  self.uiBinder.img_newrecord:SetImage("ui/textures/fishing/fishing_lab_record")
+  self.uiBinder.img_new:SetImage("ui/textures/fishing/fishing_lab_new")
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_newrecord, newRecord_)
   local newUnLock_ = self.fishingData_.TargetFish.OldSizeRecord == -1
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_new, newUnLock_)
@@ -80,12 +82,16 @@ end
 
 function Fishing_obtain_windowView:playFishingSuccessTimeLine()
   local cutId = 50200101
-  local weaponState = self.fishingSettingData_:GetEntityTypeState(E.CamerasysShowEntityType.WeaponsAppearance)
+  local weaponState = self.fishingSettingData_:GetEntityTypeState(E.CameraSystemShowEntityType.WeaponsAppearance)
   local weaponHideState = -1
   if weaponState then
     weaponHideState = 0
   else
     weaponHideState = 1
+  end
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
   end
   Z.UITimelineDisplay:SetWeaponsHideState(weaponHideState)
   Z.UITimelineDisplay:AsyncPreLoadTimeline(cutId, self.cancelSource:CreateToken(), function()
@@ -100,7 +106,7 @@ end
 
 function Fishing_obtain_windowView:OnInputBack()
   if not self.fishingData_.IgnoreInputBack and self.IsResponseInput then
-    self.fishingVM_.QuitFishingState(self.cancelSource:CreateToken())
+    self.fishingVM_.AsyncQuitFishingState(self.cancelSource:CreateToken())
     Z.UIMgr:CloseView("fishing_obtain_window")
   end
 end

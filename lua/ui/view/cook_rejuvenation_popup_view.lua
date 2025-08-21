@@ -33,15 +33,15 @@ function Cook_rejuvenation_popupView:initBtns()
     self.cookVM_:CloseCookRejuvenationPopup()
   end)
   self:AddAsyncClick(self.affirmBinder_.btn, function()
-    self.itemsVM_.AsyncUseItemByConfigId(self.recoverConfigId_, self.cancelSource:CreateToken(), self.curNum_)
+    if self.curNum_ > 0 then
+      self.itemsVM_.AsyncUseItemByConfigId(self.recoverConfigId_, self.cancelSource:CreateToken(), self.curNum_)
+    end
     self.cookVM_:CloseCookRejuvenationPopup()
   end)
   self:AddClick(self.addBtn_, function()
-    if self.isMax_ then
-      Z.TipsVM.ShowTips(1002006)
-      return
+    if self:checkWhetherAdd() then
+      self:add()
     end
-    self:add()
   end)
   self:AddClick(self.minusBtn_, function()
     if self.isMin_ then
@@ -50,11 +50,9 @@ function Cook_rejuvenation_popupView:initBtns()
     self:minus()
   end)
   self:AddClick(self.maxBtn_, function()
-    if self.isMax_ then
-      Z.TipsVM.ShowTips(1002006)
-      return
+    if self:checkWhetherAdd() then
+      self:max()
     end
-    self:max()
   end)
   self:AddClick(self.numBtn_, function()
     self:num()
@@ -75,7 +73,7 @@ function Cook_rejuvenation_popupView:OnActive()
   if craftEnergyTableRow then
     self.curCount_ = self.itemsVM_.GetItemTotalCount(E.CurrencyType.Vitality)
     self.recoverConfigId_ = craftEnergyTableRow.RecoverItemId[1]
-    local userCount = self.itemsVM_.GetItemTotalCount(self.recoverConfigId_)
+    self.consumeItemCount_ = self.itemsVM_.GetItemTotalCount(self.recoverConfigId_)
     self.upLimit_ = craftEnergyTableRow.UpLimit
     self.recoverCount_ = craftEnergyTableRow.RecoverItemId[2]
     self.lab_before_.text = self.curCount_ .. " / " .. self.upLimit_
@@ -83,23 +81,37 @@ function Cook_rejuvenation_popupView:OnActive()
       uiBinder = self.item_,
       configId = self.recoverConfigId_,
       labType = E.ItemLabType.Str,
-      isSquareItem = true
+      isSquareItem = true,
+      lab = self.consumeItemCount_
     })
     local itemRow = Z.TableMgr.GetRow("ItemTableMgr", self.recoverConfigId_)
     if itemRow then
       self.icon_:SetImage(itemRow.Icon)
     end
-    self.maxCount_ = math.floor((self.upLimit_ - self.curCount_) / self.recoverCount_)
-    if userCount < self.maxCount_ then
-      self.maxCount_ = userCount
+    self.needConsumeCount_ = math.max(0, math.floor((self.upLimit_ - self.curCount_) / self.recoverCount_))
+    self.maxCount_ = self.needConsumeCount_
+    if self.consumeItemCount_ < self.maxCount_ then
+      self.maxCount_ = self.consumeItemCount_
     end
-    self.minCount_ = 0
-    self.slider_.minValue = self.minCount_
+    self.slider_.minValue = 0
     self.slider_.maxValue = self.maxCount_
     self.isMax_ = 0 == self.maxCount_
-    self.isMin_ = 0 == self.minCount_
+    self.isMin_ = 0 == 0
     self.slider_.value = 0
+    self.curNum_ = 0
   end
+end
+
+function Cook_rejuvenation_popupView:checkWhetherAdd()
+  if self.isMax_ then
+    if self.needConsumeCount_ == 0 or self.needConsumeCount_ <= self.consumeItemCount_ then
+      Z.TipsVM.ShowTips(1002006)
+    else
+      Z.TipsVM.ShowTips(100002)
+    end
+    return false
+  end
+  return true
 end
 
 function Cook_rejuvenation_popupView:updateNumData(num)
@@ -108,11 +120,10 @@ function Cook_rejuvenation_popupView:updateNumData(num)
     return
   end
   self.isMax_ = num == self.maxCount_
-  self.isMin_ = num == self.minCount_
+  self.isMin_ = num == 0
   self.numLab_.text = num
   self.curNum_ = num
   self.lab_after_.text = Z.RichTextHelper.ApplyColorTag(self.curNum_ * self.recoverCount_ + self.curCount_, "#DBFF00") .. " / " .. self.upLimit_
-  self.itemClass_:SetLab(self.curNum_)
 end
 
 function Cook_rejuvenation_popupView:add()

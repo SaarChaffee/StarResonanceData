@@ -24,11 +24,6 @@ function QuestionnaireData:ResetData()
   self.questionnaireInfos_ = {}
 end
 
-function QuestionnaireData:GetQuestionnaireConfig(id)
-  local questionnaireTableMgr = Z.TableMgr.GetTable("QuestionnaireTableMgr")
-  return questionnaireTableMgr.GetRow(id)
-end
-
 function QuestionnaireData:SyncContainerData(containerData)
   self.questionnaireInfos_ = containerData
 end

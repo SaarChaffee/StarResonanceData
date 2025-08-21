@@ -56,7 +56,7 @@ function AlbumPhotoItem:localPhotoGet(path)
 end
 
 function AlbumPhotoItem:httpPhotoGet(url)
-  self.albumMainVM_.AsyncGetHttpAlbumPhoto(url, E.PictureType.ECameraThumbnail, E.NativeTextureCallToken.album_photo_item, self.OnCallback, self)
+  self.albumMainVM_.AsyncGetHttpAlbumPhoto(url, E.PictureType.ECameraThumbnail, E.NativeTextureCallToken.album_photo_item, self.parent.uiView.cancelSource, self.OnCallback, self)
 end
 
 function AlbumPhotoItem:OnCallback(photoId)
@@ -86,15 +86,7 @@ function AlbumPhotoItem:OnReset()
 end
 
 function AlbumPhotoItem:CheckIndexData(selectAlbumPhotoId)
-  if type(self.parent.uiView.viewData) == "table" and self.parent.uiView.viewData.source and self.parent.uiView.viewData.source == E.AlbumOpenSource.Personal then
-    local selectPersonalzoneData = self.personalzoneData_:GetShowPhoto()
-    for _, photo in pairs(selectPersonalzoneData) do
-      if photo == selectAlbumPhotoId then
-        self.parent:SetSelected(self.component.Index)
-        return true
-      end
-    end
-  elseif type(self.parent.uiView.viewData) == "table" and self.parent.uiView.viewData.source and self.parent.uiView.viewData.source == E.AlbumOpenSource.Union then
+  if type(self.parent.uiView.viewData) == "table" and self.parent.uiView.viewData.source and self.parent.uiView.viewData.source == E.AlbumOpenSource.Union then
     if self.albumMainData_.SelectedUnionAlbumPhoto and selectAlbumPhotoId == self.albumMainData_.SelectedUnionAlbumPhoto.id then
       self.parent:SetSelected(self.component.Index)
       return true
@@ -136,21 +128,14 @@ function AlbumPhotoItem:onItemSelect(isSelected)
   self.isSelected_ = isSelected
   self.uiBinder.Ref:SetVisible(self.uiBinder.selected_node, self.isSelected_)
   if self.isSelected_ then
+    local selectedNum = self.albumMainData_:GetSelectedAlbumNumber()
+    if selectedNum >= Z.Global.PhotoAlbumUploadMaxAmount then
+      Z.TipsVM.ShowTips(1000052)
+      self.parent:SetUnSelected(self.component.Index)
+      return
+    end
     if type(self.parent.uiView.viewData) == "table" and self.parent.uiView.viewData.source then
-      if self.parent.uiView.viewData.source == E.AlbumOpenSource.Personal and not self.personalzoneData_:IsContainPhotoId(self.itemData_.id) then
-        local index = self.personalzoneData_:GetEmptyPhotoIndex()
-        if index == -1 then
-          self.parent:SetUnSelected(self.component.Index)
-        elseif self.itemData_.reviewStartTime then
-          if self.itemData_.reviewStartTime == E.PictureReviewType.Reviewing then
-            Z.TipsVM.ShowTipsLang(1000039)
-          elseif self.itemData_.reviewStartTime == E.PictureReviewType.Fail then
-            Z.TipsVM.ShowTipsLang(1000040)
-          else
-            self.personalzoneData_:SetShowPhoto(index, self.itemData_.id)
-          end
-        end
-      elseif self.parent.uiView.viewData.source == E.AlbumOpenSource.Union then
+      if self.parent.uiView.viewData.source == E.AlbumOpenSource.Union then
         if not self.albumMainVM_.CheckUnionPlayerPower(E.UnionPowerDef.SetCover) then
           self.uiBinder.Ref:SetVisible(self.uiBinder.selected_node, false)
           return
@@ -161,7 +146,6 @@ function AlbumPhotoItem:onItemSelect(isSelected)
           return
         end
         self.albumMainData_.SelectedUnionAlbumPhoto = self.itemData_
-        self.albumMainData_:AddSelectedAlbumPhoto(self.itemData_)
       elseif self.parent.uiView.viewData.source == E.AlbumOpenSource.UnionElectronicScreen then
         if not self.albumMainVM_.CheckUnionPlayerPower(E.UnionPowerDef.SetEScreenPhoto) then
           self.uiBinder.Ref:SetVisible(self.uiBinder.selected_node, false)
@@ -175,32 +159,25 @@ function AlbumPhotoItem:onItemSelect(isSelected)
           return
         end
         self.albumMainData_:AddUnionElectronicScreenSelectedPhoto(self.itemData_.id)
-        self.albumMainData_:AddSelectedAlbumPhoto(self.itemData_)
-      else
-        self.albumMainData_:AddSelectedAlbumPhoto(self.itemData_)
       end
-    else
-      self.albumMainData_:AddSelectedAlbumPhoto(self.itemData_)
     end
-  elseif type(self.parent.uiView.viewData) == "table" and self.parent.uiView.viewData.source then
-    if self.parent.uiView.viewData.source == E.AlbumOpenSource.Personal then
-      self.personalzoneData_:RemoveShowPhoto(self.itemData_.id)
-    elseif self.parent.uiView.viewData.source == E.AlbumOpenSource.Union then
-      if not self.albumMainVM_.CheckUnionPlayerPower(E.UnionPowerDef.SetCover) then
-        self.uiBinder.Ref:SetVisible(self.uiBinder.selected_node, false)
-        return
-      end
-      self.albumMainData_:DeleteSelectedAlbumPhoto(self.itemData_.id)
-      self.albumMainData_.SelectedUnionAlbumPhoto = nil
-    elseif self.parent.uiView.viewData.source == E.AlbumOpenSource.UnionElectronicScreen then
-      if not self.albumMainVM_.CheckUnionPlayerPower(E.UnionPowerDef.SetEScreenPhoto) then
-        self.uiBinder.Ref:SetVisible(self.uiBinder.selected_node, false)
-        return
-      end
-      self.albumMainData_:DeleteSelectedAlbumPhoto(self.itemData_.id)
-      self.albumMainData_:DeleteUnionElectronicScreenSelectedPhoto(self.itemData_.id)
-    end
+    self.albumMainData_:AddSelectedAlbumPhoto(self.itemData_)
   else
+    if type(self.parent.uiView.viewData) == "table" and self.parent.uiView.viewData.source then
+      if self.parent.uiView.viewData.source == E.AlbumOpenSource.Union then
+        if not self.albumMainVM_.CheckUnionPlayerPower(E.UnionPowerDef.SetCover) then
+          self.uiBinder.Ref:SetVisible(self.uiBinder.selected_node, false)
+          return
+        end
+        self.albumMainData_.SelectedUnionAlbumPhoto = nil
+      elseif self.parent.uiView.viewData.source == E.AlbumOpenSource.UnionElectronicScreen then
+        if not self.albumMainVM_.CheckUnionPlayerPower(E.UnionPowerDef.SetEScreenPhoto) then
+          self.uiBinder.Ref:SetVisible(self.uiBinder.selected_node, false)
+          return
+        end
+        self.albumMainData_:DeleteUnionElectronicScreenSelectedPhoto(self.itemData_.id)
+      end
+    end
     self.albumMainData_:DeleteSelectedAlbumPhoto(self.itemData_.id)
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Album.UpdateSelectNumber)

@@ -1,21 +1,48 @@
 local QualityGradeSetting = Panda.Utility.Quality.QualityGradeSetting
-local settingTbl = Z.TableMgr.GetTable("SettingsTableMgr")
 local settingData = Z.DataMgr.Get("setting_data")
+local EQualityGrade = Panda.Utility.Quality.EQualityGrade
 local lensCompensateIds_ = {
-  [E.SettingID.CameraTemplate] = 21,
-  [E.SettingID.PitchAngleCorrection] = 22,
-  [E.SettingID.BattleZoomCorrection] = 23,
-  [E.SettingID.BattlePitchAngkeCorrection] = 26
+  [E.SettingID.CameraTemplate] = {21},
+  [E.SettingID.PitchAngleCorrection] = {22},
+  [E.SettingID.BattleZoomCorrection] = {23},
+  [E.SettingID.BattlePitchAngkeCorrection] = {26},
+  [E.SettingID.CameraTranslationRotate] = {20},
+  [E.SettingID.CameraReleasingSkill] = {28},
+  [E.SettingID.CameraReleasingSkillAngle] = {30, 31},
+  [E.SettingID.CameraSeek] = {32},
+  [E.SettingID.CameraMelee] = {
+    7,
+    8,
+    24,
+    25
+  }
 }
-local openSettingView = function()
-  Z.UIMgr:OpenView("setting")
+local openSettingView = function(showFuncs, firstFunc)
+  Z.UIMgr:OpenView("setting", {showFuncs = showFuncs, firstFunc = firstFunc})
 end
 local closeSettingView = function()
   Z.UIMgr:CloseView("setting")
 end
+local closeSettingPopupView = function()
+  Z.UIMgr:CloseView("setting_popup")
+end
+local getSettingPopupViewShowed = function()
+  local showed = Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Device, "SettingPopupViewShowed", 0)
+  return 0 < showed
+end
+local setSettingPopupViewShowed = function()
+  Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Device, "SettingPopupViewShowed", 1)
+end
+local openSettingPopupView = function()
+  if getSettingPopupViewShowed() then
+    return
+  end
+  setSettingPopupViewShowed()
+  Z.UIMgr:OpenView("setting_popup")
+end
 local asyncSaveSetting = function(setData)
-  local npcProxy = require("zproxy.world_proxy")
-  npcProxy.SaveSetting(setData)
+  local worldProxy = require("zproxy.world_proxy")
+  worldProxy.SaveSetting(setData)
 end
 local setInt = function(id, value)
   local valueType = type(value)
@@ -33,43 +60,67 @@ local setInt = function(id, value)
   end
   local row
   if 0 <= id then
+    local settingTbl = Z.TableMgr.GetTable("SettingsTableMgr")
     row = settingTbl.GetRow(id)
   end
   if row then
-    if row.DataStorage == settingData.DataStorage.clientData then
-      Z.LocalUserDataMgr.SetInt("BKL_SETID_" .. id, newValue)
-    elseif row.DataStorage == settingData.DataStorage.onlyClinetData then
-      Z.LocalUserDataMgr.SetInt("BKL_SETID_" .. id, newValue, 0, true)
-    elseif row.DataStorage == settingData.DataStorage.serverData then
-      local npcProxy = require("zproxy.world_proxy")
-      npcProxy.SaveSetting({
+    if row.DataStorage == settingData.DataStorage.ClientDeviceData then
+      Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Device, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientEnvData then
+      Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Env, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientAccountData then
+      Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Account, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientCharacterData then
+      Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Character, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ServerData then
+      local worldProxy = require("zproxy.world_proxy")
+      worldProxy.SaveSetting({
         [id] = tostring(newValue)
       })
     end
   else
-    Z.LocalUserDataMgr.SetInt("BKL_CUSTOM_SETID_" .. id, newValue)
+    Z.LocalUserDataMgr.SetIntByLua(E.LocalUserDataType.Device, "BKL_CUSTOM_SETID_" .. id, newValue)
   end
 end
 local getInt = function(id)
   local row
   if 0 <= id then
+    local settingTbl = Z.TableMgr.GetTable("SettingsTableMgr")
     row = settingTbl.GetRow(id)
   end
   if row then
-    local defaultValue = Mathf.Round(tonumber(row.Value))
+    local defaultValue = 0
+    local rowValue = tonumber(row.Value)
+    if rowValue then
+      defaultValue = Mathf.Round(rowValue)
+    else
+      local idArrays = string.split(row.Value, "=")
+      if idArrays and #idArrays == 2 then
+        if Z.GameContext.IsPC then
+          rowValue = tonumber(idArrays[1])
+        else
+          rowValue = tonumber(idArrays[2])
+        end
+      end
+    end
+    if rowValue then
+      defaultValue = Mathf.Round(rowValue)
+    end
     local value = defaultValue
-    if row.DataStorage == settingData.DataStorage.clientData then
-      local key = "BKL_SETID_" .. id
-      value = Z.LocalUserDataMgr.GetInt(key, defaultValue)
-    elseif row.DataStorage == settingData.DataStorage.onlyClinetData then
-      local key = "BKL_SETID_" .. id
-      value = Z.LocalUserDataMgr.GetInt(key, defaultValue, 0, true)
-    elseif row.DataStorage == settingData.DataStorage.serverData and Z.ContainerMgr.CharSerialize.settingData.settingMap[id] then
+    if row.DataStorage == settingData.DataStorage.ClientDeviceData then
+      value = Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Device, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientEnvData then
+      value = Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Env, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientAccountData then
+      value = Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Account, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientCharacterData then
+      value = Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Character, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ServerData and Z.ContainerMgr.CharSerialize.settingData.settingMap[id] then
       value = Mathf.Round(tonumber(Z.ContainerMgr.CharSerialize.settingData.settingMap[id]))
     end
     return value
   else
-    return Z.LocalUserDataMgr.GetInt("BKL_CUSTOM_SETID_" .. id, -99999)
+    return Z.LocalUserDataMgr.GetIntByLua(E.LocalUserDataType.Device, "BKL_CUSTOM_SETID_" .. id, -99999)
   end
 end
 local getBoolean = function(id)
@@ -89,41 +140,51 @@ local setFloat = function(id, value)
   end
   local row
   if 0 <= id then
+    local settingTbl = Z.TableMgr.GetTable("SettingsTableMgr")
     row = settingTbl.GetRow(id)
   end
   if row then
-    if row.DataStorage == settingData.DataStorage.clientData then
-      Z.LocalUserDataMgr.SetFloat("BKL_SETID_" .. id, newValue)
-    elseif row.DataStorage == settingData.DataStorage.onlyClinetData then
-      Z.LocalUserDataMgr.SetFloat("BKL_SETID_" .. id, newValue, 0, true)
-    elseif row.DataStorage == settingData.DataStorage.serverData then
-      local npcProxy = require("zproxy.world_proxy")
-      npcProxy.SaveSetting({
+    if row.DataStorage == settingData.DataStorage.ClientDeviceData then
+      Z.LocalUserDataMgr.SetFloatByLua(E.LocalUserDataType.Device, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientEnvData then
+      Z.LocalUserDataMgr.SetFloatByLua(E.LocalUserDataType.Env, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientAccountData then
+      Z.LocalUserDataMgr.SetFloatByLua(E.LocalUserDataType.Account, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientCharacterData then
+      Z.LocalUserDataMgr.SetFloatByLua(E.LocalUserDataType.Character, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ServerData then
+      local worldProxy = require("zproxy.world_proxy")
+      worldProxy.SaveSetting({
         [id] = tostring(newValue)
       })
     end
   else
-    Z.LocalUserDataMgr.SetFloat("BKL_CUSTOM_SETID_" .. id, newValue)
+    Z.LocalUserDataMgr.SetFloatByLua(E.LocalUserDataType.Device, "BKL_CUSTOM_SETID_" .. id, newValue)
   end
 end
 local getFloat = function(id)
   local row
   if 0 <= id then
+    local settingTbl = Z.TableMgr.GetTable("SettingsTableMgr")
     row = settingTbl.GetRow(id)
   end
   if row then
     local defaultValue = tonumber(row.Value)
     local value = defaultValue
-    if row.DataStorage == settingData.DataStorage.clientData then
-      value = Z.LocalUserDataMgr.GetFloat("BKL_SETID_" .. id, defaultValue)
-    elseif row.DataStorage == settingData.DataStorage.onlyClinetData then
-      value = Z.LocalUserDataMgr.GetFloat("BKL_SETID_" .. id, defaultValue, 0, true)
-    elseif row.DataStorage == settingData.DataStorage.serverData and Z.ContainerMgr.CharSerialize.settingData.settingMap[id] then
+    if row.DataStorage == settingData.DataStorage.ClientDeviceData then
+      value = Z.LocalUserDataMgr.GetFloatByLua(E.LocalUserDataType.Device, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientEnvData then
+      value = Z.LocalUserDataMgr.GetFloatByLua(E.LocalUserDataType.Env, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientAccountData then
+      value = Z.LocalUserDataMgr.GetFloatByLua(E.LocalUserDataType.Account, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientCharacterData then
+      value = Z.LocalUserDataMgr.GetFloatByLua(E.LocalUserDataType.Character, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ServerData and Z.ContainerMgr.CharSerialize.settingData.settingMap[id] then
       value = tonumber(Z.ContainerMgr.CharSerialize.settingData.settingMap[id])
     end
     return value
   else
-    return Z.LocalUserDataMgr.GetFloat("BKL_CUSTOM_SETID_" .. id, -99999.0)
+    return Z.LocalUserDataMgr.GetFloatByLua(E.LocalUserDataType.Device, "BKL_CUSTOM_SETID_" .. id, -99999.0)
   end
 end
 local setString = function(id, value)
@@ -139,50 +200,60 @@ local setString = function(id, value)
   end
   local row
   if 0 <= id then
+    local settingTbl = Z.TableMgr.GetTable("SettingsTableMgr")
     row = settingTbl.GetRow(id)
   end
   if row then
-    if row.DataStorage == settingData.DataStorage.clientData then
-      Z.LocalUserDataMgr.SetString("BKL_SETID_" .. id, newValue)
-    elseif row.DataStorage == settingData.DataStorage.onlyClinetData then
-      Z.LocalUserDataMgr.SetString("BKL_SETID_" .. id, newValue, 0, true)
-    elseif row.DataStorage == settingData.DataStorage.serverData then
-      local npcProxy = require("zproxy.world_proxy")
-      npcProxy.SaveSetting({
+    if row.DataStorage == settingData.DataStorage.ClientDeviceData then
+      Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Device, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientEnvData then
+      Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Env, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientAccountData then
+      Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Account, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientCharacterData then
+      Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Character, "BKL_SETID_" .. id, newValue)
+    elseif row.DataStorage == settingData.DataStorage.ServerData then
+      local worldProxy = require("zproxy.world_proxy")
+      worldProxy.SaveSetting({
         [id] = newValue
       })
     end
   else
-    Z.LocalUserDataMgr.SetString("BKL_CUSTOM_SETID_" .. id, newValue)
+    Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Device, "BKL_CUSTOM_SETID_" .. id, newValue)
   end
 end
 local getString = function(id)
   local row
   if 0 <= id then
+    local settingTbl = Z.TableMgr.GetTable("SettingsTableMgr")
     row = settingTbl.GetRow(id)
   end
   if row then
     local defaultValue = row.Value
     local value = defaultValue
-    if row.DataStorage == settingData.DataStorage.clientData then
-      value = Z.LocalUserDataMgr.GetString("BKL_SETID_" .. id, defaultValue)
-    elseif row.DataStorage == settingData.DataStorage.onlyClinetData then
-      value = Z.LocalUserDataMgr.GetString("BKL_SETID_" .. id, defaultValue, 0, true)
-    elseif row.DataStorage == settingData.DataStorage.serverData then
+    if row.DataStorage == settingData.DataStorage.ClientDeviceData then
+      value = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Device, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientEnvData then
+      value = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Env, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientAccountData then
+      value = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Account, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ClientCharacterData then
+      value = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Character, "BKL_SETID_" .. id, defaultValue)
+    elseif row.DataStorage == settingData.DataStorage.ServerData then
       value = Z.ContainerMgr.CharSerialize.settingData.settingMap[id] or ""
     end
     return value
   else
-    return Z.LocalUserDataMgr.GetString("BKL_CUSTOM_SETID_" .. id, "")
+    return Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Device, "BKL_CUSTOM_SETID_" .. id, "")
   end
 end
 local setGrade = function(id, value)
   local dataNumber = value.ShadowGrade * 10000 + value.PostEffectGrade * 1000 + value.SceneDetailGrade * 100 + value.CharDetailGrade * 10 + value.EffectEffectGrade
   local str = tostring(dataNumber)
-  Z.LocalUserDataMgr.SetString("BKL_SETID_QUALITY_", str)
+  Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Character, "BKL_SETID_QUALITY_", str)
 end
 local getGrade = function(id)
-  local str = Z.LocalUserDataMgr.GetString("BKL_SETID_QUALITY_", "")
+  local str = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Character, "BKL_SETID_QUALITY_", "")
   if str ~= "" then
     local dataNumber = tonumber(str)
     return {
@@ -199,6 +270,7 @@ local SettingFunctionConfig = {
   [E.SettingID.EffEnemy] = {get = getString, set = setString},
   [E.SettingID.EffTeammate] = {get = getString, set = setString},
   [E.SettingID.EffOther] = {get = getString, set = setString},
+  [E.SettingID.EffectRest] = {get = getString, set = setString},
   [E.SettingID.HorizontalSensitivity] = {get = getFloat, set = setFloat},
   [E.SettingID.VerticalSensitivity] = {get = getFloat, set = setFloat},
   [E.SettingID.Master] = {get = getFloat, set = setFloat},
@@ -207,6 +279,8 @@ local SettingFunctionConfig = {
   [E.SettingID.Voice] = {get = getFloat, set = setFloat},
   [E.SettingID.System] = {get = getFloat, set = setFloat},
   [E.SettingID.P3] = {get = getFloat, set = setFloat},
+  [E.SettingID.PlayerVoiceReceptionVolume] = {get = getFloat, set = setFloat},
+  [E.SettingID.PlayerVoiceTransmissionVolume] = {get = getFloat, set = setFloat},
   [E.SettingID.LockOpen] = {get = getBoolean, set = setInt},
   [E.SettingID.CameraLockFirst] = {get = getBoolean, set = setInt},
   [E.SettingID.GlideDirectionCtrl] = {get = getInt, set = setInt},
@@ -214,6 +288,15 @@ local SettingFunctionConfig = {
   [E.SettingID.KeyHint] = {get = getBoolean, set = setInt},
   [E.SettingID.CameraSeismicScreen] = {get = getBoolean, set = setInt},
   [E.SettingID.PulseScreen] = {get = getBoolean, set = setInt},
+  [E.SettingID.SkillController] = {get = getBoolean, set = setInt},
+  [E.SettingID.SkillControllerPcUp] = {get = getInt, set = setInt},
+  [E.SettingID.CameraMove] = {get = getBoolean, set = setInt},
+  [E.SettingID.CameraTranslationRotate] = {get = getBoolean, set = setInt},
+  [E.SettingID.CameraReleasingSkill] = {get = getBoolean, set = setInt},
+  [E.SettingID.CameraReleasingSkillAngle] = {get = getBoolean, set = setInt},
+  [E.SettingID.CameraSeek] = {get = getBoolean, set = setInt},
+  [E.SettingID.CameraMelee] = {get = getBoolean, set = setInt},
+  [E.SettingID.RemoveMouseRestrictions] = {get = getBoolean, set = setInt},
   [E.ClientSettingID.Grade] = {get = getGrade, set = setGrade},
   [E.ClientSettingID.AutoPlay] = {get = getBoolean, set = setInt},
   [E.SettingID.CameraTemplate] = {get = getBoolean, set = setInt},
@@ -225,7 +308,11 @@ local SettingFunctionConfig = {
   [E.SettingID.WeaponDisplay] = {get = getBoolean, set = setInt},
   [E.SettingID.PlayerHeadInformation] = {get = getString, set = setString},
   [E.SettingID.OtherPlayerHeadInformation] = {get = getString, set = setString},
-  [E.SettingID.NPCPlayerHeadInformation] = {get = getString, set = setString}
+  [E.SettingID.NPCPlayerHeadInformation] = {get = getString, set = setString},
+  [E.SettingID.ShowTaskEffect] = {get = getBoolean, set = setInt},
+  [E.SettingID.ToyVisible] = {get = getInt, set = setInt},
+  [E.SettingID.HudNumberClose] = {get = getBoolean, set = setInt},
+  [E.SettingID.HudNumberSimple] = {get = getBoolean, set = setInt}
 }
 local set = function(id, value)
   local setFunc
@@ -276,7 +363,7 @@ local getAllLensCompensateId = function()
 end
 local convertEnumToVFXLevel = function(vfxIndexEnum)
   local settingData = Z.DataMgr.Get("setting_data")
-  if Z.IsPCUI then
+  if Z.GameContext.IsPC then
     return settingData.VFXIndexMapPC[vfxIndexEnum]
   else
     return settingData.VFXIndexMapMobile[vfxIndexEnum]
@@ -286,33 +373,104 @@ local getVFXLevelEnum = function(settingId)
   local valueIndex
   local settingData = Z.DataMgr.Get("setting_data")
   local vfxMap
-  if Z.IsPCUI then
+  if Z.GameContext.IsPC then
     vfxMap = settingData.VFXIndexMapPC
   else
     vfxMap = settingData.VFXIndexMapMobile
   end
   local settingValue = get(settingId)
   local vfxLevelIndex = tonumber(settingValue)
+  local useDefault = false
   if vfxLevelIndex then
     valueIndex = vfxLevelIndex
   else
-    local idArray = string.split(settingValue, "=")
-    if idArray and 0 < #idArray then
-      if Z.IsPCUI then
-        valueIndex = tonumber(idArray[1])
-      else
-        valueIndex = tonumber(idArray[2])
-      end
+    local grade = QualityGradeSetting.QualityGrade
+    grade = (grade:ToInt() < EQualityGrade.ELow:ToInt() or grade:ToInt() > EQualityGrade.ECustom:ToInt()) and EQualityGrade.EVeryHigh or grade
+    local idArrays = string.split(settingValue, "|")
+    if idArrays and 0 < #idArrays then
+      local idArrayString = Z.GameContext.IsPC and idArrays[1] or idArrays[2]
+      local idArray = string.split(idArrayString, "=")
+      valueIndex = tonumber(idArray[grade:ToInt() + 1])
     end
+    useDefault = true
   end
   if valueIndex then
     for k, v in pairs(vfxMap) do
       if v == valueIndex then
-        return k
+        return k, useDefault
       end
     end
   end
-  return E.SettingVFXLevel.Normal
+  return E.SettingVFXLevel.Normal, useDefault
+end
+local imageQualityChanged = function()
+  local vfxMap
+  if Z.GameContext.IsPC then
+    vfxMap = settingData.VFXIndexMapPC
+  else
+    vfxMap = settingData.VFXIndexMapMobile
+  end
+  local grade = QualityGradeSetting.QualityGrade
+  grade = (grade:ToInt() < EQualityGrade.ELow:ToInt() or grade:ToInt() > EQualityGrade.ECustom:ToInt()) and EQualityGrade.EVeryHigh or grade
+  if grade:ToInt() == EQualityGrade.ECustom:ToInt() then
+    return
+  end
+  for k, v in pairs(settingData.SettingImageQuality2Effects) do
+    local settingID = v
+    local settingTbl = Z.TableMgr.GetTable("SettingsTableMgr")
+    local row = settingTbl.GetRow(settingID)
+    local idArrays = string.split(row.Value, "|")
+    local settingVFXLevel = E.SettingVFXLevel.Normal
+    if idArrays and 0 < #idArrays then
+      local idArrayString = Z.GameContext.IsPC and idArrays[1] or idArrays[2]
+      local idArray = string.split(idArrayString, "=")
+      local valueIndex = tonumber(idArray[grade:ToInt() + 1])
+      for k, v in pairs(vfxMap) do
+        if v == valueIndex then
+          settingVFXLevel = k
+        end
+      end
+    end
+    local level = convertEnumToVFXLevel(settingVFXLevel)
+    set(settingID, level)
+  end
+  Z.LuaBridge.ImportEffectLimitGradeConf()
+end
+local getSwitchIsOn = function(id)
+  local settingData = Z.DataMgr.Get("setting_data")
+  local settingCfg = Z.TableMgr.GetTable("SettingsTableMgr").GetRow(id)
+  local localSaveType = E.LocalUserDataType.Device
+  if settingCfg and settingCfg.DataStorage then
+    if settingCfg.DataStorage == settingData.DataStorage.ClientDeviceData then
+      localSaveType = E.LocalUserDataType.Device
+    elseif settingCfg.DataStorage == settingData.DataStorage.ClientEnvData then
+      localSaveType = E.LocalUserDataType.Env
+    elseif settingCfg.DataStorage == settingData.DataStorage.ClientAccountData then
+      localSaveType = E.LocalUserDataType.Account
+    elseif settingCfg.DataStorage == settingData.DataStorage.ClientCharacterData then
+      localSaveType = E.LocalUserDataType.Character
+    end
+  end
+  return Z.LocalUserDataMgr.GetIntByLua(localSaveType, string.format(Z.ConstValue.UserSetting.ConstStrSwitchGetInt, id), 1) == 1
+end
+local setSwitchIsOn = function(id, val)
+  local settingData = Z.DataMgr.Get("setting_data")
+  local settingCfg = Z.TableMgr.GetTable("SettingsTableMgr").GetRow(id)
+  local localSaveType = E.LocalUserDataType.Device
+  if settingCfg and settingCfg.DataStorage then
+    if settingCfg.DataStorage == settingData.DataStorage.ClientDeviceData then
+      localSaveType = E.LocalUserDataType.Device
+    elseif settingCfg.DataStorage == settingData.DataStorage.ClientEnvData then
+      localSaveType = E.LocalUserDataType.Env
+    elseif settingCfg.DataStorage == settingData.DataStorage.ClientAccountData then
+      localSaveType = E.LocalUserDataType.Account
+    elseif settingCfg.DataStorage == settingData.DataStorage.ClientCharacterData then
+      localSaveType = E.LocalUserDataType.Character
+    end
+  end
+  local settingData_ = Z.DataMgr.Get("setting_data")
+  local tag = val and settingData_.CanOpen.open or settingData_.CanOpen.close
+  Z.LocalUserDataMgr.SetIntByLua(localSaveType, string.format(Z.ConstValue.UserSetting.ConstStrSwitchGetInt, id), tag)
 end
 local ret = {
   OpenSettingView = openSettingView,
@@ -325,6 +483,12 @@ local ret = {
   GetLensCompensateId = getLensCompensateId,
   GetAllLensCompensateId = getAllLensCompensateId,
   ConvertEnumToVFXLevel = convertEnumToVFXLevel,
-  GetVFXLevelEnum = getVFXLevelEnum
+  GetVFXLevelEnum = getVFXLevelEnum,
+  ImageQualityChanged = imageQualityChanged,
+  CloseSettingPopupView = closeSettingPopupView,
+  OpenSettingPopupView = openSettingPopupView,
+  SetSettingPopupViewShowed = setSettingPopupViewShowed,
+  GetSwitchIsOn = getSwitchIsOn,
+  SetSwitchIsOn = setSwitchIsOn
 }
 return ret

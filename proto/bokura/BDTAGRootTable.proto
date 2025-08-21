@@ -12,8 +12,6 @@ message BDTAGRootTableBase {
     int32 SkillLevel = 1667;
     string_array TagPath = 488;
 }
-
 message BDTAGRootTableMgr {
-    map<int32, .bokura.BDTAGRootTableBase> datas = 1;
+    repeated bokura.BDTAGRootTableMgr.DatasEntry datas = 1;
 }
-

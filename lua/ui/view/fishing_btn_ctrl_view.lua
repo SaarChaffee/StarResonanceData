@@ -8,17 +8,18 @@ function Fishing_btn_ctrlView:ctor(parent)
   self.fishingVM = Z.VMMgr.GetVM("fishing")
   self.fishingData = Z.DataMgr.Get("fishing_data")
   self.longPressTimer = nil
-  self.isClicking_ = false
   self.uiBinder = nil
   self.fishingIconPath = {
-    [E.FishingBtnIconType.CastFishingRod] = "ui/atlas/skill/fishing_icon_prompt",
-    [E.FishingBtnIconType.HarvestingRod] = "ui/atlas/skill/fishing_icon_harvest",
-    [E.FishingBtnIconType.HookingUp] = "ui/atlas/skill/fishing_icon_bait"
+    [E.FishingBtnIconType.CastFishingRod] = "ui/atlas/fishing/fishing_icon_prompt",
+    [E.FishingBtnIconType.HarvestingRod] = "ui/atlas/fishing/fishing_icon_harvest",
+    [E.FishingBtnIconType.HookingUp] = "ui/atlas/fishing/fishing_icon_bait"
   }
   
   function self.onDownEvent(inputActionEventData)
-    self.isClicking_ = true
     if self.uiBinder == nil then
+      return
+    end
+    if not Z.MouseMgr.IsMouseLock and Z.IsPCUI then
       return
     end
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, true)
@@ -28,8 +29,10 @@ function Fishing_btn_ctrlView:ctor(parent)
   end
   
   function self.onUpEvent(inputActionEventData)
-    self.isClicking_ = false
     if self.uiBinder == nil then
+      return
+    end
+    if not Z.MouseMgr.IsMouseLock and Z.IsPCUI then
       return
     end
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, false)
@@ -50,29 +53,23 @@ function Fishing_btn_ctrlView:OnActive()
     self.onUpEvent()
   end)
   self:onFishingStageChanged()
-  self:registerBtnEvent()
   if Z.IsPCUI then
     self.uiBinder.Ref.UIComp:SetVisible(false)
   end
   Z.EventMgr:Add(Z.ConstValue.Fishing.FishingStateChange, self.onFishingStageChanged, self)
 end
 
-function Fishing_btn_ctrlView:registerBtnEvent()
-  if Z.IsPCUI then
-    Z.InputMgr:AddInputEventDelegate(self.onDownEvent, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.ComAttack)
-    Z.InputMgr:AddInputEventDelegate(self.onUpEvent, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.ComAttack)
-  end
-end
-
-function Fishing_btn_ctrlView:unRegisterBtnEvent()
-  if Z.IsPCUI then
-    Z.InputMgr:RemoveInputEventDelegate(self.onDownEvent, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.ComAttack)
-    Z.InputMgr:RemoveInputEventDelegate(self.onUpEvent, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.ComAttack)
+function Fishing_btn_ctrlView:OnTriggerInputAction(inputActionEventData)
+  if Z.IsPCUI and inputActionEventData.actionId == Z.RewiredActionsConst.FishingClick then
+    if inputActionEventData.eventType == Z.InputActionEventType.ButtonJustPressed then
+      self.onDownEvent(inputActionEventData)
+    elseif inputActionEventData.eventType == Z.InputActionEventType.ButtonJustReleased then
+      self.onUpEvent(inputActionEventData)
+    end
   end
 end
 
 function Fishing_btn_ctrlView:OnDeActive()
-  self:unRegisterBtnEvent()
   self.uiBinder.img_bg:ClearSteerList()
   Z.EventMgr:Remove(Z.ConstValue.Fishing.FishingStateChange, self.onFishingStageChanged, self)
 end
@@ -83,7 +80,7 @@ end
 function Fishing_btn_ctrlView:onFishingBtnClick()
   if self.fishingData.FishingStage == E.FishingStage.EnterFishing then
     self.fishingVM.ThrowFishingRod()
-    Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvnet, string.zconcat(E.SteerGuideEventType.Fishing, "=", 3))
+    Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvent, string.zconcat(E.SteerGuideEventType.Fishing, "=", 3))
   elseif self.fishingData.FishingStage == E.FishingStage.FishBiteHook or self.fishingData.FishingStage == E.FishingStage.ThrowFishingRodInWater or self.fishingData.FishingStage == E.FishingStage.BuoyDive then
     self.fishingVM.HarvestingFishingRod()
   elseif self.fishingData.FishingStage == E.FishingStage.QTE then
@@ -101,7 +98,7 @@ function Fishing_btn_ctrlView:onFishingStageChanged()
   elseif self.fishingData.FishingStage == E.FishingStage.FishBiteHook then
     self.uiBinder.Ref:SetVisible(self.uiBinder.ctrl, true)
     self.uiBinder.btn_icon:SetImage(self.fishingIconPath[E.FishingBtnIconType.HarvestingRod])
-    Z.AudioMgr:Play("UI_Event_Magic_A")
+    Z.AudioMgr:Play("UI_Event_Magic_A_Louder")
   elseif self.fishingData.FishingStage == E.FishingStage.QTE then
     self.uiBinder.Ref:SetVisible(self.uiBinder.ctrl, true)
     self.uiBinder.btn_icon:SetImage(self.fishingIconPath[E.FishingBtnIconType.HookingUp])

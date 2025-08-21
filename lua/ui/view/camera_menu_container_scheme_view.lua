@@ -5,28 +5,23 @@ local cameraData_ = Z.DataMgr.Get("camerasys_data")
 local cameraVm_ = Z.VMMgr.GetVM("camerasys")
 
 function Camera_menu_container_schemeView:ctor(parent)
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "camera_menu_container_scheme_sub", "photograph/camera_menu_container_scheme_sub", UI.ECacheLv.None)
 end
 
 function Camera_menu_container_schemeView:OnActive()
-  self.panel.Ref:SetOffSetMin(0, 0)
-  self.panel.Ref:SetOffSetMax(0, 0)
-  local schemeScrollRect = self.panel.loopscroll_scheme.VLoopScrollRect
+  self.uiBinder.Trans:SetOffsetMin(0, 0)
+  self.uiBinder.Trans:SetOffsetMax(0, 0)
+  local schemeScrollRect = self.uiBinder.loopscroll_scheme
   self.schemeScrollRect_ = require("ui/component/loopscrollrect").new(schemeScrollRect, self, require("ui.component.camerasys.camera_setting_config_item"))
   self:initBtn()
-  self.selectedItem_ = nil
   cameraData_.IsInitSchemeState = true
-  self:refSchemeDatas()
+  self:refSchemeDatas(nil, true)
   self:BindEvents()
 end
 
-function Camera_menu_container_schemeView:SetSelectedItem(item)
-  self.selectedItem_ = item
-end
-
 function Camera_menu_container_schemeView:initBtn()
-  self.panel.img_btn_add.Btn:AddListener(function()
+  self.uiBinder.img_btn_add:AddListener(function()
     local schemeInfoDatas = cameraData_:GetSchemeInfoDatas()
     if #schemeInfoDatas < 5 then
       cameraVm_.AddCameraSchemeInfo()
@@ -39,26 +34,25 @@ function Camera_menu_container_schemeView:initBtn()
       Z.UIMgr:OpenView("camera_config_popup")
     end
   end)
-  self:AddClick(self.panel.cont_btn_preservation.Btn, function()
+  self:AddClick(self.uiBinder.cont_btn_preservation, function()
     if not cameraData_:GetIsSchemeParamUpdated() then
       return
     end
     local schemeInfo = cameraData_:GetCameraSchemeInfo()
     cameraVm_.SaveCameraSchemeInfoEX(schemeInfo)
     cameraData_:SetIsSchemeParamUpdated(false)
-    Z.TipsVM.ShowTipsLang(1000001)
+    Z.TipsVM.ShowTipsLang(1000053)
     self:checkSchemeIsUpdated()
   end)
-  self.panel.cont_btn_delete.Btn:AddListener(function()
+  self.uiBinder.cont_btn_delete:AddListener(function()
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("DeleteAlubmScheme"), function()
       cameraVm_.DeleteCameraSchemeInfo(cameraData_.CameraSchemeSelectInfo)
       self:refSchemeDatas()
       cameraData_.CameraSchemeSelectIndex = 0
       self.schemeScrollRect_:SetSelected(0)
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   end)
-  self.panel.cont_btn_compile.Btn:AddListener(function()
+  self.uiBinder.cont_btn_compile:AddListener(function()
     self:amendName()
   end)
 end
@@ -74,12 +68,12 @@ function Camera_menu_container_schemeView:amendName()
         return
       end
       Z.CoroUtil.create_coro_xpcall(function()
-        local vm = Z.VMMgr.GetVM("screenword")
-        vm.CheckScreenWord(value, E.TextCheckSceneType.TextCheckAlbumPhotoEditText, self.cancelSource:CreateToken(), function()
+        local result = cameraVm_.AsyncSetPhotoSchemeName(schemedata.id, value, self.cancelSource:CreateToken())
+        if result and result.errCode == 0 then
           schemedata.schemeName = value
           cameraVm_.ReplaceCameraSchemeInfo(schemedata)
           self.schemeScrollRect_:RefreshAllItem()
-        end)
+        end
       end)()
     end,
     stringLengthLimitNum = limitNum,
@@ -93,17 +87,20 @@ function Camera_menu_container_schemeView:changeBottom(cameraSchemeType)
   if cameraSchemeType == E.CameraSchemeType.CustomScheme then
     isShow = true
   end
-  self.panel.layout_btn_2:SetVisible(isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.layout_btn_2, isShow)
   self:checkSchemeIsUpdated()
 end
 
-function Camera_menu_container_schemeView:refSchemeDatas(eventData)
-  self.schemeScrollRect_:ClearSelected()
+function Camera_menu_container_schemeView:refSchemeDatas(eventData, isInit)
   local schemeInfoDatas = cameraData_:GetSchemeInfoDatas()
   table.sort(schemeInfoDatas, function(a, b)
     return a.schemeTime < b.schemeTime
   end)
-  self.schemeScrollRect_:SetData(schemeInfoDatas)
+  if isInit then
+    self.schemeScrollRect_:SetData(schemeInfoDatas)
+  else
+    self.schemeScrollRect_:RefreshData(schemeInfoDatas)
+  end
   if eventData and next(eventData) then
     cameraData_.CameraSchemeSelectIndex = eventData.index
     self.schemeScrollRect_:SetSelected(eventData.index)
@@ -113,27 +110,31 @@ end
 function Camera_menu_container_schemeView:OnDeActive()
   self:UnBindEvents()
   cameraData_.IsInitSchemeState = true
-  self.schemeScrollRect_:ClearSelected()
+  if self.schemeScrollRect_ then
+    self.schemeScrollRect_:ClearCells()
+    self.schemeScrollRect_ = nil
+  end
 end
 
 function Camera_menu_container_schemeView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Camera.SchemeBtnUpdate, self.changeBottom, self)
-  Z.EventMgr:Add(Z.ConstValue.Camera.RefSchemeLsit, self.refSchemeDatas, self)
+  Z.EventMgr:Add(Z.ConstValue.Camera.RefSchemeList, self.refSchemeDatas, self)
 end
 
 function Camera_menu_container_schemeView:UnBindEvents()
   Z.EventMgr:Remove(Z.ConstValue.Camera.SchemeBtnUpdate, self.changeBottom, self)
-  Z.EventMgr:Remove(Z.ConstValue.Camera.RefSchemeLsit, self.refSchemeDatas, self)
+  Z.EventMgr:Remove(Z.ConstValue.Camera.RefSchemeList, self.refSchemeDatas, self)
 end
 
 function Camera_menu_container_schemeView:OnRefresh()
+  self:refSchemeDatas()
   self.schemeScrollRect_:SetSelected(cameraData_.CameraSchemeSelectIndex)
   self:checkSchemeIsUpdated()
 end
 
 function Camera_menu_container_schemeView:checkSchemeIsUpdated()
   local schemeUpdated = cameraData_:GetIsSchemeParamUpdated()
-  self.panel.cont_btn_preservation.Btn.IsDisabled = not schemeUpdated
+  self.uiBinder.cont_btn_preservation.IsDisabled = not schemeUpdated
 end
 
 return Camera_menu_container_schemeView

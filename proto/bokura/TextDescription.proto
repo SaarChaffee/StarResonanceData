@@ -10,8 +10,6 @@ message TextDescriptionBase {
     mlstring Description = 75;
     int32 ShowRule = 716;
 }
-
 message TextDescriptionMgr {
-    map<int32, .bokura.TextDescriptionBase> datas = 1;
+    repeated bokura.TextDescriptionMgr.DatasEntry datas = 1;
 }
-

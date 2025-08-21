@@ -1,11 +1,6 @@
 local CommonFilterHelper = class("CommonFilterHelper")
 local common_filter_subView = require("ui/view/common_filter_sub_view")
 local filter_type_eliminate_tipsView = require("ui/view/filter_type_eliminate_tips_view")
-CommonFilterHelper.FilterType = {
-  ModType = 1,
-  ModQuality = 2,
-  ModEffectSelect = 3
-}
 
 function CommonFilterHelper:ctor(parent)
   self.filterSubView_ = common_filter_subView.new(self)
@@ -17,18 +12,18 @@ function CommonFilterHelper:ctor(parent)
   self.certainFunc_ = nil
 end
 
-function CommonFilterHelper:Init(title, filterTypes, filterSubParent, eliminateParent)
+function CommonFilterHelper:Init(title, filterTypes, filterSubParent, eliminateParent, certainFunc)
   self.title_ = title
   self.filterTypes_ = filterTypes
   self.filterSubParent_ = filterSubParent
   self.eliminateParent_ = eliminateParent
+  self.certainFunc_ = certainFunc
 end
 
 function CommonFilterHelper:ActiveFilterSub(viewData)
-  self.certainFunc_ = viewData.filterFunc
   local subViewData = {
     title = self.title_,
-    filterTypes = self.filterTypes_,
+    filterTypes = viewData.filterTypes or self.filterTypes_,
     filterRes = viewData.filterRes,
     filterFunc = function(filterRes)
       self:certain(filterRes)

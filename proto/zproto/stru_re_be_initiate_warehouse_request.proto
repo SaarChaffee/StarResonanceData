@@ -7,4 +7,3 @@ message ReBeInitiateWarehouseRequest {
     bool agree = 2;
     int64 presidentId = 3;
 }
-

@@ -5,7 +5,5 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message ProfileList {
-    map<int32, bool> unlockProfileList = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.ProfileList.UnlockProfileListEntry unlockProfileList = 1;
 }
-

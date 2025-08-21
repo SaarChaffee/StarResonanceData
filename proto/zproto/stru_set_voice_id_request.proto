@@ -8,4 +8,3 @@ message SetVoiceIdRequest {
     zproto.SessionInfo session = 1;
     int32 voiceId = 2;
 }
-

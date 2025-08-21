@@ -12,5 +12,5 @@ message BasicShowInfo {
     int32 level = 5;
     uint32 curTalentPoolId = 6;
     uint32 unionHuntRandIdx = 7;
+    bool isNewbie = 8;
 }
-

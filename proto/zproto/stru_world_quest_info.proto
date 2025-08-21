@@ -8,6 +8,4 @@ message WorldQuestInfo {
     uint32 finishPoints = 1;
     repeated uint32 rewards = 2;
     uint32 ExceedingPoints = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

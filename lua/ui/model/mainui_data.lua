@@ -13,6 +13,7 @@ function MainUIData:ctor()
   self.IsShowLeftBtn = true
   self.mainIconStorageCondition = {}
   self.mainUiBtnItemList = {}
+  self.leftTrackCurSelectedIndex_ = E.MainViewLeftTrackUIMark.Task
 end
 
 function MainUIData:Init()
@@ -31,6 +32,14 @@ end
 
 function MainUIData:UnInit()
   self.mainUiBtnItemList = {}
+end
+
+function MainUIData:SetLeftTrackCurSelectedIndex(index)
+  self.leftTrackCurSelectedIndex_ = index
+end
+
+function MainUIData:GetLeftTrackCurSelectedIndex()
+  return self.leftTrackCurSelectedIndex_
 end
 
 function MainUIData:initBtnData()
@@ -56,6 +65,8 @@ function MainUIData:ResetData()
     {},
     {}
   }
+  self.MainUIPCShowFriendMessage = false
+  self.MainUIPCShowMail = false
 end
 
 function MainUIData:SetMainUiAreaHideStyle(hideStyle, viewConfigKey, isHide)
@@ -83,6 +94,14 @@ function MainUIData:initMainArea(hideStyle)
   elseif hideStyle == E.MainViewHideStyle.Top then
     table.insert(areaPositionTable, E.MainUIArea.UpperLeft)
     table.insert(areaPositionTable, E.MainUIArea.UpperRight)
+  elseif hideStyle == E.MainViewHideStyle.UpperLeft then
+    table.insert(areaPositionTable, E.MainUIArea.UpperLeft)
+  elseif hideStyle == E.MainViewHideStyle.UpperRight then
+    table.insert(areaPositionTable, E.MainUIArea.UpperRight)
+  elseif hideStyle == E.MainViewHideStyle.LowLeft then
+    table.insert(areaPositionTable, E.MainUIArea.LowLeft)
+  elseif hideStyle == E.MainViewHideStyle.LowRight then
+    table.insert(areaPositionTable, E.MainUIArea.LowRight)
   end
   return areaPositionTable
 end
@@ -155,6 +174,10 @@ end
 
 function MainUIData:getCurMainUiId()
   local mainuiId
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local visualLayerId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrVisualLayerUid")).Value
   if 0 < visualLayerId then
     local visualLayerCfg = Z.TableMgr.GetTable("VisualLayerMgr").GetRow(visualLayerId)
@@ -178,6 +201,33 @@ function MainUIData:getCurMainUiId()
     return
   end
   return mainuiId
+end
+
+function MainUIData:GetKeyIdAndDescByFuncId(funcId)
+  if self.cacheKeyInfoMap_ == nil then
+    self.cacheKeyInfoMap_ = {}
+    local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
+    for keyId, row in pairs(keyTbl.GetDatas()) do
+      if row.KeyboardDes == 2 then
+        self.cacheKeyInfoMap_[row.FunctionId] = {
+          keyId,
+          row.SetDes
+        }
+      end
+    end
+  end
+  local info = self.cacheKeyInfoMap_[funcId]
+  if info then
+    if funcId == E.FunctionID.PathFinding then
+      if Z.ZPathFindingMgr.CurStage == Panda.ZGame.EPathFindingStage.EMove then
+        return info[1], Lang("PathFindingMoving")
+      else
+        return info[1], info[2]
+      end
+    else
+      return info[1], info[2]
+    end
+  end
 end
 
 return MainUIData

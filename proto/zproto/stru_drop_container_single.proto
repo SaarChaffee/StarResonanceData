@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message DropContainerSingle {
+    int32 Id = 1;
+    int32 Count = 2;
+    int64 CycleTime = 3;
+    int32 HistoryCount = 4;
+}

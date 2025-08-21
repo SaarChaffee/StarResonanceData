@@ -13,8 +13,6 @@ message SeasonGlobalTableBase {
     int32 MaxWeaponLevel = 1229;
     int32 BattlePassCardId = 635;
 }
-
 message SeasonGlobalTableMgr {
-    map<int32, .bokura.SeasonGlobalTableBase> datas = 1;
+    repeated bokura.SeasonGlobalTableMgr.DatasEntry datas = 1;
 }
-

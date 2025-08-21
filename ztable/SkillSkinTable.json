@@ -1,0 +1,604 @@
+{
+  "1714": {
+    "Id": 1714,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 1,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 1
+  },
+  "1715": {
+    "Id": 1715,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      1715
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 1,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 2
+  },
+  "171401": {
+    "Id": 171401,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_tdl_sakura_skin01",
+    "SkillId": [
+      1714,
+      1734
+    ],
+    "SkillGroupId": 171401,
+    "SummonSkillId": [],
+    "ProfessionId": 1,
+    "SkillIdsVideo": "weapon/tdl/tdl_sakura_skin01",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077001,
+        1
+      ]
+    ],
+    "Sort": 3
+  },
+  "171501": {
+    "Id": 171501,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_tdl_sakura_skin02",
+    "SkillId": [
+      1715,
+      1738
+    ],
+    "SkillGroupId": 171501,
+    "SummonSkillId": [],
+    "ProfessionId": 1,
+    "SkillIdsVideo": "weapon/tdl/tdl_sakura_skin02",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077001,
+        1
+      ]
+    ],
+    "Sort": 4
+  },
+  "1242": {
+    "Id": 1242,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      1242
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 2,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 1
+  },
+  "1241": {
+    "Id": 1241,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      1241
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 2,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 2
+  },
+  "124201": {
+    "Id": 124201,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_fz_sakura_skin01",
+    "SkillId": [
+      1242
+    ],
+    "SkillGroupId": 124201,
+    "SummonSkillId": [],
+    "ProfessionId": 2,
+    "SkillIdsVideo": "weapon/fz/fz_sakura_skin01",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077003,
+        1
+      ]
+    ],
+    "Sort": 3
+  },
+  "124101": {
+    "Id": 124101,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_fz_sakura_skin02",
+    "SkillId": [
+      1241
+    ],
+    "SkillGroupId": 124101,
+    "SummonSkillId": [],
+    "ProfessionId": 2,
+    "SkillIdsVideo": "weapon/fz/fz_sakura_skin02",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077003,
+        1
+      ]
+    ],
+    "Sort": 4
+  },
+  "1518": {
+    "Id": 1518,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      1518,
+      1525
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 5,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 1
+  },
+  "1507": {
+    "Id": 1507,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      1507
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 5,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 2
+  },
+  "151801": {
+    "Id": 151801,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_fh_sakura_skin01",
+    "SkillId": [
+      1518,
+      1530,
+      1541,
+      1525
+    ],
+    "SkillGroupId": 151801,
+    "SummonSkillId": [],
+    "ProfessionId": 5,
+    "SkillIdsVideo": "weapon/fh/fh_sakura_skin01",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077005,
+        1
+      ]
+    ],
+    "Sort": 3
+  },
+  "150701": {
+    "Id": 150701,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_fh_sakura_skin02",
+    "SkillId": [
+      1507
+    ],
+    "SkillGroupId": 150701,
+    "SummonSkillId": [],
+    "ProfessionId": 5,
+    "SkillIdsVideo": "weapon/fh/fh_sakura_skin02",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077005,
+        1
+      ]
+    ],
+    "Sort": 4
+  },
+  "1922": {
+    "Id": 1922,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      1922
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 9,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 1
+  },
+  "1930": {
+    "Id": 1930,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      1930
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 9,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 2
+  },
+  "192201": {
+    "Id": 192201,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_wr_sakura_skin01",
+    "SkillId": [
+      1922,
+      1932
+    ],
+    "SkillGroupId": 192201,
+    "SummonSkillId": [],
+    "ProfessionId": 9,
+    "SkillIdsVideo": "weapon/wr/wr_sakura_skin01",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077007,
+        1
+      ]
+    ],
+    "Sort": 3
+  },
+  "193001": {
+    "Id": 193001,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_wr_sakura_skin02",
+    "SkillId": [
+      1930
+    ],
+    "SkillGroupId": 193001,
+    "SummonSkillId": [],
+    "ProfessionId": 9,
+    "SkillIdsVideo": "weapon/wr/wr_sakura_skin02",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077007,
+        1
+      ]
+    ],
+    "Sort": 4
+  },
+  "1418": {
+    "Id": 1418,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      1418
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 4,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 1
+  },
+  "1419": {
+    "Id": 1419,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      1419
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 4,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 2
+  },
+  "141801": {
+    "Id": 141801,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_cq_sakura_skin01",
+    "SkillId": [
+      1418
+    ],
+    "SkillGroupId": 141801,
+    "SummonSkillId": [],
+    "ProfessionId": 4,
+    "SkillIdsVideo": "weapon/cq/cq_sakura_skin01",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077004,
+        1
+      ]
+    ],
+    "Sort": 3
+  },
+  "141901": {
+    "Id": 141901,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_cq_sakura_skin02",
+    "SkillId": [
+      1419
+    ],
+    "SkillGroupId": 141901,
+    "SummonSkillId": [],
+    "ProfessionId": 4,
+    "SkillIdsVideo": "weapon/cq/cq_sakura_skin02",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077004,
+        1
+      ]
+    ],
+    "Sort": 4
+  },
+  "2220": {
+    "Id": 2220,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      2220
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 11,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 1
+  },
+  "2222": {
+    "Id": 2222,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      2222
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 11,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 2
+  },
+  "222001": {
+    "Id": 222001,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_gj_sakura_skin01",
+    "SkillId": [
+      2220
+    ],
+    "SkillGroupId": 222001,
+    "SummonSkillId": [],
+    "ProfessionId": 11,
+    "SkillIdsVideo": "weapon/gj/gj_sakura_skin01",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077002,
+        1
+      ]
+    ],
+    "Sort": 3
+  },
+  "222201": {
+    "Id": 222201,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_gj_sakura_skin02",
+    "SkillId": [
+      2222,
+      2224
+    ],
+    "SkillGroupId": 222201,
+    "SummonSkillId": [],
+    "ProfessionId": 11,
+    "SkillIdsVideo": "weapon/gj/gj_sakura_skin02",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077002,
+        1
+      ]
+    ],
+    "Sort": 4
+  },
+  "2405": {
+    "Id": 2405,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      2405
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 12,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 1
+  },
+  "2406": {
+    "Id": 2406,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      2406
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 12,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 2
+  },
+  "240501": {
+    "Id": 240501,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_jd_sakura_skin01",
+    "SkillId": [
+      2405
+    ],
+    "SkillGroupId": 240501,
+    "SummonSkillId": [],
+    "ProfessionId": 12,
+    "SkillIdsVideo": "weapon/jd/jd_sakura_skin01",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077006,
+        1
+      ]
+    ],
+    "Sort": 3
+  },
+  "240601": {
+    "Id": 240601,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_jd_sakura_skin02",
+    "SkillId": [
+      2406
+    ],
+    "SkillGroupId": 240601,
+    "SummonSkillId": [],
+    "ProfessionId": 12,
+    "SkillIdsVideo": "weapon/jd/jd_sakura_skin02",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077006,
+        1
+      ]
+    ],
+    "Sort": 4
+  },
+  "2306": {
+    "Id": 2306,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      2306
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 13,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 1
+  },
+  "2307": {
+    "Id": 2307,
+    "Name": "",
+    "Desc": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "Icon": "ui/atlas/weapon_effects/weapon_skill_skin_default",
+    "SkillId": [
+      2307
+    ],
+    "SkillGroupId": 0,
+    "SummonSkillId": [],
+    "ProfessionId": 13,
+    "SkillIdsVideo": "",
+    "UnlockCondition": [],
+    "UnlockConsume": [],
+    "Sort": 2
+  },
+  "230601": {
+    "Id": 230601,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_jt_sakura_skin01",
+    "SkillId": [
+      2306
+    ],
+    "SkillGroupId": 230601,
+    "SummonSkillId": [],
+    "ProfessionId": 13,
+    "SkillIdsVideo": "weapon/jt/jt_sakura_skin01",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077008,
+        1
+      ]
+    ],
+    "Sort": 3
+  },
+  "230701": {
+    "Id": 230701,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/weapon_effects/weapon_jt_sakura_skin02",
+    "SkillId": [
+      2307
+    ],
+    "SkillGroupId": 230701,
+    "SummonSkillId": [
+      2311,
+      2361,
+      2307
+    ],
+    "ProfessionId": 13,
+    "SkillIdsVideo": "weapon/jt/jt_sakura_skin02",
+    "UnlockCondition": [],
+    "UnlockConsume": [
+      [
+        1077008,
+        1
+      ]
+    ],
+    "Sort": 4
+  }
+}

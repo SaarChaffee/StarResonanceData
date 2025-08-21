@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message TransferLeaderRequest {
-    uint32 newLeaderId = 2;
+    int64 newLeaderId = 3;
 }
-

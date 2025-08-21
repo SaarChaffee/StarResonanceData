@@ -6,4 +6,3 @@ message PlaceHolderPlayer {
     int64 charId = 1;
     string name = 2;
 }
-

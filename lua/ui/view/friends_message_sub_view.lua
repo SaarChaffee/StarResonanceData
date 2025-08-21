@@ -3,6 +3,7 @@ local super = require("ui.ui_subview_base")
 local Friends_message_subView = class("Friends_message_subView", super)
 local chat_input_box_view = require("ui.view.chat_input_box_view")
 local chat_dialogue_tpl_view = require("ui.view.chat_dialogue_tpl_view")
+local SDKDefine = require("ui.model.sdk_define")
 local maskHeight = 340
 
 function Friends_message_subView:ctor(parent)
@@ -24,20 +25,26 @@ function Friends_message_subView:onInitData()
   self.friendsMainData_ = Z.DataMgr.Get("friend_main_data")
   self.chatMainVm_ = Z.VMMgr.GetVM("chat_main")
   self.chatMainData_ = Z.DataMgr.Get("chat_main_data")
-  self.socialVm_ = Z.VMMgr.GetVM("social")
-  self.chatMainData_:SetPrivateSelectId(self.viewData.CharId)
+  self.socialVm_ = Z.VMMgr.GetVM("socialcontact_main")
+  self.sdkVM_ = Z.VMMgr.GetVM("sdk")
+  self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
+  self.curCharId_ = self.viewData.CharId
+  self.chatMainData_:SetPrivateSelectId(self.curCharId_)
   self.chat_dialogue_tpl_view_ = chat_dialogue_tpl_view.new()
-  local chatDialogueViewData = {}
-  chatDialogueViewData.parentView = self
-  chatDialogueViewData.chatChannelId = E.ChatChannelType.EChannelPrivate
-  chatDialogueViewData.windowType = E.ChatWindow.Main
-  self.chat_dialogue_tpl_view_:Active(chatDialogueViewData, self.uiBinder.node_msg_parent, self.uiBinder)
+  self.chatDialogueViewData_ = {
+    parentView = self,
+    windowType = E.ChatWindow.Main,
+    channelId = E.ChatChannelType.EChannelPrivate,
+    charId = self.curCharId_
+  }
+  self.chat_dialogue_tpl_view_:Active(self.chatDialogueViewData_, self.uiBinder.node_msg_parent, self.uiBinder)
   self.chat_input_box_view_ = chat_input_box_view.new()
-  self:setInputBox(true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_qqark, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_wechatprivilege, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_qqprivilege, false)
 end
 
 function Friends_message_subView:onInitComp()
-  self.curCharId_ = self.viewData.CharId
   self.chatMainVm_.CheckPrivateChatCharId(self.curCharId_)
   self:AddClick(self.uiBinder.btn_else, function()
     local viewData = {}
@@ -54,11 +61,22 @@ function Friends_message_subView:onInitComp()
     self.friendsMainVm_.AsyncSendAddFriend(self.curCharId_, E.FriendAddSource.EPrivateChat, self.cancelSource:CreateToken())
   end)
   self:AddClick(self.uiBinder.btn_friend_degree, function()
-    local viewData = {
-      charId = self.curCharId_
-    }
-    Z.UIMgr:OpenView("friend_degree_popup", viewData)
   end)
+  self:AddClick(self.uiBinder.btn_mini, function()
+    self.chatMainVm_.OpenMiniChat(E.ChatChannelType.EChannelPrivate, self.curCharId_, self.showName_, E.TextStyleTag.ChannelPrivate)
+    self.socialVm_.CloseSocialContactView()
+  end)
+  self:AddClick(self.uiBinder.btn_wechatprivilege, function()
+    self.sdkVM_.PrivilegeBtnClick(self.curCharId_)
+  end)
+  self:AddClick(self.uiBinder.btn_qqprivilege, function()
+    self.sdkVM_.PrivilegeBtnClick()
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_qqark, function()
+    self.chatMainVm_.AsyncArkShareWithTencent(self.curCharId_, self.cancelSource:CreateToken())
+  end)
+  self:setInputBox(true)
+  self:onEmojiViewShow(false)
 end
 
 function Friends_message_subView:OnDeActive()
@@ -75,14 +93,16 @@ end
 
 function Friends_message_subView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Friend.FriendRefresh, self.refreshPlayerInfo, self)
-  Z.EventMgr:Add(Z.ConstValue.Friend.FriendLinessChange, self.refreshFriendLiness, self)
   Z.EventMgr:Add(Z.ConstValue.Chat.PrivateChatRefresh, self.refreshPlayerInfo, self)
+  Z.EventMgr:Add(Z.ConstValue.Chat.SocialDataUpdata, self.refreshPlayerInfo, self)
+  Z.EventMgr:Add(Z.ConstValue.Friend.FriendLinessChange, self.refreshFriendLiness, self)
 end
 
 function Friends_message_subView:UnBindEvents()
   Z.EventMgr:Remove(Z.ConstValue.Friend.FriendRefresh, self.refreshPlayerInfo, self)
-  Z.EventMgr:Remove(Z.ConstValue.Friend.FriendLinessChange, self.refreshFriendLiness, self)
   Z.EventMgr:Remove(Z.ConstValue.Chat.PrivateChatRefresh, self.refreshPlayerInfo, self)
+  Z.EventMgr:Remove(Z.ConstValue.Chat.SocialDataUpdata, self.refreshPlayerInfo, self)
+  Z.EventMgr:Remove(Z.ConstValue.Friend.FriendLinessChange, self.refreshFriendLiness, self)
 end
 
 function Friends_message_subView:OnRefresh()
@@ -95,10 +115,14 @@ function Friends_message_subView:OnRefresh()
   end
   self.chatMainVm_.CheckPrivateChatCharId(self.curCharId_)
   self.chatMainData_:SetPrivateSelectId(self.curCharId_)
-  if self.chat_input_box_view_ and self.chat_input_box_view_.IsActive and self.chat_input_box_view_.IsLoaded then
+  self.inputViewData_.charId = self.curCharId_
+  self.chat_input_box_view_:Active(self.inputViewData_, self.uiBinder.node_bottom_container, self.uiBinder)
+  self.chatDialogueViewData_.charId = self.curCharId_
+  self.chat_dialogue_tpl_view_:Active(self.chatDialogueViewData_, self.uiBinder.node_msg_parent, self.uiBinder)
+  if self.chat_input_box_view_ then
     self.chat_input_box_view_:RefreshChatDraft(true)
   end
-  if self.chat_dialogue_tpl_view_ and self.chat_dialogue_tpl_view_.IsActive and self.chat_dialogue_tpl_view_.IsLoaded then
+  if self.chat_dialogue_tpl_view_ then
     self.chat_dialogue_tpl_view_:RefreshMsgList(true)
   end
   self:refreshMessage()
@@ -106,7 +130,7 @@ end
 
 function Friends_message_subView:refreshMessage()
   self:refreshReturnBtn()
-  self:refreshPlayerInfo()
+  self:refreshPlayerInfo(true)
   self:refreshFriendLiness()
   self:updatePrivateChatCharId()
 end
@@ -164,19 +188,20 @@ function Friends_message_subView:refreshPlayerInfo()
     if friendData:GetRemark() and friendData:GetRemark() ~= "" then
       showName = friendData:GetRemark() .. "(" .. friendData:GetPlayerName() .. ")"
     end
-    self:refreshTitleInfo(showName, friendData:GetPlayerOffLineTime(), friendData:GetPlayerPersonalState())
+    self:refreshTitleInfo(showName, friendData:GetPlayerOffLineTime(), friendData:GetPlayerPersonalState(), friendData:GetSocialData())
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_else, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_remind, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_friend, true)
     local privateChat = self.chatMainData_:GetPrivateChatItemByCharId(self.curCharId_)
     if privateChat and privateChat.socialData and privateChat.socialData.basicData then
-      self:refreshTitleInfo(privateChat.socialData.basicData.name, privateChat.socialData.basicData.offlineTime)
+      self:refreshTitleInfo(privateChat.socialData.basicData.name, privateChat.socialData.basicData.offlineTime, nil, privateChat.socialData)
     end
   end
 end
 
-function Friends_message_subView:refreshTitleInfo(showName, offlineTime, personalState)
+function Friends_message_subView:refreshTitleInfo(showName, offlineTime, personalState, socialData)
+  self.showName_ = showName
   self.uiBinder.lab_title.text = showName
   local persData
   if personalState then
@@ -191,7 +216,8 @@ function Friends_message_subView:refreshTitleInfo(showName, offlineTime, persona
   end
   if persData then
     self.uiBinder.lab_state.text = persData.StatusName
-    self.uiBinder.img_state:SetImage(Z.ConstValue.Friend.FriendIconPath .. persData.Res)
+    self.uiBinder.img_state:SetImage(string.zconcat(Z.ConstValue.Friend.FriendIconPath, persData.Res))
+    self:refreshSDKState(persData, socialData)
   end
 end
 
@@ -207,18 +233,19 @@ end
 
 function Friends_message_subView:setInputBox(isShowInput)
   if isShowInput then
-    local inputViewData = {}
-    inputViewData.parentView = self
-    inputViewData.windowType = E.ChatWindow.Main
-    inputViewData.channelId = E.ChatChannelType.EChannelPrivate
-    inputViewData.showInputBg = false
-    inputViewData.isShowVoice = true
-    
-    function inputViewData.onEmojiViewChange(isShow)
-      self:onEmojiViewShow(isShow)
-    end
-    
-    self.chat_input_box_view_:Active(inputViewData, self.uiBinder.node_bottom_container, self.uiBinder)
+    self.inputViewData_ = {
+      parentView = self,
+      windowType = E.ChatWindow.Main,
+      channelId = E.ChatChannelType.EChannelPrivate,
+      charId = self.curCharId_,
+      showInputBg = false,
+      isShowVoice = true,
+      activeInputActions = true,
+      onEmojiViewChange = function(isShow)
+        self:onEmojiViewShow(isShow)
+      end
+    }
+    self.chat_input_box_view_:Active(self.inputViewData_, self.uiBinder.node_bottom_container, self.uiBinder)
   elseif self.chat_input_box_view_ then
     self.chat_input_box_view_:DeActive()
   end
@@ -235,6 +262,42 @@ function Friends_message_subView:setInputBoxVisible(isShowInput)
   elseif self.chat_input_box_view_ then
     self.chat_input_box_view_:SetVisible(false)
   end
+end
+
+function Friends_message_subView:refreshSDKState(config, socialData)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_qqark, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_wechatprivilege, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_qqprivilege, false)
+  if E.PersonalizationStatus.EStatusOutLine == config.Id then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_qqark, self:isShowQQServerArkShare())
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_qqark, false)
+  end
+  if socialData and socialData.privilegeData and socialData.privilegeData.isPrivilege then
+    if socialData.privilegeData.launchPlatform == SDKDefine.LaunchPlatform.LaunchPlatformQq and self.sdkVM_.CheckSDKFunctionCanShow(E.FunctionID.TencentQQPrivilege) then
+      self.uiBinder.Ref:SetVisible(self.uiBinder.btn_qqprivilege, true)
+    elseif socialData.privilegeData.launchPlatform == SDKDefine.LaunchPlatform.LaunchPlatformWeXin and self.sdkVM_.CheckSDKFunctionCanShow(E.FunctionID.TencentWeChatPrivilege) then
+      self.uiBinder.Ref:SetVisible(self.uiBinder.btn_wechatprivilege, true)
+    end
+  end
+end
+
+function Friends_message_subView:isShowQQServerArkShare()
+  if not self.sdkVM_.CheckSDKFunctionCanShow(E.FunctionID.TencentQQArk) then
+    return false
+  end
+  local friends = Z.DataMgr.Get("sdk_data").SDKFriends
+  for _, data in ipairs(friends) do
+    if data.roleInfos then
+      for _, roleInfo in ipairs(data.roleInfos) do
+        local charId = tonumber(roleInfo.charId)
+        if charId and charId == self.curCharId_ then
+          return true
+        end
+      end
+    end
+  end
+  return false
 end
 
 return Friends_message_subView

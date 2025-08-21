@@ -15,8 +15,6 @@ message ElementalRestraintTableBase {
     int32 DefenseLight = 210;
     int32 DefenseDark = 937;
 }
-
 message ElementalRestraintTableMgr {
-    map<int32, .bokura.ElementalRestraintTableBase> datas = 1;
+    repeated bokura.ElementalRestraintTableMgr.DatasEntry datas = 1;
 }
-

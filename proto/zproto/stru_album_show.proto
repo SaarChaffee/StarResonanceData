@@ -14,4 +14,3 @@ message AlbumShow {
     zproto.ImageInfo coverThumbnailInfo = 6;
     repeated uint32 photoIds = 7;
 }
-

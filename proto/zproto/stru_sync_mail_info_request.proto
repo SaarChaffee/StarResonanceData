@@ -5,6 +5,5 @@ package zproto;
 import "stru_mail_state_info.proto";
 
 message SyncMailInfoRequest {
-    map<int64, .zproto.MailStateInfo> mails = 2;
+    repeated zproto.SyncMailInfoRequest.MailsEntry mails = 1;
 }
-

@@ -16,6 +16,7 @@ function MapFlagsComp:Init()
   self.questFlagParentNode_ = self.view_.uiBinder.node_quest_flags
   self.customFlagParentNode_ = self.view_.uiBinder.node_custom_flags
   self.areaFlagParentNode_ = self.view_.uiBinder.node_area_flags
+  self.collectionDataList_ = {}
   self.teamDataList_ = {}
   self.customDataList_ = {}
   self.dynamicTraceList_ = {}
@@ -30,6 +31,7 @@ end
 
 function MapFlagsComp:UnInit()
   self:UnBindEventsAndWatcher()
+  self.collectionDataList_ = nil
   self.teamDataList_ = nil
   self.customDataList_ = nil
   self.dynamicTraceList_ = nil
@@ -48,6 +50,7 @@ function MapFlagsComp:BindEventsAndWatcher()
   Z.EventMgr:Add(Z.ConstValue.Team.Refresh, self.onRefreshTeam, self)
   Z.EventMgr:Add(Z.ConstValue.Team.MemberChangeScene, self.onRefreshTeam, self)
   Z.EventMgr:Add(Z.ConstValue.Team.MemberInfoChange, self.onTeamMemberInfoChange, self)
+  Z.EventMgr:Add(Z.ConstValue.Team.OnLineState, self.onRefreshTeam, self)
   Z.EventMgr:Add(Z.ConstValue.Team.ChangeSceneId, self.onRefreshTeam, self)
   Z.EventMgr:Add(Z.ConstValue.Quest.TrackingIdChange, self.onTrackingIdChange, self)
   Z.EventMgr:Add(Z.ConstValue.Quest.TrackOptionChange, self.onQuestGoalChange, self)
@@ -61,6 +64,7 @@ function MapFlagsComp:BindEventsAndWatcher()
   Z.EventMgr:Add(Z.ConstValue.Pivot.OnPivotUnlock, self.onTransferPointChange, self)
   Z.EventMgr:Add(Z.ConstValue.PlayerEnterOrExitZone, self.onPlayerEnterOrExitZone, self)
   Z.EventMgr:Add(Z.ConstValue.VisualLayerChange, self.onVisualLayerChange, self)
+  Z.EventMgr:Add(Z.ConstValue.MapCollectionChange, self.onTargetCollectionChange, self)
   
   function self.onMapDataChange_(container, dirty)
     if dirty and dirty.markDataMap then
@@ -92,11 +96,6 @@ end
 
 function MapFlagsComp:RefreshMap()
   self.miniMapNode_:ClearAllMapFlags()
-  local sceneId = self:getCurSceneId()
-  self.levelFlagHelper_:ResetAll(sceneId)
-  self.teamDataList_ = self.mapVM_.GetTeamFlagDataBySceneId(sceneId)
-  self.labDataList_ = self.mapVM_.GetAreaNamePosBySceneId(sceneId)
-  self.dynamicTraceList_ = self:GetDynamicTraceList(sceneId)
   for _, id in ipairs(self.redpointList_) do
     Z.RedPointMgr.RemoveNodeItem(id)
   end
@@ -105,14 +104,23 @@ function MapFlagsComp:RefreshMap()
     self.view_:RemoveUiUnit(value)
   end
   self:clearNoticeUpdateTimer()
-  self:createAllMapFlag()
-  if self.isBigMap_ then
-    self:createNameText()
+  if not self.view_:IsWorldMap() then
+    local sceneId = self:getCurSceneId()
+    self.levelFlagHelper_:ResetAll(sceneId)
+    self.collectionDataList_ = self.mapVM_.GetSelectCollectionFlagData(self.mapData_:GetTargetCollectionId(), sceneId)
+    self.teamDataList_ = self.mapVM_.GetTeamFlagDataBySceneId(sceneId)
+    self.labDataList_ = self.mapVM_.GetAreaNamePosBySceneId(sceneId)
+    self.dynamicTraceList_ = self:GetDynamicTraceList(sceneId)
+    self:createAllMapFlag()
+    if self.isBigMap_ then
+      self:createNameText()
+    end
   end
 end
 
 function MapFlagsComp:GetFlagDataByFlagId(flagId, ignoreDynamic)
   local list = {}
+  self:findFlagDataById(flagId, self.collectionDataList_, list)
   self:findFlagDataById(flagId, self.teamDataList_, list)
   self:findFlagDataById(flagId, self.customDataList_, list)
   local mergedData = self.levelFlagHelper_:GetMergedFlagDataByFlagId(flagId)
@@ -123,7 +131,7 @@ function MapFlagsComp:GetFlagDataByFlagId(flagId, ignoreDynamic)
     self:findFlagDataById(flagId, self.dynamicTraceList_, list)
   end
   if 1 < #list then
-    logError("[MapFlagsComp] flagId \233\135\141\229\164\141")
+    logError("[MapFlagsComp] flagId \233\135\141\229\164\141 : " .. flagId)
   end
   if 1 <= #list then
     return list[1]
@@ -132,6 +140,7 @@ end
 
 function MapFlagsComp:GetOriginFlagListByFlagId(flagId)
   local list = {}
+  self:findFlagDataById(flagId, self.collectionDataList_, list)
   self:findFlagDataById(flagId, self.teamDataList_, list)
   self:findFlagDataById(flagId, self.customDataList_, list)
   self:findFlagDataById(flagId, self.levelFlagHelper_:GetOriginFlagListByFlagId(flagId), list)
@@ -165,7 +174,7 @@ function MapFlagsComp:GetDynamicTraceList(sceneId)
 end
 
 function MapFlagsComp:OnMapZoomChange()
-  for _, flagData in ipairs(self:getAllFlagDataList()) do
+  for _, flagData in ipairs(self:GetAllFlagDataList()) do
     local name = self:getFlagUnitNameByFlagData(flagData)
     local unit = self.view_.units[name]
     if unit then
@@ -176,6 +185,7 @@ end
 
 function MapFlagsComp:createAllMapFlag()
   self:createMapFlagByDataList(self.levelFlagHelper_:GetAllMergedFlagData())
+  self:createMapFlagByDataList(self.collectionDataList_)
   self:createMapFlagByDataList(self.teamDataList_)
   self:createMapFlagByDataList(self.dynamicTraceList_)
   self:createCustomFlag()
@@ -190,7 +200,7 @@ function MapFlagsComp:createNameText()
       table.insert(self.unitsName_, unitName)
       if unit then
         unit.lab_name.text = data.Name
-        self.miniMapNode_:AddMapFlag(E.MapFlagType.AreaName, index, 0, data.Pos, unit.comp_map_flag)
+        self.miniMapNode_:AddMapFlag(E.MapFlagType.AreaName, index, 0, data.Pos, unit.comp_map_flag, false)
         self:refreshFlagUIPos()
       end
     end)()
@@ -236,8 +246,9 @@ function MapFlagsComp:asyncCreateMapFlagByFlagData(flagData)
   if self.isBigMap_ then
     Z.GuideMgr:SetSteerIdByComp(unit.comp_steer, E.DynamicSteerType.MapFlag, flagData.TpPointId)
   end
-  self.miniMapNode_:AddMapFlag(flagData.FlagType, flagData.Id, flagData.TypeId, flagData.Pos, unit.comp_map_flag)
-  self:initFlagUnit(unit, flagData)
+  local isManualHide = not self.mapData_:GetMapFlagVisibleSettingByTypeId(flagData.TypeId)
+  self.miniMapNode_:AddMapFlag(flagData.FlagType, flagData.Id, flagData.TypeId, flagData.Pos, unit.comp_map_flag, isManualHide)
+  self:initFlagUnit(unit, flagData, isManualHide)
   if not self.isBigMap_ then
     unit.Ref:SetVisible(unit.node_parent, false)
   end
@@ -264,15 +275,20 @@ function MapFlagsComp:getFlagUnitNameByFlagData(data)
   return pre .. data.Id
 end
 
-function MapFlagsComp:initFlagUnit(unit, flagData)
+function MapFlagsComp:initFlagUnit(unit, flagData, isManualHide)
   unit.Ref.UIComp:SetVisible(false)
   if flagData.IsTeam then
-    playerPortraitHgr.InsertNewPortraitBySocialData(unit.binder_head, flagData.SocialData)
+    playerPortraitHgr.InsertNewPortraitBySocialData(unit.binder_head, flagData.SocialData, nil, self.view_.cancelSource:CreateToken())
     unit.Ref.UIComp:SetVisible(true)
     unit.binder_head.lab_index.text = flagData.TeamIndex
   elseif flagData.IconPath and flagData.IconPath ~= "" then
     unit.img_icon:SetImage(flagData.IconPath)
     unit.Ref.UIComp:SetVisible(true)
+  end
+  if flagData.QuestId then
+    unit.img_icon.transform:SetSizeDelta(100, 100)
+  else
+    unit.img_icon.transform:SetSizeDelta(70, 70)
   end
   self:setFlagUnitIconVisible(unit, flagData)
   self:setFlagUnitCornerIcon(unit, flagData)
@@ -280,8 +296,7 @@ function MapFlagsComp:initFlagUnit(unit, flagData)
   self:setFlagUnitTeamIndex(unit, flagData)
   self:setFlagUnitEffect(unit, flagData)
   self:setFlagUnitBoardLimit(unit, flagData)
-  local isShow = self.mapData_:GetMapFlagVisibleSettingByTypeId(flagData.TypeId)
-  unit.Ref:SetVisible(unit.node_parent, isShow)
+  unit.Ref:SetVisible(unit.node_parent, not isManualHide)
   unit.tog_select:RemoveAllListeners()
   unit.tog_select.isOn = false
   unit.dotween_provider:Rewind(Z.DOTweenAnimType.Tween_0)
@@ -307,7 +322,7 @@ function MapFlagsComp:initFlagUnit(unit, flagData)
     unit.tog_select.interactable = false
   end
   local cfg = Z.TableMgr.GetTable("SceneTagTableMgr").GetRow(flagData.TypeId)
-  if cfg and cfg.Type == 4 then
+  if cfg and cfg.Type == E.SceneTagType.Dungeon then
     local dungeonId = tonumber(cfg.Param)
     local id = Z.VMMgr.GetVM("dungeon").GetRedPointID(dungeonId)
     if 0 < id then
@@ -356,9 +371,10 @@ function MapFlagsComp:setFlagUnitRange(flagUnit, flagData)
     flagUnit.Ref:SetVisible(flagUnit.img_range, false)
     return
   end
+  local scaleRate = 1 / flagUnit.Trans.localScale.x
   local scaleVector = self.miniMapNode_:GetMapScale()
-  local w = flagData.RangeDiameter * scaleVector.x
-  local h = flagData.RangeDiameter * scaleVector.y
+  local w = flagData.RangeDiameter * scaleVector.x * scaleRate
+  local h = flagData.RangeDiameter * scaleVector.y * scaleRate
   flagUnit.Ref:SetVisible(flagUnit.img_range, true)
   flagUnit.img_range.transform:SetSizeDelta(w, h)
 end
@@ -403,7 +419,7 @@ function MapFlagsComp:setFlagUnitEffect(flagUnit, flagData)
   local mapData_ = Z.DataMgr.Get("map_data")
   local showWorldQuest_ = self:isShowWorldQuestEffect(flagData)
   if showWorldQuest_ and not flagUnit.effect_worldquest.HasActiveEffectGo then
-    flagUnit.effect_worldquest:CreatEFFGO(mapData_.MapEffectPathDict[E.MapFlagEffectType.WorldQuset], Vector3.zero, true)
+    flagUnit.effect_worldquest:CreatEFFGO(mapData_.MapEffectPathDict[E.MapFlagEffectType.WorldQuest], Vector3.zero, true)
   end
   flagUnit.Ref:SetVisible(flagUnit.effect_worldquest, showWorldQuest_)
   flagUnit.effect_worldquest:SetEffectGoVisible(showWorldQuest_)
@@ -442,7 +458,7 @@ function MapFlagsComp:onMapOutRangeChange(id)
   end
 end
 
-function MapFlagsComp:GetFalgData(uid, entityType, subType)
+function MapFlagsComp:GetFlagData(uid, entityType, subType)
   return self.levelFlagHelper_:GetMergedFlagDataByEntSubType(uid, entityType, subType)
 end
 
@@ -459,7 +475,7 @@ function MapFlagsComp:getCustomFlagDataList()
       FlagType = E.MapFlagType.Custom,
       Type = -1,
       TypeId = markInfo.iconId,
-      Pos = Vector2.New(markInfo.position.x / Z.ConstValue.MapScalePercent, markInfo.position.y / Z.ConstValue.MapScalePercent),
+      Pos = Vector3.New(markInfo.position.x / Z.ConstValue.MapScalePercent, markInfo.position.y / Z.ConstValue.MapScalePercent, 0),
       IconPath = sceneTagRow and sceneTagRow.Icon1 or "",
       MarkInfo = markInfo
     }
@@ -491,7 +507,7 @@ function MapFlagsComp:RemoveTempMapFlagByFlagData()
   local name = Z.ConstValue.MapCustomFlagName
   local unit = self.view_.units[name]
   if unit and unit.tog_select then
-    unit.tog_select.isOn = false
+    unit.tog_select:SetIsOnWithoutCallBack(false)
     unit.tog_select:RemoveAllListeners()
   end
   self.view_:RemoveUiUnit(name)
@@ -516,9 +532,10 @@ function MapFlagsComp:SetUnitSelectByFlagData(flagData)
   end
 end
 
-function MapFlagsComp:getAllFlagDataList()
+function MapFlagsComp:GetAllFlagDataList()
   local list = {}
   table.zmerge(list, self.levelFlagHelper_:GetAllMergedFlagData())
+  table.zmerge(list, self.collectionDataList_)
   table.zmerge(list, self.teamDataList_)
   table.zmerge(list, self.customDataList_)
   table.zmerge(list, self.dynamicTraceList_)
@@ -579,7 +596,7 @@ function MapFlagsComp:onTeamMemberInfoChange(mem)
   local mapData = Z.DataMgr.Get("map_data")
   for _, flagData in ipairs(self.teamDataList_) do
     if flagData.Uid == mem.charId then
-      flagData.Pos = Vector3.New(mem.sceneData.levelPos.x, mem.sceneData.levelPos.y, mem.sceneData.levelPos.z)
+      flagData.Pos = Vector3.New(mem.pos.x, mem.pos.y, mem.pos.z)
       self.miniMapNode_:UpdateMapFlagWorldPos(flagData.FlagType, flagData.Id, flagData.Pos)
       if mapData.TracingFlagData and mapData.TracingFlagData.IsTeam then
         local guideVM = Z.VMMgr.GetVM("goal_guide")
@@ -590,7 +607,7 @@ function MapFlagsComp:onTeamMemberInfoChange(mem)
 end
 
 function MapFlagsComp:onGoalGuideChange(src, oldGoalList)
-  for _, flagData in ipairs(self:getAllFlagDataList()) do
+  for _, flagData in ipairs(self:GetAllFlagDataList()) do
     local name = self:getFlagUnitNameByFlagData(flagData)
     local unit = self.view_.units[name]
     if unit then
@@ -662,6 +679,13 @@ end
 function MapFlagsComp:onVisualLayerChange(isEnter, zoneUid)
   self:refreshMapFlagUnitBySrc(E.LevelMapFlagSrc.QuestGoal)
   self:refreshMapFlagUnitBySrc(E.LevelMapFlagSrc.QuestNpc)
+end
+
+function MapFlagsComp:onTargetCollectionChange()
+  local curSceneId = self:getCurSceneId()
+  local targetCollectionId = self.mapData_:GetTargetCollectionId()
+  local collectionDataList = self.mapVM_.GetSelectCollectionFlagData(targetCollectionId, curSceneId)
+  self:flagDataChangeHandler(self.collectionDataList_, collectionDataList)
 end
 
 function MapFlagsComp:flagDataChangeHandler(originFlagDataList, newFlagDataList)

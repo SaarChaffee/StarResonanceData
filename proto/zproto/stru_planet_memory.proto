@@ -6,6 +6,4 @@ import "stru_dirty_mask.proto";
 
 message PlanetMemory {
     repeated int32 passRoom = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

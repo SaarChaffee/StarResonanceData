@@ -6,4 +6,3 @@ enum EBulletDamageType {
     BulletDamageTypeAOE = 0;
     BulletDamageTypeSingle = 1;
 }
-

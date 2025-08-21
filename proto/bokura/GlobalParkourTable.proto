@@ -9,8 +9,6 @@ message GlobalParkourTableBase {
     string Id = 1463;
     mlstring Value = 616;
 }
-
 message GlobalParkourTableMgr {
-    map<int32, .bokura.GlobalParkourTableBase> datas = 1;
+    repeated bokura.GlobalParkourTableMgr.DatasEntry datas = 1;
 }
-

@@ -8,8 +8,6 @@ message EmoClipsTableBase {
     int32 layer = 1035;
     string Address = 989;
 }
-
 message EmoClipsTableMgr {
-    map<int32, .bokura.EmoClipsTableBase> datas = 1;
+    repeated bokura.EmoClipsTableMgr.DatasEntry datas = 1;
 }
-

@@ -3,10 +3,10 @@ local super = require("ui.ui_view_base")
 local Trialroad_battle_failure_windowView = class("Trialroad_battle_failure_windowView", super)
 local planetMemoryDeadTb = {
   {
-    btnType = E.PlanetMemoryDeadViewBtnType.LeaveCopy
+    btnType = E.TrialRoadDeadViewBtnType.LeaveCopy
   },
   {
-    btnType = E.PlanetMemoryDeadViewBtnType.Restart
+    btnType = E.TrialRoadDeadViewBtnType.Restart
   }
 }
 
@@ -37,6 +37,7 @@ function Trialroad_battle_failure_windowView:getBtnState()
 end
 
 function Trialroad_battle_failure_windowView:OnActive()
+  Z.AudioMgr:Play("UI_Event_Dungeon_Fail")
   self:getBtnState()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   local path = "ui/prefabs/dead/dead_resurrection_tpl"
@@ -44,7 +45,7 @@ function Trialroad_battle_failure_windowView:OnActive()
     for key, value in pairs(planetMemoryDeadTb) do
       local item = self:AsyncLoadUiUnit(path, "reviveBtn" .. key, self.uiBinder.btn_parent)
       local lab = key == 1 and Lang("LeaveCopy") or Lang("Restart")
-      if self.hideRestart_ and value.btnType == E.PlanetMemoryDeadViewBtnType.Restart then
+      if self.hideRestart_ and value.btnType == E.TrialRoadDeadViewBtnType.Restart then
         item.Ref.UIComp:SetVisible(false)
       end
       item.cont_btn_resurrection.interactable = true
@@ -52,7 +53,7 @@ function Trialroad_battle_failure_windowView:OnActive()
       item.lab_content_normal.text = lab
       self:AddAsyncClick(item.cont_btn_resurrection, function()
         local trialroadVM = Z.VMMgr.GetVM("trialroad")
-        if value.btnType == E.PlanetMemoryDeadViewBtnType.LeaveCopy then
+        if value.btnType == E.TrialRoadDeadViewBtnType.LeaveCopy then
           local proxy = require("zproxy.world_proxy")
           proxy.LeaveScene(self.cancelSource:CreateToken())
           trialroadVM.CloseTrialRoadFailureView()
@@ -62,6 +63,7 @@ function Trialroad_battle_failure_windowView:OnActive()
       end)
     end
   end)()
+  self:onAnimStart()
 end
 
 function Trialroad_battle_failure_windowView:OnDeActive()
@@ -75,6 +77,10 @@ function Trialroad_battle_failure_windowView:OnRefresh()
     return
   end
   self.uiBinder.lab_bottom.text = dungeonsTable.FailText
+end
+
+function Trialroad_battle_failure_windowView:onAnimStart()
+  self.uiBinder.anim:PlayOnce("anim_trialroad_battle_failure_window_open")
 end
 
 return Trialroad_battle_failure_windowView

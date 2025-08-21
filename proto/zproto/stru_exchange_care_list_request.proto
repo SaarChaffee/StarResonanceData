@@ -7,4 +7,3 @@ import "enum_e_exchange_item_type.proto";
 message ExchangeCareListRequest {
     zproto.EExchangeItemType type = 1;
 }
-

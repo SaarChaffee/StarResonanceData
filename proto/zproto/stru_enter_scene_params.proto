@@ -3,11 +3,12 @@ syntax = "proto3";
 package zproto;
 
 import "stru_transfer_param.proto";
+import "google/protobuf/any.proto";
 
 message EnterSceneParams {
     int32 changeSceneType = 1;
     int32 sceneId = 2;
     string sceneGuid = 3;
     zproto.TransferParam transferParam = 4;
+    repeated google.protobuf.Any enterSceneParams = 5;
 }
-

@@ -33,10 +33,12 @@ function RecycleData:GetAllRecycleItemDict()
     local recycleItemTableMgr = Z.TableMgr.GetTable("RecycleItemTableMgr")
     local recycleItemTableRows = recycleItemTableMgr:GetDatas()
     for id, row in pairs(recycleItemTableRows) do
-      if self.recycleItemConfigDict_[row.FunctionId] == nil then
-        self.recycleItemConfigDict_[row.FunctionId] = {}
+      if not row.IsBlocked then
+        if self.recycleItemConfigDict_[row.FunctionId] == nil then
+          self.recycleItemConfigDict_[row.FunctionId] = {}
+        end
+        self.recycleItemConfigDict_[row.FunctionId][row.ItemID] = row
       end
-      self.recycleItemConfigDict_[row.FunctionId][row.ItemID] = row
     end
   end
   return self.recycleItemConfigDict_
@@ -54,14 +56,30 @@ function RecycleData:GetTotalCanRecycleItems(functionId, sortData)
     return resultList
   end
   local itemsVM = Z.VMMgr.GetVM("items")
-  local itemSortFactoryVm_ = Z.VMMgr.GetVM("item_sort_factory")
-  local sortFunc = itemSortFactoryVm_.GetItemSortFunc(E.BackPackItemPackageType.RecycleItem, sortData)
-  local ownItemList = itemsVM.GetItemIds(E.BackPackItemPackageType.Item, nil, sortFunc, false)
-  for i, v in ipairs(ownItemList) do
-    if recycleItemDict[v.configId] then
-      table.insert(resultList, v)
+  local itemData = Z.DataMgr.Get("items_data")
+  if functionId == E.FunctionID.HomeFlowerRecycle then
+    local homeData = Z.DataMgr.Get("home_editor_data")
+    for configId, row in pairs(recycleItemDict) do
+      local items = homeData:GetFurnitureWarehouseItem(configId, true)
+      if items and 0 < #items then
+        for i, item in ipairs(items) do
+          table.insert(resultList, item)
+        end
+      end
+    end
+  else
+    for configId, row in pairs(recycleItemDict) do
+      local uuidList = itemData:GetItemUuidsByConfigId(configId)
+      if uuidList and 0 < #uuidList then
+        for i, uuid in ipairs(uuidList) do
+          table.insert(resultList, {itemUuid = uuid, configId = configId})
+        end
+      end
     end
   end
+  local itemSortFactoryVm_ = Z.VMMgr.GetVM("item_sort_factory")
+  local sortFunc = itemSortFactoryVm_.GetItemSortFunc(E.BackPackItemPackageType.RecycleItem, sortData)
+  table.sort(resultList, sortFunc)
   return resultList
 end
 
@@ -75,27 +93,62 @@ function RecycleData:ClearTempRecycleData()
   self.tempSelectRecycleDict_ = {}
 end
 
-function RecycleData:AddTempRecycleData(data)
-  if self.tempRecycleData_[data.configId] == nil then
-    self.tempRecycleData_[data.configId] = {}
+function RecycleData:GetConfigIdAndUidByDataAndFunctionId(data, functionId)
+  local configId = 0
+  local itemUid = 0
+  if functionId == E.FunctionID.HomeFlowerRecycle then
+    configId = data.ConfigId
+    itemUid = data.InstanceId
+  else
+    configId = data.configId
+    itemUid = data.itemUuid
   end
-  local count = self.tempRecycleData_[data.configId][data.itemUuid] or 0
-  self.tempRecycleData_[data.configId][data.itemUuid] = count + 1
+  return configId, itemUid
 end
 
-function RecycleData:ReduceTempRecycleData(data)
-  if self.tempRecycleData_[data.configId] == nil then
-    self.tempRecycleData_[data.configId] = {}
+function RecycleData:SetTempRecycleData(data, functionId, cnt)
+  local configId, uid = self:GetConfigIdAndUidByDataAndFunctionId(data, functionId)
+  if self.tempRecycleData_[configId] == nil then
+    self.tempRecycleData_[configId] = {}
   end
-  local count = self.tempRecycleData_[data.configId][data.itemUuid] or 0
-  self.tempRecycleData_[data.configId][data.itemUuid] = count - 1
+  self.tempRecycleData_[configId][uid] = cnt
 end
 
-function RecycleData:GetTempRecycleCount(data)
-  if self.tempRecycleData_[data.configId] == nil then
+function RecycleData:AddTempRecycleData(data, functionId)
+  local configId, uid = self:GetConfigIdAndUidByDataAndFunctionId(data, functionId)
+  if self.tempRecycleData_[configId] == nil then
+    self.tempRecycleData_[configId] = {}
+  end
+  local count = self.tempRecycleData_[configId][uid] or 0
+  self.tempRecycleData_[configId][uid] = count + 1
+end
+
+function RecycleData:ReduceTempRecycleData(data, functionId)
+  local configId, uid = self:GetConfigIdAndUidByDataAndFunctionId(data, functionId)
+  if self.tempRecycleData_[configId] == nil then
+    self.tempRecycleData_[configId] = {}
+  end
+  local count = self.tempRecycleData_[configId][uid] or 0
+  if count == 1 then
+    return
+  end
+  self.tempRecycleData_[configId][uid] = count - 1
+end
+
+function RecycleData:ClearCurTempRecycleData(data, functionId)
+  local configId, uid = self:GetConfigIdAndUidByDataAndFunctionId(data, functionId)
+  if self.tempRecycleData_[configId] == nil then
+    self.tempRecycleData_[configId] = {}
+  end
+  self.tempRecycleData_[configId][uid] = 0
+end
+
+function RecycleData:GetTempRecycleCount(data, functionId)
+  local configId, uid = self:GetConfigIdAndUidByDataAndFunctionId(data, functionId)
+  if self.tempRecycleData_[configId] == nil then
     return 0
   end
-  local count = self.tempRecycleData_[data.configId][data.itemUuid] or 0
+  local count = self.tempRecycleData_[configId][uid] or 0
   return count
 end
 
@@ -107,16 +160,16 @@ function RecycleData:GetTempRecycleItemSelect(itemUuid)
   return self.tempSelectRecycleDict_[itemUuid]
 end
 
-function RecycleData:GetTempRecycleRolumnCount()
-  local rolumnCount = 0
+function RecycleData:GetTempRecycleColumnCount()
+  local columnCount = 0
   for configId, info in pairs(self.tempRecycleData_) do
     for itemUuid, count in pairs(info) do
       if 0 < count then
-        rolumnCount = rolumnCount + 1
+        columnCount = columnCount + 1
       end
     end
   end
-  return rolumnCount
+  return columnCount
 end
 
 function RecycleData:GetTempRecycleList()
@@ -167,12 +220,13 @@ function RecycleData:GetSendServerItemList(functionId, tempRecycleList)
     return
   end
   local itemList = {}
+  local isHomeFlower = functionId == E.FunctionID.HomeFlowerRecycle
   for i, info in ipairs(tempRecycleList) do
     local itemInfo = recycleItemDict[info.configId]
     if itemInfo then
       local recycleInfo = {
         recycleId = itemInfo.Id,
-        itemUuid = info.itemUuid,
+        itemUuid = isHomeFlower and info.configId or info.itemUuid,
         count = info.count
       }
       table.insert(itemList, recycleInfo)

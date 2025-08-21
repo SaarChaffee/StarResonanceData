@@ -54,7 +54,13 @@ function cls.GetProfileImageList(type)
         local itemsACount = tempItemsCount[a.Id]
         local itemsBCount = tempItemsCount[b.Id]
         if itemsACount == itemsBCount then
-          return a.Sort < b.Sort
+          local aRed = cls.CheckSingleRedDot(a.Id) and 0 or 1
+          local bRed = cls.CheckSingleRedDot(b.Id) and 0 or 1
+          if aRed == bRed then
+            return a.Sort < b.Sort
+          else
+            return aRed < bRed
+          end
         else
           return itemsACount > itemsBCount
         end
@@ -114,39 +120,6 @@ function cls.GetCurProfileImageId(type)
   return id
 end
 
-function cls.OpenFunctionById(functionId)
-  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
-  local isOn = gotoFuncVM.CheckFuncCanUse(functionId)
-  if not isOn then
-    return false
-  end
-  local personalzone_data = Z.DataMgr.Get("personal_zone_data")
-  local personalzoneMainViewData = personalzone_data:GetCurPreviewPersonalZoneData()
-  if personalzoneMainViewData == nil then
-    return false
-  end
-  if functionId == E.FunctionID.PersonalzonePhoto then
-    local photos = {}
-    if personalzoneMainViewData.personalzone and personalzoneMainViewData.personalzone.photos then
-      photos = personalzoneMainViewData.personalzone.photos
-    end
-    local data = {
-      charId = personalzoneMainViewData.charId,
-      photos = photos
-    }
-    Z.UIMgr:OpenView("personalzone_photo_show", data)
-  elseif functionId == E.FunctionID.PersonalzoneMedal then
-    local data
-    if personalzoneMainViewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
-      data = {}
-      if personalzoneMainViewData.personalzone then
-        data = personalzoneMainViewData.personalzone.medals
-      end
-    end
-    Z.UIMgr:OpenView("personal_zone_medal_main", data)
-  end
-end
-
 function cls.CheckSingleRedDot(id)
   local personalzone_data = Z.DataMgr.Get("personal_zone_data")
   local config = personalzone_data:GetProfileImageTarget(id)
@@ -204,12 +177,12 @@ function cls.CheckRed()
     local functionId = DEFINE.ProfileImageFunctionId[key]
     if functionId == nil or gotoFuncVM.CheckFuncCanUse(functionId, true) then
       if redDot then
-        Z.RedPointMgr.RefreshServerNodeCount(redDotType, 1)
+        Z.RedPointMgr.UpdateNodeCount(redDotType, 1)
       else
-        Z.RedPointMgr.RefreshServerNodeCount(redDotType, 0)
+        Z.RedPointMgr.UpdateNodeCount(redDotType, 0)
       end
     else
-      Z.RedPointMgr.RefreshServerNodeCount(redDotType, 0)
+      Z.RedPointMgr.UpdateNodeCount(redDotType, 0)
     end
   end
   Z.EventMgr:Dispatch(Z.ConstValue.PersonalZone.OnMedalRedDotRefresh)
@@ -295,10 +268,8 @@ function cls.RefreshViewExpireTime(selectId, uibinder, lab)
   if config.TimeType ~= 0 and config.TimeType ~= 4 and isUnlock then
     uibinder.Ref:SetVisible(lab, true)
     local expireTime = cls.GetItemExpireTime(selectId)
-    local timeStrYMD = Z.TimeTools.FormatTimeToYMD(expireTime)
-    local timeStrHMS = Z.TimeTools.FormatTimeToHMS(expireTime)
-    local str = string.format("%s %s", timeStrYMD, timeStrHMS)
-    local param = {str = str}
+    local timeStrYMDHMS = Z.TimeFormatTools.TicksFormatTime(expireTime, E.TimeFormatType.YMDHMS)
+    local param = {str = timeStrYMDHMS}
     lab.text = Lang("Tips_TimeLimit_Valid", param)
   end
 end
@@ -322,7 +293,7 @@ end
 function cls.OpenPersonalZoneMainByCharId(charId, cancelToken)
   Z.CoroUtil.create_coro_xpcall(function()
     local socialVM = Z.VMMgr.GetVM("social")
-    local socialData = socialVM.AsyncGetHeadAndHeadFrameInfo(charId, cancelToken)
+    local socialData = socialVM.AsyncGetSocialData(0, charId, cancelToken)
     cls.OpenPersonalZoneMain(socialData)
   end)()
 end
@@ -333,54 +304,15 @@ function cls.OpenPersonalZoneMain(socialData)
   if not isPersonalzone then
     return
   end
-  local viewData = {}
-  if socialData then
-    local socialVM = Z.VMMgr.GetVM("social")
-    viewData.charId = socialData.basicData.charID
-    viewData.name = socialData.basicData.name
-    viewData.gender = socialData.basicData.gender
-    viewData.personalzone = socialData.personalZone
-    viewData.id = socialData.avatarInfo.avatarId
-    viewData.modelId = socialVM.GetModelId(socialData)
-    if socialData.avatarInfo and socialData.avatarInfo.avatarFrameId then
-      viewData.headFrameId = socialData.avatarInfo.avatarFrameId
-    end
-  else
-    local charBase = Z.ContainerMgr.CharSerialize.charBase
-    viewData.charId = Z.EntityMgr.PlayerEnt.EntId
-    viewData.name = charBase.name
-    viewData.gender = charBase.gender
-    viewData.personalzone = Z.ContainerMgr.CharSerialize.personalZone
-    viewData.id = cls.GetCurProfileImageId(DEFINE.ProfileImageType.Head)
-    viewData.modelId = Z.ModelManager:GetModelIdByGenderAndSize(charBase.gender, Z.ContainerMgr.CharSerialize.charBase.bodySize)
-    viewData.headFrameId = cls.GetCurProfileImageId(DEFINE.ProfileImageType.HeadFrame)
-  end
   Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Space_01, "personalzone_main", function()
-    local personalzone_data = Z.DataMgr.Get("personal_zone_data")
-    personalzone_data:SetCurPreviewPersonalZoneData(viewData)
-    Z.UIMgr:OpenView("personalzone_main", viewData)
+    Z.UIMgr:OpenView("personalzone_main", socialData)
   end, Z.ConstValue.UnrealSceneConfigPaths.Presonzone)
 end
 
-function cls.AsyncSaveMainUIPosition(datas, cancelToken)
-  local request = {}
-  request.uiPosition = datas
-  local reply = worldProxy.SetPersonalZoneUIPosition(request, cancelToken)
-  return cls.CheckReply(reply)
-end
-
-function cls.AsyncSaveTheme(id, cancelToken)
-  local request = {}
-  request.themeId = id
-  local reply = worldProxy.SetPersonalZoneTheme(request, cancelToken)
-  return cls.CheckReply(reply)
-end
-
-function cls.AsyncSaveAnim(info, cancelToken)
-  local request = {}
-  request.actionInfo = info
-  local reply = worldProxy.SetPersonalZoneActionInfo(request, cancelToken)
-  return cls.CheckReply(reply)
+function cls.OpenPersonalZoneEditor(editorType)
+  Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Space_01, "personalzone_edit_window", function()
+    Z.UIMgr:OpenView("personalzone_edit_window", editorType)
+  end, Z.ConstValue.UnrealSceneConfigPaths.Presonzone)
 end
 
 function cls.AsyncSavePersonalTags(onlineDaya, onlineTimes, tags, cancelToken)
@@ -389,49 +321,26 @@ function cls.AsyncSavePersonalTags(onlineDaya, onlineTimes, tags, cancelToken)
   request.onlinePeriods = onlineTimes
   request.tags = tags
   local reply = worldProxy.SetPersonalZoneTags(request, cancelToken)
-  Z.EventMgr:Dispatch(Z.ConstValue.PersonalZone.OnTagsRefresh, Z.ContainerMgr.CharSerialize.personalZone)
+  Z.EventMgr:Dispatch(Z.ConstValue.PersonalZone.OnTagsRefresh, Z.ContainerMgr.CharSerialize.personalZone.onlinePeriods, Z.ContainerMgr.CharSerialize.personalZone.tags)
   return cls.CheckReply(reply)
 end
 
-function cls.CheckPersonalzonePhotoIsChange()
-  local isChange = false
-  local personalzone_data = Z.DataMgr.Get("personal_zone_data")
-  local showPhotos = personalzone_data:GetShowPhoto()
-  local photos = {}
-  if Z.ContainerMgr.CharSerialize.personalZone and Z.ContainerMgr.CharSerialize.personalZone.photos then
-    photos = Z.ContainerMgr.CharSerialize.personalZone.photos
+function cls.AsyncSaveTheme(id, cancelToken)
+  local request = {}
+  request.themeId = id
+  local reply = worldProxy.SetPersonalZoneTheme(request, cancelToken)
+  if cls.CheckReply(reply) then
+    Z.EventMgr:Dispatch(Z.ConstValue.PersonalZone.OnPersonalBgRefresh, id)
+    return true
   end
-  for i = 1, DEFINE.ShowPhotoMaxCount do
-    local tempShowPhoto = 0
-    if showPhotos[i] then
-      tempShowPhoto = showPhotos[i]
-    end
-    local tempPhoto = 0
-    if photos[i] then
-      tempPhoto = photos[i]
-    end
-    if tempShowPhoto ~= tempPhoto then
-      isChange = true
-      break
-    end
-  end
-  return isChange
-end
-
-function cls.AsynSavePersonalPhoto(cancelToken)
-  local personalzone_data = Z.DataMgr.Get("personal_zone_data")
-  local showPhotos = personalzone_data:GetShowPhoto()
-  local res = cls.AsyncSavePhoto(showPhotos, cancelToken)
-  if res then
-    Z.TipsVM.ShowTipsLang(1002103)
-  end
+  return false
 end
 
 function cls.AsyncSavePhoto(photos, cancelToken)
   local request = {}
   request.photos = photos
   local reply = worldProxy.SetPersonalZonePhoto(request, cancelToken)
-  Z.EventMgr:Dispatch(Z.ConstValue.PersonalZone.OnPhotoRefresh, Z.ContainerMgr.CharSerialize.personalZone.photos)
+  Z.EventMgr:Dispatch(Z.ConstValue.PersonalZone.OnPhotoRefresh, Z.ContainerMgr.CharSerialize.personalZone.photosWall)
   return cls.CheckReply(reply)
 end
 
@@ -462,24 +371,6 @@ function cls.PrepareCellPos(width, height, size)
       table.insert(out, Vector2.New(x, y))
     end
   end
-  return out
-end
-
-function cls.GetAllHeadOrFrameConfig(type)
-  if not type or type ~= 1 and type ~= 2 then
-    logError("GetAllHeadConfig \229\147\170\230\156\137\232\191\153\228\184\170\231\177\187\229\158\139\239\188\159{0}", type)
-    return {}
-  end
-  local out = {}
-  local configs = Z.TableMgr.GetTable("ProfileImageTableMgr").GetDatas()
-  for _, config in pairs(configs) do
-    if config.Type == type then
-      table.insert(out, config)
-    end
-  end
-  table.sort(out, function(a, b)
-    return a.Id < b.Id
-  end)
   return out
 end
 
@@ -536,10 +427,12 @@ function cls.GetMedalConfig(type, all)
   else
     local tempRes = {}
     local index = 0
-    for _, config in ipairs(configs) do
-      if cls.HasMedal(config.Id) then
-        index = index + 1
-        tempRes[index] = config
+    if configs then
+      for _, config in ipairs(configs) do
+        if cls.HasMedal(config.Id) then
+          index = index + 1
+          tempRes[index] = config
+        end
       end
     end
     return tempRes
@@ -577,19 +470,42 @@ function cls.IDCardHelperBase(uibinder, idcard)
     return
   end
   if uibinder.rimg_bg then
-    uibinder.rimg_bg:SetImage(config.Image2)
+    uibinder.rimg_bg:SetImage(Z.ConstValue.PersonalZone.PersonalCBg .. config.Image)
   end
-  if uibinder.img_player_name_bg then
-    uibinder.img_player_name_bg:SetColorByHex(config.Color)
+end
+
+function cls.IDCardHelperBasePC(uibinder, idcard)
+  if uibinder == nil then
+    return
   end
-  if uibinder.img_diamond then
-    uibinder.img_diamond:SetColorByHex(config.Color)
+  if idcard == 0 then
+    return
   end
-  if uibinder.img_armband_bg_1 then
-    uibinder.img_armband_bg_1:SetColorByHex(config.Color)
+  local config = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(idcard)
+  if config == nil then
+    return
   end
-  if uibinder.img_armband_bg_2 then
-    uibinder.img_armband_bg_2:SetColorByHex(config.Color)
+  if uibinder.rimg_card then
+    uibinder.rimg_card:SetImage(Z.ConstValue.PersonalZone.PersonalCardBgLong .. config.Image)
+  end
+  if uibinder.img_line_01 then
+    uibinder.img_line_01:SetColorByHex(config.Color)
+  end
+  if uibinder.img_bg then
+    uibinder.img_bg:SetColorByHex(config.Color2)
+  end
+end
+
+function cls.SetPersonalInfoBgBySocialData(socialData, rimg)
+  local cardConfig
+  local personalzoneData = Z.DataMgr.Get("personal_zone_data")
+  if socialData.avatarInfo and socialData.avatarInfo.businessCardStyleId > 0 then
+    cardConfig = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(socialData.avatarInfo.businessCardStyleId)
+  else
+    cardConfig = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(personalzoneData:GetDefaultProfileImageConfigByType(DEFINE.ProfileImageType.Card))
+  end
+  if cardConfig then
+    rimg:SetImage(Z.ConstValue.PersonalZone.PersonalInfoBg .. cardConfig.Image)
   end
 end
 

@@ -159,7 +159,7 @@ function Union_detail_popupView:refreshHeadInfo()
   self.headItem_ = playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.binder_head, self.curPresidentSocialData_, function()
     Z.CoroUtil.create_coro_xpcall(function()
       local idCardVM = Z.VMMgr.GetVM("idcard")
-      idCardVM.AsyncGetCardData(self.curPresidentSocialData_.basicData.charID, self.cancelSource:CreateToken())
+      idCardVM.AsyncGetCardData(self.curPresidentSocialData_.basicData.charID, self.cancelSource:CreateToken(), nil, self.cancelSource:CreateToken())
     end)()
   end)
 end
@@ -188,7 +188,7 @@ end
 
 function Union_detail_popupView:getUnionPhoto(photoId, cosUrl)
   local album_main_vm = Z.VMMgr.GetVM("album_main")
-  album_main_vm.AsyncGetHttpAlbumPhoto(cosUrl, E.PictureType.ECameraRender, E.NativeTextureCallToken.album_loop_item, self.onPhotoCallBack, self)
+  album_main_vm.AsyncGetHttpAlbumPhoto(cosUrl, E.PictureType.ECameraRender, E.NativeTextureCallToken.album_loop_item, self.cancelSource, self.onPhotoCallBack, self)
 end
 
 function Union_detail_popupView:onPhotoCallBack(photoId)
@@ -222,8 +222,8 @@ function Union_detail_popupView:onCollectionBtnClick()
   local unionData = self.unionDataList_[self.curUnionIndex_]
   local unionId = unionData.baseInfo.Id
   if self.unionData_:IsUnionCollection(unionId) then
-    local reply = self.unionVM_:AsyncCancelCollectUnion(unionId, self.cancelSource:CreateToken())
-    if reply.errCode and reply.errCode ~= 0 then
+    local errCode = self.unionVM_:AsyncCancelCollectUnion(unionId, self.cancelSource:CreateToken())
+    if errCode ~= 0 then
       return
     end
   elseif self.unionData_:IsCanCollectUnion() then
@@ -273,7 +273,7 @@ function Union_detail_popupView:asyncQueryUnionInfo(index)
     local cacheInfo = self.cacheUnionDetailInfoDict_[unionId]
     if cacheInfo == nil then
       local reply = self.unionVM_:AsyncReqOtherUnionInfo(unionId, self.cancelSource:CreateToken())
-      if reply and reply.errorCode ~= 0 then
+      if reply and reply.errCode ~= 0 then
         self:enableOrDisableBtn(true)
         return
       end

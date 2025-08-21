@@ -33,6 +33,20 @@ local mergeDataFuncs = {
     local last = container.__data__.successRate
     container.__data__.successRate = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("successRate", last)
+  end,
+  [4] = function(container, buffer, watcherList)
+    local count = br.ReadInt32(buffer)
+    if count == -4 then
+      return
+    end
+    local t = {}
+    local last = container.__data__.initLinkNums
+    container.__data__.initLinkNums = t
+    for i = 1, count do
+      local v = br.ReadInt32(buffer)
+      t[#t + 1] = v
+      container.Watcher:MarkDirty("initLinkNums", last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -70,6 +84,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.successRate then
     container.__data__.successRate = 0
+  end
+  if not pbData.initLinkNums then
+    container.__data__.initLinkNums = {}
   end
   setForbidenMt(container)
 end
@@ -165,6 +182,27 @@ local getContainerElem = function(container)
     dataType = 0,
     data = container.successRate
   }
+  if container.initLinkNums ~= nil then
+    local data = {}
+    for index, repeatedItem in pairs(container.initLinkNums) do
+      data[index] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.initLinkNums = {
+      fieldId = 4,
+      dataType = 3,
+      data = data
+    }
+  else
+    ret.initLinkNums = {
+      fieldId = 4,
+      dataType = 3,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_hand_book_struct.proto";
+import "stru_dirty_mask.proto";
+
+message HandbookData {
+    repeated zproto.HandbookData.UnlockNoteImportantRoleMapEntry unlockNoteImportantRoleMap = 1;
+    repeated zproto.HandbookData.UnlockNoteReadingBookMapEntry unlockNoteReadingBookMap = 2;
+    repeated zproto.HandbookData.UnlockNoteDictionaryMapEntry unlockNoteDictionaryMap = 3;
+    repeated zproto.HandbookData.UnlockNotePostCardMapEntry unlockNotePostCardMap = 4;
+    repeated zproto.HandbookData.UnlockNoteMonthCardMapEntry unlockNoteMonthCardMap = 5;
+}

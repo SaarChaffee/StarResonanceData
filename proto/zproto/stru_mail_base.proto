@@ -3,9 +3,9 @@ syntax = "proto3";
 package zproto;
 
 import "stru_item.proto";
+import "stru_mail_extra_condition.proto";
 import "enum_mail_state.proto";
 import "enum_mail_type.proto";
-import "stru_dirty_mask.proto";
 
 message MailBase {
     int64 mailUuid = 1;
@@ -25,6 +25,6 @@ message MailBase {
     uint32 importance = 15;
     repeated uint32 awardIds = 16;
     int64 RegisterBeforeTime = 17;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    zproto.MailExtraCondition condition = 18;
+    bool isCollect = 19;
 }
-

@@ -7,4 +7,3 @@ message EditUnionAlbumNameRequest {
     uint32 albumId = 2;
     string name = 3;
 }
-

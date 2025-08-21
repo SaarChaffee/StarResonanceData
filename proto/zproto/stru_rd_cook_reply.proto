@@ -5,8 +5,7 @@ package zproto;
 import "enum_e_error_code.proto";
 
 message RdCookReply {
-    zproto.EErrorCode errorCode = 1;
-    int32 recipeId = 2;
-    int32 foodId = 3;
+    int32 recipeId = 1;
+    int32 foodId = 2;
+    zproto.EErrorCode errCode = 3;
 }
-

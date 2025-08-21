@@ -5,8 +5,6 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message RedDotData {
-    map<int32, bool> permanentClosedRedDot = 1;
-    map<int32, int32> redDotCount = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.RedDotData.PermanentClosedRedDotEntry permanentClosedRedDot = 1;
+    repeated zproto.RedDotData.RedDotCountEntry redDotCount = 2;
 }
-

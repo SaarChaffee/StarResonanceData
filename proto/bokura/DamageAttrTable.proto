@@ -24,8 +24,6 @@ message DamageAttrTableBase {
     int_array Tags = 232;
     bool BehitLightIsOpen = 1780;
 }
-
 message DamageAttrTableMgr {
-    map<int64, .bokura.DamageAttrTableBase> datas = 1;
+    repeated bokura.DamageAttrTableMgr.DatasEntry datas = 1;
 }
-

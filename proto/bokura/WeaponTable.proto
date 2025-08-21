@@ -76,8 +76,6 @@ message WeaponTableBase {
     int32 ObtainTips = 1301;
     int32 Index = 1400;
 }
-
 message WeaponTableMgr {
-    map<int32, .bokura.WeaponTableBase> datas = 1;
+    repeated bokura.WeaponTableMgr.DatasEntry datas = 1;
 }
-

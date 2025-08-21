@@ -9,8 +9,6 @@ message EquipEffectCostTableBase {
     mlstring EffectTypeName = 911;
     int_table ItemCost = 452;
 }
-
 message EquipEffectCostTableMgr {
-    map<int32, .bokura.EquipEffectCostTableBase> datas = 1;
+    repeated bokura.EquipEffectCostTableMgr.DatasEntry datas = 1;
 }
-

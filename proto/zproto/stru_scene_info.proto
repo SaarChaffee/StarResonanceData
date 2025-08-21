@@ -4,7 +4,6 @@ package zproto;
 
 import "stru_scene_data.proto";
 import "stru_transfer_info.proto";
-import "stru_dirty_mask.proto";
 
 message SceneInfo {
     zproto.SceneData data = 1;
@@ -16,6 +15,4 @@ message SceneInfo {
     uint32 oldSceneSubType = 7;
     uint32 sceneSubType = 8;
     zproto.TransferInfo transferInfo = 9;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

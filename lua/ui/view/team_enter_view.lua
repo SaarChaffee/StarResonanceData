@@ -2,6 +2,7 @@ local UI = Z.UI
 local super = require("ui.ui_view_base")
 local Team_enterView = class("Team_enterView", super)
 local playerPortraitHgr = require("ui.component.role_info.common_player_portrait_item_mgr")
+local PERSONALZONEDEFINE = require("ui.model.personalzone_define")
 
 function Team_enterView:ctor()
   self.uiBinder = nil
@@ -11,47 +12,147 @@ function Team_enterView:ctor()
   self.teamData_ = Z.DataMgr.Get("team_data")
   self.worldquestVM_ = Z.VMMgr.GetVM("worldquest")
   self.snapShotVM_ = Z.VMMgr.GetVM("snapshot")
+  self.assistFightVM_ = Z.VMMgr.GetVM("assist_fight")
+  self.matchTeamVm_ = Z.VMMgr.GetVM("match_team")
+  self.matchVm_ = Z.VMMgr.GetVM("match")
+  self.matchTeamData_ = Z.DataMgr.Get("match_team_data")
+  self.matchActivityData_ = Z.DataMgr.Get("match_activity_data")
+  self.matchData_ = Z.DataMgr.Get("match_data")
 end
 
 function Team_enterView:initBinder()
   self.sceneMask_ = self.uiBinder.scenemask
-  self.anim_ = self.uiBinder.anim
   self.lab_title_ = self.uiBinder.lab_title
   self.btn_confirm_ = self.uiBinder.btn_confirm
   self.btn_cancel_ = self.uiBinder.btn_cancel
-  self.slider_ = self.uiBinder.slider_time
+  self.imgSlider_ = self.uiBinder.img_slider
   self.lab_time_ = self.uiBinder.lab_time
   self.btn_node_ = self.uiBinder.btn_node
   self.layout_gruop_ = self.uiBinder.layout_gruop
   self.node_worldquest = self.uiBinder.node_worldquest
+  self.affixNode_ = self.uiBinder.btn_affix
+  self.affixBtn_ = self.affixNode_.btn
+  self.memberNode20_ = self.uiBinder.layout_gruop_20team
 end
 
 function Team_enterView:OnActive()
   self:initBinder()
   self.sceneMask_:SetSceneMaskByKey(self.SceneMaskKey)
-  self.anim_:Restart(Z.DOTweenAnimType.Open)
   self.uiBinder.Ref:SetVisible(self.btn_node_, true)
   self.teamVM_ = Z.VMMgr.GetVM("team")
-  self:setViewInfo()
-  Z.CoroUtil.create_coro_xpcall(function()
-    self:setMemberInfo()
-  end)()
+  if self.viewData and self.viewData.assignSceneParams then
+    self:setViewInfo()
+    Z.CoroUtil.create_coro_xpcall(function()
+      self:setMemberInfo()
+    end)()
+  end
+  if self.viewData and self.viewData.isMatching then
+    self:setMatchViewInfo()
+    Z.CoroUtil.create_coro_xpcall(function()
+      self:setMatchMemberInfo()
+    end)()
+  end
   self:BindEvents()
 end
 
 function Team_enterView:OnDeActive()
-  self.anim_:Play(Z.DOTweenAnimType.Close)
+  Z.EventMgr:RemoveObjAll(self)
+  self.timerMgr:Clear()
+end
+
+function Team_enterView:setMatchTeamViewInfo()
+  local dungeonId = self.matchTeamData_:GetCurMatchingDungeonId()
+  local dungeonCfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
+  if not dungeonCfg then
+    return
+  end
+  local teamMainVm = Z.VMMgr.GetVM("team_main")
+  local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonId)
+  local teamTargetTableRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetId)
+  if teamTargetTableRow then
+    self.uiBinder.rimg_bg:SetImage(teamTargetTableRow.MatchPic)
+  end
+  self.lab_title_.text = dungeonCfg.Name .. "  " .. dungeonCfg.DungeonTypeName
+  self.uiBinder.Ref:SetVisible(self.node_worldquest, self.worldquestVM_.CheckIsWorldDungeonAndFinish(dungeonId))
+  local affixList
+  local hasAffix = false
+  local dungeon_data = Z.DataMgr.Get("dungeon_data")
+  local dungeonAffix = dungeon_data:GetDungeonAffixDic(dungeonId)
+  if dungeonAffix and dungeonAffix.affixes then
+    affixList = dungeonAffix.affixes
+    hasAffix = table.zcount(affixList) > 0
+  end
+  self:AddClick(self.affixBtn_, function()
+    self.vm.OpenAffixInfoView(dungeonAffix.affixes)
+  end)
+  self.affixNode_.Ref:SetVisible(self.affixBtn_, hasAffix)
+  local matchTableRow = Z.TableMgr.GetTable("MatchTableMgr").GetRow(teamTargetTableRow.MatchID)
+  local lastTime = matchTableRow.ConfirmTime
+  local sliderValue = lastTime
+  self.timerMgr:StartFrameTimer(function()
+    sliderValue = sliderValue - Time.deltaTime
+    self.imgSlider_.fillAmount = 1 / lastTime * sliderValue
+  end, 1, -1)
+  self.lab_time_.text = lastTime .. Lang("EquipSecondsText")
+  local time = 0
+  self.timerMgr:StartTimer(function()
+    time = time + 1
+    self.lab_time_.text = (lastTime - time < 0 and 0 or lastTime - time) .. Lang("EquipSecondsText")
+  end, 1, -1)
+end
+
+function Team_enterView:setMatchViewInfo()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_bottom, false)
+  local matchType = self.matchData_:GetMatchType()
+  if matchType == E.MatchType.Team then
+    self:setMatchTeamViewInfo()
+  end
+  self:AddAsyncClick(self.btn_confirm_, function()
+    self.matchVm_.AsyncMatchReady(true)
+    self.uiBinder.Ref:SetVisible(self.btn_node_, false)
+  end, nil, nil)
+  self:AddAsyncClick(self.btn_cancel_, function()
+    local confirmFunc = function()
+      Z.CoroUtil.create_coro_xpcall(function()
+        self.matchVm_.AsyncMatchReady(false)
+        self.uiBinder.Ref:SetVisible(self.btn_node_, false)
+      end)()
+    end
+    local data = {
+      dlgType = E.DlgType.YesNo,
+      onConfirm = confirmFunc,
+      labDesc = Lang("ConfirmUnreadyMatchTips")
+    }
+    Z.DialogViewDataMgr:OpenDialogView(data)
+  end, nil, nil)
+  self.uiBinder.Ref:SetVisible(self.btn_confirm_, true)
 end
 
 function Team_enterView:setViewInfo()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_bottom, true)
   local dungeonId = self.viewData.assignSceneParams.sceneId
   local dungeonCfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
   if not dungeonCfg then
     return
   end
-  self.lab_title_.text = dungeonCfg.DungeonTypeName
-  self.uiBinder.lab_name.text = dungeonCfg.Name
+  local dungeonTypeName = dungeonCfg.DungeonTypeName
+  if dungeonCfg.PlayType == E.DungeonType.MasterChallengeDungeon and dungeonCfg.PlayType == E.DungeonType.MasterChallengeDungeon then
+    local diff = self.viewData.assignSceneParams.initParam.masterModeDiff
+    dungeonTypeName = Z.VMMgr.GetVM("hero_dungeon_main").GetHeroDungeonTypeName(dungeonId, diff)
+  end
+  local teamMainVm = Z.VMMgr.GetVM("team_main")
+  local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonId)
+  if targetId ~= nil then
+    local teamTargetTableRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetId)
+    if teamTargetTableRow then
+      self.uiBinder.rimg_bg:SetImage(teamTargetTableRow.MatchPic)
+    end
+  else
+    self.uiBinder.rimg_bg:SetImage("ui/background/seasonact/activity_dina_7")
+  end
+  self.lab_title_.text = dungeonCfg.Name .. "  " .. dungeonTypeName
   local teamInfo = self.teamData_.TeamInfo.baseInfo
+  self.TeamMaxMemberType_ = teamInfo.teamMemberType
   self.selfIsLeader_ = teamInfo.leaderId == Z.ContainerMgr.CharSerialize.charBase.charId
   self:AddAsyncClick(self.btn_confirm_, function()
     if not self.teamVM_.CheckIsInTeam() then
@@ -74,9 +175,6 @@ function Team_enterView:setViewInfo()
     self.uiBinder.Ref:SetVisible(self.btn_node_, false)
     self.vm.CloseEnterView()
   end, nil, nil)
-  self:AddClick(self.uiBinder.btn_label, function()
-    self.vm.OpenAffixInfoView(self.viewData)
-  end)
   self.uiBinder.Ref:SetVisible(self.btn_confirm_, not self.selfIsLeader_)
   self.uiBinder.Ref:SetVisible(self.node_worldquest, self.worldquestVM_.CheckIsWorldDungeonAndFinish(dungeonId))
   local teamActivity = self.viewData
@@ -98,14 +196,15 @@ function Team_enterView:setViewInfo()
     affixList = useItem.affixData.affixIds
     hasAffix = 0 < table.zcount(affixList)
   end
-  self:SetUIVisible(self.uiBinder.btn_label, hasAffix)
+  self.affixNode_.Ref:SetVisible(self.affixBtn_, hasAffix)
+  self:AddClick(self.affixBtn_, function()
+    self.vm.OpenAffixInfoView(dungeonAffix.affixes, hasUseKey and useItem.affixData.affixIds or nil)
+  end)
   local lastTime = Z.Global.TeamApplyActivityLastTime
-  self.slider_.value = lastTime
-  self.slider_.maxValue = lastTime
   local sliderValue = lastTime
   self.timerMgr:StartFrameTimer(function()
     sliderValue = sliderValue - Time.deltaTime
-    self.slider_.value = sliderValue
+    self.imgSlider_.fillAmount = 1 / lastTime * sliderValue
   end, 1, -1)
   self.lab_time_.text = lastTime .. Lang("EquipSecondsText")
   local time = 0
@@ -113,12 +212,39 @@ function Team_enterView:setViewInfo()
     time = time + 1
     self.lab_time_.text = lastTime - time .. Lang("EquipSecondsText")
     if time >= lastTime then
-      if not self.teamVM_.CheckIsInTeam() then
-        self.vm.CloseEnterView()
-      end
       self.timerMgr:Clear()
+      self.vm.CloseEnterView()
     end
   end, 1, -1)
+end
+
+function Team_enterView:setMatchMemberInfo()
+  self:ClearAllUnits()
+  local memberList = self.matchData_:GetMatchPlayerInfo()
+  for k, v in pairs(memberList) do
+    local memberInfo = v
+    local charId = memberInfo.charId
+    local memberItem = self:AsyncLoadUiUnit(GetLoadAssetPath(Z.ConstValue.Team.EnterPlayTpl), "member" .. charId, self.layout_gruop_.transform)
+    memberItem.Ref:SetVisible(memberItem.img_select, memberInfo.readyStatus == E.RedayType.Ready)
+    memberItem.Ref:SetVisible(memberItem.cont_login, memberInfo.readyStatus ~= E.RedayType.Ready)
+    memberItem.Ref:SetVisible(memberItem.lab_tips, false)
+    local isAssistFight = false
+    if not memberInfo.isAi then
+      isAssistFight = memberInfo.isAssist
+    end
+    memberItem.Ref:SetVisible(memberItem.node_assist_fight, isAssistFight)
+    self:setMatchHalfPortraitPImg(memberInfo, memberItem)
+    memberItem.Ref:SetVisible(memberItem.lab_master, false)
+    local idcard = Z.DataMgr.Get("personal_zone_data"):GetDefaultProfileImageConfigByType(PERSONALZONEDEFINE.ProfileImageType.Card)
+    local config = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(idcard)
+    if config then
+      memberItem.rimg_bg:SetImage(Z.ConstValue.PersonalZone.PersonalTeamBg .. config.Image)
+    end
+    for i = 1, Z.Global.TeamCardShowMedalCount do
+      local img = memberItem.node_badge["rimg_badge_" .. i]
+      memberItem.node_badge.Ref:SetVisible(img, false)
+    end
+  end
 end
 
 function Team_enterView:setMemberInfo()
@@ -131,17 +257,28 @@ function Team_enterView:setMemberInfo()
   local teamInfo = self.teamData_.TeamInfo.baseInfo
   local memberList = self.teamVM_.GetTeamMemData()
   local memberListCount = #memberList
+  local dungeonId = self.viewData.assignSceneParams.sceneId
+  local dungeonCfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
+  local showScore = false
+  if dungeonCfg then
+    showScore = dungeonCfg.PlayType == E.DungeonType.MasterChallengeDungeon
+  end
+  local parent = self.TeamMaxMemberType_ == E.ETeamMemberType.Five and self.layout_gruop_ or self.memberNode20_
+  local path = self.TeamMaxMemberType_ == E.ETeamMemberType.Five and GetLoadAssetPath(Z.ConstValue.Team.EnterPlayTpl) or GetLoadAssetPath(Z.ConstValue.Team.EnterPlayTpl20)
   for i = 1, memberListCount do
     local memberInfo = memberList[i]
     local charId = memberInfo.charId
-    local memberItem = self:AsyncLoadUiUnit(GetLoadAssetPath(Z.ConstValue.Team.EnterPlayTpl), "member" .. charId, self.layout_gruop_.transform)
+    local memberItem = self:AsyncLoadUiUnit(path, "member" .. charId, parent)
     local isLeader = charId == teamInfo.leaderId
-    memberItem.Ref:SetVisible(memberItem.img_leader, isLeader)
     local memberSocialData = memberInfo.socialData
     memberItem.Ref:SetVisible(memberItem.img_select, isLeader)
     memberItem.Ref:SetVisible(memberItem.cont_login, not isLeader)
     memberItem.Ref:SetVisible(memberItem.lab_tips, hasUseKey == true)
-    memberItem.Ref:SetVisible(memberItem.img_line_1, i < memberListCount)
+    local isAssistFight = false
+    if not memberInfo.isAi then
+      isAssistFight = teamActivity.awardCountInfo[charId].isAssist
+    end
+    memberItem.Ref:SetVisible(memberItem.node_assist_fight, isAssistFight)
     if hasUseKey then
       local limitID, limitCount, curCount, str
       if isLeader then
@@ -161,21 +298,74 @@ function Team_enterView:setMemberInfo()
       memberItem.lab_tips.text = str
     end
     if memberSocialData then
-      memberItem.lab_name.text = memberSocialData.basicData.name
-      self:setHalfPortraitPImg(memberInfo, memberSocialData, memberItem)
+      self:setHalfPortraitPImg(memberInfo, memberItem)
+      local score = 0
+      local master_dungeon_score_text = Lang("MaterDungeonScore") .. score
+      if memberInfo.socialData.masterModeDungeonData then
+        score = memberInfo.socialData.masterModeDungeonData.seasonScore
+        local scoreText = Z.VMMgr.GetVM("hero_dungeon_main").GetPlayerSeasonMasterDungeonTotalScoreWithColor(score)
+        master_dungeon_score_text = Lang("MaterDungeonScore") .. scoreText
+        if memberInfo.socialData.masterModeDungeonData.isShow then
+          master_dungeon_score_text = Lang("MaterDungeonScore") .. Lang("Hidden")
+        end
+      end
+      memberItem.lab_master.text = master_dungeon_score_text
+      memberItem.Ref:SetVisible(memberItem.lab_master, 0 < score and showScore)
+      local idcard = Z.DataMgr.Get("personal_zone_data"):GetDefaultProfileImageConfigByType(PERSONALZONEDEFINE.ProfileImageType.Card)
+      if memberSocialData.avatarInfo and memberSocialData.avatarInfo.businessCardStyleId and memberSocialData.avatarInfo.businessCardStyleId ~= 0 then
+        idcard = memberSocialData.avatarInfo.businessCardStyleId
+      end
+      local config = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(idcard)
+      if config and memberItem.rimg_bg then
+        memberItem.rimg_bg:SetImage(Z.ConstValue.PersonalZone.PersonalTeamBg .. config.Image)
+      end
+      local medals = {}
+      local medalCount = 0
+      if memberSocialData.personalZone and memberSocialData.personalZone.medals then
+        for i = 1, Z.Global.PersonalMedalLimit * Z.Global.PersonalzoneMedalRow[1] * Z.Global.PersonalzoneMedalRow[2] do
+          if memberSocialData.personalZone.medals[i] ~= nil and memberSocialData.personalZone.medals[i] ~= 0 then
+            medalCount = medalCount + 1
+            medals[medalCount] = memberSocialData.personalZone.medals[i]
+            if medalCount == Z.Global.IdCardShowMedalCount then
+              break
+            end
+          end
+        end
+      end
+      if self.TeamMaxMemberType_ == E.ETeamMemberType.Five then
+        local mgr = Z.TableMgr.GetTable("MedalTableMgr")
+        for i = 1, Z.Global.TeamCardShowMedalCount do
+          local img = memberItem.node_badge["rimg_badge_" .. i]
+          if medals[i] ~= nil and medals[i] ~= 0 then
+            memberItem.node_badge.Ref:SetVisible(img, true)
+            local config = mgr.GetRow(medals[i])
+            if config then
+              img:SetImage(config.Image)
+            end
+          else
+            memberItem.node_badge.Ref:SetVisible(img, false)
+          end
+        end
+      end
     end
   end
 end
 
-function Team_enterView:setHalfPortraitPImg(memberInfo, memberSocialData, memberItem)
+function Team_enterView:setHalfPortraitPImg(memberInfo, memberItem)
+  local memberSocialData = memberInfo.socialData
+  local professionId = 0
   memberItem.Ref:SetVisible(memberItem.img_idcard, false)
   memberItem.Ref:SetVisible(memberItem.rimg_idcard, false)
   local modelId = 0
+  local level = 0
   if memberInfo.isAi then
     local botAiId = memberSocialData.basicData.botAiId
+    level = self.teamData_:GetLeaderLevel()
     local botAiTableRow = Z.TableMgr.GetRow("BotAITableMgr", botAiId)
     if botAiTableRow then
+      professionId = botAiTableRow.Weapon[1]
       modelId = botAiTableRow.ModelID
+      memberItem.lab_name.text = botAiTableRow.Name
       local path = self.snapShotVM_.GetModelHalfPortrait(modelId)
       if path ~= nil then
         memberItem.Ref:SetVisible(memberItem.img_idcard, true)
@@ -183,6 +373,12 @@ function Team_enterView:setHalfPortraitPImg(memberInfo, memberSocialData, member
       end
     end
   else
+    local professionData = memberSocialData.professionData
+    level = memberSocialData.basicData.level
+    memberItem.lab_name.text = memberSocialData.basicData.name
+    if professionData then
+      professionId = professionData.professionId
+    end
     modelId = Z.ModelManager:GetModelIdByGenderAndSize(memberSocialData.basicData.gender, memberSocialData.basicData.bodySize)
     local path = self.snapShotVM_.GetInternalHalfPortrait(memberInfo.charId, modelId)
     if path ~= nil then
@@ -204,6 +400,85 @@ function Team_enterView:setHalfPortraitPImg(memberInfo, memberSocialData, member
       memberItem.rimg_idcard:SetNativeTexture(headId)
     end
   end
+  if professionId ~= 0 then
+    local professionSystemTableRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
+    if professionSystemTableRow then
+      memberItem.img_profession:SetImage(professionSystemTableRow.Icon)
+      memberItem.lab_salutation.text = Lang("Grade", {val = level}) .. professionSystemTableRow.Name
+    end
+  end
+end
+
+function Team_enterView:setMatchHalfPortraitPImg(memberInfo, memberItem)
+  local professionId = memberInfo.professionId
+  memberItem.Ref:SetVisible(memberItem.img_idcard, false)
+  memberItem.Ref:SetVisible(memberItem.rimg_idcard, false)
+  local modelId = 0
+  local level = 0
+  if memberInfo.isBot then
+    local botAiId = memberInfo.charId
+    level = memberInfo.matchShowInfo.level
+    local botAiTableRow = Z.TableMgr.GetRow("BotAITableMgr", botAiId)
+    if botAiTableRow then
+      professionId = botAiTableRow.Weapon[1]
+      modelId = botAiTableRow.ModelID
+      memberItem.lab_name.text = botAiTableRow.Name
+      local path = self.snapShotVM_.GetModelHalfPortrait(modelId)
+      if path ~= nil then
+        memberItem.Ref:SetVisible(memberItem.img_idcard, true)
+        memberItem.img_idcard:SetImage(path)
+      end
+    end
+  else
+    memberItem.lab_name.text = memberInfo.matchShowInfo.name
+    if memberInfo.matchShowInfo.avatarInfo and memberInfo.matchShowInfo.avatarInfo.halfBody and not string.zisEmpty(memberInfo.matchShowInfo.avatarInfo.halfBody.url) and memberInfo.matchShowInfo.avatarInfo.halfBody.verify.ReviewStartTime == E.EPictureReviewType.EPictureReviewed then
+      local snapshotVm = Z.VMMgr.GetVM("snapshot")
+      local nativeTextureId = snapshotVm.AsyncDownLoadPictureByUrl(memberInfo.matchShowInfo.avatarInfo.halfBody.url)
+      if self.uiBinder == nil then
+        return
+      end
+      if nativeTextureId then
+        memberItem.Ref:SetVisible(memberItem.rimg_idcard, true)
+        memberItem.rimg_idcard:SetNativeTexture(nativeTextureId)
+      else
+        self:setDefaultModelHalf(memberInfo, memberItem)
+      end
+    else
+      self:setDefaultModelHalf(memberInfo, memberItem)
+    end
+  end
+  if professionId ~= 0 then
+    local professionSystemTableRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
+    if professionSystemTableRow then
+      memberItem.img_profession:SetImage(professionSystemTableRow.Icon)
+      memberItem.lab_salutation.text = Lang("Grade", {
+        val = memberInfo.matchShowInfo.level
+      }) .. professionSystemTableRow.Name
+    end
+  end
+end
+
+function Team_enterView:setDefaultModelHalf(memberInfo, memberItem)
+  local modelId = Z.ModelManager:GetModelIdByGenderAndSize(memberInfo.matchShowInfo.gender, memberInfo.matchShowInfo.bodySize)
+  local path = self.snapShotVM_.GetInternalHalfPortrait(memberInfo.charId, modelId)
+  if path ~= nil then
+    if type(path) == "number" then
+      memberItem.Ref:SetVisible(memberItem.rimg_idcard, true)
+      memberItem.rimg_idcard:SetNativeTexture(path)
+    else
+      memberItem.Ref:SetVisible(memberItem.img_idcard, true)
+      memberItem.img_idcard:SetImage(path)
+    end
+  end
+  local headId, charId = self.snapShotVM_.AsyncGetHttpHalfPortraitId(memberInfo.charId)
+  if not self.uiBinder then
+    return
+  end
+  if charId == memberInfo.charId and headId ~= nil and headId ~= 0 then
+    memberItem.Ref:SetVisible(memberItem.img_idcard, false)
+    memberItem.Ref:SetVisible(memberItem.rimg_idcard, true)
+    memberItem.rimg_idcard:SetNativeTexture(headId)
+  end
 end
 
 function Team_enterView:teamRefreshActivityVoteResult(resultData)
@@ -217,38 +492,28 @@ function Team_enterView:teamRefreshActivityVoteResult(resultData)
   end
 end
 
-function Team_enterView:refreshTeamActivityVoteResult()
-  local data = self.teamData_:GetMemberReadyState()
-  if not data then
-    return
-  end
-  for _, resultData in pairs(data) do
-    local unit = self.units["member" .. resultData.charId]
-    if unit then
-      local isAgree = resultData.readyStatus == E.RedayType.Ready or self.selfIsLeader_
-      unit.Ref:SetVisible(unit.img_select, isAgree)
-      unit.Ref:SetVisible(unit.cont_login, not isAgree)
-    end
-  end
-end
-
 function Team_enterView:hideActivityLeaderCancelBtn()
   if self.selfIsLeader_ then
     self.uiBinder.Ref:SetVisible(self.btn_node_, false)
   end
 end
 
-function Team_enterView:removeTeamMen(charId)
-  if self.units and self.units["member" .. charId] then
-    self:RemoveUiUnit("member" .. charId)
-  end
-end
-
 function Team_enterView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Team.HideActivityLeaderCancelBtn, self.hideActivityLeaderCancelBtn, self)
-  Z.EventMgr:Add("removeTeamMen", self.removeTeamMen, self)
-  Z.EventMgr:Add(Z.ConstValue.Team.RefreshActivityVoteResult, self.refreshTeamActivityVoteResult, self)
   Z.EventMgr:Add(Z.ConstValue.Team.TeamRefreshActivityVoteResult, self.teamRefreshActivityVoteResult, self)
+  Z.EventMgr:Add(Z.ConstValue.Match.MatchPlayerInfoChange, self.teamMatchRefreshActivityVoteResult, self)
+end
+
+function Team_enterView:teamMatchRefreshActivityVoteResult()
+  local memberList = self.matchData_:GetMatchPlayerInfo()
+  for k, v in pairs(memberList) do
+    local memberInfo = v
+    local memberItem = self.units["member" .. memberInfo.charId]
+    if memberItem then
+      memberItem.Ref:SetVisible(memberItem.img_select, memberInfo.readyStatus == E.RedayType.Ready)
+      memberItem.Ref:SetVisible(memberItem.cont_login, memberInfo.readyStatus ~= E.RedayType.Ready)
+    end
+  end
 end
 
 function Team_enterView:OnRefresh()

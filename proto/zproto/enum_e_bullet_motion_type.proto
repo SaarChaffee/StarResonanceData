@@ -9,4 +9,3 @@ enum EBulletMotionType {
     BulletMotionFollow = 3;
     BulletMotionSurround = 4;
 }
-

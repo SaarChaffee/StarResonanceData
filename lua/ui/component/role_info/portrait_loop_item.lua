@@ -25,12 +25,17 @@ function PortraitLoopItem:setUI()
     return
   end
   self.data = self.parent:GetDataByIndex(index)
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local viewData = {
     id = self.data.Id,
     modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value,
     charId = Z.EntityMgr.PlayerEnt.EntId,
     isShowCombinationIcon = false,
-    isShowTalentIcon = false
+    isShowTalentIcon = false,
+    token = self.parent.uiView.cancelSource:CreateToken()
   }
   playerPortraitHgr.InsertPortrait(self.unit.content, viewData)
   self.unit.content.group_unlocked:SetVisible(not self.vm_.CheckPortraitUnlock(self.data.Id))

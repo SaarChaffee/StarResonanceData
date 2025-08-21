@@ -3,26 +3,32 @@ local super = require("ui.ui_subview_base")
 local Cont_num_keyboardView = class("Cont_num_keyboardView", super)
 
 function Cont_num_keyboardView:ctor(parent)
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "cont_num_keyboard", "c_common/cont_num_keyboard_tpl", UI.ECacheLv.None)
   self.parentView_ = parent
 end
 
-function Cont_num_keyboardView:initWidget()
+function Cont_num_keyboardView:initComp()
   self.btns_ = {}
-  self.delBtn_ = self.panel.btn_del
-  self.press_ = self.panel.node_press
-  self.okBtn_ = self.panel.btn_ok
   for i = 0, 9 do
-    self.btns_[i + 1] = self.panel["btn_" .. i]
+    self.btns_[i + 1] = self.uiBinder["btn_" .. i]
+  end
+end
+
+function Cont_num_keyboardView:refreshUIScale()
+  if self.viewData.scale then
+    self.uiBinder.Trans.localScale = Vector3.one * self.viewData.scale
+  else
+    self.uiBinder.Trans.localScale = Vector3.one
   end
 end
 
 function Cont_num_keyboardView:OnActive()
-  self:initWidget()
+  self:initComp()
+  self:refreshUIScale()
   self.nowInputNum_ = 0
   for index, btn in ipairs(self.btns_) do
-    self:AddClick(btn.Btn, function()
+    self:AddClick(btn, function()
       local value = self.nowInputNum_ * 10 + index - 1
       if self.viewData.max and value > self.viewData.max then
         value = self.viewData.max
@@ -34,10 +40,13 @@ function Cont_num_keyboardView:OnActive()
       self.parentView_:InputNum(self.nowInputNum_, nil, true)
     end)
   end
-  self:AddClick(self.okBtn_.Btn, function()
+  self:AddAsyncClick(self.uiBinder.btn_ok, function()
+    if self.viewData.onInputOk then
+      self.viewData.onInputOk(self.nowInputNum_)
+    end
     self:DeActive()
   end)
-  self:AddClick(self.delBtn_.Btn, function()
+  self:AddClick(self.uiBinder.btn_del, function()
     self.nowInputNum_ = 0
     if self.viewData.min then
       self.parentView_:InputNum(self.viewData.min)
@@ -45,16 +54,19 @@ function Cont_num_keyboardView:OnActive()
       self.parentView_:InputNum(self.nowInputNum_)
     end
   end)
-  self:AddClick(self.press_.PressCheck.ContainGoEvent, function(isCheck)
+  self:AddClick(self.uiBinder.press_check.ContainGoEvent, function(isCheck)
     if not isCheck then
       self:DeActive()
     end
   end)
-  self.press_.PressCheck:StartCheck()
+  self.uiBinder.press_check:StartCheck()
 end
 
 function Cont_num_keyboardView:OnDeActive()
-  self.press_.PressCheck:StopCheck()
+  if self.viewData.onKeyPadClose then
+    self.viewData.onKeyPadClose()
+  end
+  self.uiBinder.press_check:StopCheck()
 end
 
 function Cont_num_keyboardView:OnRefresh()

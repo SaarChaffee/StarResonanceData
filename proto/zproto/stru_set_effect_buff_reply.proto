@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_union_effect_buff.proto";
 
 message SetEffectBuffReply {
-    int32 errCode = 1;
-    zproto.UnionEffectBuff effectBuff = 2;
+    zproto.UnionEffectBuff effectBuff = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

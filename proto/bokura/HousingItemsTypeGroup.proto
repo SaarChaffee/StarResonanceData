@@ -6,8 +6,6 @@ message HousingItemsTypeGroupBase {
     int32 Id = 1463;
     int32 GroupName = 581;
 }
-
 message HousingItemsTypeGroupMgr {
-    map<int32, .bokura.HousingItemsTypeGroupBase> datas = 1;
+    repeated bokura.HousingItemsTypeGroupMgr.DatasEntry datas = 1;
 }
-

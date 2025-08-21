@@ -7,4 +7,3 @@ enum StructureOpType {
     StructureOpTypeUpdate = 1;
     StructureOpTypeDelete = 2;
 }
-

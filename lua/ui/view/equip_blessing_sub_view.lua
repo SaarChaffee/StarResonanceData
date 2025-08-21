@@ -6,8 +6,15 @@ local loop_item = require("ui.component.equip.equip_blessing_loop_item")
 
 function Equip_blessing_subView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "equip_blessing_sub", "equip/equip_blessing_sub", UI.ECacheLv.None)
+  local assetPath
+  if Z.IsPCUI then
+    assetPath = "equip/equip_blessing_sub_pc"
+  else
+    assetPath = "equip/equip_blessing_sub"
+  end
+  super.ctor(self, "equip_blessing_sub", assetPath, UI.ECacheLv.None)
   self.equipCfgData_ = Z.DataMgr.Get("equip_config_data")
+  self.equipRefineData_ = Z.DataMgr.Get("equip_refine_data")
 end
 
 function Equip_blessing_subView:initBinders()
@@ -42,7 +49,13 @@ end
 function Equip_blessing_subView:initUi()
   local part = self.viewData.part
   local congfigs = self.equipCfgData_.RefineBlessingTableData[part] or {}
-  self.loopListView_ = loop_list.new(self, self.itemList_, loop_item, "equip_blessing_item_tpl")
+  local loadItem
+  if Z.IsPCUI then
+    loadItem = "equip_blessing_item_tpl_pc"
+  else
+    loadItem = "equip_blessing_item_tpl"
+  end
+  self.loopListView_ = loop_list.new(self, self.itemList_, loop_item, loadItem)
   self.loopListView_:Init(congfigs)
   self:StartCheck()
 end
@@ -65,18 +78,26 @@ function Equip_blessing_subView:OnDeActive()
   Z.EventMgr:Dispatch(Z.ConstValue.Equip.IsHideLeftView, false)
 end
 
-function Equip_blessing_subView:OnSelectedItem(congfigId, count, successRate)
-  self.ItemCount[congfigId] = count
-  Z.EventMgr:Dispatch("selectedBlessingItem", congfigId, count, successRate)
+function Equip_blessing_subView:OnSelectedItem(configId, count, successRate)
+  self.equipRefineData_.CurSelBlessingData[configId] = {
+    configId = configId,
+    num = count,
+    rate = successRate
+  }
+  Z.EventMgr:Dispatch(Z.ConstValue.Equip.EquipRefreshSelBlessingData)
 end
 
-function Equip_blessing_subView:OnChangeNum(congfigId, count, successRate)
-  self.ItemCount[congfigId] = count
-  Z.EventMgr:Dispatch("blessingItemCountChange", congfigId, count, successRate)
+function Equip_blessing_subView:OnChangeNum(configId, count, successRate)
+  local data = self.equipRefineData_.CurSelBlessingData[configId]
+  if data and data.num ~= count then
+    self.equipRefineData_.CurSelBlessingData[configId].num = count
+    self.equipRefineData_.CurSelBlessingData[configId].rate = successRate
+    Z.EventMgr:Dispatch(Z.ConstValue.Equip.EquipRefreshSelBlessingData)
+  end
 end
 
-function Equip_blessing_subView:GetSelectedCount(congfigId)
-  return self.ItemCount[congfigId]
+function Equip_blessing_subView:GetSelectedInfo(configId)
+  return self.equipRefineData_.CurSelBlessingData[configId]
 end
 
 function Equip_blessing_subView:OnRefresh()

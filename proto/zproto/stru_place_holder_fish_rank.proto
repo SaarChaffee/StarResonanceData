@@ -7,4 +7,3 @@ message PlaceHolderFishRank {
     int32 Size = 2;
     int32 Rank = 3;
 }
-

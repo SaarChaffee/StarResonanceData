@@ -1,6 +1,8 @@
 local super = require("ui.ui_view_base")
 local Camera_config_popupView = class("Camera_config_popupView", super)
 local data = Z.DataMgr.Get("camerasys_data")
+local loopScrollRect_ = require("ui.component.loop_grid_view")
+local camera_config_select_item = require("ui/component/camerasys/camera_config_select_item")
 
 function Camera_config_popupView:ctor()
   self.uiBinder = nil
@@ -10,7 +12,8 @@ end
 function Camera_config_popupView:OnActive()
   self.uiBinder.scenemask:SetSceneMaskByKey(self.SceneMaskKey)
   local cameraConfigScrollRect = self.uiBinder.loopscroll_config
-  self.cameraConfigScrollRect_ = require("ui/component/loopscrollrect").new(cameraConfigScrollRect, self, require("ui.component.camerasys.camera_config_select_item"))
+  self.cameraConfigScrollRect_ = loopScrollRect_.new(self, self.uiBinder.loopscroll_config, camera_config_select_item, "camera_config_select_item")
+  self.cameraConfigScrollRect_:Init({})
   self.uiBinder.btn_save:AddListener(function()
     Z.VMMgr.GetVM("camerasys").SaveCameraSchemeInfo()
     Z.UIMgr:CloseView("camera_config_popup")
@@ -21,6 +24,8 @@ function Camera_config_popupView:OnActive()
 end
 
 function Camera_config_popupView:OnDeActive()
+  self.cameraConfigScrollRect_:UnInit()
+  self.cameraConfigScrollRect_ = nil
 end
 
 function Camera_config_popupView:OnRefresh()
@@ -34,7 +39,7 @@ function Camera_config_popupView:OnRefresh()
   table.sort(showDatas, function(a, b)
     return a.schemeTime < b.schemeTime
   end)
-  self.cameraConfigScrollRect_:SetData(showDatas)
+  self.cameraConfigScrollRect_:RefreshListView(showDatas)
 end
 
 return Camera_config_popupView

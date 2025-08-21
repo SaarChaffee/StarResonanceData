@@ -9,4 +9,3 @@ message TotalFriendliness {
     int32 todayTotalAddExps = 4;
     repeated int32 gotLevelAwards = 5;
 }
-

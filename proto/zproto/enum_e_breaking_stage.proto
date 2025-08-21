@@ -6,4 +6,3 @@ enum EBreakingStage {
     Breaking = 0;
     BreakEnd = 1;
 }
-

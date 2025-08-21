@@ -49,8 +49,7 @@ local upLoad = function(token)
   end
   local result = token.result
   if result then
-    local cosXml = Z.CosXmlRequest.Rent()
-    cosXml:InitCosXml(result.tmpSecretId, result.tmpSecretKey, result.region, result.tmpToken, result.expiredTime, function(isSuccess)
+    local func = function(isSuccess)
       if isSuccess then
         local ownerId = Z.ContainerMgr.CharSerialize.charBase.charId or 0
         local request = {
@@ -68,11 +67,17 @@ local upLoad = function(token)
         }
         upLoadResultFunc(request, headSnapshotData.CancelSource:CreateToken())
       end
-      cosXml:Recycle()
-    end)
-    cosXml.Bucket = result.bucket
-    cosXml.SaveKey = result.objectKey
-    Z.SnapShotMgr:PostBytes(cosXml, result.pictureId)
+    end
+    local uploadParm = Z.UploadParm.New()
+    uploadParm.TmpSecretId = result.tmpSecretId
+    uploadParm.TmpSecretKey = result.tmpSecretKey
+    uploadParm.Region = result.region
+    uploadParm.TmpToken = result.tmpToken
+    uploadParm.ExpireTime = result.expiredTime
+    uploadParm.CallBackFunc = func
+    uploadParm.Bucket = result.bucket
+    uploadParm.SaveKey = result.objectKey
+    Z.SnapShotMgr:PostBytes(uploadParm, result.pictureId)
   end
 end
 local asyncDownLoadUrlData = function(url, charId, callFunc)
@@ -138,14 +143,14 @@ local getHttpHalfPortraitId = function(charId)
     if textureId == 0 and matchURL then
       textureId = asyncDownLoadPictureByUrl(url)
       if textureId ~= nil and textureId ~= -1 then
-        if charId ~= Z.EntityMgr.PlayerEnt.EntId then
+        if not Z.EntityMgr.PlayerEnt or charId ~= Z.EntityMgr.PlayerEnt.EntId then
           saveTextureToLocal(folderName, version, textureId)
         end
         removeOldTexture(headSnapshotData:GetHalfDataInfo(charId))
         headSnapshotData:SetHalfTime(charId, newTime)
         headSnapshotData:SetHalfDataInfo(charId, textureId, version)
       else
-        textureId = getFilePathTextureId(folderName, version - 1, 0)
+        return nil
       end
     else
       headSnapshotData:SetHalfTime(charId, newTime)
@@ -206,8 +211,7 @@ local getTextureId = function(charId, socialData, newTime, func)
         removeOldTexture(headSnapshotData:GetHeadDataInfo(charId))
         headSnapshotData:SetHeadDataInfo(charId, natvieTextureId)
       else
-        headSnapshotData:SetHeadTime(charId, 0)
-        natvieTextureId = getFilePathTextureId(folderName, version - 1, 0)
+        return nil
       end
       func(charId, natvieTextureId)
     end

@@ -11,8 +11,6 @@ message FantasyTypeTableBase {
     string TypeTips = 209;
     string TypeShow = 52;
 }
-
 message FantasyTypeTableMgr {
-    map<int32, .bokura.FantasyTypeTableBase> datas = 1;
+    repeated bokura.FantasyTypeTableMgr.DatasEntry datas = 1;
 }
-

@@ -2,8 +2,6 @@ local super = require("ui.component.loop_list_view_item")
 local RoleLevelItem = class("RoleLevelItem", super)
 local loopListView = require("ui.component.loop_list_view")
 local levelAwardLoopItem = require("ui.component.role_level.role_level_reward_loop_item")
-local completeColor = Color.New(0.8549019607843137, 0.8549019607843137, 0.8549019607843137, 1.0)
-local unCompleteColor = Color.New(0.8549019607843137, 0.8549019607843137, 0.8549019607843137, 0.25098039215686274)
 
 function RoleLevelItem:ctor()
   self.roleLevelVm_ = Z.VMMgr.GetVM("rolelevel_main")
@@ -27,36 +25,37 @@ end
 
 function RoleLevelItem:initItem()
   local cont_energy_ = self.uiBinder.cont_energy
-  cont_energy_.Ref:SetVisible(cont_energy_.img_complete, false)
-  cont_energy_.Ref:SetVisible(cont_energy_.lab_name, false)
+  local isLevelComplete = self.level >= self.awardData.Level
+  local dataList_ = self.parent:GetData()
+  local setVisibility = function()
+    cont_energy_.Ref:SetVisible(cont_energy_.img_complete, isLevelComplete)
+    cont_energy_.Ref:SetVisible(cont_energy_.img_dot_off, not isLevelComplete)
+    cont_energy_.Ref:SetVisible(cont_energy_.img_dot_on, isLevelComplete)
+    cont_energy_.Ref:SetVisible(cont_energy_.lab_name, not isLevelComplete)
+    cont_energy_.Ref:SetVisible(cont_energy_.lab_energy_num_on, isLevelComplete)
+    cont_energy_.Ref:SetVisible(cont_energy_.lab_energy_num_off, not isLevelComplete)
+    cont_energy_.Ref:SetVisible(cont_energy_.img_up, self.Index == 1)
+    cont_energy_.Ref:SetVisible(cont_energy_.img_down, self.Index == #dataList_ - 1)
+  end
+  setVisibility()
+  cont_energy_.lab_energy_num_on.text = self.awardData.Level
+  cont_energy_.lab_energy_num_off.text = self.awardData.Level
   self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
-  cont_energy_.lab_energy_num.text = self.awardData.Level
-  if self.level < self.awardData.Level then
-    cont_energy_.img_slider.fillAmount = 0
-    cont_energy_.Ref:SetVisible(cont_energy_.img_complete, false)
-    cont_energy_.Ref:SetVisible(cont_energy_.lab_name, true)
-    cont_energy_.img_bg:SetColor(unCompleteColor)
-    cont_energy_.img_slider_bg.alpha = 0.5
-    cont_energy_.img_frame_bg.alpha = 0.5
-  else
+  if isLevelComplete then
     self.itemClassData_.isShowReceive = true
     self.isGetAward_ = true
-    cont_energy_.Ref:SetVisible(cont_energy_.img_complete, true)
-    cont_energy_.Ref:SetVisible(cont_energy_.lab_name, false)
     cont_energy_.img_slider.fillAmount = 1
-    cont_energy_.img_bg:SetColor(completeColor)
-    cont_energy_.img_slider_bg.alpha = 1
     cont_energy_.img_frame_bg.alpha = 1
     local curAwardData = self:GetCurData()
     if curAwardData and self.level == self.awardData.Level then
       local levelExp = curAwardData.Exp
       local curExp = Z.ContainerMgr.CharSerialize.roleLevel.curLevelExp or 0
-      local ratio = 0
-      if levelExp ~= 0 then
-        ratio = curExp / levelExp
-      end
+      local ratio = levelExp ~= 0 and curExp / levelExp or 0
       cont_energy_.img_slider.fillAmount = math.min(ratio, 1)
     end
+  else
+    cont_energy_.img_slider.fillAmount = 0
+    cont_energy_.img_frame_bg.alpha = 0.65
   end
 end
 

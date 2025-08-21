@@ -9,10 +9,7 @@ message FriendNtf {
     message NotifyUpdateData {
         zproto.NotifyUpdateDataRequest vRequest = 1;
     }
-
     message NotifyFriendlinessExpLv {
         zproto.NotifyFriendlinessExpLvRequest vRequest = 1;
     }
-
 }
-

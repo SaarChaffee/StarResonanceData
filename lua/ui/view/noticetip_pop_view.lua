@@ -1,6 +1,14 @@
 local super = require("ui.ui_view_base")
 local Noticetip_popView = class("Noticetip_popView", super)
 local popItem = require("ui.component.tips.noticetip_pop_item")
+local type2AudioTable = {
+  [E.TipsType.BottomTips] = "UI_Event_Notice_Tip",
+  [E.TipsType.DungeonChallengeWinTips] = "UI_Event_Dungeon_Victory",
+  [E.TipsType.DungeonChallengeFailTips] = "UI_Event_Dungeon_Fail",
+  [E.TipsType.DungeonRedTips] = "UI_Event_Error_Tip",
+  [E.TipsType.DungeonGreenTips] = "UI_Event_Magic_A",
+  [E.TipsType.DungeonSpecialTips] = "UI_Event_Notice_Tip"
+}
 
 function Noticetip_popView:ctor()
   self.uiBinder = nil
@@ -13,6 +21,7 @@ function Noticetip_popView:OnActive()
   self.popItemBinderPoolCache_ = {}
   self.itemInShowQueue_ = {}
   self.ShowMsgItem_ = {}
+  self.normalShowQueue_ = {}
   self.animator_ = self.uiBinder.anim
   self.node_pop_tip_ = self.uiBinder.node_pop_tip
   self.item_1_ = self.uiBinder.node_pop_tip.item_1
@@ -61,12 +70,11 @@ function Noticetip_popView:OnRefresh()
     self:PopDungeonEndTips(true)
   elseif self.viewData.viewType == E.TipsType.DungeonChallengeFailTips then
     self:PopDungeonEndTips(false)
-  elseif self.viewData.viewType == E.TipsType.DungeonRedTips then
-    self:PopEditorDungeonTips(true)
-  elseif self.viewData.viewType == E.TipsType.DungeonGreenTips then
-    self:PopEditorDungeonTips(false)
   elseif self.viewData.viewType == E.TipsType.DungeonSpecialTips then
     self:PopDungeonSpTips()
+  end
+  if self.viewData and type2AudioTable[self.viewData.viewType] then
+    Z.AudioMgr:Play(type2AudioTable[self.viewData.viewType])
   end
 end
 
@@ -76,6 +84,7 @@ function Noticetip_popView:OnDeActive()
   self.popItemBinderPoolCache_ = nil
   self.popItemCache_ = nil
   self.itemInShowQueue_ = nil
+  self.normalShowQueue_ = nil
   self.ShowMsgItem_ = nil
 end
 
@@ -88,6 +97,15 @@ function Noticetip_popView:UnBindEvents()
 end
 
 function Noticetip_popView:showPopTip(msgItem)
+  if #self.normalShowQueue_ >= 3 then
+    self.data_:EnqueuePopData(msgItem)
+    return
+  end
+  local viewTypeIsRed = msgItem.viewType == E.TipsType.DungeonRedTips and msgItem.viewType ~= E.TipsType.PopTip
+  if msgItem.viewType == E.TipsType.DungeonRedTips or msgItem.viewType == E.TipsType.DungeonGreenTips then
+    self:PopEditorDungeonTips(viewTypeIsRed, msgItem)
+    return
+  end
   if self.popItemCache_ == nil then
     self.popItemCache_ = {}
     for index, value in ipairs(self.popItemBinderPoolCache_) do
@@ -100,12 +118,16 @@ function Noticetip_popView:showPopTip(msgItem)
   end
   table.insert(self.ShowMsgItem_, msgItem)
   local config = msgItem.config
+  if config.Audio ~= "" then
+    Z.AudioMgr:Play(config.Audio)
+  end
   local showInterval = (config.RepeatPlay[2] or 0) * 0.001
   msgItem.repeatCount = math.max(config.RepeatPlay[1] or 1, 1)
   local showAction = function()
     msgItem.repeatCount = msgItem.repeatCount - 1
     self:popTipAnimation(msgItem)
   end
+  table.insert(self.normalShowQueue_, 1, msgItem)
   self.timerMgr:StartTimer(function()
     showAction()
     if msgItem.repeatCount > 0 then
@@ -138,6 +160,7 @@ function Noticetip_popView:popTipAnimation(msgItem)
     if not force then
       table.insert(self.popItemCache_, item)
     end
+    table.remove(self.normalShowQueue_, #self.normalShowQueue_)
     local msgItem = self.data_:DequeuePopData()
     if msgItem then
       self:showPopTip(msgItem)
@@ -182,11 +205,11 @@ function Noticetip_popView:PopBottomPositonTips()
   end)
 end
 
-function Noticetip_popView:PopEditorDungeonTips(isRed)
-  local itemData = self.viewData
+function Noticetip_popView:PopEditorDungeonTips(isRed, itemData)
   if not itemData then
     return
   end
+  table.insert(self.normalShowQueue_, 1, itemData)
   self.node_pop_tip_.Ref:SetVisible(self.dungeonRedNode_, false)
   self.node_pop_tip_.Ref:SetVisible(self.dungeonGreenNode_, false)
   local tipsNode, tipsLab, tipsAnim, tipsEff
@@ -209,7 +232,11 @@ function Noticetip_popView:PopEditorDungeonTips(isRed)
   self.timer = self.timerMgr:StartTimer(function()
   end, 1, countTime, true, function()
     self.node_pop_tip_.Ref:SetVisible(tipsNode, false)
-    Z.EventMgr:Dispatch(Z.ConstValue.TipsShowNextTopPop)
+    table.remove(self.normalShowQueue_, #self.normalShowQueue_)
+    local msgItem = self.data_:DequeuePopData()
+    if msgItem then
+      self:showPopTip(msgItem)
+    end
   end)
 end
 
@@ -269,6 +296,7 @@ function Noticetip_popView:PopDungeonSpTips()
         self.node_pop_tip_.Ref:SetVisible(self.spTipsAnimComp_, false)
         Z.EventMgr:Dispatch(Z.ConstValue.TipsShowNextTopPop)
       end, function(err)
+        Z.EventMgr:Dispatch(Z.ConstValue.TipsShowNextTopPop)
         if err == ZUtil.ZCancelSource.CancelException then
           return
         end

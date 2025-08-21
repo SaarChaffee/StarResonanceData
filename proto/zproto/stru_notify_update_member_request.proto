@@ -13,4 +13,3 @@ message NotifyUpdateMemberRequest {
     zproto.EnumUnionNotifyType type = 4;
     repeated zproto.UserSummaryData memberSocialList = 5;
 }
-

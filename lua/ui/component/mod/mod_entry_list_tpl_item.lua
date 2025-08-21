@@ -54,10 +54,10 @@ function ModEntryListTplItem:OnRefresh(data)
     local detail = details[i]
     if detail then
       nodeOnUIBinder.Ref.UIComp:SetVisible(true)
-      modGlossaryItemTplItem.RefreshTpl(nodeOnUIBinder.mod_glossary_item_tpl, detail.id, detail.level)
+      modGlossaryItemTplItem.RefreshTpl(nodeOnUIBinder.mod_glossary_item_tpl, detail.id)
       nodeOnUIBinder.lab_num.text = "+" .. detail.level
       nodeOffUIBinder.Ref.UIComp:SetVisible(true)
-      modGlossaryItemTplItem.RefreshTpl(nodeOffUIBinder.mod_glossary_item_tpl, detail.id, detail.level)
+      modGlossaryItemTplItem.RefreshTpl(nodeOffUIBinder.mod_glossary_item_tpl, detail.id)
       nodeOffUIBinder.lab_num.text = "+" .. detail.level
     else
       nodeOnUIBinder.Ref.UIComp:SetVisible(false)

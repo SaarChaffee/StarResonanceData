@@ -11,4 +11,3 @@ message ExchangePriceItemData {
     string guid = 4;
     int64 noticeTime = 5;
 }
-

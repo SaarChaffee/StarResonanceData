@@ -15,6 +15,9 @@ function SkillRemodelItem:OnInit()
   self.parent.UIView:AddAsyncClick(self.uiBinder.btn_select, function()
     self.parent:SetSelected(self.Index)
   end)
+  Z.EventMgr:Add(Z.ConstValue.Backpack.ItemCountChange, self.onItemCountChange, self)
+  Z.EventMgr:Add(Z.ConstValue.Backpack.AddItem, self.onItemCountChange, self)
+  Z.EventMgr:Add(Z.ConstValue.Backpack.DelItem, self.onItemCountChange, self)
 end
 
 function SkillRemodelItem:OnRefresh(data)
@@ -23,14 +26,29 @@ function SkillRemodelItem:OnRefresh(data)
   self.uiBinder.lab_digit.text = data.Level
   self.uiBinder.lab_title01.text = data.Name
   local remodelSkill = self.weaponSkillVm_:GetSkillRemodelLevel(data.SkillId)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.layout_label, remodelSkill >= data.Level)
   local red = self.weaponSkillVm_:GetSkillRemouldRedId(data.SkillId)
   local state = Z.RedPointMgr.GetRedState(red)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_red, data.Level == remodelSkill + 1 and state)
   if data.Level == remodelSkill then
-    self.uiBinder.img_arrow:SetColor(Color.New(0.81, 0.91, 0.55, 1))
+    self.uiBinder.img_arrow:SetColorByHex("#71ccff")
   else
-    self.uiBinder.img_arrow:SetColor(Color.New(1, 1, 1, 1))
+    self.uiBinder.img_arrow:SetColorByHex("#5d5d5f")
+  end
+  if remodelSkill >= data.Level then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_condition, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_advance, true)
+    self.uiBinder.img_title_arrow:SetColorByHex("#6c431a")
+    self.uiBinder.img_title:SetColorByHex("#a96e34")
+  else
+    if data.Level > remodelSkill + 1 then
+      self.uiBinder.img_title_arrow:SetColorByHex("#494949")
+      self.uiBinder.img_title:SetColorByHex("#777777")
+    else
+      self.uiBinder.img_title_arrow:SetColorByHex("#1a586c")
+      self.uiBinder.img_title:SetColorByHex("#348ca9")
+    end
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_condition, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_advance, false)
   end
   local content, descList = self.weaponSkillVm_:ParseRemodelDesc(data.SkillId, data.Level)
   Z.RichTextHelper.SetTmpLabTextWithCommonLinkNew(self.uiBinder.lab_content, content)
@@ -42,27 +60,27 @@ function SkillRemodelItem:OnRefresh(data)
     local results = Z.ConditionHelper.GetConditionDescList(data.UlockSkillLevel)
     local conditionContent = ""
     for _, value in ipairs(results) do
-      conditionContent = conditionContent .. value.Desc
+      conditionContent = conditionContent .. value.Desc .. "\n"
     end
     if passCondition then
       self.uiBinder.Ref:SetVisible(self.uiBinder.condition_off, false)
       self.uiBinder.Ref:SetVisible(self.uiBinder.condition_on, true)
-      self.uiBinder.lab_condition.text = Z.RichTextHelper.ApplyStyleTag(conditionContent, E.TextStyleTag.AccentGreen)
+      self.uiBinder.lab_condition.text = Z.RichTextHelper.ApplyStyleTag(conditionContent, E.TextStyleTag.ConditionMet)
     else
       self.uiBinder.Ref:SetVisible(self.uiBinder.condition_off, true)
       self.uiBinder.Ref:SetVisible(self.uiBinder.condition_on, false)
-      self.uiBinder.lab_condition.text = Z.RichTextHelper.ApplyStyleTag(conditionContent, E.TextStyleTag.AccentRed)
+      self.uiBinder.lab_condition.text = Z.RichTextHelper.ApplyStyleTag(conditionContent, E.TextStyleTag.ConditionNotMet)
     end
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_icon, false)
     self.uiBinder.lab_condition.text = ""
   end
-  local costItem = {}
+  self.costItem_ = {}
   for _, value in ipairs(data.UpgradeCost) do
-    table.insert(costItem, value)
+    table.insert(self.costItem_, value)
   end
   for _, value in ipairs(data.UpgradeExtraCost) do
-    table.insert(costItem, value)
+    table.insert(self.costItem_, value)
   end
   for _, value in ipairs(self.itemUibinder_) do
     value.itemUIBinder.Ref.UIComp:SetVisible(false)
@@ -70,7 +88,7 @@ function SkillRemodelItem:OnRefresh(data)
   local parent = self.uiBinder.layout_item
   local itemPath = GetLoadAssetPath(Z.ConstValue.Backpack.BackPack_Item_Unit_Addr1_8_New)
   Z.CoroUtil.create_coro_xpcall(function()
-    for index, value in ipairs(costItem) do
+    for index, value in ipairs(self.costItem_) do
       local itemUIBinder
       if self.itemUibinder_[index] and self.itemUibinder_[index].itemUIBinder then
         itemUIBinder = self.itemUibinder_[index].itemUIBinder
@@ -108,6 +126,16 @@ function SkillRemodelItem:OnRefresh(data)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, self.IsSelected)
 end
 
+function SkillRemodelItem:onItemCountChange()
+  for index, value in ipairs(self.costItem_) do
+    if self.itemClassTab_[index] == nil then
+      return
+    end
+    local totalCount = self.itemVm_.GetItemTotalCount(value[1])
+    self.itemClassTab_[index]:SetExpendCount(totalCount, value[2])
+  end
+end
+
 function SkillRemodelItem:OnSelected()
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, self.IsSelected)
   if self.IsSelected then
@@ -124,6 +152,9 @@ function SkillRemodelItem:OnUnInit()
   for _, value in ipairs(self.itemUibinder_) do
     self.parent.UIView:RemoveUiUnit(value.name)
   end
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.ItemCountChange, self.onItemCountChange, self)
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.AddItem, self.onItemCountChange, self)
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.DelItem, self.onItemCountChange, self)
 end
 
 return SkillRemodelItem

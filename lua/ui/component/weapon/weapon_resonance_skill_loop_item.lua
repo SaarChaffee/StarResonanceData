@@ -1,9 +1,13 @@
 local super = require("ui.component.loop_grid_view_item")
 local WeaponResonanceSkillLoopItem = class("WeaponResonanceSkillLoopItem", super)
+local inputKeyDescComp = require("input.input_key_desc_comp")
+local ACTIVE_NAME_PATH = "ui/atlas/weap_skill/weap_char_bg_on"
+local NOT_ACTIVE_NAME_PATH = "ui/atlas/weap_skill/weap_char_bg_off"
 
 function WeaponResonanceSkillLoopItem:ctor()
   self.weaponSkillVM_ = Z.VMMgr.GetVM("weapon_skill")
   self.weaponVM_ = Z.VMMgr.GetVM("weapon")
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function WeaponResonanceSkillLoopItem:OnInit()
@@ -33,20 +37,23 @@ function WeaponResonanceSkillLoopItem:OnRefresh(data)
   self.uiBinder.img_icon:SetImage(skillTableRow.Icon)
   Z.GuideMgr:SetSteerIdByComp(self.uiBinder.uisteer, E.DynamicSteerType.ResonanceIndex, self.skillId_)
   self.uiBinder.lab_name.text = skillTableRow.Name
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_char_bg, true)
+  local charName = Z.RichTextHelper.ApplyStyleTag(resonanceRow.ResonanceObject, data.IsUnlock and E.TextStyleTag.Black or E.TextStyleTag.White)
+  self.uiBinder.lab_char.text = charName
   self.uiBinder.Ref:SetVisible(self.uiBinder.lab_name, true)
+  self.uiBinder.img_char_bg:SetImage(data.IsUnlock and ACTIVE_NAME_PATH or NOT_ACTIVE_NAME_PATH)
   self.uiBinder.lab_advance_level.text = advanceLevel
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_advance_level, 0 < advanceLevel)
+  local iconName, keyId = self.weaponSkillVM_:GetKeyCodeNameBySkillId(self.skillId_)
+  self.inputKeyDescComp_:Init(keyId, self.uiBinder.com_icon_key)
   if Z.IsPCUI and data.IsEquip then
-    self.uiBinder.lab_key.text = self.weaponSkillVM_:GetKeyCodeNameBySkillId(self.skillId_)
+    self.inputKeyDescComp_:SetVisible(keyId ~= nil)
+  else
+    self.inputKeyDescComp_:SetVisible(false)
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_pc, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_key, Z.IsPCUI and data.IsEquip)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_assemble, not Z.IsPCUI and data.IsEquip)
-  self.uiBinder.img_bg:SetImage(Z.ConstValue.Resonance_skill_bg .. resonanceRow.RarityType)
-  self.uiBinder.img_on:SetImage(Z.ConstValue.Resonance_skill_select .. resonanceRow.RarityType)
-  self.uiBinder.img_lock:SetImage(Z.ConstValue.Resonance_skill_frame .. resonanceRow.RarityType)
-  self.uiBinder.img_frame:SetImage(Z.ConstValue.Resonance_skill_frame .. resonanceRow.RarityType)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_frame, true)
+  self.uiBinder.img_bg:SetImage(Z.ConstValue.Resonance.skill_bg .. resonanceRow.RarityType)
+  self.uiBinder.img_advance_level:SetImage(Z.ConstValue.Resonance.skill_lv_bg_ .. resonanceRow.RarityType)
   if isSelected then
     self.parent.UIView:ChangeSelectState(self.skillId_, self.uiBinder, false)
   end
@@ -67,6 +74,7 @@ function WeaponResonanceSkillLoopItem:OnUnInit()
   self.uiBinder.btn:RemoveAllListeners()
   self:unInitDragEvent()
   Z.EventMgr:Remove(Z.ConstValue.Weapon.OnSkillEquipRedChange, self.refreshRedDot, self)
+  self.inputKeyDescComp_:UnInit()
 end
 
 function WeaponResonanceSkillLoopItem:initDragEvent()

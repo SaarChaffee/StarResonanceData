@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_exchange_sell_item_data.proto";
 
 message ExchangeSellItemReply {
-    int32 errCode = 1;
     repeated zproto.ExchangeSellItemData items = 2;
-    map<uint32, uint32> withDrawItem = 3;
+    repeated zproto.ExchangeSellItemReply.WithDrawItemEntry withDrawItem = 3;
     int32 limit = 4;
     int32 rate = 5;
+    zproto.EErrorCode errCode = 6;
 }
-

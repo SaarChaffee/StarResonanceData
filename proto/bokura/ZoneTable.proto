@@ -17,8 +17,6 @@ message ZoneTableBase {
     int_table ShowStatusInfo = 1473;
     int_table ShowStatusTransition = 1771;
 }
-
 message ZoneTableMgr {
-    map<int32, .bokura.ZoneTableBase> datas = 1;
+    repeated bokura.ZoneTableMgr.DatasEntry datas = 1;
 }
-

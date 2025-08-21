@@ -58,7 +58,6 @@ function Pub_mixology_mainView:OnActive()
         self:playSuccessEpflow(ids[#ids])
         self.vm_.CloseMixolopyView()
       end
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   end)
   self:AddClick(self.refreshBtn_, function()

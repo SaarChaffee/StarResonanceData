@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_warehouse_grid.proto";
+
+message HomelandWarehouseInfo {
+    repeated zproto.HomelandWarehouseInfo.WarehouseGridsEntry warehouseGrids = 1;
+}

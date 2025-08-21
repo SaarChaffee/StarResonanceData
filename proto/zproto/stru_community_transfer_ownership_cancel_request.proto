@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityTransferOwnershipCancelRequest {
+    int64 homelandId = 1;
+}

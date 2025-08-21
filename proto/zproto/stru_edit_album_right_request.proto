@@ -8,4 +8,3 @@ message EditAlbumRightRequest {
     uint32 albumId = 2;
     zproto.EAlbumRight access = 3;
 }
-

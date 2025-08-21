@@ -6,7 +6,7 @@ local albumLoopItem = require("ui.component.album.album_loop_item")
 
 function Album_container_couldalbumView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "album_container_union_cloud_sub", "photograph/album_container_couldalbum_union_sub", UI.ECacheLv.None, parent)
+  super.ctor(self, "album_container_union_cloud_sub", "photograph/album_container_couldalbum_union_sub", UI.ECacheLv.None)
   self.albumNum_ = 0
   self.albumMainVM_ = Z.VMMgr.GetVM("album_main")
   self.albumMainData_ = Z.DataMgr.Get("album_main_data")
@@ -36,8 +36,8 @@ function Album_container_couldalbumView:initBtnClick()
     self:setItemShowState(false, E.AlbumSelectType.Select)
   end)
   self:AddAsyncClick(self.uiBinder.btn_save, function()
-    local ret = self.albumMainVM_.AsyncSetUnionCoverPhoto(self.cancelSource:CreateToken())
-    if ret and ret.errCode == 0 then
+    local errCode = self.albumMainVM_.AsyncSetUnionCoverPhoto(self.cancelSource:CreateToken())
+    if errCode == 0 then
       Z.TipsVM.ShowTips(1000566)
       Z.UIMgr:CloseView("album_main")
     else

@@ -1,0 +1,10 @@
+{
+  "102": {
+    "Id": 102,
+    "Buff": 2010012,
+    "Desc": "",
+    "Time": 86400,
+    "Icon": "ui/atlas/union/union_btn_icon",
+    "UnionBankroll": []
+  }
+}

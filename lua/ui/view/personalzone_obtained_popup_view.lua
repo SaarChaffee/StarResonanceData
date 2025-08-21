@@ -22,10 +22,16 @@ function Personalzone_obtained_popupView:OnActive()
     end
   end, nil, nil)
   local functionId = 0
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   self.uiBinder.Ref:SetVisible(self.uiBinder.lab_title_name, false)
   self.uiBinder.com_head_51_item.Ref.UIComp:SetVisible(false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_idcard, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_medal, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_personalzonebg, false)
   if self.viewData.type == DEFINE.ProfileImageType.Medal then
     self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_medal, true)
     local medalConfig = Z.TableMgr.GetTable("MedalTableMgr").GetRow(self.viewData.id)
@@ -40,6 +46,7 @@ function Personalzone_obtained_popupView:OnActive()
     viewData.modelId = self.modelId_
     viewData.isShowCombinationIcon = false
     viewData.isShowTalentIcon = false
+    viewData.token = self.cancelSource:CreateToken()
     PlayerPortraitHgr.InsertNewPortrait(self.uiBinder.com_head_51_item, viewData)
     self.uiBinder.rimg_bg:SetHeight(360)
     self.uiBinder.lab_title.fontSize = 60
@@ -48,6 +55,7 @@ function Personalzone_obtained_popupView:OnActive()
     self.uiBinder.com_head_51_item.Ref.UIComp:SetVisible(true)
     local viewData = {}
     viewData.headFrameId = self.viewData.id
+    viewData.token = self.cancelSource:CreateToken()
     PlayerPortraitHgr.InsertNewPortrait(self.uiBinder.com_head_51_item, viewData)
     self.uiBinder.rimg_bg:SetHeight(360)
     self.uiBinder.lab_title.fontSize = 60
@@ -56,7 +64,7 @@ function Personalzone_obtained_popupView:OnActive()
     local profileImageConfig = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(self.viewData.id)
     if profileImageConfig then
       self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_idcard, true)
-      self.uiBinder.rimg_idcard:SetImage(profileImageConfig.Image2)
+      self.uiBinder.rimg_idcard:SetImage(Z.ConstValue.PersonalZone.PersonalCardBg .. profileImageConfig.Image)
     end
     self.uiBinder.rimg_bg:SetHeight(360)
     self.uiBinder.lab_title.fontSize = 60
@@ -70,6 +78,15 @@ function Personalzone_obtained_popupView:OnActive()
     self.uiBinder.rimg_bg:SetHeight(100)
     self.uiBinder.lab_title.fontSize = 30
     functionId = E.FunctionID.PersonalzoneTitle
+  elseif self.viewData.type == DEFINE.ProfileImageType.PersonalzoneBg then
+    local profileImageConfig = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(self.viewData.id)
+    if profileImageConfig then
+      self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_personalzonebg, true)
+      self.uiBinder.rimg_personalzonebg:SetImage(profileImageConfig.Image)
+    end
+    self.uiBinder.rimg_bg:SetHeight(360)
+    self.uiBinder.lab_title.fontSize = 60
+    functionId = E.FunctionID.PersonalzoneBg
   end
   local funcRow = Z.TableMgr.GetTable("FunctionTableMgr").GetRow(functionId)
   if funcRow then

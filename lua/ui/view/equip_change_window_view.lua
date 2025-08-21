@@ -2,7 +2,7 @@ local UI = Z.UI
 local super = require("ui.ui_view_base")
 local Equip_change_subView = class("Equip_change_subView", super)
 local equipRed = require("rednode.equip_red")
-local item_operation_btnsView_ = require("ui.view.item_operation_btns_view")
+local btnBinder = require("common.btn_binder")
 local loopGridView_ = require("ui/component/loop_grid_view")
 local itemFilter = require("ui.view.item_filters_view")
 local keepActionState = {
@@ -24,12 +24,12 @@ local default_equip_loop_list_item_ = require("ui.component.equip.new_default_eq
 
 function Equip_change_subView:ctor()
   self.uiBinder = nil
-  super.ctor(self, "equip_change_window")
+  super.ctor(self, "equip_change_window", "equip/equip_change_window")
   self.commonVM_ = Z.VMMgr.GetVM("common")
   self.itemsVm_ = Z.VMMgr.GetVM("items")
   self.equipVm_ = Z.VMMgr.GetVM("equip_system")
   self.actionVM_ = Z.VMMgr.GetVM("action")
-  self.item_operation_btnsView_ = item_operation_btnsView_.new()
+  self.btnBinder_ = btnBinder.new(self)
   self.itemSortFactoryVm_ = Z.VMMgr.GetVM("item_sort_factory")
   self.equipData_ = Z.DataMgr.Get("equip_system_data")
   self.equipAttrParseVM_ = Z.VMMgr.GetVM("equip_attr_parse")
@@ -62,7 +62,10 @@ function Equip_change_subView:inituiBinders()
   self.anim_ = self.uiBinder.anim_change
   self.sortNode_ = self.uiBinder.node_sort_rule
   self.tipsRightNode_ = self.uiBinder.cont_right_info
-  self.tabScrllView_ = self.uiBinder.tab_scrollview
+  self.tabScrollView_ = self.uiBinder.tab_scrollview
+  self.partName_ = self.uiBinder.lab_name
+  self.partIcon_ = self.uiBinder.part_icon
+  self.itemRect_ = self.uiBinder.item_rect
   self.equipPartTabs_ = {}
   self.equipPartTabs_[E.EquipPart.Weapon] = self.uiBinder.cont_weapon
   self.equipPartTabs_[E.EquipPart.Helmet] = self.uiBinder.cont_helmet
@@ -75,21 +78,25 @@ function Equip_change_subView:inituiBinders()
   self.equipPartTabs_[E.EquipPart.LeftBracelet] = self.uiBinder.cont_left_bracelet
   self.equipPartTabs_[E.EquipPart.RightBracelet] = self.uiBinder.cont_right_bracelet
   self.equipPartTabs_[E.EquipPart.Amulet] = self.uiBinder.cont_amulet
+  self.item_operation_btns_ = self.uiBinder.item_operation_btns
 end
 
 function Equip_change_subView:OnActive()
+  Z.AudioMgr:Play("UI_Event_CharacterAttributes_Open")
   self:inituiBinders()
   self:startAnimatedShow()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self.weaponVm_ = Z.VMMgr.GetVM("weapon")
-  self.filterTgas_ = nil
+  self.filterTags_ = nil
   self.commonVM_.SetLabText(self.titleLab_, {
     E.FunctionID.RoleInfo,
     E.FunctionID.EquipChange
   })
-  self.playerModel_ = Z.EntityMgr.PlayerEnt.Model
-  if self:checkCanPlayAction() then
-    self.playerModel_:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent(Panda.ZAnim.EAnimBase.EIdle))
+  if Z.EntityMgr.PlayerEnt then
+    self.playerModel_ = Z.EntityMgr.PlayerEnt.Model
+    if self:checkCanPlayAction() and self.playerModel_ then
+      self.playerModel_:SetLuaAnimBase(Z.AnimBaseData.Rent(Panda.ZAnim.EAnimBase.EIdle))
+    end
   end
   if self.viewData then
     self.selectedPartId_ = self.viewData.prtId or E.EquipPart.Weapon
@@ -114,7 +121,11 @@ function Equip_change_subView:OnActive()
     self.equipVm_.CloseChangeEquipView()
   end)
   local vLoopScrollRect = self.loopscroll_items
-  self.loopGridViewRect_ = loopGridView_.new(self, vLoopScrollRect, default_equip_loop_list_item_, "com_item_long_3")
+  local itemPath = "com_item_long_3"
+  if Z.IsPCUI then
+    itemPath = "com_item_long_3_8"
+  end
+  self.loopGridViewRect_ = loopGridView_.new(self, vLoopScrollRect, default_equip_loop_list_item_, itemPath)
   self.loopGridViewRect_:Init({})
   self:initSortUi()
   self:initEquipPartTabUi()
@@ -124,19 +135,14 @@ function Equip_change_subView:OnActive()
   self:refreshEquipListView(self.selectedItemUuid_)
   self:BindEvents()
   local nowHeight = self.uiBinder.cont_weapon.Ref.transform.rect.height * (self.selectedPartId_ - E.EquipPart.Weapon + 1)
-  local rectHeight = self.tabScrllView_.transform.rect.height
+  local rectHeight = self.tabScrollView_.transform.rect.height
   local diff = nowHeight - rectHeight
   if 0 < diff then
-    self.tabScrllView_.content:SetAnchorPosition(0, diff)
+    self.tabScrollView_.content:SetAnchorPosition(0, diff)
   else
-    self.tabScrllView_.content:SetAnchorPosition(0, 0)
+    self.tabScrollView_.content:SetAnchorPosition(0, 0)
   end
-  if Z.EntityMgr.PlayerEnt:GetLuaRidingId() == 0 then
-    self.weaponVm_.SwitchEntityShow(false)
-    Z.UICameraHelper.SetCameraFocus(true, Z.Global.CameraFocusMainView[1], Z.Global.CameraFocusMainView[2])
-  else
-    self.weaponVm_.SwitchEntityShow(true)
-  end
+  self.weaponVm_.SwitchEntityShow(false)
 end
 
 function Equip_change_subView:initSortUi()
@@ -171,63 +177,82 @@ function Equip_change_subView:openItemFilter()
   local viewData = {
     parentView = self,
     filterType = E.ItemFilterType.ItemRare + E.ItemFilterType.ItemType + E.ItemFilterType.EquipGs + E.ItemFilterType.EquipRecast + E.ItemFilterType.EquipPerfect,
-    existFilterTags = self.filterTgas_
+    existFilterTags = self.filterTags_
   }
   self.itemFilter_:Active(viewData, self.uiBinder.node_screening.transform)
 end
 
-function Equip_change_subView:onSelectFilter(filterTgas)
-  self.filterTgas_ = filterTgas
+function Equip_change_subView:onSelectFilter(filterTags)
+  self.filterTags_ = filterTags
   self:refreshloopScrollView()
 end
 
 function Equip_change_subView:checkIsShowItem(item, equipTableRow)
-  if self.filterTgas_ and next(self.filterTgas_) and equipTableRow then
+  local isShow = true
+  if self.filterTags_ and next(self.filterTags_) and equipTableRow then
     local itemTableRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(item.configId)
-    if self.filterTgas_[E.ItemFilterType.ItemRare] and itemTableRow then
-      for k, v in pairs(self.filterTgas_[E.ItemFilterType.ItemRare]) do
-        if itemTableRow.Quality == k then
-          return true
+    if self.filterTags_[E.ItemFilterType.ItemRare] then
+      isShow = false
+      if itemTableRow then
+        for k, v in pairs(self.filterTags_[E.ItemFilterType.ItemRare]) do
+          if itemTableRow.Quality == k then
+            isShow = true
+            break
+          end
         end
       end
     end
     local itemInfo = self.itemsVm_.GetItemInfobyItemId(item.itemUuid, item.configId)
-    if not itemInfo then
-      return false
+    if not itemInfo or not isShow then
+      return isShow
     end
-    if self.filterTgas_[E.ItemFilterType.EquipGs] then
-      for k, v in pairs(self.filterTgas_[E.ItemFilterType.EquipGs]) do
+    if self.filterTags_[E.ItemFilterType.EquipGs] then
+      isShow = false
+      for k, v in pairs(self.filterTags_[E.ItemFilterType.EquipGs]) do
         local minValue = tonumber(Z.Global.EquipScreenGS[k][1])
         local maxValue = tonumber(Z.Global.EquipScreenGS[k][2])
         if minValue <= equipTableRow.EquipGs and maxValue >= equipTableRow.EquipGs then
-          return true
+          isShow = true
+          break
         end
       end
     end
-    if self.filterTgas_[E.ItemFilterType.EquipPerfect] then
-      for k, v in pairs(self.filterTgas_[E.ItemFilterType.EquipPerfect]) do
+    if isShow == false then
+      return isShow
+    end
+    if self.filterTags_[E.ItemFilterType.EquipPerfect] then
+      isShow = false
+      for k, v in pairs(self.filterTags_[E.ItemFilterType.EquipPerfect]) do
         local minValue = tonumber(Z.Global.EquipScreenPerfectVal[k][1])
         local maxValue = tonumber(Z.Global.EquipScreenPerfectVal[k][2])
-        if self.equipVm_.CheckCanRecast(itemInfo.uuid, itemInfo.configId) and minValue <= itemInfo.equipAttr.perfectionValue and maxValue >= itemInfo.equipAttr.perfectionValue then
-          return true
+        if minValue <= itemInfo.equipAttr.perfectionValue and maxValue >= itemInfo.equipAttr.perfectionValue then
+          isShow = true
+          break
         end
       end
     end
-    if self.filterTgas_[E.ItemFilterType.EquipRecast] then
-      for k, v in pairs(self.filterTgas_[E.ItemFilterType.EquipRecast]) do
+    if isShow == false then
+      return isShow
+    end
+    if self.filterTags_[E.ItemFilterType.EquipRecast] then
+      isShow = false
+      for k, v in pairs(self.filterTags_[E.ItemFilterType.EquipRecast]) do
         local minValue = tonumber(Z.Global.EquipScreenType[k][1])
         local maxValue = tonumber(Z.Global.EquipScreenType[k][2])
         if minValue <= itemInfo.equipAttr.totalRecastCount and maxValue >= itemInfo.equipAttr.totalRecastCount then
-          return true
+          isShow = true
+          break
         end
       end
     end
-    if self.filterTgas_[E.ItemFilterType.EquipProfession] and self.equipVm_.CheckProfessionIsContainEquipAttr(itemInfo) then
-      return true
+    if isShow == false then
+      return isShow
     end
-    return false
+    if self.filterTags_[E.ItemFilterType.EquipProfession] then
+      isShow = self.equipVm_.CheckProfessionIsContainEquipAttr(itemInfo)
+    end
   end
-  return true
+  return isShow
 end
 
 function Equip_change_subView:refreshloopScrollView(selectIndex)
@@ -255,15 +280,32 @@ function Equip_change_subView:refreshloopScrollView(selectIndex)
     index = self:getSelectItemIndex(data) or 1
   end
   local isNotEmpty = 0 < #data
-  self.uiBinder.Ref:SetVisible(self.loopscroll_items, isNotEmpty)
+  if not Z.IsPCUI then
+    self.uiBinder.Ref:SetVisible(self.loopscroll_items, isNotEmpty)
+  end
   self.uiBinder.Ref:SetVisible(self.empty, not isNotEmpty)
   self.uiBinder.Ref:SetVisible(self.sortNode_, isNotEmpty)
   self.uiBinder.Ref:SetVisible(self.tipsRightNode_, isNotEmpty)
   self:clearItemRed()
   self.loopGridViewRect_:ClearAllSelect()
-  self.loopGridViewRect_:RefreshListView(data)
+  self.loopGridViewRect_:RefreshListView(self:addEmptyData(data))
   self.loopGridViewRect_:SetSelected(index)
   self.loopGridViewRect_:MovePanelToItemIndex(index)
+end
+
+function Equip_change_subView:addEmptyData(data)
+  if not Z.IsPCUI then
+    return data
+  end
+  local width = self.itemRect_.rect.height
+  local count = self.loopGridViewRect_:GetFixedRowOrColumnCount() * math.ceil(width / 150)
+  if count <= #data then
+    return data
+  end
+  for i = #data + 1, count do
+    data[i] = {IsEmpty = true}
+  end
+  return data
 end
 
 function Equip_change_subView:clearItemRed()
@@ -330,9 +372,17 @@ function Equip_change_subView:refreshEquipListByPartId(partId, force, animUiBind
   if partId == self.selectedPartId_ and not force then
     return
   end
+  if Z.IsPCUI then
+    local partRow = Z.TableMgr.GetRow("EquipPartTableMgr", partId)
+    if not partRow then
+      return
+    end
+    self.partName_.text = partRow.PartName
+    self.partIcon_:SetImage(partRow.PartIcon)
+  end
   self.commonVM_.CommonPlayTogAnim(animUiBinder.anim_tog, self.cancelSource:CreateToken())
-  Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvnet, string.zconcat(E.SteerGuideEventType.PutOnEquip, "=", partId))
-  self.item_operation_btnsView_:DeActive()
+  Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvent, string.zconcat(E.SteerGuideEventType.PutOnEquip, "=", partId))
+  self.btnBinder_:OnUnInit()
   Z.TipsVM.CloseItemTipsView(self.selectItemTipsId_)
   Z.TipsVM.CloseItemTipsView(self.acquisitionTipId_)
   for k, v in pairs(self.equipPartTabs_) do
@@ -364,14 +414,19 @@ function Equip_change_subView:refreshModelAction()
 end
 
 function Equip_change_subView:checkCanPlayAction()
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return false
+  end
   if Z.EntityMgr.PlayerEnt:GetLuaRidingId() ~= 0 then
     return false
   end
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
-  for _, value in ipairs(keepActionState) do
-    if value == stateId then
-      return false
-    end
+  local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
+  if stateId ~= Z.PbEnum("EActorState", "ActorStateDefault") then
+    return false
+  end
+  if Z.EntityMgr.PlayerEnt:GetLuaIsInCombat() then
+    return false
   end
   Z.EntityMgr.PlayerEnt:SetLuaLocalAttrInBattleShow(false)
   return true
@@ -414,6 +469,7 @@ function Equip_change_subView:onEquipItemSelected(itemUuid, configId)
   selectItemTipsData.isShowFixBg = true
   selectItemTipsData.posType = E.EItemTipsPopType.Parent
   selectItemTipsData.parentTrans = self.tipsTrans_.transform
+  selectItemTipsData.isPlay = false
   local curEquipAttr
   if putonEquipConfigId then
     curEquipAttr = self.equipVm_.GetEquipAttr(putonEquipConfigId, equipInfo.itemUuid)
@@ -421,18 +477,23 @@ function Equip_change_subView:onEquipItemSelected(itemUuid, configId)
       selectItemTipsData.data = {
         BasicAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.basicAttr),
         AdvanceAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.advanceAttr),
-        RecastAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.recastAttr)
+        RecastAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.recastAttr),
+        RareAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.rareQualityAttr)
       }
     end
   end
   Z.TipsVM.CloseItemTipsView(self.selectItemTipsId_)
   self.selectItemTipsId_ = nil
   self.selectItemTipsId_ = Z.TipsVM.OpenItemTipsView(selectItemTipsData)
-  self.item_operation_btnsView_:Active({
-    itemId = itemUuid,
+  self.btnBinder_:OnUnInit()
+  self.btnBinder_:InitData({
+    uiBinder = self.item_operation_btns_,
+    itemUuId = itemUuid,
     configId = configId,
-    btnData = self.btnData_
-  }, self.operationBtnsTrans_.transform)
+    btnData = self.btnData_,
+    viewBtns = E.BtnViewType.Equip
+  })
+  self.anim_:Restart(Z.DOTweenAnimType.Tween_1)
 end
 
 function Equip_change_subView:onEquipListViewPartChanged(partId)
@@ -473,6 +534,7 @@ function Equip_change_subView:getSelectItemId(selectedItemUuid)
 end
 
 function Equip_change_subView:OnDeActive()
+  self.anim_:Complete(Z.DOTweenAnimType.Tween_1)
   if self.loopGridViewRect_ then
     self.loopGridViewRect_:UnInit()
   end
@@ -487,19 +549,25 @@ function Equip_change_subView:OnDeActive()
   self.equipVm_.CloseApproach()
   Z.TipsVM.CloseItemTipsView(self.selectItemTipsId_)
   Z.TipsVM.CloseItemTipsView(self.curPutOnEquipTipsId_)
-  self.item_operation_btnsView_:DeActive()
+  self.btnBinder_:OnUnInit()
   Z.ContainerMgr.CharSerialize.equip.Watcher:UnregWatcher(self.equipListChangeFunc_)
   self.weaponVm_ = Z.VMMgr.GetVM("weapon")
   self.weaponVm_.SwitchEntityShow(true)
   if self:checkCanPlayAction() then
-    self.playerModel_:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent(Panda.ZAnim.EAnimBase.EIdle))
+    self.playerModel_:SetLuaAnimBase(Z.AnimBaseData.Rent(Panda.ZAnim.EAnimBase.EIdle))
   end
-  Z.UICameraHelper.SetCameraFocus(false)
+  if self.playerStateWatcher ~= nil then
+    self.playerStateWatcher:Dispose()
+    self.playerStateWatcher = nil
+  end
 end
 
 function Equip_change_subView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.FashionAttrChange, self.onFashionAttrChange, self)
   Z.EventMgr:Add(Z.ConstValue.ItemFilterConfirm, self.onSelectFilter, self)
+  self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
+    self:refreshModelAction()
+  end)
 end
 
 function Equip_change_subView:changeEquip(container, dirtys)
@@ -529,7 +597,9 @@ function Equip_change_subView:OnRefresh()
 end
 
 function Equip_change_subView:startAnimatedShow()
-  self.anim_:Play(Z.DOTweenAnimType.Open)
+  if Z.IsPCUI then
+    return
+  end
   self.anim_:Restart(Z.DOTweenAnimType.Open)
 end
 

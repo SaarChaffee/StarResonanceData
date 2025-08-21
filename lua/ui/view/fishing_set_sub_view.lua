@@ -5,7 +5,11 @@ local Fishing_set_subView = class("Fishing_set_subView", super)
 function Fishing_set_subView:ctor(parent)
   self.uiBinder = nil
   self.parentView_ = parent
-  super.ctor(self, "fishing_set_sub", "fishing/fishing_set_sub", UI.ECacheLv.None)
+  if Z.IsPCUI then
+    super.ctor(self, "fishing_set_sub", "fishing/fishing_set_sub_pc", UI.ECacheLv.None)
+  else
+    super.ctor(self, "fishing_set_sub", "fishing/fishing_set_sub", UI.ECacheLv.None)
+  end
   self.fishingVM_ = Z.VMMgr.GetVM("fishing")
 end
 

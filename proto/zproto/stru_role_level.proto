@@ -8,8 +8,13 @@ import "stru_dirty_mask.proto";
 message RoleLevel {
     int32 level = 1;
     int64 curLevelExp = 2;
-    map<int32, bool> ReceivedLevelList = 3;
+    repeated zproto.RoleLevel.ReceivedLevelListEntry ReceivedLevelList = 3;
     zproto.LevelProficiency proficiencyInfo = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.RoleLevel.ActiveExpMapEntry activeExpMap = 5;
+    int32 lastSeasonDay = 6;
+    int64 blessExpPool = 7;
+    int64 grantBlessExp = 8;
+    int64 accumulateBlessExp = 9;
+    int64 accumulateExp = 10;
+    int32 prevSeasonMaxLv = 11;
 }
-

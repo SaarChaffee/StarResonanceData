@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message SignStatus {
+    bool isSigned = 1;
+    bool isRewarded = 2;
+    bool isSupplement = 3;
+    int64 signTime = 4;
+    int64 rewardTime = 5;
+}

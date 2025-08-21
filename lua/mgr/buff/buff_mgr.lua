@@ -63,6 +63,14 @@ function BuffMgr:GetBuffData(entityId, buffId)
   return entityBuffData:GetBuffData(buffId)
 end
 
+function BuffMgr:GetBuffItemMap(entityId)
+  local entityBuffData = self.entityBuffDatas_[entityId]
+  if not entityBuffData then
+    return nil
+  end
+  return entityBuffData:GetBuffItemMap()
+end
+
 function BuffMgr:BindBuffChangeCallBack(entityId, callBack)
   local entityBuffData = self.entityBuffDatas_[entityId]
   if not entityBuffData then

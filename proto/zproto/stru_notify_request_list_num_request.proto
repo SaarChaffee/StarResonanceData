@@ -5,4 +5,3 @@ package zproto;
 message NotifyRequestListNumRequest {
     int32 num = 2;
 }
-

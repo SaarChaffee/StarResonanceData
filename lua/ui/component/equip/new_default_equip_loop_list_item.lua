@@ -9,6 +9,9 @@ end
 
 function EquipItemsLoopItem:OnInit()
   self.itemClass_ = item.new(self.parent.UIView)
+  self.itemClass_:Init({
+    uiBinder = self.uiBinder
+  })
   
   function self.itemWatcherFun_(container, dirtyKeys)
     local backpackData = Z.DataMgr.Get("backpack_data")
@@ -28,6 +31,16 @@ end
 function EquipItemsLoopItem:OnRefresh(data)
   if not data then
     logError("EquipItemsLoopItem data is nil,index is ")
+    return
+  end
+  self.data_ = data
+  if data.IsEmpty then
+    self.itemClass_:RefreshByData({
+      uiBinder = self.uiBinder,
+      isClickOpenTips = false,
+      isShowLattice = true
+    })
+    self:SetCanSelect(false)
     return
   end
   self:SetCanSelect(true)
@@ -57,7 +70,7 @@ function EquipItemsLoopItem:setui(data)
   if not itemTableRow then
     return
   end
-  self.itemClass_:Init({
+  self.itemClass_:RefreshByData({
     uiBinder = self.uiBinder,
     configId = self.configId,
     uuid = self.uuid_,
@@ -108,6 +121,9 @@ function EquipItemsLoopItem:OnPointerClick(go, eventData)
 end
 
 function EquipItemsLoopItem:OnSelected(isSelected, isClick)
+  if self.data_.IsEmpty then
+    return
+  end
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, isSelected)
   if isSelected then
     if isClick then

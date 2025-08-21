@@ -46,46 +46,20 @@ function UnionActivityHuntItem:OnRefresh(data)
         end
       end
     else
+      str = self.data.Time
       isUnlock = true
       local timeId = self.data.TimerId
-      local leftTime_, beforeLeftTime_ = Z.TimeTools.GetTimeLeftInSpecifiedTime(timeId)
-      local serverOpen = true
+      local _, beforeLeftTime_ = Z.TimeTools.GetLeftTimeByTimerId(timeId)
       local func = function()
         beforeLeftTime_ = beforeLeftTime_ - 1
-        if 0 < beforeLeftTime_ then
-          local timeStr_ = Z.TimeTools.FormatToDHMSStr(beforeLeftTime_)
-          str = Lang("remainderLimit", {str = timeStr_})
-          self.uiBinder.lab_unlock.text = str
-        else
+        if beforeLeftTime_ <= 0 then
           local data_ = self:GetCurData()
           self:OnRefresh(data_)
         end
       end
       if 0 < beforeLeftTime_ then
-        if serverOpen then
-          func()
-          self.timer = self.timerMgr:StartTimer(func, 1, leftTime_ + 1)
-        else
-          local startTimeList, endTimeList = Z.TimeTools.GetCycleTimeDataByTimeId(timeId)
-          local strTable = {}
-          for _, value in ipairs(startTimeList) do
-            local strResult = Z.TimeTools.FormatToWDHM(value)
-            table.insert(strTable, strResult)
-          end
-          local timeStr_ = table.zconcat(strTable, ",")
-          str = Lang("UnionNextActivityTime", {str = timeStr_})
-        end
-      else
-        do
-          local startTimeList, endTimeList = Z.TimeTools.GetCycleTimeDataByTimeId(timeId)
-          local strTable = {}
-          for _, value in ipairs(startTimeList) do
-            local strResult = Z.TimeTools.FormatToWDHM(value)
-            table.insert(strTable, strResult)
-          end
-          local timeStr_ = table.zconcat(strTable, ",")
-          str = Lang("UnionActivityTime", {str = timeStr_})
-        end
+        func()
+        self.timer = self.timerMgr:StartTimer(func, 1, beforeLeftTime_ + 1)
       end
     end
   elseif reason and reason[1] then

@@ -18,7 +18,8 @@ end
 
 function FunctionPreviewData:refreshStateDict()
   self.FuncRewardDict = {}
-  local funcDatas = Z.TableMgr.GetTable("FunctionPreviewTableMgr").GetDatas()
+  local mgr = Z.TableMgr.GetTable("FunctionPreviewTableMgr")
+  local funcDatas = mgr.GetDatas()
   local switchVM = Z.VMMgr.GetVM("switch")
   for k, v in pairs(funcDatas) do
     local open = switchVM.CheckFuncSwitch(v.Id)
@@ -31,7 +32,9 @@ function FunctionPreviewData:refreshStateDict()
   local ids = Z.ContainerMgr.CharSerialize.FunctionData.drawnFunctionIds
   if ids then
     for k, v in pairs(ids) do
-      self.FuncRewardDict[v] = E.FuncPreviewAwardState.Complete
+      if mgr.GetRow(v, true) then
+        self.FuncRewardDict[v] = E.FuncPreviewAwardState.Complete
+      end
     end
   end
   local sevendaysRed_ = require("rednode.sevendays_target_red")

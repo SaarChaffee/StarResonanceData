@@ -16,6 +16,7 @@ function Talent_skill_windowView:ctor()
   self.itemVM_ = Z.VMMgr.GetVM("items")
   self.helpsysVM_ = Z.VMMgr.GetVM("helpsys")
   self.commonVM_ = Z.VMMgr.GetVM("common")
+  self.gotofuncVM_ = Z.VMMgr.GetVM("gotofunc")
   self.rightGroupSubView_ = require("ui/view/talent_attr_info_sub_view").new(self)
   self.minTalentTreeScale_ = Z.Global.TalentPageScale[1]
   self.maxTalentTreeScale_ = Z.Global.TalentPageScale[2]
@@ -71,6 +72,9 @@ function Talent_skill_windowView:OnActive()
     self:openNotEnoughItemTips(self.talentSkillData_:GetTalentPointConfigId(), self.uiBinder.rect_icon)
   end)
   self:AddAsyncClick(self.uiBinder.btn_icon_weapon, function()
+    if not self.gotofuncVM_.CheckFuncCanUse(E.FunctionID.ProfessionLv, true) then
+      return
+    end
     if not self.canUITouchByAnimEnd_ then
       return
     end
@@ -133,18 +137,13 @@ function Talent_skill_windowView:OnActive()
     end
   end)
   self:AddClick(self.uiBinder.btn_viewguide, function()
-    if self.professionSystemTable_ == nil then
-      return
+    local talentStageId = self.talentSkillVM_.GetCurProfessionTalentStage()
+    local talenStageRow = Z.TableMgr.GetTable("TalentStageTableMgr").GetRow(talentStageId)
+    if talenStageRow then
+      self.helpsysVM_.OpenMulHelpSysView(talenStageRow.StrategyPage)
     end
-    self.helpsysVM_.OpenMulHelpSysView(self.professionSystemTable_.StrategyPage)
   end)
-  
-  function self.onInputAction_(inputActionEventData)
-    self:OnInputBack()
-  end
-  
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect_5)
-  self:RegisterInputActions()
   Z.EventMgr:Add(Z.ConstValue.Quest.QuestFlowLoaded, self.onQuestAccept, self)
   Z.EventMgr:Add(Z.ConstValue.TalentSkill.UnLockTalent, self.talentChangeRefresh, self)
   self:initData()
@@ -156,7 +155,6 @@ end
 function Talent_skill_windowView:OnDeActive()
   Z.EventMgr:Remove(Z.ConstValue.Quest.QuestFlowLoaded, self.onQuestAccept, self)
   Z.EventMgr:Remove(Z.ConstValue.TalentSkill.UnLockTalent, self.talentChangeRefresh, self)
-  self:UnRegisterInputActions()
   self:UnBindLuaAttrWatchers()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   self:closeSourceTip()
@@ -166,6 +164,8 @@ function Talent_skill_windowView:OnDeActive()
   self.uiBinder.node_effect_5:ReleseEffGo()
   self.isCreateWeaponEffect_ = nil
   self:unloadTalentSkillTree()
+  Z.UIMgr:ReleasePreloadAsset(TalentSkillDefine.TalentWindowCharacerLeftRimg .. self.professionSystemTable_.ProfessionId)
+  Z.UIMgr:ReleasePreloadAsset(TalentSkillDefine.TalentWindowCharacerRightRimg .. self.professionSystemTable_.ProfessionId)
 end
 
 function Talent_skill_windowView:OnRefresh()
@@ -189,12 +189,14 @@ function Talent_skill_windowView:initData()
   self.loadTalentTreeNames_ = {}
   self.nextStageSkills_ = {}
   self.talentTreeUnit_ = nil
-  self.zoomSize_ = (self.minTalentTreeScale_ + self.maxTalentTreeScale_) * TalentZoneAdd / 2
+  if Z.IsPCUI then
+    self.zoomSize_ = self.minTalentTreeScale_ * TalentZoneAdd
+  else
+    self.zoomSize_ = (self.minTalentTreeScale_ + self.maxTalentTreeScale_) * TalentZoneAdd / 2
+  end
   self.lastZoomSize_ = nil
   self.selectTalentUnit_ = nil
   self.canUITouchByAnimEnd_ = false
-  self.imageLeftFinish_ = false
-  self.imageRightFinish_ = false
   self.curPointActiveTalentTreeNodes_ = {}
   self.curPointUnlockTalentTreeNodes_ = {}
   self.lineEffects_ = {}
@@ -205,15 +207,10 @@ end
 
 function Talent_skill_windowView:BindLuaAttrWatchers()
   function self.onContainerChanged(container, dirty)
-    local posX, posY = self.uiBinder.content:GetAnchorPosition(nil, nil)
-    
-    self.treeY_ = posY
-    if self.selectTalentUnit_ and self.selectTalentUnit_.type == TalentSkillDefine.TalentAttrInfoSubViewType.Weapon then
-      self.selectTalentUnit_.unit = nil
-    end
     if dirty.professionList then
       if self.isCreateWeaponEffect_ == nil then
         local weaponTalent = self.professionSystemTable_.Talent
+        
         self.uiBinder.node_effect_5:CreatEFFGO(TalentSkillDefine.TalentSkillWeaponLevelUpEffect[weaponTalent], Vector3.zero)
         self.uiBinder.node_effect_5:SetEffectGoVisible(true)
         self.isCreateWeaponEffect_ = true
@@ -270,26 +267,14 @@ function Talent_skill_windowView:RefreshProfession()
     self.uiBinder.rimg_icon_weapon:SetImage(self.professionSystemTable_.MainTalentIcon)
     self.uiBinder.rimg_adorn:SetImage(TalentSkillDefine.TalentSkillWindowAdornIconPath[1])
     self.uiBinder.rimg_line_middel:SetColor(TalentSkillDefine.TalentWindowMiddelRimg[weaponTalent])
-    self.uiBinder.rimg_character_left:SetImage(TalentSkillDefine.TalentWindowCharacerLeftRimg .. self.professionSystemTable_.Id, function()
-      self.imageLeftFinish_ = true
-      self:afterImageFinish()
-    end)
-    self.uiBinder.rimg_character_right:SetImage(TalentSkillDefine.TalentWindowCharacerRightRimg .. self.professionSystemTable_.Id, function()
-      self.imageRightFinish_ = true
-      self:afterImageFinish()
-    end)
+    self.uiBinder.rimg_character_left:SetImage(TalentSkillDefine.TalentWindowCharacerLeftRimg .. self.professionSystemTable_.Id)
+    self.uiBinder.rimg_character_right:SetImage(TalentSkillDefine.TalentWindowCharacerRightRimg .. self.professionSystemTable_.Id)
+    self:refreshTalentPoints()
+    self:refreshWeaponInfo()
+    self:refreshTalentTreeScaleAndSlider()
+    self:loadTalentTree(true)
+    self:playAnim()
   end
-end
-
-function Talent_skill_windowView:afterImageFinish()
-  if not self.imageLeftFinish_ or not self.imageRightFinish_ then
-    return
-  end
-  self:refreshTalentPoints()
-  self:refreshWeaponInfo()
-  self:refreshTalentTreeScaleAndSlider()
-  self:loadTalentTree(true)
-  self:playAnim()
 end
 
 function Talent_skill_windowView:playAnim()
@@ -303,6 +288,8 @@ function Talent_skill_windowView:refreshTalentPoints()
 end
 
 function Talent_skill_windowView:talentChangeRefresh(talents)
+  local posX, posY = self.uiBinder.content:GetAnchorPosition(nil, nil)
+  self.treeY_ = posY
   if talents then
     local mgr = Z.TableMgr.GetTable("TalentTreeTableMgr")
     for _, talentId in ipairs(talents) do
@@ -319,13 +306,18 @@ function Talent_skill_windowView:talentChangeRefresh(talents)
 end
 
 function Talent_skill_windowView:refreshWeaponInfo()
-  local weapon = self.weaponVM_.GetWeaponInfo(self.professionSystemTable_.ProfessionId)
-  if weapon then
-    self.uiBinder.lab_lv.text = Lang("WeaponProficiency") .. weapon.level
+  if self.gotofuncVM_.CheckFuncCanUse(E.FunctionID.ProfessionLv, true) then
+    local weapon = self.weaponVM_.GetWeaponInfo(self.professionSystemTable_.ProfessionId)
+    if weapon then
+      self.uiBinder.lab_lv.text = Lang("WeaponProficiency") .. weapon.level
+    else
+      self.uiBinder.lab_lv.text = Lang("common_lock")
+    end
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, self.talentSkillVM_.CheckWeaponRed() and self.weaponVM_.GetCurWeapon() == self.viewData.professionId)
   else
-    self.uiBinder.lab_lv.text = Lang("common_lock")
+    self.uiBinder.lab_lv.text = ""
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, false)
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, self.talentSkillVM_.CheckWeaponRed() and self.weaponVM_.GetCurWeapon() == self.viewData.professionId)
 end
 
 function Talent_skill_windowView:refreshTalentTreeScaleAndSlider()
@@ -435,11 +427,12 @@ function Talent_skill_windowView:loadTalentTree(isFirst)
           needPoint = allStageConfigs[i - 1][0].NeedPoint
         end
         local timeCondition = true
-        local tipsStr = ""
-        local progress = ""
+        local tipsParam = ""
         if next(allStageConfigs[i][0].OpenCondition) then
           local condition = allStageConfigs[i][0].OpenCondition[1]
-          timeCondition, tipsStr, progress = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
+          local tempTimeCondition, _, _, _, tempTipsParam = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
+          timeCondition = tempTimeCondition
+          tipsParam = tempTipsParam
         end
         local unlockBDType = -1
         local count = 0
@@ -485,11 +478,11 @@ function Talent_skill_windowView:loadTalentTree(isFirst)
             else
               unitTalentNextStageUnit.lab_nextstation_condition.text = Lang("TalentNextStationOpenServiceCondition", {
                 val1 = allStageConfigs[i][0].Name[1],
-                val2 = progress
+                val2 = tipsParam.val
               })
               self.talentTreeUnlockTipsLang_[i] = Lang("TalentNextStationOpenServiceConditionSubTip", {
                 val1 = allStageConfigs[i][0].Name[1],
-                val2 = progress
+                val2 = tipsParam.val
               })
             end
           end
@@ -561,7 +554,7 @@ function Talent_skill_windowView:loadTalentTree(isFirst)
           local treeUnit = self:AsyncLoadUiUnit(treePath, treeName, self.uiBinder.group_skill)
           if treeUnit then
             treeUnit.Trans:SetAnchorPosition(0, -height)
-            local tempStageConfig = allStageConfigs[i][tempBDType]
+            local tempStageConfig = Z.TableMgr.GetTable("TalentStageTableMgr").GetRow(allStageConfigs[i][tempBDType].Id)
             local rootTalentId = tempStageConfig.RootId
             self.lastTalentActiveCount_ = 0
             self.refreshUnitTalentTreeId_ = {}
@@ -579,7 +572,7 @@ function Talent_skill_windowView:loadTalentTree(isFirst)
             table.insert(self.loadTalentTreeNames_, treeName)
           end
         else
-          local tempStageConfig = allStageConfigs[i][0]
+          local tempStageConfig = Z.TableMgr.GetTable("TalentStageTableMgr").GetRow(allStageConfigs[i][0].Id)
           unitTalentNextStageUnit.lab_cur_condition.text = string.format("%s : %s/%s", tempStageConfig.Name[1], 0, allStageConfigs[i][0].NeedPoint)
         end
       end
@@ -606,7 +599,7 @@ end
 
 function Talent_skill_windowView:unloadTalentSkillTree()
   Z.RedPointMgr.RemoveNodeItem(E.RedType.TalentTree)
-  if self.selectTalentUnit_ and (self.selectTalentUnit_.type == TalentSkillDefine.TalentAttrInfoSubViewType.Talent or self.selectTalentUnit_.type == TalentSkillDefine.TalentAttrInfoSubViewType.TalentBD) and self.selectTalentUnit_.unit ~= nil then
+  if self.selectTalentUnit_ and self.selectTalentUnit_.unit ~= nil then
     self.selectTalentUnit_.unit.node_effect_select:SetEffectGoVisible(false)
     self.selectTalentUnit_.unit.node_effect_select:ReleseEffGo()
     self.selectTalentUnit_.unit = nil
@@ -809,9 +802,6 @@ function Talent_skill_windowView:refreshSpecialTalentTreeNode(unit, skillId, isL
     if not self.canUITouchByAnimEnd_ then
       return
     end
-    if isActive then
-      self:previewTalentTree(skillId)
-    end
     self:hideRightSubView()
     local viewData = {
       type = TalentSkillDefine.TalentTreeUnitType.Special,
@@ -823,14 +813,22 @@ function Talent_skill_windowView:refreshSpecialTalentTreeNode(unit, skillId, isL
     }
     self:showRightSubView(viewData)
     self:hideSelectUnit()
-    self.selectTalentUnit_ = {
-      nodeId = skillId,
-      unit = unit,
-      type = TalentSkillDefine.TalentTreeUnitType.Special
-    }
-    self.selectTalentUnit_.unit.node_effect_select:CreatEFFGO(TalentSkillDefine.TalentSkillTreeNodeSelectEffect[2][self.professionSystemTable_.Talent], Vector3.zero)
-    self.selectTalentUnit_.unit.node_effect_select:SetEffectGoVisible(true)
-    self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.selectTalentUnit_.unit.node_effect_select)
+    if isActive then
+      self.selectTalentUnit_ = {
+        nodeId = skillId,
+        type = TalentSkillDefine.TalentTreeUnitType.Special
+      }
+      self:previewTalentTree(skillId)
+    else
+      self.selectTalentUnit_ = {
+        nodeId = skillId,
+        unit = unit,
+        type = TalentSkillDefine.TalentTreeUnitType.Special
+      }
+      self.selectTalentUnit_.unit.node_effect_select:CreatEFFGO(TalentSkillDefine.TalentSkillTreeNodeSelectEffect[2][self.professionSystemTable_.Talent], Vector3.zero)
+      self.selectTalentUnit_.unit.node_effect_select:SetEffectGoVisible(true)
+      self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.selectTalentUnit_.unit.node_effect_select)
+    end
   end)
   if self.talentTreeRedDots_[skillId] then
     Z.RedPointMgr.LoadRedDotItem(E.RedType.TalentTree, self, unit.Trans)
@@ -902,10 +900,9 @@ function Talent_skill_windowView:onClickReset()
         Z.TipsVM.ShowTipsLang(1042006)
         self:talentChangeRefresh()
       end
-      Z.DialogViewDataMgr:CloseDialogView()
     end
   }
-  Z.DialogViewDataMgr:OpenDialogView(dialogViewData, E.EDialogViewDataType.Game)
+  Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
 end
 
 function Talent_skill_windowView:openSourceTip()
@@ -934,6 +931,7 @@ function Talent_skill_windowView:hideSelectUnit()
     self.uiBinder.rimg_icon_weapon:SetImage(self.professionSystemTable_.MainTalentIcon)
     self.uiBinder.rimg_adorn:SetImage(TalentSkillDefine.TalentSkillWindowAdornIconPath[1])
   elseif (self.selectTalentUnit_.type == TalentSkillDefine.TalentAttrInfoSubViewType.Talent or self.selectTalentUnit_.type == TalentSkillDefine.TalentAttrInfoSubViewType.TalentBD) and self.selectTalentUnit_.unit ~= nil and self.selectTalentUnit_.unit.node_effect_select ~= nil then
+    self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.selectTalentUnit_.unit.node_effect_select)
     self.selectTalentUnit_.unit.node_effect_select:SetEffectGoVisible(false)
     self.selectTalentUnit_.unit.node_effect_select:ReleseEffGo()
   end
@@ -1062,11 +1060,10 @@ function Talent_skill_windowView:recommedTalent()
       labDesc = Lang("TalentRecommedCertain"),
       onConfirm = function()
         self.talentSkillVM_.UnlockTalentTreeNode(self.professionSystemTable_.ProfessionId, resTalent, self.cancelSource:CreateToken(), true)
-        Z.DialogViewDataMgr:CloseDialogView()
       end,
       itemList = itemList
     }
-    Z.DialogViewDataMgr:OpenDialogView(dialogViewData, E.EDialogViewDataType.Game)
+    Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
   else
     if 0 < noEnoughItemId then
       local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(noEnoughItemId)
@@ -1089,14 +1086,6 @@ function Talent_skill_windowView:onQuestAccept(questId)
   questTrackVM.ReplaceAndTrackingQuest(questId)
   local questDetailVm_ = Z.VMMgr.GetVM("questdetail")
   questDetailVm_.OpenDetailView()
-end
-
-function Talent_skill_windowView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.TalentView)
-end
-
-function Talent_skill_windowView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.TalentView)
 end
 
 function Talent_skill_windowView:JumpTalentStage(stage)

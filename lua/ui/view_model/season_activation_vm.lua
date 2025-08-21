@@ -1,23 +1,3 @@
-local getAllOpenFuncId = function()
-  local switchVM = Z.VMMgr.GetVM("switch")
-  local rowList = {}
-  for id, row in pairs(Z.TableMgr.GetTable("MainIconTableMgr").GetDatas()) do
-    if row.SystemPlace == 5 and switchVM.CheckFuncSwitch(id) then
-      table.insert(rowList, row)
-    end
-  end
-  table.sort(rowList, function(left, right)
-    if left.SortId ~= right.SortId then
-      return left.SortId < right.SortId
-    end
-    return left.Id < right.Id
-  end)
-  local idList = {}
-  for _, row in ipairs(rowList) do
-    table.insert(idList, row.Id)
-  end
-  return idList
-end
 local openSurveys = function()
   local questionnaireVM = Z.VMMgr.GetVM("questionnaire")
   local allQuestionnaireInfos = questionnaireVM.GetAllOpenedQuestionnaireInfos()
@@ -65,14 +45,16 @@ local getImageDatePath = function()
   end
   return dataPath
 end
-local assembleDataList = function(rateTempTable, tempTable)
+local assembleDataList = function(rateTempTable, tempTable, isPc)
   local dataList = {
     [1] = {Type = 1, Index = 1}
   }
   local maxLineNum = 0
+  local rateUILineCount = isPc and 3 or 2
+  local tempUILineCount = isPc and 4 or 3
   for i, v in ipairs(rateTempTable) do
-    local lineNum = math.ceil(i / 2)
-    local rowNum = i % 2 == 0 and 2 or i % 2
+    local lineNum = math.ceil(i / rateUILineCount)
+    local rowNum = i % rateUILineCount == 0 and rateUILineCount or i % rateUILineCount
     if dataList[lineNum + 1] == nil then
       dataList[lineNum + 1] = {}
     end
@@ -84,8 +66,8 @@ local assembleDataList = function(rateTempTable, tempTable)
   dataList[#dataList + 1] = {Type = 1, Index = 2}
   maxLineNum = maxLineNum + 2
   for i, v in ipairs(tempTable) do
-    local lineNum = math.ceil(i / 3)
-    local rowNum = i % 3 == 0 and 3 or i % 3
+    local lineNum = math.ceil(i / tempUILineCount)
+    local rowNum = i % tempUILineCount == 0 and tempUILineCount or i % tempUILineCount
     if dataList[lineNum + maxLineNum] == nil then
       dataList[lineNum + maxLineNum] = {}
     end
@@ -103,7 +85,8 @@ local classifyAndSortData = function(data)
     if activationCfg.IfFunctionOpen == 1 then
       funcOpen = funcVm.FuncIsOn(activationCfg.FunctionId, true)
     end
-    if funcOpen then
+    local isCanShow = Z.ConditionHelper.CheckCondition(activationCfg.ShowCondition, false)
+    if funcOpen and isCanShow then
       if v.rewardRate and v.rewardRate > 100 then
         table.insert(rateTempTable, v)
       else
@@ -121,11 +104,11 @@ local classifyAndSortData = function(data)
   end)
   return rateTempTable, tempTable
 end
-local getActivationTargetData = function()
+local getActivationTargetData = function(isPc)
   local data = Z.ContainerMgr.CharSerialize.seasonActivation.activationTargets
   if data and table.zcount(data) > 0 then
     local rateTempTable, tempTable = classifyAndSortData(data)
-    local dataList = assembleDataList(rateTempTable, tempTable)
+    local dataList = assembleDataList(rateTempTable, tempTable, isPc)
     return dataList
   else
     return {
@@ -170,10 +153,19 @@ local asyncRefreshCountRequest = function(cancelToken)
 end
 local asyncReceiveActivationAwardRequest = function(stage, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
-  worldProxy.ReceiveSeasonActivationAward(stage, cancelToken)
+  local reply = worldProxy.ReceiveSeasonActivationAward(stage, cancelToken)
+  if reply.items ~= nil then
+    local itemShowVM = Z.VMMgr.GetVM("item_show")
+    itemShowVM.OpenItemShowViewByItems(reply.items, true)
+  end
+  if reply.errCode == 0 then
+    return true
+  else
+    Z.TipsVM.ShowTips(reply.errCode)
+    return false
+  end
 end
 local ret = {
-  GetAllOpenFuncId = getAllOpenFuncId,
   OpenSurveys = openSurveys,
   GetActivationAwards = getActivationAwards,
   GetRefreshCount = getRefreshCount,

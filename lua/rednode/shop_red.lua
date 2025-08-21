@@ -1,24 +1,12 @@
 local ShopRed = {}
 local shopItemRedTab = {}
 ShopRed.package = {}
-local itemCfgName = {
-  [E.EShopType.Shop] = "MallItemTableMgr",
-  [E.EShopType.SeasonShop] = "SeasonShopItemTableMgr"
-}
 local MallTableDatas = {}
 local MallItemTableDatas = {}
-local SeasonShopTableDatas = {}
-local SeasonShopItemTableDatas = {}
-local eShopTypeItemCfg = {
-  [E.EShopType.Shop] = {cfg = MallTableDatas, itemCfg = MallItemTableDatas},
-  [E.EShopType.SeasonShop] = {cfg = SeasonShopTableDatas, itemCfg = SeasonShopItemTableDatas}
-}
 
 function ShopRed.initCfgData()
   MallTableDatas = Z.TableMgr.GetTable("MallTableMgr").GetDatas()
   MallItemTableDatas = Z.TableMgr.GetTable("MallItemTableMgr").GetDatas()
-  SeasonShopTableDatas = Z.TableMgr.GetTable("SeasonShopTableMgr").GetDatas()
-  SeasonShopItemTableDatas = Z.TableMgr.GetTable("SeasonShopItemTableMgr").GetDatas()
 end
 
 local mysteriousRow
@@ -35,17 +23,13 @@ function ShopRed.Init()
       Z.RedPointMgr.AddChildNodeData(childRedId, E.RedType.ShopTwoTab, E.RedType.Shop .. E.RedType.ShopTwoTab .. mallCfgData.Id)
     end
   end
-  for i, data in pairs(SeasonShopTableDatas) do
-    local childRedId = string.zconcat(E.RedType.SeasonShop, E.RedType.SeasonShopOneTab, data.Id)
-    Z.RedPointMgr.AddChildNodeData(E.RedType.SeasonShop, E.RedType.SeasonShopOneTab, childRedId)
-  end
 end
 
 function ShopRed.AddNewRed(mallItemId, shopType)
-  local mallItemCfgData = Z.TableMgr.GetTable(itemCfgName[shopType]).GetRow(mallItemId)
+  local mallItemCfgData = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(mallItemId)
   if mallItemCfgData then
     local mallCfgData
-    for key, cfgData in pairs(eShopTypeItemCfg[shopType].cfg) do
+    for key, cfgData in pairs(MallTableDatas) do
       if cfgData.FunctionId == mallItemCfgData.FunctionId then
         mallCfgData = cfgData
         break
@@ -69,7 +53,7 @@ function ShopRed.AddNewRed(mallItemId, shopType)
         Z.RedPointMgr.AddChildNodeData(parentId, E.RedType.SeasonShopItem, childRedNodeId)
       end
       shopItemRedTab[mallItemId] = childRedNodeId
-      Z.RedPointMgr.RefreshServerNodeCount(childRedNodeId, 1)
+      Z.RedPointMgr.UpdateNodeCount(childRedNodeId, 1)
     end
   end
 end
@@ -83,7 +67,7 @@ end
 
 function ShopRed.RemoveRed(mallItemId)
   if shopItemRedTab[mallItemId] then
-    Z.RedPointMgr.RefreshServerNodeCount(shopItemRedTab[mallItemId], 0)
+    Z.RedPointMgr.UpdateNodeCount(shopItemRedTab[mallItemId], 0)
     shopItemRedTab[mallItemId] = nil
   end
 end
@@ -109,8 +93,8 @@ function ShopRed.ShopRefreshListChange()
           if 0 < refreshCount then
             do
               local lastRefreshTime = refreshList.timestamp[refreshCount]
-              local startTime = Z.TimeTools.GetStartTimeByTimerId(mysteriousRow.RefreshIntervalType)
-              if lastRefreshTime < startTime / 1000 then
+              local startTime = Z.TimeTools.GetStartEndTimeByTimerId(mysteriousRow.RefreshIntervalType)
+              if lastRefreshTime < startTime then
                 isNeedRefresh = true
               end
             end
@@ -126,7 +110,7 @@ function ShopRed.ShopRefreshListChange()
   end
   local redNum = 0
   if isNeedRefresh then
-    local lastTime = Z.LocalUserDataMgr.GetLong("BKL_REDDOTRED" .. E.RedType.MysteriousShopRed, 0, 0, true)
+    local lastTime = Z.LocalUserDataMgr.GetLongByLua(E.LocalUserDataType.Character, "BKL_REDDOTRED" .. E.RedType.MysteriousShopRed, 0)
     if lastTime ~= 0 then
       local isSameDay = Z.TimeTools.CheckIsSameDay(lastTime, math.floor(Z.ServerTime:GetServerTime() / 1000))
       if not isSameDay then
@@ -136,7 +120,7 @@ function ShopRed.ShopRefreshListChange()
       redNum = 1
     end
   end
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.MysteriousShopRed, redNum)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.MysteriousShopRed, redNum)
 end
 
 return ShopRed

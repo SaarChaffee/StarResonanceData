@@ -27,6 +27,22 @@ function Set_key_subView:OnActive()
   self:AddClick(self.uiBinder.btn_reset, function()
     self:onClickReset()
   end)
+  self:initSettingUIDict()
+end
+
+function Set_key_subView:initSettingUIDict()
+  self.setting2UIDict_ = {}
+  self.setting2UIDict_[E.SettingID.KeyHint] = self.uiBinder.cont_set_show
+end
+
+function Set_key_subView:refreshAllSettingVisible()
+  local settingVisibleData = Z.DataMgr.Get("setting_visible_data")
+  for k, v in pairs(self.setting2UIDict_) do
+    local show = settingVisibleData:CheckVisible(k)
+    if not show then
+      v.Ref.UIComp:SetVisible(show)
+    end
+  end
 end
 
 function Set_key_subView:createKeyMapList()
@@ -68,7 +84,6 @@ function Set_key_subView:onClickReset()
     self.keyVM_.ResetKeySetting()
     self:createKeyMapList()
     Z.EventMgr:Dispatch(Z.ConstValue.KeySettingReset)
-    Z.DialogViewDataMgr:CloseDialogView()
     Z.TipsVM.ShowTipsLang(1000203)
   end)
 end
@@ -84,6 +99,7 @@ function Set_key_subView:RefreshAllItem()
 end
 
 function Set_key_subView:OnRefresh()
+  self:refreshAllSettingVisible()
 end
 
 return Set_key_subView

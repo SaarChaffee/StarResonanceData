@@ -5,7 +5,5 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message MiscInfo {
-    map<int32, int32> expressionIdsLearned = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.MiscInfo.ExpressionIdsLearnedEntry expressionIdsLearned = 1;
 }
-

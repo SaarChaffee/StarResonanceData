@@ -10,7 +10,7 @@ function GrpcTeamNtfStubImpl:NoticeUpdateTeamInfo(call, vRequest)
   local clientTeamBaseInfo = teamData.TeamInfo.baseInfo
   local matchVm = Z.VMMgr.GetVM("match")
   if clientTeamBaseInfo and serverTeamBaseInfo then
-    if clientTeamBaseInfo.targetId ~= serverTeamBaseInfo.targetId or clientTeamBaseInfo.desc ~= serverTeamBaseInfo.desc or clientTeamBaseInfo.hallShow ~= serverTeamBaseInfo.hallShow then
+    if clientTeamBaseInfo.targetId ~= serverTeamBaseInfo.targetId then
       local teamTargetInfo = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(serverTeamBaseInfo.targetId)
       if teamTargetInfo == nil then
         return
@@ -25,8 +25,15 @@ function GrpcTeamNtfStubImpl:NoticeUpdateTeamInfo(call, vRequest)
       clientTeamBaseInfo.hallShow = serverTeamBaseInfo.hallShow
       Z.TipsVM.ShowTipsLang(1000635, param)
       Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshSetting)
+    elseif clientTeamBaseInfo.desc ~= serverTeamBaseInfo.desc then
+      clientTeamBaseInfo.desc = serverTeamBaseInfo.desc
+      Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshSettingDes)
+    elseif clientTeamBaseInfo.hallShow ~= serverTeamBaseInfo.hallShow then
+      clientTeamBaseInfo.hallShow = serverTeamBaseInfo.hallShow
     end
     if clientTeamBaseInfo.leaderId ~= serverTeamBaseInfo.leaderId then
+      local dungeonPrepareVm_ = Z.VMMgr.GetVM("dungeon_prepare")
+      dungeonPrepareVm_.CancelReadyCheck()
       if serverTeamBaseInfo.leaderId == Z.ContainerMgr.CharSerialize.charBase.charId then
         Z.TipsVM.ShowTipsLang(1000633)
       else
@@ -40,26 +47,19 @@ function GrpcTeamNtfStubImpl:NoticeUpdateTeamInfo(call, vRequest)
           Z.TipsVM.ShowTipsLang(1000618, param)
         end
       end
+      teamData:SetLeaderId(serverTeamBaseInfo.leaderId)
     end
-    local matchData = Z.DataMgr.Get("match_data")
-    local matchType = matchData:GetMatchType()
-    if clientTeamBaseInfo.matching ~= serverTeamBaseInfo.matching and matchType == E.MatchType.Team then
-      local matching = serverTeamBaseInfo.matching
-      local matchingId = matching and 1000613 or 1000614
-      clientTeamBaseInfo.matching = serverTeamBaseInfo.matching
-      Z.TipsVM.ShowTipsLang(matchingId)
-      matchVm.SetSelfMatchData(matching, "teamMatching")
-      if matching then
-        matchVm.CreateMatchingTips()
+    if clientTeamBaseInfo.teamMemberType ~= serverTeamBaseInfo.teamMemberType then
+      local tab = {}
+      if serverTeamBaseInfo.teamMemberType == E.ETeamMemberType.Five then
+        tab = {val = 5}
       else
-        Z.EventMgr:Dispatch(Z.ConstValue.Team.RepeatTeamCancelMatch)
-        matchVm.CancelMatchingTips()
+        tab = {val = 20}
       end
+      Z.TipsVM.ShowTips(1000648, tab)
     end
     teamData.TeamInfo.baseInfo = serverTeamBaseInfo
-  end
-  if serverTeamBaseInfo.teamId and serverTeamBaseInfo.teamId > 0 then
-    matchVm.SetSelfMatchData(false, "matching")
+    self:setTeamGroupInfo()
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Team.Refresh)
 end
@@ -68,13 +68,13 @@ function GrpcTeamNtfStubImpl:updateTeamFastSyncData(teamFastSyncData)
   local teamData = Z.DataMgr.Get("team_data")
   local clientMemberInfo = teamData.TeamInfo.members[teamFastSyncData.charId]
   if clientMemberInfo then
-    if clientMemberInfo.socialData.sceneData.levelPos ~= teamFastSyncData.position then
-      clientMemberInfo.socialData.sceneData.levelPos = teamFastSyncData.position
-      Z.EventMgr:Dispatch(Z.ConstValue.Team.MemberInfoChange, clientMemberInfo.socialData)
+    if clientMemberInfo.pos ~= teamFastSyncData.position then
+      clientMemberInfo.pos = teamFastSyncData.position
+      Z.EventMgr:Dispatch(Z.ConstValue.Team.MemberInfoChange, clientMemberInfo)
     end
-    if clientMemberInfo.socialData.userAttrData.hp ~= teamFastSyncData.hp or clientMemberInfo.socialData.userAttrData.maxHp ~= teamFastSyncData.maxHp then
-      clientMemberInfo.socialData.userAttrData.hp = teamFastSyncData.hp
-      clientMemberInfo.socialData.userAttrData.maxHp = teamFastSyncData.maxHp
+    if clientMemberInfo.hp ~= teamFastSyncData.hp or clientMemberInfo.maxHp ~= teamFastSyncData.maxHp then
+      clientMemberInfo.hp = teamFastSyncData.hp
+      clientMemberInfo.maxHp = teamFastSyncData.maxHp
       Z.EventMgr:Dispatch(Z.ConstValue.Team.UpdateMemberData, {
         charId = teamFastSyncData.charId,
         isForce = true
@@ -88,68 +88,32 @@ function GrpcTeamNtfStubImpl:updateTeamFastSyncData(teamFastSyncData)
 end
 
 function GrpcTeamNtfStubImpl:NoticeUpdateTeamMemberInfo(call, vRequest)
-  if vRequest.syncType == 1 then
-    for index, value in pairs(vRequest.teamFastSyncData.teamMemberSyncDatas) do
+  if vRequest.teamMemberSyncDatas then
+    for index, value in pairs(vRequest.teamMemberSyncDatas) do
       GrpcTeamNtfStubImpl:updateTeamFastSyncData(value)
     end
-    return
   end
-  local serverMemberInfo = vRequest.socialData
-  local charId = serverMemberInfo.basicData.charID
-  local teamData = Z.DataMgr.Get("team_data")
-  local clientMemberInfo = teamData.TeamInfo.members[charId]
-  if clientMemberInfo == nil then
-    return
-  end
-  if clientMemberInfo.isAi then
-    if clientMemberInfo.socialData and clientMemberInfo.socialData.userAttrData and (clientMemberInfo.socialData.userAttrData.hp ~= serverMemberInfo.userAttrData.hp or clientMemberInfo.socialData.userAttrData.maxHp ~= serverMemberInfo.userAttrData.maxHp) then
-      clientMemberInfo.socialData.userAttrData.hp = serverMemberInfo.userAttrData.hp
-      clientMemberInfo.socialData.userAttrData.maxHp = serverMemberInfo.userAttrData.maxHp
-      Z.EventMgr:Dispatch(Z.ConstValue.Team.UpdateMemberData, {
-        charId = serverMemberInfo.basicData.charID,
-        isForce = true
-      })
-    end
-    return
-  end
-  if serverMemberInfo and clientMemberInfo.socialData then
-    if clientMemberInfo.socialData.userAttrData.hp ~= serverMemberInfo.userAttrData.hp or clientMemberInfo.socialData.userAttrData.maxHp ~= serverMemberInfo.userAttrData.maxHp then
-      clientMemberInfo.socialData.userAttrData.hp = serverMemberInfo.userAttrData.hp
-      clientMemberInfo.socialData.userAttrData.maxHp = serverMemberInfo.userAttrData.maxHp
-      Z.EventMgr:Dispatch(Z.ConstValue.Team.UpdateMemberData, {
-        charId = serverMemberInfo.basicData.charID,
-        isForce = true
-      })
-    end
-    if clientMemberInfo.socialData.avatarInfo.avatarId ~= serverMemberInfo.avatarInfo.avatarId then
-      clientMemberInfo.socialData.avatarInfo.avatarId = serverMemberInfo.avatarInfo.avatarId
-      Z.EventMgr:Dispatch(Z.ConstValue.Team.MemberUpDateHedaId, {
-        charId = serverMemberInfo.basicData.charID,
-        isForce = true
-      })
-    end
-    if clientMemberInfo.socialData.sceneData.levelPos ~= serverMemberInfo.sceneData.levelPos then
-      clientMemberInfo.socialData.sceneData.levelPos = serverMemberInfo.sceneData.levelPos
-      Z.EventMgr:Dispatch(Z.ConstValue.Team.MemberInfoChange, serverMemberInfo)
-    end
-    if clientMemberInfo.socialData.basicData.sceneGuid ~= serverMemberInfo.basicData.sceneGuid then
-      teamData:SetTeamMemberSceneGuide(charId, serverMemberInfo.basicData.sceneGuid)
-      Z.EventMgr:Dispatch(Z.ConstValue.Team.ChangeSceneGuid, serverMemberInfo)
-    end
-    if clientMemberInfo.socialData.basicData.sceneId ~= serverMemberInfo.basicData.sceneId then
-      clientMemberInfo.socialData.basicData.sceneId = serverMemberInfo.basicData.sceneId
-      Z.EventMgr:Dispatch(Z.ConstValue.Team.ChangeSceneId, serverMemberInfo)
-    end
-    if clientMemberInfo.socialData.sceneData.mapId ~= serverMemberInfo.sceneData.mapId then
-      clientMemberInfo.socialData.sceneData.mapId = serverMemberInfo.sceneData.mapId
-      teamData:SetSocialData(charId, serverMemberInfo)
-      Z.EventMgr:Dispatch(Z.ConstValue.Team.MemberChangeScene)
-    else
-      teamData:SetSocialData(charId, serverMemberInfo)
+  if vRequest.teamMemberSocialDatas then
+    local teamData = Z.DataMgr.Get("team_data")
+    for index, value in ipairs(vRequest.teamMemberSocialDatas) do
+      local charId = value.charId
+      local clientMemberInfo = teamData.TeamInfo.members[charId]
+      if clientMemberInfo == nil then
+        return
+      end
+      if clientMemberInfo.isAi then
+        return
+      end
+      if clientMemberInfo.socialData then
+        if value.socialData.basicData and clientMemberInfo.socialData.basicData.offlineTime ~= value.socialData.basicData.offlineTime then
+          clientMemberInfo.socialData.basicData.offlineTime = value.socialData.basicData.offlineTime
+          Z.EventMgr:Dispatch(Z.ConstValue.Team.OnLineState, value.socialData)
+        end
+        teamData:SetSocialData(charId, value.socialData)
+        Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshMemberInfo, clientMemberInfo)
+      end
     end
   end
-  local teamVM = Z.VMMgr.GetVM("team")
-  teamVM.SetLeaderId()
 end
 
 function GrpcTeamNtfStubImpl:NotifyApplyJoin(call, vRequest)
@@ -159,7 +123,7 @@ end
 
 function GrpcTeamNtfStubImpl:NotifyInvitation(call, vRequest)
   local teamTipsVM = Z.VMMgr.GetVM("team_tips")
-  teamTipsVM.ReceiveInvited(vRequest.inviteMemData, vRequest.teamid, vRequest.targetId, vRequest.teamNum)
+  teamTipsVM.ReceiveInvited(vRequest.inviteMemData, vRequest.teamid, vRequest.targetId, vRequest.teamNum, vRequest.teamMemberType)
 end
 
 function GrpcTeamNtfStubImpl:NotifyRefuseInvite(call, vRequest)
@@ -179,7 +143,7 @@ function GrpcTeamNtfStubImpl:NotifyLeaderApplyListSize(call, vRequest)
     local teamData = Z.DataMgr.Get("team_data")
     local teamVm = Z.VMMgr.GetVM("team")
     teamVm.AsyncLeaderGetApplyList(false, teamData.CancelSource:CreateToken())
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TeamApplyButton, teamData:GetApplyCount())
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.TeamApplyButton, teamData:GetApplyCount())
   end)()
 end
 
@@ -242,11 +206,8 @@ function GrpcTeamNtfStubImpl:NotifyCharMatchResult(call, vRequest)
     teamVM.QuiteTeamVoice()
     teamData:SetTeamInfo(vRequest.teamInfo.baseInfo, vRequest.teamInfo.members)
     teamVM.JoinTeamVoice()
-    matchVm.SetSelfMatchData(false, "matching")
     Z.EventMgr:Dispatch(Z.ConstValue.Team.Refresh)
-    matchVm.CancelMatchingTips()
   else
-    matchVm.SetSelfMatchData(false, "matching")
     Z.EventMgr:Dispatch(Z.ConstValue.Team.MatchWaitTimeOut)
   end
 end
@@ -288,9 +249,9 @@ function GrpcTeamNtfStubImpl:TeamActivityVoteResult(call, vRequest)
   if not memInfo then
     return
   end
-  if vRequest.retCode == 3 then
+  if vRequest.code == E.TeamVoteRet.Cancel then
     Z.TipsVM.ShowTipsLang(1000636)
-  elseif vRequest.retCode == 4 then
+  elseif vRequest.code == E.TeamVoteRet.TimeOut then
     local param = {
       player = {
         name = memInfo.socialData and memInfo.socialData.basicData.name or ""
@@ -298,12 +259,12 @@ function GrpcTeamNtfStubImpl:TeamActivityVoteResult(call, vRequest)
     }
     Z.TipsVM.ShowTipsLang(1000637, param)
   else
-    local isAgree = vRequest.retCode == 1 and true or false
+    local isAgree = vRequest.code == E.TeamVoteRet.Agree and true or false
     Z.EventMgr:Dispatch(Z.ConstValue.Team.TeamRefreshActivityVoteResult, {
       charId = vRequest.vCharId,
       isAgree = isAgree
     })
-    if vRequest.retCode == 2 then
+    if vRequest.code == E.TeamVoteRet.Refuse then
       local param = {
         player = {
           name = memInfo.socialData and memInfo.socialData.basicData.name or ""
@@ -314,15 +275,6 @@ function GrpcTeamNtfStubImpl:TeamActivityVoteResult(call, vRequest)
   end
 end
 
-function GrpcTeamNtfStubImpl:TeamTargetList(call, vRequest)
-  if vRequest.vIsRefresh then
-    Z.TipsVM.ShowTipsLang(1000625)
-  end
-  local matchData = Z.DataMgr.Get("match_data")
-  matchData:SetSelfMatchData(vRequest.vTargetId, "targetId")
-  Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshHallList, vRequest.vTeamList)
-end
-
 function GrpcTeamNtfStubImpl:RetApplyJoinList(call, vRequest)
 end
 
@@ -331,19 +283,23 @@ function GrpcTeamNtfStubImpl:NotifyJoinTeam(call, vRequest)
   local param = {
     player = {name = ""}
   }
+  local teamVm = Z.VMMgr.GetVM("team")
   local isNewTeam = false
   if vRequest.baseInfo then
-    isNewTeam = true
-    Z.TipsVM.ShowTipsLang(1000615, param)
-    teamData:SetTeamInfo(vRequest.baseInfo, {})
-    local teamVm = Z.VMMgr.GetVM("team")
-    teamVm.JoinTeamVoice()
-    local matchData = Z.DataMgr.Get("match_data")
-    matchData:SetSelfMatchData(false, "matching")
-    Z.VMMgr.GetVM("chat_main").ClearChannelQueueByChannelId(E.ChatChannelType.EChannelTeam)
-    Z.EventMgr:Dispatch(Z.ConstValue.Chat.ChatInputState)
-    Z.EventMgr:Dispatch(Z.ConstValue.Team.EnterTeam)
-    self:CheckNeedSwitchSceneLine(vRequest)
+    if not teamVm.CheckIsInTeam() then
+      isNewTeam = true
+      Z.TipsVM.ShowTipsLang(1000615, param)
+      teamData:SetTeamInfo(vRequest.baseInfo, {})
+      teamVm.JoinTeamVoice()
+      Z.VMMgr.GetVM("chat_main").ClearChannelQueueByChannelId(E.ChatChannelType.EChannelTeam)
+      Z.EventMgr:Dispatch(Z.ConstValue.Chat.ChatInputState)
+      Z.EventMgr:Dispatch(Z.ConstValue.Team.EnterTeam)
+      if vRequest.teamJoinType and vRequest.teamJoinType == Z.PbEnum("ETeamJoinType", "ETeamJoinTypeTargetMatch") and vRequest.baseInfo.leaderId == Z.ContainerMgr.CharSerialize.charBase.charId then
+        Z.TipsVM.ShowTips(1000642)
+      end
+    else
+      teamData.TeamInfo.baseInfo = vRequest.baseInfo
+    end
   end
   for key, menber in ipairs(vRequest.memberData) do
     local charId = menber.charId
@@ -356,13 +312,24 @@ function GrpcTeamNtfStubImpl:NotifyJoinTeam(call, vRequest)
     menber.isAi = entityVm.CheckIsAIByEntId(charId)
     teamData:SetTeamMember(charId, menber)
   end
-  for key, socialData in ipairs(vRequest.socialDatas) do
-    local charId = socialData.basicData.charID
-    teamData:SetSocialData(charId, socialData)
+  for key, member in ipairs(vRequest.memberData) do
+    local charId = member.charId
+    teamData:SetSocialData(charId, member.socialData)
     if not isNewTeam and charId ~= Z.ContainerMgr.CharSerialize.charBase.charId then
-      param.player.name = socialData.basicData.name
+      if member.socialData.basicData.botAiId and member.socialData.basicData.botAiId ~= 0 then
+        local botAITableRow = Z.TableMgr.GetRow("BotAITableMgr", member.socialData.basicData.botAiId)
+        if botAITableRow then
+          param.player.name = botAITableRow.Name
+        end
+      else
+        param.player.name = member.socialData.basicData.name
+      end
       Z.TipsVM.ShowTipsLang(1000615, param)
     end
+  end
+  if not isNewTeam then
+    local dungeonPrepareVm_ = Z.VMMgr.GetVM("dungeon_prepare")
+    dungeonPrepareVm_.CancelReadyCheck()
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Team.Refresh)
 end
@@ -371,21 +338,20 @@ function GrpcTeamNtfStubImpl:CheckNeedSwitchSceneLine(vRequest)
   local leaderId_ = vRequest.baseInfo.leaderId
   local playerId_ = Z.ContainerMgr.CharSerialize.charBase.charId
   local leaderLineId_, playerLineId, leaderSceneId, playerSceneId
-  for key, value in ipairs(vRequest.socialDatas) do
-    if value.basicData.charID == leaderId_ then
-      leaderSceneId = value.basicData.sceneId
-      leaderLineId_ = value.sceneData.lineId
+  for key, value in ipairs(vRequest.memberData) do
+    if value.charId == leaderId_ then
+      leaderSceneId = value.socialData.basicData.sceneId
+      leaderLineId_ = value.socialData.userSceneInfo.lineId
     end
-    if value.basicData.charID == playerId_ then
-      playerLineId = value.sceneData.lineId
-      playerSceneId = value.basicData.sceneId
+    if value.charId == playerId_ then
+      playerLineId = value.socialData.userSceneInfo.lineId
+      playerSceneId = value.socialData.basicData.sceneId
     end
   end
   if leaderSceneId == playerSceneId and leaderLineId_ ~= playerLineId then
     Z.DialogViewDataMgr:OpenCountdownNODialog(Lang("TeamSwitchLineCheck"), function()
       local scenelineVM_ = Z.VMMgr.GetVM("sceneline")
-      scenelineVM_.EnterSceneLine(leaderLineId_)
-      Z.DialogViewDataMgr:CloseDialogView()
+      scenelineVM_.AsyncReqSwitchSceneLineByCharId(leaderId_)
     end, nil, Z.Global.LineTipButtonCD)
   end
 end
@@ -412,11 +378,21 @@ function GrpcTeamNtfStubImpl:NotifyLeaveTeam(call, vRequest)
   else
     local member = teamData.TeamInfo.members[charId]
     if member and member.socialData then
-      param.player.name = member.socialData.basicData.name
+      if member.isAi then
+        local botAiId = member.socialData.basicData.botAiId
+        local botAITableRow = Z.TableMgr.GetRow("BotAITableMgr", botAiId)
+        if botAITableRow then
+          param.player.name = botAITableRow.Name
+        end
+      else
+        param.player.name = member.socialData.basicData.name
+      end
     end
     Z.TipsVM.ShowTipsLang(1000616, param)
     teamData:SetTeamMember(charId, nil)
   end
+  local dungeonPrepareVm_ = Z.VMMgr.GetVM("dungeon_prepare")
+  dungeonPrepareVm_.CancelReadyCheck()
   Z.EventMgr:Dispatch(Z.ConstValue.Team.Refresh)
 end
 
@@ -456,7 +432,7 @@ function GrpcTeamNtfStubImpl:NotifyTeamMemBeCallResult(call, vRequest)
 end
 
 function GrpcTeamNtfStubImpl:NotifyTeamEnterErr(call, vRequest)
-  Z.TipsVM.ShowTips(vRequest.errorCode)
+  Z.TipsVM.ShowTips(vRequest.errCode)
 end
 
 function GrpcTeamNtfStubImpl:NotifyTeamMemMicrophoneStatusChange(call, vRequest)
@@ -488,8 +464,45 @@ function GrpcTeamNtfStubImpl:NotifyTeamMemVoiceIdChange(call, vRequest)
   teamData:SetMemberVoiceId(vRequest.memberId, vRequest.voiceId)
 end
 
+function GrpcTeamNtfStubImpl:NotifyInviteJoinDungeons(call, vRequest)
+  local groupKey = vRequest.groupKey
+  local dungeonId = vRequest.dungeonId
+  local charId = vRequest.senderId
+  local teamTipsVm = Z.VMMgr.GetVM("team_tips")
+  teamTipsVm.CallInviteJoinDungeons(charId, groupKey, dungeonId)
+end
+
 function GrpcTeamNtfStubImpl:UpdateTeamMemberFastData(call, vRequest)
   GrpcTeamNtfStubImpl:updateTeamFastSyncData(vRequest.teamMemberFastSyncData)
+end
+
+function GrpcTeamNtfStubImpl:NotifyTeamGroupUpdate(call, vRequest)
+  if vRequest.errCode ~= 0 then
+    Z.TipsVM.ShowTips(vRequest.errCode)
+  else
+    local teamData = Z.DataMgr.Get("team_data")
+    teamData.TeamInfo.baseInfo.teamMemberGroupInfos = vRequest.teamMemberGroupInfos
+    self:setTeamGroupInfo()
+    Z.EventMgr:Dispatch(Z.ConstValue.Team.Refresh)
+  end
+end
+
+function GrpcTeamNtfStubImpl:NotifyTeamChangeMemberType(call, vRequest)
+  if vRequest.errorCode ~= 0 then
+    Z.TipsVM.ShowTips(vRequest.errorCode)
+  else
+  end
+end
+
+function GrpcTeamNtfStubImpl:setTeamGroupInfo()
+  local teamData = Z.DataMgr.Get("team_data")
+  for groupId, memberGroupInfo in pairs(teamData.TeamInfo.baseInfo.teamMemberGroupInfos) do
+    for index, charId in ipairs(memberGroupInfo.charIds) do
+      if teamData.TeamInfo.members[charId] then
+        teamData.TeamInfo.members[charId].groupId = groupId
+      end
+    end
+  end
 end
 
 return GrpcTeamNtfStubImpl

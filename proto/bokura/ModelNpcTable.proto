@@ -31,8 +31,6 @@ message ModelNpcTableBase {
     string WeaponR = 1690;
     string WeaponIdleAnim = 102;
 }
-
 message ModelNpcTableMgr {
-    map<int32, .bokura.ModelNpcTableBase> datas = 1;
+    repeated bokura.ModelNpcTableMgr.DatasEntry datas = 1;
 }
-

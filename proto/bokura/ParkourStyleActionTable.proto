@@ -12,8 +12,6 @@ message ParkourStyleActionTableBase {
     float WaitTime = 106;
     int32 Dot = 849;
 }
-
 message ParkourStyleActionTableMgr {
-    map<int32, .bokura.ParkourStyleActionTableBase> datas = 1;
+    repeated bokura.ParkourStyleActionTableMgr.DatasEntry datas = 1;
 }
-

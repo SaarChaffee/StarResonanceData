@@ -8,6 +8,8 @@ function DeadView:ctor()
   self.vm = Z.VMMgr.GetVM("dead")
   self.bossBattleVm_ = Z.VMMgr.GetVM("bossbattle")
   self.itemsVM_ = Z.VMMgr.GetVM("items")
+  self.funcVM_ = Z.VMMgr.GetVM("gotofunc")
+  self.mainuiVM_ = Z.VMMgr.GetVM("mainui")
 end
 
 function DeadView:OnActive()
@@ -16,8 +18,11 @@ function DeadView:OnActive()
     return
   end
   self:bindLuaAttrWatchers()
+  self:setExitDungeonBtn()
   self:setBaseInfo()
+  self:openMainChatView()
   Z.CoroUtil.create_coro_xpcall(function()
+    self:unLoadAllReviveItem()
     self:loadAllReviveItem()
     self:setReviveCountTip()
   end)()
@@ -27,6 +32,10 @@ function DeadView:OnDeActive()
   self:unBindLuaAttrWatchers()
   self:clearCheckTimer()
   self:unLoadAllReviveItem()
+  if self.playerStateWatcher ~= nil then
+    self.playerStateWatcher:Dispose()
+    self.playerStateWatcher = nil
+  end
 end
 
 function DeadView:bindLuaAttrWatchers()
@@ -35,9 +44,9 @@ function DeadView:bindLuaAttrWatchers()
   end
   
   Z.ContainerMgr.DungeonSyncData.reviveInfo.Watcher:RegWatcher(self.onReviveInfoChange_)
-  self:BindEntityLuaAttrWatcher({
-    Z.PbAttrEnum("AttrState")
-  }, Z.EntityMgr.PlayerEnt, self.updateState)
+  self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
+    self:updateState()
+  end)
 end
 
 function DeadView:unBindLuaAttrWatchers()
@@ -59,24 +68,47 @@ function DeadView:onReviveInfoChange()
   end)()
 end
 
+function DeadView:setExitDungeonBtn()
+  local show = self.mainuiVM_.CheckFunctionCanShowInScene(E.FunctionID.ExitDungeon) and not Z.StageMgr.IsInVisualLayer()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_exit, show)
+  self:AddAsyncClick(self.uiBinder.btn_exit, function()
+    self.funcVM_.GoToFunc(E.FunctionID.ExitDungeon)
+  end)
+end
+
 function DeadView:setBaseInfo()
   local msgCfg = Z.TableMgr.GetTable("MessageTableMgr").GetRow(Z.Global.ReviveText)
   self.uiBinder.lab_content.text = msgCfg.Content
 end
 
+function DeadView:openMainChatView()
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  if gotoFuncVM.CheckFuncCanUse(E.FunctionID.MainChat, true) then
+    local chatMainVM = Z.VMMgr.GetVM("chat_main")
+    chatMainVM.OpenMainChatView()
+  end
+end
+
 function DeadView:loadAllReviveItem()
   self.allReviveItemDict_ = {}
   self.curReviveIdList_ = self.vm.GetCurReviveIdList()
-  local path = "ui/prefabs/dead/dead_btn_tpl"
+  local path
+  if Z.IsPCUI then
+    path = "ui/prefabs/dead/dead_btn_tpl_pc"
+  else
+    path = "ui/prefabs/dead/dead_btn_tpl"
+  end
   for key, value in pairs(self.curReviveIdList_) do
     local revive = Z.TableMgr.GetTable("ReviveTableMgr").GetRow(value)
     if revive and revive.Type ~= E.ReviveType.BeRevived then
       self.hasBoos_ = self.bossBattleVm_.CheckHasBoss()
       do
         local gotoCheckBattle = self.hasBoos_ and revive.IsBossCanRevive <= 0
-        local itemName = "reviveBtn" .. key
-        local item = self:AsyncLoadUiUnit(path, itemName, self.uiBinder.layout_btn)
-        self.allReviveItemDict_[itemName] = item
+        local unitName = "reviveBtn" .. key
+        local unitToken = self.cancelSource:CreateToken()
+        self.allReviveItemTokenDict_[unitName] = unitToken
+        local item = self:AsyncLoadUiUnit(path, unitName, self.uiBinder.layout_btn, unitToken)
+        self.allReviveItemDict_[unitName] = item
         item.img_icon:SetImage(revive.Icon)
         self:setCostUI(revive, item)
         self:setBtnState(item, true, revive.Id)
@@ -147,9 +179,15 @@ function DeadView:loadAllReviveItem()
 end
 
 function DeadView:unLoadAllReviveItem()
+  if self.allReviveItemTokenDict_ then
+    for unitName, unitToken in pairs(self.allReviveItemTokenDict_) do
+      Z.CancelSource.ReleaseToken(unitToken)
+    end
+  end
+  self.allReviveItemTokenDict_ = {}
   if self.allReviveItemDict_ then
-    for itemName, itemBinder in pairs(self.allReviveItemDict_) do
-      self:RemoveUiUnit(itemName)
+    for unitName, unitItem in pairs(self.allReviveItemDict_) do
+      self:RemoveUiUnit(unitName)
     end
   end
   self.allReviveItemDict_ = {}
@@ -237,6 +275,7 @@ function DeadView:confirmRevive(reviveRow)
       ReviveId = reviveRow.Id
     })
   else
+    Z.AudioMgr:Play("UI_Button_Revive")
     self.vm.AsyncRevive(reviveRow.Id, self.cancelSource:CreateToken())
   end
 end
@@ -247,7 +286,7 @@ function DeadView:setReviveCountTip()
   for index, reviveId in ipairs(self.curReviveIdList_) do
     local countInfo = self.vm.GetPlayerReviveInfo(reviveId)
     if countInfo then
-      if 0 < countInfo.PersonReviveLimit then
+      if 0 <= countInfo.PersonReviveLimit then
         showCountTip = true
       end
       local count = countInfo.PersonReviveLimit - countInfo.PersonReviveCount

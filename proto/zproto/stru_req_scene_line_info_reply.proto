@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
-import "stru_scene_line_info.proto";
+import "enum_e_error_code.proto";
+import "stru_scene_line_data.proto";
 
 message ReqSceneLineInfoReply {
-    int32 errCode = 1;
-    repeated zproto.SceneLineInfo lineInfos = 2;
+    repeated zproto.SceneLineData lineInfos = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

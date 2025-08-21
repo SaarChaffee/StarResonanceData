@@ -63,10 +63,10 @@ end
 function Iteminfo_tipsView:refreshDefaultTips()
   self.itemInfo_ = self.itemsVm_.GetItemInfobyItemId(self.viewData.itemUuid, self.viewData.configId)
   self.panel.con_information.lab_count.TMPLab.text = Lang("Count") .. ": " .. self.itemInfo_.count
-  self:refreshClientUi(self.itemInfo_.configId, self.itemInfo_.quality)
   local itemTableData = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.itemInfo_.configId)
   if itemTableData then
     self:setlimit(itemTableData)
+    self:refreshClientUi(self.itemInfo_.configId, itemTableData.Quality)
   end
   if self.itemsVm_.CheckPackageTypeByConfigId(self.itemInfo_.configId, E.BackPackItemPackageType.Equip) then
     self:refreshEquipTips()
@@ -145,10 +145,8 @@ function Iteminfo_tipsView:setlimit(itemTableData)
   if itemTableData.TimeType == 0 then
   elseif itemTableData.TimeType ~= 4 then
     self.panel.con_information.limit_content.expiry_date:SetVisible(0 < self.itemInfo_.expireTime)
-    local timeStrYMD = Z.TimeTools.FormatTimeToYMD(self.itemInfo_.expireTime)
-    local timeStrHMS = Z.TimeTools.FormatTimeToHMS(self.itemInfo_.expireTime)
-    local str = string.format("%s %s", timeStrYMD, timeStrHMS)
-    local param = {str = str}
+    local timeStrYMDHMS = Z.TimeFormatTools.TicksFormatTime(self.itemInfo_.expireTime, E.TimeFormatType.YMDHMS)
+    local param = {str = timeStrYMDHMS}
     if self.itemInfo_.invalid == 1 then
       timeLimt = Lang("Tips_TimeLimit_InValid", param)
       self.panel.con_information.limit_content.lab_period.TMPLab.text = timeLimt

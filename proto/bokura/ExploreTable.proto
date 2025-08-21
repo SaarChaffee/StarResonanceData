@@ -11,8 +11,6 @@ message ExploreTableBase {
     int32 Exploration = 229;
     mlstring Param = 1207;
 }
-
 message ExploreTableMgr {
-    map<int32, .bokura.ExploreTableBase> datas = 1;
+    repeated bokura.ExploreTableMgr.DatasEntry datas = 1;
 }
-

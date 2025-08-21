@@ -37,7 +37,7 @@ function UnionPowerTog:switchToggle(isOn)
     self.waiting_ = true
     local reply = self.unionVM_:AsyncReqChangeOfficials(self.unionVM_:GetPlayerUnionId(), E.UnionPowerDef.ModifyPositionPower, modifyOfficialDataList, self.unionData_.CancelSource:CreateToken())
     self.waiting_ = false
-    if reply.errorCode == 0 then
+    if reply.errCode == 0 then
       Z.TipsVM.ShowTipsLang(1000535)
     end
     local curValue = officialDataDict[self.officialId_].power[self.powerId_]

@@ -41,8 +41,6 @@ message CollectionEntityTableBase {
     int_table ShowStatusInfo = 1473;
     int_table ShowStatusTransition = 1771;
 }
-
 message CollectionEntityTableMgr {
-    map<int32, .bokura.CollectionEntityTableBase> datas = 1;
+    repeated bokura.CollectionEntityTableMgr.DatasEntry datas = 1;
 }
-

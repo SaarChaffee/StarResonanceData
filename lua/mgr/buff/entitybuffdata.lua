@@ -113,6 +113,10 @@ function EntityBuffData:GetBuffData(buffId)
   return self.buffItemMap_[buffId]
 end
 
+function EntityBuffData:GetBuffItemMap()
+  return self.buffItemMap_
+end
+
 function EntityBuffData:GetBuffDatas()
   return self.buffItemMap_
 end

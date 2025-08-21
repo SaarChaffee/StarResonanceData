@@ -5,4 +5,3 @@ package zproto;
 message BuffEnergyDisplayInfo {
     int32 effectId = 1;
 }
-

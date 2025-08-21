@@ -6,23 +6,39 @@ local Face_editView = class("Face_editView", super)
 function Face_editView:ctor()
   self.uiBinder = nil
   uibase.ctor(self, "face_edit")
-  self.faceVM_ = Z.VMMgr.GetVM("face")
-  self.faceData_ = Z.DataMgr.Get("face_data")
-  self.actionVM_ = Z.VMMgr.GetVM("action")
+  self.editorFaceInfo_ = {}
   self:createSubView()
 end
 
 function Face_editView:OnActive()
   Z.AudioMgr:Play("sys_player_wardrobe_in")
-  Z.UnrealSceneMgr:InitSceneCamera()
+  Z.UnrealSceneMgr:InitSceneCamera(true)
   super.OnActive(self)
+  self.editorFaceInfo_ = {}
+  self.costMoney_ = {
+    [1] = {
+      node = self.uiBinder.layout_money1,
+      img = self.uiBinder.img_icon_1,
+      lab = self.uiBinder.lab_num_1,
+      btn = self.uiBinder.btn_money_1
+    },
+    [2] = {
+      node = self.uiBinder.layout_money2,
+      img = self.uiBinder.img_icon_2,
+      lab = self.uiBinder.lab_num_2,
+      btn = self.uiBinder.btn_money_2
+    }
+  }
   self:initSaveCost()
-  self:AddClick(self.uiBinder.btn_money, function()
-    local costData = self.faceVM_.GetFaceSaveCostData()
-    self.tipsId_ = Z.TipsVM.ShowItemTipsView(self.uiBinder.tips_trans, costData.ItemId)
-  end)
+  for index, node in ipairs(self.costMoney_) do
+    self:AddClick(node.btn, function()
+      local costData = self.faceVM_.GetFaceSaveCostData(self.editorFaceInfo_)
+      self.tipsId_ = Z.TipsVM.ShowItemTipsView(self.uiBinder.tips_trans, costData[index].ItemId)
+    end)
+  end
   local commonVM = Z.VMMgr.GetVM("common")
   commonVM.SetLabText(self.uiBinder.lab_title, E.FunctionID.Cosmetology)
+  self:initEditorFace()
   self:BindEvents()
   self:onInitRed()
 end
@@ -36,6 +52,7 @@ function Face_editView:OnDeActive()
     Z.TipsVM.CloseItemTipsView(self.sourceTipsId_)
     self.sourceTipsId_ = nil
   end
+  self.editorFaceInfo_ = {}
   self:clearRed()
   super.OnDeActive(self)
 end
@@ -63,6 +80,16 @@ function Face_editView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Backpack.ItemCountChange, self.onItemCountChange, self)
   Z.EventMgr:Add(Z.ConstValue.Backpack.AddItem, self.onItemCountChange, self)
   Z.EventMgr:Add(Z.ConstValue.Backpack.DelItem, self.onItemCountChange, self)
+  Z.EventMgr:Add(Z.ConstValue.Face.FaceOptionChange, self.changeEditorFaceInfo, self)
+end
+
+function Face_editView:RemoveEvents()
+  super.RemoveEvents(self)
+  Z.EventMgr:Remove(Z.ConstValue.FaceSaveConfirmItemClick, self.onFaceSaveConfirmItemClick, self)
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.ItemCountChange, self.onItemCountChange, self)
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.AddItem, self.onItemCountChange, self)
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.DelItem, self.onItemCountChange, self)
+  Z.EventMgr:Remove(Z.ConstValue.Face.FaceOptionChange, self.changeEditorFaceInfo, self)
 end
 
 function Face_editView:initFaceData()
@@ -93,30 +120,35 @@ function Face_editView:initModel()
     model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, 180, 0)))
     model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
     model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
+    model:SetLuaAttrLookAtEnable(true)
   end, function(model)
     super.PreloadModel(self, model)
+    local fashionVm = Z.VMMgr.GetVM("fashion")
+    fashionVm.SetModelAutoLookatCamera(model)
   end)
 end
 
-function Face_editView:OnFinishModelLoad(model)
-  super.OnFinishModelLoad(self, model)
-  self.modelCount_ = self.modelCount_ + 1
-  if self.modelCount_ >= 3 then
-    Z.UIMgr:FadeOut()
-  end
-end
-
 function Face_editView:initSaveCost()
-  local costData = self.faceVM_.GetFaceSaveCostData()
   local itemsVM = Z.VMMgr.GetVM("items")
-  if costData then
-    local row = Z.TableMgr.GetTable("ItemTableMgr").GetRow(costData.ItemId)
-    if row then
-      self.uiBinder.img_icon:SetImage(itemsVM.GetItemIcon(costData.ItemId))
+  local mgr = Z.TableMgr.GetTable("ItemTableMgr")
+  local costDataCount = 0
+  local costData = self.faceVM_.GetFaceSaveCostData(self.editorFaceInfo_)
+  for index, node in ipairs(self.costMoney_) do
+    if costData[index] then
+      costDataCount = costDataCount + 1
+      local data = costData[index]
+      self.uiBinder.Ref:SetVisible(node.node, true)
+      local row = mgr.GetRow(data.ItemId)
+      if row then
+        node.img:SetImage(itemsVM.GetItemIcon(data.ItemId))
+      end
+      local ownNum = itemsVM.GetItemTotalCount(data.ItemId)
+      node.lab.text = Z.RichTextHelper.RefreshItemExpendCountUi(ownNum, data.Num)
+    else
+      self.uiBinder.Ref:SetVisible(node.node, false)
     end
-    local ownNum = itemsVM.GetItemTotalCount(costData.ItemId)
-    self.uiBinder.lab_num.text = Z.RichTextHelper.RefreshItemExpendCountUi(ownNum, costData.Num)
   end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.cont_money, 0 < costDataCount)
 end
 
 function Face_editView:GetCacheData()
@@ -130,9 +162,14 @@ function Face_editView:GetCacheData()
 end
 
 function Face_editView:onItemCountChange(item)
-  local costData = self.faceVM_.GetFaceSaveCostData()
-  if costData and costData.ItemId == item.configId then
-    self:initSaveCost()
+  local itemsVM = Z.VMMgr.GetVM("items")
+  local costData = self.faceVM_.GetFaceSaveCostData(self.editorFaceInfo_)
+  for index, cost in ipairs(costData) do
+    if cost.ItemId == item.configId then
+      local node = self.costMoney_[index]
+      local ownNum = itemsVM.GetItemTotalCount(cost.ItemId)
+      node.lab.text = Z.RichTextHelper.RefreshItemExpendCountUi(ownNum, cost.Num)
+    end
   end
 end
 
@@ -162,15 +199,29 @@ function Face_editView:onClickRevert()
   if not self.faceVM_.IsAttrChange() then
     return
   end
+  if Z.SDKDevices.IsCloudGame then
+    self:revertFace()
+    return
+  end
+  Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("RevertFaceData"), function()
+    self:revertFace()
+  end, nil, E.DlgPreferencesType.Never, E.DlgPreferencesKeyType.ConfirmRevertFaceData)
+end
+
+function Face_editView:revertFace()
   self.faceVM_.RecordFaceEditorCommand()
   self.faceVM_.UpdateFaceDataByContainerData()
+  self.faceVM_.CacheFaceData()
   Z.EventMgr:Dispatch(Z.ConstValue.FaceOptionAllChange)
   Z.EventMgr:Dispatch(Z.ConstValue.Face.FaceRefreshMenuView)
+  self.editorFaceInfo_ = {}
+  self:initSaveCost()
 end
 
 function Face_editView:onClickFinish()
-  local costData = self.faceVM_.GetFaceSaveCostData()
-  if not costData then
+  local costData = self.faceVM_.GetFaceSaveCostData(self.editorFaceInfo_)
+  if #costData == 0 then
+    Z.TipsVM.ShowTipsLang(120011)
     return
   end
   local sendList = self.faceVM_.GetSendFaceOptionEnumList()
@@ -179,22 +230,25 @@ function Face_editView:onClickFinish()
     return
   end
   local itemsVM = Z.VMMgr.GetVM("items")
-  local ownNum = itemsVM.GetItemTotalCount(costData.ItemId)
-  if ownNum < costData.Num then
-    self.sourceTipsId_ = Z.TipsVM.OpenSourceTips(costData.ItemId, self.uiBinder.cont_money)
-    Z.TipsVM.ShowTipsLang(100002)
-    return
+  for _, cost in ipairs(costData) do
+    local ownNum = itemsVM.GetItemTotalCount(cost.ItemId)
+    if ownNum < cost.Num then
+      self.sourceTipsId_ = Z.TipsVM.OpenSourceTips(cost.ItemId, self.uiBinder.cont_money)
+      Z.TipsVM.ShowTipsLang(100002)
+      return
+    end
   end
   local lockList = self.faceVM_.GetUsedLockFaceOptionList()
   if 0 < #lockList then
     Z.UIMgr:OpenView("face_unlock_popup", lockList)
   else
-    local showItemList = {
-      {
-        ItemId = costData.ItemId,
-        ItemNum = costData.Num
-      }
-    }
+    local showItemList = {}
+    for _, cost in ipairs(costData) do
+      table.insert(showItemList, {
+        ItemId = cost.ItemId,
+        ItemNum = cost.Num
+      })
+    end
     Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("DescFaceEditConfirm"), function()
       self:onConfirmSetSeverFaceData()
     end, nil, E.DlgPreferencesType.Never, E.DlgPreferencesKeyType.SetSeverFaceData, showItemList)
@@ -204,6 +258,8 @@ end
 function Face_editView:onConfirmSetSeverFaceData()
   self.faceData_.Height = self.playerModel_:GetAttrGoHeight()
   self.faceVM_.AsyncSetSeverFaceData(self.cancelSource:CreateToken())
+  self.editorFaceInfo_ = {}
+  self:initSaveCost()
 end
 
 function Face_editView:getCurFashionSettingStr()
@@ -224,6 +280,28 @@ end
 
 function Face_editView:OnInputBack()
   Z.UIMgr:CloseView("face_edit")
+end
+
+function Face_editView:changeEditorFaceInfo(pbEnum)
+  local option = self.faceData_.FaceOptionDict[pbEnum]
+  local serverValue = self.faceData_:GetFaceOptionValueByEnum(pbEnum)
+  local isChange = option and not option:IsEqualTo(serverValue)
+  if self.editorFaceInfo_[pbEnum] == nil then
+    self.editorFaceInfo_[pbEnum] = {isChange = isChange}
+  else
+    self.editorFaceInfo_[pbEnum].isChange = isChange
+  end
+  self:initSaveCost()
+end
+
+function Face_editView:initEditorFace()
+  for pbEnum, option in pairs(self.faceData_.FaceOptionDict) do
+    local serverValue = self.faceData_:GetFaceOptionValueByEnum(pbEnum)
+    self.editorFaceInfo_[pbEnum] = {
+      isChange = not option:IsEqualTo(serverValue)
+    }
+  end
+  self:initSaveCost()
 end
 
 return Face_editView

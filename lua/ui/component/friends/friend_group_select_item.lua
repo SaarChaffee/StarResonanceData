@@ -1,30 +1,17 @@
-local super = require("ui.component.loopscrollrectitem")
+local super = require("ui.component.loop_list_view_item")
 local FriendSelectItem = class("FriendSelectItem", super)
 
-function FriendSelectItem:ctor()
-end
-
-function FriendSelectItem:OnInit()
-end
-
-function FriendSelectItem:Refresh()
-  local index = self.component.Index + 1
-  self.data_ = self.parent:GetDataByIndex(index)
+function FriendSelectItem:OnRefresh(data)
+  self.data_ = data
   self.uiBinder.lab_group_name.text = self.data_.GroupName
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_check, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_check, self.IsSelected)
 end
 
-function FriendSelectItem:Selected(isSelected)
+function FriendSelectItem:OnSelected(isSelected, isClick)
   if true == isSelected then
-    self.parent.uiView:ChangeGroup(self.data_.GroupId)
+    self.parent.UIView:ChangeGroup(self.data_.GroupId)
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_check, isSelected)
-end
-
-function FriendSelectItem:OnUnInit()
-end
-
-function FriendSelectItem:OnReset()
 end
 
 return FriendSelectItem

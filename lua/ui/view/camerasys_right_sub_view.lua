@@ -10,6 +10,7 @@ function Camerasys_right_subView:ctor(parent)
   self.parent_ = parent
   self.containerHeight_ = nil
   super.ctor(self, "camerasys_right_sub", "photograph/camerasys_right_sub", UI.ECacheLv.None)
+  self.funcVM_ = Z.VMMgr.GetVM("gotofunc")
   self:initPublicVariable()
 end
 
@@ -31,12 +32,35 @@ function Camerasys_right_subView:OnActive()
     self:initExpressionData()
     self:initExpressionView()
   end
+  self.expressionData_.OpenSourceType = self.viewData.OpenSourceType
+  local isFuncOn = self.funcVM_.CheckFuncCanUse(E.FunctionID.ChatExpressionFast, true)
+  if self.viewData.ShowWheelSetting and isFuncOn then
+    self:AddClick(self.uiBinder.btn_wheel_setting, function()
+      self.expressionVm_.OpenExpressionWheelSettingView()
+    end)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_wheel_setting, true)
+    self.uiBinder.img_tog_bg_ref:SetOffsetMin(15, 155)
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_wheel_setting, false)
+    self.uiBinder.img_tog_bg_ref:SetOffsetMin(15, 15)
+  end
+  self:bindEvents()
+end
+
+function Camerasys_right_subView:bindEvents()
+  Z.EventMgr:Add(Z.ConstValue.CameraMember.SelectCameraMemberChanged, self.onMemberChanged, self)
+end
+
+function Camerasys_right_subView:unBindEvents()
+  Z.EventMgr:Remove(Z.ConstValue.CameraMember.SelectCameraMemberChanged, self.onMemberChanged, self)
 end
 
 function Camerasys_right_subView:initPublicVariable()
   self.cameraData_ = Z.DataMgr.Get("camerasys_data")
   self.cameraVm_ = Z.VMMgr.GetVM("camerasys")
   self.switchVM_ = Z.VMMgr.GetVM("switch")
+  self.cameraMemberVM_ = Z.VMMgr.GetVM("camera_member")
+  self.cameraMemberData_ = Z.DataMgr.Get("camerasys_member_data")
   self.expressionVm_ = Z.VMMgr.GetVM("expression")
   self.expressionData_ = Z.DataMgr.Get("expression_data")
   self.multActionData_ = Z.DataMgr.Get("multaction_data")
@@ -53,21 +77,15 @@ function Camerasys_right_subView:initPublicVariable()
   self.menuContainerHistory_ = require("ui/view/camera_menu_container_history_sub_view").new(self)
   self.menuContainerGaze_ = require("ui/view/camera_menu_container_gaze_view").new(self)
   self.menuContainerUnionBg_ = require("ui/view/camera_menu_container_union_bg_view").new(self)
+  self.menuContainerFishing_ = require("ui/view/camera_menu_container_fishing_sub_view").new(self)
 end
 
 function Camerasys_right_subView:OnCloseView()
-  if self.viewData.OpenSourceType == E.ExpressionOpenSourceType.Camera then
-    if self.parent_ then
-      self.parent_:setRightPanelVisible(true)
-      self.parent_:setRightFuncShow(true)
-    end
-    self:Hide()
-  else
-    self:DeActive()
-  end
+  self:DeActive()
 end
 
 function Camerasys_right_subView:OnDeActive()
+  self:unBindEvents()
   self.containerHeight_ = nil
   self.uiBinder.tog_action:RemoveAllListeners()
   self.uiBinder.tog_decorate:RemoveAllListeners()
@@ -79,14 +97,12 @@ function Camerasys_right_subView:OnDeActive()
   self.cameraData_:InitTagIndex()
   self.expressionData_:SetDisplayExpressionType(E.ExpressionType.None)
   self.expressionData_:SetLogicExpressionType(E.ExpressionType.None)
-  if self.cameraActionSlider_ and self.cameraActionSlider_.IsActive then
-    self.cameraActionSlider_:DeActive()
-  end
   if self.expressionItemTable then
     self.expressionItemTable = nil
   end
-  if self.menuContainerHistory_ and self.menuContainerHistory_.IsActive then
-    self.menuContainerHistory_:DeActive()
+  if self.currentActiveSubView_ then
+    self.currentActiveSubView_:DeActive()
+    self.currentActiveSubView_ = nil
   end
   self.expressionVm_.CloseExpressionView()
 end
@@ -103,20 +119,19 @@ function Camerasys_right_subView:OnRefresh()
   end
   if self.viewData.OpenSourceType == E.ExpressionOpenSourceType.Camera then
     self:updateCameraTopBtnIsOn()
-    self:updateContent(true)
+    self:updateContent()
   end
 end
 
 function Camerasys_right_subView:initCameraView()
   self.uiBinder.Ref:SetVisible(self.uiBinder.layout_togs_group, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_line, true)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_decorate, self.cameraData_.CameraPatternType ~= E.CameraState.UnrealScene)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_decorate, self.cameraData_.CameraPatternType ~= E.TakePhotoSate.UnionTakePhoto)
   self.uiBinder.layout_element_scroll.minHeight = self.containerHeight_ - TogsHeight
   self:initCameraBtn()
 end
 
 function Camerasys_right_subView:initCameraData()
-  self.cameraActionSlider_ = require("ui/view/camera_action_slider_view").new(self)
   self.menuContainerAll_ = {
     self.menuContainerFilter_,
     self.menuContainerFrame_,
@@ -127,7 +142,8 @@ function Camerasys_right_subView:initCameraData()
     self.menuContainerMovieScreen_,
     self.menuContainerText_,
     self.menuContainerGaze_,
-    self.menuContainerUnionBg_
+    self.menuContainerUnionBg_,
+    self.menuContainerFishing_
   }
   self.funcTb_ = {}
   self.TogUnitsName_ = {}
@@ -143,22 +159,21 @@ function Camerasys_right_subView:initCameraBtn()
   self.uiBinder.tog_action:AddListener(function(isOn)
     if isOn then
       self.cameraVm_.SetTopTagIndex(E.CamerasysTopType.Action)
-      self:updateContent(true)
+      self:updateContent()
     end
   end)
   self.uiBinder.tog_decorate:AddListener(function(isOn)
     if isOn then
       self.cameraVm_.SetTopTagIndex(E.CamerasysTopType.Decorate)
-      self:updateContent(true)
+      self:updateContent()
     end
   end)
   self.uiBinder.tog_setting:AddListener(function(isOn)
     if isOn then
       self.cameraVm_.SetTopTagIndex(E.CamerasysTopType.Setting)
-      self:updateContent(true)
+      self:updateContent()
     end
   end)
-  self.cameraActionSlider_:Active(self.viewData, self.uiBinder.node_action_slider_container)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_action_slider_container, false)
 end
 
@@ -173,11 +188,14 @@ function Camerasys_right_subView:updateCameraTopBtnIsOn()
   end
 end
 
-function Camerasys_right_subView:updateContent(refreshTagList)
+function Camerasys_right_subView:onMemberChanged(isSelf)
+  self.cameraData_:SetNodeTagIndex(1)
+  self:updateContent()
+end
+
+function Camerasys_right_subView:updateContent()
   self:updateSettingView()
-  if refreshTagList then
-    self:updateTagList()
-  end
+  self:updateTagList()
 end
 
 function Camerasys_right_subView:updateSettingView()
@@ -185,10 +203,12 @@ function Camerasys_right_subView:updateSettingView()
   self:deActiveAllSubView()
   local functionLogicIndex = self.cameraVm_.CameraFuncTogIndexToLogicIndex()
   if topTag.TopTagIndex == E.CamerasysTopType.Action then
-    if functionLogicIndex == E.CamerasysFuncType.LookAt then
+    if functionLogicIndex == E.CamerasysFuncType.Fishing then
+      self.menuContainerFishing_:Active(nil, self.uiBinder.node_scroll_container)
+    elseif functionLogicIndex == E.CamerasysFuncType.LookAt then
       self.menuContainerGaze_:Active(nil, self.uiBinder.node_scroll_container)
     else
-      if (functionLogicIndex == E.CamerasysFuncType.CommonAction or functionLogicIndex == E.CamerasysFuncType.LoopAction) and (self.cameraData_.CameraPatternType == E.CameraState.Default or self.cameraData_.CameraPatternType == E.CameraState.UnrealScene) then
+      if (functionLogicIndex == E.CamerasysFuncType.CommonAction or functionLogicIndex == E.CamerasysFuncType.LoopAction) and (self.cameraData_.CameraPatternType == E.TakePhotoSate.Default or self.cameraData_.CameraPatternType == E.TakePhotoSate.UnionTakePhoto) then
         self.expressionData_:SetLogicExpressionType(E.ExpressionType.Action)
         self.expressionData_:SetDisplayExpressionType(topTag.NodeTagIndex)
       else
@@ -231,13 +251,20 @@ function Camerasys_right_subView:updateTagList()
   if topTag.TopTagIndex == -1 then
     return
   end
-  if self.cameraData_.CameraPatternType == E.CameraState.Default then
+  if self.cameraData_.CameraPatternType == E.TakePhotoSate.Default then
     tagList = self.cameraData_.funcTbDefault[topTag.TopTagIndex]
-  elseif self.cameraData_.CameraPatternType == E.CameraState.SelfPhoto then
+    local selectMemberData = self.cameraMemberData_:GetSelectMemberData()
+    if selectMemberData and not selectMemberData.baseData.isSelf and topTag.TopTagIndex == E.CamerasysTopType.Action then
+      tagList = {
+        E.CamerasysFuncType.LookAt
+      }
+      self.cameraData_:SetNodeTagIndex(1)
+    end
+  elseif self.cameraData_.CameraPatternType == E.TakePhotoSate.SelfPhoto then
     tagList = self.cameraData_.funcTbSelfPhoto[topTag.TopTagIndex]
-  elseif self.cameraData_.CameraPatternType == E.CameraState.AR then
+  elseif self.cameraData_.CameraPatternType == E.TakePhotoSate.AR then
     tagList = self.cameraData_.funcTbAR[topTag.TopTagIndex]
-  elseif self.cameraData_.CameraPatternType == E.CameraState.UnrealScene then
+  elseif self.cameraData_.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     tagList = self.cameraData_.funcTbUnrealScene[topTag.TopTagIndex]
   end
   local funList = {}
@@ -276,7 +303,6 @@ function Camerasys_right_subView:removeUnitTogs()
 end
 
 function Camerasys_right_subView:setTogsData(tagList, indexList)
-  local count = #indexList
   if indexList and next(indexList) then
     local unitPath = self.uiBinder.prefabCache:GetString("tag_tpl")
     for k, v in ipairs(indexList) do
@@ -285,24 +311,22 @@ function Camerasys_right_subView:setTogsData(tagList, indexList)
       local item = self:AsyncLoadUiUnit(unitPath, name, self.uiBinder.node_tog)
       local togId = tagList[v]
       local path = string.format("%s%s", togPath, togId)
-      item.img_icon_ash.Img:SetImage(path)
-      item.img_icon.Img:SetImage(path)
-      item.group_no_active:SetVisible(not item.tog_function.Tog.isOn)
-      item.group_active:SetVisible(item.tog_function.Tog.isOn)
-      item.tog_function.Tog.group = self.uiBinder.node_toggle
+      item.img_icon_ash:SetImage(path)
+      item.img_icon:SetImage(path)
+      item.Ref:SetVisible(item.group_no_active, not item.tog_function.isOn)
+      item.Ref:SetVisible(item.group_active, item.tog_function.isOn)
+      item.tog_function.group = self.uiBinder.node_toggle
       local tagIndex = self.cameraData_:GetTagIndex().NodeTagIndex
-      if tagIndex == v then
-        item.tog_function.Tog.isOn = true
+      if k == tagIndex then
+        item.tog_function.isOn = true
       end
-      item.tog_function.Tog:AddListener(function(isOn)
+      item.tog_function:AddListener(function(isOn)
         if isOn then
           self.cameraVm_.SetNodeTagIndex(v)
         end
-        item.group_no_active:SetVisible(not item.tog_function.Tog.isOn)
-        item.group_active:SetVisible(item.tog_function.Tog.isOn)
       end)
-      if item.tog_function.Tog.isOn then
-        item.group_active.TweenContainer:Restart(Z.DOTweenAnimType.Tween_1)
+      if item.tog_function.isOn then
+        item.group_active:Restart(Z.DOTweenAnimType.Tween_1)
       end
     end
   end
@@ -314,10 +338,7 @@ function Camerasys_right_subView:deActiveAllSubView()
     for _, v in pairs(self.menuContainerAll_) do
       v:DeActive()
     end
-    if self.cameraActionSlider_ then
-      self.uiBinder.Ref:SetVisible(self.uiBinder.node_action_slider_container, false)
-      self.menuContainerAction_:Hide()
-    end
+    self.menuContainerAction_:Hide()
   end
 end
 
@@ -330,6 +351,7 @@ end
 
 function Camerasys_right_subView:initExpressionData()
   self.expressionItemTable = nil
+  self.currentActiveSubView_ = nil
 end
 
 function Camerasys_right_subView:initTog()
@@ -347,39 +369,52 @@ function Camerasys_right_subView:initTog()
       local name = string.format("expression_tog_%s", k)
       local item = self:AsyncLoadUiUnit(unitPath, name, self.uiBinder.node_tog, self.cancelSource:CreateToken())
       if item then
-        Z.GuideMgr:SetSteerId(item.camera_setting_tag_tpl, E.DynamicSteerType.ExpressionTab, v.type)
+        Z.GuideMgr:SetSteerIdByComp(item.uisteer, E.DynamicSteerType.ExpressionTab, v.type)
       end
       table.insert(self.expressionItemTable, item)
       self:setItemTog(item, imagePath, count, k, v)
     end
     self.expressionData_:SetLogicExpressionType(E.ExpressionType.Action)
-    local index = self.expressionVm_.CheckExpressionHistoryAndCommonData() and 1 or 2
-    self.expressionItemTable[index].tog_function.Tog.isOn = true
+    local firstOpenIndex = self.expressionVm_.CheckExpressionHistoryAndCommonData() and 1 or 2
+    if self.viewData and self.viewData.firstOpenIndex then
+      firstOpenIndex = self.viewData.firstOpenIndex
+    end
+    self.expressionItemTable[firstOpenIndex].tog_function.isOn = true
   end)()
 end
 
 function Camerasys_right_subView:setItemTog(item, imagePath, count, currentIdx, togData)
-  item.img_icon_ash.Img:SetImage(imagePath)
-  item.img_icon.Img:SetImage(imagePath)
-  item.tog_function.Tog.group = self.uiBinder.node_toggle
+  item.img_icon_ash:SetImage(imagePath)
+  item.img_icon:SetImage(imagePath)
+  item.tog_function.group = self.uiBinder.node_toggle
   if togData.type == E.DisplayExpressionType.CommonAction or togData.type == E.DisplayExpressionType.LoopAction then
     Z.RedPointMgr.LoadRedDotItem(E.RedType.ExpressionMain .. E.ItemType.ActionExpression .. togData.type, self, item.Trans)
   end
-  item.tog_function.Tog:AddListener(function(isOn)
+  item.tog_function:AddListener(function(isOn)
     if isOn then
-      item.group_active.TweenContainer:Restart(Z.DOTweenAnimType.Tween_1)
+      item.group_active:Restart(Z.DOTweenAnimType.Tween_1)
       self.expressionVm_.SetTabSelected(currentIdx)
       self.expressionData_:SetLogicExpressionType(self.expressionVm_.DisplayTypeToLogicType(currentIdx - 1))
       self.expressionData_:SetDisplayExpressionType(currentIdx - 1)
-      if currentIdx == 1 then
-        self.menuContainerAction_:DeActive()
-        self.menuContainerHistory_:Active(self.viewData, self.uiBinder.node_scroll_container)
-      else
-        self.menuContainerHistory_:DeActive()
-        self.menuContainerAction_:Active(self.viewData, self.uiBinder.node_scroll_container)
-      end
+      self:initSubView()
     end
   end)
+end
+
+function Camerasys_right_subView:initSubView()
+  local showType = self.expressionData_:GetDisplayExpressionType()
+  if self.currentActiveSubView_ then
+    self.currentActiveSubView_:DeActive()
+    self.currentActiveSubView_ = nil
+  end
+  if showType == E.DisplayExpressionType.History then
+    self.currentActiveSubView_ = self.menuContainerHistory_
+  elseif showType == E.DisplayExpressionType.FishingAction then
+    self.currentActiveSubView_ = self.menuContainerFishing_
+  else
+    self.currentActiveSubView_ = self.menuContainerAction_
+  end
+  self.currentActiveSubView_:Active(self.viewData, self.uiBinder.node_scroll_container)
 end
 
 function Camerasys_right_subView:initAlbumSecondEditData()
@@ -438,6 +473,10 @@ function Camerasys_right_subView:updateSecondSettingView(index)
       v:Active(data, self.uiBinder.node_scroll_container)
     end
   end
+end
+
+function Camerasys_right_subView:SetActionSliderIsShow(isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_action_slider_container, isShow)
 end
 
 return Camerasys_right_subView

@@ -21,6 +21,15 @@ enum ETempAttrEffectType {
     TempAttrDodgeLosslessRate = 350;
     TempAttrDodgeMaxCount = 351;
     TempAttrChargeCountAdd = 352;
+    TempAttrInteractionTime = 370;
+    TempAttrInteractionTimeRate = 371;
+    TempAttrInteractionCost = 372;
+    TempAttrInteractionCostRate = 373;
+    TempAttrLifeProfessionExp = 374;
+    TempAttrLifeProfessionExpRate = 375;
+    TempAttrLifeProfessionWorkCost = 376;
+    TempAttrLifeProfessionWorkCostRate = 377;
+    TempAttrLifeProfessionWorkTime = 378;
     TempAttrTagDamage = 401;
     TempAttrTagExtraDamage = 402;
     TempAttrBuffTimePCT = 501;
@@ -35,6 +44,7 @@ enum ETempAttrEffectType {
     TempAttrEliteAdd = 521;
     TempAttrBossAdd = 522;
     TempAttrAffectAward = 600;
+    TempAttrHeroDungeonMultiaAward = 603;
     TempAttrAttackSpeedAdd = 700;
     TempAttrLuckyAdd = 701;
     TempAttrCritAdd = 702;
@@ -53,4 +63,3 @@ enum ETempAttrEffectType {
     TempAttrAdaptiveAttack = 761;
     TempAttrSummonUpperLimitAdd = 800;
 }
-

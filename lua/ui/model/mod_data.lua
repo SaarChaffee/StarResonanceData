@@ -1,6 +1,5 @@
 local super = require("ui.model.data_base")
 local ModData = class("ModData", super)
-local MOD_DEFINE = require("ui.model.mod_define")
 
 function ModData:ctor()
   super.ctor(self)
@@ -74,6 +73,7 @@ function ModData:ResetData()
   end
   self.modLinkEffectConfig_ = Z.TableMgr.GetTable("ModLinkEffectTableMgr").GetDatas()
   self.modLinkEffectConfigCount_ = #self.modLinkEffectConfig_
+  self.modHoleConfigs_ = Z.TableMgr.GetTable("ModHoleTableMgr").GetDatas()
 end
 
 function ModData:GetQualityConfig(quality)
@@ -160,6 +160,10 @@ end
 
 function ModData:GetIntensifyModUuid()
   return self.intensifyModUuid_
+end
+
+function ModData:GetHoleConfigs()
+  return self.modHoleConfigs_
 end
 
 return ModData

@@ -10,8 +10,6 @@ message EquipEffectLibTableBase {
     int_array EffectType = 527;
     int_array Element = 547;
 }
-
 message EquipEffectLibTableMgr {
-    map<int32, .bokura.EquipEffectLibTableBase> datas = 1;
+    repeated bokura.EquipEffectLibTableMgr.DatasEntry datas = 1;
 }
-

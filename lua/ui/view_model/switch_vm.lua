@@ -28,13 +28,14 @@ local checkTime = function(config)
   end
   local tipsId = 0
   local tipsParam
-  local startTime, endTime, duration = Z.TimeTools.GetCfgTimerItem(config.TimerId)
+  local startTime, endTime, duration = Z.TimeTools.GetWholeStartEndTimeByTimerId(config.TimerId)
   if startTime then
-    local serverTime = Z.ServerTime:GetServerTime()
+    local serverTime = Z.ServerTime:GetServerTime() / 1000
     if startTime > serverTime then
-      local date = {}
+      local date = {
+        longstring = Z.TimeFormatTools.TicksFormatTime(startTime * 1000, E.TimeFormatType.YMD)
+      }
       tipsId = 124001
-      date.longstring = Z.TimeTools.FormatTimeToYMDHMS(startTime)
       tipsParam = {
         date = date,
         str = config.Name

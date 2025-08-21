@@ -6,4 +6,3 @@ message DeleteUnionTmpPhotoRequest {
     int64 unionId = 1;
     uint32 photoId = 2;
 }
-

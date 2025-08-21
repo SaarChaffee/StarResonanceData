@@ -1,0 +1,97 @@
+{
+  "1": {
+    "Id": 1,
+    "Name": "",
+    "TagColor": "#EC9700"
+  },
+  "2": {
+    "Id": 2,
+    "Name": "",
+    "TagColor": "#D7AF6D"
+  },
+  "101": {
+    "Id": 101,
+    "Name": "",
+    "TagColor": "#65AFE8"
+  },
+  "102": {
+    "Id": 102,
+    "Name": "",
+    "TagColor": "#F2B447"
+  },
+  "103": {
+    "Id": 103,
+    "Name": "",
+    "TagColor": "#D2E443"
+  },
+  "104": {
+    "Id": 104,
+    "Name": "",
+    "TagColor": "#87C264"
+  },
+  "105": {
+    "Id": 105,
+    "Name": "",
+    "TagColor": "#E37A65"
+  },
+  "106": {
+    "Id": 106,
+    "Name": "",
+    "TagColor": "#536DD5"
+  },
+  "107": {
+    "Id": 107,
+    "Name": "",
+    "TagColor": "#AE805E"
+  },
+  "201": {
+    "Id": 201,
+    "Name": "",
+    "TagColor": "#89CEF6"
+  },
+  "202": {
+    "Id": 202,
+    "Name": "",
+    "TagColor": "#EB9A73"
+  },
+  "203": {
+    "Id": 203,
+    "Name": "",
+    "TagColor": "#B0D595"
+  },
+  "204": {
+    "Id": 204,
+    "Name": "",
+    "TagColor": "#F6CC84"
+  },
+  "205": {
+    "Id": 205,
+    "Name": "",
+    "TagColor": "#EB9EC2"
+  },
+  "206": {
+    "Id": 206,
+    "Name": "",
+    "TagColor": "#8F82BE"
+  },
+  "301": {
+    "Id": 301,
+    "Name": "",
+    "TagColor": "#65AFE8"
+  },
+  "302": {
+    "Id": 302,
+    "Name": "",
+    "TagColor": "#65AFE8"
+  },
+  "303": {
+    "Id": 303,
+    "Name": "",
+    "TagColor": "#65AFE8"
+  },
+  "401": {
+    "Id": 401,
+    "Name": "",
+    "TagColor": "#D7AF6D"
+  }
+}

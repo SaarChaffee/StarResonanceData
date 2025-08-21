@@ -7,4 +7,3 @@ enum DungeonEventState {
     DungeonEventStateRunning = 1;
     DungeonEventStateEnd = 2;
 }
-

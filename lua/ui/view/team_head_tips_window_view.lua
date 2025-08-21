@@ -51,45 +51,49 @@ function Team_head_tips_windowView:refreshIdCard(recvCharIdList)
       if i <= charIdList.count then
         uuid = charIdList[i - 1]
       end
-      local unitName = "idCard_" .. i
-      if self.idCardShowList_[i] == nil then
-        self.idCardShowList_[i] = {unitName = unitName, unitGo = nil}
-        self.idCardShowList_[i].unitGo = self:AsyncLoadUiUnit(itemPath, unitName, self.node_head.transform)
-      end
-      if self.idCardShowList_[i] and self.idCardShowList_[i].unitGo then
-        local item = self.idCardShowList_[i].unitGo
-        if uuid == nil then
-          item.Ref.UIComp:SetVisible(false)
-        else
-          local ent = Z.EntityMgr.Instance:GetEntity(uuid)
-          if ent then
-            local name = ent:GetLuaAttr(Z.PbAttrEnum("AttrName")).Value
-            if name then
-              if string.zlenNormalize(name) > MAX_SHOW_NAME_LENGTH then
-                name = self.vm.GetStringByCharCount(name, MAX_SHOW_NAME_LENGTH) .. "..."
+      local charId = self.entityVM_.UuidToEntId(uuid)
+      local isAi = self.entityVM_.CheckIsAIByEntId(charId)
+      if not isAi then
+        local unitName = "idCard_" .. i
+        if self.idCardShowList_[i] == nil then
+          self.idCardShowList_[i] = {unitName = unitName, unitGo = nil}
+          self.idCardShowList_[i].unitGo = self:AsyncLoadUiUnit(itemPath, unitName, self.node_head.transform)
+        end
+        if self.idCardShowList_[i] and self.idCardShowList_[i].unitGo then
+          local item = self.idCardShowList_[i].unitGo
+          if uuid == nil then
+            item.Ref.UIComp:SetVisible(false)
+          else
+            local ent = Z.EntityMgr.Instance:GetEntity(uuid)
+            if ent then
+              local name = ent:GetLuaAttr(Z.PbAttrEnum("AttrName")).Value
+              if name then
+                if string.zlenNormalize(name) > MAX_SHOW_NAME_LENGTH then
+                  name = self.vm.GetStringByCharCount(name, MAX_SHOW_NAME_LENGTH) .. "..."
+                end
+                local charId = self.entityVM_.UuidToEntId(uuid)
+                local rideId = ent:GetLuaRidingId()
+                item.lab_name.text = name
+                local socialData = self.socialVm_.AsyncGetSocialData(0, charId, self.cancelSource:CreateToken())
+                if socialData then
+                  self:AddAsyncClick(item.btn, function()
+                    if Z.UIMgr:IsActive("expression") then
+                      local multActionVM = Z.VMMgr.GetVM("multaction")
+                      multActionVM.SetInviteId(charId)
+                    else
+                      local idCardVM = Z.VMMgr.GetVM("idcard")
+                      idCardVM.AsyncGetCardData(charId, self.cancelSource:CreateToken(), nil, true, rideId)
+                    end
+                  end)
+                  playerPortraitHgr.InsertNewPortraitBySocialData(item.head, socialData, nil, self.cancelSource:CreateToken())
+                end
+                item.Ref.UIComp:SetVisible(true)
+              else
+                item.Ref.UIComp:SetVisible(false)
               end
-              local charId = self.entityVM_.UuidToEntId(uuid)
-              local rideId = ent:GetLuaRidingId()
-              item.lab_name.text = name
-              local socialData = self.socialVm_.AsyncGetSocialData(0, charId, self.cancelSource:CreateToken())
-              if socialData then
-                self:AddAsyncClick(item.btn, function()
-                  if Z.UIMgr:IsActive("expression") then
-                    local multActionVM = Z.VMMgr.GetVM("multaction")
-                    multActionVM.SetInviteId(charId)
-                  else
-                    local idCardVM = Z.VMMgr.GetVM("idcard")
-                    idCardVM.AsyncGetCardData(charId, self.cancelSource:CreateToken(), nil, true, rideId)
-                  end
-                end)
-                playerPortraitHgr.InsertNewPortraitBySocialData(item.head, socialData)
-              end
-              item.Ref.UIComp:SetVisible(true)
             else
               item.Ref.UIComp:SetVisible(false)
             end
-          else
-            item.Ref.UIComp:SetVisible(false)
           end
         end
       end

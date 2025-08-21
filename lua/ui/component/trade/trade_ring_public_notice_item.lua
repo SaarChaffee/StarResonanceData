@@ -39,10 +39,10 @@ function TradeRingNoticeItem:OnRefresh(data)
     self.uiBinder.Ref:SetVisible(self.uiBinder.lab_purchase_time, false)
   else
     local delta = math.floor(data.noticeTime - now)
-    self.uiBinder.lab_purchase_time.text = Z.TimeTools.S2HMFormat(delta)
+    self.uiBinder.lab_purchase_time.text = Z.TimeFormatTools.FormatToDHMS(delta)
     self.itemSellTimer_ = self.parent.UIView.timerMgr:StartTimer(function()
       delta = delta - 1
-      self.uiBinder.lab_purchase_time.text = Z.TimeTools.S2HMFormat(delta)
+      self.uiBinder.lab_purchase_time.text = Z.TimeFormatTools.FormatToDHMS(delta)
       if delta <= 0 then
         self.uiBinder.Ref:SetVisible(self.uiBinder.lab_purchase_time, false)
       end

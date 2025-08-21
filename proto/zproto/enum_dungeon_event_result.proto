@@ -9,4 +9,3 @@ enum DungeonEventResult {
     DungeonEventResultFailed = 3;
     DungeonEventResultEnd = 4;
 }
-

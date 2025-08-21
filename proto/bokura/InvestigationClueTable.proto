@@ -16,8 +16,6 @@ message InvestigationClueTableBase {
     mlstring UnlockedBubble = 1539;
     int32 UnlockedBubbleAction = 130;
 }
-
 message InvestigationClueTableMgr {
-    map<int32, .bokura.InvestigationClueTableBase> datas = 1;
+    repeated bokura.InvestigationClueTableMgr.DatasEntry datas = 1;
 }
-

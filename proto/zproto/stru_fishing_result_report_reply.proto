@@ -5,11 +5,10 @@ package zproto;
 import "enum_e_error_code.proto";
 
 message FishingResultReportReply {
-    zproto.EErrorCode errorCode = 1;
-    bool durabilityExhausted = 2;
-    bool isBurst = 3;
-    bool BaitExhausted = 4;
-    int32 size = 5;
-    bool sizeNewRecord = 6;
+    bool durabilityExhausted = 1;
+    bool isBurst = 2;
+    bool BaitExhausted = 3;
+    int32 size = 4;
+    bool sizeNewRecord = 5;
+    zproto.EErrorCode errCode = 6;
 }
-

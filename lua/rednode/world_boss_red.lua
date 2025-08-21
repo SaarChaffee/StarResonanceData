@@ -15,7 +15,9 @@ function WorldBossRed.CheckRed(isInTime, isInRecommendTime)
     isInRecommendTime = nil
   end
   local isRed = WorldBossRed.CheckHasAwardInOpenTime(isInTime, isInRecommendTime) and not WorldBossRed.RedChecked()
-  if WorldBossRed.CheckScoreAwardRed() or WorldBossRed.CheckProgress() then
+  WorldBossRed.CheckScoreAwardRed()
+  WorldBossRed.CheckProgress()
+  if WorldBossRed.HasScoreAwardRed() or WorldBossRed.HasProgressRed() then
     Z.EventMgr:Dispatch(Z.ConstValue.Recommendedplay.FunctionRed, E.FunctionID.WorldBoss, true)
   else
     Z.EventMgr:Dispatch(Z.ConstValue.Recommendedplay.FunctionRed, E.FunctionID.WorldBoss, isRed)
@@ -23,7 +25,6 @@ function WorldBossRed.CheckRed(isInTime, isInRecommendTime)
 end
 
 function WorldBossRed.CheckScoreAwardRed()
-  local isRed = false
   local awardInfo = Z.WorldBoss.WorldBossPersonalScoreAward
   local worldBossInfo = Z.ContainerMgr.CharSerialize.personalWorldBossInfo
   local receiveData = worldBossInfo.scoreAwardInfo
@@ -40,16 +41,32 @@ function WorldBossRed.CheckScoreAwardRed()
         redCount = 0
       end
     end
-    Z.RedPointMgr.RefreshServerNodeCount(redNodeName, redCount)
-    if not isRed and 0 < redCount then
-      isRed = true
+    Z.RedPointMgr.UpdateNodeCount(redNodeName, redCount)
+  end
+end
+
+function WorldBossRed.HasScoreAwardRed()
+  local awardInfo = Z.WorldBoss.WorldBossPersonalScoreAward
+  local worldBossInfo = Z.ContainerMgr.CharSerialize.personalWorldBossInfo
+  local receiveData = worldBossInfo.scoreAwardInfo
+  for k, v in ipairs(awardInfo) do
+    local score = v[1]
+    local curNum = worldBossInfo.score or 0
+    local hasRed = score <= curNum
+    if receiveData then
+      local rewardState = receiveData[k]
+      if rewardState and rewardState.awardStatus == E.ReceiveRewardStatus.Received then
+        hasRed = false
+      end
+    end
+    if hasRed then
+      return true
     end
   end
-  return isRed
+  return false
 end
 
 function WorldBossRed.CheckProgress()
-  local isRed = false
   local serveData = worldBossData:GetWorldBossInfoData()
   if serveData == nil then
     return
@@ -70,13 +87,41 @@ function WorldBossRed.CheckProgress()
           end
         end
       end
-      Z.RedPointMgr.RefreshServerNodeCount(redNodeName, redCount)
-      if not isRed and 0 < redCount then
-        isRed = true
+      local switchVm = Z.VMMgr.GetVM("switch")
+      local isWorldBossScheduleOpen = switchVm.CheckFuncSwitch(E.FunctionID.WorldBossSchedule)
+      if not isWorldBossScheduleOpen then
+        redCount = 0
+      end
+      Z.RedPointMgr.UpdateNodeCount(redNodeName, redCount)
+    end
+  end
+end
+
+function WorldBossRed.HasProgressRed()
+  local switchVm = Z.VMMgr.GetVM("switch")
+  local isWorldBossScheduleOpen = switchVm.CheckFuncSwitch(E.FunctionID.WorldBossSchedule)
+  if not isWorldBossScheduleOpen then
+    return false
+  end
+  local serveData = worldBossData:GetWorldBossInfoData()
+  if serveData == nil then
+    return false
+  end
+  local stage = serveData.bossStage
+  local receiveData = Z.ContainerMgr.CharSerialize.personalWorldBossInfo.bossAwardInfo
+  for k, data in ipairs(progressCfgData) do
+    if 1 < k and k <= stage then
+      if receiveData then
+        local curData = receiveData[data.Id]
+        if curData and curData.awardStatus ~= E.ReceiveRewardStatus.Received then
+          return true
+        end
+      else
+        return true
       end
     end
   end
-  return isRed
+  return false
 end
 
 function WorldBossRed.CheckHasAwardInOpenTime(isInTime, isInRecommendTime)

@@ -19,13 +19,33 @@ function Common_popup_inputView:OnActive()
   self.inputshorttipsStr_ = Lang("CommonPopupInputZero")
   self.uiBinder.sceneMask:SetSceneMaskByKey(self.SceneMaskKey)
   self.uiBinder.input_field:SetTextWithoutNotify("")
+  local height, left, right, anchorPosition, alignment, imgHeight, labNumPosition
   if self.viewData.isMultiLine then
-    self.uiBinder.input_ref:SetHeight(176)
-    self.uiBinder.lab_input.alignment = TMPro.TextAlignmentOptions.TopLeft
+    height = 178
+    imgHeight = 200
+    left = 0
+    right = 0
+    anchorPosition = 56
+    labNumPosition = -25
+    alignment = TMPro.TextAlignmentOptions.TopLeft
   else
-    self.uiBinder.input_ref:SetHeight(54)
-    self.uiBinder.lab_input.alignment = TMPro.TextAlignmentOptions.Midline
+    height = 54
+    imgHeight = 54
+    left = 100
+    right = 100
+    anchorPosition = 0
+    labNumPosition = 0
+    alignment = TMPro.TextAlignmentOptions.Midline
   end
+  self.uiBinder.input_ref:SetHeight(height)
+  self.uiBinder.img_input_bg:SetHeight(imgHeight)
+  self.uiBinder.lab_input_ref:SetOffsetMin(left, 0)
+  self.uiBinder.lab_input_ref:SetOffsetMax(-right, 0)
+  self.uiBinder.lab_output_ref:SetOffsetMin(left, 0)
+  self.uiBinder.lab_output_ref:SetOffsetMax(-right, 0)
+  self.uiBinder.lab_rule_ref:SetAnchorPosition(0, anchorPosition)
+  self.uiBinder.lab_num_ref:SetAnchorPosition(0, labNumPosition)
+  self.uiBinder.lab_input.alignment = alignment
 end
 
 function Common_popup_inputView:OnDeActive()
@@ -56,12 +76,12 @@ function Common_popup_inputView:OnRefresh()
     self:refreshInputLimitShow(inputLength)
   else
     self.uiBinder.lab_num.text = ""
-    self.uiBinder.lab_desc.text = ""
+    self.uiBinder.lab_desc.text = self.viewData.tipDesc or ""
     self.uiBinder.btn_affirm.IsDisabled = false
     self.uiBinder.btn_affirm.interactable = true
   end
   self.uiBinder.input_field:AddListener(function(string)
-    local inputLength = string.zlen(string)
+    local inputLength = string.zlenNormalize(string)
     self:refreshInputLimitShow(inputLength)
   end)
   self:AddAsyncClick(self.uiBinder.btn_affirm, function()
@@ -75,7 +95,7 @@ function Common_popup_inputView:OnRefresh()
     end
     if self.viewData.onConfirm then
       local errCode = self.viewData.onConfirm(self.uiBinder.input_field.text)
-      if errCode and errCode == Z.PbEnum("EErrorCode", "ErrIllegalCharacter") then
+      if errCode then
         self.uiBinder.lab_desc.text = Lang("ErrSensitiveContent")
         self.uiBinder.btn_affirm.IsDisabled = true
         self.uiBinder.btn_affirm.interactable = false
@@ -84,6 +104,7 @@ function Common_popup_inputView:OnRefresh()
     end
     self:close()
   end, nil, nil)
+  self:checkVerifyLabel()
 end
 
 function Common_popup_inputView:refreshInputLimitShow(inputLength)
@@ -98,26 +119,47 @@ function Common_popup_inputView:refreshInputLimitShow(inputLength)
   else
     self:refreshLengthLimitNormal(inputLength)
   end
+  self:checkVerifyLabel()
+end
+
+function Common_popup_inputView:checkVerifyLabel()
+  if self.viewData.verifyLabel and self.viewData.verifyLabel ~= "" then
+    local verify = self.viewData.verifyLabel == self.uiBinder.input_field.text
+    self.uiBinder.btn_affirm.IsDisabled = not verify
+    self.uiBinder.btn_affirm.interactable = verify
+  end
 end
 
 function Common_popup_inputView:refreshLengthLimitNum(inputLength)
   self.uiBinder.lab_desc.text = self.inputlongtipsStr_
   local strLength = Z.RichTextHelper.ApplyStyleTag(tostring(inputLength), E.TextStyleTag.EmphRb)
-  self.uiBinder.lab_num.text = string.format("%s/%s", strLength, self.viewData.stringLengthLimitNum)
+  if self.viewData.stringLengthLimitNum then
+    self.uiBinder.lab_num.text = string.format("%s/%s", strLength, self.viewData.stringLengthLimitNum)
+  else
+    self.uiBinder.lab_num.text = ""
+  end
   self.uiBinder.btn_affirm.IsDisabled = true
   self.uiBinder.btn_affirm.interactable = false
 end
 
 function Common_popup_inputView:refreshLengthLimitEmpty(inputLength)
   self.uiBinder.lab_desc.text = self.inputshorttipsStr_
-  self.uiBinder.lab_num.text = string.format("%s/%s", inputLength, self.viewData.stringLengthLimitNum)
+  if self.viewData.stringLengthLimitNum then
+    self.uiBinder.lab_num.text = string.format("%s/%s", inputLength, self.viewData.stringLengthLimitNum)
+  else
+    self.uiBinder.lab_num.text = ""
+  end
   self.uiBinder.btn_affirm.IsDisabled = true
   self.uiBinder.btn_affirm.interactable = false
 end
 
 function Common_popup_inputView:refreshLengthLimitNormal(inputLength)
-  self.uiBinder.lab_desc.text = ""
-  self.uiBinder.lab_num.text = string.format("%s/%s", inputLength, self.viewData.stringLengthLimitNum)
+  self.uiBinder.lab_desc.text = self.viewData.tipDesc or ""
+  if self.viewData.stringLengthLimitNum then
+    self.uiBinder.lab_num.text = string.format("%s/%s", inputLength, self.viewData.stringLengthLimitNum)
+  else
+    self.uiBinder.lab_num.text = ""
+  end
   self.uiBinder.btn_affirm.IsDisabled = false
   self.uiBinder.btn_affirm.interactable = true
 end

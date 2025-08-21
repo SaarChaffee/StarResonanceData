@@ -8,7 +8,7 @@ local comRewardItem = require("ui.component.common_reward_grid_list_item")
 
 function Season_course_subView:ctor()
   self.uiBinder = nil
-  super.ctor(self, "season_course_sub")
+  super.ctor(self, "season_course_sub", "season_title/season_course_sub", true)
   self.seasonData_ = Z.DataMgr.Get("season_data")
   self.seasonTitleVM_ = Z.VMMgr.GetVM("season_title")
   self.seasonVM_ = Z.VMMgr.GetVM("season")
@@ -35,8 +35,16 @@ function Season_course_subView:OnActive()
   self:AddClick(self.uiBinder.node_season_title.btn_view, function()
     Z.UIMgr:OpenView("season_window")
   end)
-  self.allRankScrollRect_ = loopGridView_.new(self, self.uiBinder.scrollview_reward, season_course_item, "season_course_item_tpl")
-  self.rewardScrollRect_ = loopListView_.new(self, self.uiBinder.scrollview_item, comRewardItem, "com_item_square_1_8")
+  local courseItemPath, itemPath
+  if Z.IsPCUI then
+    courseItemPath = "season_course_item_tpl_pc"
+    itemPath = "com_item_square_1_8_pc"
+  else
+    courseItemPath = "season_course_item_tpl"
+    itemPath = "com_item_square_1_8"
+  end
+  self.allRankScrollRect_ = loopListView_.new(self, self.uiBinder.scrollview_reward, season_course_item, courseItemPath)
+  self.rewardScrollRect_ = loopListView_.new(self, self.uiBinder.scrollview_item, comRewardItem, itemPath)
   self.rewardScrollRect_:Init({})
   self:BindEvents()
 end
@@ -156,13 +164,18 @@ function Season_course_subView:SetCurSelectItem(rankId)
     end
     index = index + 1
   end
+  local labSize
+  if Z.IsPCUI then
+    labSize = 50
+  else
+    labSize = 80
+  end
   self.allRankScrollRect_:ClearAllSelect()
   self.allRankScrollRect_:SetSelected(selectIndex)
-  local styStr = Z.RichTextHelper.ApplySizeTag(tostring(selectIndex), 150)
+  local styStr = Z.RichTextHelper.ApplySizeTag(tostring(selectIndex), labSize)
   self.uiBinder.lab_award_title.text = string.format(Lang("FirstLevelReward"), styStr)
   local rankStr = string.format("(%s)", string.format(Lang("GetRewardWhenSeasonTitle"), selectRankConfig.Name))
-  local styStr = Z.RichTextHelper.ApplyStyleTag(rankStr, "season_title_reward_title")
-  self.uiBinder.lab_rank_get.text = string.format("%s%s", Lang("RewardContent"), styStr)
+  self.uiBinder.lab_rank_get.text = string.format("%s%s", Lang("RewardContent"), rankStr)
   local selectRankConfig = self.seasonTitleData_:GetRankIdConfig(self.curSelectRankId_)
   if selectRankConfig == nil then
     return

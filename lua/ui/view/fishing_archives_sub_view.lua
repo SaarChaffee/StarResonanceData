@@ -1,41 +1,91 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Fishing_archives_subView = class("Fishing_archives_subView", super)
+local SDKDefine = require("ui.model.sdk_define")
 
 function Fishing_archives_subView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "fishing_archives_sub", "fishing/fishing_archives_sub", UI.ECacheLv.None)
+  if Z.IsPCUI then
+    super.ctor(self, "fishing_archives_sub", "fishing/fishing_archives_sub_pc", UI.ECacheLv.None)
+  else
+    super.ctor(self, "fishing_archives_sub", "fishing/fishing_archives_sub", UI.ECacheLv.None)
+  end
   self.fishingData_ = Z.DataMgr.Get("fishing_data")
   self.snapShotVM = Z.VMMgr.GetVM("snapshot")
   self.fishingVM_ = Z.VMMgr.GetVM("fishing")
+  self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
+  self.sdkVM_ = Z.VMMgr.GetVM("sdk")
 end
 
 function Fishing_archives_subView:OnActive()
   local showData = self.viewData
   self.charId = showData.CharId
+  self:onStartAnimShow()
+  local isUnlock = self.gotoFuncVM_.FuncIsOn(E.FunctionID.TencentWechatOriginalShare, true)
   self:AddClick(self.uiBinder.btn_share, function()
-    self.fishingVM_.ShareArchievesToChat()
+    if Z.GameContext.IsPC or Z.SDKDevices.IsCloudGame or not isUnlock then
+      self.fishingVM_.ShareArchievesToChat()
+    else
+      self.uiBinder.node_share.Ref.UIComp:SetVisible(true)
+      self.uiBinder.node_share.group_press_check:AddGameObject(self.uiBinder.node_share.btn_chat.gameObject)
+      self.uiBinder.node_share.group_press_check:AddGameObject(self.uiBinder.node_share.btn_wechat.gameObject)
+      self.uiBinder.node_share.group_press_check:AddGameObject(self.uiBinder.node_share.btn_moments.gameObject)
+      self.uiBinder.node_share.group_press_check:StartCheck()
+    end
   end)
   self.dataList_ = showData.DataList
   self.showInChat_ = showData.ShowInChat
   self.titleData = showData.titleData
+  self.isNewbie_ = showData.IsNewbie
   self.itemUI_ = {}
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self.uiBinder.presscheck:StopCheck()
-  self:EventAddAsyncListener(self.uiBinder.presscheck.ContainGoEvent, function(isContain)
-    if not isContain and self.showInChat_ then
-      Z.UIMgr:CloseView("fishing_archives_window")
-    end
-  end, nil, nil)
-  self:AddClick(self.uiBinder.btn_no, function()
-    if self.showInChat_ then
-      Z.UIMgr:CloseView("fishing_archives_window")
-    end
-  end)
+  if self.showInChat_ or Z.IsPCUI then
+    self:EventAddAsyncListener(self.uiBinder.presscheck.ContainGoEvent, function(isContain)
+      if not isContain and self.showInChat_ then
+        Z.UIMgr:CloseView("fishing_archives_window")
+      end
+    end, nil, nil)
+    self:AddClick(self.uiBinder.btn_no, function()
+      if self.showInChat_ then
+        Z.UIMgr:CloseView("fishing_archives_window")
+      end
+    end)
+  else
+    self.uiBinder.node_share.Ref.UIComp:SetVisible(false)
+    self.uiBinder.node_share.group_press_check:StopCheck()
+    self:EventAddAsyncListener(self.uiBinder.node_share.group_press_check.ContainGoEvent, function(isContain)
+      if not isContain then
+        self.uiBinder.node_share.Ref.UIComp:SetVisible(false)
+        self.uiBinder.node_share.group_press_check:StopCheck()
+      end
+    end, nil, nil)
+    self:AddAsyncClick(self.uiBinder.node_share.btn_chat, function()
+      self.fishingVM_.ShareArchievesToChat()
+    end)
+    self:AddAsyncClick(self.uiBinder.node_share.btn_wechat, function()
+      self.sdkVM_.SDKOriginalShare({
+        SDKDefine.ORIGINAL_SHARE_FUNCTION_TYPE.Fishing,
+        false
+      })
+    end)
+    self:AddAsyncClick(self.uiBinder.node_share.btn_moments, function()
+      self.sdkVM_.SDKOriginalShare({
+        SDKDefine.ORIGINAL_SHARE_FUNCTION_TYPE.Fishing,
+        true
+      })
+    end)
+  end
 end
 
 function Fishing_archives_subView:OnDeActive()
+  if not Z.IsPCUI then
+    self.uiBinder.node_share.group_press_check:RemoveGameObject(self.uiBinder.node_share.btn_chat.gameObject)
+    self.uiBinder.node_share.group_press_check:RemoveGameObject(self.uiBinder.node_share.btn_wechat.gameObject)
+    self.uiBinder.node_share.group_press_check:RemoveGameObject(self.uiBinder.node_share.btn_moments.gameObject)
+    self.uiBinder.node_share.group_press_check:StopCheck()
+  end
   self.uiBinder.presscheck:StopCheck()
 end
 
@@ -44,15 +94,24 @@ function Fishing_archives_subView:OnRefresh()
 end
 
 function Fishing_archives_subView:refreshUI()
-  self.uiBinder.presscheck:StartCheck()
   self.uiBinder.lab_lv.text = self.fishingData_.FishingLevel
   local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
   local canUseChat = gotoFuncVM.CheckFuncCanUse(E.FunctionID.MainChat, true)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_share, not self.showInChat_ and canUseChat)
+  if self.showInChat_ then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_share, false)
+    self.uiBinder.presscheck:StartCheck()
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_share, canUseChat)
+  end
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_no, self.showInChat_)
   self.uiBinder.node_archives.anchoredPosition = self.showInChat_ and Vector3.New(0, 78) or Vector3.New(64, -30)
   self.uiBinder.lab_title_name.text = self.titleData.Name
   self.uiBinder.lab_title_union.text = self.titleData.UnionName
+  if self.isNewbie_ ~= nil and Z.VMMgr.GetVM("player"):IsShowNewbie(self.isNewbie_) then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, true)
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, false)
+  end
   self:createArchiesItem()
   self:refreshLeftHeadImg()
 end
@@ -96,6 +155,9 @@ function Fishing_archives_subView:refreshFigureImg(socialData)
   if socialData.avatarInfo and socialData.avatarInfo.halfBody and not string.zisEmpty(socialData.avatarInfo.halfBody.url) and socialData.avatarInfo.halfBody.verify.ReviewStartTime == E.EPictureReviewType.EPictureReviewed then
     local snapshotVm = Z.VMMgr.GetVM("snapshot")
     local nativeTextureId = snapshotVm.AsyncDownLoadPictureByUrl(socialData.avatarInfo.halfBody.url)
+    if self.uiBinder == nil then
+      return
+    end
     if nativeTextureId then
       self.uiBinder.Ref:SetVisible(self.uiBinder.img_idcard_figure, false)
       self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_idcard_figure, true)
@@ -119,6 +181,10 @@ function Fishing_archives_subView:setDefaultModelHalf(socialData)
   else
     logError("ModelHalfPortrait config row is Empty!")
   end
+end
+
+function Fishing_archives_subView:onStartAnimShow()
+  self.uiBinder.anim_do:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Fishing_archives_subView

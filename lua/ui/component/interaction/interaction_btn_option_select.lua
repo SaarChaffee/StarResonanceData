@@ -1,7 +1,7 @@
 local super = require("ui.component.interaction.interaction_btn_base")
 local InteractionBtnOptionSelect = class("InteractionBtnOptionSelect", super)
 
-function InteractionBtnOptionSelect:Init(uiData, btnType)
+function InteractionBtnOptionSelect:AsyncInit(uiData, btnType)
   self.interactionBtnType_ = btnType
   local data = string.zsplit(uiData.triggerData, "=")
   local btnId = tonumber(data[1])
@@ -14,7 +14,6 @@ function InteractionBtnOptionSelect:Init(uiData, btnType)
   self.unitContentStr_ = interBtnCfg.Name
   self.unitIcon_ = interBtnCfg.IconPath
   self.unitName_ = string.zconcat("OptionSelect", btnId)
-  self.isClickIng_ = false
   return true
 end
 

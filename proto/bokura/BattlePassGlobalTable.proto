@@ -19,8 +19,6 @@ message BattlePassGlobalTableBase {
     int32 PrimePassPaymentID = 180;
     int32 PassPriceDiffPaymentID = 522;
 }
-
 message BattlePassGlobalTableMgr {
-    map<int32, .bokura.BattlePassGlobalTableBase> datas = 1;
+    repeated bokura.BattlePassGlobalTableMgr.DatasEntry datas = 1;
 }
-

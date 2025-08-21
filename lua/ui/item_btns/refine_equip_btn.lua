@@ -1,20 +1,7 @@
 local equipVm_ = Z.VMMgr.GetVM("equip_system")
 local funcVM = Z.VMMgr.GetVM("gotofunc")
 local checkValid = function(itemUuid, configId, data)
-  local itemsVM = Z.VMMgr.GetVM("items")
-  if not funcVM.CheckFuncCanUse(E.EquipFuncId.EquipRefine, true) then
-    return E.ItemBtnState.UnActive
-  end
-  local equipTableMgr = Z.TableMgr.GetTable("EquipTableMgr")
-  local equipTable = equipTableMgr.GetRow(configId, true)
-  if equipTable == nil then
-    return E.ItemBtnState.UnActive
-  end
-  local equipPartRow = Z.TableMgr.GetTable("EquipPartTableMgr").GetRow(equipTable.EquipPart)
-  if not equipPartRow or not Z.ConditionHelper.CheckCondition(equipPartRow.UnlockCondition) then
-    return E.ItemBtnState.UnActive
-  end
-  return E.ItemBtnState.Active
+  return E.ItemBtnState.UnActive
 end
 local onClick = function(itemUuid, configId, data)
   equipVm_.OpenEquipRefineView(itemUuid, configId)

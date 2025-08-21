@@ -12,7 +12,7 @@ local mergeDataFuncs = {
   end,
   [3] = function(container, buffer, watcherList)
     local last = container.__data__.showId
-    container.__data__.showId = br.ReadUInt32(buffer)
+    container.__data__.showId = br.ReadInt64(buffer)
     container.Watcher:MarkDirty("showId", last)
   end,
   [4] = function(container, buffer, watcherList)

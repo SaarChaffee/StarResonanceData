@@ -119,24 +119,38 @@ function ItemEvent.onItemCountChangeEvent(item, changeType, info)
     return
   end
   local itemsData = Z.DataMgr.Get("items_data")
+  local takeMedicineBagData = Z.DataMgr.Get("take_medicine_bag_data")
+  local isCurrency = itemsVm.CheckPackageTypeByConfigId(item.configId, E.BackPackItemPackageType.Currency)
   if changeType == E.ItemChangeType.Add then
-    itemsData:UpdateItem(item)
-    itemsVm.setQuickBar(item.configId)
+    if not isCurrency then
+      itemsData:UpdateItem(item)
+      itemsData:ChangeItemTotalCount(item.configId, item.count)
+      takeMedicineBagData:ItemAdd(item)
+      itemsVm.setQuickBar(item.configId)
+      if not itemsData:GetIgnoreItemTips() then
+        quickItemUsageVm.AddItemToQuickUseQueue(item.configId, item.uuid)
+      end
+      itemsVm.checkItemAutoApply(item)
+    end
     Z.EventMgr:Dispatch(Z.ConstValue.Backpack.AddItem, item)
     ItemEvent.dispatch(E.ItemChangeType.Add, E.ItemAddEventType.ItemId, item.configId, item)
     ItemEvent.dispatch(E.ItemChangeType.Add, E.ItemAddEventType.ItemType, itemTableRows[item.configId].Type, item)
-    if not itemsData:GetIgnoreItemTips() then
-      quickItemUsageVm.AddItemToQuickUseQueue(item.configId)
-    end
-    itemsVm.checkItemAutoApply(item)
   elseif changeType == E.ItemChangeType.Delete then
-    itemsData:RemoveItem(item)
+    if not isCurrency then
+      itemsData:RemoveItem(item)
+      itemsData:ChangeItemTotalCount(item.configId, -item.count)
+      takeMedicineBagData:ItemDel(item)
+      quickItemUsageVm.DelQuickItemData(item.configId, item.uuid)
+    end
     Z.EventMgr:Dispatch(Z.ConstValue.Backpack.DelItem, item)
     ItemEvent.dispatch(E.ItemChangeType.Delete, E.ItemAddEventType.ItemId, item.configId, item)
     ItemEvent.dispatch(E.ItemChangeType.Delete, E.ItemAddEventType.ItemType, itemTableRows[item.configId].Type, item)
-    quickItemUsageVm.DelQuickItemData(item.configId)
   elseif changeType == E.ItemChangeType.Change then
-    itemsData:UpdateItem(item)
+    if not isCurrency then
+      itemsData:UpdateItem(item)
+      itemsData:ChangeItemTotalCount(item.configId, info.count)
+      takeMedicineBagData:ItemChange(item)
+    end
     Z.EventMgr:Dispatch(Z.ConstValue.Backpack.ItemCountChange, item)
     ItemEvent.dispatch(E.ItemChangeType.Change, E.ItemAddEventType.ItemId, item.configId, item)
     ItemEvent.dispatch(E.ItemChangeType.Change, E.ItemAddEventType.ItemType, itemTableRows[item.configId].Type, item)
@@ -144,12 +158,16 @@ function ItemEvent.onItemCountChangeEvent(item, changeType, info)
       Z.EventMgr:Dispatch(Z.ConstValue.Backpack.InsertItem, item)
       ItemEvent.dispatch(E.ItemChangeType.Insert, E.ItemAddEventType.ItemId, item.configId, item)
       ItemEvent.dispatch(E.ItemChangeType.Insert, E.ItemAddEventType.ItemType, itemTableRows[item.configId].Type, item)
-      quickItemUsageVm.AddItemToQuickUseQueue(item.configId)
-      itemsVm.checkItemAutoApply(item)
+      if not isCurrency then
+        quickItemUsageVm.AddItemToQuickUseQueue(item.configId, item.uuid)
+        itemsVm.checkItemAutoApply(item)
+      end
     elseif info.count < 0 then
       ItemEvent.dispatch(E.ItemChangeType.Reduce, E.ItemAddEventType.ItemId, item.configId, item)
       ItemEvent.dispatch(E.ItemChangeType.Reduce, E.ItemAddEventType.ItemType, itemTableRows[item.configId].Type, item)
-      quickItemUsageVm.DelQuickItemData(item.configId)
+      if not isCurrency then
+        quickItemUsageVm.DelQuickItemData(item.configId, item.uuid)
+      end
     end
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Backpack.AllChange, item)
@@ -167,10 +185,6 @@ function ItemEvent.onItemCountChange(item, dirtyKeys)
   end
   local changeCount = countDirty:Get() - countDirty:GetLast()
   ItemEvent.onItemCountChangeEvent(item, E.ItemChangeType.Change, {count = changeCount})
-  if changeCount < 1 then
-    return
-  end
-  ItemEvent.addItemGetTipsData(item, item.uuid, changeCount)
 end
 
 function ItemEvent.onpackageChange(package, dirtyKeys)
@@ -196,7 +210,6 @@ function ItemEvent.onpackageChange(package, dirtyKeys)
         if not backPackData_.NewItems[k] then
           backPackData_.NewItems[k] = k
         end
-        ItemEvent.addItemGetTipsData(item, k, item.count)
       end
     end
     if v:IsDel() then
@@ -220,10 +233,34 @@ function ItemEvent.WatcherItemsChange()
       itemsVm.setQuickBar(item.configId)
     end
   end
+  local currencyPackage = Z.ContainerMgr.CharSerialize.itemCurrency
+  currencyPackage.Watcher:RegWatcher(ItemEvent.oncurrencyPackageChange)
+  for _, item in pairs(currencyPackage.currencyDatas) do
+    item.Watcher:RegWatcher(ItemEvent.onItemCountChange)
+  end
   itemsData:InitItemIdsMap()
+  local takeMedicineBagData = Z.DataMgr.Get("take_medicine_bag_data")
+  takeMedicineBagData:InitMedicineData()
 end
 
-function ItemEvent.addItemGetTipsData(item, uuid, changeCount)
+function ItemEvent.oncurrencyPackageChange(package, dirtyKeys)
+  local items = dirtyKeys.currencyDatas
+  if items == nil then
+    return
+  end
+  for k, v in pairs(items) do
+    if v:IsNew() then
+      local item = package.currencyDatas[k]
+      item.Watcher:RegWatcher(ItemEvent.onItemCountChange)
+      ItemEvent.onItemCountChangeEvent(item, E.ItemChangeType.Add)
+    end
+    if v:IsDel() then
+      ItemEvent.onItemCountChangeEvent(v:GetLast(), E.ItemChangeType.Delete)
+    end
+  end
+end
+
+function ItemEvent.AddItemGetTipsData(item)
   local itemTableMgr = Z.TableMgr.GetTable("ItemTableMgr")
   local itemTableRow = itemTableMgr.GetRow(item.configId)
   if not itemTableRow or itemTableRow.GetTips == 1 then
@@ -231,26 +268,44 @@ function ItemEvent.addItemGetTipsData(item, uuid, changeCount)
   end
   local tipsData = Z.DataMgr.Get("tips_data")
   local itemGetTipsData = {
-    ItemUuid = uuid,
+    ItemUuid = item.uuid,
     ItemConfigId = item.configId,
-    ChangeCount = changeCount
+    ChangeCount = item.count
   }
-  tipsData:AddSystemTipInfo(E.ESystemTipInfoType.ItemInfo, itemGetTipsData.ItemConfigId, itemGetTipsData.ChangeCount)
-  if itemsData:GetIgnoreItemTips() then
-    return
-  end
-  if itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.FashionAndVehicle then
-    Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.FashionAndVehicle, "com_rewards_window", {
-      configId = item.configId
-    })
-  elseif not itemTableRow.IsSpecialDisplay then
-    tipsData:PushAcquireItemInfo(itemGetTipsData)
-    Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.ItemGet, "acquiretip")
-  elseif itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.Mod then
+  tipsData:AddSystemTipInfo(E.ESystemTipInfoType.ItemInfo, item.configId, item.count)
+  if not (itemTableRow.SpecialDisplayType > 0) or itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.Mod then
   elseif itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.Talent then
     Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.FunctionOpen, "talent_award_window", {itemData = itemGetTipsData}, 9999)
   elseif itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.ResonanceSkill then
     Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.ResonanceSkillGet, "weapon_resonance_obtain_popup", {itemData = itemGetTipsData})
+  elseif itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.FashionAndVehicle then
+    Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.FashionAndVehicle, "com_rewards_window", {
+      configId = item.configId
+    })
+  elseif itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.WeaponSkin then
+    local weaponSkinRow = Z.TableMgr.GetTable("WeaponSkinTableMgr").GetRow(item.configId)
+    if weaponSkinRow and weaponSkinRow.Original == 0 and weaponSkinRow.IsOpen then
+      Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.FashionAndVehicle, "com_rewards_window", {
+        configId = item.configId
+      })
+    end
+  elseif itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.HouseCertificate then
+    local itemShowVm = Z.VMMgr.GetVM("item_show")
+    itemShowVm.OpenItemShowViewByItems({item})
+  elseif itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.HeadPortrait or itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.HeadFrame or itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.IdCard or itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.Badges or itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.ZoneBackground or itemTableRow.SpecialDisplayType == E.ItemSpecialDisplayType.Title then
+    local personalZoneVM = Z.VMMgr.GetVM("personal_zone")
+    personalZoneVM.OpenAwardPopView(item.configId)
+  end
+  local itemsData = Z.DataMgr.Get("items_data")
+  if itemsData:GetIgnoreItemTips() then
+    return
+  end
+  if 0 < itemTableRow.SpecialTips then
+    tipsData:PushSpecialAcquireItemInfo(itemGetTipsData)
+    Z.UIMgr:OpenView("tv_acquiretip_special")
+  else
+    tipsData:PushAcquireItemInfo(itemGetTipsData)
+    Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.ItemGet, "acquiretip")
   end
   ItemEvent.showExpireItemTips(item)
 end

@@ -1,6 +1,8 @@
 local super = require("ui.ui_view_base")
 local Album_photo_showView = class("Album_photo_showView", super)
+local logoImg = "ui/textures/login/login_logo"
 local Union_Temp_Album_ID = 0
+local playerPortraitHgr = require("ui.component.role_info.common_player_portrait_item_mgr")
 
 function Album_photo_showView:ctor()
   self.panel = nil
@@ -12,6 +14,7 @@ function Album_photo_showView:ctor()
   self.cameraVM_ = Z.VMMgr.GetVM("camerasys")
   self.snapshotVM_ = Z.VMMgr.GetVM("snapshot")
   self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
+  self.socialVm_ = Z.VMMgr.GetVM("social")
 end
 
 function Album_photo_showView:initComp()
@@ -31,6 +34,7 @@ function Album_photo_showView:initComp()
   self.btn_cloud_union_ = self.uiBinder.btn_cloud_union
   self.isShowPlayerInfo_ = false
   self.isShowGameInfo_ = false
+  self.uiBinder.rimg_game_name:SetImage(logoImg)
   self.scene_mask_:SetSceneMaskByKey(Z.UI.ESceneMaskKey.Default)
   self.uiBinder.tog_char_info:SetIsOnWithoutCallBack(false)
   self.uiBinder.tog_char_info:RemoveAllListeners()
@@ -57,22 +61,15 @@ function Album_photo_showView:initWaterMark()
     end
     self.uiBinder.img_code:SetImage(imgPath)
   end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_place, not self.isShowGameInfo_ and not self.isShowPlayerInfo_)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_bottom, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_bottom_tog, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_game_info, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_player_info, false)
+  local isUnlockFunc = self.gotoFuncVM_.FuncIsOn(E.FunctionID.SDKShareLocalPhoto, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, isUnlockFunc and not Z.IsPCUI)
   self.photoReductionOriSize_ = {width = 0, height = 0}
   self.photoReductionOriSize_.width, self.photoReductionOriSize_.height = self.uiBinder.node_photo_reduction:GetSize(self.photoReductionOriSize_.width, self.photoReductionOriSize_.height)
-  
-  function self.loadHeadCallBack_(charId, textureId)
-    if textureId == 0 then
-      self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_head, false)
-      return
-    end
-    self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_head, true)
-    self.uiBinder.rimg_head:SetNativeTexture(textureId)
-  end
-  
   self:initPlayerInfo()
   self:setHead()
 end
@@ -81,12 +78,18 @@ function Album_photo_showView:setPlayerInfo(isOn)
   self.isShowPlayerInfo_ = isOn
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_player_info, isOn)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_bottom, self.isShowGameInfo_ or self.isShowPlayerInfo_)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_place, not self.isShowGameInfo_ and not self.isShowPlayerInfo_)
+  if isOn then
+    self:initPlayerInfo()
+    self:setHead()
+  end
 end
 
 function Album_photo_showView:setGameInfo(isOn)
   self.isShowGameInfo_ = isOn
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_game_info, isOn)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_bottom, self.isShowGameInfo_ or self.isShowPlayerInfo_)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_place, not self.isShowGameInfo_ and not self.isShowPlayerInfo_)
 end
 
 function Album_photo_showView:initBtnClick()
@@ -121,15 +124,20 @@ function Album_photo_showView:initBtnClick()
       self.albumMainVM_.DeleteLocalPhoto(self.showPhotoInfo_)
       Z.UIMgr:CloseView("album_photo_show")
       Z.TipsVM.ShowTipsLang(1000008)
-      Z.DialogViewDataMgr:CloseDialogView()
       Z.EventMgr:Dispatch(Z.ConstValue.Album.SecondaryEditTempRef)
     end)
   end)
   self:AddAsyncClick(self.btn_cloud_union_, function()
+    local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+    local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.SharePhotoToUnion)
+    if not isOn then
+      return
+    end
     local unionVM = Z.VMMgr.GetVM("union")
     local unionId = unionVM:GetPlayerUnionId()
     if unionId == 0 then
       logGreen("Union is null!")
+      return
     end
     self.albumMainData_:AddSelectedAlbumPhoto(self.showPhotoInfo_)
     self.albumMainVM_.AlbumUpLoadStart(1)
@@ -146,40 +154,58 @@ function Album_photo_showView:initBtnClick()
   self:AddAsyncClick(self.save_local_btn_, function()
     if self.isShowGameInfo_ or self.isShowPlayerInfo_ then
       self:savePhoto()
-    elseif Z.CameraFrameCtrl:SaveToSystemAlbum(self.photoId_) then
-      if Z.IsPCUI then
-        local albumPath = Z.CameraFrameCtrl:GetPCAlbumPath()
-        albumPath = string.gsub(albumPath, "/", "\\")
-        Z.TipsVM.ShowTipsLang(1000041, {val = albumPath})
-      else
-        Z.TipsVM.ShowTipsLang(1000036)
-      end
     else
-      Z.TipsVM.ShowTipsLang(1000037)
+      Z.CameraFrameCtrl:SaveToSystemAlbum(self.photoId_, function(result)
+        if result then
+          if Z.IsPCUI then
+            local albumPath = Z.CameraFrameCtrl:GetPCAlbumPath()
+            Z.TipsVM.ShowTipsLang(1000041, {val = albumPath})
+          else
+            Z.TipsVM.ShowTipsLang(1000036)
+          end
+        else
+          Z.TipsVM.ShowTipsLang(1000037)
+        end
+      end)
     end
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_qq, function()
+    self:shareImage(Bokura.Plugins.Share.SharePlatform.QQ)
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_wechat, function()
+    self:shareImage(Bokura.Plugins.Share.SharePlatform.WeChat)
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_moments, function()
+    self:shareImage(Bokura.Plugins.Share.SharePlatform.WeChatMoment)
   end)
   self.uiBinder.scene_mask:SetSceneMaskByKey(self.SceneMaskKey)
 end
 
-function Album_photo_showView:savePhoto()
+function Album_photo_showView:generatePhoto()
   self:showOrHideBtnAndBottom(false)
   self:setRawImgSize()
   self:asyncTakePhoto()
-  self.uiBinder.node_bottom:SetScale(1, 1)
+  self.uiBinder.node_player_info:SetScale(1, 1)
+  self.uiBinder.node_game_info:SetScale(1, 1)
   self:showOrHideBtnAndBottom(true)
   self.uiBinder.node_photo_reduction:SetSizeDelta(self.photoReductionOriSize_.width, self.photoReductionOriSize_.height)
+end
+
+function Album_photo_showView:savePhoto()
+  self:generatePhoto()
   if self.resizeId_ then
-    if Z.CameraFrameCtrl:SaveToSystemAlbum(self.resizeId_) then
-      if Z.IsPCUI then
-        local albumPath = Z.CameraFrameCtrl:GetPCAlbumPath()
-        albumPath = string.gsub(albumPath, "/", "\\")
-        Z.TipsVM.ShowTipsLang(1000041, {val = albumPath})
+    Z.CameraFrameCtrl:SaveToSystemAlbum(self.resizeId_, function(result)
+      if result then
+        if Z.IsPCUI then
+          local albumPath = Z.CameraFrameCtrl:GetPCAlbumPath()
+          Z.TipsVM.ShowTipsLang(1000041, {val = albumPath})
+        else
+          Z.TipsVM.ShowTipsLang(1000036)
+        end
       else
-        Z.TipsVM.ShowTipsLang(1000036)
+        Z.TipsVM.ShowTipsLang(1000037)
       end
-    else
-      Z.TipsVM.ShowTipsLang(1000037)
-    end
+    end)
     Z.LuaBridge.ReleaseScreenShot(self.resizeId_)
     self.resizeId_ = nil
   else
@@ -187,10 +213,21 @@ function Album_photo_showView:savePhoto()
   end
 end
 
+function Album_photo_showView:shareImage(shareplatform)
+  if self.isShowGameInfo_ or self.isShowPlayerInfo_ then
+    self:generatePhoto()
+    if self.resizeId_ then
+      Z.GameShareManager:ShareImageAutoThumb("", self.resizeId_, shareplatform, "", "")
+      Z.LuaBridge.ReleaseScreenShot(self.resizeId_)
+      self.resizeId_ = nil
+    end
+  else
+    Z.GameShareManager:ShareImageAutoThumb("", self.photoId_, shareplatform, "", "")
+  end
+end
+
 function Album_photo_showView:setRawImgSize()
-  local parentNodeWidth, parentNodeHeight = 0, 0
-  parentNodeWidth, parentNodeHeight = self.uiBinder.Trans:GetSize(parentNodeWidth, parentNodeHeight)
-  self.uiBinder.node_photo_reduction:SetSizeDelta(parentNodeWidth, parentNodeHeight)
+  self.uiBinder.node_photo_reduction:SetSizeDelta(Z.UIRoot.CurCanvasSize.x, Z.UIRoot.CurCanvasSize.y)
 end
 
 function Album_photo_showView:showOrHideBtnAndBottom(isShow)
@@ -198,6 +235,7 @@ function Album_photo_showView:showOrHideBtnAndBottom(isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_bottom_tog, isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_delete, isShow)
   self.uiBinder.Ref:SetVisible(self.close_btn_, isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.bottom_share, isShow)
 end
 
 function Album_photo_showView:asyncTakePhoto()
@@ -205,7 +243,8 @@ function Album_photo_showView:asyncTakePhoto()
   local photoWidth, height = self.cameraVM_.GetTakePhotoSize()
   local scaleX = Z.UIRoot.CurScreenSize.x / photoWidth
   local scaleY = Z.UIRoot.CurScreenSize.y / height
-  self.uiBinder.node_bottom:SetScale(scaleX, scaleY)
+  self.uiBinder.node_player_info:SetScale(scaleX, scaleY)
+  self.uiBinder.node_game_info:SetScale(scaleX, scaleY)
   local oriId = asyncCall(self.cancelSource:CreateToken(), E.NativeTextureCallToken.CamerasysViewOri)
   self.resizeId_ = Z.LuaBridge.ResizeTextureSizeForAlbum(oriId, E.NativeTextureCallToken.CamerasysViewOri, photoWidth, height)
 end
@@ -237,10 +276,8 @@ end
 
 function Album_photo_showView:setHead()
   Z.CoroUtil.create_coro_xpcall(function()
-    local modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
-    local modelHead = self.snapshotVM_.GetModelHeadPortrait(modelId)
-    self.uiBinder.img_head:SetImage(modelHead)
-    self.snapshotVM_.AsyncGetHttpPortraitId(Z.ContainerMgr.CharSerialize.charBase.charId, self.loadHeadCallBack_)
+    local socialData = self.socialVm_.AsyncGetSocialData(0, Z.ContainerMgr.CharSerialize.charId, self.cancelSource:CreateToken())
+    playerPortraitHgr.InsertNewPortraitBySocialData(self.uiBinder.binder_head, socialData, nil, self.cancelSource:CreateToken())
   end)()
 end
 
@@ -251,7 +288,6 @@ function Album_photo_showView:OnDeActive()
   self.showPhotoInfo_ = {}
   self:unBindWatchers()
   self.playerInfoDataFunc_ = nil
-  self.loadHeadCallBack_ = nil
 end
 
 function Album_photo_showView:bindEvents()

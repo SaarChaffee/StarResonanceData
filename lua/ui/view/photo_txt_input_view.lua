@@ -25,7 +25,7 @@ function Photo_txt_inputView:OnActive()
   end)
   self.uiBinder.input_content.characterLimit = self.viewData.txtMaxCount
   self:AddAsyncClick(self.uiBinder.input_content, function(str)
-    local len = string.zlen(str)
+    local len = string.zlenNormalize(str)
     if len <= tonumber(self.viewData.txtMaxCount) then
       self.uiBinder.input_content.text = str
     end
@@ -50,7 +50,7 @@ function Photo_txt_inputView:OnDeActive()
 end
 
 function Photo_txt_inputView:OnRefresh()
-  local len = string.zlen(self.uiBinder.input_content.text) or 0
+  local len = string.zlenNormalize(self.uiBinder.input_content.text) or 0
   self:setDesLen(len)
 end
 

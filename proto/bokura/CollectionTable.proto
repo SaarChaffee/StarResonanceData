@@ -38,8 +38,6 @@ message CollectionTableBase {
     int_table ShowStatusInfo = 1473;
     int_table ShowStatusTransition = 1771;
 }
-
 message CollectionTableMgr {
-    map<int32, .bokura.CollectionTableBase> datas = 1;
+    repeated bokura.CollectionTableMgr.DatasEntry datas = 1;
 }
-

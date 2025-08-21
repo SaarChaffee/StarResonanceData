@@ -4,6 +4,7 @@ function QuestStep:ctor(questId, stepId)
   self.questId_ = questId
   self.stepId_ = stepId
   self.questData_ = Z.DataMgr.Get("quest_data")
+  self.questGoalVM_ = Z.VMMgr.GetVM("quest_goal")
 end
 
 function QuestStep:StepInit()
@@ -19,19 +20,22 @@ function QuestStep:StepInit()
   end
   self:addGoalData()
   self:setTpLimit(true)
-  self:updateNpcQuestIcon()
+  self:updateQuestHud()
   local questTalkVM = Z.VMMgr.GetVM("quest_talk")
   questTalkVM.AddGoalTalkDataByQuestId(self.questId_, true)
   if self.stepNode_ then
-    self.stepNode_:ExecuteStepStartActions()
+    self.stepNode_:OnEnter()
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Quest.StepStart, self.stepId_)
 end
 
 function QuestStep:StepUnInit()
+  if self.stepNode_ then
+    self.stepNode_:OnLeave()
+  end
   self:clearGoalData()
   self:setTpLimit(false)
-  self:updateNpcQuestIcon(true)
+  self:updateQuestHud(true)
   local questTalkVM = Z.VMMgr.GetVM("quest_talk")
   questTalkVM.RemoveGoalTalkDataByStepId(self.stepId_)
   self.goalDict_ = nil
@@ -43,7 +47,7 @@ end
 
 function QuestStep:StepFinish()
   if self.stepNode_ then
-    self.stepNode_:ExecuteStepCompleteActions()
+    self.stepNode_:OnCompleted()
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Quest.StepFinish, self.stepId_)
 end
@@ -54,8 +58,9 @@ end
 
 function QuestStep:SetGoalCompleted(goalIndex)
   self:unregisterGoal(goalIndex)
+  self:RemoveNeedTrackNpcData(goalIndex)
   Z.EventMgr:Dispatch(Z.ConstValue.Quest.GoalComplete, self.questId_, goalIndex)
-  self:updateNpcQuestIcon()
+  self:updateQuestHud()
 end
 
 function QuestStep:ResetGoal(goalIndex)
@@ -70,7 +75,8 @@ function QuestStep:ResetGoal(goalIndex)
     local token = Z.LuaGoalMgr:AddGoal(paramArrays[goalIndex])
     self.goalDict_[goalIndex] = token
   end
-  self:updateNpcQuestIcon()
+  self:AddNeedTrackNpcData(goalIndex)
+  self:updateQuestHud()
 end
 
 function QuestStep:StepOnQuestStateChange(oldState, newState)
@@ -80,7 +86,7 @@ function QuestStep:StepOnQuestStateChange(oldState, newState)
   elseif oldState == E.QuestState.NotEnough then
     questTalkVM.AddGoalTalkDataByQuestId(self.questId_, true)
   end
-  self:updateNpcQuestIcon()
+  self:updateQuestHud()
 end
 
 function QuestStep:addGoalData()
@@ -104,6 +110,7 @@ function QuestStep:addGoalData()
     self:addGoalBlackMaskData(goalParamList)
     local token = Z.LuaGoalMgr:AddGoal(goalParamList)
     self.goalDict_[goalIndex] = token
+    self:AddNeedTrackNpcData(goalIndex)
   end
 end
 
@@ -124,19 +131,29 @@ function QuestStep:addGoalTrackData(stepId, goalIndex, toSceneId, posParamList)
 end
 
 function QuestStep:getEntityPos(sceneId, posType, uid)
-  if sceneId ~= Z.StageMgr.GetCurrentSceneId() then
-    return
-  end
-  local guideVM = Z.VMMgr.GetVM("goal_guide")
-  local tbl = guideVM.GetLevelTableByPosType(posType)
-  if tbl then
-    local row = tbl.GetRow(uid)
-    if row then
-      local posArray = row.Position
+  if sceneId == Z.StageMgr.GetCurrentSceneId() then
+    local guideVM = Z.VMMgr.GetVM("goal_guide")
+    local tbl = guideVM.GetLevelTableByPosType(posType)
+    if tbl then
+      local row = tbl.GetRow(uid)
+      if row then
+        local posArray = row.Position
+        local pos = {
+          x = posArray[1],
+          y = posArray[2],
+          z = posArray[3]
+        }
+        return pos
+      end
+    end
+  else
+    local mapVM = Z.VMMgr.GetVM("map")
+    local globalConfig = mapVM.GetGlobalInfo(sceneId, posType, uid)
+    if globalConfig and globalConfig.Position then
       local pos = {
-        x = posArray[1],
-        y = posArray[2],
-        z = posArray[3]
+        x = globalConfig.Position[1],
+        y = globalConfig.Position[2],
+        z = globalConfig.Position[3]
       }
       return pos
     end
@@ -205,21 +222,16 @@ function QuestStep:setTpLimit(isAdd)
   end
 end
 
-function QuestStep:updateNpcQuestIcon(isOld)
-  self:updateQuestHud(isOld)
-  Z.EventMgr:Dispatch(Z.ConstValue.NpcQuestIconChange, self.questId_)
-end
-
 function QuestStep:updateQuestHud(isOld)
   local questId = self.questId_
-  local questVM = Z.VMMgr.GetVM("quest")
+  local questIconVM = Z.VMMgr.GetVM("quest_icon")
   local npcDict = self:getBindNpcDict()
   for goalIndex, npcId in pairs(npcDict) do
     local isDel
     if isOld then
       isDel = true
     else
-      isDel = questVM.IsGoalCompleted(questId, goalIndex)
+      isDel = self.questGoalVM_.IsGoalCompleted(questId, goalIndex)
     end
     if not isDel then
       self.questData_:AddNpcHudQuest(npcId, questId)
@@ -228,7 +240,7 @@ function QuestStep:updateQuestHud(isOld)
     end
     local stage = self.questData_.QuestMgrStage
     if stage >= E.QuestMgrStage.InitEnd and stage < E.QuestMgrStage.BeginUnInit then
-      questVM.UpdateNpcHudQuest(npcId)
+      questIconVM.UpdateNpcHudQuest(npcId)
     end
   end
 end
@@ -267,6 +279,44 @@ function QuestStep:unregisterGoal(goalIndex)
   if token then
     Z.LuaGoalMgr:RemoveGoal(token)
   end
+end
+
+function QuestStep:AddNeedTrackNpcData(goalIndex)
+  local isCompleted = self.questGoalVM_.IsGoalCompleted(self.questId_, goalIndex)
+  if isCompleted then
+    return
+  end
+  local stepRow = self.questData_:GetStepConfigByStepId(self.stepId_)
+  local goalPosArray = stepRow.StepTargetPos[goalIndex]
+  local paramArrays = stepRow.StepParam
+  local goalParamList = paramArrays[goalIndex]
+  local toSceneId = tonumber(goalParamList[3])
+  if toSceneId ~= Z.StageMgr.GetCurrentSceneId() then
+    return
+  end
+  local posType = Z.GoalPosType.IntToEnum(tonumber(goalPosArray[1]))
+  if posType ~= Z.GoalPosType.Npc then
+    return
+  end
+  local uid = tonumber(goalPosArray[2]) or 0
+  if uid <= 0 then
+    return
+  end
+  Z.QuestMgr:GetQuestTrackEffectComp():AddNeedTrackNpcEnt(self.questId_, uid)
+end
+
+function QuestStep:RemoveNeedTrackNpcData(goalIndex)
+  local stepRow = self.questData_:GetStepConfigByStepId(self.stepId_)
+  local goalPosArray = stepRow.StepTargetPos[goalIndex]
+  local posType = Z.GoalPosType.IntToEnum(tonumber(goalPosArray[1]))
+  if posType ~= Z.GoalPosType.Npc then
+    return
+  end
+  local uid = tonumber(goalPosArray[2]) or 0
+  if uid <= 0 then
+    return
+  end
+  Z.QuestMgr:GetQuestTrackEffectComp():RemoveNeedTrackNpcEnt(self.questId_, uid)
 end
 
 return QuestStep

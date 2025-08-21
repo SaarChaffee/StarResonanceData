@@ -15,13 +15,14 @@ function Pivot_reward_subView:OnActive()
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self.pivotVm_ = Z.VMMgr.GetVM("pivot")
   self.mapData_ = Z.DataMgr.Get("map_data")
-  self:AddAsyncClick(self.uiBinder.cont_panel.group_bg.cont_map_title_top.cont_btn_return.btn, function()
+  self.gotofuncVM_ = Z.VMMgr.GetVM("gotofunc")
+  self:AddAsyncClick(self.uiBinder.cont_panel.btn_close, function()
     if self.isMap_ then
       if self.viewData.extraParams and self.viewData.extraParams.IsBackToProgress then
         local sceneId = self.parent_:GetCurSceneId()
         self.pivotVm_.OpenPivotProgressView(sceneId)
       else
-        self.parent_:CloseRightSubview()
+        self.parent_:CloseRightSubView()
       end
     else
       self.pivotVm_.ClosePivotRewardView()
@@ -37,14 +38,21 @@ function Pivot_reward_subView:OnActive()
   end, nil, nil)
   self:AddAsyncClick(self.uiBinder.cont_panel.btn_trace, function()
     local mapVM = Z.VMMgr.GetVM("map")
-    mapVM.SetMapTraceByFlagData(E.GoalGuideSource.MapFlag, self.parent_:GetCurSceneId(), self.viewData.flagData)
-    self.parent_:CloseRightSubview()
+    mapVM.SetMapTraceByFlagData(E.GoalGuideSource.MapFlag, self.parent_:GetCurSceneId(), self.flagData_)
+    self.parent_:CloseRightSubView()
   end, nil, nil)
   self:AddAsyncClick(self.uiBinder.cont_panel.btn_trace_no, function()
     local mapVM = Z.VMMgr.GetVM("map")
     mapVM.ClearFlagDataTrackSource(self.parent_:GetCurSceneId(), self.flagData_)
-    self.parent_:CloseRightSubview()
+    self.parent_:CloseRightSubView()
   end, nil, nil)
+  self:AddAsyncClick(self.uiBinder.cont_panel.btn_pathfinding, function()
+    local mapVM = Z.VMMgr.GetVM("map")
+    mapVM.SetMapTraceByFlagData(E.GoalGuideSource.MapFlag, self.parent_:GetCurSceneId(), self.flagData_)
+    local pathFindingVM = Z.VMMgr.GetVM("path_finding")
+    pathFindingVM:StartPathFindingByFlagData(self.parent_:GetCurSceneId(), self.flagData_)
+    self.parent_:CloseRightSubView()
+  end)
   self.rewardUnits = {
     [1] = self.uiBinder.cont_panel.cont_pivot_reward_tpl_1,
     [2] = self.uiBinder.cont_panel.cont_pivot_reward_tpl_2,
@@ -86,17 +94,18 @@ function Pivot_reward_subView:OnRefresh()
     self.pivotTbl_ = Z.TableMgr.GetTable("PivotTableMgr").GetRow(self.pivotId_)
     local transferTableRow = Z.TableMgr.GetTable("TransferTableMgr").GetRow(self.pivotId_)
     if self.pivotTbl_ and transferTableRow then
-      contPanel_.group_bg.cont_map_title_top.lab_title.text = self.pivotTbl_.Name
+      contPanel_.lab_title.text = self.pivotTbl_.Name
       contPanel_.lab_content.text = transferTableRow.TransferDec
     end
   else
     local envTbl = Z.TableMgr.GetTable("EnvironmentResonanceTableMgr").GetRow(self.pivotId_)
-    contPanel_.group_bg.cont_map_title_top.lab_title.text = envTbl.Name
+    contPanel_.lab_title.text = envTbl.Name
     contPanel_.lab_content.text = envTbl.Desc
   end
   contPanel_.Ref:SetVisible(contPanel_.group_content, false)
   contPanel_.Ref:SetVisible(contPanel_.group_progress, false)
   contPanel_.Ref:SetVisible(contPanel_.group_description, true)
+  contPanel_.Ref:SetVisible(contPanel_.btn_pathfinding, false)
   if sceneObjType == E.SceneObjType.Pivot and self.pivotVm_.CheckPivotUnlock(self.pivotId_) then
     contPanel_.Ref:SetVisible(contPanel_.btn_trace, false)
     contPanel_.Ref:SetVisible(contPanel_.btn_trace_no, false)
@@ -107,6 +116,8 @@ function Pivot_reward_subView:OnRefresh()
     contPanel_.Ref:SetVisible(contPanel_.btn_trace, true)
     contPanel_.Ref:SetVisible(contPanel_.btn_trace_no, true)
     contPanel_.Ref:SetVisible(contPanel_.btn_teleport, false)
+    local isShow = self.gotofuncVM_.CheckFuncCanUse(E.FunctionID.PathFinding, true)
+    contPanel_.Ref:SetVisible(contPanel_.btn_pathfinding, isShow)
     local mapVM = Z.VMMgr.GetVM("map")
     local isTracking = mapVM.CheckIsTracingFlagByFlagData(self.parent_:GetCurSceneId(), self.flagData_)
     self:refreshTraceBtn(isTracking)

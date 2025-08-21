@@ -7,4 +7,3 @@ enum WarehouseExitType {
     WarehouseExitTypeBeKickOut = 1;
     WarehouseExitTypeDisband = 2;
 }
-

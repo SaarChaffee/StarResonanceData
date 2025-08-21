@@ -85,7 +85,7 @@ function SevenDaysTargetManualLoopItem:refreshBinderUI(binder, cfg, award, pic, 
   binder.Ref:SetVisible(binder.rimg_on, isOn_)
   binder.btn:RemoveAllListeners()
   self:AddAsyncListener(binder.btn, function()
-    self:clickTarget(cfg)
+    self:clickTarget(cfg, true)
   end)
   self.redKey_ = cfg.TargetId
   local hideProgress_ = progress <= 0 or 100 <= progress or canGet_ or complete
@@ -93,14 +93,14 @@ function SevenDaysTargetManualLoopItem:refreshBinderUI(binder, cfg, award, pic, 
   binder.lab_schedule.text = progress .. "%"
 end
 
-function SevenDaysTargetManualLoopItem:clickTarget(cfg)
+function SevenDaysTargetManualLoopItem:clickTarget(cfg, isClick)
   local showVertical_
   if cfg == self.data.leftInfo then
     showVertical_ = self.data.isVH
   else
     showVertical_ = not self.data.isVH
   end
-  self.parentUIView:OnClickManualItem(cfg, showVertical_)
+  self.parentUIView:OnClickManualItem(cfg, showVertical_, isClick)
   self:RefreshSelect(true, cfg)
 end
 

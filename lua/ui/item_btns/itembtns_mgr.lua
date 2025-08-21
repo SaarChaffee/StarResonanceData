@@ -22,7 +22,67 @@ local eBtnType = {
   ItemSell = 21,
   EquipRefine = 22,
   Recycle = 23,
-  Discard = 24
+  Discard = 24,
+  EquipEnchant = 25,
+  GotoEnchant = 26,
+  TraceMaterial = 27,
+  Make = 28,
+  EquipTrace = 29,
+  ModTrace = 30,
+  ResonanceSwitch = 31,
+  HomePreview = 32,
+  FuncSwitch = 33
+}
+E.BtnViewType = {
+  Bag = {
+    [E.BackPackItemPackageType.Item] = {
+      [eBtnType.ItemUseBtn] = 1,
+      [eBtnType.ItemUseBatchBtn] = 2,
+      [eBtnType.KeyRecast] = 3,
+      [eBtnType.ItemDetailBtn] = 4,
+      [eBtnType.ItemSell] = 5,
+      [eBtnType.FuncSwitch] = 6
+    },
+    [E.BackPackItemPackageType.Equip] = {
+      [eBtnType.GotoEquipView] = 1,
+      [eBtnType.ItemSell] = 2,
+      [eBtnType.EquipTrace] = 3
+    },
+    [E.BackPackItemPackageType.Mod] = {
+      [eBtnType.GotoModEquip] = 1,
+      [eBtnType.ItemSell] = 2,
+      [eBtnType.ModTrace] = 3
+    },
+    [E.BackPackItemPackageType.ResonanceSkill] = {
+      [eBtnType.ResonanceSkillMake] = 1,
+      [eBtnType.ItemSell] = 2,
+      [eBtnType.Recycle] = 3,
+      [eBtnType.ResonanceSwitch] = 4
+    }
+  },
+  Equip = {
+    [eBtnType.EquipPutOnBtn] = 1,
+    [eBtnType.ItemDecomposeBtn] = 2,
+    [eBtnType.EquipReplaceBtn] = 3,
+    [eBtnType.EquipTakeOff] = 4,
+    [eBtnType.EquipRecast] = 5,
+    [eBtnType.EquipRefine] = 6,
+    [eBtnType.EquipEnchant] = 7,
+    [eBtnType.EquipTrace] = 8
+  },
+  Mod = {
+    [eBtnType.ModIntensify] = 1,
+    [eBtnType.ModDecompose] = 2,
+    [eBtnType.ModInstall] = 3,
+    [eBtnType.ModUninstall] = 4,
+    [eBtnType.ModReplace] = 5,
+    [eBtnType.ModTrace] = 6
+  },
+  Resonance = {
+    [eBtnType.ResonanceSkillMake] = 1,
+    [eBtnType.ResonanceSkillDecompose] = 2,
+    [eBtnType.ResonanceSwitch] = 3
+  }
 }
 local btns_ = {
   [eBtnType.ItemUseBtn] = require("ui.item_btns.item_use_btn"),
@@ -48,7 +108,16 @@ local btns_ = {
   [eBtnType.ItemSell] = require("ui.item_btns.item_sell_btn"),
   [eBtnType.EquipRefine] = require("ui.item_btns.refine_equip_btn"),
   [eBtnType.Recycle] = require("ui.item_btns.recycle_item_btn"),
-  [eBtnType.Discard] = require("ui.item_btns.discard_item_btn")
+  [eBtnType.Discard] = require("ui.item_btns.discard_item_btn"),
+  [eBtnType.EquipEnchant] = require("ui.item_btns.enchant_equip_btn"),
+  [eBtnType.GotoEnchant] = require("ui.item_btns.enchant_goto_btn"),
+  [eBtnType.TraceMaterial] = require("ui.item_btns.item_trace_material_btn"),
+  [eBtnType.Make] = require("ui.item_btns.item_make_btn"),
+  [eBtnType.EquipTrace] = require("ui.item_btns.item_equip_trace_btn"),
+  [eBtnType.ModTrace] = require("ui.item_btns.item_mod_trace_btn"),
+  [eBtnType.ResonanceSwitch] = require("ui.item_btns.resonance_switch_btn"),
+  [eBtnType.HomePreview] = require("ui.item_btns.item_home_preview_btn"),
+  [eBtnType.FuncSwitch] = require("ui.item_btns.item_func_switch_btn")
 }
 local switchVm_ = Z.VMMgr.GetVM("switch")
 local btnFun_ = {
@@ -75,37 +144,61 @@ local btnFun_ = {
   [eBtnType.ItemSell] = E.FunctionID.Trade,
   [eBtnType.EquipRefine] = E.FunctionID.None,
   [eBtnType.Recycle] = E.FunctionID.Recycle,
-  [eBtnType.Discard] = E.FunctionID.None
+  [eBtnType.Discard] = E.FunctionID.None,
+  [eBtnType.EquipEnchant] = E.FunctionID.None,
+  [eBtnType.GotoEnchant] = E.FunctionID.None,
+  [eBtnType.TraceMaterial] = E.FunctionID.None,
+  [eBtnType.Make] = E.FunctionID.None,
+  [eBtnType.EquipTrace] = E.EquipFuncId.EquipTrace,
+  [eBtnType.ModTrace] = E.FunctionID.ModTrace,
+  [eBtnType.ResonanceSwitch] = E.FunctionID.WeaponAoyiSkill,
+  [eBtnType.HomePreview] = E.FunctionID.None,
+  [eBtnType.FuncSwitch] = E.FunctionID.None
 }
 local sortBtn = function(left, right, data)
   return btns_[left.key].Priority(data) - btns_[right.key].Priority(data) < 0
 end
-local getItemBtns = function(itemUuid, configId, data)
-  local btns = {}
-  for k, btn in ipairs(btns_) do
-    local state = btn.CheckValid(itemUuid, configId, data)
-    if state ~= E.ItemBtnState.UnActive then
-      local funState = btnFun_[k] == 0 and true or switchVm_.CheckFuncSwitch(btnFun_[k])
-      if funState ~= false then
-        table.insert(btns, {key = k, state = state})
+local getBtnInfos = function(btns, itemUuid, configId, data)
+  local btnInfos = {}
+  for k, value in pairs(btns) do
+    local btn = btns_[k]
+    if btn then
+      local state = btn.CheckValid(itemUuid, configId, data)
+      if state == E.ItemBtnState.Active or state == E.ItemBtnState.IsDisabled then
+        local funState = btnFun_[k] == 0 and true or switchVm_.CheckFuncSwitch(btnFun_[k])
+        if funState ~= false then
+          table.insert(btnInfos, {key = k, state = state})
+        end
       end
     end
   end
-  table.sort(btns, function(a, b)
+  table.sort(btnInfos, function(a, b)
     return sortBtn(a, b, data)
   end)
-  return btns
+  return btnInfos
+end
+local getItemBtns = function(itemUuid, configId, data)
+  return getBtnInfos(btns_, itemUuid, configId, data)
+end
+local getBtnStateByKey = function(key, itemUuid, configId, data)
+  local btn = btns_[key]
+  if btn then
+    local state = btn.CheckValid(itemUuid, configId, data)
+  else
+    logError("itemBtnsMgr: getBtnStateByKey no find key, kye = {0}", key)
+  end
+end
+local getItemBtnInfosByType = function(viewBtns, itemUuid, configId, data)
+  return getBtnInfos(viewBtns, itemUuid, configId, data)
 end
 local getFilterEquipBtns = function(btns)
   local lefBtns = {}
   local rightBtns = {}
   for k, btn in ipairs(btns) do
-    if btn.state == E.ItemBtnState.Active then
-      if btn.key == eBtnType.EquipPutOnBtn or btn.key == eBtnType.EquipTakeOff or btn.key == eBtnType.EquipReplaceBtn or btn.key == eBtnType.GotoEquipView then
-        rightBtns[#rightBtns + 1] = btn
-      else
-        lefBtns[#lefBtns + 1] = btn
-      end
+    if btn.key == eBtnType.EquipPutOnBtn or btn.key == eBtnType.EquipTakeOff or btn.key == eBtnType.EquipReplaceBtn or btn.key == eBtnType.GotoEquipView then
+      rightBtns[#rightBtns + 1] = btn
+    else
+      lefBtns[#lefBtns + 1] = btn
     end
   end
   return lefBtns, rightBtns
@@ -116,10 +209,10 @@ local getBtnName = function(key, itemUuid, configId, data)
     return btn.GetBtnName(itemUuid, configId, data)
   end
 end
-local onClick = function(key, itemUuid, configId, data)
+local onClick = function(key, itemUuid, configId, data, token)
   local btn = btns_[key]
   if btn then
-    return btn.OnClick(itemUuid, configId, data)
+    return btn.OnClick(itemUuid, configId, data, token)
   end
 end
 local loadRedNode = function(key, itemUuid, configId)
@@ -134,6 +227,7 @@ local ret = {
   GetBtnName = getBtnName,
   GetFilterEquipBtns = getFilterEquipBtns,
   OnClick = onClick,
-  LoadRedNode = loadRedNode
+  LoadRedNode = loadRedNode,
+  GetItemBtnInfosByType = getItemBtnInfosByType
 }
 return ret

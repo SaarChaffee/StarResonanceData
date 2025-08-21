@@ -7,7 +7,7 @@ local equip_decompose_loop_list_item_ = require("ui.component.equip.equip_decomp
 
 function Equip_itemlistView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "equip_list_sub", "equip/equip_list_sub", UI.ECacheLv.None)
+  super.ctor(self, "equip_list_sub", "equip/equip_list_sub", UI.ECacheLv.None, true)
   self.parent_ = parent
   self.equipVm_ = Z.VMMgr.GetVM("equip_system")
   self.itemsVm_ = Z.VMMgr.GetVM("items")
@@ -52,11 +52,18 @@ function Equip_itemlistView:initEquipLoopItems()
   self.funcLoopItems_[E.EquipFuncViewType.Equip] = default_equip_loop_list_item_
   self.funcLoopItems_[E.EquipFuncViewType.Decompose] = equip_decompose_loop_list_item_
   self.funcLoopItems_[E.EquipFuncViewType.Recast] = default_equip_loop_list_item_
+  self.funcLoopItems_[E.EquipFuncViewType.Enchant] = default_equip_loop_list_item_
 end
 
 function Equip_itemlistView:initEquipLoopScrollView()
   self.multiSelectedItems_ = {}
-  self.loopGridView_ = loopGridView.new(self, self.scrollView_, self.funcLoopItems_[self.funcViewType_], "com_item_long_3")
+  local itemPath
+  if Z.IsPCUI then
+    itemPath = "com_item_long_3_8"
+  else
+    itemPath = "com_item_long_3"
+  end
+  self.loopGridView_ = loopGridView.new(self, self.scrollView_, self.funcLoopItems_[self.funcViewType_], itemPath)
   self.loopGridView_:Init({})
   if self.funcViewType_ == E.EquipFuncViewType.Decompose then
     self.loopGridView_:SetCanMultiSelected(true)
@@ -113,7 +120,7 @@ function Equip_itemlistView:initSortUi()
   else
     self.isAscending_ = false
   end
-  self:AddClick(self.sortRuleUibinder_.sort_btn, function()
+  self:AddClick(self.sortRuleUibinder_.btn_refresh, function()
     self.selectedItemUuid_ = nil
     self:refreshSort(self.equipSortTyp_, not self.isAscending_)
   end)
@@ -223,6 +230,7 @@ function Equip_itemlistView:refreshEquipListByPartId(partId, force, animUiBinder
     self.equipPartTabs_[self.curPartId_].eff_two_tog:SetEffectGoVisible(false)
   end
   animUiBinder.tog_tab_select_anim:Restart(Z.DOTweenAnimType.Open)
+  self.parent_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.equipPartTabs_[partId].eff_two_tog)
   self.equipPartTabs_[partId].eff_two_tog:SetEffectGoVisible(true)
   self.equipPartTabs_[partId].tog_tab.isOn = true
   self.curPartId_ = partId
@@ -404,10 +412,10 @@ function Equip_itemlistView:AddSelectedItems(items)
   if not self.multiSelectedItems_ then
     self.multiSelectedItems_ = {}
   end
-  for uuid, configId in pairs(items) do
-    if self.multiSelectedItems_[uuid] == nil then
-      self.multiSelectedItems_[uuid] = configId
-      self:SetSelectItem(uuid)
+  for _, data in ipairs(items) do
+    if self.multiSelectedItems_[data.itemUuid] == nil then
+      self.multiSelectedItems_[data.itemUuid] = data.configId
+      self:SetSelectItem(data.itemUuid)
     end
   end
 end

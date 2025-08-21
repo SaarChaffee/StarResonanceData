@@ -12,8 +12,6 @@ message MapBookTableBase {
     int32 AwardId = 1197;
     int_array StickerId = 1275;
 }
-
 message MapBookTableMgr {
-    map<int32, .bokura.MapBookTableBase> datas = 1;
+    repeated bokura.MapBookTableMgr.DatasEntry datas = 1;
 }
-

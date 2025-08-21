@@ -11,8 +11,8 @@ local QteUIPath = {
     [1] = "ui/prefabs/qte/qte_weapon_sf_tpl",
     [2] = "ui/prefabs/qte/qte_weapon_knife_tpl",
     [3] = "ui/prefabs/qte/qte_weapon_knife_1_tpl",
-    [4] = "ui/prefabs/qte/qte_parkour_jump_pc_tpl",
-    [5] = "ui/prefabs/qte/qte_parkour_shadow_dash_pc_tpl"
+    [4] = "ui/prefabs/qte/qte_parkour_jump_tpl_pc",
+    [5] = "ui/prefabs/qte/qte_parkour_shadow_dash_tpl_pc"
   }
 }
 
@@ -83,7 +83,9 @@ function qteInfo:parse(qteRow)
   end
   self.maxTriggerCount_ = qteRow.triggerCount[1]
   self.sucessNeedCount_ = qteRow.triggerCount[2]
-  self.maxDotCount = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrMaxShimmyJumpPac")).Value
+  if Z.EntityMgr.PlayerEnt then
+    self.maxDotCount = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrMaxShimmyJumpPac")).Value
+  end
   self.UIPath = Z.IsPCUI and QteUIPath[2][qteRow.UIType] or QteUIPath[1][qteRow.UIType]
   return true
 end
@@ -117,6 +119,10 @@ function qteInfo:OnTrigger(curTime)
 end
 
 function qteInfo:CheckDot()
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local enegryCount = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EParkourQTEEnergyBean).Value
   if enegryCount >= self.maxDotCount then
     Z.EntityMgr.PlayerEnt:SetLuaIntAttr(Z.LocalAttr.EParkourQTEEnergyBean, 0)
@@ -126,6 +132,10 @@ end
 function qteInfo:SyncRes()
   local worldProxy = require("zproxy.world_proxy")
   worldProxy.QteEnd(self.Id_, self.qteSuccessIdxList_, self.sucessful_)
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   if self.sucessful_ then
     if self.qteRow.QTEType == 0 then
       for _, v in ipairs(self.qteSuccessIdxList_) do

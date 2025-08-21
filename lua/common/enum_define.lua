@@ -1,5 +1,16 @@
 E = {}
 E.RpcChannelType = {Gateway = 0, World = 1}
+E.LocalUserDataType = {
+  Device = 0,
+  Env = 1,
+  Account = 2,
+  Character = 3
+}
+E.GameEnvironment = {
+  Product = 0,
+  Preview = 1,
+  Test = 2
+}
 E.LevelTableType = {
   Npc = 1,
   Zone = 2,
@@ -47,16 +58,29 @@ E.DlgPreferencesKeyType = {
   WorldBossMatch = "WorldBossMatch",
   GashaEnsureTipsShowKey = "GashaEnsureTipsShowKey",
   EquipPutOnNoBindFlag = "EquipPutOnNoBindFlag",
+  EquipBreakDownExclusiveEquipTips = "EquipBreakDownExclusiveEquipTips",
   EquipDecomposeHighQualityTips = "EquipDecomposeHighQualityTips",
+  EquipBreakDownRareEquipTips = "EquipBreakDownRareEquipTips",
   EquipEquipDecomposeTips = "EquipEquipDecomposeTips",
   EquipRecastCanTradeTips = "EquipRecastCanTradeTips",
   EquipRecastingManytimesTips = "EquipRecastingManytimesTips",
   EquipRecastingManyTimesTips = "EquipRecastingManyTimesTips",
   EquipRecastingHighPerfectTips = "EquipRecastingHighPerfectTips",
   EquipRecastingBindingTips = "EquipRecastingBindingTips",
+  EquipRecastMaxPerfect = "EquipRecastMaxPerfect",
+  EquipEnchantBindingTips = "EquipEnchantBindingTips",
   StallPublicityDialogTips = "StallPublicityDialogTips",
   StallNormalDialogTips = "StallNormalDialogTips",
-  ItemRecycleTips = "ItemRecycleTips"
+  ItemRecycleTips = "ItemRecycleTips",
+  EquipChangeEnchantItem = "EquipChangeEnchantItem",
+  FashionAdvancedColorTips = "FashionAdvancedColorTips",
+  ExchangeShopExchangeNoCurProfession = "ExchangeShopExchangeNoCurProfession",
+  GashaUseBinding = "gashaUseBinding",
+  MailDeleteConfirmTips = "MailDeleteConfirmTips",
+  MatchLeaderConfirmTips = "MatchLeaderConfirmTips",
+  PersonalzoneSecondCheck = "PersonalzoneSecondCheck",
+  ResonanceItemDecompose1 = "ResonanceItemDecompose1",
+  ResonanceItemDecompose2 = "ResonanceItemDecompose2"
 }
 E.PlayerBattleResType = {
   TdlPurpleRes = 12041,
@@ -78,11 +102,22 @@ E.ProfessionResEffType = {
   Decline = 2,
   Empty = 3
 }
+E.MapMode = {World = 0, Area = 1}
 E.MapFlagTypeId = {
   TransferDoor = 103,
   CustomTag1 = 301,
-  CustomTag2 = 302,
-  CustomTag3 = 504
+  CustomTag2 = 302
+}
+E.SceneTagType = {
+  SceneEnter = 2,
+  Custom = 3,
+  Dungeon = 4
+}
+E.SceneTagGroupId = {
+  Shop = 1,
+  Make = 2,
+  Cook = 3,
+  Custom = 10
 }
 E.ShowProportionType = {
   Low = 1,
@@ -112,7 +147,8 @@ E.PlayerCtrlBtnPCShowBtnType = {
 E.ItemBtnState = {
   Active = 1,
   Hide = 2,
-  UnActive = 3
+  UnActive = 3,
+  IsDisabled = 4
 }
 E.AwardPreLimitType = {SexLimit = 1}
 E.AwardPreType = {
@@ -142,6 +178,7 @@ E.ColorHexValues = {
   InvestigateUnlockClue = "#DA9B8F",
   Yellow = "#FDC359",
   White = "#FFFFFF",
+  Gray = "#808080",
   TipsGreen = "#CEE98D",
   JobActive = "#AFE716",
   JobNotActive = "#A2A2A2",
@@ -149,6 +186,13 @@ E.ColorHexValues = {
   DarkGreen = "#4C774A",
   DarkPruple = "#675397",
   DarkBlue = "#1B8BA5"
+}
+E.FashionCustomsizedLineColor = {
+  Green = "#A1F2DF",
+  Blue = "#9BC8FF",
+  Pruple = "#E5B3FF",
+  Yellow = "#FCE14A",
+  Red = "#FFA391"
 }
 E.ItemQuality = {
   White = 0,
@@ -162,7 +206,15 @@ E.ItemSpecialDisplayType = {
   Mod = 1,
   Talent = 2,
   ResonanceSkill = 3,
-  FashionAndVehicle = 4
+  FashionAndVehicle = 4,
+  WeaponSkin = 5,
+  HeadPortrait = 6,
+  HeadFrame = 7,
+  IdCard = 8,
+  Badges = 9,
+  ZoneBackground = 10,
+  Title = 11,
+  HouseCertificate = 12
 }
 E.TextStyleTag = {
   TipsTitle = "tipsTitle",
@@ -199,6 +251,8 @@ E.TextStyleTag = {
   ChannelGuild = "ChannelGuild",
   ChannelSystem = "ChannelSystem",
   ChannelFriend = "ChannelFriend",
+  ChannelPrivate = "ChannelPrivate",
+  ChannelFriendPC = "ChannelFriendPC",
   ItemNotEnough = "item_not_enought",
   AttrUp = "attr_up",
   GrayTextColor = "GrayTextColor",
@@ -228,7 +282,11 @@ E.TextStyleTag = {
   MapTextFinish = "map_text_finish",
   RoloLabAttr = "role_lab_attr",
   UnionDeviceNormal = "UnionDeviceNormal",
-  UnionDeviceLock = "UnionDeviceLock"
+  UnionDeviceLock = "UnionDeviceLock",
+  RoleLevelLabUp = "RoleLevelLabUp",
+  FashionCostRedTips = "FashionCostRedTips",
+  ConditionMet = "condition_met",
+  ConditionNotMet = "condition_not_met"
 }
 E.EquipPart = {
   Weapon = 200,
@@ -242,6 +300,11 @@ E.EquipPart = {
   LeftBracelet = 208,
   RightBracelet = 209,
   Amulet = 210
+}
+E.EquipRareQuality = {Purple = 301, Orange = 401}
+E.EquipRareQualityColor = {
+  [E.EquipRareQuality.Purple] = "#b08aff",
+  [E.EquipRareQuality.Orange] = "#efda49"
 }
 E.WeaponPos = {Left = 1, Right = 2}
 E.WeaponId = {
@@ -257,18 +320,12 @@ E.ExpressionType = {
   MultAction = 3
 }
 E.DisplayExpressionType = {
-  None = 0,
+  History = 0,
   CommonAction = 1,
   LoopAction = 2,
   MultAction = 3,
-  Emote = 4
-}
-E.ExpressionTogType = {
-  Action = 1,
-  Emo = 2,
-  Double = 3,
-  Collection = 4,
-  Customization = 5
+  Emote = 4,
+  FishingAction = 5
 }
 E.ExpressionState = {
   UnActive = 0,
@@ -301,7 +358,8 @@ E.CamerasysFuncType = {
   Show = 10,
   Scheme = 11,
   LookAt = 13,
-  UnionBg = 14
+  UnionBg = 14,
+  Fishing = 15
 }
 E.CamerasysFuncIdType = {
   Action = 102018,
@@ -327,6 +385,7 @@ E.PhotoDecorationsType = {
 }
 E.AlbumSelectType = {Normal = 0, Select = 1}
 E.DecorateLayerType = {CamerasysType = 0, AlbumType = 1}
+E.CameraStickType = {Small = 1, Middle = 2}
 E.AlbumJurisdictionType = {
   All = 0,
   Friend = 1,
@@ -339,7 +398,7 @@ E.AlbumOperationType = {
   Move = 1,
   UnionMove = 2
 }
-E.CamerasysShowEntityType = {
+E.CameraSystemShowEntityType = {
   None = 0,
   Oneself = 1,
   Chum = 2,
@@ -351,7 +410,9 @@ E.CamerasysShowEntityType = {
   AngelWeapons = 8,
   Enemy = 9,
   WeaponsAppearance = 10,
-  OtherPlayer = 11
+  OtherPlayer = 11,
+  Collection = 12,
+  CameraTeamMember = 13
 }
 E.CamerasysShowUIType = {None = 0, Name = 1}
 E.CamerasysContrShowType = {Entity = 0, UI = 1}
@@ -401,9 +462,11 @@ E.FashionRegion = {
   FaceMask = 714,
   MouthMask = 715,
   Tail = 716,
+  Back = 717,
   Earrings = 721,
   Necklace = 722,
-  Ring = 723
+  Ring = 723,
+  WeapoonSkin = 731
 }
 E.FashionResType = {
   Clothes = 0,
@@ -420,23 +483,36 @@ E.FashionResType = {
   FaceWear = 11,
   MouthWear = 12,
   Earrings = 13,
-  Tail = 14
+  Tail = 14,
+  Back = 15
 }
-E.FashionTipsReason = {UnlockedWear = 1, UnlockedColor = 2}
+E.FashionPrivilegeType = {
+  ExchangeShop = 1,
+  ExclusiveShop = 2,
+  MoonGift = 3
+}
+E.FashionTipsReason = {
+  UnlockedWear = 1,
+  UnlockedColor = 2,
+  UnlockedWeaponSkin = 3,
+  UnlockedFashionAdvanced = 4
+}
 E.EquipItemSortType = {
   Quality = 1,
   GS = 2,
   Lv = 3,
   QualityConfig = 4,
-  QualityAndGS = 5
+  QualityAndGS = 5,
+  Season = 6
 }
 E.ResonanceItemSortType = {Quality = 1}
 E.RecycleItemSortType = {Quality = 1, Count = 2}
 E.EquipFuncViewType = {
   Weapon = 0,
   Equip = 1,
-  Decompose = 6,
-  Recast = 7
+  Decompose = 2,
+  Recast = 3,
+  Enchant = 4
 }
 E.SpecialItem = {RefineEnergy = 1030001}
 E.ItemChangeType = {
@@ -455,7 +531,8 @@ E.ItemAddEventType = {
 E.EItemTipsPopType = {
   Parent = 1,
   Bounds = 2,
-  WorldPosition = 3
+  WorldPosition = 3,
+  ScreenPosition = 4
 }
 E.EItemTipsShowType = {Default = 1, OnlyClient = 2}
 E.TipsItemFuncType = {
@@ -492,7 +569,11 @@ E.GoalGuideSource = {
   MapFlag = 6,
   MonsterExplore = 7,
   GetItem = 8,
-  Env = 9
+  Env = 9,
+  CanAcceptSideQuest = 10,
+  CanAcceptAreaQuest = 11,
+  CanAcceptGuideQuest = 12,
+  CanAcceptEventQuest = 13
 }
 E.GoalParam = {
   Type = 1,
@@ -511,7 +592,14 @@ E.QuestMgrStage = {
   InitEnd = 3,
   BeginUnInit = 4
 }
-E.QuestType = {Main = 1, WorldQuest = 16}
+E.QuestType = {
+  Main = 1,
+  Side = 2,
+  Area = 3,
+  Guide = 4,
+  Event = 5,
+  WorldQuest = 16
+}
 E.QuestTypeGroup = {WorldEvent = 8}
 E.QuestTrackViewState = {
   Detail = 1,
@@ -585,15 +673,20 @@ E.BackPackItemPackageType = {
   Weapon = 8,
   Personalzone = 9,
   UnionResource = 10,
+  HouseItem = 11,
+  Ride = 12,
+  HouseCurrency = 13,
   SpecialItem = 102,
   CookFoodType = 109,
-  RecycleItem = 110
+  RecycleItem = 110,
+  FurnitureItem = 1101
 }
 E.ItemFunctionType = {
   Buff = 1,
   Gift = 2,
   Hero = 3,
-  Function = 101
+  Function = 101,
+  FuncSwitch = 102
 }
 E.ResonanceSkillItemType = {Prop = 300, Material = 301}
 E.FishingItemType = {FishingRod = 1103, FishBait = 1102}
@@ -603,10 +696,10 @@ E.TeamInviteType = {
   Near = 3
 }
 E.InvitationTipsType = {
-  Invite = 1,
-  Request = 2,
-  Leader = 3,
-  Transfer = 4,
+  TeamInvite = 1,
+  TeamRequest = 2,
+  TeamLeader = 3,
+  TeamTransfer = 4,
   MultActionInvite = 5,
   Branching = 6,
   WorldQuest = 7,
@@ -615,7 +708,9 @@ E.InvitationTipsType = {
   Warehouse = 10,
   VehicleApply = 11,
   VehicleInvite = 12,
-  UnionWarDance = 13
+  UnionWarDance = 13,
+  Summon = 14,
+  LeisureActivity = 15
 }
 E.MultActionType = {
   Null = 1,
@@ -662,18 +757,20 @@ E.ChatFuncId = {
 E.ChatFuncType = {
   Emoji = 1,
   Record = 2,
-  Backpack = 3
+  Backpack = 3,
+  QuickMessage = 4
 }
 E.FunctionID = {
   None = 0,
   MiniMap = 100301,
   Map = 100302,
+  MapMark = 801002,
+  MapSetting = 801003,
   Synthesis = 100220,
   Shredder = 100241,
   Fashion = 101101,
   MainFuncMenu = 200000,
   Memory = 300301,
-  RoleResonance = 103000,
   Cosmetology = 103004,
   Role = 104000,
   RoleAttr = 104001,
@@ -687,9 +784,13 @@ E.FunctionID = {
   MapExplore = 100801,
   MapBook = 100802,
   PhotoTask = 100803,
-  MonsterExplore = 100804,
+  ExploreMonster = 100804,
+  ExploreMonsterNormal = 100815,
+  ExploreMonsterElite = 100805,
+  ExploreMonsterBoss = 100806,
+  MagicalCreature = 100814,
   MainChat = 102100,
-  LandScapeMode = 333333,
+  LandScapeMode = 333334,
   WeaponProfression = 104100,
   EquipChange = 100701,
   EquipFunc = 100702,
@@ -701,7 +802,9 @@ E.FunctionID = {
   Personalzone = 100908,
   PersonalzoneTitle = 100909,
   PersonalzonePhoto = 100910,
+  PersonalzoneBg = 100911,
   HeroDungeon = 300200,
+  ExtremeSpace = 300206,
   WorldEvent = 800100,
   PayFunction = 800801,
   ExChangeMoney = 800700,
@@ -713,9 +816,11 @@ E.FunctionID = {
   WeaponNormalSkill = 200502,
   WeaponSupportSkill = 200503,
   Talent = 104200,
+  ProfessionLv = 104201,
   Mod = 104210,
   ModIntensify = 104211,
   ModDecompose = 104212,
+  ModTrace = 104213,
   Illustrated = 105010,
   Collect = 600301,
   Monster = 800901,
@@ -735,10 +840,29 @@ E.FunctionID = {
   SeasonAchievement = 800504,
   SeasonCultivate = 800506,
   SeasonTitleEnter = 800510,
+  SeasonBpUnlockUpgrade = 800514,
+  MonthlyCard = 801200,
   Shop = 800800,
+  QueryBalance = 800805,
+  TokenShop = 800812,
+  FriendShipShop = 800817,
+  FashionShop = 800830,
+  FashionGiftShop = 800831,
+  FashionClothesShop = 800832,
+  FashionJewelryShop = 800833,
+  FashionFaceShop = 800834,
+  TreasuresShop = 800840,
+  MountShop = 800841,
+  WeaponShop = 800842,
+  WeaponShop2 = 800829,
   Cook = 600901,
+  CompensatenShop = 800870,
+  ActivityShop = 819300,
+  CookLife = 501004,
+  LifeWork = 501100,
   Questionnaire = 900101,
-  HeroNormalDungeon = 30020,
+  HeroNormalDungeon = 300205,
+  HeroDungeonGoblin = 300212,
   HeroDungeonDiNa = 300201,
   HeroChallengeDungeon = 300202,
   HeroDungeonJuTaYiJi = 300203,
@@ -747,16 +871,25 @@ E.FunctionID = {
   HeroChallengeJuLongZhuaHen = 300208,
   HeroDungeonKaNiMan = 300209,
   HeroChallengeKaNiMan = 300210,
+  HeroDungeonDarkFort = 300213,
+  HeroChallengeDarkFort = 300214,
   EntranceDiNa = 300100,
   EntranceJuTaYiJi = 300101,
   UnionTask = 500122,
-  ExploreMonsterElite = 100805,
-  ExploreMonsterBoss = 100806,
   Home = 102501,
   Trade = 800400,
+  TradeConsignment = 800401,
+  TradeBuy = 800405,
+  TradeBuyFocus = 800406,
+  TradePublicNotice = 800407,
+  TradePublicNoticeFocus = 800408,
+  TradePreorder = 800409,
+  TradeSell = 800410,
   ExitDungeon = 100401,
   WorldBoss = 800902,
+  WorldBossSchedule = 800903,
   Fishing = 300000,
+  FishingShop = 300003,
   CraftEnergy = 100807,
   Rename = 700102,
   MysteriousShop = 800803,
@@ -769,8 +902,110 @@ E.FunctionID = {
   Recycle = 106100,
   SevendayTargetTitlePage = 800507,
   SevendayTargetManual = 800508,
+  FunctionPreview = 800512,
   UnionHunt = 500151,
-  UnionWarDance = 900200
+  UnionDailySign = 500155,
+  UnionWarDance = 900200,
+  RecommendFightValue = 200700,
+  CompetencyAssess = 200701,
+  Proficiency = 200401,
+  LifeProfession = 501000,
+  LifeProfessionPlant = 501001,
+  LifeProfessionMine = 501002,
+  LifeProfessionStone = 501003,
+  LifeProfessionCook = 501004,
+  LifeProfessionChemistry = 501005,
+  LifeProfessionCast = 501006,
+  LifeProfessionJinXie = 501007,
+  LifeProfessionMaterial = 501008,
+  SkillSkin = 200506,
+  RechargeActivityBuyGift = 801300,
+  RechargeActivityBuyGiftA = 801301,
+  RechargeActivityBuyGiftB = 801302,
+  RoleLevel = 200101,
+  Performace = 100601,
+  ExpressionPC = 100605,
+  FishingAction = 100606,
+  CollectionReward = 101105,
+  CollectionVipLevel = 101106,
+  SceneLine = 101010,
+  ShortcutMenu = 106001,
+  UnionHeadCamera = 500153,
+  UnionCardCamera = 500154,
+  UnionPhotoWall = 500156,
+  UnionPhotoSet = 500157,
+  ChatSettingChannelShow = 102195,
+  ChatSettingBarrageShow = 102197,
+  ChatSettingFilter = 102198,
+  ShareToChat = 300007,
+  SelectProfession = 200600,
+  ChatExpressionFast = 102250,
+  SharePhotoToUnion = 102413,
+  Warehouse = 100106,
+  Report = 500400,
+  UserSupport = 100211,
+  Announcement = 100212,
+  HaoPlayAnnouncement = 100213,
+  HaoPlayUserSupport = 900116,
+  HaoPlayUserCenter = 900117,
+  APJAnnouncement = 100214,
+  BlessExp = 500500,
+  DetachStuck = 100200,
+  Treasure = 501201,
+  CameraDepth = 102007,
+  House = 102500,
+  HouseFurnitureGuide = 102502,
+  HouseProduction = 102503,
+  TencentQQChannel = 900102,
+  TencentQQPrivilege = 900103,
+  TencentQQGift = 900104,
+  TencentQQGameCenter = 900105,
+  TencentWeChatGift = 900106,
+  TencentWeChatPrivilege = 900107,
+  TencentSuperVip = 900108,
+  TencentGrowth = 900109,
+  TencentFriends = 900110,
+  TencentGroup = 900111,
+  TencentQQArk = 900112,
+  TapTapEvaluation = 900113,
+  TokenLink = 900114,
+  AppleStoreEvaluation = 900115,
+  TencentWechatOriginalShare = 300008,
+  SDKShareLocalPhoto = 102414,
+  SDKShareCloudPhoto = 102415,
+  Handbook = 600400,
+  HandbookMonthCard = 600401,
+  HandbookRead = 600402,
+  HandbookDictionary = 600403,
+  HandbookPostCard = 600404,
+  HandbookCharater = 600405,
+  PathFinding = 102900,
+  LeisureActivities = 800200,
+  Achievement = 800515,
+  HouseQuest = 102505,
+  PlayerNewbie = 100502,
+  HomeFlowerRecycle = 106105,
+  HomeBuyShop = 102504,
+  HomeSellShop = 102508,
+  HomeWarehouse = 102507,
+  HomeLiveTogether = 102513,
+  TeamVoice = 101008,
+  TeamVoiceMic = 101009,
+  FaceShareScanIOS = 103005,
+  FaceShareScanAndroid = 103006,
+  FaceShareLoadWin = 103007,
+  FaceShareLoadIOS = 103008,
+  FaceShareLoadAndroid = 103009,
+  ThemePlay = 820000,
+  Dps = 100503,
+  RaidDungeonBuff = 500125,
+  PandoraPopup = 819000,
+  AddFriend = 102301,
+  DeleteFriend = 102312,
+  FashionDyeing = 101107,
+  TeamTwenty = 101011,
+  ChatVoiceInput = 102206,
+  ChatVoiceText = 102207
 }
 E.BackpackFuncId = {
   Backpack = 100101,
@@ -779,7 +1014,11 @@ E.BackpackFuncId = {
   CardBp = 100105,
   ResonanceSkill = 100107
 }
-E.ResonanceFuncId = {Decompose = 200505, Create = 200504}
+E.ResonanceFuncId = {
+  Decompose = 200505,
+  Create = 200504,
+  Advance = 200507
+}
 E.SetFuncId = {
   Setting = 100201,
   SettingControl = 100202,
@@ -789,14 +1028,22 @@ E.SetFuncId = {
   SettingOther = 100206,
   SettingExpend = 100207,
   SettingKey = 100208,
-  SettingLanguage = 100209
+  SettingLanguage = 100209,
+  GamepadKeyDisplay = 100260,
+  SettingLanguageVoice = 110209,
+  NpcVoice = 110210
 }
 E.EquipFuncId = {
   Equip = 100701,
   EquipFunc = 100702,
   EquipDecompose = 100707,
   EquipRecast = 100708,
-  EquipRefine = 100709
+  EquipRefine = 100709,
+  EquipEnchant = 100710,
+  EquipTrace = 100711,
+  EquipBreak = 100712,
+  EquipMake = 100713,
+  EquipSuit = 100714
 }
 E.PerformanceFuncId = {
   Performace = 100601,
@@ -819,7 +1066,8 @@ E.UnionFuncId = {
   Build = 500106,
   Collection = 500107,
   Active = 500109,
-  Hunt = 500108
+  Hunt = 500108,
+  Buff = 500121
 }
 E.AlbumFuncId = {
   Album = 102400,
@@ -847,9 +1095,11 @@ E.IdCardFuncId = {
   EnterLine = 4001,
   InvteWarehouse = 100106,
   ApplyForRide = 102801,
-  InviteRide = 102802
+  InviteRide = 102802,
+  Report = 500400
 }
 E.ExchangeFuncId = {Exchange = 100230, UnionExchange = 100233}
+E.ShopFuncID = {MonthlyCard = 801200}
 E.ExchangeLimitType = {
   Not = -1,
   Always = 0,
@@ -877,7 +1127,11 @@ E.GlobalTimerTag = {
   TeamSpeakVoice = 18,
   LoadPlayerHead = 19,
   RefreshEnergy = 20,
-  WeeklyHuntNext = 21
+  WeeklyHuntNext = 21,
+  SeasonAchievementRed = 22,
+  DungeonPrepareTime = 23,
+  DungeonPrepareCD = 24,
+  TeamTypeCD = 25
 }
 E.PrefabPoolState = {
   None = 0,
@@ -908,15 +1162,34 @@ E.SettingID = {
   CameraLockFirst = 1013,
   CameraSeismicScreen = 1014,
   PulseScreen = 1015,
+  SkillController = 1016,
+  SkillControllerPcUp = 1024,
+  CameraTranslationRotate = 1017,
+  CameraReleasingSkill = 1018,
+  CameraReleasingSkillAngle = 1019,
+  CameraSeek = 1020,
+  CameraMelee = 1022,
+  RemoveMouseRestrictions = 1023,
+  CameraMove = 1021,
   KeyHint = 2001,
   EffSelf = 3001,
   EffEnemy = 3002,
   EffTeammate = 3003,
   EffOther = 3004,
+  EffectRest = 3005,
+  HudNumberClose = 3010,
+  HudNumberSimple = 3011,
   WeaponDisplay = 4001,
   PlayerHeadInformation = 4002,
   OtherPlayerHeadInformation = 4003,
-  NPCPlayerHeadInformation = 4004
+  NPCPlayerHeadInformation = 4004,
+  ShowTaskEffect = 4005,
+  ToyVisible = 5000
+}
+E.SettingToyType = {
+  Invisible = 0,
+  VisibleNoInteract = 1,
+  VisibleAndInteract = 2
 }
 E.SettingHUDType = {
   Name = 1,
@@ -951,11 +1224,11 @@ E.AlbumMainState = {
   UnionCloud = 4
 }
 E.CachePhotoType = {
-  CacheEffectPhoto = 0,
   CacheOriPhoto = 1,
-  CacheThumbPhoto = 2,
-  CacheHeadPhoto = 3,
-  CacheHalfPhoto = 4
+  CacheEffectPhoto = 2,
+  CacheThumbPhoto = 3,
+  CacheHeadPhoto = 4,
+  CacheHalfPhoto = 5
 }
 E.HttpTokenType = {
   FuncTypeDefault = 0,
@@ -987,16 +1260,23 @@ E.CameraState = {
   MiscSystem = 13
 }
 E.TakePhotoSate = {
-  FreeLook = 1,
+  Default = 1,
   SelfPhoto = 2,
-  VR = 3,
-  UnionTakePhoto = 4
+  AR = 3,
+  UnionTakePhoto = 4,
+  Battle = 5
 }
-E.UnionCameraSubType = {Body = 0, Head = 1}
+E.UnionCameraSubType = {
+  Body = 0,
+  Head = 1,
+  Fashion = 2
+}
 E.CameraTargetStage = {
-  [E.CameraState.Default] = 1,
-  [E.CameraState.AR] = 2,
-  [E.CameraState.SelfPhoto] = 3
+  [E.TakePhotoSate.Default] = 1,
+  [E.TakePhotoSate.AR] = 2,
+  [E.TakePhotoSate.SelfPhoto] = 3,
+  [E.TakePhotoSate.UnionTakePhoto] = 4,
+  [E.TakePhotoSate.Battle] = 5
 }
 E.ESystemTipInfoType = {
   ItemInfo = 1,
@@ -1020,6 +1300,7 @@ E.ParkourStyleItemLifeCycle = {
 }
 E.LockOperationMode = {Btn = 1, Free = 2}
 E.GlideDirectionCtrlMode = {Axis = 1, Camera = 2}
+E.FreeSkillUseMode = {Click = 1, Release = 2}
 E.GlideDiveCtrlMode = {Up = 1, Down = 2}
 E.PictureType = {
   ENormalPicture = 0,
@@ -1052,12 +1333,14 @@ E.MapSubViewType = {
   Info = 1,
   NormalQuest = 2,
   EventQuest = 3,
-  Setting = 4,
   Custom = 5,
   PivotReward = 6,
   PivotProgress = 7,
   DungeonEnter = 8,
-  DungeonAdd = 9
+  DungeonAdd = 9,
+  LifeSystem = 10,
+  Collection = 11,
+  SceneLock = 12
 }
 E.CameraSchemeType = {DefaultScheme = 0, CustomScheme = 1}
 E.AlbumServerCtrlType = {
@@ -1088,7 +1371,8 @@ E.TipsType = {
   MiddleTips = 9,
   QuestLetter = 10,
   DungeonRedTips = 11,
-  DungeonGreenTips = 12
+  DungeonGreenTips = 12,
+  QuestLetterWithBackground = 13
 }
 E.NativeTextureCallToken = {
   album_photo_item = 10001,
@@ -1120,7 +1404,7 @@ E.SlotType = {Skill = 0, Normal = 1}
 E.SkillType = {
   WeaponSkill = 1,
   MysteriesSkill = 2,
-  SupportSkill = 3
+  EnvironmentSkill = 3
 }
 E.SlotName = {
   SkillSlot_1 = "1",
@@ -1335,21 +1619,7 @@ E.DrawState = {
   CanDraw = 1,
   AlreadyDraw = 2
 }
-E.PlanetmemoryType = {
-  None = 0,
-  Common = 1,
-  Cream = 2,
-  Boss = 3,
-  Special = 4,
-  Incident = 5
-}
-E.PlanetmemoryState = {
-  Close = 0,
-  Open = 1,
-  Pass = 2
-}
-E.PlanetmemoryFogState = {Unlocked = 0, NotYetUnlocked = 1}
-E.PlanetMemoryDeadViewBtnType = {LeaveCopy = 0, Restart = 1}
+E.TrialRoadDeadViewBtnType = {LeaveCopy = 0, Restart = 1}
 E.DungeonType = {
   None = 0,
   DungeonCopy = 1,
@@ -1367,7 +1637,8 @@ E.DungeonType = {
   UnionHunt = 13,
   HeroKeyDungeon = 14,
   WorldBoss = 15,
-  WeeklyTower = 16
+  WeeklyTower = 16,
+  MasterChallengeDungeon = 17
 }
 E.DungeonResultHudType = {
   None = 0,
@@ -1392,13 +1663,12 @@ E.DungeonResult = {
   DungeonResultFailed = 2
 }
 E.DungeonTimeShowType = {time = 1, num = 2}
-E.PlanetMemoryTipsType = {Affix = 0, Monster = 1}
 E.PCKeyHint = {
-  LockTarget = "KeyHint23",
-  ShowMouse = "KeyHint116",
-  RunWalkSwitch = "KeyHint6",
-  Dash = "KeyHint8",
-  Jump = "KeyHint7"
+  LockTarget = 23,
+  ShowMouse = 116,
+  RunWalkSwitch = 6,
+  Dash = 8,
+  Jump = 7
 }
 E.SceneObjType = {
   Normal = 0,
@@ -1406,12 +1676,14 @@ E.SceneObjType = {
   PivotPort = 2,
   Resonance = 3,
   Transfer = 4,
-  WorldQuest = 5
+  WorldQuest = 5,
+  Collection = 6
 }
 E.RedType = {
   TeamApplyMain = 1,
   TeamApplySystem = 2,
   TeamApplyButton = 3,
+  EscMenu = 12,
   UnionMemberTab = 14,
   UnionApplyButton = 15,
   WorldEventReward = 16,
@@ -1422,8 +1694,6 @@ E.RedType = {
   QuestSeasonDay2 = 22,
   QuestSeasonDay3 = 23,
   Proficiency = 24,
-  EnvEnter1 = 25,
-  EnvEnter2 = 26,
   HeroMemory = 103,
   HeroDungeonReward = 104,
   TalentEnter = 201,
@@ -1459,6 +1729,8 @@ E.RedType = {
   SeasonShopOneTab = 2011,
   SeasonShopItem = 2012,
   SeasonTitle = 2020,
+  MonthlyCardTab = 2007,
+  MonthlyCardGift = 2008,
   WorldEvent = 38,
   PivotProgress = 40,
   MonsterExplore = 36,
@@ -1485,6 +1757,7 @@ E.RedType = {
   WeaponSkillUpLevel = 508,
   WeaponSkillRemould = 509,
   ResonanceMakePropItem = 520,
+  Achievement = 1029000,
   SeasonAchievement = 1029001,
   SeasonCenter = 800500,
   SeasonBpCardAndActivation = 39,
@@ -1530,6 +1803,8 @@ E.RedType = {
   MonsterHuntTargetReceiveBtn = 74,
   MonsterHuntLevel = 75,
   MonsyerHuntLevelReceiveBtn = 76,
+  RoleMainRolelevelPageBtn = 77,
+  EnvSkillPageBtn = 78,
   HelpsysRed = 103001,
   HelpsysTabRed = 1030010001,
   HelpsysItemRed = 103001002,
@@ -1539,6 +1814,7 @@ E.RedType = {
   PersonalzoneCard = 1505,
   PersonalzoneMedal = 1506,
   PersonalzoneTitle = 1504,
+  PersonalzoneBg = 1507,
   FishingEsc = 150,
   FishingMainLevelBtn = 151,
   FishingIllustratedTab = 152,
@@ -1582,8 +1858,32 @@ E.RedType = {
   UnionHuntCount = 3003,
   UnionDanceTab = 3004,
   UnionDanceCount = 3005,
+  HouseRed = 4000,
+  HouseLevelRed = 4001,
   WeeklyHuntTarget = 1601,
-  WeeklyHuntAward = 1602
+  WeeklyHuntAward = 1602,
+  SkillSkinUnlock = 172,
+  SkillSkinBtn = 173,
+  WeeklyHuntAward = 1602,
+  RechargeActivityBuyGift = 2005,
+  FashionRed = 601,
+  FashionCollectionScoreRewardRed = 602,
+  FashionCollectionWindowRed = 603,
+  FashionCollectionWindowPrivilegeRed = 604,
+  FashionClothes = 605,
+  FashionOrnament = 606,
+  FashionWeapon = 607,
+  PandoraAnnounce = 1701,
+  WeaponRolePlayerPc = 1021001,
+  ChatInputBoxMoreBtn = 701,
+  ChatInputBoxEmojiFunctionBtn = 702,
+  Treasure = 50120101,
+  Vehicle = 651,
+  VehicleItem = 652,
+  MasterScore = 81000701,
+  ThemePlay = 82000000,
+  ThemePlayActivity = 82000001,
+  ThemePlayPandora = 82000002
 }
 E.UnBreakType = {
   Default = 1,
@@ -1654,6 +1954,7 @@ E.SteerType = {
   FinishQuest = 505,
   Trigger = 506,
   ChangeWeapon = 507,
+  OnInputKey = 508,
   StopEPFlow = 509,
   EndCutscene = 510,
   ActiveTaskGuide = 511,
@@ -1671,6 +1972,7 @@ E.SteerType = {
   ReceiveItemType = 523,
   BagItem = 524,
   AlreadyPutEquip = 525,
+  Timer = 526,
   Rolelevel = 533,
   ResonanceWeapon = 9,
   PutOnEquip = 11
@@ -1702,7 +2004,15 @@ E.DynamicSteerType = {
   WeaponSkillSlot = 15,
   EquipBtn = 16,
   ChooseSkillIndex = 17,
-  MedalEditItemIndex = 18
+  MedalEditItemIndex = 18,
+  EquipEnchantItemIndex = 19,
+  BagFirstIndex = 20,
+  FashionItemIndex = 21,
+  expressionGroupIndex = 22,
+  HomeEditorTogId = 23,
+  HomeEditorItemIndex = 24,
+  AchievementSeasonClassId = 25,
+  CurrencyItemId = 26
 }
 E.ItemLabType = {
   Num = 1,
@@ -1722,12 +2032,20 @@ E.AudioGameState = {
   Ingame = "Normal",
   Menu = "Menu"
 }
-E.ItemType = {ActionExpression = 107, Vehicle = 1201}
+E.ItemType = {
+  CostItem = 11,
+  ActionExpression = 107,
+  Blueprint = 117,
+  FashinUnlockItem = 119,
+  VehicleUnlockItem = 120,
+  Vehicle = 1201
+}
 E.EBuffPriority = {
   NotShow = 0,
   Secondly = 1,
   Highest = 2,
-  Notice = 3
+  Notice = 3,
+  NoticeAndTeamShow = 4
 }
 E.EBuffType = {
   Debuff = 0,
@@ -1735,13 +2053,17 @@ E.EBuffType = {
   GainRecovery = 2,
   Item = 3
 }
-E.ESystemCameraId = {WeaponRole = 4000}
+E.ESystemCameraId = {WeaponRole = 4000, WeaponRoleScreen = 4001}
 E.MainViewHideStyle = {
   None = 0,
   Left = 1,
   Right = 2,
   Top = 3,
-  Bottom = 4
+  Bottom = 4,
+  UpperLeft = 5,
+  UpperRight = 6,
+  LowLeft = 7,
+  LowRight = 8
 }
 E.MainUIArea = {
   UpperLeft = 1,
@@ -1754,6 +2076,13 @@ E.MainUIShowLeftType = {
   DefaultShowButRec = 1,
   DefaultHide = 2,
   DefaultShow = 3
+}
+E.MainUIPlaceType = {
+  LeftTop = 1,
+  LeftBottom = 2,
+  RightTop = 3,
+  Esc = 4,
+  EscRight = 5
 }
 E.SkillViewSubViewType = {
   skillLevel = "skillLevelUp",
@@ -1773,6 +2102,17 @@ E.ItemFilterType = {
   EquipGs = 1024,
   EquipRecast = 2048,
   EquipPerfect = 4096
+}
+E.CommonFilterType = {
+  ModType = 1,
+  ModQuality = 2,
+  ModEffectSelect = 3,
+  SeasonEquip = 4,
+  EquipGs = 5,
+  UnlockProfession = 6,
+  ResonanceSkillRarity = 7,
+  ResonanceSkillType = 8,
+  ResonanceHave = 9
 }
 E.EWorldEventType = {
   Blue = 1,
@@ -1807,6 +2147,7 @@ E.DungeonTimerEffectType = {
   EDungeonTimerEffectTypeSub = 2,
   EDungeonTimerEffectTypeChange = 3
 }
+E.DungeonTimerTimerLookType = {EDungeonTimerTimerLookTypeDefault = 0, EDungeonTimerTimerLookTypeRed = 1}
 E.EActionType = {Idle = 19}
 E.UnrealSceneSlantingLightStyle = {
   Green = 0,
@@ -1831,8 +2172,16 @@ E.EHueModifiedMode = {
   Slider = 2,
   Board = 3
 }
-E.EShopType = {Shop = 0, SeasonShop = 1}
-E.EShopShowType = {Shop = 0, FishingShop = 1}
+E.EShopItemType = {ItemType = 1, WeaponProfession = 2}
+E.EShopType = {
+  Shop = 0,
+  SeasonShop = 1,
+  FishingShop = 2,
+  TokenShop = 3,
+  HouseShop = 4,
+  CompensateShop = 5,
+  ActivityShop = 6
+}
 E.SeasonJumpType = {
   MapFlag = 1,
   MapFunc = 2,
@@ -1848,7 +2197,9 @@ E.EQueueTipType = {
   ResonanceSkillGet = 7,
   ItemShow = 8,
   SelectPack = 9,
-  Episode = 10
+  Episode = 10,
+  Activities = 11,
+  LifeRecipe = 12
 }
 E.EItemSource = {
   Self = 0,
@@ -1856,7 +2207,6 @@ E.EItemSource = {
   ZoneEntity = 2,
   SceneObject = 3
 }
-E.EDialogViewDataType = {System = 1, Game = 2}
 E.EInteractiveGroup = {Pivot = 1, PivotProgress = 2}
 E.ELookAtScaleType = {
   BodyHeight = 1,
@@ -1888,7 +2238,8 @@ E.TrackType = {
   Npc = 2,
   Monster = 3,
   Zone = 4,
-  SceneObject = 5
+  SceneObject = 5,
+  Collection = 7
 }
 E.NearTraceTargetType = {
   Npc = 1,
@@ -1917,9 +2268,8 @@ E.SeasonCultivateHole = {
 }
 E.AlbumOpenSource = {
   Album = 0,
-  Personal = 1,
-  Union = 2,
-  UnionElectronicScreen = 3
+  Union = 1,
+  UnionElectronicScreen = 2
 }
 E.SkillCostType = {
   WeaponSkill = 1001,
@@ -1927,8 +2277,8 @@ E.SkillCostType = {
   MysteriesSkill = 1003
 }
 E.SeasonUnRealBgPath = {
-  Scene = "ui/textures/virtual_scene/virtual scene_bg_7",
-  Characters = "ui/textures/virtual_scene/virtual scene_bg_8"
+  Scene = "ui/textures/virtual_scene/virtual_scene_bg_7",
+  Characters = "ui/textures/virtual_scene/virtual_scene_bg_8"
 }
 E.ExpressionActionPlayTargetType = {
   None = 0,
@@ -1961,10 +2311,17 @@ E.FightAttrId = {
   Versatility = 11150,
   VersatilityPct = 11950,
   Mastery = 11140,
-  MasteryPct = 11940
+  MasteryPct = 11940,
+  Block = 11170,
+  BlockPct = 11970
 }
 E.ReviveType = {BeRevived = 5}
-E.CurrencyType = {Vitality = 20003, Honour = 10006}
+E.CurrencyType = {
+  Vitality = 20003,
+  Honour = 10006,
+  Friendship = 10004,
+  Home = 10010
+}
 E.EDungeonResult = {
   DungeonResultNull = 0,
   DungeonResultSuccess = 1,
@@ -1983,12 +2340,6 @@ E.SevenDayTargetAwardState = {
   notOpen = 3
 }
 E.UnionActivityType = {UnionHunt = 1, UnionDance = 2}
-E.MainUiArea = {
-  TopLeft = 1,
-  BottomLeft = 2,
-  UpperRight = 3,
-  BottomRight = 4
-}
 E.WeeklyHuntMonsterType = {
   Samll = 1,
   Elite = 2,
@@ -2048,7 +2399,22 @@ E.VehicleApplyRideResult = {
   ApplyRideResultRefuse = 2,
   ApplyRideResultTimeOut = 3
 }
-E.ETipsType = {ETipsTypeNormal = 0, ETipsTypeUseItemLimit = 1}
+E.ETipsType = {
+  ETipsTypeNormal = 0,
+  ETipsTypeUseItemLimit = 1,
+  ETipsTypeCraftEnergy = 2,
+  ETipsTypeGetLifePoint = 3
+}
+E.MonthlyAwardType = {
+  EReward = 1,
+  EPrivilege = 2,
+  EFixedItem = 3
+}
+E.MonthlyAwardItemType = {
+  MonthAward = 1,
+  DayAward = 2,
+  MonthLimitAwardId = 3
+}
 E.FlowPlayStateEnum = {
   WaitNpc = 1,
   Loading = 2,
@@ -2060,5 +2426,423 @@ E.FlowPlaySourceEnum = {
   AutoPlayFlow = 2,
   OptionPlayFlow = 3,
   OtherPlayFlow = 4
+}
+E.EPreloadTypeEnum = {
+  ETexture = 0,
+  EPrefab = 1,
+  ETextAsset = 2
+}
+E.MallCouponsEffectiveType = {MallTableId = 1, MallItemTableId = 2}
+E.MallCouponsType = {Discount = 1, Deduction = 2}
+E.ELifeProfession = {
+  Collection = 101,
+  Cook = 201,
+  Chemistry = 202,
+  Cast = 203
+}
+E.ELifeProfessionMainType = {
+  Collection = 1,
+  Manufacture = 2,
+  Cook = 3
+}
+E.EExchangeWithDrawType = {
+  ExchangeWithDrawTypeNone = 0,
+  ExchangeWithDrawTypePart = 1,
+  ExchangeWithDrawTypeAll = 2
+}
+E.QuestLimitState = {
+  None = 0,
+  NotMet = 1,
+  Met = 2
+}
+E.EQuestLimitEnum = {
+  itemCount = 2,
+  date = 3,
+  roleLv = 4,
+  questStep = 5
+}
+E.EQuestLimitType = {
+  RoleLv = 1,
+  ItemCount = 11,
+  QuestStep = 21,
+  Timer = 18,
+  Date = 80
+}
+E.EChatStickersType = {
+  EStandardEmoji = 1,
+  EEmoji = 2,
+  EPicture = 3,
+  EHeadPicture = 4,
+  EQuickMessage = 5
+}
+E.RoleLevelPageIndex = {RoleLevel = 1, Proficiency = 2}
+E.MonthlyCardTipsClicked = {
+  None = 0,
+  CanShow = 1,
+  Showed = 2
+}
+E.MonthCardPrivilegeLabType = {
+  TradingRing = 4,
+  NormalWarehouseCount = 5,
+  HomeWarehouseCount = 6
+}
+E.WarehouseType = {Normal = 1, House = 2}
+E.WarehouseGroupId = {Normal = 101, Precious = 201}
+E.ProductType = {
+  NormalItem = 1,
+  MonthlyCard = 2,
+  MonthlyCardTencent = 998
+}
+E.EnchantType = {
+  Common = 1,
+  Middle = 2,
+  Advanced = 3
+}
+E.WheelViewType = {EEditor = 1, EUse = 2}
+E.ExpressionRightSubType = {ECamerasysRightSub = 1, EExpressionRightSub = 2}
+E.ExpressionSettingType = {
+  CommonAction = 1,
+  LoopAction = 2,
+  MultAction = 3,
+  Emoji = 4,
+  QuickMessage = 5,
+  AllAction = 6,
+  UseItem = 7,
+  Transporter = 8
+}
+E.CameraPlayerLookAtType = {
+  Default = 1,
+  Camera = 2,
+  Free = 3,
+  Lock = 4
+}
+E.CameraPlayerLookAtShowType = {
+  Default = 1,
+  Camera = 2,
+  Free = 3
+}
+E.ItemTracePosType = {Top = 1, Right = 2}
+E.CameraCharacterRelationship = {
+  Union = 1,
+  Friend = 2,
+  Team = 3
+}
+E.AssistType = {
+  None = 0,
+  AssistReward = 1,
+  AssistLimit = 2
+}
+E.CollectionHistoryType = {
+  Fashion = 1,
+  Weapon = 2,
+  Ride = 3
+}
+E.SysDevelopTreeActiveType = {Start = 0, StartAndEnd = 1}
+E.CommonRechargePopViewType = {Monthly = 1, Item = 2}
+E.EIgnoreMaskSource = {
+  EDefault = 0,
+  EScene = 1,
+  ELevel = 2,
+  EAttr = 3,
+  EFlow = 4,
+  EGlide = 5,
+  EMultActionAttr = 6,
+  EFlowActionControlCamera = 7,
+  EStageTransfer = 8,
+  EBattleShowCameraOffset = 9,
+  EBattleShowInputMask = 10,
+  ECutScene = 11,
+  ECutSceneTalk = 12,
+  EUIView = 13,
+  EUITalk = 14,
+  EUIPivot = 15,
+  EUIMultiAction = 16,
+  EGm = 17,
+  Fishing = 18,
+  QuestEpisode = 19,
+  EInteraction = 20,
+  EBigSkill = 21,
+  EEPFlow = 22,
+  EResurrection = 23,
+  EPayWebView = 24,
+  EUIMask = 25
+}
+E.ModelDisplayType = {
+  Ui = 0,
+  Lod0 = 1,
+  Lod1 = 2,
+  Lod2 = 3,
+  Lod3 = 4,
+  Culling = 5,
+  Count = 6
+}
+E.PrivilegeShowType = {
+  Item = 1,
+  Experience = 2,
+  lv = 3,
+  Count = 4
+}
+E.RedDotStyleType = {
+  Normal = 0,
+  Image = 1,
+  Number = 2,
+  CEffect = 3,
+  UEffect = 4
+}
+E.EShopViewType = {
+  ECommon = 1,
+  EGift = 2,
+  ERewardCard = 3,
+  EFashion = 4,
+  EMysterious = 5,
+  EPay = 6
+}
+E.EShopGoodsType = {
+  ENormal = 0,
+  EFashion = 1,
+  EMount = 2,
+  EWeapon = 3
+}
+E.GoToFunc = {
+  team = 1,
+  chatSet = 2,
+  union = 3
+}
+E.EChatRightChannelBtnFunctionId = {
+  EExpand = 102128,
+  EPop = 102129,
+  ESetting = 102130,
+  ERotate = 102131
+}
+E.FriendAddSubShowType = {ESuggestion = 1, ESearch = 2}
+E.FriendLoopItemType = {
+  EPrivateChat = 1,
+  EFriendItem = 2,
+  EFriendGroup = 3,
+  EFriendGroupName = 4
+}
+E.FriendMainPCRightViewType = {
+  Empty = 1,
+  Message = 2,
+  FriendApply = 3
+}
+E.ExpressionTabType = {
+  History = 0,
+  Collection = 1,
+  NormalAction = 2,
+  LoopAction = 3,
+  Emote = 4,
+  MulAction = 5,
+  Fishing = 6
+}
+E.CameraSystemFunctionType = {
+  Camera = 101,
+  Action = 102,
+  Decorations = 103,
+  Setting = 104
+}
+E.CameraSystemSubFunctionType = {
+  None = 0,
+  CommonAction = 1001,
+  LoopAction = 1002,
+  Emote = 1003,
+  LookAt = 1004,
+  Frame = 1005,
+  Sticker = 1006,
+  Text = 1007,
+  Camera = 1008,
+  ShotSet = 1009,
+  Filter = 1010,
+  Show = 1011,
+  Scheme = 1012,
+  UnionBg = 1013,
+  Fishing = 1014
+}
+E.CameraSystemPlatform = {
+  General = 1,
+  Pc = 2,
+  Mobile = 3
+}
+E.CameraPcSliderEnum = {
+  Fov = 1,
+  CameraTilt = 2,
+  Horizontal = 3,
+  Vertical = 4,
+  Aperture = 5,
+  Near = 6,
+  Far = 7,
+  Focus = 8,
+  StickerAlpha = 9,
+  TextSize = 10,
+  TextHue = 11,
+  TextAlpha = 12,
+  Brightness = 13,
+  Saturation = 14,
+  Contrast = 15,
+  DayTime = 16,
+  PlayerRotation = 17
+}
+E.DungeonMultiAwardItemId = 1040144
+E.InputTriggerViewActionType = {
+  None = 0,
+  CloseView = 1,
+  NavigationUp = 2,
+  NavigationDown = 3,
+  NavigationLeft = 4,
+  NavigationRight = 5,
+  Custom = 99
+}
+E.HouseSetOptionType = {
+  Set = 1,
+  Member = 2,
+  Apply = 3
+}
+E.HouseMemberState = {
+  Normal = 1,
+  Quit = 2,
+  InitiativeQuit = 3,
+  Transfer = 4
+}
+E.HomeEnvLightType = {Static = 1, Dynamic = 2}
+E.HomeFarmActionType = {
+  Seed = 1,
+  Pollination = 2,
+  Manure = 3,
+  Watering = 4,
+  Collect = 5,
+  Harvest = 6
+}
+E.HomeEnvMode = {EnvPrefab = 0, EnvColor = 1}
+E.EWorldChannelState = {
+  Low = 1,
+  Hot = 2,
+  Height = 3
+}
+E.ESeasonShopRefreshType = {
+  None = 0,
+  Season = 1,
+  Daily = 2,
+  Month = 3,
+  Week = 4,
+  Compensate = 5,
+  Permanent = 999
+}
+E.NodeState = {
+  Normal = 0,
+  Highlighted = 1,
+  Pressed = 2,
+  Disabled = 3
+}
+E.ActionAccessory = {
+  Normal = 0,
+  Fish = 1,
+  Pendant = 2
+}
+E.BlockSteerType = {ScreenSaver = 1, Gamepad = 2}
+E.BlockChatType = {HomeEditor = 1}
+E.ShopDeliverWayType = {
+  EDeliverWayType = 1,
+  EDeliverWayParam = 2,
+  EDeliverWayTipsParam = 3
+}
+E.MainViewLeftTrackUIMark = {
+  Task = 1,
+  Bubble = 2,
+  Dps = 3
+}
+E.EDeliverWayType = {EBack = 0, EMail = 1}
+E.ManufactureProductType = {
+  All = 0,
+  Material = 1,
+  ConsumeItem = 2,
+  Equip = 3,
+  House = 4
+}
+E.MatchActivityType = {CommonActivity = 1, WorldBoseActivity = 2}
+E.ESocialApplySettingType = {
+  EAllApply = 0,
+  EFriendApply = 1,
+  ENoneApply = 2
+}
+E.ESocialApplyType = {
+  ETeamApply = 1,
+  ECarpoolApply = 2,
+  EInteractiveApply = 3
+}
+E.SeasonActFuncType = {Recommend = 1, Theme = 2}
+E.MenuBannerType = {FuncPreview = 1, Theme = 2}
+E.ThemeActivitySubType = {SeasonActivity = 1, PandoraActivity = 2}
+E.ThemeActivityFuncType = {Sign = 2, Shop = 3}
+E.ThemeActivityFunctionId = {
+  Sign = 820005,
+  Entrance = 820001,
+  Celebration = 820002
+}
+E.ThemeActivityRedDot = {
+  [E.ThemeActivityFunctionId.Sign] = 82000004
+}
+E.SeasonActivityTimeStage = {
+  NotOpen = 0,
+  Open = 1,
+  Over = 2
+}
+E.RecommendFightValueType = {
+  Level = E.FunctionID.RoleLevel,
+  Talent = E.FunctionID.Talent,
+  Equip = E.FunctionID.EquipChange,
+  Skill = E.FunctionID.WeaponSkill,
+  Mod = E.FunctionID.Mod,
+  Season = E.FunctionID.SeasonCultivate
+}
+E.ETeamVoiceState = {
+  SpeakerVoice = 0,
+  MicVoice = 1,
+  CloseVoice = 2,
+  ShieldVoice = 3,
+  SpeakingVoice = 4
+}
+E.ETeamVoiceSpeakState = {
+  NotSpeak = 0,
+  Speaking = 1,
+  EndSpeak = 2
+}
+E.DpsDpdTypeList = {
+  Damage = 1,
+  Cure = 2,
+  TakeDamage = 3,
+  DamageSecond = 4,
+  CureSecond = 5
+}
+E.SignActivityType = {ThemeActivity = 1}
+E.ESceneType = {
+  Unknown = 0,
+  Static = 1,
+  Dynamic = 2
+}
+E.MonthShowLang = {
+  [1] = "Jan",
+  [2] = "Feb",
+  [3] = "Mar",
+  [4] = "Apr",
+  [5] = "May",
+  [6] = "Jun",
+  [7] = "Jul",
+  [8] = "Aug",
+  [9] = "Sept",
+  [10] = "Oct",
+  [11] = "Nov",
+  [12] = "Dec"
+}
+E.TimeFormatType = {
+  YMDHMS = 1,
+  YMD = 2,
+  HMS = 3,
+  MD = 4
+}
+E.AwardCountType = {RaidDungeon = 30}
+E.LeisureActivityState = {
+  TodayOpenAndCurOpen = 0,
+  TodayOpen = 1,
+  TodayNotOpen = 2
 }
 return E

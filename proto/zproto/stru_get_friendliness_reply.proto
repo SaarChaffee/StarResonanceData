@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_friendliness.proto";
 import "stru_total_friendliness.proto";
 
 message GetFriendlinessReply {
-    int32 errCode = 2;
-    map<int32, .zproto.Friendliness> friendlinessList = 3;
-    zproto.TotalFriendliness totalFriendliness = 4;
+    repeated zproto.GetFriendlinessReply.FriendlinessListEntry friendlinessList = 1;
+    zproto.TotalFriendliness totalFriendliness = 2;
+    zproto.EErrorCode errCode = 3;
 }
-

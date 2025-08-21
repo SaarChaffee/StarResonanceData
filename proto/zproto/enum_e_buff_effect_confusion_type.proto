@@ -7,4 +7,3 @@ enum EBuffEffectConfusionType {
     EBECPlayMove = 1;
     EBECPlayRandMove = 2;
 }
-

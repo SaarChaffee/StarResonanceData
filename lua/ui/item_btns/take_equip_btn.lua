@@ -39,7 +39,6 @@ local onClick = function(itemUuid, configId, data)
               val = professionSystemTable.Name
             }), function()
               func()
-              Z.DialogViewDataMgr:CloseDialogView()
             end)
           end
         end

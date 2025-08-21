@@ -24,10 +24,10 @@ function ActionVM:PlayAction(model, actionInfo)
     if 0 < actionInfo.isPlayEnd then
       clipNames:Add(actionInfo.actionName .. "_end")
     end
-    model:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent(clipNames))
+    model:SetLuaAnimBase(Z.AnimBaseData.Rent(clipNames))
     clipNames:Recycle()
   else
-    model:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent(actionInfo.actionName))
+    model:SetLuaAnimBase(Z.AnimBaseData.Rent(actionInfo.actionName))
   end
 end
 

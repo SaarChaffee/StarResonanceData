@@ -14,6 +14,10 @@ function EquipService:OnLogin()
   equipRefineVm.InitRefineData()
   local equipRecastVm = Z.VMMgr.GetVM("equip_recast")
   equipRecastVm.InitConfig()
+  local equipEnchantVm = Z.VMMgr.GetVM("equip_enchant")
+  equipEnchantVm.InitConfig()
+  local equipForgeVm = Z.VMMgr.GetVM("equip_forge")
+  equipForgeVm.InitConfig()
 end
 
 function EquipService:OnLeaveScene()

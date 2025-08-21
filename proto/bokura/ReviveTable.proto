@@ -14,8 +14,6 @@ message ReviveTableBase {
     int32 WaitTime = 106;
     int32 IsBossCanRevive = 812;
 }
-
 message ReviveTableMgr {
-    map<int32, .bokura.ReviveTableBase> datas = 1;
+    repeated bokura.ReviveTableMgr.DatasEntry datas = 1;
 }
-

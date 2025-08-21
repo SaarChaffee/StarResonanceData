@@ -7,4 +7,3 @@ message BuffProfessionEffectData {
     repeated int32 professionPoint = 2;
     repeated bool professionSwitch = 3;
 }
-

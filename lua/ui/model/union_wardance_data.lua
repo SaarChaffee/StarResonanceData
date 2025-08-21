@@ -166,7 +166,7 @@ function UnionWarDanceData:GetWillOpenTimeStamp()
     return 0
   end
   local timerID = danceActivityTableRow.PreTimerId
-  local hasEnd, _, endTime = Z.TimeTools.GetCycleEndTimeByTimeId(timerID)
+  local hasEnd, _, endTime = Z.TimeTools.GetCycleStartEndTimeByTimeId(timerID)
   if not hasEnd then
     return 0
   end
@@ -312,12 +312,12 @@ end
 function UnionWarDanceData:SetRecommendRedChecked(checked)
   self.recommendRedChecked_ = checked
   if checked then
-    Z.LocalUserDataMgr.SetLong("UnionDanceActivityChecked", math.floor(Z.TimeTools.Now() / 1000))
+    Z.LocalUserDataMgr.SetLongByLua(E.LocalUserDataType.Character, "UnionDanceActivityChecked", math.floor(Z.TimeTools.Now() / 1000))
   end
 end
 
 function UnionWarDanceData:RecommendRedChecked()
-  local lastCheckedTime = Z.LocalUserDataMgr.GetLong("UnionDanceActivityChecked", 0)
+  local lastCheckedTime = Z.LocalUserDataMgr.GetLongByLua(E.LocalUserDataType.Character, "UnionDanceActivityChecked", 0)
   if Z.TimeTools.CheckIsSameDay(math.floor(Z.TimeTools.Now() / 1000), lastCheckedTime) then
     return true
   end

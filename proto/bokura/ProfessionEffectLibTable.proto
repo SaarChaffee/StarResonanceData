@@ -12,8 +12,6 @@ message ProfessionEffectLibTableBase {
     int_table ValueRange = 1881;
     int_table RandomRange = 1236;
 }
-
 message ProfessionEffectLibTableMgr {
-    map<int32, .bokura.ProfessionEffectLibTableBase> datas = 1;
+    repeated bokura.ProfessionEffectLibTableMgr.DatasEntry datas = 1;
 }
-

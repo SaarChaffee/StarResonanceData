@@ -6,8 +6,12 @@ function PlayerVM:AsyncSetCharName(name, cancelToken)
 end
 
 function PlayerVM:IsNamed()
+  return self:IsNamedByCharState(Z.ContainerMgr.CharSerialize.charBase.CharState)
+end
+
+function PlayerVM:IsNamedByCharState(charState)
   local mask = 1 << Z.PbEnum("EUserState", "ENameState")
-  local isNamed = Z.ContainerMgr.CharSerialize.charBase.CharState & mask > 0
+  local isNamed = 0 < charState & mask
   return isNamed
 end
 
@@ -41,7 +45,6 @@ function PlayerVM:OpenUnstuckTip()
   end
   Z.DialogViewDataMgr:OpenNormalDialog(labDesc, function(cancelToken)
     self:AsyncSendUnstuck(cancelToken)
-    Z.DialogViewDataMgr:CloseDialogView()
     local settingVM = Z.VMMgr.GetVM("setting")
     settingVM.CloseSettingView()
     local mainUIFuncsListVM = Z.VMMgr.GetVM("mainui_funcs_list")
@@ -81,6 +84,10 @@ end
 
 function PlayerVM:AsyncChangeShowId(showId)
   worldProxy.ChangeShowId(showId)
+end
+
+function PlayerVM:IsShowNewbie(isNewbie)
+  return isNewbie and Z.VMMgr.GetVM("gotofunc").CheckFuncCanUse(E.FunctionID.PlayerNewbie, true)
 end
 
 return PlayerVM

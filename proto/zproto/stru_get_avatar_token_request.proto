@@ -11,4 +11,3 @@ message GetAvatarTokenRequest {
     int32 pictureId = 4;
     string pictureName = 5;
 }
-

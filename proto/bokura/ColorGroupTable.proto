@@ -20,8 +20,6 @@ message ColorGroupTableBase {
     int_table ConsumeHigh = 1761;
     int_table Unlock = 1666;
 }
-
 message ColorGroupTableMgr {
-    map<int32, .bokura.ColorGroupTableBase> datas = 1;
+    repeated bokura.ColorGroupTableMgr.DatasEntry datas = 1;
 }
-

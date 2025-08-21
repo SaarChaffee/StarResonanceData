@@ -32,24 +32,20 @@ function InviteItem:Refresh()
   playerPortraitHgr.InsertNewPortraitBySocialData(self.uiBinder.cont_popup, socialData, function()
     local idCardVM = Z.VMMgr.GetVM("idcard")
     idCardVM.AsyncGetCardData(self.charId_, self.parent.uiView.cancelSource:CreateToken())
-  end)
-  local isInvite = self.teamData_:GetTeamInviteStatus(self.charId_)
-  self.btnCanClick_ = not isInvite
+  end, self.parent.uiView.cancelSource:CreateToken())
   self:AddAsyncClick(self.uiBinder.btn_invite, function()
-    if self.btnCanClick_ == true then
-      self.btnCanClick_ = false
-      if self.teamData_.TeamInfo.members[self.charId_] then
-        Z.TipsVM.ShowTipsLang(1000623)
-        return
-      end
-      local members = self.teamVM_.GetTeamMemData()
-      if #members == 4 then
-        Z.TipsVM.ShowTipsLang(1000619)
-        return
-      end
-      self.teamVM_.AsyncInviteToTeam(self.charId_, self.parent.uiView.cancelSource:CreateToken())
+    if self.teamData_.TeamInfo.members[self.charId_] then
+      Z.TipsVM.ShowTipsLang(1000623)
+      return
     end
+    local members = self.teamVM_.GetTeamMemData()
+    if #members >= self.teamData_:GetTeamMaxMember() then
+      Z.TipsVM.ShowTipsLang(1000619)
+      return
+    end
+    self.teamVM_.AsyncInviteToTeam(self.charId_, self.parent.uiView.cancelSource:CreateToken())
   end)
+  self:refreshBtnInteractable(self.charId_)
 end
 
 function InviteItem:refreshBtnInteractable(refreshCharId)
@@ -58,7 +54,6 @@ function InviteItem:refreshBtnInteractable(refreshCharId)
   end
   local isInvite = self.teamData_:GetTeamInviteStatus(self.charId_)
   self.uiBinder.btn_invite.interactable = not isInvite
-  self.btnCanClick_ = not isInvite
   self.uiBinder.btn_invite.IsDisabled = isInvite
 end
 

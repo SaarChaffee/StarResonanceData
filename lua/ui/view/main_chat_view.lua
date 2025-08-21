@@ -1,28 +1,20 @@
 local UI = Z.UI
 local bulletPath = {
-  [1] = "ui/prefabs/main/main_bullet_chat_item_pc_tpl",
+  [1] = "ui/prefabs/main/main_bullet_chat_item_tpl_pc",
   [2] = "ui/prefabs/main/main_bullet_chat_item_tpl"
 }
 local chatMiniBtnTplPath = "ui/prefabs/chat/chat_minichat_btn_tpl"
 local mainchat_loopItem = require("ui.component.chat.mainchat_loopitem")
 local chat_mini_sub_view = require("ui.view.chat_mini_sub_view")
-local newKeyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 local loop_list_view = require("ui/component/loop_list_view")
 local super = require("ui.ui_view_base")
 local Main_chatView = class("Main_chatView", super)
 
 function Main_chatView:ctor()
   self.uiBinder = nil
-  if Z.IsPCUI then
-    Z.UIConfig.main_chat.PrefabPath = "main/main_chat_pc_tpl"
-  else
-    Z.UIConfig.main_chat.PrefabPath = "main/main_chat_tpl"
-  end
   super.ctor(self, "main_chat")
-  
-  function self.onInputAction_(inputActionEventData)
-    self:OnInputAction()
-  end
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function Main_chatView:OnActive()
@@ -36,16 +28,21 @@ function Main_chatView:OnActive()
   self:onInitData()
   self:onInitProp()
   self:BindEvents()
-  self:RegisterInputActions()
   self:updateMainUIMainChat()
   if Z.IsPCUI then
     self.uiBinder.anim_chat_content:Restart(Z.DOTweenAnimType.Open)
-  end
-  self.chatData_:SetChatDataFlg(E.ChatChannelType.EMain, E.ChatWindow.Main, true, false)
-  self.checkDataListTimer_ = self.timerMgr:StartTimer(function()
-    self:checkChatBullet()
+    self.checkDataListTimer_ = self.timerMgr:StartTimer(function()
+      self:checkChatBullet()
+    end, 1, -1)
+  else
+    self.chatData_:SetChatDataFlg(E.ChatChannelType.EMain, E.ChatWindow.Main, true, false)
     self:checkMainChatList()
-  end, 1, -1)
+    self.checkDataListTimer_ = self.timerMgr:StartTimer(function()
+      self:checkChatBullet()
+      self:checkMainChatList()
+    end, 1, -1)
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_list, not Z.IsPCUI)
   Z.CoroUtil.create_coro_xpcall(function()
     self:asyncInitMiniChat()
   end)()
@@ -61,18 +58,19 @@ function Main_chatView:removeRedPoint()
 end
 
 function Main_chatView:OnRefresh()
-  local isShowChatBtn = not Z.IsPCUI or self.deadVM_.CheckPlayerIsDead()
+  local isShowChatBtn = not Z.IsPCUI
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_chat, isShowChatBtn)
 end
 
 function Main_chatView:OnDeActive()
+  self.inputKeyDescComp_:UnInit()
   self.chatLoopListView_:UnInit()
-  self:UnRegisterInputActions()
   self:clearMiniChat()
   self:removeRedPoint()
-  if self.checkDataListTimer_ then
-    self.timerMgr:StopTimer(self.checkDataListTimer_)
-  end
+  self.timerMgr:StopTimer(self.checkDataListTimer_)
+  self.checkDataListTimer_ = nil
+  self.timerMgr:StopTimer(self.checkViewShowHideTimer_)
+  self.checkViewShowHideTimer_ = nil
 end
 
 function Main_chatView:checkChatBullet()
@@ -104,7 +102,7 @@ function Main_chatView:checkMainChatList()
   else
     return
   end
-  local msgList = self.chatData_:GetChannelQueueByChannelId(E.ChatChannelType.EMain)
+  local msgList = self.chatData_:GetChannelQueueByChannelId(E.ChatChannelType.EMain, nil, true)
   self.chatLoopListView_:RefreshListView(msgList, false)
   self.chatLoopListView_:MovePanelToItemIndex(#msgList)
 end
@@ -126,13 +124,17 @@ function Main_chatView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Chat.OpenMiniChat, self.showMiniChatView, self)
   Z.EventMgr:Add(Z.ConstValue.MainUI.UpdateMainUIMainChat, self.updateMainUIMainChat, self)
   Z.EventMgr:Add(Z.ConstValue.Fishing.FishingStateChange, self.updateFishingMainChat, self)
+  Z.EventMgr:Add(Z.ConstValue.Fishing.UpdateFishingMainChat, self.updateFishingMainChat, self)
 end
 
 function Main_chatView:updateFishingMainChat()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.anim_chat_content, self.fishingData_.FishingStage == E.FishingStage.Quit and self.mainUIData_:GetIsShowMainChat())
+  self.uiBinder.Ref:SetVisible(self.uiBinder.anim_chat_content, (self.fishingData_.FishingStage == E.FishingStage.Quit or self.fishingData_.FishingStage == E.FishingStage.EnterFishing) and self.mainUIData_:GetIsShowMainChat())
 end
 
 function Main_chatView:playBullet(chatMsgData)
+  if not Z.ChatMsgHelper.CheckChatMsgCanShow(chatMsgData) then
+    return
+  end
   self.idx_ = self.idx_ + 1
   local fontSize = self.chatSettingData_:GetFontSize()
   local canvasGroup = self.chatSettingData_:GetAlpha()
@@ -143,11 +145,11 @@ function Main_chatView:playBullet(chatMsgData)
   local speed = 0
   if speedEnum then
     if speedEnum == E.BulletSpeed.low then
-      speed = 15
+      speed = 3
     elseif speedEnum == E.BulletSpeed.mid then
-      speed = 10
-    else
       speed = 5
+    else
+      speed = 8
     end
   end
   Z.CoroUtil.create_coro_xpcall(function()
@@ -158,7 +160,8 @@ function Main_chatView:playBullet(chatMsgData)
     item.lab_content.text = content
     item.lab_content.fontSize = fontSize
     item.lab_content_canvasgroup.alpha = canvasGroup / 100
-    item.lab_move:PlayAnim(0, -Z.UIRoot.CurScreenSize.x, speed, function()
+    local labSize = item.lab_content:GetPreferredValues(content)
+    item.lab_move:PlayAnim(0, -labSize.x - Z.UIRoot.CurScreenSize.x, speed, function()
       self:RemoveUiUnit(name)
     end)
   end)()
@@ -184,26 +187,36 @@ function Main_chatView:getBulletShowContext(chatMsgData)
     local channelId = Z.ChatMsgHelper.GetChannelId(chatMsgData)
     local config = self.chatData_:GetConfigData(channelId)
     local colorTag = config.ChannelStyle
-    local channelName = Z.RichTextHelper.ApplyStyleTag(string.format("[%s]", config.ChannelName), colorTag)
+    local channelName = Z.RichTextHelper.ApplyStyleTag(string.zconcat("[", config.ChannelName, "]"), colorTag)
     if msgType == E.ChitChatMsgType.EChatMsgTextMessage or msgType == E.ChitChatMsgType.EChatMsgTextNotice then
       if channelId == E.ChatChannelType.ESystem then
-        content = string.format("%s%s", channelName, msg)
+        content = string.zconcat(channelName, msg)
       else
-        content = string.format("%s%s:%s", channelName, playerName, msg)
+        content = string.zconcat(channelName, playerName, ":", msg)
       end
     elseif msgType == E.ChitChatMsgType.EChatMsgPictureEmoji then
-      content = string.format("%s%s:[%s]", channelName, playerName, Lang("chat_pic"))
+      local showContent = Z.ChatMsgHelper.GetEmojiText(chatMsgData)
+      if showContent ~= "" then
+        content = string.zconcat(channelName, playerName, ":[", showContent, "]")
+      else
+        content = string.zconcat(channelName, playerName, ":", Lang("chat_pic"))
+      end
     elseif msgType == E.ChitChatMsgType.EChatMsgVoice then
-      content = string.format("%s%s:[%s]", channelName, playerName, Lang("chatMiniVoice"))
+      content = string.zconcat(channelName, playerName, ":", Lang("chatMiniVoice"))
     end
   else
-    local friendName = Z.RichTextHelper.ApplyStyleTag(string.format("[%s]", Lang("Friend")), E.TextStyleTag.ChannelFriend)
+    local friendName = Z.RichTextHelper.ApplyStyleTag(Lang("FriendChannel"), E.TextStyleTag.ChannelFriend)
     if msgType == E.ChitChatMsgType.EChatMsgTextMessage or msgType == E.ChitChatMsgType.EChatMsgTextNotice then
-      content = string.format("%s%s:%s", friendName, playerName, msg)
+      content = string.zconcat(friendName, playerName, ":", msg)
     elseif msgType == E.ChitChatMsgType.EChatMsgPictureEmoji then
-      content = string.format("%s%s:[%s]", friendName, playerName, Lang("chat_pic"))
+      local showContent = Z.ChatMsgHelper.GetEmojiText(chatMsgData)
+      if showContent ~= "" then
+        content = string.zconcat(friendName, playerName, ":[", showContent, "]")
+      else
+        content = string.zconcat(friendName, playerName, ":", Lang("chat_pic"))
+      end
     elseif msgType == E.ChitChatMsgType.EChatMsgVoice then
-      content = string.format("%s%s:[%s]", friendName, playerName, Lang("chatMiniVoice"))
+      content = string.zconcat(friendName, playerName, ":", Lang("chatMiniVoice"))
     end
   end
   return content
@@ -229,7 +242,7 @@ function Main_chatView:onInitProp()
     binderChat.func_btn_img:SetImage(mainIconTableRow.Icon)
     local keyId = self:getKeyIdByFuncId(mainIconTableRow.Id)
     if keyId then
-      newKeyIconHelper.InitKeyIcon(self, binderChat.cont_key_icon_uiBinder, keyId)
+      self.inputKeyDescComp_:Init(keyId, binderChat.cont_key_icon_uiBinder)
     end
   end
 end
@@ -258,60 +271,64 @@ end
 
 function Main_chatView:asyncInitMiniChat()
   local miniChatList = self.chatData_:GetMiniChatList()
-  for _, channelData in pairs(miniChatList) do
-    if channelData.type == E.MiniChatType.EChatView then
-      self:showMiniChatView(channelData.channelId, true)
+  for _, data in pairs(miniChatList) do
+    if data.type == E.MiniChatType.EChatView then
+      self:showMiniChatView(data, true)
     else
-      self:asyncShowMiniChatBtn(channelData.channelId)
+      self:asyncShowMiniChatBtn(data)
     end
   end
-  self:SelectMiniChat(self.chatData_:GetSelectMiniChatChannelId())
+  self:SelectMiniChat(self.chatData_:GetSelectMiniChatIndex())
 end
 
-function Main_chatView:showMiniChatView(channelId, ignoreSelect)
-  if not channelId or channelId == E.ChatChannelType.EComprehensive or channelId == E.ChatChannelType.EMain or channelId == E.ChatChannelType.ESystem then
-    return
+function Main_chatView:showMiniChatView(data, ignoreSelect)
+  if not data then
+    local miniChatList = self.chatData_:GetMiniChatList()
+    if miniChatList and 0 < #miniChatList then
+      data = miniChatList[#miniChatList]
+    else
+      return
+    end
   end
-  if not self.chat_mini_sub_view_list_[channelId] then
-    local viewData = {}
-    viewData.channelId = channelId
-    viewData.parentView = self
-    self.chat_mini_sub_view_list_[channelId] = chat_mini_sub_view.new()
-    self.chat_mini_sub_view_list_[channelId]:Active(viewData, self.uiBinder.node_mini_chat, self.uiBinder)
+  if not self.chat_mini_sub_view_list_[data.index] then
+    local viewData = {data = data, parentView = self}
+    self.chat_mini_sub_view_list_[data.index] = chat_mini_sub_view.new()
+    self.chat_mini_sub_view_list_[data.index]:Active(viewData, self.uiBinder.node_mini_chat, self.uiBinder)
   else
-    self:hideMiniChatBtn(channelId)
-    self.chat_mini_sub_view_list_[channelId]:Show()
-    self.chat_mini_sub_view_list_[channelId]:OnShow()
+    self:hideMiniChatBtn(data.index)
+    self.chat_mini_sub_view_list_[data.index]:Show()
+    self.chat_mini_sub_view_list_[data.index]:OnShow()
   end
   if not ignoreSelect then
-    self:SelectMiniChat(channelId)
+    self:SelectMiniChat(data.index)
   end
 end
 
-function Main_chatView:SelectMiniChat(channelId)
-  if channelId == nil or channelId == 0 then
-    return
+function Main_chatView:SelectMiniChat(index)
+  local curIndex = self.chatData_:GetSelectMiniChatIndex()
+  self.chatData_:SetSelectMiniChatIndex(index)
+  local rootIndex = self.uiBinder.node_mini_chat:GetSiblingIndex()
+  if self.chat_mini_sub_view_list_[curIndex] and self.chat_mini_sub_view_list_[curIndex].uiBinder then
+    self.chat_mini_sub_view_list_[curIndex].uiBinder.Trans:SetSiblingIndex(rootIndex)
   end
-  self.chatData_:SetSelectMiniChatChannelId(channelId)
-  if self.chat_mini_sub_view_list_[channelId] and self.chat_mini_sub_view_list_[channelId].Trans then
-    local rootIndex = self.uiBinder.node_mini_chat:GetSiblingIndex()
-    self.chat_mini_sub_view_list_[channelId].Trans:SetSiblingIndex(rootIndex + 1)
+  if self.chat_mini_sub_view_list_[index] and self.chat_mini_sub_view_list_[index].uiBinder then
+    self.chat_mini_sub_view_list_[index].uiBinder.Trans:SetSiblingIndex(rootIndex + 1)
   end
 end
 
-function Main_chatView:AsyncHideMiniChat(channelId)
-  if self.chat_mini_sub_view_list_[channelId] then
-    self.chat_mini_sub_view_list_[channelId]:Hide()
+function Main_chatView:AsyncHideMiniChat(data)
+  if self.chat_mini_sub_view_list_[data.index] then
+    self.chat_mini_sub_view_list_[data.index]:Hide()
   end
-  self.chatData_:UpdateMiniChatType(channelId, E.MiniChatType.EChatBtn)
-  self:asyncShowMiniChatBtn(channelId)
+  self.chatData_:UpdateMiniChatType(data.index, E.MiniChatType.EChatBtn)
+  self:asyncShowMiniChatBtn(data)
 end
 
-function Main_chatView:CloseMiniChat(channelId)
-  self.chatData_:RemoveMiniChat(channelId)
-  if self.chat_mini_sub_view_list_[channelId] then
-    self.chat_mini_sub_view_list_[channelId]:DeActive()
-    self.chat_mini_sub_view_list_[channelId] = nil
+function Main_chatView:CloseMiniChat(index)
+  self.chatData_:RemoveMiniChat(index)
+  if self.chat_mini_sub_view_list_[index] then
+    self.chat_mini_sub_view_list_[index]:DeActive()
+    self.chat_mini_sub_view_list_[index] = nil
   end
 end
 
@@ -321,65 +338,45 @@ function Main_chatView:clearMiniChat()
   end
 end
 
-function Main_chatView:asyncShowMiniChatBtn(channelId)
-  local miniChatData = self.chatData_:GetMiniChatData(channelId)
-  if not miniChatData then
-    return
-  end
-  local channelName = Z.RichTextHelper.ApplyStyleTag(miniChatData.channelName, miniChatData.colorTag)
-  if not self.chat_mini_btn_list_[channelId] then
-    local item = self:AsyncLoadUiUnit(chatMiniBtnTplPath, tostring(channelId), self.uiBinder.node_mini_chat_btn)
+function Main_chatView:asyncShowMiniChatBtn(data)
+  local channelName = Z.RichTextHelper.ApplyStyleTag(data.channelName, data.colorTag)
+  if not self.chat_mini_btn_list_[data.index] then
+    local item = self:AsyncLoadUiUnit(chatMiniBtnTplPath, tostring(data.index), self.uiBinder.node_mini_chat_btn)
     if not item then
       return
     end
-    item.chat_minichat_btn_tpl:SetAnchorPosition(miniChatData.x, miniChatData.y)
+    item.chat_minichat_btn_tpl:SetAnchorPosition(data.x, data.y)
     item.lab_channel.text = channelName
     item.Ref:SetVisible(item.chat_minichat_btn_tpl, true)
-    self.chat_mini_btn_list_[channelId] = item
+    self.chat_mini_btn_list_[data.index] = item
     self:AddClick(item.btn_minichat, function()
       if not self.isDrag_ then
-        self:hideMiniChatBtn(channelId)
-        self.chatData_:UpdateMiniChatType(channelId, E.MiniChatType.EChatView)
-        self:showMiniChatView(channelId)
+        self:hideMiniChatBtn(data.index)
+        self.chatData_:UpdateMiniChatType(data.channelId, data.charId, E.MiniChatType.EChatView)
+        self:showMiniChatView(data)
       end
     end)
     item.btn_minichat_trigger.onDrag:AddListener(function(go, eventData)
       self.isDrag_ = true
-      local x, y = item.chat_minichat_btn_tpl:GetAnchorPosition()
+      local x, y = item.chat_minichat_btn_tpl:GetAnchorPosition(nil, nil)
       item.chat_minichat_btn_tpl:SetAnchorPosition(eventData.delta.x + x, eventData.delta.y + y)
-      self.chatData_:UpdateMiniChatPosition(channelId, eventData.delta.x + x, eventData.delta.y + y)
+      data.x = eventData.delta.x + x
+      data.y = eventData.delta.y + y
     end)
     item.btn_minichat_trigger.onEndDrag:AddListener(function(go, eventData)
       self.isDrag_ = false
     end)
   else
-    local miniChatData = self.chatData_:GetMiniChatData(channelId)
-    if not miniChatData then
-      return
-    end
-    local channelName = Z.RichTextHelper.ApplyStyleTag(miniChatData.channelName, miniChatData.colorTag)
-    self.chat_mini_btn_list_[channelId].chat_minichat_btn_tpl:SetAnchorPosition(miniChatData.x, miniChatData.y)
-    self.chat_mini_btn_list_[channelId].lab_channel.text = channelName
-    self.chat_mini_btn_list_[channelId].Ref:SetVisible(self.chat_mini_btn_list_[channelId].chat_minichat_btn_tpl, true)
+    self.chat_mini_btn_list_[data.index].chat_minichat_btn_tpl:SetAnchorPosition(data.x, data.y)
+    self.chat_mini_btn_list_[data.index].lab_channel.text = channelName
+    self.chat_mini_btn_list_[data.index].Ref:SetVisible(self.chat_mini_btn_list_[data.index].chat_minichat_btn_tpl, true)
   end
 end
 
-function Main_chatView:hideMiniChatBtn(channelId)
-  if self.chat_mini_btn_list_[channelId] then
-    self.chat_mini_btn_list_[channelId].Ref:SetVisible(self.chat_mini_btn_list_[channelId].chat_minichat_btn_tpl, false)
+function Main_chatView:hideMiniChatBtn(index)
+  if self.chat_mini_btn_list_[index] then
+    self.chat_mini_btn_list_[index].Ref:SetVisible(self.chat_mini_btn_list_[index].chat_minichat_btn_tpl, false)
   end
-end
-
-function Main_chatView:OnInputAction()
-  Z.VMMgr.GetVM("gotofunc").GoToFunc(E.FunctionID.MainChat)
-end
-
-function Main_chatView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Chat)
-end
-
-function Main_chatView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Chat)
 end
 
 return Main_chatView

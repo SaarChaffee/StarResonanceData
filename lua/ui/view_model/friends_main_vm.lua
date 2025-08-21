@@ -7,7 +7,8 @@ E.FriendAddSource = {
   ESuggestion = 3,
   EPrivateChat = 4,
   EDungeon = 5,
-  EPersonalzone = 6
+  EPersonalzone = 6,
+  Team = 7
 }
 E.FriendFunctionBtnType = {
   AddFriend = 102301,
@@ -34,9 +35,21 @@ E.FriendFunctionViewType = {
   GroupManagement = 7
 }
 local logPbError = function(ret)
-  if ret and ret.errorCode and ret.errorCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errorCode)
+  if ret and ret.errCode and ret.errCode ~= 0 then
+    Z.TipsVM.ShowTips(ret.errCode)
   end
+end
+local logErrCode = function(errCode)
+  if errCode and errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
+  end
+end
+local checkCharIdVaild = function(charId)
+  if not charId or charId == 0 then
+    Z.TipsVM.ShowTipsLang(130107)
+    return false
+  end
+  return true
 end
 local initFriendData = function()
   local friendData = friend_data.new()
@@ -47,10 +60,21 @@ local getSearchDataList = function(searchContext)
   for _, groupList in pairs(friendMainData:GetFriendDic()) do
     for _, friendData in pairs(groupList) do
       if friendData and friendData:GetPlayerName() then
+        local isMatch = false
         if string.match(friendData:GetPlayerName(), searchContext) then
-          table.insert(list, friendData)
+          isMatch = true
         elseif string.match(friendData:GetRemark(), searchContext) then
-          table.insert(list, friendData)
+          isMatch = true
+        end
+        if isMatch then
+          if Z.IsPCUI then
+            table.insert(list, {
+              loopItemType = E.FriendLoopItemType.EFriendItem,
+              friendData = friendData
+            })
+          else
+            table.insert(list, friendData)
+          end
         end
       end
     end
@@ -124,17 +148,24 @@ local updateGroupShowList = function()
   end
 end
 local asyncSendAddFriend = function(charId, sourceId, cancelToken)
+  if not checkCharIdVaild(charId) then
+    return
+  end
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  if not gotoFuncVM.CheckFuncCanUse(E.FunctionID.AddFriend) then
+    return
+  end
   local sendData = {}
   sendData.charId = charId
   sendData.source = sourceId
-  local ret = worldProxy.RequestAddFriend(sendData, cancelToken)
-  if ret ~= nil then
-    if ret.errorCode == 0 then
+  local errCode = worldProxy.RequestAddFriend(sendData, cancelToken)
+  if errCode ~= nil then
+    if errCode == 0 then
       Z.TipsVM.ShowTipsLang(130101)
       friendMainData:AddSendedFriendList(charId)
       return true
     else
-      logPbError(ret)
+      logErrCode(errCode)
       return false
     end
   end
@@ -150,15 +181,15 @@ local asyncProcessAddRequest = function(charId, isAgree, name, cancelToken)
   local sendData = {}
   sendData.charId = charId
   sendData.isAgree = isAgree
-  local ret = worldProxy.ProcessAddRequest(sendData, cancelToken)
-  logPbError(ret)
-  if ret.errorCode == 0 and isAgree then
+  local errCode = worldProxy.ProcessAddRequest(sendData, cancelToken)
+  logErrCode(errCode)
+  if errCode == 0 and isAgree then
     local param = {
       player = {name = name}
     }
     Z.TipsVM.ShowTipsLang(130103, param)
   end
-  return ret
+  return errCode
 end
 local refreshBothWayFirneds = function(friendList, isAdd, isFull)
   if friendList then
@@ -203,7 +234,10 @@ local refreshBothWayFirneds = function(friendList, isAdd, isFull)
           closeSetView()
         end
         local chatMainData = Z.DataMgr.Get("chat_main_data")
-        chatMainData:DelPrivateChatByCharId(charId)
+        if chatMainData:IsHavePrivateChat(charId) then
+          chatMainData:DelPrivateChatByCharId(charId)
+          Z.EventMgr:Dispatch(Z.ConstValue.Chat.DeletePrivateChat, charId)
+        end
       end
       friendMainData:RemoveSendedFriendList(charId)
     end
@@ -226,9 +260,10 @@ local refreshBothWayFirneds = function(friendList, isAdd, isFull)
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Friend.FriendSuggestionRefresh)
 end
-local asyncInitInfo = function(friendData)
+local asyncInitInfo = function(friendData, token)
   local socialVM = Z.VMMgr.GetVM("social")
-  local socialData = socialVM.AsyncGetHeadAndHeadFrameInfo(friendData:GetCharId(), friendMainData.CancelSource:CreateToken())
+  token = token or friendMainData.CancelSource:CreateToken()
+  local socialData = socialVM.AsyncGetHeadAndHeadFrameInfoAndSDKPrivilege(friendData:GetCharId(), token)
   if socialData and socialData.basicData then
     local modelId = Z.ModelManager:GetModelIdByGenderAndSize(socialData.basicData.gender, socialData.basicData.bodySize)
     friendData:SetPlayerName(socialData.basicData.name)
@@ -240,10 +275,17 @@ local asyncInitInfo = function(friendData)
     friendData:SetSocialData(socialData)
   end
 end
+local asyncUpdataPrivateChat = function(privateChat, token)
+  local socialVM = Z.VMMgr.GetVM("social")
+  local socialData = socialVM.AsyncGetHeadAndHeadFrameInfoAndSDKPrivilege(privateChat.charId, token)
+  if socialData then
+    privateChat.socialData = socialData
+  end
+end
 local asyncRefreshBlacks = function(blackList)
   if blackList and 0 < #blackList then
     for i = 1, #blackList do
-      local blackData = friendMainData:GetGroupFriendData()
+      local blackData = friendMainData:GetGroupFriendData(E.FriendGroupType.Shield, blackList[i])
       if not blackData then
         blackData = initFriendData()
         blackData:RefreshBlackFriend(blackList[i])
@@ -283,9 +325,9 @@ end
 local asyncSetGroupSort = function(groupSort, cancelToken)
   local sendData = {}
   sendData.groupSort = groupSort
-  local ret = worldProxy.SetGroupSort(sendData, cancelToken)
-  logPbError(ret)
-  return ret
+  local errCode = worldProxy.SetGroupSort(sendData, cancelToken)
+  logErrCode(errCode)
+  return errCode
 end
 local refreshSuggestionList = function(suggestionList)
   local chatMainData = Z.DataMgr.Get("chat_main_data")
@@ -344,19 +386,25 @@ local asyncGetFriendBaseInfo = function(charId, cancelToken)
     friendMainData:Clear()
     refreshBothWayFirneds(baseInfo.friendList, true, true)
     refreshCustomGroups(baseInfo.groupIdList)
-    refreshApplications(baseInfo.applicationList, true)
+    local chatSettingData = Z.DataMgr.Get("chat_setting_data")
+    if chatSettingData:GetFriendApply() then
+      refreshApplications(baseInfo.applicationList, true)
+    end
     refreshGroupSort(baseInfo.groupSort)
   end
   refreshFriendLiness(ret.friendlinessList)
   refreshTotalFriendLiness(ret.totalFriendliness)
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.FriendAddressTab, table.zcount(friendMainData:GetApplicationList()))
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.FriendAddressTab, table.zcount(friendMainData:GetApplicationList()))
   return ret
 end
 local asyncGetFriendBaseData = function()
   if friendMainData.IsCache == false then
     local charId = Z.ContainerMgr.CharSerialize.charId
-    asyncGetFriendBaseInfo(charId, friendMainData.CancelSource:CreateToken())
-    friendMainData.IsCache = true
+    local ret = asyncGetFriendBaseInfo(charId, friendMainData.CancelSource:CreateToken())
+    if ret.errCode == 0 then
+      friendMainData.IsCache = true
+      Z.EventMgr:Dispatch(Z.ConstValue.Friend.RefreshFriendBaseDataCache)
+    end
   end
 end
 local asyncFriend = function(operationMap, syncData)
@@ -388,15 +436,17 @@ local asyncFriend = function(operationMap, syncData)
       groupSortRefresh = true
     elseif k == Z.PbEnum("EFriendSyncDataType", "DataTypeApplicationList") then
       if isAdd == 0 then
-        refreshApplications(syncData.baseInfo.applicationList)
-        friendMainData:GetApplicationList()
-        Z.RedPointMgr.RefreshServerNodeCount(E.RedType.FriendAddressTab, table.zcount(friendMainData:GetApplicationList()))
+        local chatSettingData = Z.DataMgr.Get("chat_setting_data")
+        if chatSettingData:GetFriendApply() then
+          refreshApplications(syncData.baseInfo.applicationList)
+          Z.RedPointMgr.UpdateNodeCount(E.RedType.FriendAddressTab, table.zcount(friendMainData:GetApplicationList()))
+        end
       else
         for _, applicationInfo in pairs(syncData.baseInfo.applicationList) do
           friendMainData:RemoveApplicationFriendData(applicationInfo.charId)
           Z.EventMgr:Dispatch(Z.ConstValue.InvitationRemoveTipsUnit, E.InvitationTipsType.FriendApply, applicationInfo.charId)
         end
-        Z.RedPointMgr.RefreshClientNodeCount(E.RedType.FriendAddressTab, table.zcount(friendMainData:GetApplicationList()))
+        Z.RedPointMgr.UpdateNodeCount(E.RedType.FriendAddressTab, table.zcount(friendMainData:GetApplicationList()), true)
       end
       applicationRefresh = true
     elseif k == Z.PbEnum("EFriendSyncDataType", "DataTypeGroupSort") then
@@ -427,6 +477,9 @@ local updateSelfFriendLinessData = function(totalLevel, totalExp, todayAddExp, u
   Z.EventMgr:Dispatch(Z.ConstValue.Friend.FriendLinessChange)
 end
 local setFriendRemarks = function(charId, remark, cancelToken)
+  if not checkCharIdVaild(charId) then
+    return
+  end
   local sendData = {}
   sendData.charId = charId
   sendData.remark = remark
@@ -434,60 +487,78 @@ local setFriendRemarks = function(charId, remark, cancelToken)
   return ret
 end
 local deleteFriend = function(charList, cancelToken)
+  for i = 1, #charList do
+    if not checkCharIdVaild(charList[i]) then
+      return
+    end
+  end
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  if not gotoFuncVM.CheckFuncCanUse(E.FunctionID.DeleteFriend) then
+    return
+  end
   local sendData = {}
   sendData.charList = {}
   sendData.charList.memberList = charList
-  local ret = worldProxy.DeleteFriend(sendData, cancelToken)
-  logPbError(ret)
-  return ret
+  local errCode = worldProxy.DeleteFriend(sendData, cancelToken)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncChangeGroup = function(charId, targetGroupId, cancelToken)
+  if not checkCharIdVaild(charId) then
+    return
+  end
   local sendData = {}
   sendData.charId = charId
   sendData.targetGroupId = targetGroupId
-  local ret = worldProxy.ChangeGroup(sendData, cancelToken)
-  logPbError(ret)
-  return ret
+  local errCode = worldProxy.ChangeGroup(sendData, cancelToken)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncChangeGroupName = function(groupId, groupName, cancelToken)
   local sendData = {}
   sendData.groupId = groupId
   sendData.newName = groupName
-  local ret = worldProxy.ChangeGroupName(sendData, cancelToken)
-  logPbError(ret)
-  return ret
+  local errCode = worldProxy.ChangeGroupName(sendData, cancelToken)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncCreateGroup = function(groupName, cancelToken)
   local sendData = {}
   sendData.groupName = groupName
-  local ret = worldProxy.CreateGroup(sendData, cancelToken)
-  if ret.errorCode ~= Z.PbEnum("EErrorCode", "ErrIllegalCharacter") then
-    logPbError(ret)
+  local errCode = worldProxy.CreateGroup(sendData, cancelToken)
+  if errCode ~= Z.PbEnum("EErrorCode", "ErrIllegalCharacter") then
+    logErrCode(errCode)
   end
-  return ret
+  return errCode
 end
 local asyncDelectGroup = function(groupID, cancelToken)
   local sendData = {}
   sendData.groupId = groupID
-  local ret = worldProxy.DeleteGroup(sendData, cancelToken)
-  logPbError(ret)
-  return ret
+  local errCode = worldProxy.DeleteGroup(sendData, cancelToken)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncSetRemind = function(charId, isRemind, cancelToken)
+  if not checkCharIdVaild(charId) then
+    return
+  end
   local sendData = {}
   sendData.charId = charId
   sendData.isRemind = isRemind
-  local ret = worldProxy.SetRemind(sendData, cancelToken)
-  logPbError(ret)
-  return ret
+  local errCode = worldProxy.SetRemind(sendData, cancelToken)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncSetTop = function(charId, isTop, cancelToken)
+  if not checkCharIdVaild(charId) then
+    return
+  end
   local sendData = {}
   sendData.charId = charId
   sendData.isTop = isTop
-  local ret = worldProxy.SetTop(sendData, cancelToken)
-  logPbError(ret)
-  return ret
+  local errCode = worldProxy.SetTop(sendData, cancelToken)
+  logErrCode(errCode)
+  return errCode
 end
 local asyncSetPersonalState = function(state, isRemove)
   worldProxy.SetPersonalState(state, isRemove)
@@ -516,22 +587,22 @@ end
 local asyncSetSignature = function(signature, cancelSource)
   local data = {}
   data.signature = signature
-  local ref = worldProxy.SetSignature(data, cancelSource:CreateToken())
+  worldProxy.SetSignature(data, cancelSource:CreateToken())
 end
 local asyncSetHobbyMark = function(hobbyMark, cancelSource)
   local data = {}
   data.markList = hobbyMark
-  local ref = worldProxy.SetHobbyMark(data, cancelSource:CreateToken())
+  worldProxy.SetHobbyMark(data, cancelSource:CreateToken())
 end
 local asyncSetTimeMark = function(timeMark, cancelSource)
   local data = {}
   data.markList = timeMark
-  local ref = worldProxy.SetTimeMark(data, cancelSource:CreateToken())
+  worldProxy.SetTimeMark(data, cancelSource:CreateToken())
 end
 local asyncSetshowPicture = function(url, cancelSource)
   local data = {}
   data.url = url
-  local ref = worldProxy.SetshowPicture(data, cancelSource:CreateToken())
+  worldProxy.SetshowPicture(data, cancelSource:CreateToken())
 end
 local asyncGetFriendShowInfo = function(charId, cancelSource)
   local data = {}
@@ -545,7 +616,7 @@ local asyncGetSuggestionList = function(cancelSource)
   local data = {}
   data.charId = Z.ContainerMgr.CharSerialize.charId
   local ret = worldProxy.GetSuggestionList(data, cancelSource:CreateToken())
-  if ret.errorCode == 0 then
+  if ret.errCode == 0 then
     refreshSuggestionList(ret.suggestionList)
   end
 end
@@ -586,6 +657,22 @@ local getPlayerShowName = function(charId, playerName)
   end
   return playerName
 end
+local checkFriendChatRed = function(charId)
+  if Z.IsPCUI then
+    if friendMainData:GetFriendViewOpen() and friendMainData:GetFriendViewType() == E.FriendViewType.Chat and friendMainData:GetChatSelectCharId() == charId then
+      return
+    end
+  else
+    if friendMainData:GetFriendViewOpen() and friendMainData:GetIsShowFriendChat() and friendMainData:GetFriendViewType() == E.FriendViewType.Chat and friendMainData:GetChatSelectCharId() == charId then
+      return
+    end
+    if friendMainData:GetFriendViewOpen() and friendMainData:GetIsShowFriendChat() and friendMainData:GetFriendViewType() == E.FriendViewType.Friend and friendMainData:GetAddressSelectCharId() == charId then
+      return
+    end
+  end
+  local chatMainData = Z.DataMgr.Get("chat_main_data")
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.FriendChatTab, chatMainData:GetPrivateChatUnReadCount())
+end
 local ret = {
   UpdateGroupShowList = updateGroupShowList,
   GetFriendAndGroupList = getFriendAndGroupList,
@@ -619,12 +706,14 @@ local ret = {
   AsyncGetSuggestionList = asyncGetSuggestionList,
   OpenPrivateChat = openPrivateChat,
   AsyncInitInfo = asyncInitInfo,
+  AsyncUpdataPrivateChat = asyncUpdataPrivateChat,
   AsyncRefreshBlacks = asyncRefreshBlacks,
   CheckFriendRemark = checkFriendRemark,
   RewardPersonalFriendlinessLv = rewardPersonalFriendlinessLv,
   RefreshTotalFriendLiness = refreshTotalFriendLiness,
   RewardTotalFriendlinessLv = rewardTotalFriendlinessLv,
   UpdateFriendliness = updateFriendliness,
-  GetPlayerShowName = getPlayerShowName
+  GetPlayerShowName = getPlayerShowName,
+  CheckFriendChatRed = checkFriendChatRed
 }
 return ret

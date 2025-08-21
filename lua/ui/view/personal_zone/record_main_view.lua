@@ -42,6 +42,7 @@ function PersonalZoneRecordMain:ctor()
 end
 
 function PersonalZoneRecordMain:OnActive()
+  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
   self.uiBinder.node_loop_eff:SetEffectGoVisible(true)
   self:AddClick(self.uiBinder.btn_close, function()
@@ -66,7 +67,7 @@ function PersonalZoneRecordMain:OnActive()
     return a.sort < b.sort
   end)
   Z.CoroUtil.create_coro_xpcall(function()
-    local unitPath = GetLoadAssetPath("PersonalZoneRecodTogItem")
+    local unitPath = GetLoadAssetPath("ComTabTogItem")
     for _, tab in ipairs(self.tabs_) do
       local functionConfig = Z.TableMgr.GetTable("FunctionTableMgr").GetRow(tab.functionId)
       local unitName = "togs_" .. tab.functionId
@@ -75,9 +76,11 @@ function PersonalZoneRecordMain:OnActive()
         unit.img_on:SetImage(functionConfig.Icon)
         unit.img_off:SetImage(functionConfig.Icon)
         unit.tog_tab_select.group = self.uiBinder.layout_tab
-        self:AddClick(unit.tog_tab_select, function()
-          self.commonVM_.CommonPlayTogAnim(unit.anim_tog, self.cancelSource:CreateToken())
-          self:SelectFunctionId(tab.functionId)
+        unit.tog_tab_select:AddListener(function(isOn)
+          if isOn then
+            self.commonVM_.CommonPlayTogAnim(unit.anim_tog, self.cancelSource:CreateToken())
+            self:SelectFunctionId(tab.functionId)
+          end
         end)
         self.tabsfunctionId_[tab.functionId] = unit
         do
@@ -97,16 +100,22 @@ function PersonalZoneRecordMain:OnActive()
     self.uiBinder.layout_tab:SetAllTogglesOff()
     if self.viewData and type(self.viewData) == "number" and self.tabsfunctionId_[self.viewData] then
       self.tabsfunctionId_[self.viewData].tog_tab_select.isOn = true
-      self.commonVM_.CommonPlayTogAnim(self.tabsfunctionId_[self.viewData].anim_tog, self.cancelSource:CreateToken())
-      self:SelectFunctionId(self.viewData)
+    elseif self.tabs_[1] ~= nil and self.tabs_[1].functionId ~= nil then
+      self.tabsfunctionId_[self.tabs_[1].functionId].tog_tab_select.isOn = true
     end
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
   end)()
 end
 
 function PersonalZoneRecordMain:OnDeActive()
+  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_loop_eff)
   self.uiBinder.node_loop_eff:SetEffectGoVisible(false)
   self.uiBinder.layout_tab:ClearAll()
+  for _, unit in pairs(self.tabsfunctionId_) do
+    unit.tog_tab_select:RemoveAllListeners()
+    unit.tog_tab_select.isOn = false
+  end
   self.tabsfunctionId_ = {}
   if self.curSelectTogSubView_ then
     self.curSelectTogSubView_:DeActive()
@@ -118,10 +127,6 @@ function PersonalZoneRecordMain:OnDeActive()
 end
 
 function PersonalZoneRecordMain:OnRefresh()
-  if self.viewData and type(self.viewData) == "number" and self.tabsfunctionId_[self.viewData] then
-    self.tabsfunctionId_[self.viewData].tog_tab_select.isOn = true
-    self:SelectFunctionId(self.viewData)
-  end
 end
 
 function PersonalZoneRecordMain:SelectFunctionId(functionId)
@@ -134,6 +139,7 @@ function PersonalZoneRecordMain:SelectFunctionId(functionId)
   end
   self.togSubViews_[functionId]:Active(functionId, self.uiBinder.node_info)
   self.curSelectTogSubView_ = self.togSubViews_[functionId]
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
 end
 
 return PersonalZoneRecordMain

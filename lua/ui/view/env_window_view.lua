@@ -1,5 +1,5 @@
 local UI = Z.UI
-local super = require("ui.ui_view_base")
+local super = require("ui.ui_subview_base")
 local Env_windowView = class("Env_windowView", super)
 local envSkillItem = require("ui.component.environment_resonance.env_skill_item")
 local SkillState = E.EnvResonanceSkillState
@@ -32,15 +32,17 @@ local STATE_INFO = {
   }
 }
 
-function Env_windowView:ctor()
+function Env_windowView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "env_window")
+  super.ctor(self, "env_window", "environment/env_window", UI.ECacheLv.None, true)
   self.envTipsView_ = require("ui.view.tips_env_info_view").new(self)
+  self.parent_ = parent
 end
 
 function Env_windowView:OnActive()
+  self.uiBinder.Trans:SetAnchorPosition(0, 0)
+  self.uiBinder.Trans:SetSizeDelta(0, 0)
   self:startAnimatedShow()
-  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self.envVm_ = Z.VMMgr.GetVM("env")
   self.pivotVm_ = Z.VMMgr.GetVM("pivot")
   self.envTbl_ = Z.TableMgr.GetTable("EnvironmentResonanceTableMgr")
@@ -49,16 +51,8 @@ function Env_windowView:OnActive()
   self.pivotTableMgr_ = Z.TableMgr.GetTable("PivotTableMgr")
   self.skillTableMgr_ = Z.TableMgr.GetTable("SkillTableMgr")
   self.sceneTableMgr_ = Z.TableMgr.GetTable("SceneTableMgr")
-  self.commonVm_.SetLabText(self.uiBinder.node_info.cont_title_return.lab_title, E.FunctionID.EnvResonance)
   self.cont_leftUIBinder = self.uiBinder.node_info.cont_left
   self.cont_rightUIBinder = self.uiBinder.node_info.cont_right
-  self:AddAsyncClick(self.uiBinder.node_info.cont_title_return.btn, function()
-    self.envVm_.CloseEnvWindowView()
-  end)
-  self:AddAsyncClick(self.uiBinder.node_info.cont_title_return.btn_ask, function()
-    local helpsysVM = Z.VMMgr.GetVM("helpsys")
-    helpsysVM.OpenFullScreenTipsView(300014)
-  end)
   self:AddAsyncClick(self.cont_rightUIBinder.btn_track, function()
     self:onClickTrack()
   end)
@@ -101,8 +95,8 @@ function Env_windowView:OnActive()
   self.SelectResonanceId_ = 0
   self.IsEquipSkillItem_ = false
   self:initEnvSkillItem()
-  self:initEnvSceneItem()
   self:initEquipSkillItem()
+  self:initEnvSceneItem()
   self:refreshEnvSceneItem()
   self:BindEvents()
 end
@@ -124,6 +118,7 @@ function Env_windowView:onBeginDrag(sceneIdx, index)
       local env_skill_item = envSkillItem.new()
       env_skill_item:InitItem(self.copyItem_, config, self.skillTableMgr_.GetRow(envSkillItemList.lstSkillIds[index]), self, nil, self.SelectScenePos_)
       env_skill_item:RefreshItem()
+      self:clearDragItem()
       self.copySkillItem_ = env_skill_item
       self.isDraw_ = true
       self:RefreshSelectSkill(config.Id, false)
@@ -140,6 +135,7 @@ function Env_windowView:onBeginDrag(sceneIdx, index)
 end
 
 function Env_windowView:onEndDrag()
+  self:clearDragItem()
   local leftDis = self.envVm_.GetScreenDistance(self.copyItem_.Trans, self.cont_skill_left.Trans)
   local rightDis = self.envVm_.GetScreenDistance(self.copyItem_.Trans, self.cont_skill_right.Trans)
   if leftDis <= rightDis then
@@ -148,10 +144,6 @@ function Env_windowView:onEndDrag()
     end
   elseif rightDis <= self.skillDistance_ then
     self.envEquipSKillItemDic_[2]:AsyncChangeResonanceSkill()
-  end
-  if self.copySkillItem_ then
-    self.copySkillItem_:DestroyItem()
-    self.copySkillItem_ = nil
   end
 end
 
@@ -173,6 +165,7 @@ function Env_windowView:onSkillBeginDrag(index)
           local env_skill_item = envSkillItem.new()
           env_skill_item:InitItem(self.copyItem_, config, configSkill, self, nil, self.SelectScenePos_)
           env_skill_item:RefreshItem()
+          self:clearDragItem()
           self.copySkillItem_ = env_skill_item
           self.isDraw_ = true
           self.curSelectSkillIdx_ = index
@@ -185,6 +178,7 @@ function Env_windowView:onSkillBeginDrag(index)
 end
 
 function Env_windowView:onSkillEndDrag()
+  self:clearDragItem()
   local resonanceLeftId = self.envVm_.GetEquipResonance(1)
   local resonanceRightId = self.envVm_.GetEquipResonance(2)
   if self.curSelectSkillIdx_ == 1 then
@@ -209,10 +203,6 @@ function Env_windowView:onSkillEndDrag()
     elseif self.envVm_.GetScreenDistance(self.copyItem_.Trans, self.cont_skill_right.Trans) > self.skillDistance_ then
       self.envVm_.AsyncChangeResonanceSkill(2, 0, self.cancelSource:CreateToken())
     end
-  end
-  if self.copySkillItem_ then
-    self.copySkillItem_:DestroyItem()
-    self.copySkillItem_ = nil
   end
 end
 
@@ -267,7 +257,6 @@ function Env_windowView:initDraw(skillItem, initDataFunc, endDragFunc)
 end
 
 function Env_windowView:OnDeActive()
-  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   Z.ContainerMgr.CharSerialize.resonance.Watcher:UnregWatcher(self.onContainerChanged)
   self:closeSkillTips()
   self:clearSkillItem()
@@ -388,6 +377,14 @@ function Env_windowView:clearSkillItem()
     skillItem:DestroyItem()
   end
   self.envEquipSKillItemDic_ = {}
+  self:clearDragItem()
+end
+
+function Env_windowView:clearDragItem()
+  if self.copySkillItem_ then
+    self.copySkillItem_:DestroyItem()
+    self.copySkillItem_ = nil
+  end
 end
 
 function Env_windowView:refreshEnvSkillItems(scenePos)
@@ -503,11 +500,11 @@ function Env_windowView:refreshSkillTips()
       curSkillEffectDesc = string.zconcat("<br>", Lang("EnvSkillEffect"), "<br>", skillDesc, "<br>")
       nextSkillEffectDesc = string.zconcat("<br>", Lang("EnvSkillEffectNext"), "<br>", nextSkillDesc)
     end
-    local durationTimeDesc = Z.TimeTools.FormatToDHM(envConfig.Time)
+    local durationTimeDesc = 0 < envConfig.Time and Lang("resonanceDurationTime") .. Z.TimeFormatTools.FormatToDHMS(envConfig.Time) or ""
     local remainTime = self.envVm_.GetResonanceRemainTime(self.SelectResonanceId_)
     tipsViewData.iconPath = skillConfig.Icon
     tipsViewData.title = skillConfig.Name
-    tipsViewData.effectTime = Lang("resonanceDurationTime") .. durationTimeDesc
+    tipsViewData.effectTime = durationTimeDesc
     tipsViewData.currentDesc = curSkillEffectDesc
     tipsViewData.nextDesc = nextSkillEffectDesc
     tipsViewData.itemName = envConfig.Name
@@ -516,6 +513,7 @@ function Env_windowView:refreshSkillTips()
       tipsViewData.showTime = remainTime
     end
   end
+  self.cont_rightUIBinder.lab_title.text = tipsViewData.title
   self.envTipsView_:Active(tipsViewData, self.cont_rightUIBinder.cont_info.Trans)
   self.cont_rightUIBinder.Ref:SetVisible(self.cont_rightUIBinder.btn_track, state == SkillState.Lock or state == SkillState.NotActive or state == SkillState.Expired)
 end

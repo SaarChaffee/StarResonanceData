@@ -17,6 +17,15 @@ function BagFirstClassLoopItem:Refresh()
   if self.itemPackageItem_ == nil then
     return
   end
+  local redTrans
+  if Z.IsPCUI then
+    self.uiBinder.lab_name_on.text = self.itemPackageItem_.Name
+    self.uiBinder.lab_name_off.text = self.itemPackageItem_.Name
+    self.uiBinder.node_eff:SetEffectGoVisible(false)
+    redTrans = self.uiBinder.node_red
+  else
+    redTrans = self.uiBinder.Trans
+  end
   local backpackVm = Z.VMMgr.GetVM("backpack")
   local datas = backpackVm.GetFirstClassSortIdList()
   self.totalCount_ = #datas
@@ -24,15 +33,21 @@ function BagFirstClassLoopItem:Refresh()
   self.uiBinder.img_off:SetImage(self.itemPackageItem_.Icon)
   self:refreshLines()
   local newNodeId = bagRed.GetNewTabRedId(self.packageId_)
-  Z.RedPointMgr.LoadRedDotItem(newNodeId, self.view, self.uiBinder.Trans)
+  Z.RedPointMgr.LoadRedDotItem(newNodeId, self.view, redTrans)
   local resonanceNodeId = bagRed.GetResonanceTabRedId(self.packageId_)
-  Z.RedPointMgr.LoadRedDotItem(resonanceNodeId, self.view, self.uiBinder.Trans)
+  Z.RedPointMgr.LoadRedDotItem(resonanceNodeId, self.view, redTrans)
+  Z.GuideMgr:SetSteerIdByComp(self.uiBinder.uisteer, E.DynamicSteerType.BagFirstIndex, self.index)
 end
 
 function BagFirstClassLoopItem:OnSelected(isOn)
   self.isSelected = isOn
   self:refreshLines()
   if isOn then
+    if Z.IsPCUI then
+      self.uiBinder.anim_do:Restart(Z.DOTweenAnimType.Open)
+      self.view.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff)
+      self.uiBinder.node_eff:SetEffectGoVisible(true)
+    end
     self.commonVM_.CommonPlayTogAnim(self.uiBinder.anim_tog, self.view.cancelSource:CreateToken())
     Z.RedPointMgr.OnClickRedDot(E.RedType.Backpack .. self.packageId_)
   end

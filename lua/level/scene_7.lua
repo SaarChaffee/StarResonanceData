@@ -11,6 +11,50 @@ Scene.Seasons = {}
 
 function Scene:InitEvents()
   self.EventItems = {}
+  self.EventItems[4399] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 4399,
+    count = -1,
+    entity = {actorType = 5, tableUid = 15094},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      Z.VMMgr.GetVM("scene").CheckSceneUnlockByTrigger(71, true)
+    end
+  }
+  self.EventItems[4400] = {
+    eventType = E.LevelEventType.OnZoneExitClient,
+    enable = true,
+    group = 0,
+    eventId = 4400,
+    count = -1,
+    entity = {actorType = 5, tableUid = 15094},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      Z.VMMgr.GetVM("scene").CheckSceneUnlockByTrigger(71, false)
+    end
+  }
+  self.EventItems[4401] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 4401,
+    count = -1,
+    entity = {actorType = 5, tableUid = 21123},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      Z.VMMgr.GetVM("scene").CheckSceneUnlockByTrigger(75, true)
+    end
+  }
+  self.EventItems[4402] = {
+    eventType = E.LevelEventType.OnZoneExitClient,
+    enable = true,
+    group = 0,
+    eventId = 4402,
+    count = -1,
+    entity = {actorType = 5, tableUid = 21123},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      Z.VMMgr.GetVM("scene").CheckSceneUnlockByTrigger(75, false)
+    end
+  }
   self.EventItems[2569] = {
     eventType = E.LevelEventType.OnZoneEnterClient,
     enable = true,
@@ -23,40 +67,6 @@ function Scene:InitEvents()
         eventType = 1,
         strParams = {"10010209", ""}
       })
-    end
-  }
-  self.EventItems[3578] = {
-    eventType = E.LevelEventType.OnFlowPlayEnd,
-    enable = true,
-    group = 0,
-    eventId = 3578,
-    count = -1,
-    selectedStr = "on_10010314_flow_end",
-    action = function(localSelf)
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("mission1_2_path3", 0, 0, 25, false, 0)
-    end
-  }
-  self.EventItems[3877] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3877,
-    count = -1,
-    entity = {actorType = 5, tableUid = 19600},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("mission1_2_path2", 0, 0, 25, false, 0)
-      Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("mission1_2_path3")
-    end
-  }
-  self.EventItems[3579] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3579,
-    count = -1,
-    entity = {actorType = 5, tableUid = 18530},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("mission1_2_path2")
     end
   }
   self.EventItems[3580] = {
@@ -79,28 +89,6 @@ function Scene:InitEvents()
     entity = {actorType = 5, tableUid = 18530},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
       Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("mission2_1_path1")
-    end
-  }
-  self.EventItems[3583] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3583,
-    count = -1,
-    entity = {actorType = 5, tableUid = 18531},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("mission1_2_path1", 0, 0, 10, false, 0)
-    end
-  }
-  self.EventItems[3584] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3584,
-    count = -1,
-    entity = {actorType = 5, tableUid = 18532},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("mission1_2_path1")
     end
   }
   self.EventItems[3887] = {
@@ -133,7 +121,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5017,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, true)
+      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, true, localSelf.eventId)
       Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
         3,
         4,
@@ -150,7 +138,7 @@ function Scene:InitEvents()
         25,
         26,
         27
-      }, true)
+      }, true, localSelf.eventId)
       Panda.ZGame.ZEventParser.PreLoadCutscene(20204202)
     end
   }
@@ -162,7 +150,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5017,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1)
+      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1, localSelf.eventId)
     end
   }
   self.EventItems[669] = {
@@ -917,538 +905,187 @@ function Scene:InitEvents()
       Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("mission2_4_path7")
     end
   }
-  self.EventItems[2890] = {
+  self.EventItems[4150] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 2890,
+    eventId = 4150,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1009",
+    selectedStr = "EnterWindTunnel_1009",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("WindTunnel_Floating_1009", 0, 0, 5, false, 0)
-      require("zproxy.world_proxy").UserDoAction("WindZone_1009")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[2891] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 2891,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14508},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1009)
       Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("WindTunnel_Floating_1009")
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1009")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[2892] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 2892,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14509},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1009")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3934] = {
+  self.EventItems[4134] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3934,
+    eventId = 4134,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1001",
+    selectedStr = "EnterWindTunnel_1001",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindZone_1001")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3935] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3935,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14551},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1001)
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1001")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3936] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 3936,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14552},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1001")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3940] = {
+  self.EventItems[4136] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3940,
+    eventId = 4136,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1002",
+    selectedStr = "EnterWindTunnel_1002",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindZone_1002")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3941] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3941,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14543},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1002)
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1002")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3942] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 3942,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14544},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1002")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3946] = {
+  self.EventItems[4138] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3946,
+    eventId = 4138,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1003",
+    selectedStr = "EnterWindTunnel_1003",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindZone_1003")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3947] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3947,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14539},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1003)
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1003")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3948] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 3948,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14540},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1003")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3952] = {
+  self.EventItems[4140] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3952,
+    eventId = 4140,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1004",
+    selectedStr = "EnterWindTunnel_1004",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("WindTunnel_Floating_1004", 0, 0, 5, false, 0)
-      require("zproxy.world_proxy").UserDoAction("WindZone_1004")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3953] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3953,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14527},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1004)
       Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("WindTunnel_Floating_1004")
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1004")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3954] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 3954,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14528},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1004")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3958] = {
+  self.EventItems[4142] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3958,
+    eventId = 4142,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1005",
+    selectedStr = "EnterWindTunnel_1005",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindZone_1005")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3959] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3959,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14531},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1005)
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1005")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3960] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 3960,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14532},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1005")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3964] = {
+  self.EventItems[4144] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3964,
+    eventId = 4144,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1006",
+    selectedStr = "EnterWindTunnel_1006",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindZone_1006")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3965] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3965,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14523},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1006)
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1006")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3966] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 3966,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14524},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1006")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3970] = {
+  self.EventItems[4146] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3970,
+    eventId = 4146,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1007",
+    selectedStr = "EnterWindTunnel_1007",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindZone_1007")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3971] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3971,
-    count = -1,
-    entity = {actorType = 5, tableUid = 16210},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1007)
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1007")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3972] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 3972,
-    count = -1,
-    entity = {actorType = 5, tableUid = 16211},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1007")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3976] = {
+  self.EventItems[4148] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3976,
+    eventId = 4148,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1008",
+    selectedStr = "EnterWindTunnel_1008",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindZone_1008")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3977] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3977,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14515},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1008)
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1008")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3978] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 3978,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14516},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1008")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3982] = {
+  self.EventItems[4152] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3982,
+    eventId = 4152,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1010",
+    selectedStr = "EnterWindTunnel_1010",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindZone_1010")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3983] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3983,
-    count = -1,
-    entity = {actorType = 5, tableUid = 10987},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1010)
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1010")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3984] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 3984,
-    count = -1,
-    entity = {actorType = 5, tableUid = 10991},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1010")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3988] = {
+  self.EventItems[4154] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3988,
+    eventId = 4154,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1011",
+    selectedStr = "EnterWindTunnel_1011",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindZone_1011")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3989] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3989,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14535},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1011)
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1011")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3990] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 3990,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14536},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1011")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3994] = {
+  self.EventItems[4156] = {
     eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3994,
+    eventId = 4156,
     count = -1,
-    selectedStr = "ActivateWindTunnel_1012",
+    selectedStr = "EnterWindTunnel_1012",
     action = function(localSelf)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("WindTunnel_Floating_1012", 0, 0, 5, false, 0)
-      require("zproxy.world_proxy").UserDoAction("WindZone_1012")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\233\128\154\233\129\147\230\191\128\230\180\187\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[3995] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3995,
-    count = -1,
-    entity = {actorType = 5, tableUid = 14519},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1012)
       Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("WindTunnel_Floating_1012")
-      require("zproxy.world_proxy").UserDoAction("WindTunnelStart_1012")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[3996] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
+  self.EventItems[4158] = {
+    eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 3996,
+    eventId = 4158,
     count = -1,
-    entity = {actorType = 5, tableUid = 14520},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-      require("zproxy.world_proxy").UserDoAction("WindTunnelEnd_1012")
-      logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
-    end
-  }
-  self.EventItems[4001] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 4001,
-    count = -1,
-    entity = {actorType = 5, tableUid = 17834},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+    selectedStr = "EnterWindTunnel_1013",
+    action = function(localSelf)
       logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1013)
       logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[4002] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
+  self.EventItems[4159] = {
+    eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 4002,
+    eventId = 4159,
     count = -1,
-    entity = {actorType = 5, tableUid = 17835},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+    selectedStr = "ExitWindTunnel_1013",
+    action = function(localSelf)
       logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[4007] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
+  self.EventItems[4160] = {
+    eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 4007,
+    eventId = 4160,
     count = -1,
-    entity = {actorType = 5, tableUid = 17845},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+    selectedStr = "EnterWindTunnel_1014",
+    action = function(localSelf)
       logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1014)
       logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\232\191\155\229\133\165\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[4008] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
+  self.EventItems[4161] = {
+    eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 4008,
+    eventId = 4161,
     count = -1,
-    entity = {actorType = 5, tableUid = 17846},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+    selectedStr = "ExitWindTunnel_1014",
+    action = function(localSelf)
       logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
@@ -1464,20 +1101,6 @@ function Scene:InitEvents()
       Z.LevelMgr.FireSceneEvent({
         eventType = 4,
         intParams = {1002}
-      })
-    end
-  }
-  self.EventItems[1441] = {
-    eventType = E.LevelEventType.OnVisualLayerEnter,
-    enable = true,
-    group = 0,
-    eventId = 1441,
-    count = -1,
-    layerConfigId = 5020,
-    action = function(localSelf, layerConfigId)
-      Z.LevelMgr.FireSceneEvent({
-        eventType = 4,
-        intParams = {10103004}
       })
     end
   }
@@ -1643,31 +1266,6 @@ function Scene:InitEvents()
       Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
     end
   }
-  self.EventItems[3387] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3387,
-    count = -1,
-    entity = {actorType = 5, tableUid = 18083},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Z.LevelMgr.FireSceneEvent({
-        eventType = 1,
-        strParams = {"5203001", ""}
-      })
-    end
-  }
-  self.EventItems[3893] = {
-    eventType = E.LevelEventType.OnVisualLayerEnter,
-    enable = true,
-    group = 0,
-    eventId = 3893,
-    count = -1,
-    layerConfigId = 5203,
-    action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.PreLoadFlow(10020302)
-    end
-  }
   self.EventItems[2290] = {
     eventType = E.LevelEventType.OnVisualLayerEnter,
     enable = true,
@@ -1677,38 +1275,22 @@ function Scene:InitEvents()
     layerConfigId = 5212,
     action = function(localSelf, layerConfigId)
       Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 1)
+      Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/fld001_story_visuallayer5212")
+      Z.LevelMgr.FireSceneEvent({
+        eventType = 1,
+        strParams = {"10010265", ""}
+      })
     end
   }
-  self.EventItems[2292] = {
+  self.EventItems[4335] = {
     eventType = E.LevelEventType.OnVisualLayerLeave,
     enable = true,
     group = 0,
-    eventId = 2292,
+    eventId = 4335,
     count = -1,
     layerConfigId = 5212,
     action = function(localSelf, layerConfigId)
       Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
-    end
-  }
-  self.EventItems[3349] = {
-    eventType = E.LevelEventType.OnVisualLayerEnter,
-    enable = true,
-    group = 0,
-    eventId = 3349,
-    count = -1,
-    layerConfigId = 5212,
-    action = function(localSelf, layerConfigId)
-      Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/fld001_story_visuallayer5212")
-    end
-  }
-  self.EventItems[3350] = {
-    eventType = E.LevelEventType.OnVisualLayerLeave,
-    enable = true,
-    group = 0,
-    eventId = 3350,
-    count = -1,
-    layerConfigId = 5212,
-    action = function(localSelf, layerConfigId)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/fld001_story_visuallayer5212")
     end
   }
@@ -1733,23 +1315,44 @@ function Scene:InitEvents()
     selectedStr = "on_10030412_flow_end",
     action = function(localSelf)
       Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("main_3rd_starway3", 0, 0, 10, false, 0)
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("main_3rd_starway4", 0, 0, 10, false, 0)
       Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("main_3rd_starway5", 0, 0, 10, false, 0)
       Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("main_3rd_starway1")
       Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("main_3rd_starway2")
     end
   }
-  self.EventItems[3835] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
+  self.EventItems[4427] = {
+    eventType = E.LevelEventType.OnVisualLayerEnter,
     enable = true,
     group = 0,
-    eventId = 3835,
+    eventId = 4427,
     count = -1,
-    entity = {actorType = 5, tableUid = 12992},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+    layerConfigId = 5310,
+    action = function(localSelf, layerConfigId)
       Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("main_3rd_starway3")
-      Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("main_3rd_starway4")
       Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("main_3rd_starway5")
+    end
+  }
+  self.EventItems[4429] = {
+    eventType = E.LevelEventType.OnFlowPlayEnd,
+    enable = true,
+    group = 0,
+    eventId = 4429,
+    count = -1,
+    selectedStr = "on_10030403_flow_end",
+    action = function(localSelf)
+      Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("main_3rd_starway3")
+      Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("main_3rd_starway5")
+    end
+  }
+  self.EventItems[4454] = {
+    eventType = E.LevelEventType.OnFlowPlayEnd,
+    enable = true,
+    group = 0,
+    eventId = 4454,
+    count = -1,
+    selectedStr = "on_10302008_flow_end",
+    action = function(localSelf)
+      Panda.ZGame.ZEventParser.PreLoadCutscene(201010308)
     end
   }
   self.EventItems[3357] = {
@@ -2004,18 +1607,14 @@ function Scene:InitEvents()
       Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
     end
   }
-  self.EventItems[3631] = {
+  self.EventItems[4533] = {
     eventType = E.LevelEventType.OnVisualLayerLeave,
     enable = true,
     group = 0,
-    eventId = 3631,
+    eventId = 4533,
     count = -1,
     layerConfigId = 5304,
     action = function(localSelf, layerConfigId)
-      Z.LevelMgr.FireSceneEvent({
-        eventType = 4,
-        intParams = {1002}
-      })
       Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
     end
   }
@@ -2225,73 +1824,27 @@ function Scene:InitEvents()
       })
     end
   }
-  self.EventItems[2655] = {
-    eventType = E.LevelEventType.OnFlowPlayEnd,
+  self.EventItems[4132] = {
+    eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 2655,
+    eventId = 4132,
     count = -1,
-    selectedStr = "on_10030222_flow_end",
+    selectedStr = "EnterWindTunnel_Story_02",
     action = function(localSelf)
-      do
-        local entityData = {actorType = 3, tableUid = 14241}
-        if entityData.groupId then
-          Z.LevelMgr.FireSceneEvent({
-            eventType = 25,
-            intParams = {
-              entityData.groupId
-            }
-          })
-        else
-          Panda.ZGame.ZClientEntityMgr.Instance:RemoveClientEntityLua(entityData.tableUid, entityData.actorType)
-        end
-      end
-    end
-  }
-  self.EventItems[2656] = {
-    eventType = E.LevelEventType.OnFlowPlayEnd,
-    enable = true,
-    group = 0,
-    eventId = 2656,
-    count = -1,
-    selectedStr = "on_10030223_flow_end",
-    action = function(localSelf)
-      do
-        local entityData = {actorType = 3, tableUid = 14242}
-        if entityData.groupId then
-          Z.LevelMgr.FireSceneEvent({
-            eventType = 25,
-            intParams = {
-              entityData.groupId
-            }
-          })
-        else
-          Panda.ZGame.ZClientEntityMgr.Instance:RemoveClientEntityLua(entityData.tableUid, entityData.actorType)
-        end
-      end
-    end
-  }
-  self.EventItems[2703] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 2703,
-    count = -1,
-    entity = {actorType = 5, tableUid = 13681},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
       logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\232\191\155\229\133\165\233\163\142\229\138\155\233\128\154\233\129\147\229\133\165\229\143\163\229\140\186\229\159\159----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
       Panda.ZGame.ZWindTunnelMgr.Instance:EnterTunnel(1102)
       logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\232\191\155\229\133\165\233\163\142\229\138\155\233\128\154\233\129\147\229\133\165\229\143\163\229\140\186\229\159\159----\231\187\147\230\157\159------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
     end
   }
-  self.EventItems[2704] = {
-    eventType = E.LevelEventType.OnPlayerStateLeave,
+  self.EventItems[4133] = {
+    eventType = E.LevelEventType.OnOptionSelect,
     enable = true,
     group = 0,
-    eventId = 2704,
+    eventId = 4133,
     count = -1,
-    state = 30,
-    action = function(localSelf, state)
+    selectedStr = "ExitWindTunnel_Story_02",
+    action = function(localSelf)
       if Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.ETunnelId).Value == 1024 then
         logGreen(string.format("\239\188\136\229\133\179\229\141\161\231\188\150\232\190\145\229\153\168\230\137\147\229\141\176\239\188\137\233\163\142\229\138\155\233\128\154\233\129\147\231\154\132\231\166\187\229\188\128\233\128\187\232\190\145----\229\188\128\229\167\139------ : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
         do
@@ -2320,10 +1873,43 @@ function Scene:InitEvents()
     layerConfigId = 5006,
     action = function(localSelf, layerConfigId)
       Z.LevelMgr.FireSceneEvent({
-        eventType = 1,
-        strParams = {"10010246", ""}
+        eventType = 4,
+        intParams = {10101008}
       })
-      Panda.ZGame.ZEventParser.PreLoadCutscene(10101008)
+    end
+  }
+  self.EventItems[4409] = {
+    eventType = E.LevelEventType.OnVisualLayerEnter,
+    enable = true,
+    group = 0,
+    eventId = 4409,
+    count = -1,
+    layerConfigId = 5402,
+    action = function(localSelf, layerConfigId)
+      Panda.LuaAsyncBridge.SetCurWeatherTime(5)
+      Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(false)
+      Z.LevelMgr.timerMgr:StartTimer(function()
+        Z.LevelMgr.FireSceneEvent({
+          eventType = 1,
+          strParams = {"10410101", ""}
+        })
+        Z.LevelMgr.FireSceneEvent({
+          eventType = 1,
+          strParams = {"10410102", ""}
+        })
+      end, 4)
+    end
+  }
+  self.EventItems[4410] = {
+    eventType = E.LevelEventType.OnVisualLayerLeave,
+    enable = true,
+    group = 0,
+    eventId = 4410,
+    count = -1,
+    layerConfigId = 5402,
+    action = function(localSelf, layerConfigId)
+      Panda.LuaAsyncBridge.SetCurWeatherTime(0)
+      Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(true)
     end
   }
   self.EventItems[3345] = {
@@ -2333,7 +1919,11 @@ function Scene:InitEvents()
     eventId = 3345,
     count = -1,
     action = function(localSelf)
-      if Z.VMMgr.GetVM("level_editor").IsQuestExist(120001) == true and Z.VMMgr.GetVM("level_editor").IsWorldEventExist(6) == true then
+      if Z.VMMgr.GetVM("level_editor").IsQuestExist(120001) == true and Z.VMMgr.GetVM("level_editor").IsWorldEventExist(7075) == true then
+        Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/fld001_story_worldevent7075")
+      elseif Z.VMMgr.GetVM("level_editor").IsQuestExist(120001) == true and Z.VMMgr.GetVM("level_editor").IsWorldEventExist(7076) == true then
+        Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/fld001_story_worldevent7075")
+      elseif Z.VMMgr.GetVM("level_editor").IsQuestExist(120001) == true and Z.VMMgr.GetVM("level_editor").IsWorldEventExist(7077) == true then
         Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/fld001_story_worldevent7075")
       else
         Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/fld001_story_worldevent7075")
@@ -2347,7 +1937,11 @@ function Scene:InitEvents()
     eventId = 3389,
     count = -1,
     action = function(localSelf)
-      if Z.VMMgr.GetVM("level_editor").IsQuestExist(120001) == true and Z.VMMgr.GetVM("level_editor").IsWorldEventExist(6) == true then
+      if Z.VMMgr.GetVM("level_editor").IsQuestExist(120001) == true and Z.VMMgr.GetVM("level_editor").IsWorldEventExist(7075) == true then
+        Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/fld001_story_worldevent7075")
+      elseif Z.VMMgr.GetVM("level_editor").IsQuestExist(120001) == true and Z.VMMgr.GetVM("level_editor").IsWorldEventExist(7076) == true then
+        Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/fld001_story_worldevent7075")
+      elseif Z.VMMgr.GetVM("level_editor").IsQuestExist(120001) == true and Z.VMMgr.GetVM("level_editor").IsWorldEventExist(7077) == true then
         Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/fld001_story_worldevent7075")
       else
         Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/fld001_story_worldevent7075")
@@ -2362,16 +1956,34 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5007,
     action = function(localSelf, layerConfigId)
-      Z.LevelMgr.FireSceneEvent({
-        eventType = 1,
-        strParams = {"10010214", ""}
-      })
-      Z.LevelMgr.FireSceneEvent({
-        eventType = 1,
-        strParams = {"10010215", ""}
-      })
+      do
+        local entityData = {actorType = 2, groupId = 769}
+        if entityData.groupId then
+          Z.LevelMgr.FireSceneEvent({
+            eventType = 24,
+            intParams = {
+              entityData.groupId
+            }
+          })
+        else
+          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
+        end
+      end
       do
         local entityData = {actorType = 5, tableUid = 14357}
+        if entityData.groupId then
+          Z.LevelMgr.FireSceneEvent({
+            eventType = 24,
+            intParams = {
+              entityData.groupId
+            }
+          })
+        else
+          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
+        end
+      end
+      do
+        local entityData = {actorType = 2, tableUid = 14254}
         if entityData.groupId then
           Z.LevelMgr.FireSceneEvent({
             eventType = 24,
@@ -2407,11 +2019,38 @@ function Scene:InitEvents()
         end
       end
       local entityData = {actorType = 2, tableUid = 14305}
-      Panda.ZGame.ZAIMgr.Instance:SendEvent(entityData.tableUid, entityData.actorType, 500701)
+      if entityData.groupId then
+        Panda.ZGame.ZAIMgr.Instance:SendEventToGroup(entityData.groupId, 500701)
+      else
+        Panda.ZGame.ZAIMgr.Instance:SendEvent(entityData.tableUid, entityData.actorType, 500701)
+      end
       local entityData = {actorType = 2, tableUid = 14306}
-      Panda.ZGame.ZAIMgr.Instance:SendEvent(entityData.tableUid, entityData.actorType, 500701)
+      if entityData.groupId then
+        Panda.ZGame.ZAIMgr.Instance:SendEventToGroup(entityData.groupId, 500701)
+      else
+        Panda.ZGame.ZAIMgr.Instance:SendEvent(entityData.tableUid, entityData.actorType, 500701)
+      end
       local entityData = {actorType = 2, tableUid = 14307}
-      Panda.ZGame.ZAIMgr.Instance:SendEvent(entityData.tableUid, entityData.actorType, 500701)
+      if entityData.groupId then
+        Panda.ZGame.ZAIMgr.Instance:SendEventToGroup(entityData.groupId, 500701)
+      else
+        Panda.ZGame.ZAIMgr.Instance:SendEvent(entityData.tableUid, entityData.actorType, 500701)
+      end
+      Z.LevelMgr.timerMgr:StartTimer(function()
+        do
+          local entityData = {actorType = 2, groupId = 769}
+          if entityData.groupId then
+            Z.LevelMgr.FireSceneEvent({
+              eventType = 25,
+              intParams = {
+                entityData.groupId
+              }
+            })
+          else
+            Panda.ZGame.ZClientEntityMgr.Instance:RemoveClientEntityLua(entityData.tableUid, entityData.actorType)
+          end
+        end
+      end, 20)
     end
   }
   self.EventItems[2828] = {
@@ -2422,6 +2061,7 @@ function Scene:InitEvents()
     count = -1,
     selectedStr = "on_10010119_flow_end",
     action = function(localSelf)
+      Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1002})
       do
         local entityData = {actorType = 2, tableUid = 14297}
         if entityData.groupId then
@@ -2481,7 +2121,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5405,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 4)
     end
   }
   self.EventItems[3155] = {
@@ -2538,57 +2178,6 @@ function Scene:InitEvents()
           strParams = {"30011403", ""}
         })
       end
-    end
-  }
-  self.EventItems[3245] = {
-    eventType = E.LevelEventType.OnVisualLayerLeave,
-    enable = true,
-    group = 0,
-    eventId = 3245,
-    count = -1,
-    layerConfigId = 5008,
-    action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
-      Panda.LuaAsyncBridge.SetCurWeatherTime(-1)
-      Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(true)
-    end
-  }
-  self.EventItems[3364] = {
-    eventType = E.LevelEventType.TriggerEvent,
-    enable = true,
-    group = 0,
-    eventId = 3364,
-    count = -1,
-    action = function(localSelf)
-      do
-        local entityData = {actorType = 5, tableUid = 18208}
-        if entityData.groupId then
-          Z.LevelMgr.FireSceneEvent({
-            eventType = 24,
-            intParams = {
-              entityData.groupId
-            }
-          })
-        else
-          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
-        end
-      end
-    end
-  }
-  self.EventItems[3365] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 3365,
-    count = 1,
-    entity = {actorType = 5, tableUid = 18208},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      if localSelf.count == 0 then
-        return
-      else
-        localSelf.count = localSelf.count - 1
-      end
-      Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1002})
     end
   }
   self.EventItems[3512] = {
@@ -2751,30 +2340,48 @@ function Scene:InitEvents()
       })
     end
   }
-  self.EventItems[3636] = {
+  self.EventItems[4073] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 4073,
+    count = -1,
+    action = function(localSelf)
+      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("dng_5406_path02", 0, 0, 15, false, 0)
+    end
+  }
+  self.EventItems[4075] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 4075,
+    count = -1,
+    action = function(localSelf)
+      Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("dng_5406_path02")
+    end
+  }
+  self.EventItems[4423] = {
     eventType = E.LevelEventType.OnVisualLayerEnter,
     enable = true,
     group = 0,
-    eventId = 3636,
+    eventId = 4423,
     count = -1,
-    layerConfigId = 5313,
+    layerConfigId = 5406,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.LuaAsyncBridge.SetCurWeatherTime(5)
+      Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(false)
     end
   }
-  self.EventItems[3637] = {
+  self.EventItems[4424] = {
     eventType = E.LevelEventType.OnVisualLayerLeave,
     enable = true,
     group = 0,
-    eventId = 3637,
+    eventId = 4424,
     count = -1,
-    layerConfigId = 5313,
+    layerConfigId = 5406,
     action = function(localSelf, layerConfigId)
-      Z.LevelMgr.FireSceneEvent({
-        eventType = 4,
-        intParams = {1002}
-      })
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.LuaAsyncBridge.SetCurWeatherTime(0)
+      Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(true)
     end
   }
   self.EventItems[3733] = {
@@ -2834,6 +2441,10 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5314,
     action = function(localSelf, layerConfigId)
+      Z.LevelMgr.FireSceneEvent({
+        eventType = 4,
+        intParams = {1002}
+      })
       Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
     end
   }
@@ -2850,6 +2461,243 @@ function Scene:InitEvents()
         intParams = {1002}
       })
       Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+    end
+  }
+  self.EventItems[4213] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 4213,
+    count = -1,
+    action = function(localSelf)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+    end
+  }
+  self.EventItems[3878] = {
+    eventType = E.LevelEventType.OnVisualLayerEnter,
+    enable = true,
+    group = 0,
+    eventId = 3878,
+    count = -1,
+    layerConfigId = 5409,
+    action = function(localSelf, layerConfigId)
+      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
+        3,
+        4,
+        5,
+        6,
+        10,
+        13,
+        14,
+        24,
+        26,
+        27
+      }, true, localSelf.eventId)
+    end
+  }
+  self.EventItems[3879] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 3879,
+    count = -1,
+    entity = {actorType = 5, tableUid = 12809},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1, localSelf.eventId)
+    end
+  }
+  self.EventItems[3880] = {
+    eventType = E.LevelEventType.OnVisualLayerLeave,
+    enable = true,
+    group = 0,
+    eventId = 3880,
+    count = -1,
+    layerConfigId = 5409,
+    action = function(localSelf, layerConfigId)
+      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1, localSelf.eventId)
+    end
+  }
+  self.EventItems[3889] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 3889,
+    count = -1,
+    entity = {actorType = 5, tableUid = 19652},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      local entityData = {actorType = 2, groupId = 698}
+      if entityData.groupId then
+        Panda.ZGame.ZAIMgr.Instance:SendEventToGroup(entityData.groupId, 3889)
+      else
+        Panda.ZGame.ZAIMgr.Instance:SendEvent(entityData.tableUid, entityData.actorType, 3889)
+      end
+    end
+  }
+  self.EventItems[3890] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 3890,
+    count = -1,
+    entity = {actorType = 5, tableUid = 19653},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      local entityData = {actorType = 2, groupId = 705}
+      if entityData.groupId then
+        Panda.ZGame.ZAIMgr.Instance:SendEventToGroup(entityData.groupId, 3889)
+      else
+        Panda.ZGame.ZAIMgr.Instance:SendEvent(entityData.tableUid, entityData.actorType, 3889)
+      end
+    end
+  }
+  self.EventItems[3891] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 3891,
+    count = -1,
+    entity = {actorType = 5, tableUid = 19654},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      local entityData = {actorType = 2, groupId = 706}
+      if entityData.groupId then
+        Panda.ZGame.ZAIMgr.Instance:SendEventToGroup(entityData.groupId, 3889)
+      else
+        Panda.ZGame.ZAIMgr.Instance:SendEvent(entityData.tableUid, entityData.actorType, 3889)
+      end
+    end
+  }
+  self.EventItems[3906] = {
+    eventType = E.LevelEventType.OnVisualLayerEnter,
+    enable = true,
+    group = 0,
+    eventId = 3906,
+    count = -1,
+    layerConfigId = 5505,
+    action = function(localSelf, layerConfigId)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 1)
+    end
+  }
+  self.EventItems[3907] = {
+    eventType = E.LevelEventType.OnVisualLayerLeave,
+    enable = true,
+    group = 0,
+    eventId = 3907,
+    count = -1,
+    layerConfigId = 5505,
+    action = function(localSelf, layerConfigId)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+    end
+  }
+  self.EventItems[4275] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 4275,
+    count = -1,
+    entity = {actorType = 5, tableUid = 21076},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 4)
+    end
+  }
+  self.EventItems[4541] = {
+    eventType = E.LevelEventType.OnVisualLayerLeave,
+    enable = true,
+    group = 0,
+    eventId = 4541,
+    count = -1,
+    layerConfigId = 5535,
+    action = function(localSelf, layerConfigId)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+    end
+  }
+  self.EventItems[4543] = {
+    eventType = E.LevelEventType.OnVisualLayerLeave,
+    enable = true,
+    group = 0,
+    eventId = 4543,
+    count = -1,
+    layerConfigId = 5535,
+    action = function(localSelf, layerConfigId)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+    end
+  }
+  self.EventItems[4177] = {
+    eventType = E.LevelEventType.OnFlowPlayEnd,
+    enable = true,
+    group = 0,
+    eventId = 4177,
+    count = -1,
+    selectedStr = "on_10050428_flow_end",
+    action = function(localSelf)
+      Panda.ZGame.ZEventParser.PreLoadFlow(10050411)
+    end
+  }
+  self.EventItems[4545] = {
+    eventType = E.LevelEventType.OnOptionSelect,
+    enable = true,
+    group = 0,
+    eventId = 4545,
+    count = -1,
+    selectedStr = "ShowPatrolRoute_204",
+    action = function(localSelf)
+      Z.LevelMgr.FireSceneEvent({
+        eventType = 1,
+        strParams = {"16010002", ""}
+      })
+      Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("bubble_route_204")
+      Z.LevelMgr.timerMgr:StartTimer(function()
+        Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("bubble_route_204", 0, 0, 7.5, true, 0)
+      end, 0.3)
+    end
+  }
+  self.EventItems[4546] = {
+    eventType = E.LevelEventType.OnOptionSelect,
+    enable = true,
+    group = 0,
+    eventId = 4546,
+    count = -1,
+    selectedStr = "ShowPatrolRoute_205",
+    action = function(localSelf)
+      Z.LevelMgr.FireSceneEvent({
+        eventType = 1,
+        strParams = {"16010002", ""}
+      })
+      Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("bubble_route_205")
+      Z.LevelMgr.timerMgr:StartTimer(function()
+        Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("bubble_route_205", 0, 0, 7.5, true, 0)
+      end, 0.3)
+    end
+  }
+  self.EventItems[4547] = {
+    eventType = E.LevelEventType.OnOptionSelect,
+    enable = true,
+    group = 0,
+    eventId = 4547,
+    count = -1,
+    selectedStr = "ShowPatrolRoute_206",
+    action = function(localSelf)
+      Z.LevelMgr.FireSceneEvent({
+        eventType = 1,
+        strParams = {"16010002", ""}
+      })
+      Panda.ZEffect.ZPathEffectMgr.Instance:StopEffect("bubble_route_206")
+      Z.LevelMgr.timerMgr:StartTimer(function()
+        Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("bubble_route_206", 0, 0, 7.5, true, 0)
+      end, 0.3)
+    end
+  }
+  self.EventItems[4539] = {
+    eventType = E.LevelEventType.OnZoneEnterClient,
+    enable = true,
+    group = 0,
+    eventId = 4539,
+    count = -1,
+    entity = {actorType = 5, tableUid = 22101},
+    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
+      logGreen("\229\138\160\232\189\189\229\137\141")
+      if Z.VMMgr.GetVM("level_editor").IsQuestStepGoing(50004, 50004001) then
+        logGreen("\229\138\160\232\189\189\229\173\144\229\133\179")
+        Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/fld001_story_raidentrance")
+      end
     end
   }
 end

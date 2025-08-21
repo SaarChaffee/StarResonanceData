@@ -20,8 +20,6 @@ message SeasonActTableBase {
     int_array QuickJumpParam = 1617;
     mlstring UnlockDes = 1991;
 }
-
 message SeasonActTableMgr {
-    map<int32, .bokura.SeasonActTableBase> datas = 1;
+    repeated bokura.SeasonActTableMgr.DatasEntry datas = 1;
 }
-

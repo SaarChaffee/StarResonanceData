@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message NotifyLeaderApplyListSizeRequest {
-    int32 vSize = 2;
+    int32 vSize = 1;
 }
-

@@ -51,8 +51,13 @@ function mod_fantasy_window_view:OnActive()
         self.slotEffects_[i][res.id] = res.successTimes
       end
     end
-    local isUnLock, level = self.modVM_.CheckSlotIsUnlock(i)
-    ModItemCardTplItem.RefreshTpl(unitUIBinder, modId, isUnLock, i, level)
+    local isUnLock, condType, condValue, unlockDesc, progress = self.modVM_.CheckSlotIsUnlock(i)
+    ModItemCardTplItem.RefreshTpl(unitUIBinder, modId, isUnLock, i, {
+      condType = condType,
+      condValue = condValue,
+      unlockDesc = unlockDesc,
+      progress = progress
+    })
     self:AddAsyncClick(unitUIBinder.img_bg, function()
       self.modVM_.EnterModView(i)
     end)
@@ -148,28 +153,28 @@ function mod_fantasy_window_view:openItemFilter()
   local viewData = {
     parentView = self,
     filterType = E.ItemFilterType.ModEffectType + E.ItemFilterType.ModSuccessTimes,
-    existFilterTags = self.filterTgas_
+    existFilterTags = self.filterTags_
   }
   self.itemFilter_:Active(viewData, self.uiBinder.node_filter_pos)
 end
 
-function mod_fantasy_window_view:onSelectFilter(filterTgas)
-  if table.zcount(filterTgas) < 1 then
-    self.filterTgas_ = nil
+function mod_fantasy_window_view:onSelectFilter(filterTags)
+  if table.zcount(filterTags) < 1 then
+    self.filterTags_ = nil
   end
-  self.filterTgas_ = filterTgas
+  self.filterTags_ = filterTags
   self:refreshEffectList()
 end
 
 function mod_fantasy_window_view:refreshEffectList()
-  if self.filterTgas_ then
+  if self.filterTags_ then
     local tempmodLoopItems = {}
     local tempmodLoopItemsIndex = 0
     for _, item in ipairs(self.modEffectListData_) do
       local isAccord1 = true
-      if self.filterTgas_[E.ItemFilterType.ModEffectType] and next(self.filterTgas_[E.ItemFilterType.ModEffectType]) then
+      if self.filterTags_[E.ItemFilterType.ModEffectType] and next(self.filterTags_[E.ItemFilterType.ModEffectType]) then
         isAccord1 = false
-        for key, tga in pairs(self.filterTgas_[E.ItemFilterType.ModEffectType]) do
+        for key, tga in pairs(self.filterTags_[E.ItemFilterType.ModEffectType]) do
           local attrConfig = self.modData_:GetEffectTableConfig(item.effectId, 0)
           if attrConfig.EffectType == key and tga then
             isAccord1 = true
@@ -178,9 +183,9 @@ function mod_fantasy_window_view:refreshEffectList()
         end
       end
       local isAccord2 = true
-      if self.filterTgas_[E.ItemFilterType.ModSuccessTimes] and next(self.filterTgas_[E.ItemFilterType.ModSuccessTimes]) then
+      if self.filterTags_[E.ItemFilterType.ModSuccessTimes] and next(self.filterTags_[E.ItemFilterType.ModSuccessTimes]) then
         isAccord2 = false
-        for key, tga in pairs(self.filterTgas_[E.ItemFilterType.ModSuccessTimes]) do
+        for key, tga in pairs(self.filterTags_[E.ItemFilterType.ModSuccessTimes]) do
           if tga then
             local successTimestable = Z.Global.ModFilterCriteria[key]
             if tonumber(successTimestable[2]) <= item.successTimes and item.successTimes <= tonumber(successTimestable[3]) then

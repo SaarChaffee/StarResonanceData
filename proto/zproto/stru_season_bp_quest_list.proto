@@ -6,9 +6,7 @@ import "stru_season_bp_quest_data.proto";
 import "stru_dirty_mask.proto";
 
 message SeasonBpQuestList {
-    map<uint32, .zproto.SeasonBpQuestData> seasonMap = 1;
+    repeated zproto.SeasonBpQuestList.SeasonMapEntry seasonMap = 1;
     repeated uint32 randomMap = 2;
     int64 refreshTimeStamp = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

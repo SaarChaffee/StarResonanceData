@@ -23,6 +23,7 @@ function Weapon_skill_upgrades_popupView:OnActive()
   self.maxLevel_ = self.weaponSkillVm_:GetSkillCanLevelMax(self.replaceSkillId_, self.viewData.skillLevel, true)
   self.targetLevel_ = self.viewData.skillLevel + 1
   self:AddAsyncClick(self.uiBinder.btn_ok, function()
+    self:checkItemEnought(self.targetLevel_)
     if self.notEnoughItem_ then
       if self.sourceTipId_ then
         Z.TipsVM.CloseItemTipsView(self.sourceTipId_)
@@ -41,8 +42,16 @@ function Weapon_skill_upgrades_popupView:OnActive()
   self:AddAsyncClick(self.uiBinder.btn_add, function()
     self:checkItemEnought(self.targetLevel_ + 1)
     if self.notEnoughItem_ then
-      Z.TipsVM.ShowTipsLang(100002)
-      self.notEnoughItem_ = nil
+      if self.sourceTipId_ then
+        Z.TipsVM.CloseItemTipsView(self.sourceTipId_)
+      end
+      local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.notEnoughItem_)
+      if itemConfig then
+        Z.TipsVM.ShowTipsLang(1045006, {
+          val = itemConfig.Name
+        })
+        self.sourceTipId_ = Z.TipsVM.OpenSourceTips(self.notEnoughItem_, self.uiBinder.tips_root)
+      end
       return
     end
     if self.targetLevel_ >= self.weaponSkillVm_:GetSkillMaxlevel(self.replaceSkillId_) then
@@ -66,8 +75,16 @@ function Weapon_skill_upgrades_popupView:OnActive()
   self:AddAsyncClick(self.uiBinder.btn_max, function()
     self:checkItemEnought(self.targetLevel_ + 1)
     if self.notEnoughItem_ then
-      Z.TipsVM.ShowTipsLang(100002)
-      self.notEnoughItem_ = nil
+      if self.sourceTipId_ then
+        Z.TipsVM.CloseItemTipsView(self.sourceTipId_)
+      end
+      local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.notEnoughItem_)
+      if itemConfig then
+        Z.TipsVM.ShowTipsLang(1045006, {
+          val = itemConfig.Name
+        })
+        self.sourceTipId_ = Z.TipsVM.OpenSourceTips(self.notEnoughItem_, self.uiBinder.tips_root)
+      end
       return
     end
     if self.targetLevel_ >= self.maxLevel_ then
@@ -143,8 +160,10 @@ function Weapon_skill_upgrades_popupView:OnRefresh()
 end
 
 function Weapon_skill_upgrades_popupView:RefreshSkillInfo(level)
-  local levelLabNow = Lang("Lv") .. self.viewData.skillLevel
-  local levelLabNext = Lang("Lv") .. level
+  local levelLabNow = Lang("Level", {
+    val = self.viewData.skillLevel
+  })
+  local levelLabNext = Lang("Level", {val = level})
   self.uiBinder.lab_digit.text = level - self.viewData.skillLevel
   self.uiBinder.node_skill_info_pre.lab_lv.text = levelLabNow
   self.uiBinder.node_skill_info_cur.lab_lv.text = levelLabNext

@@ -5,10 +5,6 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message UserAttrData {
-    uint32 hp = 1;
-    uint32 maxHp = 2;
     int32 state = 3;
     int64 fightPoint = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

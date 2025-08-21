@@ -8,10 +8,7 @@ cJson.encode_sparse_array(true)
 local OnCallStub = function(call)
   xpcall(function()
     if call:GetMethodId() == 1 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.ChitChatNtf.NotifyNewestChitChatMsgs", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(164931432, 1, cJson.encode(pbMsg), pbData, true)
@@ -20,10 +17,7 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 2 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.ChitChatNtf.NotifyBeMuted", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(164931432, 2, cJson.encode(pbMsg), pbData, true)
@@ -32,15 +26,21 @@ local OnCallStub = function(call)
       return
     end
     if call:GetMethodId() == 3 then
-      local pbData = ""
-      if call:GetCallDataSize() > 0 then
-        pbData = string.sub(call:GetCallData(), 0, call:GetCallDataSize())
-      end
+      local pbData = call:GetCallData()
       local pbMsg = pb.decode("zproto.ChitChatNtf.NotifyAddPrivateChatSession", pbData)
       if MessageInspectBridge.InInspectState == true then
         MessageInspectBridge.HandleReceiveMessage(164931432, 3, cJson.encode(pbMsg), pbData, true)
       end
       impl:NotifyAddPrivateChatSession(call, pbMsg.vRequest)
+      return
+    end
+    if call:GetMethodId() == 4 then
+      local pbData = call:GetCallData()
+      local pbMsg = pb.decode("zproto.ChitChatNtf.NotifyClearChatHistory", pbData)
+      if MessageInspectBridge.InInspectState == true then
+        MessageInspectBridge.HandleReceiveMessage(164931432, 4, cJson.encode(pbMsg), pbData, true)
+      end
+      impl:NotifyClearChatHistory(call, pbMsg.vRequest)
       return
     end
   end, function(err)

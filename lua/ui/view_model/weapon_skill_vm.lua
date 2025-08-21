@@ -89,6 +89,16 @@ function WeaponSkillVM:CheckSkillUnlock(skillId)
 end
 
 function WeaponSkillVM:CheckSkillEquip(skillId)
+  local weaponVm = Z.VMMgr.GetVM("weapon")
+  local weaponId = weaponVm.GetCurWeapon()
+  local weaponInfo = weaponVm.GetWeaponInfo(weaponId)
+  if weaponInfo and weaponInfo.slotSkillInfoMap then
+    for slotId, value in pairs(weaponInfo.slotSkillInfoMap) do
+      if value == skillId then
+        return true
+      end
+    end
+  end
   local slots = Z.ContainerMgr.CharSerialize.slots.slots
   for _, value in pairs(slots) do
     if value.skillId == skillId then
@@ -383,13 +393,13 @@ function WeaponSkillVM:MergeMultiRemodelEffect(remodelDatas, skillId, advanceLev
   return resultEffectList, buffParList
 end
 
-function WeaponSkillVM:ParseResonanceSkillBaseDesc(skillId)
+function WeaponSkillVM:ParseResonanceSkillBaseDesc(skillId, advanceLevel)
   local skillVM = Z.VMMgr.GetVM("skill")
   local content = ""
   local skillLv = 1
   local skillFightData = self:GetSkillFightDataById(skillId)
   local nowSkillFightLvTblData = skillFightData[skillLv]
-  local advanceLevel = self:GetSkillRemodelLevel(skillId)
+  advanceLevel = advanceLevel or self:GetSkillRemodelLevel(skillId)
   local nowSkillDecsList = skillVM.GetSkillDecs(nowSkillFightLvTblData.Id, advanceLevel, true) or {}
   nowSkillDecsList = skillVM.GetSkillDecsWithColor(nowSkillDecsList)
   local skillRow = Z.TableMgr.GetTable("SkillTableMgr").GetRow(skillId)
@@ -521,9 +531,17 @@ function WeaponSkillVM:GetAllReplaceConfig()
   for _, value in pairs(talentData) do
     for __, effect in pairs(value.TalentEffect) do
       if effect[1] == E.RemodelInfoType.SkillReplace then
-        replaceTalent[value.Id] = {}
-        replaceTalent[value.Id].skillId = effect[2]
-        replaceTalent[value.Id].repalceSkillId = effect[3]
+        if replaceTalent[value.Id] == nil then
+          replaceTalent[value.Id] = {}
+        end
+        if replaceTalent[value.Id].skillId == nil then
+          replaceTalent[value.Id].skillId = {}
+        end
+        table.insert(replaceTalent[value.Id].skillId, effect[2])
+        if replaceTalent[value.Id].repalceSkillId == nil then
+          replaceTalent[value.Id].repalceSkillId = {}
+        end
+        table.insert(replaceTalent[value.Id].repalceSkillId, effect[3])
       end
     end
   end
@@ -544,11 +562,13 @@ function WeaponSkillVM:RefreshReplaceSkill()
   end
   skillReplaceDict = {}
   local talentSkillVm = Z.VMMgr.GetVM("talent_skill")
-  local professionId = Z.VMMgr.GetVM("profession").GetCurProfession()
+  local professionId = Z.VMMgr.GetVM("profession").GetContainerProfession()
   for _, value in pairs(repalceTalentTree) do
     if talentSkillVm.CheckTalentIsActive(professionId, value.Id) then
       local replaceTalentData = replaceTalent[value.TalentId]
-      skillReplaceDict[replaceTalentData.skillId] = replaceTalentData.repalceSkillId
+      for index, value in ipairs(replaceTalentData.skillId) do
+        skillReplaceDict[value] = replaceTalentData.repalceSkillId[index]
+      end
     end
   end
 end
@@ -594,9 +614,11 @@ end
 local skillTypeInSlot = {
   [E.SkillType.WeaponSkill] = {
     1,
+    2,
     3,
     4,
     5,
+    6,
     9
   },
   [E.SkillType.MysteriesSkill] = {7, 8}
@@ -617,24 +639,35 @@ function WeaponSkillVM:GetMysteriesSkillList(filterData)
   local resultList = {}
   local skillConfigs = Z.TableMgr.GetTable("SkillAoyiTableMgr").GetDatas()
   for k, value in pairs(skillConfigs) do
-    local isCanInsert = true
-    if filterData then
-      local filterRarity = filterData[E.ItemFilterType.ResonanceSkillRarity]
-      if filterRarity and next(filterRarity) and not filterRarity[value.RarityType] then
-        isCanInsert = false
+    if not value.IsBlocked then
+      local isCanInsert = true
+      if filterData then
+        local filterRarity = filterData[E.CommonFilterType.ResonanceSkillRarity]
+        if filterRarity and next(filterRarity) and next(filterRarity.value) and not filterRarity.value[value.RarityType] then
+          isCanInsert = false
+        end
+        local filterType = filterData[E.CommonFilterType.ResonanceSkillType]
+        if filterType and next(filterType) and next(filterType.value) then
+          local isInclude = false
+          for i, type in ipairs(value.ShowSkillType) do
+            if filterType.value[type] then
+              isInclude = true
+              break
+            end
+          end
+          if not isInclude then
+            isCanInsert = false
+          end
+        end
       end
-      local filterType = filterData[E.ItemFilterType.ResonanceSkillType]
-      if filterType and next(filterType) and not filterType[value.ShowSkillType] then
-        isCanInsert = false
+      if isCanInsert then
+        table.insert(resultList, {
+          Config = value,
+          IsEquip = self:CheckSkillEquip(value.Id),
+          IsUnlock = self:CheckSkillUnlock(value.Id),
+          IsCanUnlock = self:CheckResonanceSkillCanUnlock(value.Id)
+        })
       end
-    end
-    if isCanInsert then
-      table.insert(resultList, {
-        Config = value,
-        IsEquip = self:CheckSkillEquip(value.Id),
-        IsUnlock = self:CheckSkillUnlock(value.Id),
-        IsCanUnlock = self:CheckResonanceSkillCanUnlock(value.Id)
-      })
     end
   end
   table.sort(resultList, function(a, b)
@@ -695,6 +728,25 @@ function WeaponSkillVM:CheckResonanceSkillCanUnlock(skillId)
   return isCanUnlock
 end
 
+function WeaponSkillVM:IsResonanceCorrelativeItem(itemConfigId)
+  if self.resonanceCorrelativeItemDict_ == nil then
+    self.resonanceCorrelativeItemDict_ = {}
+    local skillConfigs = Z.TableMgr.GetTable("SkillAoyiTableMgr").GetDatas()
+    for k, row in pairs(skillConfigs) do
+      for i, v in ipairs(row.SkillAdvancedItem) do
+        self.resonanceCorrelativeItemDict_[v[1]] = true
+      end
+    end
+    local itemConfigs = Z.TableMgr.GetTable("SkillAoyiItemTableMgr").GetDatas()
+    for k, row in pairs(itemConfigs) do
+      for i, v in ipairs(row.MakeConsume) do
+        self.resonanceCorrelativeItemDict_[v[1]] = true
+      end
+    end
+  end
+  return self.resonanceCorrelativeItemDict_[itemConfigId] or false
+end
+
 function WeaponSkillVM:AsyncProfessionSkillRemodel(skillNodeId, skillId, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
   local ret = worldProxy.ProfessionSkillRemodel(skillNodeId, cancelToken)
@@ -702,7 +754,6 @@ function WeaponSkillVM:AsyncProfessionSkillRemodel(skillNodeId, skillId, cancelT
     Z.TipsVM.ShowTips(ret)
     return false
   end
-  Z.EventMgr:Dispatch(Z.ConstValue.Weapon.OnWeaponSkillRemodelSuccess, skillId)
   return true
 end
 
@@ -728,7 +779,7 @@ end
 
 function WeaponSkillVM:AsyncProfessionSkillLevelUp(professionId, skillId, targetLevel, skillType, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
-  if skillType == E.SkillType.WeaponSkill or skillType == E.SkillType.SupportSkill then
+  if skillType == E.SkillType.WeaponSkill then
     local weaponSkillUpgradeRequest = {
       professionId = professionId,
       skillId = skillId,
@@ -739,23 +790,13 @@ function WeaponSkillVM:AsyncProfessionSkillLevelUp(professionId, skillId, target
       Z.TipsVM.ShowTips(ret)
       return false
     end
-    Z.EventMgr:Dispatch(Z.ConstValue.Weapon.OnWeaponSkillLevelUpSuccess, skillId)
-    return true
-  elseif skillType == E.SkillType.MysteriesSkill then
-    local aoyiSkillUpgradeRequest = {skillId = skillId, targetLevel = targetLevel}
-    local ret = worldProxy.AoYiSkillUpgrade(aoyiSkillUpgradeRequest, cancelToken)
-    if ret and ret ~= 0 then
-      Z.TipsVM.ShowTips(ret)
-      return false
-    end
-    Z.EventMgr:Dispatch(Z.ConstValue.Weapon.OnWeaponSkillLevelUpSuccess, skillId)
     return true
   end
 end
 
 function WeaponSkillVM:AsyncProfessionSkillUnlock(skillId, skillType, professionId, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
-  if skillType == E.SkillType.WeaponSkill or skillType == E.SkillType.SupportSkill then
+  if skillType == E.SkillType.WeaponSkill then
     local weaponSkillActiveRequest = {professionId = professionId, skillId = skillId}
     local ret = worldProxy.ProfessionSkillActive(weaponSkillActiveRequest, cancelToken)
     if ret and ret ~= 0 then
@@ -787,10 +828,10 @@ function WeaponSkillVM:AsyncSkillInstall(slotId, skillId, cancelToken)
   if skillId ~= 0 and skillId == nowSkillId then
     return
   end
-  local ret = worldProxy.InstallSkill(slotId, skillId, cancelToken)
-  Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvnet, string.zconcat(E.SteerGuideEventType.AssemblySkillSlot, "=", slotId))
-  if ret and ret ~= 0 then
-    Z.TipsVM.ShowTips(ret)
+  local errCode = worldProxy.InstallSkill(slotId, skillId, cancelToken)
+  Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvent, string.zconcat(E.SteerGuideEventType.AssemblySkillSlot, "=", slotId))
+  if errCode and errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   if skillId ~= 0 then
@@ -800,8 +841,6 @@ function WeaponSkillVM:AsyncSkillInstall(slotId, skillId, cancelToken)
     })
   end
   Z.AudioMgr:Play("UI_Click_QTE")
-  Z.EventMgr:Dispatch(Z.ConstValue.Hero.InstallSkill, skillId)
-  Z.EventMgr:Dispatch(Z.ConstValue.Hero.OldInstallSkillId, nowSkillId)
   if slotId == tonumber(E.SlotName.SkillSlot_7) or slotId == tonumber(E.SlotName.SkillSlot_8) then
     Z.EventMgr:Dispatch(Z.ConstValue.SkillSlotInstall, slotId)
   end
@@ -945,17 +984,8 @@ function WeaponSkillVM:GetKeyCodeNameBySkillId(skillId)
     if slotConfig then
       local keyId = slotConfig.KeyPositionId
       local keyVM = Z.VMMgr.GetVM("setting_key")
-      local keyCode = keyVM.GetKeyCodeListByKeyId(keyId)[1]
-      if keyCode then
-        local contrastRow = Z.TableMgr.GetRow("SetKeyboardContrastTableMgr", keyCode)
-        if contrastRow then
-          if contrastRow.ShowType == 0 then
-            return contrastRow.Keyboard, nil
-          else
-            return "", contrastRow.ImageWay
-          end
-        end
-      end
+      local keyDesc = keyVM.GetKeyCodeDescListByKeyId(keyId)[1]
+      return keyDesc, keyId
     end
   end
   return "", nil
@@ -1043,6 +1073,73 @@ function WeaponSkillVM:GetSkillAllTagTableList(skillID)
     end
   end
   return ret
+end
+
+function WeaponSkillVM:GetSkillLevelFightValue()
+  local fightValue = 0
+  local weaponVm_ = Z.VMMgr.GetVM("weapon")
+  for _, id in ipairs(skillTypeInSlot[E.SkillType.WeaponSkill]) do
+    local skillId = self:GetSkillBySlot(id)
+    if skillId ~= 0 then
+      local level = weaponVm_.GetShowSkillLevel(nil, skillId)
+      local skillFightData = self:GetSkillFightDataById(skillId)
+      if skillFightData[level] then
+        fightValue = fightValue + skillFightData[level].FightValue
+      end
+    end
+  end
+  return fightValue
+end
+
+function WeaponSkillVM:GetSkillRemodelFightValue()
+  local fightValue = 0
+  for _, id in ipairs(skillTypeInSlot[E.SkillType.WeaponSkill]) do
+    local skillId = self:GetSkillBySlot(id)
+    if skillId ~= 0 then
+      local remodelLevel = self:GetSkillRemodelLevel(skillId)
+      local skillRemodeRow = self:GetSkillRemodelRow(skillId, remodelLevel)
+      if next(skillRemodeRow) then
+        fightValue = fightValue + skillRemodeRow.FightValue
+      end
+    end
+  end
+  return fightValue
+end
+
+function WeaponSkillVM:GetResonanceSKillFightValue()
+  local fightValue = 0
+  for _, id in ipairs(skillTypeInSlot[E.SkillType.MysteriesSkill]) do
+    local skillId = self:GetSkillBySlot(id)
+    if skillId ~= 0 then
+      local remodelLevel = self:GetSkillRemodelLevel(skillId)
+      local skillRemodeRow = self:GetResonanceSkillRemodelRow(skillId, remodelLevel)
+      if skillRemodeRow then
+        fightValue = fightValue + skillRemodeRow.FightValue
+      end
+      local skillFightData = self:GetSkillFightDataById(skillId)
+      if skillFightData[1] then
+        fightValue = fightValue + skillFightData[1].FightValue
+      end
+    end
+  end
+  return fightValue
+end
+
+function WeaponSkillVM:GetRecommendFightValue()
+  local skillLevelValue = 0
+  local skillRemodelValue = 0
+  local resonanceSkillValue = 0
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.WeaponNormalSkill, true)
+  if isOn then
+    skillLevelValue = self:GetSkillLevelFightValue()
+    skillRemodelValue = self:GetSkillRemodelFightValue()
+  end
+  isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.WeaponAoyiSkill, true)
+  if isOn then
+    resonanceSkillValue = self:GetResonanceSKillFightValue()
+  end
+  return skillLevelValue + skillRemodelValue + resonanceSkillValue
 end
 
 return WeaponSkillVM

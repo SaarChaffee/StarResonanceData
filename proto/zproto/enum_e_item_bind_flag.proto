@@ -7,4 +7,3 @@ enum EItemBindFlag {
     ItemNotBind = 1;
     ItemBindAll = 2;
 }
-

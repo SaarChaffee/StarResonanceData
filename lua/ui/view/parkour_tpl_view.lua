@@ -4,148 +4,143 @@ local super = require("ui.ui_subview_base")
 local Parkour_tplView = class("Parkour_tplView", super)
 
 function Parkour_tplView:ctor()
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "parkour_tpl", "parkour/parkour_tpl", UI.ECacheLv.None)
 end
 
 function Parkour_tplView:OnActive()
-  self:initData()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.root, not Z.IsPCUI)
+  if not Z.IsPCUI then
+    self:initData()
+    self:BindEvents()
+  end
   self:BindLuaAttrWatchers()
-  self:BindEvents()
 end
 
 function Parkour_tplView:OnDeActive()
-  self.panel.effectParent1.ZEff:SetEffectGoVisible(false)
+  self.uiBinder.effect_parent_1:SetEffectGoVisible(false)
   if self.glideWatcher ~= nil then
     self.glideWatcher:Dispose()
     self.glideWatcher = nil
   end
+  if self.tunnelFlyWatcher ~= nil then
+    self.tunnelFlyWatcher:Dispose()
+    self.tunnelFlyWatcher = nil
+  end
+  if self.stateWatcher ~= nil then
+    self.stateWatcher:Dispose()
+    self.stateWatcher = nil
+  end
 end
 
 function Parkour_tplView:BindEvents()
-  Z.EventMgr:Add("OnQteSucess", self.QteRecovery, self)
-  Z.EventMgr:Add(Z.ConstValue.Parkour.QteDash, self.QteDash, self)
-  Z.EventMgr:Add(Z.ConstValue.Parkour.QteAlert, self.AlertEnergy, self)
+  Z.EventMgr:Add("MaxOriginEnergyChanged", self.refreshMaxEnergy, self)
 end
 
 function Parkour_tplView:BindLuaAttrWatchers()
-  if Z.EntityMgr.PlayerEnt ~= nil then
-    self:BindEntityLuaAttrWatcher({
-      Z.PbAttrEnum("AttrMaxOriginEnergy")
-    }, Z.EntityMgr.PlayerEnt, self.refreshMaxEnergy)
-    self.glideWatcher = Z.DIServiceMgr.PlayerAttrComponentWatcherService:OnLocalAttrGlideChanged(function()
-      self:onPlayerSpeedChange()
-    end)
-    self:BindEntityLuaAttrWatcher({
-      Z.LocalAttr.ETunnelFlySpeed
-    }, Z.EntityMgr.PlayerEnt, self.onPlayerSpeedChange, true)
-    self:BindEntityLuaAttrWatcher({
-      Z.PbAttrEnum("AttrState")
-    }, Z.EntityMgr.PlayerEnt, self.onPlayerStateChange)
+  if Z.EntityMgr.PlayerEnt == nil then
+    return
   end
+  self.glideWatcher = Z.DIServiceMgr.PlayerAttrComponentWatcherService:OnLocalAttrGlideChanged(function()
+    self:onPlayerSpeedChange()
+  end)
+  self.tunnelFlyWatcher = Z.DIServiceMgr.TunnelFlyComponentWatcherService:OnTunnelSpeedChanged(function()
+    self:onPlayerSpeedChange()
+  end)
+  self.stateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
+    self:onPlayerStateChange()
+  end)
 end
 
 function Parkour_tplView:OnRefresh()
-  self.panel.anim:SetVisible(false)
-  self.panel.followParentSpeed:SetVisible(false)
-  self.panel.parkour_bar_red:SetVisible(false)
+  self:SetUIVisible(self.uiBinder.anim_main, false)
+  self:SetUIVisible(self.uiBinder.trans_speed, false)
+  self:SetUIVisible(self.uiBinder.img_bar_red, false)
 end
 
 function Parkour_tplView:refreshMaxEnergy()
-  self.nowMaxValue_ = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrMaxOriginEnergy")).Value
-  self.panel.parkour_bg.Img:SetFillAmount(self.nowMaxValue_ / self.maxValue_)
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
+  self.maxValue_ = Z.EntityMgr.PlayerEnt:GetLuaMaxOriEnergy()
+  self.uiBinder.img_bg:SetFillAmount(self.curEnergy_ / self.maxValue_)
 end
 
 function Parkour_tplView:onPlayerStateChange()
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
+  local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
   local showSpeed = Z.PbEnum("EActorState", "ActorStateGlide") == stateId or Z.PbEnum("EActorState", "ActorStateTunnelFly") == stateId
-  self.panel.followParentSpeed:SetVisible(showSpeed)
+  self:SetUIVisible(self.uiBinder.trans_speed, showSpeed)
 end
 
 function Parkour_tplView:onPlayerSpeedChange()
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
-  if Z.PbEnum("EActorState", "ActorStateGlide") ~= stateId and Z.PbEnum("EActorState", "ActorStateTunnelFly") ~= stateId then
-    self.panel.followParentSpeed:SetVisible(false)
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
     return
   end
-  self.panel.followParentSpeed:SetVisible(true)
+  local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
+  if Z.PbEnum("EActorState", "ActorStateGlide") ~= stateId and Z.PbEnum("EActorState", "ActorStateTunnelFly") ~= stateId then
+    self:SetUIVisible(self.uiBinder.trans_speed, false)
+    return
+  end
+  self:SetUIVisible(self.uiBinder.trans_speed, true)
   self:calculationSpeed()
 end
 
 function Parkour_tplView:calculationSpeed()
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
   local realVelocity = 0
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
+  local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
   if Z.PbEnum("EActorState", "ActorStateGlide") == stateId then
     local velocityH = Z.EntityMgr.PlayerEnt:GetLocalAttrGlideVelocityH()
     local velocityV = Z.EntityMgr.PlayerEnt:GetLocalAttrGlideVelocityV()
     local velocity = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrAttachVelocity")).Value
     realVelocity = math.sqrt(velocityH * velocityH + velocityV * velocityV) + velocity
   elseif Z.PbEnum("EActorState", "ActorStateTunnelFly") == stateId then
-    realVelocity = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.ETunnelFlySpeed).Value
+    realVelocity = Z.EntityMgr.PlayerEnt:GetLocalAttrTunnelFlySpeed()
   end
-  self.panel.lab_num.TMPLab.text = string.format(Lang("speed"), string.format("%.2f", realVelocity))
+  self.uiBinder.lab_num.text = string.format(Lang("speed"), string.format("%.2f", realVelocity))
 end
 
 function Parkour_tplView:initData()
   self.playerEntity_ = Z.EntityMgr:GetEntity(tostring(Z.EntityMgr.PlayerUuid))
+  if self.playerEntity_ == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   self.maxValue_ = Z.GlobalParkour.OriginEnergyValue
   self.cd_ = Z.GlobalParkour.OriginEnergyBarMuteTime
   self.alterPercent_ = Z.GlobalParkour.OriginEnergyAlertPercent
-  self.curEnergy_ = self.playerEntity_:GetLuaAttr(Z.LocalAttr.EOriginEnergy).Value
+  self.curEnergy_ = self.playerEntity_:GetLuaOriginEnergy()
   self.lastEnergy_ = self.curEnergy_
   self.hideCount_ = 0
   self.isAlert_ = false
-  self.isQte_ = false
-  self.isDash_ = false
-  self.isShow_ = false
-  self.notEnough_ = false
   self.fullEnergy_ = false
-  self.notEnoughEffectCD_ = 0
-  self.qteEffectCD_ = 0
-  self.qteDashEffectCD_ = 0
   self:refreshMaxEnergy()
   self.timer_ = self.timerMgr:StartTimer(function()
     if self.playerEntity_ == nil then
       return
     end
     self:updateEnergy()
-    self:updateEffect()
   end, deltaTime, -1)
 end
 
 function Parkour_tplView:updateEnergy()
-  self.curEnergy_ = self.playerEntity_:GetLuaAttr(Z.LocalAttr.EOriginEnergy).Value
+  self.curEnergy_ = self.playerEntity_:GetLuaOriginEnergy()
   local fillAmount = self.curEnergy_ / self.maxValue_
-  self.panel.parkour_bar.Img:SetFillAmount(fillAmount)
-  self.panel.parkour_bar_blue.Img:SetFillAmount(fillAmount)
-  self.panel.parkour_bar_red.Img:SetFillAmount(fillAmount)
+  self.uiBinder.img_bar:SetFillAmount(fillAmount)
+  self.uiBinder.img_bar_blue:SetFillAmount(fillAmount)
+  self.uiBinder.img_bar_red:SetFillAmount(fillAmount)
   self:checkCd()
   self:checkAlert()
   self:checkFullEnergy()
-end
-
-function Parkour_tplView:updateEffect()
-  if self.isQte_ then
-    self.qteEffectCD_ = self.qteEffectCD_ + deltaTime
-    if self.qteEffectCD_ >= 2 then
-      self.qteEffectCD_ = 0
-      self.isQte_ = false
-    end
-  end
-  if self.isDash_ then
-    self.qteDashEffectCD_ = self.qteDashEffectCD_ + deltaTime
-    if self.qteDashEffectCD_ >= 4 then
-      self.qteDashEffectCD_ = 0
-      self.isDash_ = false
-    end
-  end
-  if self.notEnough_ then
-    self.notEnoughEffectCD_ = self.notEnoughEffectCD_ + deltaTime
-    if 2 <= self.notEnoughEffectCD_ then
-      self.notEnoughEffectCD_ = 0
-      self.notEnough_ = false
-    end
-  end
 end
 
 function Parkour_tplView:checkCd()
@@ -156,15 +151,15 @@ function Parkour_tplView:checkCd()
         self.hideCount_ = 0
         if self.isShowEnergy_ then
           Z.CoroUtil.create_coro_xpcall(function()
-            self.panel.anim.anim:Stop()
-            self.panel.followParent.anim:Stop()
+            self.uiBinder.anim_main:Stop()
+            self.uiBinder.anim_follow:Stop()
             self.isAlert_ = false
-            local asyncCall = Z.CoroUtil.async_to_sync(self.panel.anim.anim.CoroPlayOnce)
-            asyncCall(self.panel.anim.anim, "anim_parkour_tpl_close", self.cancelSource:CreateToken())
-            self.panel.anim:SetVisible(false)
+            local asyncCall = Z.CoroUtil.async_to_sync(self.uiBinder.anim_main.CoroPlayOnce)
+            asyncCall(self.uiBinder.anim_main, "anim_parkour_tpl_close", self.cancelSource:CreateToken())
+            self:SetUIVisible(self.uiBinder.anim_main, false)
             self.isShowEnergy_ = false
           end, function()
-            self.panel.anim:SetVisible(false)
+            self:SetUIVisible(self.uiBinder.anim_main, false)
             self.isShowEnergy_ = false
           end)()
         end
@@ -172,17 +167,17 @@ function Parkour_tplView:checkCd()
     else
       self.hideCount_ = 0
       if not self.isShowEnergy_ then
-        self.panel.effectParent1:SetVisible(false)
+        self:SetUIVisible(self.uiBinder.effect_parent_1, false)
         Z.CoroUtil.create_coro_xpcall(function()
           if self.curEnergy_ and self.curEnergy_ > self.alterPercent_ then
             self.isAlert_ = true
           end
-          local asyncCall = Z.CoroUtil.async_to_sync(self.panel.anim.anim.CoroPlayOnce)
-          asyncCall(self.panel.anim.anim, "anim_parkour_tpl_open", self.cancelSource:CreateToken())
-          self.panel.anim:SetVisible(true)
+          local asyncCall = Z.CoroUtil.async_to_sync(self.uiBinder.anim_main.CoroPlayOnce)
+          asyncCall(self.uiBinder.anim_main, "anim_parkour_tpl_open", self.cancelSource:CreateToken())
+          self:SetUIVisible(self.uiBinder.anim_main, true)
           self.isShowEnergy_ = true
         end, function()
-          self.panel.anim:SetVisible(true)
+          self:SetUIVisible(self.uiBinder.anim_main, true)
           self.isShowEnergy_ = true
         end)()
       end
@@ -192,10 +187,10 @@ function Parkour_tplView:checkCd()
 end
 
 function Parkour_tplView:checkFullEnergy()
-  if self.curEnergy_ >= self.nowMaxValue_ then
+  if self.curEnergy_ >= self.maxValue_ then
     if not self.fullEnergy_ then
       self.fullEnergy_ = true
-      self.panel.followParent.anim:PlayOnce("anim_parkour_tpl_blue")
+      self.uiBinder.anim_follow:PlayOnce("anim_parkour_tpl_blue")
     end
   elseif self.fullEnergy_ then
     self.fullEnergy_ = false
@@ -220,49 +215,15 @@ function Parkour_tplView:checkAlert()
 end
 
 function Parkour_tplView:changeParkOurImg()
-  if self.panel then
+  if self.uiBinder then
     if self.isAlert_ then
-      self.panel.parkour_bar.Img:SetImage(GetLoadAssetPath(Z.ConstValue.Parkour.BarRed))
-      self.panel.effectParent1:SetVisible(true)
-      self.panel.followParent.anim:PlayLoop("anim_parkour_tpl_red")
+      self.uiBinder.img_bar:SetImage(GetLoadAssetPath(Z.ConstValue.Parkour.BarRed))
+      self:SetUIVisible(self.uiBinder.effect_parent_1, true)
+      self.uiBinder.anim_follow:PlayLoop("anim_parkour_tpl_red")
     else
-      self.panel.parkour_bar.Img:SetImage(GetLoadAssetPath(Z.ConstValue.Parkour.BarBlue))
-      self.panel.followParent.anim:Stop()
-      self.panel.effectParent1:SetVisible(false)
-    end
-  end
-end
-
-function Parkour_tplView:AlertEnergy()
-  if not self.notEnough_ then
-    self.notEnough_ = not self.notEnough_
-    self.notEnoughEffectCD_ = 0
-  end
-end
-
-function Parkour_tplView:QteRecovery(qteId, parkourSytleId)
-  if qteId ~= 4 and qteId ~= 5 and qteId ~= 6 and qteId ~= 7 then
-    return
-  end
-  self.isQte_ = true
-  self.qteEffectCD_ = 0
-  if parkourSytleId then
-    local n1, n2 = math.modf(parkourSytleId)
-    local config = Z.TableMgr.GetTable("ParkourStyleActionTableMgr").GetRow(n1)
-    if config and config.EnergyValue == 0 then
-      return
-    end
-  end
-end
-
-function Parkour_tplView:QteDash(parkourSytleId)
-  self.isDash_ = true
-  self.qteDashEffectCD_ = 0
-  if parkourSytleId then
-    local n1, n2 = math.modf(parkourSytleId)
-    local config = Z.TableMgr.GetTable("ParkourStyleActionTableMgr").GetRow(n1)
-    if config and config.EnergyValue == 0 then
-      return
+      self.uiBinder.img_bar:SetImage(GetLoadAssetPath(Z.ConstValue.Parkour.BarBlue))
+      self.uiBinder.anim_follow:Stop()
+      self:SetUIVisible(self.uiBinder.effect_parent_1, false)
     end
   end
 end

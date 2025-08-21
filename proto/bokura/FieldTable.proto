@@ -17,8 +17,6 @@ message FieldTableBase {
     string DeathEffect = 1887;
     int_array Tags = 232;
 }
-
 message FieldTableMgr {
-    map<int32, .bokura.FieldTableBase> datas = 1;
+    repeated bokura.FieldTableMgr.DatasEntry datas = 1;
 }
-

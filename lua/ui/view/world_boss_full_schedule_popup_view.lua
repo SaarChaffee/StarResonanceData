@@ -37,7 +37,11 @@ function World_boss_full_schedule_popupView:refreshInfo()
   Z.CoroUtil.create_coro_xpcall(function()
     self.worldBossVM_:AsyncGetWorldBossInfo(self.cancelSource:CreateToken(), function(ret)
       self.uiBinder.lab_current_stage.text = Lang("WorldBossCurrentStage") .. ret.bossStage
-      self.uiBinder.lab_kill_count.text = Lang("WorldBossCurrentKillNum") .. ret.bossKilledNum
+      if ret.bossKilledNum > Z.Global.WorldShowMaxKillCnt then
+        self.uiBinder.lab_kill_count.text = Lang("WorldBossCurrentKillNum") .. Z.Global.WorldShowMaxKillCnt .. "+"
+      else
+        self.uiBinder.lab_kill_count.text = Lang("WorldBossCurrentKillNum") .. ret.bossKilledNum
+      end
       local list_ = self.worldBossVM_:GetStageTableData()
       self.rewardScrollRect_:RefreshListView(list_)
     end)

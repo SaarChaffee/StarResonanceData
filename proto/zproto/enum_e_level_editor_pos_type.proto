@@ -9,4 +9,3 @@ enum ELevelEditorPosType {
     LevelEditorPosTypePos = 3;
     LevelEditorPosTypePointGroup = 4;
 }
-

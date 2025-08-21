@@ -5,4 +5,3 @@ package zproto;
 message ReadMailRequest {
     repeated int64 mailIds = 2;
 }
-

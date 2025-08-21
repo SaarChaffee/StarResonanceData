@@ -7,8 +7,8 @@ import "stru_union_activity_target.proto";
 
 message MemUnionActivity {
     int64 lastRefreshTime = 1;
-    map<int32, .zproto.UnionActivityTarget> personalTargets = 2;
+    repeated zproto.MemUnionActivity.PersonalTargetsEntry personalTargets = 2;
     repeated int32 receivedPointAwardIds = 3;
     repeated zproto.NotClaimedReward noClaimedActiveAwards = 4;
+    int64 nextRefreshTime = 5;
 }
-

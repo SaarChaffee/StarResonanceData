@@ -29,6 +29,49 @@ local mergeDataFuncs = {
     local last = container.__data__.count
     container.__data__.count = br.ReadUInt32(buffer)
     container.Watcher:MarkDirty("count", last)
+  end,
+  [7] = function(container, buffer, watcherList)
+    local last = container.__data__.minSize
+    container.__data__.minSize = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("minSize", last)
+  end,
+  [8] = function(container, buffer, watcherList)
+    local last = container.__data__.minSizemillisecond
+    container.__data__.minSizemillisecond = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("minSizemillisecond", last)
+  end,
+  [9] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt64(buffer)
+      container.starCnts.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("starCnts", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.starCnts.__data__[dk]
+      container.starCnts.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("starCnts", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt64(buffer)
+      local last = container.starCnts.__data__[dk]
+      container.starCnts.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("starCnts", dk, last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -76,7 +119,19 @@ local resetData = function(container, pbData)
   if not pbData.count then
     container.__data__.count = 0
   end
+  if not pbData.minSize then
+    container.__data__.minSize = 0
+  end
+  if not pbData.minSizemillisecond then
+    container.__data__.minSizemillisecond = 0
+  end
+  if not pbData.starCnts then
+    container.__data__.starCnts = {}
+  end
   setForbidenMt(container)
+  container.starCnts.__data__ = pbData.starCnts
+  setForbidenMt(container.starCnts)
+  container.__data__.starCnts = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -145,6 +200,37 @@ local getContainerElem = function(container)
     dataType = 0,
     data = container.count
   }
+  ret.minSize = {
+    fieldId = 7,
+    dataType = 0,
+    data = container.minSize
+  }
+  ret.minSizemillisecond = {
+    fieldId = 8,
+    dataType = 0,
+    data = container.minSizemillisecond
+  }
+  if container.starCnts ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.starCnts) do
+      data[key] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.starCnts = {
+      fieldId = 9,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.starCnts = {
+      fieldId = 9,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -152,10 +238,14 @@ local new = function()
     __data__ = {},
     ResetData = resetData,
     MergeData = mergeData,
-    GetContainerElem = getContainerElem
+    GetContainerElem = getContainerElem,
+    starCnts = {
+      __data__ = {}
+    }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
+  setForbidenMt(ret.starCnts)
   return ret
 end
 return {New = new}

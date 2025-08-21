@@ -3,7 +3,7 @@ local super = require("ui.component.loopscrollrectitem")
 local CamSetFilterItem = class("CamSetFilterItem", super)
 local itemPath = "ui/atlas/expression/tab_btn_emoji_icon"
 local worldproxy = require("zproxy.world_proxy")
-local filterPath = "ui/atlas/photograph_decoration/filters/"
+local filterPath = "ui/textures/photograph_decoration/filters/"
 
 function CamSetFilterItem:ctor()
 end

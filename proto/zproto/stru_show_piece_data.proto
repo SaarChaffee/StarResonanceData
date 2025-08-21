@@ -7,9 +7,7 @@ import "stru_show_piece_pair.proto";
 import "stru_dirty_mask.proto";
 
 message ShowPieceData {
-    map<int32, .zproto.ShowPieceIdList> OftenUseTypeList = 1;
-    map<int32, .zproto.ShowPieceIdList> unlockTypeList = 2;
-    map<int32, .zproto.ShowPiecePair> roulettePosPieceInfo = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.ShowPieceData.OftenUseTypeListEntry OftenUseTypeList = 1;
+    repeated zproto.ShowPieceData.UnlockTypeListEntry unlockTypeList = 2;
+    repeated zproto.ShowPieceData.RoulettePosPieceInfoEntry roulettePosPieceInfo = 3;
 }
-

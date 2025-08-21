@@ -11,4 +11,3 @@ message UnionActivityRankInfo {
     int32 rankIdx = 4;
     int32 value = 5;
 }
-

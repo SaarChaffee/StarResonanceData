@@ -16,13 +16,18 @@ function Tips_title_contentView:OnActive()
   self.uiBinder.presscheck:StartCheck()
   self.uiBinder.lab_title.text = self.viewData.title
   self.uiBinder.lab_info.text = self.viewData.content
+  if self.viewData.subTitle then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_sub_title, true)
+    self.uiBinder.lab_sub_title.text = self.viewData.subTitle
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_sub_title, false)
+  end
   self.uiBinder.presscheck_AdaptPos:UpdatePosition(self.viewData.rect, true, false, false, self.viewData.isRightFirst)
   self.uiBinder.anim:PlayOnce("anim_iteminfo_tips_001")
 end
 
 function Tips_title_contentView:OnDeActive()
   self.uiBinder.presscheck:StopCheck()
-  self.uiBinder.anim:PlayOnce("anim_iteminfo_tips_002")
 end
 
 function Tips_title_contentView:OnRefresh()

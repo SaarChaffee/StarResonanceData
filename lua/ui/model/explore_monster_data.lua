@@ -17,7 +17,11 @@ function ExploreMonsterData:Init()
   self.exploreTargetHideTime_ = cfg[4]
   self.showTargetContent_ = {}
   self.showArrowContent_ = {}
-  self.curInsightFlag_ = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrInsightFlag")).Value == 1
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+  else
+    self.curInsightFlag_ = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrInsightFlag")).Value == 1
+  end
   self.curCheckInsightTab_ = nil
   self.monsterDisTable_ = nil
   self:InitCfgData()

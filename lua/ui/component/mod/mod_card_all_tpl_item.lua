@@ -22,7 +22,9 @@ function ModCardAllTplItem.RefreshTpl(uibinder, effectId, logs, uuid, view, isEm
     local enhancementHoleNum = 0
     local successCount = 0
     if itemInfo then
-      local qualityConfig = modData:GetQualityConfig(itemInfo.quality)
+      local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(itemInfo.configId)
+      local qualityConfig = modData:GetQualityConfig(itemConfig.Quality)
+      local modConfig = Z.TableMgr.GetTable("ModTableMgr").GetRow(itemInfo.configId)
       if qualityConfig then
         enhancementHoleNum = qualityConfig.enhancementHoleNum
         logsCount = #logs
@@ -37,8 +39,10 @@ function ModCardAllTplItem.RefreshTpl(uibinder, effectId, logs, uuid, view, isEm
               else
                 ModFabtassyDotTplItem.RefreshTpl(starUIBinder, false, false, nil)
               end
-            else
+            elseif modConfig and modConfig.IsCanLink then
               ModFabtassyDotTplItem.RefreshTpl(starUIBinder, true, false, nil)
+            else
+              ModFabtassyDotTplItem.RefreshTpl(starUIBinder, false, false, nil)
             end
           else
             starUIBinder.Ref.UIComp:SetVisible(false)
@@ -170,7 +174,7 @@ function ModCardAllTplItem.RefreshTpl(uibinder, effectId, logs, uuid, view, isEm
           local effectConfig = modData:GetEffectTableConfig(effectId, level)
           if effectConfig then
             uibinder.lab_effect_name.text = effectConfig.EffectName .. " " .. Lang("Grade", {val = level})
-            ModGlossaryItemTplItem.RefreshTpl(uibinder.node_glossary_item_tpl, effectId, level)
+            ModGlossaryItemTplItem.RefreshTpl(uibinder.node_glossary_item_tpl, effectId)
             view:AddAsyncClick(uibinder.btn_tips, function()
               local viewData = {
                 parent = uibinder.node_glossary_item_tpl.Trans,

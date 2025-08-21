@@ -49,12 +49,22 @@ function ChatHyperLinkPersonalzoneData:RefreshShareData(text1, data, text2, play
   }
   param.string = {}
   if self.shareData_.string1 and self.shareData_.string1 ~= "" then
-    param.string[1] = self.shareData_.string1
+    param.string[1] = Z.RichTextHelper.RemoveTagsOtherThanEmojis(self.shareData_.string1)
   end
   if self.shareData_.string2 and self.shareData_.string2 ~= "" then
-    param.string[2] = self.shareData_.string2
+    param.string[2] = Z.RichTextHelper.RemoveTagsOtherThanEmojis(self.shareData_.string2)
   end
   self.shareShowContent_ = Z.Placeholder.Placeholder(self.shareContent_, param)
+  if self.chatHyperLinkRow_ and self.chatHyperLinkRow_.FunctionButtonEscape ~= "" then
+    self.mainChatShareContent_ = self.chatHyperLinkRow_.FunctionButtonEscape
+  else
+    self.mainChatShareContent_ = Z.Placeholder.Placeholder(Z.RichTextHelper.RemoveStyleTag(self.shareContent_), param)
+  end
+  if self.chatHyperLinkRow_ and self.chatHyperLinkRow_.HudEscape ~= "" then
+    self.hudShareContent_ = Z.Placeholder.Placeholder(self.chatHyperLinkRow_.HudEscape, param)
+  else
+    self.hudShareContent_ = self.shareShowContent_
+  end
 end
 
 function ChatHyperLinkPersonalzoneData:CheckShareData(text)

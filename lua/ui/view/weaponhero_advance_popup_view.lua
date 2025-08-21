@@ -26,6 +26,7 @@ function Weaponhero_advance_popupView:OnDeActive()
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_item_eff)
   self.uiBinder.point_check:StopCheck()
   self:unInitLoopListView()
+  Z.CommonTipsVM.CloseRichText()
 end
 
 function Weaponhero_advance_popupView:onStartAnimShow()
@@ -46,6 +47,11 @@ function Weaponhero_advance_popupView:initComponent()
   end, nil, nil)
   self.uiBinder.point_check:StartCheck()
   self.uiBinder.scene_mask:SetSceneMaskByKey(self.SceneMaskKey)
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   self.uiBinder.node_audio:PlayByTrigger(Panda.ZUi.UIAudioTrigger.commonAudio_1)
 end
 
@@ -80,8 +86,8 @@ function Weaponhero_advance_popupView:refreshAdvanceInfo()
   if skillTableRow == nil then
     return
   end
-  self.uiBinder.lab_title_grade_former.text = Lang("AdvanceLevel2") .. advanceLv - 1
-  self.uiBinder.lab_title_grade_after.text = Lang("AdvanceLevel2") .. advanceLv
+  self.uiBinder.lab_title_grade_former.text = Lang("AdvanceLevel2") .. " " .. advanceLv - 1
+  self.uiBinder.lab_title_grade_after.text = Lang("AdvanceLevel2") .. " " .. advanceLv
   self.uiBinder.lab_title.text = Lang(advanceLv == 0 and "ActiveSuccess" or "AdvanceSuccess")
   self.uiBinder.lab_name.text = skillTableRow.Name
   self.uiBinder.rimg_monster:SetImage(skillAoyiTableRow.ArtPreview)
@@ -114,7 +120,7 @@ function Weaponhero_advance_popupView:refreshAdvanceInfo()
 
 ]], Lang("PassiveEffectColor"), "\n", passiveContent)
     end
-    self.uiBinder.lab_skill_desc.text = content
+    Z.RichTextHelper.SetTmpLabTextWithCommonLinkNew(self.uiBinder.lab_skill_desc, content)
     self.uiBinder.scroll_active.verticalNormalizedPosition = 1
   end
 end

@@ -11,8 +11,6 @@ message MagicConfigTableBase {
     int32 ModelType = 1034;
     string BeHitAct = 786;
 }
-
 message MagicConfigTableMgr {
-    map<int32, .bokura.MagicConfigTableBase> datas = 1;
+    repeated bokura.MagicConfigTableMgr.DatasEntry datas = 1;
 }
-

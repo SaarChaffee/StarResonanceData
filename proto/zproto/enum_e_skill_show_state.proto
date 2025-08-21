@@ -9,4 +9,3 @@ enum ESkillShowState {
     ESkillAimCameraDir = 3;
     ESkillAimTarget = 4;
 }
-

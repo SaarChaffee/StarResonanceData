@@ -28,8 +28,6 @@ message FightAttrTableBase {
     int32 BuffShowAttrHUD = 813;
     string_array AttrIcon = 1291;
 }
-
 message FightAttrTableMgr {
-    map<int32, .bokura.FightAttrTableBase> datas = 1;
+    repeated bokura.FightAttrTableMgr.DatasEntry datas = 1;
 }
-

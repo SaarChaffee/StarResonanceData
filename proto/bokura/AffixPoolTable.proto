@@ -13,8 +13,6 @@ message AffixPoolTableBase {
     int_table EffectTypeLimit = 1532;
     int_table TargetTypeLimit = 1783;
 }
-
 message AffixPoolTableMgr {
-    map<int32, .bokura.AffixPoolTableBase> datas = 1;
+    repeated bokura.AffixPoolTableMgr.DatasEntry datas = 1;
 }
-

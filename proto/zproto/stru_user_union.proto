@@ -10,7 +10,7 @@ import "stru_dirty_mask.proto";
 message UserUnion {
     int64 unionId = 1;
     uint64 nextJoinTime = 2;
-    map<int64, uint64> reqUnionTimes = 3;
+    repeated zproto.UserUnion.ReqUnionTimesEntry reqUnionTimes = 3;
     bool joinFlag = 4;
     repeated int64 collectedIds = 5;
     int64 activeAwardResetTime = 6;
@@ -21,6 +21,4 @@ message UserUnion {
     uint64 leaveTime = 11;
     zproto.UnionDanceHistory danceRecord = 13;
     zproto.UserUnionHuntInfo userUnionHuntInfo = 14;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

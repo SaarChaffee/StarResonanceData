@@ -1,9 +1,7 @@
 local super = require("ui.ui_view_base")
 local Camera_photo_album_windowView = class("Camera_photo_album_windowView", super)
-local PERSONALZONEDEFINE = require("ui.model.personalzone_define")
 
 function Camera_photo_album_windowView:ctor()
-  self.panel = nil
   self.viewData = nil
   self.uiBinder = nil
   super.ctor(self, "camera_photo_album_window")
@@ -21,19 +19,15 @@ function Camera_photo_album_windowView:initComp()
   self.selectNumLab_ = self.uiBinder.select_num_lab
   self.emptyNode_ = self.uiBinder.empty_node
   self.albumNameLab_ = self.uiBinder.album_title_lab
-  self.scene_mask_ = self.uiBinder.scene_mask
   self.personalzoneSaveBtn_ = self.uiBinder.btn_personalzone_save
   self.lab_title_ = self.uiBinder.lab_title
   self.lab_union_save_count_ = self.uiBinder.lab_union_save_count
-  self.scene_mask_:SetSceneMaskByKey(Z.UI.ESceneMaskKey.Default)
   self.camerasysTabScrollRect_ = require("ui/component/loopscrollrect").new(self.uiBinder.photo_loopScroll, self, require("ui.component.album.album_photo_item"))
 end
 
 function Camera_photo_album_windowView:initParam()
   self.albumMainData_ = Z.DataMgr.Get("album_main_data")
   self.albumMainVM_ = Z.VMMgr.GetVM("album_main")
-  self.personalzoneVm_ = Z.VMMgr.GetVM("personal_zone")
-  self.personalzoneData_ = Z.DataMgr.Get("personal_zone_data")
   self.commonVM_ = Z.VMMgr.GetVM("common")
   self.unionVM_ = Z.VMMgr.GetVM("union")
   self.OpenAlbumViewType = E.AlbumType.Couldalbum
@@ -41,19 +35,7 @@ function Camera_photo_album_windowView:initParam()
 end
 
 function Camera_photo_album_windowView:setSelectedState(isMultiSelect, albumSelectType, isResetSelectState)
-  if self.viewData.source == E.AlbumOpenSource.Personal then
-    self.uiBinder.Ref:SetVisible(self.editBtn_, false)
-    self.uiBinder.Ref:SetVisible(self.multiSelectBtn_, false)
-    self.uiBinder.Ref:SetVisible(self.layoutBtn_, false)
-    self.uiBinder.Ref:SetVisible(self.personalzoneSaveBtn_, true)
-    self.albumMainData_.SelectType = E.AlbumSelectType.Select
-    local num = self.personalzoneData_:GetShowPhotoCount()
-    self.uiBinder.select_num_lab.text = Lang("SelectPersonalzonePhotoNumber", {
-      val1 = num,
-      val2 = PERSONALZONEDEFINE.ShowPhotoMaxCount
-    })
-    self.personalzoneSaveBtn_.IsDisabled = not self.personalzoneVm_.CheckPersonalzonePhotoIsChange()
-  elseif self.viewData.source == E.AlbumOpenSource.Union or self.viewData.source == E.AlbumOpenSource.UnionElectronicScreen then
+  if self.viewData.source == E.AlbumOpenSource.Union or self.viewData.source == E.AlbumOpenSource.UnionElectronicScreen then
     self.uiBinder.Ref:SetVisible(self.editBtn_, false)
     self.uiBinder.Ref:SetVisible(self.multiSelectBtn_, false)
     self.uiBinder.Ref:SetVisible(self.layoutBtn_, false)
@@ -110,16 +92,9 @@ function Camera_photo_album_windowView:initBtnClick()
     self:onDeleteBtnClick()
   end)
   self:AddAsyncClick(self.personalzoneSaveBtn_, function()
-    if self.viewData.source == E.AlbumOpenSource.Personal then
-      if self.personalzoneVm_.CheckPersonalzonePhotoIsChange() then
-        self.personalzoneVm_.AsynSavePersonalPhoto(self.cancelSource:CreateToken())
-        self.personalzoneSaveBtn_.IsDisabled = not self.personalzoneVm_.CheckPersonalzonePhotoIsChange()
-      else
-        Z.TipsVM.ShowTipsLang(1002105)
-      end
-    elseif self.viewData.source == E.AlbumOpenSource.Union then
-      local ret = self.albumMainVM_.AsyncSetUnionCoverPhoto(self.cancelSource:CreateToken())
-      if ret and ret.errCode == 0 then
+    if self.viewData.source == E.AlbumOpenSource.Union then
+      local errCode = self.albumMainVM_.AsyncSetUnionCoverPhoto(self.cancelSource:CreateToken())
+      if errCode == 0 then
         Z.TipsVM.ShowTips(1000566)
         Z.UIMgr:CloseView("album_main")
         Z.UIMgr:CloseView("camera_photo_album_window")
@@ -157,26 +132,27 @@ end
 function Camera_photo_album_windowView:onDeleteBtnClick()
   Z.DialogViewDataMgr:OpenNormalDialog(Lang("ConfirmationDelCloud"), function()
     local delData = self.albumMainData_:GetSelectedAlbumPhoto()
-    local deleteCount = #delData
+    if not delData or table.zcount(delData) == 0 then
+      Z.TipsVM.ShowTipsLang(1000027)
+      return
+    end
+    local deleteCount = table.zcount(delData)
     local currentDeleteCount = 0
     for _, value in pairs(delData) do
-      Z.CoroUtil.create_coro_xpcall(function()
-        local retData = {}
-        if self.albumMainVM_.CheckSubTypeIsUnion() then
-          retData = self.albumMainVM_.AsyncDeleteUnionPhoto(value.id, self.cancelSource:CreateToken())
-        else
-          retData = self.albumMainVM_.AsyncDeleteServePhoto(value, self.cancelSource:CreateToken())
-        end
-        if retData and retData == 0 then
-          currentDeleteCount = currentDeleteCount + 1
-        end
-        if currentDeleteCount == deleteCount then
-          self:updateItemList()
-          self:setSelectedState(false, E.AlbumSelectType.Select, true)
-        end
-      end)()
+      local retData = {}
+      if self.albumMainVM_.CheckSubTypeIsUnion() then
+        retData = self.albumMainVM_.AsyncDeleteUnionPhoto(value.id, self.cancelSource:CreateToken())
+      else
+        retData = self.albumMainVM_.AsyncDeleteServePhoto(value, self.cancelSource:CreateToken())
+      end
+      if retData and retData == 0 then
+        currentDeleteCount = currentDeleteCount + 1
+      end
+      if currentDeleteCount == deleteCount then
+        self:updateItemList()
+        self:setSelectedState(false, E.AlbumSelectType.Select, true)
+      end
     end
-    Z.DialogViewDataMgr:CloseDialogView()
     Z.TipsVM.ShowTipsLang(1000008)
   end)
 end
@@ -215,6 +191,8 @@ function Camera_photo_album_windowView:showMobileAlbum(data)
 end
 
 function Camera_photo_album_windowView:OnDeActive()
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_loop_eff)
+  self.uiBinder.node_loop_eff:SetEffectGoVisible(false)
   Z.EventMgr:Dispatch(Z.ConstValue.Album.MainViewRef)
   self.albumMainData_:ClearCurrentAlbumPhotosData()
   self.albumMainData_:ClearSelectedAlbumPhoto()
@@ -245,14 +223,7 @@ end
 
 function Camera_photo_album_windowView:albumUpdateSelectNumber()
   local num = 0
-  if self.viewData.source == E.AlbumOpenSource.Personal then
-    num = self.personalzoneData_:GetShowPhotoCount()
-    self.uiBinder.select_num_lab.text = Lang("SelectPersonalzonePhotoNumber", {
-      val1 = num,
-      val2 = PERSONALZONEDEFINE.ShowPhotoMaxCount
-    })
-    self.personalzoneSaveBtn_.IsDisabled = not self.personalzoneVm_.CheckPersonalzonePhotoIsChange()
-  elseif self.viewData.source == E.AlbumOpenSource.UnionElectronicScreen then
+  if self.viewData.source == E.AlbumOpenSource.UnionElectronicScreen then
     local limit = self.unionVM_:GetUnionScreenNum(self.albumMainData_.EScreenId)
     if limit == 0 then
       self.uiBinder.select_num_lab.text = ""
@@ -322,6 +293,8 @@ function Camera_photo_album_windowView:updateItemList()
 end
 
 function Camera_photo_album_windowView:startAnimatedShow()
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
+  self.uiBinder.node_loop_eff:SetEffectGoVisible(true)
   self.animNode_:Restart(Z.DOTweenAnimType.Open)
 end
 

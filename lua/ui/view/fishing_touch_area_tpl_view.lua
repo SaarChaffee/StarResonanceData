@@ -15,6 +15,7 @@ end
 
 function Fishing_touch_area_tplView:OnDeActive()
   self:UnBindEvents()
+  self.uiBinder.joystick:ResetJoystick()
 end
 
 function Fishing_touch_area_tplView:OnRefresh()

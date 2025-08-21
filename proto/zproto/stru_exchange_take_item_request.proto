@@ -6,4 +6,3 @@ message ExchangeTakeItemRequest {
     string uuid = 2;
     uint32 configId = 3;
 }
-

@@ -41,14 +41,15 @@ function Tips_title_content_items_btnView:OnActive()
             expendCount = itemData.ItemNum,
             lab = itemsVm.GetItemTotalCount(itemData.ItemId),
             labType = E.ItemLabType.Expend,
-            isSquareItem = true
+            isSquareItem = true,
+            tipsBindPressCheckComp = self.uiBinder.presscheck
           }
           self.itemClassTab_[itemName]:Init(unlockItemData)
         end
       end
     end)()
   end
-  self.uiBinder.presscheck_AdaptPos:UpdatePosition(self.viewData.rect, true, false, false, self.viewData.isRightFirst)
+  self.uiBinder.presscheck_AdaptPos:UpdatePosition(self.viewData.rect, true, self.viewData.isCenter, false, self.viewData.isRightFirst)
   self.uiBinder.anim:PlayOnce("anim_iteminfo_tips_001")
 end
 
@@ -57,7 +58,8 @@ function Tips_title_content_items_btnView:OnDeActive()
   for _, item in pairs(self.itemClassTab_) do
     item:UnInit()
   end
-  self.uiBinder.anim:PlayOnce("anim_iteminfo_tips_002")
+  self.uiBinder.anim:ResetAniState("anim_iteminfo_tips_001")
+  self.uiBinder.anim:ClearAll()
 end
 
 function Tips_title_content_items_btnView:OnRefresh()

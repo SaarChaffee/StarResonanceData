@@ -6,4 +6,3 @@ message DeleteUnionAlbumRequest {
     int64 unionId = 1;
     uint32 albumId = 2;
 }
-

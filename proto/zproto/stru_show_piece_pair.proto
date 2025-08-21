@@ -8,6 +8,4 @@ import "stru_dirty_mask.proto";
 message ShowPiecePair {
     zproto.EShowPieceType pieceType = 1;
     int32 pieceId = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

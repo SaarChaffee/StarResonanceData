@@ -77,6 +77,18 @@ local mergeDataFuncs = {
   [19] = function(container, buffer, watcherList)
     container.fishData:MergeData(buffer, watcherList)
     container.Watcher:MarkDirty("fishData", {})
+  end,
+  [20] = function(container, buffer, watcherList)
+    container.communityData:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("communityData", {})
+  end,
+  [21] = function(container, buffer, watcherList)
+    container.privilegeData:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("privilegeData", {})
+  end,
+  [22] = function(container, buffer, watcherList)
+    container.masterModeDungeonData:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("masterModeDungeonData", {})
   end
 }
 local setForbidenMt = function(t)
@@ -163,6 +175,15 @@ local resetData = function(container, pbData)
   if not pbData.fishData then
     container.__data__.fishData = {}
   end
+  if not pbData.communityData then
+    container.__data__.communityData = {}
+  end
+  if not pbData.privilegeData then
+    container.__data__.privilegeData = {}
+  end
+  if not pbData.masterModeDungeonData then
+    container.__data__.masterModeDungeonData = {}
+  end
   setForbidenMt(container)
   container.basicData:ResetData(pbData.basicData)
   container.__data__.basicData = nil
@@ -198,6 +219,12 @@ local resetData = function(container, pbData)
   container.__data__.seasonRank = nil
   container.fishData:ResetData(pbData.fishData)
   container.__data__.fishData = nil
+  container.communityData:ResetData(pbData.communityData)
+  container.__data__.communityData = nil
+  container.privilegeData:ResetData(pbData.privilegeData)
+  container.__data__.privilegeData = nil
+  container.masterModeDungeonData:ResetData(pbData.masterModeDungeonData)
+  container.__data__.masterModeDungeonData = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -467,6 +494,45 @@ local getContainerElem = function(container)
       data = container.fishData:GetContainerElem()
     }
   end
+  if container.communityData == nil then
+    ret.communityData = {
+      fieldId = 20,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.communityData = {
+      fieldId = 20,
+      dataType = 1,
+      data = container.communityData:GetContainerElem()
+    }
+  end
+  if container.privilegeData == nil then
+    ret.privilegeData = {
+      fieldId = 21,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.privilegeData = {
+      fieldId = 21,
+      dataType = 1,
+      data = container.privilegeData:GetContainerElem()
+    }
+  end
+  if container.masterModeDungeonData == nil then
+    ret.masterModeDungeonData = {
+      fieldId = 22,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.masterModeDungeonData = {
+      fieldId = 22,
+      dataType = 1,
+      data = container.masterModeDungeonData:GetContainerElem()
+    }
+  end
   return ret
 end
 local new = function()
@@ -491,7 +557,10 @@ local new = function()
     personalZone = require("zcontainer.personal_zone").New(),
     warehouse = require("zcontainer.warehouse_data").New(),
     seasonRank = require("zcontainer.season_rank_data").New(),
-    fishData = require("zcontainer.fish_social_data").New()
+    fishData = require("zcontainer.fish_social_data").New(),
+    communityData = require("zcontainer.community_data").New(),
+    privilegeData = require("zcontainer.privilege_data").New(),
+    masterModeDungeonData = require("zcontainer.master_mode_dungeon_data").New()
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)

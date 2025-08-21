@@ -6,4 +6,3 @@ message ApplyTime {
     int64 charId = 1;
     int64 applyTime = 2;
 }
-

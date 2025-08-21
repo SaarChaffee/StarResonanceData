@@ -200,4 +200,25 @@ function RichTextHelper.ParseTextWithImages(text)
   return result
 end
 
+function RichTextHelper.RemoveStyleTag(content)
+  local text = string.gsub(content, "<style=[^>]+>", "")
+  text = string.gsub(text, "</style>", "")
+  return text
+end
+
+function RichTextHelper.RemoveTagsOtherThanEmojis(content)
+  local text = string.gsub(content, "(<[^>]+>)", function(tag)
+    if tag:match("^<sprite=%d+>$") then
+      return tag
+    else
+      return ""
+    end
+  end)
+  return text
+end
+
+function RichTextHelper.RmoveHrefTag(content)
+  return string.gsub(content, "<a href=[^>]+>", "")
+end
+
 return RichTextHelper

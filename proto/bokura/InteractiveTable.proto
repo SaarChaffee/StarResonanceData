@@ -22,8 +22,6 @@ message InteractiveTableBase {
     int32 SortId = 1586;
     int32 TipsGroup = 1901;
 }
-
 message InteractiveTableMgr {
-    map<int32, .bokura.InteractiveTableBase> datas = 1;
+    repeated bokura.InteractiveTableMgr.DatasEntry datas = 1;
 }
-

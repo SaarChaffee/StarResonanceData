@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_mem_union_activity.proto";
 import "stru_union_activity.proto";
 
 message GetUnionActivityInfoReply {
-    int32 errCode = 1;
-    zproto.UnionActivity unionActivity = 2;
-    zproto.MemUnionActivity selfActivity = 3;
+    zproto.UnionActivity unionActivity = 1;
+    zproto.MemUnionActivity selfActivity = 2;
+    zproto.EErrorCode errCode = 3;
 }
-

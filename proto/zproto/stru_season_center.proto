@@ -11,7 +11,5 @@ message SeasonCenter {
     int32 seasonId = 1;
     zproto.BattlePass battlePass = 2;
     zproto.SeasonBpQuestList bpQuestList = 3;
-    map<uint32, .zproto.SeasonCenterHistory> seasonHistory = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.SeasonCenter.SeasonHistoryEntry seasonHistory = 4;
 }
-

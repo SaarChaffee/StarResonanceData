@@ -16,7 +16,7 @@ message MallItemTableBase {
     int32 LimitTime = 348;
     int_table ShowLimitType = 433;
     int_array OriginalPrice = 1949;
-    map<int32, int32> Cost = 1056;
+    repeated bokura.MallItemTableBase.CostEntry Cost = 1056;
     int_table RefreshType = 213;
     int32 Bind = 1803;
     int_table DeliverWay = 439;
@@ -26,8 +26,6 @@ message MallItemTableBase {
     int_table Weight = 140;
     int32 CheckDisplay = 341;
 }
-
 message MallItemTableMgr {
-    map<int32, .bokura.MallItemTableBase> datas = 1;
+    repeated bokura.MallItemTableMgr.DatasEntry datas = 1;
 }
-

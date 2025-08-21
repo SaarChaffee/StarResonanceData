@@ -12,4 +12,3 @@ enum ESkillLogicState {
     ERushCanInterrupt = 6;
     EChangeProfession = 7;
 }
-

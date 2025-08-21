@@ -8,13 +8,19 @@ end
 
 function CookData:Init()
   self.CookMaterialData = {}
-  self.DefaultUnlockCookIds = {}
   self:InitCfgData()
 end
 
 function CookData:InitCfgData()
-  self.CookRecipeTableRows = Z.TableMgr.GetTable("CookRecipeTableMgr").GetDatas()
   self.CookMaterialTableDatas = Z.TableMgr.GetTable("CookMaterialTableMgr").GetDatas()
+  local data = {}
+  for k, v in pairs(self.CookMaterialTableDatas) do
+    if not data[v.TypeB] then
+      data[v.TypeB] = {}
+    end
+    data[v.TypeB][#data[v.TypeB] + 1] = v
+  end
+  self.CookMaterialData = data
 end
 
 function CookData:OnLanguageChange()

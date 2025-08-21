@@ -1,0 +1,807 @@
+{
+  "1": {
+    "Id": 1,
+    "LoadingBg": "ui/textures/login/loading1",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "2": {
+    "Id": 2,
+    "LoadingBg": "ui/textures/login/loading2",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "3": {
+    "Id": 3,
+    "LoadingBg": "ui/textures/login/loading3",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "4": {
+    "Id": 4,
+    "LoadingBg": "ui/textures/login/loading4",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "5": {
+    "Id": 5,
+    "LoadingBg": "ui/textures/login/loading5",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "6": {
+    "Id": 6,
+    "LoadingBg": "ui/textures/login/loading6",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "7": {
+    "Id": 7,
+    "LoadingBg": "ui/textures/login/loading7",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "8": {
+    "Id": 8,
+    "LoadingBg": "ui/textures/login/loading8",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "9": {
+    "Id": 9,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "10": {
+    "Id": 10,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "11": {
+    "Id": 11,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "12": {
+    "Id": 12,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "13": {
+    "Id": 13,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "14": {
+    "Id": 14,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "15": {
+    "Id": 15,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "16": {
+    "Id": 16,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "17": {
+    "Id": 17,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "18": {
+    "Id": 18,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "19": {
+    "Id": 19,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "20": {
+    "Id": 20,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "21": {
+    "Id": 21,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "22": {
+    "Id": 22,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "23": {
+    "Id": 23,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "24": {
+    "Id": 24,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "25": {
+    "Id": 25,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "26": {
+    "Id": 26,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "27": {
+    "Id": 27,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "28": {
+    "Id": 28,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "29": {
+    "Id": 29,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "30": {
+    "Id": 30,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "31": {
+    "Id": 31,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "32": {
+    "Id": 32,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "33": {
+    "Id": 33,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "34": {
+    "Id": 34,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "35": {
+    "Id": 35,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "36": {
+    "Id": 36,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "37": {
+    "Id": 37,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "38": {
+    "Id": 38,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "39": {
+    "Id": 39,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "40": {
+    "Id": 40,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "41": {
+    "Id": 41,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "42": {
+    "Id": 42,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "43": {
+    "Id": 43,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 3
+  },
+  "44": {
+    "Id": 44,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 3
+  },
+  "45": {
+    "Id": 45,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 3
+  },
+  "46": {
+    "Id": 46,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 3
+  },
+  "47": {
+    "Id": 47,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 3
+  },
+  "48": {
+    "Id": 48,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 3
+  },
+  "49": {
+    "Id": 49,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 3
+  },
+  "50": {
+    "Id": 50,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 3
+  },
+  "51": {
+    "Id": 51,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "52": {
+    "Id": 52,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "53": {
+    "Id": 53,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "54": {
+    "Id": 54,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "55": {
+    "Id": 55,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "56": {
+    "Id": 56,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "57": {
+    "Id": 57,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "58": {
+    "Id": 58,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "59": {
+    "Id": 59,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "60": {
+    "Id": 60,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "61": {
+    "Id": 61,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "62": {
+    "Id": 62,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 2
+  },
+  "63": {
+    "Id": 63,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 3
+  },
+  "64": {
+    "Id": 64,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 3
+  },
+  "65": {
+    "Id": 65,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "66": {
+    "Id": 66,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "67": {
+    "Id": 67,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "68": {
+    "Id": 68,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "69": {
+    "Id": 69,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "70": {
+    "Id": 70,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "71": {
+    "Id": 71,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "72": {
+    "Id": 72,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "73": {
+    "Id": 73,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "74": {
+    "Id": 74,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "75": {
+    "Id": 75,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "76": {
+    "Id": 76,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "77": {
+    "Id": 77,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "78": {
+    "Id": 78,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "79": {
+    "Id": 79,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "80": {
+    "Id": 80,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "81": {
+    "Id": 81,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "82": {
+    "Id": 82,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "83": {
+    "Id": 83,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "84": {
+    "Id": 84,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "85": {
+    "Id": 85,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "86": {
+    "Id": 86,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "87": {
+    "Id": 87,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "88": {
+    "Id": 88,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "89": {
+    "Id": 89,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "90": {
+    "Id": 90,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "91": {
+    "Id": 91,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "92": {
+    "Id": 92,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "93": {
+    "Id": 93,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "94": {
+    "Id": 94,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "95": {
+    "Id": 95,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "96": {
+    "Id": 96,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "97": {
+    "Id": 97,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "98": {
+    "Id": 98,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "99": {
+    "Id": 99,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "100": {
+    "Id": 100,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "101": {
+    "Id": 101,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "102": {
+    "Id": 102,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "103": {
+    "Id": 103,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "104": {
+    "Id": 104,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "105": {
+    "Id": 105,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "106": {
+    "Id": 106,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "107": {
+    "Id": 107,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "108": {
+    "Id": 108,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "109": {
+    "Id": 109,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "110": {
+    "Id": 110,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "111": {
+    "Id": 111,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "112": {
+    "Id": 112,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "113": {
+    "Id": 113,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "114": {
+    "Id": 114,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  },
+  "115": {
+    "Id": 115,
+    "LoadingBg": "",
+    "TextTitle": "",
+    "TextGeneral": "",
+    "LoadingType": 0
+  }
+}

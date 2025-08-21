@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package zproto;
+
+message CancelDeleteCharRequest {
+    int64 charId = 2;
+}

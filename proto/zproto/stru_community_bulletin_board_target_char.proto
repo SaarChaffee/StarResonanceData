@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_char_basic_data.proto";
+
+message CommunityBulletinBoardTargetChar {
+    int64 charId = 1;
+    zproto.CommunityCharBasicData charBasicData = 2;
+}

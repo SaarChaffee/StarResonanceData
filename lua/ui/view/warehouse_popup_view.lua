@@ -23,21 +23,20 @@ function Warehouse_popupView:initBinders()
 end
 
 function Warehouse_popupView:initBtns()
-  if self.data_.WarehouseInfo then
-    local isLeader = self.data_.WarehouseInfo.presidentId == Z.ContainerMgr.CharSerialize.charBase.charId
+  local warehouseInfo = self.data_:GetWarehouseInfo(E.WarehouseType.Normal)
+  if warehouseInfo then
+    local isLeader = warehouseInfo.presidentId == Z.ContainerMgr.CharSerialize.charBase.charId
     self.uiBinder.Ref:SetVisible(self.dissolveBtn_, isLeader)
     self.uiBinder.Ref:SetVisible(self.quitBtn_, not isLeader)
   end
   self:AddAsyncClick(self.dissolveBtn_, function()
-    Z.DialogViewDataMgr:OpenNormalDialog(Lang("WarehouseDissolveDialogTips"), function()
-      Z.DialogViewDataMgr:CloseDialogView()
-      self.vm_.AsyncDisbandWarehouse(self.cancelSource:CreateToken())
+    Z.DialogViewDataMgr:OpenNormalDialog(Lang("WarehouseDissolveDialogTips"), function(token)
+      self.vm_.AsyncDisbandWarehouse(token)
     end)
   end)
   self:AddAsyncClick(self.quitBtn_, function()
-    Z.DialogViewDataMgr:OpenNormalDialog(Lang("WarehouseQuitDialogTips"), function()
-      Z.DialogViewDataMgr:CloseDialogView()
-      self.vm_.AsyncExitWarehouse(self.cancelSource:CreateToken())
+    Z.DialogViewDataMgr:OpenNormalDialog(Lang("WarehouseQuitDialogTips"), function(token)
+      self.vm_.AsyncExitWarehouse(token)
     end)
   end)
   self:AddClick(self.affirmBtn_, function()
@@ -64,6 +63,9 @@ function Warehouse_popupView:loadMemberItem()
   end
   self.allUnits_ = {}
   local warehouseInfo = self.data_:GetWarehouseInfo()
+  if warehouseInfo == nil then
+    return
+  end
   local leaderIsSelf = false
   leaderIsSelf = warehouseInfo.presidentId == Z.ContainerMgr.CharSerialize.charBase.charId
   if not warehouseInfo then
@@ -114,7 +116,6 @@ function Warehouse_popupView:loadMemberItem()
                   name = socialData.basicData.name
                 }
                 Z.DialogViewDataMgr:OpenNormalDialog(Lang("WarehouseKickOutDialogTips", {player = player}), function()
-                  Z.DialogViewDataMgr:CloseDialogView()
                   self.vm_.AsyncKickOutWarehouse(memId, self.cancelSource:CreateToken())
                 end)
               end)
@@ -123,7 +124,7 @@ function Warehouse_popupView:loadMemberItem()
               end)
               playerPortraitHgr.InsertNewPortraitBySocialData(item.head, socialData, function()
                 Z.VMMgr.GetVM("idcard").AsyncGetCardData(memId, self.cancelSource:CreateToken())
-              end)
+              end, self.cancelSource:CreateToken())
             end
           end
         end

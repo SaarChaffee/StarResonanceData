@@ -127,15 +127,11 @@ function Menu_hairView:refreshPartTogGroupState(isOn)
 end
 
 function Menu_hairView:refreshHairGradientRange()
-  local realRange = self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelCHairGradient, self.faceData_.FaceDef.EAttrParamHairGradient.Range)
-  realRange = realRange - 1
-  local uiValue = self:GetValueInRang(realRange, Z.ModelAttr.EModelCHairGradient, self.faceData_.FaceDef.EAttrParamHairGradient.Range, 1, 0)
-  self:InitSlider(self.uiBinder.node_rang, uiValue, 10, 0)
+  self:InitSlider(self.uiBinder.node_rang, Z.ModelAttr.EModelCHairGradient, self.faceData_.FaceDef.EAttrParamHairGradient.Range)
 end
 
 function Menu_hairView:setRangValue(value)
-  local realValue = self:CheckValueRang(value, Z.ModelAttr.EModelCHairGradient, self.faceData_.FaceDef.EAttrParamHairGradient.Range, 10, 0)
-  self.faceVM_.SetFaceOptionByAttrType(Z.ModelAttr.EModelCHairGradient, realValue / 10 + 1, self.faceData_.FaceDef.EAttrParamHairGradient.Range)
+  self:SetFaceAttrValueByShowValue(value, Z.ModelAttr.EModelCHairGradient, self.faceData_.FaceDef.EAttrParamHairGradient.Range)
   self.uiBinder.node_rang.lab_value.text = string.format("%d", math.floor(value + 0.5))
 end
 
@@ -199,6 +195,7 @@ function Menu_hairView:initColor()
       local attrVM = Z.VMMgr.GetVM("face_attr")
       attrVM.UpdateFaceAttr(self.colorAttr_)
     end
+    self.faceVM_.CacheFaceData()
   end)
   self.uiBinder.tog_highlights1:AddListener(function(isOn)
     self:refreshHighlights1(isOn)
@@ -227,8 +224,12 @@ end
 
 function Menu_hairView:refreshFaceMenuView()
   super.refreshFaceMenuView(self)
+  local isWholeHair = self:getIsWholeHair()
+  self.uiBinder.tog_whole.tog_item.isOn = isWholeHair
+  self.uiBinder.tog_custom.tog_item.isOn = not isWholeHair
   self:refreshHairGradientRange()
   self:refreshNodeOpen()
+  self:refreshHairHighlights()
 end
 
 function Menu_hairView:refreshHairHighlights()
@@ -264,6 +265,7 @@ function Menu_hairView:OnClickFaceStyle(faceId)
     [4] = Z.ModelAttr.EModelHairWearId
   })
   self.faceVM_.SetFaceOptionByAttrType(self.styleAttr_, faceId)
+  self.faceVM_.CacheFaceData()
 end
 
 return Menu_hairView

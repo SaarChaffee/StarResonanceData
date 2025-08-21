@@ -12,7 +12,7 @@ local mergeDataFuncs = {
   end,
   [3] = function(container, buffer, watcherList)
     local last = container.__data__.showId
-    container.__data__.showId = br.ReadUInt32(buffer)
+    container.__data__.showId = br.ReadInt64(buffer)
     container.Watcher:MarkDirty("showId", last)
   end,
   [4] = function(container, buffer, watcherList)
@@ -159,6 +159,46 @@ local mergeDataFuncs = {
     local last = container.__data__.areaId
     container.__data__.areaId = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("areaId", last)
+  end,
+  [34] = function(container, buffer, watcherList)
+    local last = container.__data__.clientVersion
+    container.__data__.clientVersion = br.ReadString(buffer)
+    container.Watcher:MarkDirty("clientVersion", last)
+  end,
+  [35] = function(container, buffer, watcherList)
+    local last = container.__data__.fightPoint
+    container.__data__.fightPoint = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("fightPoint", last)
+  end,
+  [36] = function(container, buffer, watcherList)
+    local last = container.__data__.sumSave
+    container.__data__.sumSave = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("sumSave", last)
+  end,
+  [37] = function(container, buffer, watcherList)
+    local last = container.__data__.clientResourceVersion
+    container.__data__.clientResourceVersion = br.ReadString(buffer)
+    container.Watcher:MarkDirty("clientResourceVersion", last)
+  end,
+  [38] = function(container, buffer, watcherList)
+    local last = container.__data__.lastOfflineTime
+    container.__data__.lastOfflineTime = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("lastOfflineTime", last)
+  end,
+  [39] = function(container, buffer, watcherList)
+    local last = container.__data__.dayAccDurTime
+    container.__data__.dayAccDurTime = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("dayAccDurTime", last)
+  end,
+  [40] = function(container, buffer, watcherList)
+    local last = container.__data__.lastAccDurTimestamp
+    container.__data__.lastAccDurTimestamp = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("lastAccDurTimestamp", last)
+  end,
+  [41] = function(container, buffer, watcherList)
+    local last = container.__data__.saveSerial
+    container.__data__.saveSerial = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("saveSerial", last)
   end
 }
 local setForbidenMt = function(t)
@@ -283,6 +323,30 @@ local resetData = function(container, pbData)
   end
   if not pbData.areaId then
     container.__data__.areaId = 0
+  end
+  if not pbData.clientVersion then
+    container.__data__.clientVersion = ""
+  end
+  if not pbData.fightPoint then
+    container.__data__.fightPoint = 0
+  end
+  if not pbData.sumSave then
+    container.__data__.sumSave = 0
+  end
+  if not pbData.clientResourceVersion then
+    container.__data__.clientResourceVersion = ""
+  end
+  if not pbData.lastOfflineTime then
+    container.__data__.lastOfflineTime = 0
+  end
+  if not pbData.dayAccDurTime then
+    container.__data__.dayAccDurTime = 0
+  end
+  if not pbData.lastAccDurTimestamp then
+    container.__data__.lastAccDurTimestamp = 0
+  end
+  if not pbData.saveSerial then
+    container.__data__.saveSerial = 0
   end
   setForbidenMt(container)
   container.faceData:ResetData(pbData.faceData)
@@ -548,6 +612,46 @@ local getContainerElem = function(container)
     fieldId = 33,
     dataType = 0,
     data = container.areaId
+  }
+  ret.clientVersion = {
+    fieldId = 34,
+    dataType = 0,
+    data = container.clientVersion
+  }
+  ret.fightPoint = {
+    fieldId = 35,
+    dataType = 0,
+    data = container.fightPoint
+  }
+  ret.sumSave = {
+    fieldId = 36,
+    dataType = 0,
+    data = container.sumSave
+  }
+  ret.clientResourceVersion = {
+    fieldId = 37,
+    dataType = 0,
+    data = container.clientResourceVersion
+  }
+  ret.lastOfflineTime = {
+    fieldId = 38,
+    dataType = 0,
+    data = container.lastOfflineTime
+  }
+  ret.dayAccDurTime = {
+    fieldId = 39,
+    dataType = 0,
+    data = container.dayAccDurTime
+  }
+  ret.lastAccDurTimestamp = {
+    fieldId = 40,
+    dataType = 0,
+    data = container.lastAccDurTimestamp
+  }
+  ret.saveSerial = {
+    fieldId = 41,
+    dataType = 0,
+    data = container.saveSerial
   }
   return ret
 end

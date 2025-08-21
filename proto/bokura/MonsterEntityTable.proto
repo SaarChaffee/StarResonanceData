@@ -45,8 +45,6 @@ message MonsterEntityTableBase {
     int32 SourceType = 380;
     int32 DefaultState = 1528;
 }
-
 message MonsterEntityTableMgr {
-    map<int32, .bokura.MonsterEntityTableBase> datas = 1;
+    repeated bokura.MonsterEntityTableMgr.DatasEntry datas = 1;
 }
-

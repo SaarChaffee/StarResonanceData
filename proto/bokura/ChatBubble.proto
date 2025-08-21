@@ -9,8 +9,6 @@ message ChatBubbleBase {
     mlstring Content = 783;
     int32 PlotCharactersId = 1282;
 }
-
 message ChatBubbleMgr {
-    map<int32, .bokura.ChatBubbleBase> datas = 1;
+    repeated bokura.ChatBubbleMgr.DatasEntry datas = 1;
 }
-

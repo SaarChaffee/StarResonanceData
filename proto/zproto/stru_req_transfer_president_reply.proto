@@ -6,9 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_union_info.proto";
 
 message ReqTransferPresidentReply {
-    zproto.EErrorCode errorCode = 1;
-    int32 errCode = 2;
-    zproto.UnionInfo info = 3;
-    string president = 4;
+    zproto.UnionInfo info = 1;
+    string president = 2;
+    zproto.EErrorCode errCode = 3;
 }
-

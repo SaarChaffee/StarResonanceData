@@ -8,4 +8,3 @@ enum ECharAbortMatchType {
     ECharAbortMatch_JoinTeam = 2;
     ECharAbortMatch_Error = 3;
 }
-

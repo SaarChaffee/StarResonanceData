@@ -10,9 +10,8 @@ local openProficiencyView = function()
   if level < potentialCfg.Level then
     Z.TipsVM.ShowTipsLang(130032)
   else
-    Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Demo_yzh, "proficiency_main", function()
-      Z.UIMgr:OpenView("proficiency_main")
-    end, Z.ConstValue.UnrealSceneConfigPaths.Role)
+    local roleLevelVm = Z.VMMgr.GetVM("rolelevel_main")
+    roleLevelVm.OpenRolelevelAwardPanel(E.RoleLevelPageIndex.Proficiency)
   end
 end
 local closeProficiencyView = function()
@@ -154,7 +153,7 @@ local setNewProficiencyType = function(lastLevel, level)
     end
   end
   if isNewState then
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.RoleMainRolelevelBtn, table.zcount(data.ProficiencyNewItem))
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.RoleMainRolelevelBtn, table.zcount(data.ProficiencyNewItem))
   end
 end
 local isActiveByItemData = function(itemData)

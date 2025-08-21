@@ -7,7 +7,7 @@ import "stru_dirty_mask.proto";
 
 message BasicData {
     int64 charID = 1;
-    uint32 showId = 2;
+    int64 showId = 2;
     string name = 3;
     int32 gender = 4;
     zproto.EBodySize bodySize = 5;
@@ -20,6 +20,8 @@ message BasicData {
     uint32 curTalentPoolId = 12;
     uint32 botAiId = 13;
     int32 registerChannel = 14;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    uint64 charState = 15;
+    int64 onlineTime = 16;
+    int64 sumSaveDiamond = 17;
+    bool isNewbie = 18;
 }
-

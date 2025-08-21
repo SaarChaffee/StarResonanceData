@@ -9,8 +9,6 @@ message StageBehaveCallEventTableBase {
     int32 CSharpEventId = 1806;
     string Desc = 1953;
 }
-
 message StageBehaveCallEventTableMgr {
-    map<int32, .bokura.StageBehaveCallEventTableBase> datas = 1;
+    repeated bokura.StageBehaveCallEventTableMgr.DatasEntry datas = 1;
 }
-

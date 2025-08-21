@@ -15,7 +15,7 @@ end
 function Worldquest_main_subView:closeView()
   self.closeByBtn_ = true
   if self.viewData.showInMap_ then
-    self.parentView_:CloseRightSubview()
+    self.parentView_:CloseRightSubView()
   else
     Z.UIMgr:CloseView("worldquest_main_window")
   end
@@ -33,7 +33,7 @@ function Worldquest_main_subView:OnActive()
   self:AddAsyncClick(self.uiBinder.btn_transfer, function()
     local success = self.worldQuestVM_.WorldQuestTransfer(self.viewData.dailyEventId_, self.cancelSource:CreateToken())
     if success then
-      self.parentView_:CloseRightSubview()
+      Z.UIMgr:GotoMainView()
     end
   end)
   self:AddClick(self.uiBinder.btn_team, function()
@@ -60,8 +60,8 @@ function Worldquest_main_subView:OnActive()
       self.entering_ = true
       local enterdungeonsceneVm_ = Z.VMMgr.GetVM("ui_enterdungeonscene")
       enterdungeonsceneVm_.AsyncCreateLevel(dungeonsTable.FusanctionID, dailyEventRow.DungeonId, self.cancelSource:CreateToken())
-      self:closeView()
       self.entering_ = false
+      Z.UIMgr:GotoMainView()
     else
       logError("DailyWorldEventTableMgr\230\156\170\230\137\190\229\136\176id\228\184\186" .. self.viewData.dailyEventId_ .. "\231\154\132\230\149\176\230\141\174")
     end

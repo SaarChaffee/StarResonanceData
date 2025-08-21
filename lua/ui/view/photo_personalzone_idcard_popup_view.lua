@@ -49,9 +49,6 @@ function Photo_personalzone_idcard_popupView:initBtn()
   self:AddClick(self.uiBinder.btn_abandonuploading, function()
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("BusinessCardUploadTips"), function()
       Z.UIMgr:CloseView(self.viewConfigKey)
-      Z.DialogViewDataMgr:CloseDialogView()
-    end, function()
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   end)
   self:AddAsyncClick(self.uiBinder.btn_confirmupload, function()
@@ -66,11 +63,8 @@ function Photo_personalzone_idcard_popupView:initView()
   local name = Z.ContainerMgr.CharSerialize.charBase.name
   self.uiBinder.binder_bg.lab_name.text = name
   local personalZone = Z.ContainerMgr.CharSerialize.personalZone
-  if personalZone then
-    self.uiBinder.binder_bg.lab_num.text = personalZone.fashionCollectPoint
-  else
-    self.uiBinder.binder_bg.lab_num.text = 0
-  end
+  local collectionVM = Z.VMMgr.GetVM("collection")
+  self.uiBinder.binder_bg.lab_num.text = collectionVM.GetFashionCollectionPoints()
   self:refreshOnlineTime(personalZone)
   self:refreshPersonalityLabels(personalZone)
   self:showRoleInfo()

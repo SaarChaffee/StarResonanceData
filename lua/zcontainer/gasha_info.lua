@@ -14,6 +14,31 @@ local mergeDataFuncs = {
     local last = container.__data__.refreshTime
     container.__data__.refreshTime = br.ReadInt64(buffer)
     container.Watcher:MarkDirty("refreshTime", last)
+  end,
+  [8] = function(container, buffer, watcherList)
+    local last = container.__data__.wishId
+    container.__data__.wishId = br.ReadUInt32(buffer)
+    container.Watcher:MarkDirty("wishId", last)
+  end,
+  [9] = function(container, buffer, watcherList)
+    local last = container.__data__.wishValue
+    container.__data__.wishValue = br.ReadUInt32(buffer)
+    container.Watcher:MarkDirty("wishValue", last)
+  end,
+  [10] = function(container, buffer, watcherList)
+    local last = container.__data__.wishFinishCount
+    container.__data__.wishFinishCount = br.ReadUInt32(buffer)
+    container.Watcher:MarkDirty("wishFinishCount", last)
+  end,
+  [11] = function(container, buffer, watcherList)
+    local last = container.__data__.wishResetTime
+    container.__data__.wishResetTime = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("wishResetTime", last)
+  end,
+  [12] = function(container, buffer, watcherList)
+    local last = container.__data__.wishLimit
+    container.__data__.wishLimit = br.ReadUInt32(buffer)
+    container.Watcher:MarkDirty("wishLimit", last)
   end
 }
 local setForbidenMt = function(t)
@@ -51,6 +76,21 @@ local resetData = function(container, pbData)
   end
   if not pbData.refreshTime then
     container.__data__.refreshTime = 0
+  end
+  if not pbData.wishId then
+    container.__data__.wishId = 0
+  end
+  if not pbData.wishValue then
+    container.__data__.wishValue = 0
+  end
+  if not pbData.wishFinishCount then
+    container.__data__.wishFinishCount = 0
+  end
+  if not pbData.wishResetTime then
+    container.__data__.wishResetTime = 0
+  end
+  if not pbData.wishLimit then
+    container.__data__.wishLimit = 0
   end
   setForbidenMt(container)
 end
@@ -105,6 +145,31 @@ local getContainerElem = function(container)
     fieldId = 5,
     dataType = 0,
     data = container.refreshTime
+  }
+  ret.wishId = {
+    fieldId = 8,
+    dataType = 0,
+    data = container.wishId
+  }
+  ret.wishValue = {
+    fieldId = 9,
+    dataType = 0,
+    data = container.wishValue
+  }
+  ret.wishFinishCount = {
+    fieldId = 10,
+    dataType = 0,
+    data = container.wishFinishCount
+  }
+  ret.wishResetTime = {
+    fieldId = 11,
+    dataType = 0,
+    data = container.wishResetTime
+  }
+  ret.wishLimit = {
+    fieldId = 12,
+    dataType = 0,
+    data = container.wishLimit
   }
   return ret
 end

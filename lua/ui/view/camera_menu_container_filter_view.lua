@@ -1,13 +1,12 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Camera_menu_container_filterView = class("Camera_menu_container_filterView", super)
-local filterPath = "ui/atlas/photograph_decoration/filters/"
+local filterPath = "ui/textures/photograph_decoration/filters/"
 local camerasysData = Z.DataMgr.Get("camerasys_data")
 local decorateData = Z.DataMgr.Get("decorate_add_data")
 local secondaryData = Z.DataMgr.Get("photo_secondary_data")
 
 function Camera_menu_container_filterView:ctor(parent)
-  self.panel = nil
   self.uiBinder = nil
   super.ctor(self, "photoalbum_edit_container_filter_sub", "photograph/photoalbum_edit_container_filter_sub", UI.ECacheLv.None)
   self.isToEditing_ = false

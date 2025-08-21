@@ -1,0 +1,219 @@
+{
+  "101104": {
+    "Id": 101104,
+    "Preview": 1,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_19",
+    "PreviewAward": 22000010
+  },
+  "104200": {
+    "Id": 104200,
+    "Preview": 2,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_1",
+    "PreviewAward": 22000010
+  },
+  "100804": {
+    "Id": 100804,
+    "Preview": 3,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_5",
+    "PreviewAward": 22000010
+  },
+  "200501": {
+    "Id": 200501,
+    "Preview": 4,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_2",
+    "PreviewAward": 22000010
+  },
+  "800500": {
+    "Id": 800500,
+    "Preview": 5,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_7",
+    "PreviewAward": 22000010
+  },
+  "500100": {
+    "Id": 500100,
+    "Preview": 6,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_8",
+    "PreviewAward": 22000010
+  },
+  "800400": {
+    "Id": 800400,
+    "Preview": 7,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_13",
+    "PreviewAward": 22000010
+  },
+  "810009": {
+    "Id": 810009,
+    "Preview": 8,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_22",
+    "PreviewAward": 22000010
+  },
+  "800100": {
+    "Id": 800100,
+    "Preview": 9,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_4",
+    "PreviewAward": 22000010
+  },
+  "300000": {
+    "Id": 300000,
+    "Preview": 12,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_26",
+    "PreviewAward": 22000010
+  },
+  "501000": {
+    "Id": 501000,
+    "Preview": 13,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_24",
+    "PreviewAward": 22000010
+  },
+  "300205": {
+    "Id": 300205,
+    "Preview": 11,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_10",
+    "PreviewAward": 22000010
+  },
+  "200301": {
+    "Id": 200301,
+    "Preview": 14,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_3",
+    "PreviewAward": 22000010
+  },
+  "300301": {
+    "Id": 300301,
+    "Preview": 15,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_6",
+    "PreviewAward": 22000010
+  },
+  "300206": {
+    "Id": 300206,
+    "Preview": 17,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_14",
+    "PreviewAward": 22000010
+  },
+  "800902": {
+    "Id": 800902,
+    "Preview": 16,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_20",
+    "PreviewAward": 22000010
+  },
+  "500888": {
+    "Id": 500888,
+    "Preview": 18,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_23",
+    "PreviewAward": 22000010
+  },
+  "300105": {
+    "Id": 300105,
+    "Preview": 19,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_15",
+    "PreviewAward": 22000010
+  },
+  "100709": {
+    "Id": 100709,
+    "Preview": 21,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_21",
+    "PreviewAward": 22000010
+  },
+  "100710": {
+    "Id": 100710,
+    "Preview": 22,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_25",
+    "PreviewAward": 22000010
+  },
+  "800506": {
+    "Id": 800506,
+    "Preview": 23,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_17",
+    "PreviewAward": 22000010
+  },
+  "104210": {
+    "Id": 104210,
+    "Preview": 31,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_16",
+    "PreviewAward": 22000010
+  },
+  "810001": {
+    "Id": 810001,
+    "Preview": 28,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_27",
+    "PreviewAward": 22000010
+  },
+  "810002": {
+    "Id": 810002,
+    "Preview": 29,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_29",
+    "PreviewAward": 22000010
+  },
+  "810003": {
+    "Id": 810003,
+    "Preview": 32,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_28",
+    "PreviewAward": 22000010
+  },
+  "810004": {
+    "Id": 810004,
+    "Preview": 24,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_30",
+    "PreviewAward": 22000010
+  },
+  "810005": {
+    "Id": 810005,
+    "Preview": 25,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_31",
+    "PreviewAward": 22000010
+  },
+  "810006": {
+    "Id": 810006,
+    "Preview": 26,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_32",
+    "PreviewAward": 22000010
+  },
+  "810007": {
+    "Id": 810007,
+    "Preview": 30,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_33",
+    "PreviewAward": 22000010
+  },
+  "810008": {
+    "Id": 810008,
+    "Preview": 27,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_35",
+    "PreviewAward": 22000010
+  },
+  "102500": {
+    "Id": 102500,
+    "Preview": 20,
+    "PreviewText": "",
+    "PreviewPic": "ui/textures/feature_preview/feature_preview_picture_37",
+    "PreviewAward": 22000010
+  }
+}

@@ -20,10 +20,12 @@ function Mod_mainView:ctor()
   self.itemSortFactoryVm_ = Z.VMMgr.GetVM("item_sort_factory")
   self.fightAttrParseVm_ = Z.VMMgr.GetVM("fight_attr_parse")
   self.commonVM_ = Z.VMMgr.GetVM("common")
+  self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
   self.filterHelper_ = common_filter_helper.new(self)
 end
 
 function Mod_mainView:OnActive()
+  Z.AudioMgr:Play("UI_Event_CharacterAttributes_Module")
   Z.UnrealSceneMgr:InitSceneCamera()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:AddClick(self.uiBinder.btn_ask, function()
@@ -37,10 +39,6 @@ function Mod_mainView:OnActive()
   self:AddClick(self.uiBinder.btn_filter, function()
     local viewData = {
       filterRes = self.modData_.ModFilter,
-      filterFunc = function(filterRes)
-        self.modData_.ModFilter = filterRes
-        self:setLoopList()
-      end,
       closeFunc = function()
         self.uiBinder.mod_info.Ref.UIComp:SetVisible(true)
         self.commonVM_.CommonDotweenPlay(self.uiBinder.dotween_anim, Z.DOTweenAnimType.Open, nil)
@@ -54,10 +52,10 @@ function Mod_mainView:OnActive()
   self:AddClick(self.uiBinder.btn_recommend, function()
     local popViewData = {
       func = function(data)
-        self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect] = self.filterHelper_.filterSubView_.initFilterTypeData_3()
+        self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect] = self.filterHelper_.filterSubView_.initFilterTypeData_3()
         for _, value in pairs(data) do
-          self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect].value[value] = value
-          self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect].param[2][value] = value
+          self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect].value[value] = value
+          self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect].param[2][value] = value
         end
         local viewData = {
           filterRes = self.modData_.ModFilter,
@@ -85,11 +83,9 @@ function Mod_mainView:OnActive()
   for i = 1, MOD_DEFINE.ModSlotMaxCount do
     local tempUIBinder = self.uiBinder["mod_item_tpl_" .. i]
     self:AddClick(tempUIBinder.btn, function()
-      local isUnlock, level = self.modVM_.CheckSlotIsUnlock(i)
+      local isUnlock = self.modVM_.CheckSlotIsUnlock(i, true)
       if isUnlock then
         self:SetSlotId(i)
-      else
-        Z.TipsVM.ShowTipsLang(1500001, {val = level})
       end
     end)
   end
@@ -105,7 +101,7 @@ function Mod_mainView:OnActive()
     self:changeEffectShowOverview()
   end, true)
   self:AddAsyncClick(self.uiBinder.mod_info.btn_link_module, function()
-    self.modVM_.EnterModIntensifyView(MOD_DEFINE.ModIntensifyType.Intensify, self.selectModUuid_)
+    self.gotoFuncVM_.TraceOrSwitchFunc(E.FunctionID.ModTrace, false, MOD_DEFINE.ModIntensifyType.Intensify, self.selectModUuid_)
   end)
   self:AddAsyncClick(self.uiBinder.mod_info.btn_disboard.btn, function()
     local isEquip, slot = self.modVM_.IsModEquip(self.selectModUuid_)
@@ -124,18 +120,27 @@ function Mod_mainView:OnActive()
   self:AddAsyncClick(self.uiBinder.mod_info.btn_getmod.btn, function()
     self.modVM_.OpenModSearchTips(self.uiBinder.mod_info.btn_getmod.Trans)
   end)
-  self.itemListView_ = loop_list_view.new(self, self.uiBinder.loop_item, modEntryListTplItem, "mod_entry_list_tpl")
+  if Z.IsPCUI then
+    self.itemListView_ = loop_list_view.new(self, self.uiBinder.loop_item, modEntryListTplItem, "mod_entry_list_tpl_pc")
+    self.effectLeftListView_ = loop_list_view.new(self, self.uiBinder.mod_info.loop_item_left, modListGeneralSituationTplItem, "mod_list_general_situation_tpl_pc")
+    self.effectRightListView_ = loop_list_view.new(self, self.uiBinder.mod_info.loop_item_right, modListEntryDetailTplItem, "mod_list_entry_details_tpl_pc")
+  else
+    self.itemListView_ = loop_list_view.new(self, self.uiBinder.loop_item, modEntryListTplItem, "mod_entry_list_tpl")
+    self.effectLeftListView_ = loop_list_view.new(self, self.uiBinder.mod_info.loop_item_left, modListGeneralSituationTplItem, "mod_list_general_situation_tpl")
+    self.effectRightListView_ = loop_list_view.new(self, self.uiBinder.mod_info.loop_item_right, modListEntryDetailTplItem, "mod_list_entry_details_tpl")
+  end
   self.itemListView_:Init({})
-  self.effectLeftListView_ = loop_list_view.new(self, self.uiBinder.mod_info.loop_item_left, modListGeneralSituationTplItem, "mod_list_general_situation_tpl")
   self.effectLeftListView_:Init({})
-  self.effectRightListView_ = loop_list_view.new(self, self.uiBinder.mod_info.loop_item_right, modListEntryDetailTplItem, "mod_list_entry_details_tpl")
   self.effectRightListView_:Init({})
   local filterTypes = {
-    common_filter_helper.FilterType.ModType,
-    common_filter_helper.FilterType.ModQuality,
-    common_filter_helper.FilterType.ModEffectSelect
+    E.CommonFilterType.ModType,
+    E.CommonFilterType.ModQuality,
+    E.CommonFilterType.ModEffectSelect
   }
-  self.filterHelper_:Init(Lang("ModFilterTitle"), filterTypes, self.uiBinder.node_filter, self.uiBinder.node_filter_s)
+  self.filterHelper_:Init(Lang("ModFilterTitle"), filterTypes, self.uiBinder.node_filter, self.uiBinder.node_filter_s, function(filterRes)
+    self.modData_.ModFilter = filterRes
+    self:setLoopList()
+  end)
   self.filterHelper_:ActiveEliminateSub(self.modData_.ModFilter)
   self.uiBinder.mod_info.Ref.UIComp:SetVisible(true)
   for i = 1, MOD_DEFINE.ModSlotMaxCount do
@@ -258,7 +263,7 @@ function Mod_mainView:showModel()
       model:SetAttrGoRotation(self.modelQuaternion_)
       model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
       model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
-      model:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent(Panda.ZAnim.EAnimBase.EIdle))
+      model:SetLuaAnimBase(Z.AnimBaseData.Rent(Panda.ZAnim.EAnimBase.EIdle))
     end)
   end)()
 end
@@ -270,7 +275,7 @@ function Mod_mainView:SetSlotId(slotId)
   self.selectSlotId_ = slotId
   self:refreshModInfo()
   self:refreshEquipModState(false, true)
-  self:refreshLoopItems()
+  self:setLoopList()
   self:refreshModBtns()
 end
 
@@ -414,7 +419,7 @@ function Mod_mainView:refreshEquipModState(showEquipSlotEffect, changeSelectSlot
     else
       self.redMods_[i] = {}
     end
-    tempUIBinder.Ref:SetVisible(tempUIBinder.img_dot, isRed)
+    tempUIBinder.node_red_eff:SetEffectGoVisible(isRed)
     tempUIBinder.Ref:SetVisible(tempUIBinder.curslot_effect, i == self.selectSlotId_)
     if changeSelectSlotEffect then
       tempUIBinder.node_effect:SetEffectGoVisible(self.selectSlotId_ == i)
@@ -450,7 +455,7 @@ function Mod_mainView:setLoopList()
         isRed = true
         local nodeId = E.RedType.ModTab .. item.itemUuid
         Z.RedPointMgr.AddChildNodeData(E.RedType.ModTab, E.RedType.ModTab, nodeId)
-        Z.RedPointMgr.RefreshServerNodeCount(nodeId, 1)
+        Z.RedPointMgr.UpdateNodeCount(nodeId, 1)
         self.redNodeIds_[nodeId] = nodeId
       end
       local byFiltering = true
@@ -458,24 +463,24 @@ function Mod_mainView:setLoopList()
       local modConfig = Z.TableMgr.GetTable("ModTableMgr").GetRow(item.configId)
       local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(item.configId)
       local effectValueCount = 0
-      if self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect] and self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect].value then
-        effectValueCount = table.zcount(self.modData_.ModFilter[common_filter_helper.FilterType.ModEffectSelect].value)
+      if self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect] and self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect].value then
+        effectValueCount = table.zcount(self.modData_.ModFilter[E.CommonFilterType.ModEffectSelect].value)
       end
       for type, data in pairs(self.modData_.ModFilter) do
         tempFilterRes[type] = true
-        if type == common_filter_helper.FilterType.ModType then
+        if type == E.CommonFilterType.ModType then
           tempFilterRes[type] = false
           if data.value[modConfig.ModType] then
             tempFilterRes[type] = true
           end
         end
-        if type == common_filter_helper.FilterType.ModQuality then
+        if type == E.CommonFilterType.ModQuality then
           tempFilterRes[type] = false
           if data.value[itemConfig.Quality] then
             tempFilterRes[type] = true
           end
         end
-        if type == common_filter_helper.FilterType.ModEffectSelect and 0 < effectValueCount then
+        if type == E.CommonFilterType.ModEffectSelect and 0 < effectValueCount then
           local itemInfo = self.itemsVM_.GetItemInfo(item.itemUuid, E.BackPackItemPackageType.Mod)
           tempFilterRes[type] = false
           local needCount = 1
@@ -665,7 +670,7 @@ function Mod_mainView:refreshEffectLoopInfo()
       if a.curValue == b.curValue then
         return a.id < b.id
       else
-        return a.curValue < b.curValue
+        return a.curValue > b.curValue
       end
     end)
     self.effectLeftListView_:RefreshListView(effectList, true)
@@ -694,7 +699,8 @@ function Mod_mainView:refreshModBtns()
       self.uiBinder.mod_info.btn_getmod.Ref.UIComp:SetVisible(true)
     end
   else
-    self.uiBinder.mod_info.Ref:SetVisible(self.uiBinder.mod_info.btn_link_module, true)
+    local isFuncCanShow = self.gotoFuncVM_.CheckFuncCanUse(E.FunctionID.ModTrace, true)
+    self.uiBinder.mod_info.Ref:SetVisible(self.uiBinder.mod_info.btn_link_module, isFuncCanShow)
     self.uiBinder.mod_info.btn_disboard.Ref.UIComp:SetVisible(true)
     self.uiBinder.mod_info.btn_getmod.Ref.UIComp:SetVisible(false)
     local isEquip, slot = self.modVM_.IsModEquip(self.selectModUuid_)

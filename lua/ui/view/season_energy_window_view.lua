@@ -8,6 +8,7 @@ function Season_energy_windowView:ctor()
 end
 
 function Season_energy_windowView:OnActive()
+  Z.AudioMgr:Play("UI_Event_ItemGet_S")
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect_1)
   self.uiBinder.node_lv.lab_tips.text = Lang("GetSeasonEchoPoint", {
     val = self.viewData.num

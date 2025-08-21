@@ -11,8 +11,6 @@ message WeaponAttrTableBase {
     int_table BaseAttr = 965;
     int_table ExtraAttr = 1462;
 }
-
 message WeaponAttrTableMgr {
-    map<int32, .bokura.WeaponAttrTableBase> datas = 1;
+    repeated bokura.WeaponAttrTableMgr.DatasEntry datas = 1;
 }
-

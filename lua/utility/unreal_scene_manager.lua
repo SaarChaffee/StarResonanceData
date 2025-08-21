@@ -21,7 +21,7 @@ function UnrealSceneMgr:IsActive()
   return self.isActive_
 end
 
-function UnrealSceneMgr:OpenUnrealScene(path, viewConfigKey, finishCallBack, configPath, async, resetCameraConfig)
+function UnrealSceneMgr:OpenUnrealScene(path, viewConfigKey, finishCallBack, configPath, async, resetCameraConfig, isWhite)
   if self.isLoading_ then
     return
   end
@@ -45,7 +45,7 @@ function UnrealSceneMgr:OpenUnrealScene(path, viewConfigKey, finishCallBack, con
   elseif not Z.UIMgr:IsActive(viewConfigKey) then
     self.configDict_[viewConfigKey].refCount = self.configDict_[viewConfigKey].refCount + 1
   end
-  Z.UIMgr:FadeIn({IsInstant = true})
+  Z.UIMgr:FadeIn({IsInstant = true, IsWhite = isWhite})
   if async then
     if finishCallBack then
       finishCallBack()
@@ -104,12 +104,14 @@ function UnrealSceneMgr:loadUnrealSceneSync(path, configPath)
     unrealScene:Active()
   end
   Z.CoroUtil.create_coro_xpcall(function()
+    self:TryResetTexture()
     local asyncCall = Z.CoroUtil.async_to_sync(unrealScene.AsyncLoadUnrealScene)
     asyncCall(unrealScene, path)
     self.loadedUnrealScene_ = true
     self:updateLoadProgress()
   end, function(err)
     logError("unrealscene err:{0}", err)
+    Z.UIMgr:FadeOut({IsInstant = true})
   end)()
   Z.CoroUtil.create_coro_xpcall(function()
     local asyncCallConfig = Z.CoroUtil.async_to_sync(unrealScene.AsyncLoadUnrealSceneConfig)
@@ -118,10 +120,13 @@ function UnrealSceneMgr:loadUnrealSceneSync(path, configPath)
     self:updateLoadProgress()
   end, function(err)
     logError("unrealscene err:{0}", err)
+    Z.UIMgr:FadeOut({IsInstant = true})
   end)()
 end
 
 function UnrealSceneMgr:clearAll()
+  Z.UIMgr:FadeOut({IsInstant = true})
+  self:TryResetTexture()
   unrealScene:DeActive()
   self.isLoading_ = false
   self.isExist_ = false
@@ -195,12 +200,12 @@ function UnrealSceneMgr:ShowUnrealScene()
   end
 end
 
-function UnrealSceneMgr:InitSceneCamera(ingoreFadeOut)
+function UnrealSceneMgr:InitSceneCamera(ingoreFadeOut, isWhite, isInstant)
   unrealScene:InitSceneCamera(self.resetCameraConfig_)
   if ingoreFadeOut then
     return
   end
-  Z.UIMgr:FadeOut()
+  Z.UIMgr:FadeOut({IsWhite = isWhite, IsInstant = isInstant})
 end
 
 function UnrealSceneMgr:AsyncSetBackGround(texPath)
@@ -297,6 +302,10 @@ function UnrealSceneMgr:SetNodeLocalPosition(transName, x, y, z)
   return unrealScene:SetNodeLocalPosition(transName, x, y, z)
 end
 
+function UnrealSceneMgr:SetNodeRenderColorByName(transName, isBlack)
+  return unrealScene:SetNodeRenderColorByName(transName, isBlack)
+end
+
 function UnrealSceneMgr:LoadScenePrefab(path, parent, pos, token, onLoad)
   local asyncCall = Z.CoroUtil.async_to_sync(unrealScene.AsyncLoadUnrealScenePrefab)
   local Go = asyncCall(unrealScene, path, parent, pos, token)
@@ -330,6 +339,34 @@ end
 function UnrealSceneMgr:ChangeBinderGOTexture(goName, index, name, path, cancelToken)
   local asyncCall = Z.CoroUtil.async_to_sync(unrealScene.ChangeBinderGOTexture)
   asyncCall(unrealScene, goName, index, name, path, cancelToken)
+end
+
+function UnrealSceneMgr:SetCacheTextureName(goName, index, name, path)
+  if self.cacheTextureDict_ == nil then
+    self.cacheTextureDict_ = {}
+  end
+  local data = {
+    goName = goName,
+    index = index,
+    name = name,
+    path = path
+  }
+  table.insert(self.cacheTextureDict_, data)
+  unrealScene:SetCacheTexture(goName, name, path)
+end
+
+function UnrealSceneMgr:TryResetTexture()
+  if self.cacheTextureDict_ == nil then
+    return
+  end
+  for _, value in pairs(self.cacheTextureDict_) do
+    local goName = value.goName
+    local index = value.index
+    local name = value.name
+    local path = value.path
+    unrealScene:ResetTextureByCache(goName, index, name, path)
+  end
+  self.cacheTextureDict_ = {}
 end
 
 function UnrealSceneMgr:ChangeBinderGOTextureById(goName, index, name, textureId)
@@ -385,6 +422,13 @@ function UnrealSceneMgr:SwitchGroupReflection(enable)
   unrealScene:SwitchGroupReflection(enable)
 end
 
+function UnrealSceneMgr:ChangeWaterSSprHeight(height)
+  if not self.isExist_ then
+    return
+  end
+  unrealScene:ChangeWaterSSprHeight(height)
+end
+
 function UnrealSceneMgr:SetNodeScale(transName, x, y, z)
   unrealScene:SetNodeScale(transName, x, y, z)
 end
@@ -410,9 +454,9 @@ function UnrealSceneMgr:DoCameraAnim(keyName, offsetKey, callback)
   unrealScene:DoCameraAnim(keyName, offsetKey, callback)
 end
 
-function UnrealSceneMgr:DoCameraAnimLookAtOffset(keyName, offset)
+function UnrealSceneMgr:DoCameraAnimLookAtOffset(keyName, offset, callback)
   offset = offset or Vector3.zero
-  unrealScene:DoCameraAnimLookAtOffset(keyName, offset)
+  unrealScene:DoCameraAnimLookAtOffset(keyName, offset, callback)
 end
 
 function UnrealSceneMgr:ResetCameraParam(keyName, offsetKey)
@@ -478,8 +522,8 @@ function UnrealSceneMgr:CreatEffectByMoreParam(path, pos, scale, rot, time)
   return unrealScene:CreatEffect(path, pos, scale, rot, time)
 end
 
-function UnrealSceneMgr:CreateEffectOnModelPoint(model, path, point, pos, scale, isVisible, time)
-  return unrealScene:CreateEffectOnModelPoint(model, path, point, pos, scale, isVisible, time)
+function UnrealSceneMgr:CreateEffectOnModelPoint(model, path, point, pos, rot, scale, isVisible, time)
+  return unrealScene:CreateEffectOnModelPoint(model, path, point, pos, rot, scale, isVisible, time)
 end
 
 function UnrealSceneMgr:AsyncSetArmHandEffect(model, effectPath, cancelToken, onLoad, onException)

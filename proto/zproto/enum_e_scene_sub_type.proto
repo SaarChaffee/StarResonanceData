@@ -14,4 +14,3 @@ enum ESceneSubType {
     SceneSubTypeHomeland = 8;
     SceneSubTypeUnion = 9;
 }
-

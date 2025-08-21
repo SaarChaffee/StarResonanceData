@@ -52,12 +52,6 @@ function ConnectManager:asyncReconnect(channelType)
 end
 
 function ConnectManager:onDisconnect(channelType)
-  local data = Z.DataMgr.Get("player_data")
-  if not data.CharInfo then
-    local vm = Z.VMMgr.GetVM("login")
-    vm:KickOffByClient(E.KickOffClientErrCode.NoCharDisConnect)
-    return
-  end
   local connectInfo = self:getConnectInfo(channelType)
   if connectInfo.retryCount < MAX_AUTO_RETRY_COUNT then
     Z.NetWaitHelper.SetConnectingTag(channelType, true)
@@ -90,32 +84,28 @@ end
 function ConnectManager:openDisconnectDlg(channelType)
   Z.NetWaitHelper.SetConnectingTag(channelType, false)
   local onConfirm = function()
-    Z.DialogViewDataMgr:CloseDialogView()
     Z.NetWaitHelper.SetConnectingTag(channelType, true)
     self:asyncReconnect(channelType)
   end
   local onCancel = function()
-    Z.DialogViewDataMgr:CloseDialogView()
     self:Disconnect(channelType)
     local vm = Z.VMMgr.GetVM("login")
     vm:Logout()
   end
-  Z.DialogViewDataMgr:OpenNormalDialog(Lang("DescReconnect"), onConfirm, onCancel, E.EDialogViewDataType.System, false)
+  Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameImportant, E.ESysDialogGameImportantOrder.Important, nil, Lang("DescReconnect"), onConfirm, onCancel, true)
 end
 
 function ConnectManager:openConnectFailedDlg(onConfirm)
   local abortReconnect = function()
-    Z.DialogViewDataMgr:CloseDialogView()
     local vm = Z.VMMgr.GetVM("login")
     vm:Logout()
   end
   if onConfirm == nil then
-    Z.DialogViewDataMgr:OpenOKDialog(Lang("DescDisconnect"), abortReconnect, E.EDialogViewDataType.System, false)
+    Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameImportant, E.ESysDialogGameImportantOrder.Important, nil, Lang("LocalDisconnect"), abortReconnect)
   else
-    Z.DialogViewDataMgr:OpenNormalDialog(Lang("DescReconnect"), function()
-      Z.DialogViewDataMgr:CloseDialogView()
+    Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameImportant, E.ESysDialogGameImportantOrder.Important, nil, Lang("DescReconnect"), function()
       onConfirm:Invoke()
-    end, abortReconnect, E.EDialogViewDataType.System, false)
+    end, abortReconnect, true)
   end
 end
 

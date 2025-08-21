@@ -11,8 +11,6 @@ message EffectLibraryTableBase {
     string_array Tags = 232;
     string thumbnail = 619;
 }
-
 message EffectLibraryTableMgr {
-    map<int32, .bokura.EffectLibraryTableBase> datas = 1;
+    repeated bokura.EffectLibraryTableMgr.DatasEntry datas = 1;
 }
-

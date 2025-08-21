@@ -2,11 +2,7 @@ syntax = "proto3";
 
 package zproto;
 
-import "enum_e_match_type.proto";
-import "stru_match_param_context.proto";
-
 message BeginMatchParam {
-    zproto.EMatchType matchType = 1;
-    zproto.MatchParamContext matchParamContext = 2;
+    int32 targetId = 3;
+    int32 wantLeader = 4;
 }
-

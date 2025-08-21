@@ -4,8 +4,13 @@ local ret = {
   UIClose = "UIClose",
   UIShow = "UIShow",
   UIHide = "UIHide",
+  UILoadFail = "UILoadFail",
+  UILoadFinish = "UILoadFinish",
+  UIUnLoad = "UIUnLoad",
+  OnSceneSwitchComplete = "OnSceneSwitchComplete",
   RefreshLoginServerList = "RefreshLoginServerList",
   SyncAllContainerData = "SyncAllContainerData",
+  BeforeDeactiveAll = "BeforeDeactiveAll",
   VisualLayerChange = "VisualLayerChange",
   PlayerEnterOrExitZone = "PlayerEnterOrExitZone",
   ShowAcquireItemInfo = "ShowAcquireItemInfo",
@@ -19,15 +24,16 @@ local ret = {
   FashionColorUnlock = "FashionColorUnlock",
   FashionColorSave = "FashionColorSave",
   FashionSaveConfirmItemClick = "FashionSaveConfirmItemClick",
-  FashionSettingChange = "FashionSettingChange",
   FashionColorChange = "FashionColorChange",
+  FashionShopBuyItem = "FashionShopBuyItem",
+  FashionShopChangeCoupon = "FashionShopChangeCoupon",
   KeyHintOpenChange = "KeyHintOpenChange",
   KeySettingReset = "KeySettingReset",
-  CreateOption = "CreateOption",
-  RemoveOption = "RemoveOption",
+  RefreshOption = "RefreshOption",
   DeActiveOption = "DeActiveOption",
-  DeActiveOptionByName = "DeActiveOptionByName",
   PointClickOption = "PointClickOption",
+  InteractionProgressBegin = "InteractionProgressBegin",
+  InteractionProgressEnd = "InteractionProgressEnd",
   TimeLimitQuestAccept = "TimeLimitQuestAccept",
   TimeLimitQuestFinish = "TimeLimitQuestFinish",
   TimeLimitQuestEnd = "TimeLimitQuestEnd",
@@ -55,7 +61,6 @@ local ret = {
   LockTargetOpenSettingChange = "LockTargetOpenSetting",
   AutoBattleChange = "AutoBattleChange",
   OnPlayAutoBattleAnim = "OnPlayAutoBattleAnim",
-  OnAutoBattleBannedBySkillBanned = "OnAutoBattleBannedBySkillBanned",
   OnEnvSkillCd = "OnEnvSkillCd",
   LockTargetOperationModeChange = "LockTargetOperationModeChange",
   LockTargetRoot = "locktarget_ctrl_btn",
@@ -80,8 +85,7 @@ local ret = {
   SeasonAwardDesc = "SeasonAwardDesc",
   SeasonWeekData = "SeasonWeekDataChanged",
   SyncSeason = "SyncSeason",
-  SeasonAchievement = {
-    OnSelectClassifyChange = "OnSelectClassifyChange",
+  Achievement = {
     OnAchievementDataChange = "OnAchievementDataChange"
   },
   SeasonCultivate = {
@@ -106,12 +110,13 @@ local ret = {
   MapCustomFlagName = "customFlag",
   MapSettingChange = "MapSettingChange",
   MiniMapSettingChange = "MiniMapSettingChange",
-  MapFollowFinish = "MapFollowFinish",
   MapOutRangeChange = "MapOutRangeChange",
   MapResLoaded = "MapResLoaded",
   MapCollectionChange = "MapCollectionChange",
   MapAreaChange = "MapAreaChange",
   MapOpenSubView = "MapOpenSubView",
+  MapTargetCollectionChange = "MapTargetCollectionChange",
+  OnAttrIsCantRideChange = "OnAttrIsCantRideChange",
   WorldQuestListChange = "WorldQuestListChange",
   NpcQuestIconChange = "NpcQuestIconChange",
   UpdateAllTargetView = "UpdateAllTargetView",
@@ -126,15 +131,15 @@ local ret = {
   PCAssetSuffix = "_pc",
   Env_Item_Path = "Env_Item_Path",
   Img_Skill_Unknown = "Img_Skill_Unknown",
-  QualityImgBg = "ui/atlas/item/prop/common_img_quality_",
-  QualityImgCircleBg = "ui/atlas/item/prop/common_cimg_quality_",
-  QualityImgSquareBg = "ui/atlas/item/prop/fashion_img_quality_",
-  QualityImgRoundBg = "ui/atlas/item_prop/item_round_quality_",
-  QualityImgTipsBg = "ui/atlas/item/prop/item_tips_",
+  QualityImgCircleBg = "ui/atlas/permanent/item_round_quality_",
+  QualityImgRoundBg = "ui/atlas/permanent/item_round_quality_",
   Unit_Multi_Line_Labe_Addr = "Unit_Multi_Line_Labe_Addr",
+  Unit_Multi_Line_Labe_Addr_PC = "Unit_Multi_Line_Labe_Addr_PC",
   Unit_equip_arr_tpl = "ui/prefabs/common_tips/tips_attr_tpl",
+  Unit_equip_arr_tpl_pc = "ui/prefabs/common_tips/tips_attr_tpl_pc",
   UnionTaskItemQualityPath = "ui/atlas/union_task/union_task_quality_0",
   UnionItemQualityPath = "ui/textures/union_4/union_take_0",
+  FashionShopThreeImgBg = "ui/atlas/shop/shop_three_btn_bg_",
   ItemFilterGroupUnitAddr = "ItemFilterGroupUnitAddr",
   ItemFilterTagUnitaddr = "ItemFilterTagUnitaddr",
   ItemFilterselectedItemUnitAddr = "ItemFilterselectedItemUnitAddr",
@@ -162,10 +167,15 @@ local ret = {
   BossSkillEnd = "BossSkillEnd",
   PlayerSkillPanelChange = "PlayerSkillPanelChange",
   Dead = "Dead",
-  BeRevire = "BeRevire",
+  Revive = "Revive",
+  RefreshItemTrace = "RefreshItemTrace",
+  BattleResCdChange = "BattleResCdChange",
   SnapShot = {
     ContentType = "multipart/form-data"
   },
+  SetInputActionEnable = "SetInputActionEnable",
+  AISlotSetMode = "AISlotSetMode",
+  OpenSkillRoulette = "OpenSkillRoulette",
   AttrIcon = {
     [12100] = "AttrIcon_12100",
     [12080] = "AttrIcon_12080",
@@ -209,13 +219,14 @@ local ret = {
     [12140] = "CRT"
   },
   Mail = {
-    LoadingMail = "LoadingMail",
+    InitMailList = "InitMailList",
     RefreshMailLoopData = "refreshMailLoopData",
     RefreshMailBtn = "RefreshMailBtn",
     ReceiveNewMal = "ReceiveNewMal"
   },
   OnPorfessionChange = "OnPorfessionChange",
   OnBattleResChange = "OnBattleResChange",
+  OnBattleResChangeRefreshUI = "OnBattleResChangeRefreshUI",
   CreateQteUIUnit = "CreateQteUIUnit",
   NormalAttackClicked = "NormalAttackClicked",
   SkillSlotInstall = "SkillSlotInstall",
@@ -233,7 +244,6 @@ local ret = {
     OnSDKAutoLogin = "OnSDKAutoLogin",
     OnSDKLogin = "OnSDKLogin",
     OnLogout = "OnLogout",
-    OnAgreement = "OnAgreement",
     OnSelectChar = "OnLogin"
   },
   UnionActionEvt = {
@@ -253,9 +263,17 @@ local ret = {
     UnionSceneUnLock = "UnionSceneUnLock",
     UnionSceneUnlockRedRefresh = "UnionSceneUnlockRedRefresh"
   },
+  UnionSDKGroupEvent = {
+    UnionSDKGroup_OnGetGroupState = "UnionSDKGroup_OnGetGroupState",
+    UnionSDKGroup_OnGetGroupRelation = "UnionSDKGroup_OnGetGroupRelation",
+    UnionSDKGroup_OnCreateGroup = "UnionSDKGroup_OnCreateGroup",
+    UnionSDKGroup_OnJoinGroup = "UnionSDKGroup_OnJoinGroup",
+    UnionSDKGroup_OnBindGroup = "UnionSDKGroup_OnBindGroup",
+    UnionSDKGroup_OnUnbindGroup = "UnionSDKGroup_OnUnbindGroup"
+  },
   UnionRes = {
     StateOnIcon = "ui/atlas/union/union_icon_list_state_on",
-    StateOffIcon = "ui/atlas/union/union_icon_time",
+    StateOffIcon = "ui/atlas/union/union_icon_time03",
     DefaultPhotoCover = "ui/textures/union_3/union_cover"
   },
   UnionLoadPathKey = {
@@ -300,7 +318,10 @@ local ret = {
     FriendIconPath = "ui/atlas/friends/",
     FriendBlackGroupRefresh = "FriendBlackGroupRefresh",
     FriendLinessChange = "FriendLinessChange",
-    FriendAddApply = "FriendAddApply"
+    FriendAddApply = "FriendAddApply",
+    FriendNewMessage = "FriendNewMessage",
+    FriendMainChatNum = "FriendMainChatNum",
+    RefreshFriendBaseDataCache = "RefreshFriendBaseDataCache"
   },
   PersonalZone = {
     OnSelectItem = "OnSelectItem",
@@ -310,7 +331,14 @@ local ret = {
     OnUnrealScenePhotoRefresh = "OnUnrealScenePhotoRefresh",
     OnTitleRefresh = "OnTitleRefresh",
     OnCardRefresh = "OnCardRefresh",
-    OnMedalRedDotRefresh = "OnMedalRedDotRefresh"
+    OnMedalRedDotRefresh = "OnMedalRedDotRefresh",
+    OnPersonalBgRefresh = "OnPersonalBgRefresh",
+    PersonalCardBg = "ui/textures/idcard/idcard_bg/idcard_info_bg_",
+    PersonalCardBgLong = "ui/textures/idcard/idcard_personalzone_bg/personalzone_pc_",
+    PersonalInfoBg = "ui/textures/idcard/idcard_personalzone_info_bg/personalzone_bg_info_",
+    PersonalBg = "ui/background/punch_card_machine_bg/personalzone_player_bg_",
+    PersonalCBg = "ui/textures/idcard/idcard_c_bg/idcard_info_bg_",
+    PersonalTeamBg = "ui/textures/idcard/idcard_team_bg/idcard_team_bg_"
   },
   MainUI = {
     UpdateMainUIMainChat = "UpdateMainUIMainChat",
@@ -320,7 +348,11 @@ local ret = {
     CompleteMainViewAnimShow = "CompleteMainViewAnimShow",
     OnMainRefresh = "OnMainRefresh",
     UpVehicleIcon = "ui/atlas/mainui/main_btn_up_vehicle",
-    DownVehicleIcon = "ui/atlas/mainui/main_btn_down_vehicle"
+    DownVehicleIcon = "ui/atlas/mainui/main_btn_down_vehicle",
+    ChangeShortcutMenuState = "ChangeShortcutMenuState",
+    ShowOrHideEvaluateUI = "ShowOrHideEvaluateUI",
+    ShakeEvaluateUI = "ShakeEvaluateUI",
+    RefreshChatView = "RefreshChatView"
   },
   Album = {
     DefineFrame = "frame_0=0",
@@ -366,7 +398,7 @@ local ret = {
     RefSchemeInfo = "CamerasysRefSchemeInfo",
     SchemeBtnUpdate = "CamerasysSchemeBtnUpdate",
     RefSchemeSelected = "CamerasysRefSchemeSelected",
-    RefSchemeLsit = "CamerasysRefSchemeLsit",
+    RefSchemeList = "CamerasysRefSchemeLsit",
     HurtEvent = "CamerasysHurtEvent",
     PatternTypeEvent = "CamerasysPatternTypeEvent",
     SetActionSliderHide = "SetActionSliderHide",
@@ -382,11 +414,21 @@ local ret = {
     HeadUpLoadSuccess = "HeadUpLoadSuccess",
     TakePhoto = "TakePhoto",
     PhotoViewShowOrHide = "PhotoViewShowOrHide",
-    PhotoPlayerMoveShield = "PhotoPlayerMoveShield"
+    PhotoPlayerMoveShield = "PhotoPlayerMoveShield",
+    SaveLocalPhoto = "SaveLocalPhoto",
+    PhotoPcRightViewShowOrHide = "PhotoPcRightViewShowOrHide",
+    PhotoPcLeftViewShowOrHide = "PhotoPcLeftViewShowOrHide",
+    PlayerStateChanged = "PlayerStateChanged"
+  },
+  CameraMember = {
+    CameraMemberListUpdate = "CameraMemberListUpdate",
+    SelectCameraMemberChanged = "SelectCameraMemberChanged",
+    CameraMemberDataUpdate = "CameraMemberDataUpdate"
   },
   Team = {
     HideView = "HideTeamView",
     Refresh = "TeamRefresh",
+    RefreshMemberInfo = "RefreshMemberInfo",
     EnterTeam = "EnterTeam",
     StatusChange = "StatusChange",
     GetNearList = "TeamGetNearList",
@@ -394,7 +436,6 @@ local ret = {
     RefreshApplyList = "TeamRefreshApplyList",
     MatchWaitTimeOut = "TeamMatchWaitTimeOut",
     TeamRefreshActivityVoteResult = "TeamRefreshActivityVoteResult",
-    RefreshActivityVoteResult = "RefreshActivityVoteResult",
     UpdateMemberData = "TeamUpdateMemberData",
     MemberInfoChange = "TeamMemberInfoChange",
     MemberChangeScene = "TeamMemberChangeScene",
@@ -402,17 +443,17 @@ local ret = {
     HideActivityLeaderCancelBtn = "TeamHideActivityLeaderCancelBtn",
     RefreshHallList = "TeamRefreshHallList",
     RefreshNearByList = "TeamRefreshNearByList",
-    RefreshMatchingStatus = "TeamRefreshMatchingStatus",
     UpdateHallRefreshBtn = "TeamUpdateHallRefreshBtn",
     UpdateNearByRefreshBtn = "TeamUpdateNearByRefreshBtn",
     UpdateOneKeyJoinBtn = "TeamUpdateOneKeyJoinBtn",
     UpdateApplyBtn = "TeamUpdateApplyBtn",
     UpdateInviteBtn = "TeamUpdateInviteBtn",
     RefreshSetting = "TeamRefreshSetting",
+    RefreshSettingDes = "RefreshSettingDes",
     UpdateApplyCaptainBtn = "TeamUpdateApplyCaptainBtn",
-    RepeatCharCancelMatch = "TeamRepeatCharCancelMatch",
     RepeatTeamCancelMatch = "TeamRepeatTeamCancelMatch",
     EnterPlayTpl = "TeamEnterPlayTpl",
+    EnterPlayTpl20 = "TeamEnterPlayTpl20",
     TipsFlsnowTpl = "TeamTipsFlsnowTpl",
     TipsFlsnowTplPC = "TeamTipsFlsnowTplPC",
     PlayerHead = "TeamPlayerHead",
@@ -427,11 +468,15 @@ local ret = {
     ChangeSceneGuid = "ChangeSceneGuid",
     ChangeCallStatus = "ChangeCallStatus",
     ChangeSceneId = "ChangeSceneId",
+    OnLineState = "OnLineState",
     TargetIconPath = "ui/textures/team/",
     RefreshTeamMicState = "RefreshTeamMicState",
     RefreshTeamVoiceState = "RefreshTeamVoiceState",
     RefreshMemberMicState = "RefreshMemberMicState",
-    RefreshTeamSpeakState = "RefreshTeamSpeakState"
+    RefreshTeamSpeakState = "RefreshTeamSpeakState",
+    RefreshPrepareState = "RefreshPrepareState",
+    RefreshPrepareMemberInfo = "RefreshPrepareMemberInfo",
+    EndDungeonPrepare = "EndDungeonPrepare"
   },
   Backpack = {
     SortOver = "BackpackSortOver",
@@ -446,12 +491,16 @@ local ret = {
     ItemSelect = "BackpackItemSelect",
     ItemCountChange = "BackpackItemCountChange",
     Item_Unit_Addr = "BackPack_Item_Unit_Addr",
-    Item_Unit_Addr7 = "BackPack_Item_Unit_Addr7",
     BackPack_Item_Unit_Addr1_8_New = "BackPack_Item_Unit_Addr1_8_New",
-    Item_Unit_Addr76 = "BackPack_Item_Unit_Addr76",
     ChangeQuickBar = "BackpackChangeQuickBar",
     CloseShortcutsPopup = "BackpackCloseShortcutsPopup",
-    RefreshSecondClassItemLine = "BackpackRefreshSecondClassItemLine"
+    RefreshSecondClassItemLine = "BackpackRefreshSecondClassItemLine",
+    RefreshBtnSubState = "BackpackRefreshBtnSubState",
+    TakeMedicineAddItemPc = "TakeMedicineAddItemPc",
+    TakeMedicineDelItemPc = "TakeMedicineDelItemPc",
+    TakeMedicineChangeItemPc = "TakeMedicineChangeItemPc",
+    TakeMedicineBagChange = "TakeMedicineBagChange",
+    TakeMedicineBagChangeRefreshMain = "TakeMedicineBagChangeRefreshMain"
   },
   Quest = {
     TrackingIdChange = "QuestTrackingIdChange",
@@ -481,6 +530,7 @@ local ret = {
     GetRecord = "ChatGetRecord",
     RecordTplPath = "chat_record_tpl",
     PressItem = "chat_press_item",
+    PressItemPC = "chat_press_item_pc",
     PrivateChatRefresh = "PrivateChatRefresh",
     OpenMiniChat = "OpenMiniChat",
     OpenPrivateChat = "OpenPrivateChat",
@@ -490,12 +540,19 @@ local ret = {
     RefreshChatChannel = "RefreshChatChannel",
     ChatVoiceUpLoad = "ChatVoiceUpLoad",
     ChatInputState = "ChatInputState",
-    ChatVoiceImgAddress = "ui/atlas/chat/chat_voice",
-    ChatVoiceImgAddressLong = "ui/atlas/chat/chat_voice_long",
+    ChatVoiceImgAddress = "ui/atlas/chat_decorate/chat_voice",
+    ChatVoiceImgAddressLong = "ui/atlas/chat_decorate/chat_voice_long",
     ClearItemShare = "ClearItemShare",
     CreatePrivateChat = "CreatePrivateChat",
     DeletePrivateChat = "DeletePrivateChat",
-    RefreshChatViewEmptyState = "RefreshChatViewEmptyState"
+    RefreshChatViewEmptyState = "RefreshChatViewEmptyState",
+    ChatEmojiTab = "ChatEmojiTab",
+    ChatEmojiItem = "ChatEmojiItem",
+    ChatUnionBubbleCrwodPicture = "ui/textures/large_ui/union/union_chat_picture1",
+    NewPrivateChatMsg = "NewPrivateChatMsg",
+    SocialDataUpdata = "SocialDataUpdata",
+    OpenMicResult = "OpenMicResult",
+    MainChatAutoHideParamChange = "MainChatAutoHideParamChange"
   },
   Expression = {
     TabSelect = "ExpressionTabSelect",
@@ -509,8 +566,6 @@ local ret = {
   },
   PlanetMemory = {
     FlowInfoChange = "PlanetMemoryFlowInfoChange",
-    TipsChange = "PlanetMemoryTipsChange",
-    Affix_Tips_Tpl = "planetmemory_affix_tips_tpl",
     TypeFuncId = 300301
   },
   Parkour = {
@@ -541,6 +596,7 @@ local ret = {
     UpdateEvent = "UpdateDungeonEvent",
     RemoveEvent = "RemoveDungeonEvent",
     UpdateDungeonVar = "UpdateDungeonVar",
+    UpdateMasterDungeonScore = "UpdateMasterDungeonScore",
     ChineseScoreIconPathTable = {
       [0] = "ui/atlas/hero_dungeon/hero_dungeon_img_pt",
       [1] = "ui/atlas/hero_dungeon/hero_dungeon_img_yx",
@@ -563,6 +619,7 @@ local ret = {
     UpdateSmashBtnGray = "RefineUpdateSmashBtnGray"
   },
   Equip = {
+    UseIconPath = "ui/atlas/item_prop/item_use",
     PortSelect = "EquipPortSelect",
     PutOnSuccess = "EquipPutOnSuccess",
     GSTransferItemsChanged = "EquipGSTransferItemsChanged",
@@ -573,8 +630,17 @@ local ret = {
     RefreshEquipRepairState = "RefreshEquipRepairState",
     RefreshEmptyState = "RefreshEmptyState",
     SelectedRecastItem = "EquipSelectedRecastItem",
+    SelectedEnchantItem = "EquipSelectedEnchantItem",
     IsHideLeftView = "EquipIsHideLeftView",
-    RefinePartSuccess = "RefinePartSuccess"
+    RefinePartSuccess = "RefinePartSuccess",
+    EquipEnchantResult = "EquipEnchantResult",
+    EquipRefreshSelBlessingData = "EquipRefreshSelBlessingData",
+    RefineRateChange = "RefineRateChange",
+    EquipRefineSuccessRateTips = "EquipRefineSuccessRateTips",
+    EquipRecastSuccess = "EquipRecastSuccess"
+  },
+  CompetencyAssess = {
+    IsHideLeftView = "CompetencyAssessIsHideLeftView"
   },
   EquipEffect = {
     [3] = "ui/prefabs/item_eff/item_weapon_light_purple_tpl_0",
@@ -586,11 +652,22 @@ local ret = {
     [4] = "ui/prefabs/item_eff/item_tips_light_yellow_tpl_0",
     [5] = "ui/prefabs/item_eff/item_tips_light_red_tpl_0"
   },
+  ItemTipsNormalEffAnimName = {
+    [E.ItemQuality.Purple] = "anim_item_tips_light_purple_tpl_ordinary",
+    [E.ItemQuality.Yellow] = "anim_item_tips_light_yellow_tpl_ordinary",
+    [E.ItemQuality.Red] = "anim_item_tips_light_red_tpl_ordinary"
+  },
+  ItemTipsPerfectEffAnimName = {
+    [E.ItemQuality.Purple] = "anim_item_tips_light_purple_tpl_perfect",
+    [E.ItemQuality.Yellow] = "anim_item_tips_light_yellow_tpl_perfect",
+    [E.ItemQuality.Red] = "anim_item_tips_light_red_tpl_perfect"
+  },
   Emoji = {
     TogglePath = "emojiTogglePath",
     Tab = "emojiTab",
     SmallItemPath = "emojiSmallItemPath",
-    ItemPath = "emoji_item"
+    ItemPath = "emoji_item",
+    EmojiPath = "ui/textures/chat_emoji/"
   },
   Hero = {
     Select = "WeaponHeroSelect",
@@ -619,7 +696,8 @@ local ret = {
     RootPath = "ui/atlas/avatar/",
     InstallSkill = "InstallSkill",
     OldInstallSkillId = "OldInstallSkillId",
-    ResonacneSkillUnlock = "ResonacneSkillUnlock"
+    ResonacneSkillUnlock = "ResonacneSkillUnlock",
+    MasterScoreAward = "MasterScoreAward"
   },
   NpcTalk = {
     IsAllowSkipTalkChange = "IsAllowSkipTalkChange",
@@ -667,7 +745,7 @@ local ret = {
     GetStickerReward = "GetStickerReward",
     GetMapBookReward = "GetMapBookReward"
   },
-  WaitMsgMainKey = {Union = "Union"},
+  WaitMsgMainKey = {Union = "Union", Pay = "Pay"},
   Broadcast = {
     AddData = "Broadcast_AddData",
     CloseById = "Broadcast_CloseById"
@@ -680,7 +758,10 @@ local ret = {
     HeroDungeonAffix = "HeroDungeonAffix",
     EnvActive = "EnvActive",
     CollectionUnions = "CollectionUnions",
-    FixResourcesFlag = "FixResourcesFlag"
+    FixResourcesFlag = "FixResourcesFlag",
+    BagMedicineInfo = "BagMedicineInfo",
+    BagMedicineAutoSync = "BagMedicineAutoSync",
+    CameraMemberListInfo = "CameraMemberListInfo"
   },
   SteerEventName = {
     OnFinishCutscene = "GuideOnFinishCutscene",
@@ -691,7 +772,7 @@ local ret = {
     OnPlayCutscene = "GuideOnPlayCutscene",
     OnClickAllArea = "GuideOnClickAllArea",
     OnResonancEnvironment = "GuideResonancEnvironment",
-    OnGuideEvnet = "GuideOnGuideEvnet",
+    OnGuideEvent = "GuideOnGuideEvent",
     OnFinishGuideEvent = "OnFinishGuideEvent",
     OnSelectFashion = "GuideOnSelectFashion",
     OnFashionWearChange = "GuideOnFashionWearChange",
@@ -716,7 +797,10 @@ local ret = {
     SocialDataTypeSetting = 9,
     SocialDataTypeTeam = 10,
     SocialDataTypeUnion = 11,
-    SocialDataTypePersonalZone = 14
+    SocialDataTypeAccount = 12,
+    SocialDataTypePersonalZone = 14,
+    SocialDataTypeCommunity = 18,
+    SocialSDKPrivilege = 19
   },
   Explore_Monster = {
     target = "UpdateExploreMonsterTarget",
@@ -743,11 +827,14 @@ local ret = {
     OnWeaponSkillRemodelSuccess = "OnWeaponSkillRemodelSuccess",
     OnWeaponSkillLevelUpSuccess = "OnWeaponSkillLevelUpSuccess",
     OnResonanceSkillAdvanceSuccess = "OnResonanceSkillAdvanceSuccess",
-    OnSkillEquipRedChange = "OnSkillEquipRedChange"
+    OnSkillEquipRedChange = "OnSkillEquipRedChange",
+    OnWeaponSkillSkinUnlock = "OnWeaponSkillSkinUnlock",
+    OnWeaponSkillSkinChange = "OnWeaponSkillSkinChange"
   },
   Talk = {
     OnSetBackGround = "OnSetBackGround",
-    CloseModelUI = "CloseModelUI"
+    CloseModelUI = "CloseModelUI",
+    CloseTalkDialog = "CloseTalkDialog"
   },
   UnderLineTipsClose = "UnderLineTipsClose",
   AwardLevelUpCondition = {
@@ -782,15 +869,40 @@ local ret = {
     Woman = "ui/atlas/idcard/idcard_icon_woman"
   },
   Home = {
-    RefreshGridSwitchState = "RefreshGridSwitchState",
+    RefreshAlignSwitchState = "RefreshAlignSwitchState",
+    RefreshAbsorbSwitchState = "RefreshAbsorbSwitchState",
+    RefreshSelectedSwitchState = "RefreshSelectedSwitchState",
     HomeEntitySelectingSingle = "HomeEntitySelectingSingle",
+    HomeEntitySelecting = "HomeEntitySelecting",
     SaveSelectedEntity = "SaveSelectedEntity",
+    QuitGroupState = "QuitGroupState",
     RefreshHome = "RefreshHome",
-    RefreshWareHouseCount = "RefreshWareHouseCount"
+    RefreshWareHouseCount = "RefreshWareHouseCount",
+    BaseInfoUpdate = "BaseInfoUpdate",
+    CohabitationInfoUpdate = "CohabitationInfoUpdate",
+    CommunityItemUpdate = "CommunityItemUpdate",
+    DecorationInfoUpdate = "DecorationInfoUpdate",
+    RefreshInviteList = "RefreshInviteList",
+    RefreshGroupState = "RefreshGroupState",
+    DissolveStructureGroup = "DissolveStructureGroup",
+    RefreshEditorOperation = "RefreshEditorOperation",
+    RemoveStructureGroup = "RemoveStructureGroup",
+    RefreshWareHouseList = "RefreshWareHouseList",
+    BKR_HOME_ALIGN = "BKR_HOME_ALIGN",
+    BKR_HOME_ALIGN_MOVE = "BKR_HOME_ALIGN_MOVE",
+    BKR_HOME_ALIGN_HIGHT = "BKR_HOME_ALIGN_HIGHT",
+    BKR_HOME_ALIGN_ROTATE = "BKR_HOME_ALIGN_ROTATE",
+    BKR_HOME_ADSORB = "BKR_HOME_ADSORB",
+    OnClickFarmBtnAction = "OnClickFarmBtnAction",
+    HomeEntityStructureUpdate = "HomeEntityStructureUpdate",
+    HomeDragControllerUpdate = "HomeDragControllerUpdate",
+    ExitEditState = "ExitEditState",
+    CancelSelectedItem = "CancelSelectedItem"
   },
   SceneLine = {
     RefreshSceneLineList = "RefreshSceneLineList",
-    RefreshPlayerSceneLine = "RefreshPlayerSceneLine"
+    RefreshSceneLineUI = "RefreshSceneLineUI",
+    RequestSceneLineInfoBack = "RequestSceneLineInfoBack"
   },
   SeasonActivation = {
     RefreshData = "RefreshData"
@@ -798,7 +910,9 @@ local ret = {
   Face = {
     FaceRefreshOperationBtnState = "FaceRefreshOperationBtnState",
     FaceRefreshMenuView = "FaceRefreshMenuView",
-    FaceOptionCanUnlock = "FaceOptionCanUnlock"
+    FaceOptionCanUnlock = "FaceOptionCanUnlock",
+    FaceOptionChange = "FaceOptionChange",
+    FaceVoiceCivilFailed = 12305
   },
   Idcard = {
     InviteAction = "InviteAction"
@@ -807,7 +921,7 @@ local ret = {
     ExchangeWithdrawSuccess = "ExchangeWithdrawSuccess",
     ExchangePutItemSuccess = "ExchangePutItemSuccess",
     ExchangeTakeItemSuccess = "ExchangeTakeItemSuccess",
-    ExchangeBuyItemSuccess = "ExchangeBuyItemSuccess",
+    ExchangeBuyItem = "ExchangeBuyItem",
     ConsignmentPutItemSuccess = "ConsignmentPutItemSuccess",
     ConsignmentTakeItemSuccess = "ConsignmentTakeItemSuccess",
     ConsignmentBuyItemSuccess = "ConsignmentBuyItemSuccess",
@@ -826,7 +940,9 @@ local ret = {
     FishingStudyLevelChange = "FishingStudyLevelChange",
     FishingDataChange = "FishingDataChange",
     FishingResearchUseChange = "FishingResearchUseChange",
-    FishingSettingChange = "FishingSettingChange"
+    FishingSettingChange = "FishingSettingChange",
+    UpdateFishingMainChat = "UpdateFishingMainChat",
+    UpdateActionCurFishId = "UpdateActionCurFishId"
   },
   Warehouse = {
     WarehouseExistBeKickOut = "WarehouseExistBeKickOut",
@@ -847,9 +963,11 @@ local ret = {
     RefreshRoomTarget = "RefreshRoomTarget",
     RefreshTrialRoadTarget = "RefreshTrialRoadTarget"
   },
-  Resonance_skill_bg = "ui/atlas/weap_skill/weap_skill_bg_on_",
-  Resonance_skill_frame = "ui/atlas/weap_skill/weap_skill_bg_",
-  Resonance_skill_select = "ui/atlas/weap_skill/weap_skill_bg_select_",
+  Resonance = {
+    skill_bg = "ui/atlas/skill/skill_main/weap_skill_bg_on_",
+    skill_lv_bg_ = "ui/atlas/weap_skill/weap_skill_lv_bg_"
+  },
+  Skill_bg = "ui/atlas/weap_pc/weap_role_skill_bg_0%s_pc",
   ModelRotationScaleValue = 0.2,
   ItemShare = {ItemShareChatHyperLink = 3000001},
   WorldBoss = {
@@ -858,7 +976,8 @@ local ret = {
   },
   Gasha = {
     GashaHighQualityDetailShowEnd = "GashaHighQualityDetailShowEnd",
-    GashaEnsureTipsShowKey = "GashaEnsureTipsShow"
+    GashaEnsureTipsShowKey = "GashaEnsureTipsShow",
+    GashaWishIdChange = "GashaWishIdChange"
   },
   Screen = {
     UIResolutionChange = "UIResolutionChange"
@@ -869,29 +988,37 @@ local ret = {
     MatchTimeChange = "MatchTimeChange",
     MatchInfoChange = "MatchInfoChange",
     MatchPlayerInfoChange = "MatchPlayerInfoChange",
-    MatchStartTimeChange = "MatchStartTimeChange"
+    MatchStartTimeChange = "MatchStartTimeChange",
+    MatchWantLeaderChange = "MatchWantLeaderChange"
   },
   Item = {
     ItemQualityPath = "ui/atlas/permanent/item_quality_",
     SquareItemQualityPath = "ui/atlas/permanent/item_quality_",
-    ItemQualityBackGroundImage = "ui/atlas/shop/shop_lab_quality_",
+    ItemQualityBackGroundImage = "ui/atlas/permanent/com_lab_quality_",
     ShopItemQualityImage = "ui/atlas/season/seasonshop_item_quality_"
   },
-  Loading = {
-    UpdateLoadingProgress = "UpdateLoadingProgress"
+  Shop = {
+    PaymentResponse = "PaymentResponse",
+    FashionSelectItemDataChange = "FashionSelectItemChange",
+    NotifyBuyShopResult = "NotifyBuyShopResult",
+    PaymentCompleted = "PaymentCompleted"
   },
   UserSetting = {
-    ImageQualityChanged = "ImageQualityChanged"
+    ImageQualityChanged = "ImageQualityChanged",
+    ConstStrSwitchGetInt = "BKL_VOLSWITCH_%d"
   },
   Recommendedplay = {
     FunctionRed = "FunctionRed",
     DungeonRed = "DungeonRed",
-    ViewRedRefresh = "ViewRedRefresh"
+    ViewRedRefresh = "ViewRedRefresh",
+    TreasureRedRefresh = "TreasureRedRefresh"
   },
   Vehicle = {
     EquipVehicle = "EquipVehicle",
     UnEquipVehicle = "UnEquipVehicle",
-    UpdateRiding = "UpdateRiding"
+    UpdateRiding = "UpdateRiding",
+    OnActiveRideSkin = "OnActiveRideSkin",
+    SetRideSkin = "SetRideSkin"
   },
   UnrealScenePaths = {
     BackdropSeason_01 = "unrealscene/unrealscene_backdrop_season_01",
@@ -907,7 +1034,10 @@ local ret = {
     Backdrop_Store = "unrealscene/unrealscene_backdrop_store",
     Backdrop_Explore_05 = "unrealscene/unrealscene_backdrop_explore_05",
     Backdrop_Explore_04 = "unrealscene/unrealscene_backdrop_explore_04",
-    Demo_Dmj = "unrealscene/unrealscenedemo_dmj"
+    Demo_Dmj = "unrealscene/unrealscenedemo_dmj",
+    RecommendFightValue = "unrealscene/unrealscene_backdrop_ability",
+    GashaResult = "unrealscene/unrealscene_backdrop_card",
+    EquipForge = "unrealscene/unrealscene_backdrop_forge_01"
   },
   UnrealSceneConfigPaths = {
     Backdrop_Explore = "unrealscene/unrealsceneconfig_backdrop_explore",
@@ -918,15 +1048,149 @@ local ret = {
     Planetmemory = "unrealscene/unrealsceneconfig_planetmemory",
     Vehicle = "unrealscene/unrealsceneconfig_vehicle"
   },
+  UnrealSceneBgPath = {
+    VehicleDefaultBg = "ui/textures/virtual_scene/virtual_scene_bg_9",
+    ShopDefaultBg = "ui/textures/virtual_scene/virtual_scene_bg_11"
+  },
   Union = {
     UnionDataReady = "UnionDataReady",
     UnionWarDanceRedRefresh = "UnionWarDanceRedRefresh",
-    UnionHuntRedRefresh = "UnionHuntRedRefresh"
+    UnionHuntRedRefresh = "UnionHuntRedRefresh",
+    UnionSignRedRefresh = "UnionSignRedRefresh",
+    UnionDeviceBattleBuffSelect = "UnionDeviceBattleBuffSelect"
   },
   Timer = {
     TimerInited = "TimerInited",
     TimerUnInited = "TimerUnInited"
   },
-  CloseAllNoResidentTips = "CloseAllNoResidentTips"
+  RechargeActivity = {
+    ActivityRefresh = "ActivityRefresh"
+  },
+  CloseAllNoResidentTips = "CloseAllNoResidentTips",
+  LifeProfession = {
+    LifeProfessionLevelChanged = "LifeProfessionLevelChanged",
+    LifeProfessionExpChanged = "LifeProfessionExpChanged",
+    LifeProfessionPointChanged = "LifeProfessionPointChanged",
+    LifeProfessionSpecChanged = "LifeProfessionSpecChanged",
+    LifeProfessionTargetLevelChanged = "LifeProfessionTargetLevelChanged",
+    LifeProfessionTargetStateChanged = "LifeProfessionTargetStateChanged",
+    LifeProfessionBuildRefresh = "LifeProfessionBuildRefresh",
+    LifeProfessionRecipeChanged = "LifeProfessionRecipeChanged",
+    LifeProfessionUnlocked = "LifeProfessionUnlocked",
+    LifeProfessionSubFormulaChanged = "LifeProfessionSubFormulaChanged",
+    LifeProfessionSpecLevelUp = "LifeProfessionSpecLevelUp"
+  },
+  LifeWork = {
+    LifeWorkRecordReady = "LifeWorkRecordReady",
+    LifeWorkRewardChange = "LifeWorkRewardChange"
+  },
+  MonthlyCard = {
+    RefreshGuideGift = "RefreshGuideGift"
+  },
+  FaceGenderTimelineId = {
+    [1] = 50000039,
+    [2] = 50000038
+  },
+  FaceGenderTimelineIdEffect = {
+    [1] = 50000035,
+    [2] = 50000034
+  },
+  FaceGenderRotation = {
+    [1] = 193,
+    [2] = 190.5
+  },
+  Collection = {
+    CollectionTextureIconPath = "ui/textures/collection/",
+    FashionCollectionPointChange = "FashionCollectionPointChange",
+    FashionBenefitChange = "FashionBenefitChange"
+  },
+  Fashion = {
+    FashionOptionStateChange = "FashionOptionStateChange",
+    FashionViewRefresh = "FashionViewRefresh",
+    FashionSettingChange = "FashionSettingChange",
+    ModelMatRaiseHeight = "ModelMatRaiseHeight",
+    FashionWearChange = "FashionWearChange",
+    FashionSystemShowCustomBtn = "FashionSystemShowCustomBtn",
+    FashionRegionRed = "FashionRegionRed",
+    FashionStyleItemRed = "FashionStyleItemRed",
+    FashionStyleItemCustomRed = "FashionStyleItemCustomRed",
+    FashionStyleItemCustomItemRed = "FashionStyleItemCustomItemRed",
+    FashionStyleItemCustomItemUnlock = "FashionStyleItemCustomItemUnlock",
+    FashionShowState = "FashionShowState"
+  },
+  OnConditionChanged = "OnConditionChanged",
+  GashaModels = {
+    [1] = "ui/gasha/gasha_blue/ui_gasha_blue",
+    [2] = "ui/gasha/gasha_purple/ui_gasha_purple",
+    [3] = "ui/gasha/gasha_gold/ui_gasha_gold",
+    [4] = "ui/gasha/gasha_bg/ui_gasha_bg"
+  },
+  GashaQuality = {
+    White = 1,
+    Purple = 2,
+    Golden = 3,
+    AllGolden = 4
+  },
+  QualityBgColor = {
+    [0] = Color.New(0.5647058823529412, 0.596078431372549, 0.6313725490196078, 1.0),
+    [1] = Color.New(0.396078431372549, 0.6235294117647059, 0.6235294117647059, 1.0),
+    [2] = Color.New(0.47843137254901963, 0.592156862745098, 0.7372549019607844, 1.0),
+    [3] = Color.New(0.6196078431372549, 0.5568627450980392, 0.7568627450980392, 1.0),
+    [4] = Color.New(0.803921568627451, 0.6745098039215687, 0.3843137254901961, 1.0),
+    [5] = Color.New(0.7764705882352941, 0.5098039215686274, 0.41568627450980394, 1.0)
+  },
+  RedDotUIStyleAssetPaths = {
+    [E.RedDotStyleType.Normal] = "ui/prefabs/new_com/com_reddot",
+    [E.RedDotStyleType.Image] = "ui/prefabs/new_com/com_reddot",
+    [E.RedDotStyleType.Number] = "ui/prefabs/new_com/com_reddot_number",
+    [E.RedDotStyleType.CEffect] = "ui/prefabs/new_com/com_reddot_effect",
+    [E.RedDotStyleType.UEffect] = "ui/prefabs/new_com/com_reddot_effect"
+  },
+  RedDotPCUIStyleAssetPaths = {
+    [E.RedDotStyleType.Normal] = "ui/prefabs/new_com/com_reddot_pc",
+    [E.RedDotStyleType.Image] = "ui/prefabs/new_com/com_reddot_pc",
+    [E.RedDotStyleType.Number] = "ui/prefabs/new_com/com_reddot_number_pc",
+    [E.RedDotStyleType.CEffect] = "ui/prefabs/new_com/com_reddot_effect_pc",
+    [E.RedDotStyleType.UEffect] = "ui/prefabs/new_com/com_reddot_effect_pc"
+  },
+  SettingDataChanged = "SettingDataChanged",
+  House = {
+    RefreshBuildList = "RefreshBuildList",
+    HouseLevelChange = "HouseLevelChange",
+    HouseCleaninessChange = "HouseCleaninessChange",
+    RefreshApplyList = "RefreshApplyList",
+    HouseQuestChanged = "HouseQuestChanged",
+    HouseQuestFinished = "HouseQuestFinished",
+    HouseSellInfoChanged = "HouseSellInfoChanged",
+    HouseExpChange = "HouseExpChange"
+  },
+  Eplow = {
+    MessageViewClosed = "MessageViewClosed",
+    StoryMeesageViewClose = "StoryMeesageViewClose"
+  },
+  SDK = {
+    TencentPrivilegeRefresh = "TencentPrivilegeRefresh"
+  },
+  GameOnApplicationFocus = "GameOnApplicationFocus",
+  BattlePassDataUpdate = "BattlePassDataUpdate",
+  Handbook = {
+    ReadDetailRefresh = "ReadDetailRefresh"
+  },
+  PathFinding = {
+    onStageChange = "PATHFINDING_STAGE_CHANGE"
+  },
+  Device = {
+    Connected = "Connected",
+    Disconnected = "Disconnected",
+    DeviceTypeChange = "DeviceTypeChange"
+  },
+  Bubble = {
+    CurrentIdChanged = "CurrentIdChanged"
+  },
+  MasterScoreShowRefresh = "MasterScoreShowRefresh",
+  PhotoShareCodeFolder = "ShareCode",
+  ThemePlay = {
+    SignActivityRefresh = "SignActivityRefresh"
+  }
 }
 return ret

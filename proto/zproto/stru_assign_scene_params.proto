@@ -17,4 +17,3 @@ message AssignSceneParams {
     zproto.LoginSceneParams loginParam = 6;
     zproto.EAssignSceneSourceType sourceType = 7;
 }
-

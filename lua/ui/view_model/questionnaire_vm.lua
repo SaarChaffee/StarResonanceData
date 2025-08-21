@@ -1,22 +1,32 @@
 local QuestionnaireVM = {}
-local questionnaireProxy = require("zproxy.questionnaire_proxy")
+local worldProxy = require("zproxy.world_proxy")
+local UrlHelper = require("common.url_helper")
 
 function QuestionnaireVM.OpenQuestionnaireView()
   Z.UIMgr:OpenView("questionnaire_banner_popup")
 end
 
-function QuestionnaireVM.OpenQuestionnaireUrl(id)
-  local questionnaireData = Z.DataMgr.Get("questionnaire_data")
-  local info = questionnaireData:GetQuestionnaireConfig(id)
-  if info and info.Link and info.Link ~= "" then
-    logGreen("OpenQuestionnaire URL :" .. info.Link)
-    Z.SDKWebView.OpenWebView(info.Link, true)
+function QuestionnaireVM.OpenQuestionnaireUrl(url)
+  if url == nil or url == "" then
+    return
+  end
+  local accountData = Z.DataMgr.Get("account_data")
+  if accountData.PlatformType == E.LoginPlatformType.TencentPlatform then
+    logGreen("OpenQuestionnaire URL :" .. url)
+    Z.SDKWebView.OpenWebView(url, true)
+  elseif accountData.PlatformType == E.LoginPlatformType.APJPlatform then
+    local c = UrlHelper.GetUrlMontageQueryStart(url)
+    local userId = "userId=" .. Z.ContainerMgr.CharSerialize.charBase.charId
+    url = string.zconcat(url, c, userId)
+    logGreen("OpenQuestionnaire URL :" .. url)
+    Z.SDKWebView.OpenWebView(url, false)
   end
 end
 
-function QuestionnaireVM.CheckQuestionnaireIsOpen(id, levelLimit, dayLimit)
-  local questionnaireData = Z.DataMgr.Get("questionnaire_data")
-  local tempInfo = questionnaireData:GetQuestionnaireConfig(id)
+function QuestionnaireVM.CheckQuestionnaireIsOpen(info, levelLimit, dayLimit)
+  if not info.canAnswer then
+    return false
+  end
   if levelLimit == nil then
     levelLimit = Z.ContainerMgr.CharSerialize.roleLevel.level
   end
@@ -24,7 +34,7 @@ function QuestionnaireVM.CheckQuestionnaireIsOpen(id, levelLimit, dayLimit)
     local loginDayCounter = Z.Global.LoginDayCounter
     dayLimit = Z.ContainerMgr.CharSerialize.counterList.counterMap[loginDayCounter] and Z.ContainerMgr.CharSerialize.counterList.counterMap[loginDayCounter].counter or 0
   end
-  if tempInfo and levelLimit and dayLimit and levelLimit >= tempInfo.LevelLimit and dayLimit >= tempInfo.DayLimit then
+  if info and levelLimit and dayLimit and levelLimit >= info.levelLimit and dayLimit >= info.dayLimit then
     return true
   end
   return false
@@ -36,7 +46,6 @@ function QuestionnaireVM.FinishQuestionnaire(id)
   local infos = questionnaireData:GetAllQuestionnaireInfos()
   for _, value in ipairs(infos) do
     if value.id == id then
-      value.canAnswer = false
       value.status = tempStatus
       break
     end
@@ -52,7 +61,7 @@ function QuestionnaireVM.GetAllOpenedQuestionnaireInfos()
   local questionnaireData = Z.DataMgr.Get("questionnaire_data")
   local questionnaireInfos = questionnaireData:GetAllQuestionnaireInfos()
   for _, value in ipairs(questionnaireInfos) do
-    if QuestionnaireVM.CheckQuestionnaireIsOpen(value.id, level, loginDays) then
+    if QuestionnaireVM.CheckQuestionnaireIsOpen(value, level, loginDays) then
       table.insert(infos, value)
     end
   end
@@ -79,7 +88,7 @@ function QuestionnaireVM.GetNotAnsweredQuestionnaireInfos()
   local questionnaireData = Z.DataMgr.Get("questionnaire_data")
   local questionnaireInfos = questionnaireData:GetAllQuestionnaireInfos()
   for _, value in ipairs(questionnaireInfos) do
-    if QuestionnaireVM.CheckQuestionnaireIsOpen(value.id, level, loginDays) and value.status == tempStatus then
+    if QuestionnaireVM.CheckQuestionnaireIsOpen(value, level, loginDays) and value.status == tempStatus then
       table.insert(infos, value)
     end
   end
@@ -95,7 +104,7 @@ function QuestionnaireVM.IsAllQuestionnaireEmailed()
   local questionnaireData = Z.DataMgr.Get("questionnaire_data")
   local questionnaireInfos = questionnaireData:GetAllQuestionnaireInfos()
   for _, value in ipairs(questionnaireInfos) do
-    if QuestionnaireVM.CheckQuestionnaireIsOpen(value.id, level, loginDays) and value.status ~= tempStatus then
+    if QuestionnaireVM.CheckQuestionnaireIsOpen(value, level, loginDays) and value.status ~= tempStatus then
       isAllEmailed = false
     end
   end
@@ -121,8 +130,10 @@ end
 
 function QuestionnaireVM.AsyncGetQuestionnaireInfos()
   local questionnaireData = Z.DataMgr.Get("questionnaire_data")
-  local request = {}
-  local reply = questionnaireProxy.GetQuestionnaireList(request, questionnaireData.CancelSource:CreateToken())
+  local request = {
+    languageId = Z.LocalizationMgr:GetCurrentLanguage()
+  }
+  local reply = worldProxy.GetQuestionnaireList(request, questionnaireData.CancelSource:CreateToken())
   local result = QuestionnaireVM.CheckReply(reply.errCode)
   if result then
     questionnaireData:SyncContainerData(reply.questionnaires)

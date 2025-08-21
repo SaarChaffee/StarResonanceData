@@ -8,4 +8,3 @@ message RideSeatInfo {
     int64 controllerId = 1;
     repeated zproto.PassengerInfo passengers = 2;
 }
-

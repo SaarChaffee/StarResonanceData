@@ -10,13 +10,13 @@ function ApplyItem:OnInit()
   self:AddAsyncClick(self.uiBinder.btn_accept, function()
     self.teamVm_.AsyncDealApplyJoin(self.data_.charId, true, self.parent.uiView.cancelSource:CreateToken())
     self:refreshList(self.index_)
-    local unitName = E.InvitationTipsType.Request .. "_" .. self.data_.charId
+    local unitName = string.zconcat(E.InvitationTipsType.TeamRequest, "_", self.data_.charId, "_", Lang("RequestJoinTeam"))
     Z.EventMgr:Dispatch(Z.ConstValue.InvitationClearTipsUnit, unitName)
   end)
   self:AddAsyncClick(self.uiBinder.btn_refuse, function()
     self.teamVm_.AsyncDealApplyJoin(self.data_.charId, false, self.parent.uiView.cancelSource:CreateToken())
     self:refreshList(self.index_)
-    local unitName = E.InvitationTipsType.Request .. "_" .. self.data_.charId
+    local unitName = string.zconcat(E.InvitationTipsType.TeamRequest, "_", self.data_.charId, "_", Lang("RequestJoinTeam"))
     Z.EventMgr:Dispatch(Z.ConstValue.InvitationClearTipsUnit, unitName)
   end)
   self:AddAsyncClick(self.uiBinder.btn_head, function()
@@ -37,7 +37,8 @@ function ApplyItem:Refresh()
   local viewData = {
     id = avatarInfo.avatarId,
     modelId = self.modelId_,
-    charId = self.data_.charId
+    charId = self.data_.charId,
+    token = self.parent.uiView.cancelSource:CreateToken()
   }
   playerPortraitMgr.InsertNewPortrait(self.uiBinder.node_head, viewData)
   local professionSystemTableRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(self.data_.userSummaryData.professionData.professionId)

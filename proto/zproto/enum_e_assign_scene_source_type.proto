@@ -6,4 +6,3 @@ enum EAssignSceneSourceType {
     AssignSceneSourceTypeSilo = 0;
     AssignSceneSourceTypeWorld = 1;
 }
-

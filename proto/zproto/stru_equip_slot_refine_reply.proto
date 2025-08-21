@@ -5,7 +5,6 @@ package zproto;
 import "enum_e_error_code.proto";
 
 message EquipSlotRefineReply {
-    zproto.EErrorCode errorCode = 1;
-    bool success = 2;
+    bool success = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

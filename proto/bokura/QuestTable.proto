@@ -21,8 +21,6 @@ message QuestTableBase {
     string_table AbortLimit = 1720;
     string StepFlowPath = 1794;
 }
-
 message QuestTableMgr {
-    map<int32, .bokura.QuestTableBase> datas = 1;
+    repeated bokura.QuestTableMgr.DatasEntry datas = 1;
 }
-

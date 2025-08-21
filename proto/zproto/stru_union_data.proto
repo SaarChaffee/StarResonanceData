@@ -8,6 +8,4 @@ message UnionData {
     int64 unionid = 1;
     string name = 2;
     int32 unionHuntRank = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

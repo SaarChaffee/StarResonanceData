@@ -10,33 +10,20 @@ function C_com_select_use_popupView:ctor()
   self.vm_ = Z.VMMgr.GetVM("use_item_popup")
   self.useItemData_ = Z.DataMgr.Get("user_item_popup_data")
   self.itemsVm_ = Z.VMMgr.GetVM("items")
-  self.itemClass_ = item.new(self)
 end
 
 function C_com_select_use_popupView:OnActive()
-  self.isRefreshUseNum_ = false
   self.uiBinder.scenemask:SetSceneMaskByKey(self.SceneMaskKey)
   self:AddClick(self.uiBinder.btn_cancel, function()
     self.vm_.CloseUsePopup()
   end)
-  self.uiBinder.lab_title.text = self.viewData.title and Lang(self.viewData.title) or ""
-  self.uiBinder.lab_second_title.text = self.viewData.secondTitle and Lang(self.viewData.secondTitle) or ""
   self:AddAsyncClick(self.uiBinder.btn_confirm, function()
+    local useCount = self.useItemData_:GetUseCount()
     if self.viewData.isUse then
-      local param = {}
-      if self.viewData.itemUuid == nil then
-        local itemsData = Z.DataMgr.Get("items_data")
-        local ids = itemsData:GetItemUuidsByConfigId(self.viewData.configId)
-        if 1 <= #ids then
-          param.itemUuid = ids[1]
-        end
-      else
-        param.itemUuid = self.viewData.itemUuid
-      end
-      param.useNum = self.useItemData_:GetUseCount()
+      local param = self.itemsVm_.AssembleUseItemParam(self.viewData.configId, self.viewData.itemUuid, useCount)
       self.itemsVm_.AsyncUseItemByUuid(param, self.cancelSource:CreateToken())
     elseif self.viewData.isDiscard then
-      self.itemsVm_.AsyncDeleteItem(self.viewData.itemUuid, self.useItemData_:GetUseCount(), self.cancelSource:CreateToken())
+      self.itemsVm_.AsyncDeleteItem(self.viewData.itemUuid, useCount, self.cancelSource:CreateToken())
     end
     self.vm_.CloseUsePopup()
   end, nil, nil)
@@ -62,8 +49,13 @@ function C_com_select_use_popupView:OnActive()
   self:AddClick(self.uiBinder.btn_num, function()
     self.keypad_:Active({}, self.uiBinder.node_pad)
   end)
-  self.viewData_ = self.viewData
   self.keypad_ = keyPad.new(self)
+end
+
+function C_com_select_use_popupView:OnRefresh()
+  self.isRefreshUseNum_ = false
+  self.uiBinder.lab_title.text = self.viewData.title and Lang(self.viewData.title) or ""
+  self.uiBinder.lab_second_title.text = self.viewData.secondTitle and Lang(self.viewData.secondTitle) or ""
   self:initItem()
 end
 
@@ -73,13 +65,19 @@ function C_com_select_use_popupView:initItem()
   self.uiBinder.slider_progress.minValue = 1
   self:setSliderValue(maxCount)
   self:RefreshUseNum()
-  self.itemClass_:Init({
+  local itemData = {
     uiBinder = self.uiBinder.com_item_square_1,
-    configId = self.viewData_.configId,
-    uuid = self.viewData_.itemUuid,
+    configId = self.viewData.configId,
+    uuid = self.viewData.itemUuid,
     lab = self.useItemData_:GetUseCount(),
     isSquareItem = true
-  })
+  }
+  if self.itemClass_ then
+    self.itemClass_:RefreshByData(itemData)
+  else
+    self.itemClass_ = item.new(self)
+    self.itemClass_:Init(itemData)
+  end
 end
 
 function C_com_select_use_popupView:AddPressListener(btn, func)
@@ -89,6 +87,7 @@ end
 function C_com_select_use_popupView:OnDeActive()
   self.isRefreshUseNum_ = false
   self.itemClass_:UnInit()
+  self.itemClass_ = nil
   self.keypad_:DeActive()
 end
 

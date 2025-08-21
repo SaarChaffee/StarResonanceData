@@ -48,10 +48,7 @@ function ChitChatProxy.SendChitChatMsg(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.SendChitChatMsg_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 1, cJson.encode(pbRet), retData, true)
@@ -92,10 +89,7 @@ function ChitChatProxy.GetChipChatRecords(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.GetChipChatRecords_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 2, cJson.encode(pbRet), retData, true)
@@ -136,10 +130,7 @@ function ChitChatProxy.GetPrivateChatTargets(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.GetPrivateChatTargets_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 3, cJson.encode(pbRet), retData, true)
@@ -180,10 +171,7 @@ function ChitChatProxy.CreatePrivateChatSession(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.CreatePrivateChatSession_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 4, cJson.encode(pbRet), retData, true)
@@ -224,10 +212,7 @@ function ChitChatProxy.DeletePrivateChatSession(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.DeletePrivateChatSession_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 5, cJson.encode(pbRet), retData, true)
@@ -268,10 +253,7 @@ function ChitChatProxy.SetPrivateChatHasRead(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.SetPrivateChatHasRead_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 6, cJson.encode(pbRet), retData, true)
@@ -312,10 +294,7 @@ function ChitChatProxy.PrivateChatTargetTop(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.PrivateChatTargetTop_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 7, cJson.encode(pbRet), retData, true)
@@ -356,10 +335,7 @@ function ChitChatProxy.PrivateChatTargetBlock(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.PrivateChatTargetBlock_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 8, cJson.encode(pbRet), retData, true)
@@ -400,10 +376,7 @@ function ChitChatProxy.PrivateChatBlockList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.PrivateChatBlockList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 9, cJson.encode(pbRet), retData, true)
@@ -444,10 +417,7 @@ function ChitChatProxy.SetWorldChatChannelId(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.SetWorldChatChannelId_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 10, cJson.encode(pbRet), retData, true)
@@ -488,10 +458,7 @@ function ChitChatProxy.GetWorldChatChannelId(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.GetWorldChatChannelId_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 11, cJson.encode(pbRet), retData, true)
@@ -532,13 +499,133 @@ function ChitChatProxy.QueryChatMute(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.ChitChat.QueryChatMute_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(1321197368, 12, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function ChitChatProxy.SendSysChatHypertext(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.ChitChat.SendSysChatHypertext", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(1321197368, 13, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 13, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 13, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 13, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 13, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 13, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 13, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.ChitChat.SendSysChatHypertext_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(1321197368, 13, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function ChitChatProxy.ArkShareWithTencent(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.ChitChat.ArkShareWithTencent", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(1321197368, 15, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 15, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 15, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 15, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 15, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 15, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 15, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.ChitChat.ArkShareWithTencent_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(1321197368, 15, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function ChitChatProxy.GetArkJsonWithTencent(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.ChitChat.GetArkJsonWithTencent", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(1321197368, 16, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 16, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 16, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 16, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 16, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 16, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 1321197368, 16, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.ChitChat.GetArkJsonWithTencent_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(1321197368, 16, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end

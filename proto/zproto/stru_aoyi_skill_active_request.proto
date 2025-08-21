@@ -5,4 +5,3 @@ package zproto;
 message AoyiSkillActiveRequest {
     int32 skillId = 1;
 }
-

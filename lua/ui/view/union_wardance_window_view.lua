@@ -1,6 +1,7 @@
 local super = require("ui.ui_view_base")
 local Union_wardance_windowView = class("Union_wardance_windowView", super)
 local unionWardanceCountDown = require("ui.component.union.union_wardance_countdown")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 
 function Union_wardance_windowView:ctor()
   self.uiBinder = nil
@@ -11,9 +12,18 @@ function Union_wardance_windowView:ctor()
   end
   super.ctor(self, "union_wardance_window")
   self.unionWarDanceVM_ = Z.VMMgr.GetVM("union_wardance")
+  
+  function self.onInputAction_(inputActionEventData)
+    Z.CoroUtil.create_coro_xpcall(function()
+      self.unionWarDanceVM_.RequestBeginDance()
+    end)()
+  end
+  
+  self.iputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function Union_wardance_windowView:OnActive()
+  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Interact)
   self:initUi()
   Z.EventMgr:Add(Z.ConstValue.UnionWarDanceEvt.UnionWarDanceSelfIsDancing, self.changeSelfIsDancing, self)
   Z.EventMgr:Add(Z.ConstValue.UnionWarDanceEvt.UnionWarDanceSelfActivityStart, self.refreshStart, self)
@@ -35,12 +45,14 @@ function Union_wardance_windowView:initUi()
 end
 
 function Union_wardance_windowView:OnDeActive()
+  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Interact)
   if self.countDownBinder then
     self.countDownBinder:UnInit()
     self.countDownBinder = nil
   end
   Z.EventMgr:Remove(Z.ConstValue.UnionWarDanceEvt.UnionWarDanceSelfIsDancing, self.changeSelfIsDancing, self)
   Z.EventMgr:Remove(Z.ConstValue.UnionWarDanceEvt.UnionWarDanceSelfActivityStart, self.refreshStart, self)
+  self.iputKeyDescComp_:UnInit()
   self:ClearAllUnits()
 end
 
@@ -82,6 +94,7 @@ function Union_wardance_windowView:initDanceBtn()
     if not uiUnit_ then
       return
     end
+    self.iputKeyDescComp_:Init(1, uiUnit_.com_icon_key)
     self:AddAsyncClick(uiUnit_.btn_dance, function()
       self.unionWarDanceVM_.RequestBeginDance()
     end)

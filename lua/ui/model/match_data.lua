@@ -3,98 +3,79 @@ local MatchData = class("MatchData", super)
 
 function MatchData:ctor()
   super.ctor(self)
-  self.selfMatchData_ = {
-    targetId = E.TeamTargetId.All,
-    matching = false
-  }
 end
 
 function MatchData:Init()
+  self.isChangeMatching_ = false
   self.CancelSource = Z.CancelSource.Rent()
   self:ClearMatchData()
-end
-
-function MatchData:SetMatchInfo(matchInfo)
-  self.matchInfo_ = matchInfo
-  if self.matchInfo_ ~= nil then
-    self:SetMatchType(self.matchInfo_.matchType)
-    self:SetMatchState(self.matchInfo_.matchType, self.matchInfo_.matchStatus, self.matchInfo_.matchReadyTime)
-    self:SetMatchStartTime(self.matchInfo_.matchTime * 1000, self.matchInfo_.matchType)
-    self:SetMatchPlayerInfo(self.matchInfo_.matchPlayerInfo, self.matchInfo_.matchType)
-  end
-  Z.EventMgr:Dispatch(Z.ConstValue.Match.MatchInfoChange)
-end
-
-function MatchData:GetMatchInfo()
-  return self.matchInfo_
-end
-
-function MatchData:SetSelfMatchData(data, key)
-  if key then
-    self.selfMatchData_[key] = data
-    return
-  end
-  self.selfMatchData_ = data
-end
-
-function MatchData:GetSelfMatchData(key)
-  if key then
-    return self.selfMatchData_[key]
-  end
-  return self.selfMatchData_
-end
-
-function MatchData:SetMatchType(matchType)
-  if self.matchType_ == matchType then
-    return
-  end
-  self.matchType_ = matchType
-  Z.EventMgr:Dispatch(Z.ConstValue.Match.MatchTypeChange)
 end
 
 function MatchData:GetMatchType()
   return self.matchType_
 end
 
-function MatchData:SetMatchState(matchType, matchState, matchSuccessTime)
-  if matchType == E.MatchType.WorldBoss and matchSuccessTime and matchState == E.MatchSatatusType.WaitReady then
-    local worldBossData = Z.DataMgr.Get("world_boss_data")
-    worldBossData:SetWorldBossMatchSuccessTime(matchSuccessTime)
-    local worldBossVM = Z.VMMgr.GetVM("world_boss")
-    worldBossVM:OpenWorldBossMatchView()
-  end
-  if self.matchState_ == matchState then
+function MatchData:SetMatchData(data, isCancel)
+  if data == nil then
+    local matchTeamVm_ = Z.VMMgr.GetVM("match_team")
+    matchTeamVm_.CancelMatchingTimer()
     return
   end
-  self.matchState_ = matchState
+  if data.matchKeyInfo == nil or isCancel then
+    self:ClearMatchData()
+    local matchTeamVm_ = Z.VMMgr.GetVM("match_team")
+    matchTeamVm_.CancelMatchingTimer()
+    Z.EventMgr:Dispatch(Z.ConstValue.Match.MatchStateChange)
+    return
+  end
+  local matchVm_ = Z.VMMgr.GetVM("match")
+  local matchStatus = data.matchStatus
+  self.matchInfo_ = data
+  self.matchType_ = data.matchKeyInfo.matchType
+  self.matchPlayerInfo_ = data.matchPlayerInfo
+  self:SetMatchStartTime(data.matchTime * 1000)
+  if self.matchState_ == matchStatus then
+    return
+  end
+  self.matchState_ = matchStatus
+  if matchStatus == E.MatchSatatusType.WaitReady then
+    matchVm_.OpenMatchView(self.matchType_)
+  else
+    matchVm_.CloseMatchView()
+  end
   Z.EventMgr:Dispatch(Z.ConstValue.Match.MatchStateChange)
 end
 
-function MatchData:GetMatchState()
-  return self.matchState_
+function MatchData:GetMatchData()
+  return self.matchInfo_
 end
 
-function MatchData:SetMatchStartTime(matchStartTime, matchType)
+function MatchData:SetMatchStartTime(matchStartTime)
   if self.matchStartTime_ == matchStartTime then
     return
   end
-  self.matchType_ = matchType
   self.matchStartTime_ = matchStartTime
-  if matchType == E.MatchType.WorldBoss then
-    local worldBossData = Z.DataMgr.Get("world_boss_data")
-    worldBossData:SetWorldBossMatchTime(matchStartTime)
-  end
-  Z.EventMgr:Dispatch(Z.ConstValue.Match.MatchStartTimeChange, matchType)
+  Z.EventMgr:Dispatch(Z.ConstValue.Match.MatchStartTimeChange, self.matchType_)
+  local matchTeamVm_ = Z.VMMgr.GetVM("match_team")
+  matchTeamVm_.CreateMatchingTimer()
 end
 
 function MatchData:GetMatchStartTime()
   return self.matchStartTime_
 end
 
-function MatchData:SetMatchPlayerInfo(matchPlayerInfo, matchType)
+function MatchData:GetMatchSuccessTime()
+  if not self.matchInfo_ then
+    return 0
+  end
+  return self.matchInfo_.matchReadyTime
+end
+
+function MatchData:SetMatchPlayerInfo(matchPlayerInfo, matchToken)
+  if self.matchInfo_.matchToken ~= matchToken then
+    return
+  end
   self.matchPlayerInfo_ = matchPlayerInfo
-  self.matchType_ = matchType
-  Z.EventMgr:Dispatch(Z.ConstValue.Match.MatchPlayerInfoChange, matchType)
 end
 
 function MatchData:GetMatchPlayerInfo()
@@ -114,20 +95,25 @@ function MatchData:GetReadyMemberCount()
 end
 
 function MatchData:ClearMatchData()
+  self:SetMatchStartTime(0)
   self.matchType_ = E.MatchType.Null
   self.matchState_ = E.MatchSatatusType.Null
-  self.matchStartTime_ = 0
   self.matchInfo_ = nil
   self.matchPlayerInfo_ = {}
-  self.selfMatchData_ = {
-    targetId = E.TeamTargetId.All,
-    matching = false
-  }
 end
 
 function MatchData:UnInit()
   self:ClearMatchData()
   self.CancelSource:Recycle()
+end
+
+function MatchData:GetIsChangeMatching()
+  return self.isChangeMatching_, self.beginMatchFunc_
+end
+
+function MatchData:SetIsChangeMatching(isChanging, beginMatchFunc)
+  self.beginMatchFunc_ = beginMatchFunc
+  self.isChangeMatching_ = isChanging
 end
 
 return MatchData

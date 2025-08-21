@@ -285,7 +285,7 @@ function TipsPopupView:generateNodeByType8(nodeData, index)
     node.lab_type.TMPLab.text = itemTypeTableData.Name
     local itemsVM = Z.VMMgr.GetVM("items")
     node.img_icon.Img:SetImage(itemsVM.GetItemIcon(itemInfoData.ConfigId))
-    node.img_bg_quality.Img:SetImage(Z.ConstValue.QualityImgTipsBg .. itemTableData.Quality)
+    node.img_bg_quality.Img:SetColor(Z.ConstValue.QualityBgColor[itemTableData.Quality])
     local itemsVm = Z.VMMgr.GetVM("items")
     if itemInfoData.ShowType == E.EItemTipsShowType.Default then
       local itemPackageInfo = itemsVm.GetItemInfobyItemId(itemInfoData.ItemUuid, itemInfoData.ConfigId)
@@ -520,7 +520,7 @@ function TipsPopupView:generateNodeByType17(nodeData, index)
     if node ~= nil then
       do
         local setTimeLabel = function(count)
-          node.lab_title.TMPLab.text = Lang("RemainTime") .. Z.TimeTools.FormatToDHM(count)
+          node.lab_title.TMPLab.text = Lang("RemainTime") .. Z.TimeFormatTools.FormatToDHMS(count)
         end
         if timeData.IsUseTimer then
           local count = timeData.RemainTime

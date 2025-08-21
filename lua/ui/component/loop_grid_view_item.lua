@@ -20,11 +20,11 @@ function LoopGridViewItem:Init(parent, zLoopGridViewItem)
   self.loopGridViewItem.OnRecycleEvent:AddListener(function(go, eventData)
     self:OnRecycle()
   end)
-  self:OnInit()
+  xpcall(self.OnInit, self.ErrorHandle, self)
 end
 
 function LoopGridViewItem:UnInit()
-  self:OnUnInit()
+  xpcall(self.OnUnInit, self.ErrorHandle, self)
   self.parent = nil
   self.loopGridView = nil
   self.loopGridViewItem:ClearItemData()
@@ -35,16 +35,12 @@ function LoopGridViewItem:UnInit()
 end
 
 function LoopGridViewItem:Refresh(data)
-  self:OnRefresh(data)
-end
-
-local onCoroEventErr = function(err)
-  logError("coro event failed with err : {0}", err)
+  xpcall(self.OnRefresh, self.ErrorHandle, self, data)
 end
 
 function LoopGridViewItem:AddAsyncListener(subject, func, onErr, onCancel)
   if onErr == nil then
-    onErr = onCoroEventErr
+    onErr = self.ErrorHandle
   end
   if subject == nil or subject.AddListener == nil then
     logError("AddAsyncListener fail, subject == nil or subject.AddListener == nil")
@@ -79,6 +75,14 @@ function LoopGridViewItem:OnSelected(isSelected, isClick)
 end
 
 function LoopGridViewItem:OnPointerClick(go, eventData)
+end
+
+function LoopGridViewItem:OnNodeStateChange(func)
+  self.loopGridViewItem.OnNodeStateChange = func
+end
+
+function LoopGridViewItem.ErrorHandle(msg)
+  logError("[LoopGridViewItem] Error : " .. msg)
 end
 
 function LoopGridViewItem:GetCurData()

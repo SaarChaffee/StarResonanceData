@@ -1,15 +1,12 @@
 local UI = Z.UI
-local super = require("ui.ui_view_base")
+local super = require("ui.ui_subview_base")
 local Proficiency_mainView = class("Proficiency_mainView", super)
-local loopscrollrect = require("ui/component/loopscrollrect")
+local loopListView = require("ui.component.loop_list_view")
 local proficiencyItme = require("ui/component/proficiency/proficiency_loop_item")
 
-function Proficiency_mainView:ctor()
+function Proficiency_mainView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "proficiency_main")
-  self.proficiencyVm_ = Z.VMMgr.GetVM("proficiency")
-  self.profilciencyData_ = Z.DataMgr.Get("proficiency_data")
-  self.tipSub_ = require("ui/view/proficiency_tips_sub_view").new(self)
+  super.ctor(self, "proficiency_main", "proficiency/proficiency_main")
 end
 
 function Proficiency_mainView:initUiBinders()
@@ -17,11 +14,13 @@ function Proficiency_mainView:initUiBinders()
 end
 
 function Proficiency_mainView:OnActive()
+  self.uiBinder.Trans:SetAnchorPosition(0, 0)
+  self.uiBinder.Trans:SetSizeDelta(0, 0)
+  self:onStartAnimShow()
   self:initUiBinders()
-  self:startAnimatedShow()
-  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
-  Z.UnrealSceneMgr:InitSceneCamera()
-  Z.UnrealSceneMgr:DoCameraAnim("proficiencyEnter")
+  self.proficiencyVm_ = Z.VMMgr.GetVM("proficiency")
+  self.profilciencyData_ = Z.DataMgr.Get("proficiency_data")
+  self.tipSub_ = require("ui/view/proficiency_tips_sub_view").new(self)
   self.lastItemIndex_ = -1
   self.lastItemDataIndex_ = -1
   self.selectData_ = {}
@@ -30,16 +29,9 @@ function Proficiency_mainView:OnActive()
   self.isGrade_ = false
   self.level_ = Z.ContainerMgr.CharSerialize.roleLevel.level
   self.profilciencyData_:InitProficiency()
-  self:AddClick(self.uiBinder.cont_title_return.btn_ask, function()
-    local helpsysVM = Z.VMMgr.GetVM("helpsys")
-    helpsysVM.CheckAndShowView(30016)
-  end)
   self:AddClick(self.uiBinder.btn_tips, function()
     local rolelevelVm_ = Z.VMMgr.GetVM("rolelevel_main")
     rolelevelVm_.OpenRoleLevelWayWindow()
-  end)
-  self:AddClick(self.uiBinder.cont_title_return.btn, function()
-    self.proficiencyVm_.CloseProficiencyView()
   end)
   self:AddAsyncClick(self.uiBinder.btn_activated, function()
     if not (self.selectData_ and self.isUnLock_) or not self.isGrade_ then
@@ -57,12 +49,16 @@ function Proficiency_mainView:OnActive()
       end
       self.proficiencyVm_.SetActiveLevel(self.selectData_.ActiveLevel, self.selectData_.BuffId)
     end
+    local level = self.selectData_.ActiveLevel
+    self.profilciencyData_.CurNotSerActiveLevelDic[level] = true
+    local index = self.lastItemIndex_
     local ret = self.proficiencyVm_.AsyncSetProficiency(self.profilciencyData_:GetPotentialTab(), self.cancelSource:CreateToken())
     if ret == 0 then
-      self.isActive_ = not self.isActive_
+      self.profilciencyData_.CurNotSerActiveLevelDic[level] = nil
+      self.isActive_ = self.proficiencyVm_.IsActiveByItemData(self.selectData_)
       self:changeSaveBtn(self.isUnLock_ and self.isGrade_)
       self:setActiveBtnState(self.isUnLock_, self.isActive_, self.selectData_)
-      self.proficiencyRect:UpDateByIndex(self.lastItemIndex_, {})
+      self.proficiencyRect_:UpDateByIndex(index, {})
     end
   end, nil, nil)
   self:AddAsyncClick(self.uiBinder.btn_reset, function()
@@ -71,34 +67,37 @@ function Proficiency_mainView:OnActive()
         self.proficiencyVm_.NotActvationAll()
         local ret = self.proficiencyVm_.AsyncSetProficiency(self.profilciencyData_:GetPotentialTab(), self.cancelSource:CreateToken())
         if ret == 0 then
-          self.isActive_ = false
-          self:setActiveBtnState(self.isUnLock_, self.isActive_, self.selectData_)
-          self.proficiencyRect:SetData(self.proficiencyVm_.GetProficiencyData())
-          self.proficiencyRect:SetSelected(0)
+          self.proficiencyRect_:UnSelectIndex(1)
+          self.lastItemIndex_ = nil
+          self.proficiencyRect_:RefreshListView(self.proficiencyVm_.GetProficiencyData(), true)
+          self.proficiencyRect_:SetSelected(1)
         end
-        Z.DialogViewDataMgr:CloseDialogView()
       end
       Z.DialogViewDataMgr:OpenNormalDialog(Lang("ProficiencyIsReset"), onConfirm)
     end
   end)
-  self:init()
+  self:initLoopListView()
   self:BindEvents()
 end
 
-function Proficiency_mainView:init()
+function Proficiency_mainView:initLoopListView()
   self:changeSaveBtn(false)
-  self.uiBinder.lab_grade.text = self.level_
-  local vLoopScrollRect = self.uiBinder.loopscroll_grade
-  self.proficiencyRect = loopscrollrect.new(vLoopScrollRect, self, proficiencyItme)
-  self.proficiencyRect:SetData(self.proficiencyVm_.GetProficiencyData())
-  self.proficiencyRect:SetSelected(0)
+  self.uiBinder.lab_grade.text = string.format(Lang("FishingResearchCurLv"), self.level_)
+  self.proficiencyRect_ = loopListView.new(self, self.uiBinder.scrollview_grade, proficiencyItme, "proficiency_grade_tpl")
+  self.proficiencyRect_:Init(self.proficiencyVm_.GetProficiencyData())
+  self.proficiencyRect_:SetSelected(1)
+end
+
+function Proficiency_mainView:unInitLoopListView()
+  self.proficiencyRect_:UnInit()
+  self.proficiencyRect_ = nil
 end
 
 function Proficiency_mainView:unLock()
   if self.selectData_ then
     local ret = self.proficiencyVm_.AsyncUnlockProficiency(self.selectData_.ActiveLevel, self.selectData_.BuffId, self.cancelSource:CreateToken())
     if ret == 0 then
-      self.proficiencyRect:UpDateByIndex(self.lastItemIndex_, {})
+      self.proficiencyRect_:UpDateByIndex(self.lastItemIndex_)
     end
   end
 end
@@ -108,12 +107,13 @@ function Proficiency_mainView:SelectProficiencyItem(index, itemData, dataIndex, 
   self.isActive_ = isActive
   self.isUnLock_ = isUnLock
   self.isGrade_ = isGrade
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
   self.tipSub_:DeActive()
   self.tipSub_:Active(self.selectData_, self.uiBinder.cont_tips_small.anim)
   if self.lastItemIndex_ == index and dataIndex == self.lastItemDataIndex_ or self.selectData_ == nil then
     return
   end
-  self.proficiencyRect:UpDateByIndex(self.lastItemIndex_, nil)
+  self.proficiencyRect_:UpDateByIndex(self.lastItemIndex_)
   self.lastItemIndex_ = index
   self.lastItemDataIndex_ = dataIndex
   self:changeSaveBtn(isUnLock and isGrade)
@@ -146,21 +146,16 @@ function Proficiency_mainView:changeSaveBtn(isChange)
 end
 
 function Proficiency_mainView:OnDeActive()
-  self.proficiencyRect:ClearCells()
+  self:unInitLoopListView()
   if self.helpTipsId_ then
     Z.TipsVM.CloseItemTipsView(self.helpTipsId_)
     self.helpTipsId_ = nil
   end
   self.tipSub_:DeActive()
-  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   self.selectData_ = {}
   self.isActive_ = false
   self.isUnLock_ = false
   self.isGrade_ = false
-end
-
-function Proficiency_mainView:OnDestory()
-  Z.UnrealSceneMgr:CloseUnrealScene("proficiency_main")
 end
 
 function Proficiency_mainView:onItemCountChange(item)
@@ -186,13 +181,8 @@ end
 function Proficiency_mainView:OnRefresh()
 end
 
-function Proficiency_mainView:startAnimatedShow()
+function Proficiency_mainView:onStartAnimShow()
   self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
-end
-
-function Proficiency_mainView:startAnimatedHide()
-  local coro = Z.CoroUtil.async_to_sync(self.uiBinder.anim.CoroPlay)
-  coro(self.uiBinder.anim, Z.DOTweenAnimType.Close)
 end
 
 return Proficiency_mainView

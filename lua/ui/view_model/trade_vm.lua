@@ -42,7 +42,7 @@ end
 
 function TradeVM:AsyncExchangeList(type, subType, cancelToken)
   local tradeData = Z.DataMgr.Get("trade_data")
-  if tradeData.ExchangeItemCD[type] and tradeData.ExchangeItemCD[type][subType] and tradeData.ExchangeItemCD[type][subType] > 0 then
+  if tradeData.ExchangeItemCD[type] and tradeData.ExchangeItemCD[type][subType] and Z.TimeTools.Now() / 1000 - tradeData.ExchangeItemCD[type][subType] < tradeData.RefreshCD then
     return true
   end
   local worldProxy = require("zproxy.world_proxy")
@@ -53,6 +53,7 @@ function TradeVM:AsyncExchangeList(type, subType, cancelToken)
     return false
   end
   tradeData:CacheExchangeItemList(type, subType, ret.items)
+  tradeData:SetClickRefreshCD(false)
   return true
 end
 
@@ -80,7 +81,10 @@ end
 
 function TradeVM:AsyncExchangeSellItem(cancelToken)
   local worldProxy = require("zproxy.world_proxy")
-  local exchangeSellItemRequest = {}
+  local monthlyCardVM = Z.VMMgr.GetVM("monthly_reward_card")
+  local exchangeSellItemRequest = {
+    monthCardValid = monthlyCardVM:GetIsBuyCurrentMonthCard()
+  }
   local ret = worldProxy.ExchangeSellItem(exchangeSellItemRequest, cancelToken)
   if ret.errCode and ret.errCode ~= 0 then
     Z.TipsVM.ShowTips(ret.errCode)
@@ -112,14 +116,14 @@ function TradeVM:AsyncExchangeBuyItem(uuid, configId, num, price, cancelToken)
     num = num,
     price = price
   }
-  local ret = worldProxy.ExchangeBuyItem(exchangeBuyItemRequest, cancelToken)
-  if ret.errCode and ret.errCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errCode)
+  local errCode = worldProxy.ExchangeBuyItem(exchangeBuyItemRequest, cancelToken)
+  Z.EventMgr:Dispatch(Z.ConstValue.Trade.ExchangeBuyItem)
+  if errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   local tradeData = Z.DataMgr.Get("trade_data")
   tradeData:SetCacheTradeSellItemNum(configId, num)
-  Z.EventMgr:Dispatch(Z.ConstValue.Trade.ExchangeBuyItemSuccess)
   return true
 end
 
@@ -131,9 +135,9 @@ function TradeVM:AsyncExchangePutItem(uuid, num, step, isPublic, cancelToken)
     step = step,
     isPublic = isPublic
   }
-  local ret = worldProxy.ExchangePutItem(exchangePutItemRequest, cancelToken)
-  if ret.errCode and ret.errCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errCode)
+  local errCode = worldProxy.ExchangePutItem(exchangePutItemRequest, cancelToken)
+  if errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   Z.TipsVM.ShowTips(1000801)
@@ -144,9 +148,9 @@ end
 function TradeVM:AsyncExchangeTakeItem(uuid, configId, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
   local exchangeTakeItemRequest = {uuid = uuid, configId = configId}
-  local ret = worldProxy.ExchangeTakeItem(exchangeTakeItemRequest, cancelToken)
-  if ret.errCode and ret.errCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errCode)
+  local errCode = worldProxy.ExchangeTakeItem(exchangeTakeItemRequest, cancelToken)
+  if errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Trade.ExchangeTakeItemSuccess)
@@ -156,9 +160,9 @@ end
 function TradeVM:AsyncExchangeWithdraw(cancelToken)
   local worldProxy = require("zproxy.world_proxy")
   local exchangeWithdrawRequest = {}
-  local ret = worldProxy.ExchangeWithdraw(exchangeWithdrawRequest, cancelToken)
-  if ret.errCode and ret.errCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errCode)
+  local errCode = worldProxy.ExchangeWithdraw(exchangeWithdrawRequest, cancelToken)
+  if errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Trade.ExchangeWithdrawSuccess)
@@ -167,7 +171,7 @@ end
 
 function TradeVM:AsyncExchangeNotice(type, subType, cancelToken)
   local tradeData = Z.DataMgr.Get("trade_data")
-  if tradeData.ExchangeNoticeItemCD[type] and tradeData.ExchangeNoticeItemCD[type][subType] and tradeData.ExchangeNoticeItemCD[type][subType] > 0 then
+  if tradeData.ExchangeNoticeItemCD[type] and tradeData.ExchangeNoticeItemCD[type][subType] and Z.TimeTools.Now() / 1000 - tradeData.ExchangeNoticeItemCD[type][subType] < tradeData.RefreshCD then
     return true
   end
   local worldProxy = require("zproxy.world_proxy")
@@ -178,6 +182,7 @@ function TradeVM:AsyncExchangeNotice(type, subType, cancelToken)
     return false
   end
   tradeData:CacheEchangeNoticeData(type, subType, ret.items)
+  tradeData:SetClickRefreshCD(true)
   return true
 end
 
@@ -199,7 +204,7 @@ function TradeVM:AsyncExchangeNoticeDetail(configId, filter, nextPage, cancelTok
     Z.TipsVM.ShowTips(ret.errCode)
     return false
   end
-  tradeData:CacheExchangeNoticePriceItemList(configId, ret.items, nextPage)
+  tradeData:CacheExchangeNoticePriceItemList(configId, ret.items, nextPage, ret.minPrice)
   return true
 end
 
@@ -219,12 +224,12 @@ end
 function TradeVM:AsyncExchangeNoticeBuyItem(configId, uuid, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
   local ExchangeNoticeBuyItemRequest = {uuid = uuid, configId = configId}
-  local ret = worldProxy.ExchangeNoticeBuyItem(ExchangeNoticeBuyItemRequest, cancelToken)
-  if ret.errCode and ret.errCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errCode)
+  local errCode = worldProxy.ExchangeNoticeBuyItem(ExchangeNoticeBuyItemRequest, cancelToken)
+  if errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
-  Z.EventMgr:Dispatch(Z.ConstValue.Trade.ExchangeBuyItemSuccess)
+  Z.EventMgr:Dispatch(Z.ConstValue.Trade.ExchangeBuyItem)
   return true
 end
 
@@ -270,9 +275,9 @@ end
 function TradeVM:AsyncExchangeSale(num, rate, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
   local ExchangeSaleRequest = {num = num, rate = rate}
-  local ret = worldProxy.ExchangeSale(ExchangeSaleRequest, cancelToken)
-  if ret.errCode and ret.errCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errCode)
+  local errCode = worldProxy.ExchangeSale(ExchangeSaleRequest, cancelToken)
+  if errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Trade.ConsignmentPutItemSuccess)
@@ -282,9 +287,9 @@ end
 function TradeVM:AsyncExchangeSaleTake(guid, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
   local ExchangeSaleTakeRequest = {guid = guid}
-  local ret = worldProxy.ExchangeSaleTake(ExchangeSaleTakeRequest, cancelToken)
-  if ret.errCode and ret.errCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errCode)
+  local errCode = worldProxy.ExchangeSaleTake(ExchangeSaleTakeRequest, cancelToken)
+  if errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Trade.ConsignmentTakeItemSuccess)
@@ -298,9 +303,9 @@ function TradeVM:AsyncExchangeSaleBuy(rate, num, elseRate, cancelToken)
     num = num,
     elseRate = elseRate or 0
   }
-  local ret = worldProxy.ExchangeSaleBuy(ExchangeSaleBuyRequest, cancelToken)
-  if ret.errCode and ret.errCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errCode)
+  local errCode = worldProxy.ExchangeSaleBuy(ExchangeSaleBuyRequest, cancelToken)
+  if errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Trade.ConsignmentBuyItemSuccess)
@@ -310,9 +315,9 @@ end
 function TradeVM:AsyncExchangeCare(type, itemConfigId, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
   local ExchangeCareRequest = {type = type, itemConfigId = itemConfigId}
-  local ret = worldProxy.ExchangeCare(ExchangeCareRequest, cancelToken)
-  if ret.errCode and ret.errCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errCode)
+  local errCode = worldProxy.ExchangeCare(ExchangeCareRequest, cancelToken)
+  if errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   return true
@@ -321,25 +326,46 @@ end
 function TradeVM:AsyncExchangeCareCancel(type, itemConfigId, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
   local ExchangeCareCancelRequest = {type = type, itemConfigId = itemConfigId}
-  local ret = worldProxy.ExchangeCareCancel(ExchangeCareCancelRequest, cancelToken)
-  if ret.errCode and ret.errCode ~= 0 then
-    Z.TipsVM.ShowTips(ret.errCode)
+  local errCode = worldProxy.ExchangeCareCancel(ExchangeCareCancelRequest, cancelToken)
+  if errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   return true
 end
 
 function TradeVM:AsyncExchangeCareList(type, cancelToken)
+  local tradeData = Z.DataMgr.Get("trade_data")
+  local cd = 0
+  if type == E.EExchangeItemType.ExchangeItemTypeShopItem then
+    cd = tradeData.ExchangeFocusRefreshClickCD
+  elseif type == E.EExchangeItemType.ExchangeItemTypeNoticeShopItem then
+    cd = tradeData.ExchangeFocusNoticeRefreshClickCD
+  end
+  if Z.TimeTools.Now() / 1000 - cd < tradeData.RefreshCD then
+    return tradeData:GetCacheFocusItemList(type == E.EExchangeItemType.ExchangeItemTypeNoticeShopItem)
+  end
   local worldProxy = require("zproxy.world_proxy")
   local ExchangeCareListRequest = {type = type}
   local ret = worldProxy.ExchangeCareList(ExchangeCareListRequest, cancelToken)
   if ret.errCode and ret.errCode ~= 0 then
     Z.TipsVM.ShowTips(ret.errCode)
-    return false
+    return nil
   end
-  local tradeData = Z.DataMgr.Get("trade_data")
-  tradeData:CacheFocusItemList(ret.items)
+  tradeData:CacheFocusItemList(ret.items, type == E.EExchangeItemType.ExchangeItemTypeNoticeShopItem)
+  tradeData:SetClickRefreshCD(type == E.EExchangeItemType.ExchangeItemTypeNoticeShopItem, false, true)
   return ret.items
+end
+
+function TradeVM:AsyncExchangeLowestPrice(configId, cancelToken)
+  local worldProxy = require("zproxy.world_proxy")
+  local exchangeLowestPriceRequest = {configId = configId}
+  local ret = worldProxy.ExchangeLowestPrice(exchangeLowestPriceRequest, cancelToken)
+  if ret.errCode and ret.errCode ~= 0 then
+    Z.TipsVM.ShowTips(ret.errCode)
+    return false, 0
+  end
+  return true, ret.lowestPrice
 end
 
 local stallItem
@@ -369,6 +395,21 @@ function TradeVM:CheckAnySellItemTimeOut()
     end
   end
   return false
+end
+
+function TradeVM:GetCosts(totalPrice, taxPercentage, depositPercentage, hasMonthlyCard)
+  local data = Z.DataMgr.Get("trade_data")
+  local deposit = math.ceil(totalPrice * (depositPercentage / 100))
+  if not hasMonthlyCard then
+    if deposit > data.MaxDeposit then
+      deposit = data.MaxDeposit
+    end
+    if deposit < data.MinDeposit then
+      deposit = data.MinDeposit
+    end
+  end
+  local servicePrice = math.ceil(totalPrice * (taxPercentage / 100))
+  return deposit, servicePrice
 end
 
 return TradeVM

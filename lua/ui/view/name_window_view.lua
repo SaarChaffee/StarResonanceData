@@ -27,7 +27,7 @@ end
 
 function Name_windowView:onInputChanged(str)
   self.inputName_ = str
-  if string.zlen(self.inputName_) > self.nameLimitNum_ then
+  if string.zlenNormalize(self.inputName_) > self.nameLimitNum_ then
     self.uiBinder.lab_info.text = Lang("ErrNameSizeError")
     self:playErrorTipsAni(true)
   else
@@ -39,7 +39,7 @@ function Name_windowView:onConfirmBtnClick()
   if self.inputName_ == "" then
     self.uiBinder.lab_info.text = Lang("ErrEmptyName")
     self:playErrorTipsAni(true)
-  elseif string.zlen(self.inputName_) > self.nameLimitNum_ then
+  elseif string.zlenNormalize(self.inputName_) > self.nameLimitNum_ then
     self.uiBinder.lab_info.text = Lang("ErrNameSizeError")
     self:playErrorTipsAni(true)
   else

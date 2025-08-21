@@ -20,11 +20,27 @@ end
 function QuestGoalComp:UnInit()
   super.UnInit(self)
   self.questId_ = nil
+  self.quest_ = nil
+  self.stepRow_ = nil
 end
 
 function QuestGoalComp:SetQuestId(questId)
   self.questId_ = questId
+  self:refreshGoalInfo()
   self:refreshAll()
+end
+
+function QuestGoalComp:refreshGoalInfo()
+  local quest = self.questData_:GetQuestByQuestId(self.questId_)
+  if not quest then
+    return
+  end
+  local stepRow = self.questData_:GetStepConfigByStepId(quest.stepId)
+  if not stepRow then
+    return
+  end
+  self.quest_ = quest
+  self.stepRow_ = stepRow
 end
 
 function QuestGoalComp:GetTargetViewWidth()
@@ -34,44 +50,49 @@ end
 function QuestGoalComp:getGoalContentDesc()
   local configData = self.questVM_.GetCurGoalConfigData(self.questId_, self.index_)
   if configData then
-    local replaceText = self:getTargetReplaceText(configData.ParamArray)
-    return Z.Placeholder.Placeholder_task(configData.Content, replaceText)
+    local content = configData.Content
+    local num1 = (self.quest_.targetNum[self.index_ - 1] or 0) .. "/" .. (self.quest_.targetMaxNum[self.index_ - 1] or 0)
+    local placeholderParam = {num1 = num1}
+    content = self.questVM_.PlaceholderTaskContent(content, placeholderParam)
+    return content
   end
   return ""
 end
 
 function QuestGoalComp:getGoalGroupData()
-  local quest = self.questData_:GetQuestByQuestId(self.questId_)
-  if not quest then
-    return
-  end
-  local stepRow = self.questData_:GetStepConfigByStepId(quest.stepId)
-  if not stepRow then
+  if not self.quest_ or not self.stepRow_ then
     return
   end
   return {
-    targetNumDict = quest.targetNum,
-    targetMaxNumDict = quest.targetMaxNum,
-    stepTargetType = stepRow.StepTargetType,
-    stepTargetCondition = stepRow.StepTargetCondition
+    targetNumDict = self.quest_.targetNum,
+    targetMaxNumDict = self.quest_.targetMaxNum,
+    stepTargetType = self.stepRow_.StepTargetType,
+    stepTargetCondition = self.stepRow_.StepTargetCondition
   }
 end
 
+function QuestGoalComp:isHideGoalDistanceLab()
+  if not self.quest_ or not self.stepRow_ then
+    return true
+  end
+  return self.stepRow_:IsHideTrackedDis(self.index_)
+end
+
 function QuestGoalComp:getGoalPos()
-  local quest = self.questData_:GetQuestByQuestId(self.questId_)
-  if quest then
-    local trackData = self.questData_:GetGoalTrackData(quest.stepId, self.index_)
-    if trackData and trackData.toSceneId == Z.StageMgr.GetCurrentSceneId() then
-      local pos = trackData.pos
-      if trackData.posType ~= Z.GoalPosType.Point then
-        local entType = Z.GoalGuideMgr.PosTypeToEntType(trackData.posType)
-        local entity = Z.EntityMgr:GetLevelEntity(entType, trackData.uid)
-        if entity then
-          pos = entity:GetLocalAttrVirtualPos()
-        end
+  if self.quest_ == nil then
+    return
+  end
+  local trackData = self.questData_:GetGoalTrackData(self.quest_.stepId, self.index_)
+  if trackData and trackData.toSceneId == Z.StageMgr.GetCurrentSceneId() then
+    local pos = trackData.pos
+    if trackData.posType ~= Z.GoalPosType.Point then
+      local entType = Z.GoalGuideMgr.PosTypeToEntType(trackData.posType)
+      local entity = Z.EntityMgr:GetLevelEntity(entType, trackData.uid)
+      if entity then
+        pos = entity:GetLocalAttrVirtualPos()
       end
-      return pos
     end
+    return pos
   end
 end
 
@@ -122,42 +143,6 @@ function QuestGoalComp:getIsInGoalVisualLayer()
     end
   end
   return true
-end
-
-function QuestGoalComp:getTargetReplaceText(singleStepParam)
-  local index = self.index_
-  local targetType = tonumber(singleStepParam[1])
-  local replaceText = {}
-  local quest = self.questData_:GetQuestByQuestId(self.questId_)
-  if not quest then
-    return replaceText
-  end
-  local targetNumDict = quest.targetNum
-  local targetMaxNumDict = quest.targetMaxNum
-  local paramIndex = 1
-  if targetType == targetTypeEnum.TargetNpcTalk then
-    for i = 5, #singleStepParam do
-      local npcId = tonumber(singleStepParam[i])
-      local npcData = Z.TableMgr.GetTable("NpcTableMgr").GetRow(npcId)
-      if npcData then
-        local npcName = npcData.Name
-        replaceText["<npc" .. paramIndex .. ">"] = npcName
-        paramIndex = paramIndex + 1
-      end
-    end
-  elseif targetType == targetTypeEnum.TargetKillMonster then
-    for i = 4, #singleStepParam do
-      local monsterId = tonumber(singleStepParam[i])
-      local monsterData = Z.TableMgr.GetTable("MonsterTableMgr").GetRow(monsterId)
-      if monsterData then
-        local monsterName = monsterData.Name
-        replaceText["<mon" .. paramIndex .. ">"] = monsterName
-        paramIndex = paramIndex + 1
-      end
-    end
-  end
-  replaceText["<num1>"] = (targetNumDict[index - 1] or 0) .. "/" .. (targetMaxNumDict[index - 1] or 0)
-  return replaceText
 end
 
 return QuestGoalComp

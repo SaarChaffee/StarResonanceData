@@ -13,8 +13,6 @@ message ComposeTableBase {
     string ObtainName = 1627;
     int32 ConsumableTips = 901;
 }
-
 message ComposeTableMgr {
-    map<int32, .bokura.ComposeTableBase> datas = 1;
+    repeated bokura.ComposeTableMgr.DatasEntry datas = 1;
 }
-

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_treasure_item_row.proto";
+import "stru_dirty_mask.proto";
+
+message Treasure {
+    repeated zproto.Treasure.RowsEntry rows = 1;
+    repeated zproto.Treasure.HistoryRowsEntry historyRows = 2;
+    bool flag = 3;
+    int64 refreshTime = 4;
+    repeated int32 selectedReward = 5;
+    int32 seasonId = 6;
+    int32 lastSeasonId = 7;
+    int64 lastRefreshTime = 8;
+}

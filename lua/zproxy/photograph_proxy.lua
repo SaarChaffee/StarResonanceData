@@ -57,10 +57,7 @@ function PhotographProxy.DeletePhoto(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.DeletePhoto_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 2, cJson.encode(pbRet), retData, true)
@@ -101,10 +98,7 @@ function PhotographProxy.GetAllAlbums(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.GetAllAlbums_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 3, cJson.encode(pbRet), retData, true)
@@ -145,10 +139,7 @@ function PhotographProxy.GetAlbumPhotos(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.GetAlbumPhotos_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 4, cJson.encode(pbRet), retData, true)
@@ -189,10 +180,7 @@ function PhotographProxy.CreateAlbum(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.CreateAlbum_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 5, cJson.encode(pbRet), retData, true)
@@ -233,10 +221,7 @@ function PhotographProxy.DeleteAlbum(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.DeleteAlbum_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 6, cJson.encode(pbRet), retData, true)
@@ -277,10 +262,7 @@ function PhotographProxy.EditAlbumRight(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.EditAlbumRight_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 7, cJson.encode(pbRet), retData, true)
@@ -321,10 +303,7 @@ function PhotographProxy.EditAlbumName(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.EditAlbumName_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 8, cJson.encode(pbRet), retData, true)
@@ -365,10 +344,7 @@ function PhotographProxy.SetAlbumCover(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.SetAlbumCover_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 9, cJson.encode(pbRet), retData, true)
@@ -409,10 +385,7 @@ function PhotographProxy.MovePhotoToAlbum(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.MovePhotoToAlbum_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 10, cJson.encode(pbRet), retData, true)
@@ -466,10 +439,7 @@ function PhotographProxy.GetPhoto(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.GetPhoto_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 12, cJson.encode(pbRet), retData, true)
@@ -510,10 +480,7 @@ function PhotographProxy.UploadPhotoSuccessful(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.UploadPhotoSuccessful_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 13, cJson.encode(pbRet), retData, true)
@@ -554,10 +521,7 @@ function PhotographProxy.GetReviewAvatarInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.GetReviewAvatarInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 14, cJson.encode(pbRet), retData, true)
@@ -598,10 +562,7 @@ function PhotographProxy.GetFuncPhotoList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.GetFuncPhotoList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 15, cJson.encode(pbRet), retData, true)
@@ -642,13 +603,92 @@ function PhotographProxy.DelFuncPhoto(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.Photograph.DelFuncPhoto_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(904190988, 16, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function PhotographProxy.SetPhotoSchemeName(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.Photograph.SetPhotoSchemeName", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(904190988, 17, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 17, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 904190988, 17, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 904190988, 17, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 904190988, 17, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 904190988, 17, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 904190988, 17, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.Photograph.SetPhotoSchemeName_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(904190988, 17, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function PhotographProxy.CheckImage(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.Photograph.CheckImage", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(904190988, 18, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 18, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 904190988, 18, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 904190988, 18, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 904190988, 18, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 904190988, 18, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 904190988, 18, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.Photograph.CheckImage_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(904190988, 18, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end

@@ -24,6 +24,16 @@ local mergeDataFuncs = {
     local last = container.__data__.residueGuaranteeTimeY
     container.__data__.residueGuaranteeTimeY = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("residueGuaranteeTimeY", last)
+  end,
+  [6] = function(container, buffer, watcherList)
+    local last = container.__data__.residueGuaranteeTimeZ
+    container.__data__.residueGuaranteeTimeZ = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("residueGuaranteeTimeZ", last)
+  end,
+  [7] = function(container, buffer, watcherList)
+    local last = container.__data__.guaranteeZ
+    container.__data__.guaranteeZ = br.ReadUInt32(buffer)
+    container.Watcher:MarkDirty("guaranteeZ", last)
   end
 }
 local setForbidenMt = function(t)
@@ -67,6 +77,12 @@ local resetData = function(container, pbData)
   end
   if not pbData.residueGuaranteeTimeY then
     container.__data__.residueGuaranteeTimeY = 0
+  end
+  if not pbData.residueGuaranteeTimeZ then
+    container.__data__.residueGuaranteeTimeZ = 0
+  end
+  if not pbData.guaranteeZ then
+    container.__data__.guaranteeZ = 0
   end
   setForbidenMt(container)
 end
@@ -131,6 +147,16 @@ local getContainerElem = function(container)
     fieldId = 5,
     dataType = 0,
     data = container.residueGuaranteeTimeY
+  }
+  ret.residueGuaranteeTimeZ = {
+    fieldId = 6,
+    dataType = 0,
+    data = container.residueGuaranteeTimeZ
+  }
+  ret.guaranteeZ = {
+    fieldId = 7,
+    dataType = 0,
+    data = container.guaranteeZ
   }
   return ret
 end

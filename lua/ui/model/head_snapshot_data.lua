@@ -20,6 +20,8 @@ function Snapshot:ctor()
   self.NowGetHeadTimeByCharId = {}
   self.cachePlayerHeadSocialData_ = {}
   self.LoadPlayerHeadData = {}
+  self.RefreshPlayerHeadData = {}
+  self.IsRefreshPlayerHeadData = false
   local socialVM = Z.VMMgr.GetVM("social")
   self.PlayerHeadMask = socialVM.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeBase, 0)
   self.PlayerHeadMask = socialVM.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeAvatar, self.PlayerHeadMask)
@@ -42,13 +44,20 @@ function Snapshot:UnInit()
 end
 
 function Snapshot:Clear()
-  self.cachePlayerHeadSocialData_ = {}
-  self.LoadPlayerHeadData = {}
+  self:clearData()
 end
 
 function Snapshot:OnReconnect()
+  self:clearData()
+end
+
+function Snapshot:clearData()
+  self.CancelSource:CancelAll()
   self.cachePlayerHeadSocialData_ = {}
   self.LoadPlayerHeadData = {}
+  self.RefreshPlayerHeadData = {}
+  self.IsRefreshPlayerHeadData = false
+  Z.GlobalTimerMgr:StopTimer(E.GlobalTimerTag.LoadPlayerHead)
 end
 
 function Snapshot:clearCacheSocialDataByCharId()
@@ -60,10 +69,20 @@ function Snapshot:clearCacheSocialDataByCharId()
   end
 end
 
-function Snapshot:CheckPlayerHeadIsLoading(charId, callBackFunc)
+function Snapshot:CheckPlayerHeadInLoadingList(charId, callBackFunc)
   for i = 1, #self.LoadPlayerHeadData do
     if self.LoadPlayerHeadData[i].charId == charId then
       table.insert(self.LoadPlayerHeadData[i].callBackList, callBackFunc)
+      return true
+    end
+  end
+  return false
+end
+
+function Snapshot:CheckPlayerHeadIsLoading(charId, callBackFunc)
+  for i = 1, #self.RefreshPlayerHeadData do
+    if self.RefreshPlayerHeadData[i].charId == charId then
+      table.insert(self.RefreshPlayerHeadData[i].callBackList, callBackFunc)
       return true
     end
   end

@@ -1,10 +1,8 @@
 local super = require("ui.ui_subview_base")
 local SeasonCultivateGlobal = class("SeasonCultivateGlobal", super)
-local NormalAttributeUnitPath = GetLoadAssetPath("SeasonCultivateNormalAttributeUnit")
-local CoreAttributeUnitPath = GetLoadAssetPath("SeasonCultivateCoreAttributeUnit")
 
 function SeasonCultivateGlobal:ctor()
-  super.ctor(self, "season_cultivate_global", "season_cultivate/season_cultivate_global_sub", Z.UI.ECacheLv.None)
+  super.ctor(self, "season_cultivate_global", "season_cultivate/season_cultivate_global_sub", Z.UI.ECacheLv.None, true)
   self.seasonCultivateVM_ = Z.VMMgr.GetVM("season_cultivate")
 end
 
@@ -42,6 +40,12 @@ end
 
 function SeasonCultivateGlobal:resetAttribute()
   local normalNodeInfo = self.seasonCultivateVM_.GetAllNormalNodeInfo()
+  local NormalAttributeUnitPath
+  if Z.IsPCUI then
+    NormalAttributeUnitPath = GetLoadAssetPath("SeasonCultivateNormalAttributeUnit_PC")
+  else
+    NormalAttributeUnitPath = GetLoadAssetPath("SeasonCultivateNormalAttributeUnit")
+  end
   for _, info in pairs(normalNodeInfo) do
     local unit = self:AsyncLoadUiUnit(NormalAttributeUnitPath, _formatStr("attribute_{0}", info.attrConfig.NodeId), self.uiBinder.node_property.transform, self.cancelSource:CreateToken())
     if unit then
@@ -61,6 +65,12 @@ function SeasonCultivateGlobal:resetCoreAttribute()
   local coreNodeInfo = self.seasonCultivateVM_.GetCoreNodeInfo()
   if not next(coreNodeInfo) then
     return
+  end
+  local CoreAttributeUnitPath
+  if Z.IsPCUI then
+    CoreAttributeUnitPath = GetLoadAssetPath("SeasonCultivateCoreAttributeUnit_PC")
+  else
+    CoreAttributeUnitPath = GetLoadAssetPath("SeasonCultivateCoreAttributeUnit")
   end
   self.allItem_ = {}
   for _, info in pairs(coreNodeInfo) do

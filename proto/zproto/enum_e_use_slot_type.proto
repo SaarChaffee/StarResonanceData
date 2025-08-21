@@ -6,4 +6,3 @@ enum EUseSlotType {
     UseSlotType_Other = 0;
     UseSlotType_Skill = 1;
 }
-

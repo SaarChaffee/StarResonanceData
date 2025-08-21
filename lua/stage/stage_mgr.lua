@@ -55,6 +55,9 @@ end
 local getIsInGameScene = function()
   return current ~= Z.EStageType.Null and current ~= Z.EStageType.Login and current ~= Z.EStageType.SelectChar
 end
+local getIsInSelectCharScene = function()
+  return current == Z.EStageType.SelectChar
+end
 local isInNewbieScene = function()
   return getCurrentSceneId() == Z.Global.Dungeon000
 end
@@ -78,20 +81,11 @@ local onEnterStage = function(stage, toSceneId, levelId)
   stages[current]:OnEnterStage(toSceneId)
 end
 local OnSceneResLoadFinish = function(sceneId)
-  if current ~= Z.EStageType.Null and current ~= Z.EStageType.Login then
-    local dungeonVm = Z.VMMgr.GetVM("dungeon")
-    Z.CoroUtil.create_coro_xpcall(function()
-      dungeonVm.AsyncGetSeasonDungeonList()
-      dungeonVm.InitDungeonRedpoint()
-    end)()
-  end
   stages[current]:OnSceneResLoadFinish(sceneId)
 end
 local onEnterScene = function(sceneId)
   stages[current]:OnEnterScene(sceneId)
   Z.EventMgr:Dispatch(Z.ConstValue.SceneActionEvent.EnterScene, sceneId)
-  local questVM = Z.VMMgr.GetVM("quest")
-  questVM.UpdateQuestDataOnEnterScene(sceneId)
   local dungeonTrackVm = Z.VMMgr.GetVM("dungeon_track")
   dungeonTrackVm.OnEnterScene()
   local noticeTipData = Z.DataMgr.Get("noticetip_data")
@@ -116,6 +110,10 @@ local isInVisualLayer = function()
   end
   return isIn
 end
+local isDungeonStage = function()
+  local isDungeonStage = current == Z.EStageType.Dungeon or current == Z.EStageType.MirrorDungeon
+  return isDungeonStage
+end
 return {
   OnPrepareSwitchScene = OnPrepareSwitchScene,
   OnEnterStage = onEnterStage,
@@ -131,5 +129,7 @@ return {
   GetIsInDungeon = getIsInDungeon,
   IsInNewbieScene = isInNewbieScene,
   GetIsInGameScene = getIsInGameScene,
-  IsInVisualLayer = isInVisualLayer
+  GetIsInSelectCharScene = getIsInSelectCharScene,
+  IsInVisualLayer = isInVisualLayer,
+  IsDungeonStage = isDungeonStage
 }

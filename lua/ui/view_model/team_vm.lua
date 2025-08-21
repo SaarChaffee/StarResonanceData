@@ -1,4 +1,5 @@
 local worldTeamProxy = require("zproxy.world_proxy")
+local funcVm = Z.VMMgr.GetVM("gotofunc")
 local TeamEnterDungeonConditionType = {
   [124005] = E.ConditionType.Level,
   [124006] = E.ConditionType.TaskOver,
@@ -10,17 +11,6 @@ local TeamEnterDungeonConditionType = {
   [15001032] = 99997,
   [15001031] = 99998,
   [1000641] = 99999
-}
-local ETeamVoiceState = {
-  MicVoice = 0,
-  CloseVoice = 1,
-  SpeakerVoice = 2,
-  ShieldVoice = 3
-}
-local ETeamVoiceSpeakState = {
-  NotSpeak = 0,
-  Speaking = 1,
-  EndSpeak = 2
 }
 local handleError = function(errCode)
   if errCode ~= 0 and Z.PbEnum("EErrorCode", "ErrAsynchronousReturn") ~= errCode then
@@ -37,66 +27,129 @@ local setSpeakStatus = function(speakStatus)
   require.speakStatus = speakStatus
   worldTeamProxy.SetSpeakStatus(require)
 end
+local closeMic = function()
+  local teamData = Z.DataMgr.Get("team_data")
+  Z.VoiceBridge.CloseMic()
+  Z.GlobalTimerMgr:StopTimer(E.GlobalTimerTag.TeamSpeakVoice)
+  teamData.IsOpenMic = false
+end
 local closeTeamVoice = function()
   Z.GlobalTimerMgr:StopTimer(E.GlobalTimerTag.TeamSpeakVoice)
-  Z.VoiceBridge.CloseMic()
+  closeMic()
   Z.VoiceBridge.CloseSpeaker()
+  Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshTeamVoiceState, E.ETeamVoiceState.CloseVoice)
 end
-local openTeamSpeaker = function()
-  local isOpen = Z.VoiceBridge.OpenSpeaker()
-  if isOpen then
-    local settingVm = Z.VMMgr.GetVM("setting")
-    local value = settingVm.Get(E.SettingID.PlayerVoiceReceptionVolume)
-    Z.VoiceBridge.SetSpeakerVolume(value / 100)
-    Z.VoiceBridge.CloseMic()
-    Z.GlobalTimerMgr:StopTimer(E.GlobalTimerTag.TeamSpeakVoice)
+local openTeamSpeaker = function(callFunc)
+  if not funcVm.CheckFuncCanUse(E.FunctionID.TeamVoice) then
+    closeTeamVoice()
+    return false
   end
-  return isOpen
-end
-local openTeamMic = function()
-  local isOpen = Z.VoiceBridge.OpenMic()
-  if isOpen then
-    local settingVm = Z.VMMgr.GetVM("setting")
-    local value = settingVm.Get(E.SettingID.PlayerVoiceTransmissionVolume)
-    Z.VoiceBridge.SetMicVolume(value / 100)
-    local selfCharId = Z.ContainerMgr.CharSerialize.charBase.charId
-    Z.GlobalTimerMgr:StartTimer(E.GlobalTimerTag.TeamSpeakVoice, function()
-      local isSpeaking = Z.VoiceBridge.IsSpeaking()
-      local state = isSpeaking and ETeamVoiceSpeakState.Speaking or ETeamVoiceSpeakState.NotSpeak
-      local teamData = Z.DataMgr.Get("team_data")
-      local memberData = teamData.TeamInfo.members[selfCharId]
-      if memberData and memberData.micState ~= state then
-        setSpeakStatus(state)
+  local openSpeakerFunc = function()
+    local isOpen = Z.VoiceBridge.OpenSpeaker()
+    if isOpen then
+      if callFunc then
+        callFunc()
+      else
+        closeMic()
+        setMicrophoneStatus(E.ETeamVoiceState.SpeakerVoice)
+        Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshTeamVoiceState, E.ETeamVoiceState.SpeakerVoice)
       end
-    end, 1, -1, nil, function()
-      setSpeakStatus(ETeamVoiceSpeakState.NotSpeak)
+    else
+      Z.TipsVM.ShowTips(1000653)
+    end
+  end
+  if Z.SDKDevices.RuntimeOS == E.OS.Android then
+    Z.PermissionUtils.CheckOrRequestPermission(Panda.SDK.PlatformPermission.Bluetooth, function(bluetoothIsPermission)
+      if bluetoothIsPermission then
+        openSpeakerFunc()
+      else
+        Z.TipsVM.ShowTips(4401)
+      end
     end)
   else
-    Z.TipsVM.ShowTips(4401)
+    openSpeakerFunc()
   end
-  return isOpen
+end
+local openTeamMic = function()
+  if not funcVm.CheckFuncCanUse(E.FunctionID.TeamVoice) then
+    closeTeamVoice()
+    return false
+  end
+  if not funcVm.CheckFuncCanUse(E.FunctionID.TeamVoiceMic) then
+    openTeamSpeaker()
+    return false
+  end
+  local func = function()
+    Z.PermissionUtils.CheckOrRequestPermission(Panda.SDK.PlatformPermission.Microphone, function(isPermission)
+      if isPermission then
+        local isOpen = Z.VoiceBridge.OpenMic()
+        if isOpen then
+          local teamData = Z.DataMgr.Get("team_data")
+          teamData.IsOpenMic = true
+          local selfCharId = Z.ContainerMgr.CharSerialize.charBase.charId
+          Z.GlobalTimerMgr:StartTimer(E.GlobalTimerTag.TeamSpeakVoice, function()
+            local isSpeaking = Z.VoiceBridge.IsSpeaking()
+            local state = isSpeaking and E.ETeamVoiceSpeakState.Speaking or E.ETeamVoiceSpeakState.NotSpeak
+            local memberData = teamData.TeamInfo.members[selfCharId]
+            if memberData and memberData.speakState ~= state then
+              setSpeakStatus(state)
+            end
+          end, 1, -1, nil, function()
+            setSpeakStatus(E.ETeamVoiceSpeakState.NotSpeak)
+          end)
+          setMicrophoneStatus(E.ETeamVoiceState.MicVoice)
+          Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshTeamVoiceState, E.ETeamVoiceState.MicVoice)
+        else
+          setMicrophoneStatus(E.ETeamVoiceState.SpeakerVoice)
+          Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshTeamVoiceState, E.ETeamVoiceState.SpeakerVoice)
+          Z.TipsVM.ShowTips(1000652)
+        end
+      else
+        setMicrophoneStatus(E.ETeamVoiceState.SpeakerVoice)
+        Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshTeamVoiceState, E.ETeamVoiceState.SpeakerVoice)
+        Z.TipsVM.ShowTips(4401)
+      end
+    end)
+  end
+  if Z.SDKDevices.RuntimeOS == E.OS.Android then
+    Z.PermissionUtils.CheckOrRequestPermission(Panda.SDK.PlatformPermission.Bluetooth, function(bluetoothIsPermission)
+      if bluetoothIsPermission then
+        openTeamSpeaker(func)
+      else
+        Z.TipsVM.ShowTips(4401)
+      end
+    end)
+  else
+    openTeamSpeaker(func)
+  end
+end
+local sdkJoinVoiceRoom = function(roomName)
+  local isJoin = Z.VoiceBridge.JoinRoom(roomName)
+  if not isJoin then
+    Z.TipsVM.ShowTips(1000654)
+  end
+end
+local sdkQuitVoiceRoom = function(roomName)
+  Z.VoiceBridge.QuitRoom(roomName)
 end
 local joinTeamVoice = function()
+  local serverData = Z.DataMgr.Get("server_data")
   local teamData = Z.DataMgr.Get("team_data")
   if teamData.TeamInfo.baseInfo.teamId == nil then
     return
   end
   local teamId = tostring(teamData.TeamInfo.baseInfo.teamId)
-  if teamData.VoiceRoomName ~= teamId then
-    local isJoin = Z.VoiceBridge.JoinRoom(teamId)
-    if isJoin then
-      local isOpen = openTeamSpeaker()
-      if isOpen then
-        Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshTeamVoiceState, ETeamVoiceState.SpeakerVoice)
-        setMicrophoneStatus(ETeamVoiceState.SpeakerVoice)
-      end
-    end
+  local roomName = serverData:GetCurrentZoneId() .. teamId
+  if teamData.VoiceRoomName ~= roomName then
+    sdkJoinVoiceRoom(roomName)
   end
 end
 local quiteTeamVoice = function()
-  closeTeamVoice()
   local teamData = Z.DataMgr.Get("team_data")
-  Z.VoiceBridge.QuitRoom(teamData.VoiceRoomName)
+  if teamData.VoiceRoomName ~= nil and teamData.VoiceRoomName ~= "" then
+    closeTeamVoice()
+    sdkQuitVoiceRoom(teamData.VoiceRoomName)
+  end
 end
 local blockTeamMemberVoice = function(charId, isBlock)
   local teamData = Z.DataMgr.Get("team_data")
@@ -108,7 +161,7 @@ local blockTeamMemberVoice = function(charId, isBlock)
         Z.VoiceBridge.BlockPlayerVoice(memberVoiceId, isBlock, teamData.TeamInfo.baseInfo.teamId)
         teamData:SetBlockVoiceState(charId, isBlock)
         if isBlock then
-          Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshTeamMicState, charId, ETeamVoiceState.ShieldVoice)
+          Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshTeamMicState, charId, E.ETeamVoiceState.ShieldVoice)
         else
           Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshMemberMicState, charId)
         end
@@ -116,16 +169,34 @@ local blockTeamMemberVoice = function(charId, isBlock)
     end
   end
 end
+local asyncReportPlayer = function(charId)
+  Z.CoroUtil.create_coro_call(function()
+    local teamData = Z.DataMgr.Get("team_data")
+    local socialVm = Z.VMMgr.GetVM("social")
+    local socialData = socialVm.AsyncGetAccountData(charId, teamData.CancelSource:CreateToken())
+    if socialData then
+      local openId = socialData.accountData.openId
+      local openIdList = ZUtil.Pool.Collections.ZList_string.Rent()
+      openIdList:Add(openId)
+      Z.VoiceBridge.ReportPlayer(openIdList, "")
+      openIdList:Recycle()
+    end
+  end)()
+end
 local recoverMicState = function()
   local teamData = Z.DataMgr.Get("team_data")
   local charId = Z.ContainerMgr.CharSerialize.charBase.charId
   local memberData = teamData.TeamInfo.members[charId]
   if memberData then
-    if memberData.micState == ETeamVoiceState.CloseVoice then
+    if memberData.micState == E.ETeamVoiceState.CloseVoice then
       closeTeamVoice()
-    elseif memberData.micState == ETeamVoiceState.SpeakerVoice then
+    elseif memberData.micState == E.ETeamVoiceState.SpeakerVoice then
+      if not funcVm.CheckFuncCanUse(E.FunctionID.TeamVoice, true) then
+        closeTeamVoice()
+        return
+      end
       openTeamSpeaker()
-    elseif memberData.micState == ETeamVoiceState.MicVoice then
+    elseif memberData.micState == E.ETeamVoiceState.MicVoice then
       openTeamMic()
     end
   end
@@ -136,11 +207,10 @@ local recoverTeamVoice = function()
     return
   end
   local teamId = tostring(teamData.TeamInfo.baseInfo.teamId)
-  if teamData.VoiceRoomName ~= teamId then
-    local isJoin = Z.VoiceBridge.JoinRoom(teamId)
-    if isJoin then
-      recoverMicState()
-    end
+  local serverData = Z.DataMgr.Get("server_data")
+  local roomName = serverData:GetCurrentZoneId() .. teamId
+  if teamData.VoiceRoomName ~= roomName then
+    sdkJoinVoiceRoom(roomName)
   end
 end
 local asyncCreatTeam = function(targetId, cancelToken)
@@ -155,6 +225,13 @@ local asyncCreatTeam = function(targetId, cancelToken)
   request.targetId = targetId
   request.isAutoMatch = autoMatch == "0"
   request.isShowInHall = inTeamHall == "0"
+  local teamTargetData = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetId)
+  if teamTargetData then
+    request.teamMemberType = teamTargetData.TeamType
+  end
+  if teamTargetData.TeamType == E.ETeamMemberType.Twenty and not Z.VMMgr.GetVM("gotofunc").CheckFuncCanUse(E.FunctionID.TeamTwenty) then
+    return
+  end
   local ret = worldTeamProxy.CreateTeam(request, cancelToken)
   handleError(ret.errCode)
   local teamInfo = ret.teamInfo
@@ -162,9 +239,7 @@ local asyncCreatTeam = function(targetId, cancelToken)
     local teamData = Z.DataMgr.Get("team_data")
     Z.TipsVM.ShowTipsLang(1000612)
     teamData:SetTeamInfo(teamInfo.baseInfo, teamInfo.members)
-    teamData:SetSocialData(Z.ContainerMgr.CharSerialize.charBase.charId, ret.userDetailedData)
     local matchVm_ = Z.VMMgr.GetVM("match")
-    matchVm_.SetSelfMatchData(false, "matching")
     Z.EventMgr:Dispatch(Z.ConstValue.Team.Refresh)
     Z.EventMgr:Dispatch(Z.ConstValue.Chat.ChatInputState)
     Z.EventMgr:Dispatch(Z.ConstValue.Team.EnterTeam)
@@ -197,8 +272,8 @@ local asyncReplyBeInvitation = function(teamId, isAgree, cancelToken)
   local request = {}
   request.teamId = teamId
   request.agree = isAgree
-  local ret = worldTeamProxy.ReplyBeInvitation(request, cancelToken)
-  handleError(ret.errCode)
+  local errCode = worldTeamProxy.ReplyBeInvitation(request, cancelToken)
+  handleError(errCode)
 end
 local asyncQuitTeam = function(cancelSource)
   local request = {}
@@ -219,7 +294,6 @@ local asyncQuitTeam = function(cancelSource)
       player = {name = " "}
     }
     Z.TipsVM.ShowTipsLang(1000616, param)
-    matchVm_.CancelMatchingTips()
     local teamList = teamData:GetLeaveAndApplyTeam()
     if teamList then
       asyncApplyJoinTeam(teamList, cancelSource:CreateToken())
@@ -234,13 +308,15 @@ local asyncQuitTeam = function(cancelSource)
   teamData:SetTeamSimpleTime(0, "applyCaptain")
   Z.VMMgr.GetVM("chat_main").ClearChannelQueueByChannelId(E.ChatChannelType.EChannelTeam)
   Z.EventMgr:Dispatch(Z.ConstValue.Team.Refresh)
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TeamApplyButton, 0)
-  matchVm_.SetSelfMatchData(false, "teamMatching")
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.TeamApplyButton, 0)
   return ret.errCode
 end
 local asyncSetTeamTargetInfo = function(targetId, desc, autoMatch, show, cancelToken)
   local teamTargetRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetId)
   if not teamTargetRow then
+    return
+  end
+  if teamTargetRow.TeamType == E.ETeamMemberType.Twenty and not Z.VMMgr.GetVM("gotofunc").CheckFuncCanUse(E.FunctionID.TeamTwenty) then
     return
   end
   if autoMatch and teamTargetRow.MemberCountStopMatch == 0 then
@@ -252,9 +328,9 @@ local asyncSetTeamTargetInfo = function(targetId, desc, autoMatch, show, cancelT
   request.desc = desc
   request.autoMatch = autoMatch
   request.show = show
-  local ret = worldTeamProxy.SetTeamTargetInfo(request, cancelToken)
-  handleError(ret.errCode)
-  if ret.errCode == 0 then
+  local errCode = worldTeamProxy.SetTeamTargetInfo(request, cancelToken)
+  handleError(errCode)
+  if errCode == 0 then
     Z.EventMgr:Dispatch(Z.ConstValue.ScreenWordAndGrpcPass)
   end
 end
@@ -268,49 +344,72 @@ local setTeamInviteTime = function(charId)
   end, teamInviteCd)
 end
 local asyncInviteToTeam = function(inviteeCharId, cancelToken)
-  local request = {}
-  request.inviteeCharId = inviteeCharId
-  local ret = worldTeamProxy.InviteToTeam(request, cancelToken)
-  handleError(ret.errCode)
-  if ret.errCode == 0 then
-    Z.TipsVM.ShowTipsLang(1000627)
-    setTeamInviteTime(inviteeCharId)
-    Z.EventMgr:Dispatch(Z.ConstValue.Team.UpdateInviteBtn, inviteeCharId)
+  local teamVM_ = Z.VMMgr.GetVM("team")
+  local members = teamVM_.GetTeamMemData()
+  local teamData = Z.DataMgr.Get("team_data")
+  local func = function(cancelToken)
+    local request = {}
+    request.inviteeCharId = inviteeCharId
+    local errCode = worldTeamProxy.InviteToTeam(request, cancelToken)
+    handleError(errCode)
+    if errCode == 0 then
+      Z.TipsVM.ShowTipsLang(1000627)
+      setTeamInviteTime(inviteeCharId)
+      Z.EventMgr:Dispatch(Z.ConstValue.Team.UpdateInviteBtn, inviteeCharId)
+    end
   end
+  if not teamVM_.CheckIsInTeam() then
+    Z.TipsVM.ShowTipsLang(1000617)
+    return
+  end
+  local maxMember = teamData:GetTeamMaxMember()
+  if maxMember <= #members then
+    if teamData.TeamInfo.baseInfo.targetId ~= E.TeamTargetId.Costume or teamData.TeamInfo.baseInfo.teamMemberType == E.ETeamMemberType.Twenty then
+      Z.TipsVM.ShowTipsLang(1000619)
+      return
+    else
+      Z.DialogViewDataMgr:OpenNormalDialog(Lang("IsSwitchTwentyTeam"), function(cancelToken)
+        func(cancelToken)
+      end)
+      return
+    end
+  end
+  func(cancelToken)
 end
 local leaveTeamDialog = function(cancelSource)
   Z.DialogViewDataMgr:OpenNormalDialog(Lang("QuitTeam"), function()
     asyncQuitTeam(cancelSource)
-    Z.DialogViewDataMgr:CloseDialogView()
   end)
 end
 local asyncApplyBeLeader = function(cancelToken)
   local request = {}
-  local ret = worldTeamProxy.ApplyBeLeader(request, cancelToken)
-  handleError(ret.errCode)
+  local errCode = worldTeamProxy.ApplyBeLeader(request, cancelToken)
+  handleError(errCode)
 end
 local asyncTransferLeader = function(newLeaderId, cancelToken)
   local request = {}
   request.newLeaderId = newLeaderId
-  local ret = worldTeamProxy.TransferLeader(request, cancelToken)
-  handleError(ret.errCode)
+  local errCode = worldTeamProxy.TransferLeader(request, cancelToken)
+  handleError(errCode)
 end
 local asyncAcceptTransferBeLeader = function(agree, cancelToken)
   local request = {}
   request.agree = agree
-  local ret = worldTeamProxy.AcceptTransferBeLeader(request, cancelToken)
-  handleError(ret.errCode)
+  local errCode = worldTeamProxy.AcceptTransferBeLeader(request, cancelToken)
+  handleError(errCode)
 end
 local asyncTickOut = function(memberId, cancelToken)
   local request = {}
   request.vMemId = memberId
-  local ret = worldTeamProxy.KickOut(request, cancelToken)
-  handleError(ret.errCode)
+  local errCode = worldTeamProxy.KickOut(request, cancelToken)
+  handleError(errCode)
 end
 local asyncGetTeamList = function(targetId, isRefresh, cancelToken)
   local request = {}
   request.targetId = targetId
   request.isRefresh = isRefresh
+  request.ignoreSelfTalent = false
+  request.memberCount = 0
   local ret = worldTeamProxy.GetTeamList(request, cancelToken)
   if isRefresh then
     Z.TipsVM.ShowTipsLang(1000625)
@@ -322,6 +421,8 @@ local asyncGetNearTeamList = function(mapId, isRefresh, cancelToken)
   local request = {}
   request.mapId = mapId
   request.isRefresh = isRefresh
+  request.ignoreSelfTalent = false
+  request.memberCount = 0
   local ret = worldTeamProxy.GetNearTeamList(request, cancelToken)
   if isRefresh then
     Z.TipsVM.ShowTipsLang(1000628)
@@ -330,22 +431,48 @@ local asyncGetNearTeamList = function(mapId, isRefresh, cancelToken)
   handleError(ret.errCode)
 end
 local asyncDealApplyJoin = function(applicantId, isAgree, cancelToken)
-  local request = {}
-  request.applicantId = applicantId
-  request.agree = isAgree
-  local ret = worldTeamProxy.DealApplyJoin(request, cancelToken)
-  handleError(ret.errCode)
+  local teamVM_ = Z.VMMgr.GetVM("team")
+  local members = teamVM_.GetTeamMemData()
   local teamData = Z.DataMgr.Get("team_data")
-  teamData:RemoveApplyList(applicantId)
-  Z.RedPointMgr.RefreshClientNodeCount(E.RedType.TeamApplyButton, teamData:GetApplyCount())
+  local func = function(cancelToken)
+    local request = {}
+    request.applicantId = applicantId
+    request.agree = isAgree
+    local errCode = worldTeamProxy.DealApplyJoin(request, cancelToken)
+    handleError(errCode)
+    teamData:RemoveApplyList(applicantId)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.TeamApplyButton, teamData:GetApplyCount(), true)
+  end
+  if isAgree then
+    if not teamVM_.CheckIsInTeam() then
+      Z.TipsVM.ShowTipsLang(1000617)
+      return
+    end
+    local maxMember = teamData:GetTeamMaxMember()
+    if maxMember <= #members then
+      if teamData.TeamInfo.baseInfo.targetId ~= E.TeamTargetId.Costume or teamData.TeamInfo.baseInfo.teamMemberType == E.ETeamMemberType.Twenty then
+        Z.TipsVM.ShowTipsLang(1000619)
+        return
+      else
+        Z.DialogViewDataMgr:OpenNormalDialog(Lang("IsSwitchTwentyTeam"), function(cancelToken)
+          func(cancelToken)
+        end)
+        return
+      end
+    else
+      func(cancelToken)
+    end
+  else
+    func(cancelToken)
+  end
 end
 local asyncDenyAllApllyJoin = function(cancelToken)
   local request = {}
-  local ret = worldTeamProxy.DenyAllApplyJoin(request, cancelToken)
-  handleError(ret.errCode)
+  local errCode = worldTeamProxy.DenyAllApplyJoin(request, cancelToken)
+  handleError(errCode)
   local teamData = Z.DataMgr.Get("team_data")
   teamData:ClearApply()
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TeamApplyButton, 0)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.TeamApplyButton, 0)
 end
 local asyncLeaderGetApplyList = function(isRefresh, cancelToken)
   local request = {}
@@ -380,8 +507,8 @@ end
 local refuseLeaderApply = function(charId, cancelToken)
   local request = {}
   request.charId = charId
-  local ret = worldTeamProxy.RefuseLeaderApply(request, cancelToken)
-  handleError(ret.errCode)
+  local errCode = worldTeamProxy.RefuseLeaderApply(request, cancelToken)
+  handleError(errCode)
 end
 local checkIsInTeam = function()
   local teamData = Z.DataMgr.Get("team_data")
@@ -390,6 +517,14 @@ local checkIsInTeam = function()
     return true
   end
   return false
+end
+local checkLeaderIsOnline = function()
+  local teamData = Z.DataMgr.Get("team_data")
+  local leaderId = teamData.TeamInfo.baseInfo.leaderId
+  local memberInfo = teamData.TeamInfo.members[leaderId]
+  if memberInfo then
+    return memberInfo.socialData.basicData.offlineTime ~= 0
+  end
 end
 local getTeamMemData = function()
   local teamData = Z.DataMgr.Get("team_data")
@@ -476,11 +611,19 @@ local setTeamApplyCaptainTime = function()
     Z.EventMgr:Dispatch(Z.ConstValue.Team.UpdateApplyCaptainBtn)
   end, teamApplyCaptainCd)
 end
+local setTeamTargetTime = function()
+  local teamData = Z.DataMgr.Get("team_data")
+  local teamTypeCD = Z.Global.TeamTypeCD
+  teamData:SetTeamSimpleTime(teamTypeCD, "teamTypeCD")
+  Z.GlobalTimerMgr:StartTimer(E.GlobalTimerTag.TeamTypeCD, function()
+    teamData:SetTeamSimpleTime(0, "teamTypeCD")
+  end, teamTypeCD)
+end
 local setShowHall = function(canShow, cancelToken)
   local request = {}
   request.isShow = canShow
-  local ret = worldTeamProxy.SetShowHall(request, cancelToken)
-  handleError(ret.errCode)
+  local errCode = worldTeamProxy.SetShowHall(request, cancelToken)
+  handleError(errCode)
 end
 local setLeaderId = function()
   local teamData = Z.DataMgr.Get("team_data")
@@ -490,7 +633,7 @@ local setLeaderId = function()
     return
   end
   if lasterLeaderId == Z.ContainerMgr.CharSerialize.charBase.charId then
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TeamApplyButton, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.TeamApplyButton, 0)
   end
   teamData:SetLeaderId(leaderId)
 end
@@ -505,8 +648,8 @@ end
 local asyncGoToTeamMemWorld = function(charId, token)
   local request = {}
   request.charId = charId
-  local ret = worldTeamProxy.GoToTeamMemWorld(request, token)
-  handleError(ret.errCode)
+  local errCode = worldTeamProxy.GoToTeamMemWorld(request, token)
+  handleError(errCode)
 end
 local asyncTeamLeaderCall = function(token)
   local request = {}
@@ -605,9 +748,9 @@ local asyncGetTeamInfo = function(token)
       end
     end
     teamData:SetTeamMembers(memberData)
-    if ret.memSocialData then
-      for _, socialData in pairs(ret.memSocialData) do
-        teamData:SetSocialData(socialData.basicData.charID, socialData)
+    if ret.memberData then
+      for _, member in pairs(ret.memberData) do
+        teamData:SetSocialData(member.charId, member.socialData)
       end
     end
     if ret.memVoiceId then
@@ -818,21 +961,118 @@ local teamActivityListResult = function(vRequest)
     return
   end
 end
-local enterVoiceRoom = function(roomName, member)
+local onSdkJoinRoom = function(roomName, member)
   local teamData = Z.DataMgr.Get("team_data")
   teamData.VoiceRoomName = roomName
+  local settingVm = Z.VMMgr.GetVM("setting")
+  local speakerVolume = settingVm.GetSwitchIsOn(E.SettingID.PlayerVoiceReceptionVolume) and settingVm.Get(E.SettingID.PlayerVoiceReceptionVolume) or 0
+  Z.VoiceBridge.SetSpeakerVolume(speakerVolume / 100)
+  local micVolume = settingVm.GetSwitchIsOn(E.SettingID.PlayerVoiceTransmissionVolume) and settingVm.Get(E.SettingID.PlayerVoiceTransmissionVolume) or 0
+  Z.VoiceBridge.SetMicVolume(micVolume / 100)
+  closeTeamVoice()
+  if not funcVm.CheckFuncCanUse(E.FunctionID.TeamVoice, true) then
+    return
+  end
+  openTeamSpeaker()
+  setSpeakStatus(E.ETeamVoiceSpeakState.NotSpeak)
   Z.CoroUtil.create_coro_xpcall(function()
     worldTeamProxy.SetVoiceId({voiceId = member}, teamData.CancelSource:CreateToken())
     recoverMicState()
   end)()
 end
-local quitVoiceRoom = function(roomName, member)
+local onSdkQuitRoom = function(roomName, member)
   local teamData = Z.DataMgr.Get("team_data")
   teamData.VoiceRoomName = nil
+  teamData.IsOpenMic = false
 end
 local getTeamMemberInfoByCharId = function(charId)
   local teamData = Z.DataMgr.Get("team_data")
   return teamData.TeamInfo.members[charId]
+end
+local asyncChangeTeamMemberType = function(teamMemberType, targetId)
+  if teamMemberType == E.ETeamMemberType.Twenty and not Z.VMMgr.GetVM("gotofunc").CheckFuncCanUse(E.FunctionID.TeamTwenty) then
+    return false
+  end
+  local teamData = Z.DataMgr.Get("team_data")
+  if teamData.TeamInfo.baseInfo.teamMemberType == teamMemberType then
+    return
+  end
+  local request = {}
+  request.teamMemberType = teamMemberType
+  request.targetId = targetId
+  worldTeamProxy.ChangeTeamMemberType(request)
+  return true
+end
+local asyncUpdateTeamGroup = function(groupId, charId, groupIndex)
+  local request = {
+    groupId = groupId,
+    charId = charId,
+    groupIndex = groupIndex
+  }
+  worldTeamProxy.UpdateTeamGroup(request)
+end
+local getTeamTwentyIndex = function(charId)
+  local teamData = Z.DataMgr.Get("team_data")
+  if teamData.TeamInfo.baseInfo.teamMemberType == E.ETeamMemberType.Twenty then
+    for groupId, value in pairs(teamData.TeamInfo.baseInfo.teamMemberGroupInfos) do
+      for index, value in ipairs(value.charIds) do
+        if value == charId then
+          return (groupId - 1) * 5 + index
+        end
+      end
+    end
+  end
+end
+local asyncSetTeamTargetQuickSay = function(desc, quickSayId, token)
+  local request = {desc = desc, quickSayId = quickSayId}
+  local ret = worldTeamProxy.SetTeamTargetQuickSay(request, token)
+  if ret.errCode ~= 0 then
+    Z.TipsVM.ShowTips(ret.errCode)
+    return false
+  else
+    return true
+  end
+end
+local checkCanSummoned = function(member)
+  if not Z.StageMgr.IsDungeonStage() then
+    return false
+  end
+  local dungeonRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(Z.StageMgr.GetCurrentDungeonId())
+  if not dungeonRow then
+    return false
+  end
+  if dungeonRow.CanSummoned == 0 then
+    return false
+  end
+  if Z.StageMgr.GetCurrentDungeonId() ~= member.socialData.basicData.sceneId then
+    return true
+  end
+  return false
+end
+local asyncInviteJoinDungeons = function(inviteReceiver, token)
+  local teamData = Z.DataMgr.Get("team_data")
+  if Z.TimeTools.Now() / 1000 - teamData:GetInviteCd(inviteReceiver) < Z.Global.DungeonSummonedCD then
+    Z.TipsVM.ShowTips(4525)
+    return
+  end
+  if Z.EntityMgr.PlayerEnt:GetLuaIsInCombat() then
+    Z.TipsVM.ShowTips(3202)
+    return
+  end
+  local request = {inviteReceiver = inviteReceiver}
+  teamData:SetInviteCd(inviteReceiver)
+  local ret = worldTeamProxy.InviteJoinDungeons(request, token)
+  handleError(ret)
+  if ret == 0 then
+    Z.TipsVM.ShowTipsLang(1000600)
+  end
+end
+local asyncJoinDungeons = function(callData, flag, cancelSource)
+  if not flag then
+    return
+  end
+  local ret = worldTeamProxy.JoinDungeons(callData, cancelSource:CreateToken())
+  handleError(ret)
 end
 local ret = {
   AsyncCreatTeam = asyncCreatTeam,
@@ -863,6 +1103,7 @@ local ret = {
   SetOneKeyJoinTime = setOneKeyJoinTime,
   AsyncQuitReplyTeam = asyncQuitReplyTeam,
   SetTeamApplyCaptainTime = setTeamApplyCaptainTime,
+  SetTeamTargetTime = setTeamTargetTime,
   SetShowHall = setShowHall,
   SetLeaderId = setLeaderId,
   GetYouIsLeader = getYouIsLeader,
@@ -881,10 +1122,20 @@ local ret = {
   OpenTeamSpeaker = openTeamSpeaker,
   OpenTeamMic = openTeamMic,
   CloseTeamVoice = closeTeamVoice,
+  AsyncReportPlayer = asyncReportPlayer,
   GetMemDataNotContainSelf = getMemDataNotContainSelf,
-  EnterVoiceRoom = enterVoiceRoom,
-  QuitVoiceRoom = quitVoiceRoom,
+  OnSdkJoinRoom = onSdkJoinRoom,
+  OnSdkQuitRoom = onSdkQuitRoom,
   GetNotMyUnionMemberInTeam = getNotMyUnionMemberInTeam,
-  GetTeamMemberInfoByCharId = getTeamMemberInfoByCharId
+  GetTeamMemberInfoByCharId = getTeamMemberInfoByCharId,
+  CheckLeaderIsOnline = checkLeaderIsOnline,
+  RecoverMicState = recoverMicState,
+  AsyncChangeTeamMemberType = asyncChangeTeamMemberType,
+  AsyncUpdateTeamGroup = asyncUpdateTeamGroup,
+  GetTeamTwentyIndex = getTeamTwentyIndex,
+  AsyncSetTeamTargetQuickSay = asyncSetTeamTargetQuickSay,
+  CheckCanSummoned = checkCanSummoned,
+  AsyncInviteJoinDungeons = asyncInviteJoinDungeons,
+  AsyncJoinDungeons = asyncJoinDungeons
 }
 return ret

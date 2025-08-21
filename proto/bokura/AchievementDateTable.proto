@@ -15,8 +15,6 @@ message AchievementDateTableBase {
     string TypeIcon = 1596;
     int32 SeasonId = 1669;
 }
-
 message AchievementDateTableMgr {
-    map<int32, .bokura.AchievementDateTableBase> datas = 1;
+    repeated bokura.AchievementDateTableMgr.DatasEntry datas = 1;
 }
-

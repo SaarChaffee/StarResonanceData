@@ -29,6 +29,11 @@ end
 
 function Weapon_resonance_preview_popupView:initComponent()
   self.uiBinder.scenemask:SetSceneMaskByKey(self.SceneMaskKey)
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   self:AddClick(self.uiBinder.btn_close, function()
     Z.UIMgr:CloseView(self.ViewConfigKey)
   end)

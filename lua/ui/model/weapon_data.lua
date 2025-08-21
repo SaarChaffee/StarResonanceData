@@ -8,6 +8,7 @@ function WeaponData:ctor()
   self.HasSpSkill = true
   self.closeWeaponCamera_ = false
   self.cacheWeaponSkillData_ = nil
+  self.cacheSlotSkillInfoMap = nil
   self.cacheWeaponObtains_ = {}
   self.SkillPanelToggleIsOn = true
   self.timerMgr_ = Z.TimerMgr.new()
@@ -30,10 +31,13 @@ end
 function WeaponData:Clear()
   self.timerMgr_:Clear()
   self.closeWeaponCamera_ = {}
+  self.cacheWeaponSkillData_ = nil
+  self.cacheWeaponAttrData_ = nil
   self.BattleRes = {}
   self.SkillPanelToggleIsOn = true
   self.drawIdToPropIdDict_ = nil
   self.propIdToDrawIdDict_ = nil
+  self.cacheSlotSkillInfoMap = nil
 end
 
 function WeaponData:ClearBattleRes()
@@ -65,6 +69,9 @@ function WeaponData:cacheWeaponAttrs()
 end
 
 function WeaponData:GetWeaponAttrTableRow(weaponId, weaponLevel)
+  if self.cacheWeaponAttrData_ == nil then
+    self:cacheWeaponAttrs()
+  end
   local weaponLevelAttrs = self.cacheWeaponAttrData_[weaponId]
   if weaponLevelAttrs == nil then
     return nil
@@ -77,33 +84,38 @@ function WeaponData:GetWeaponAttrTableRow(weaponId, weaponLevel)
   return weaponLevelAttrs[weaponLevel]
 end
 
-function WeaponData:cacheWeaponSkillData()
+function WeaponData:cacheAllWeaponSkillData()
   self.cacheWeaponSkillData_ = {}
-  local weaponVm = Z.VMMgr.GetVM("weapon")
-  local weaponConfig = Z.TableMgr.GetTable("ProfessionTableMgr").GetDatas()
+  local weaponConfig = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetDatas()
   for _, value in ipairs(weaponConfig) do
-    local weapon = weaponVm.GetWeaponInfo(value.Id)
-    for __, skillId in ipairs(value.WearedSkillIds) do
-      if weapon and weapon.skillInfoMap[skillId] then
-        self.cacheWeaponSkillData_[skillId] = weapon.skillInfoMap[skillId].level
-      else
-        self.cacheWeaponSkillData_[skillId] = 0
-      end
+    for __, skillId in ipairs(value.NormalSkill) do
+      self:cacheWeaponSkillData(value.Id, skillId)
     end
-    local passiveId = value.PassiveId
-    if passiveId and passiveId ~= 0 then
-      if weapon and weapon.skillInfoMap[passiveId] then
-        self.cacheWeaponSkillData_[passiveId] = weapon.skillInfoMap[passiveId].level
-      else
-        self.cacheWeaponSkillData_[passiveId] = 0
-      end
+    for __, skillId in ipairs(value.NormalAttackSkill) do
+      self:cacheWeaponSkillData(value.Id, skillId)
     end
+    for __, skillId in ipairs(value.SpecialSkill) do
+      self:cacheWeaponSkillData(value.Id, skillId)
+    end
+    for __, skillId in ipairs(value.UltimateSkill) do
+      self:cacheWeaponSkillData(value.Id, skillId)
+    end
+  end
+end
+
+function WeaponData:cacheWeaponSkillData(professionId, skillId)
+  local weaponVm = Z.VMMgr.GetVM("weapon")
+  local weapon = weaponVm.GetWeaponInfo(professionId)
+  if weapon and weapon.skillInfoMap[skillId] then
+    self.cacheWeaponSkillData_[skillId] = weapon.skillInfoMap[skillId].level
+  else
+    self.cacheWeaponSkillData_[skillId] = 0
   end
 end
 
 function WeaponData:GetWeaponSkillData(skillId)
   if self.cacheWeaponSkillData_ == nil then
-    self:cacheWeaponSkillData()
+    self:cacheAllWeaponSkillData()
   end
   if self.cacheWeaponSkillData_[skillId] then
     return self.cacheWeaponSkillData_[skillId]
@@ -113,7 +125,7 @@ end
 
 function WeaponData:UpdateSkillData(skill, skillLevel)
   if self.cacheWeaponSkillData_ == nil then
-    self:cacheWeaponSkillData()
+    self:cacheAllWeaponSkillData()
   end
   self.cacheWeaponSkillData_[skill] = skillLevel
 end
@@ -135,6 +147,28 @@ end
 
 function WeaponData:ClearWeaponObtain()
   self.cacheWeaponObtains_ = {}
+end
+
+function WeaponData:InitSlotSkill()
+  self.cacheSlotSkillInfoMap = {}
+  for id, professionInfo in pairs(Z.ContainerMgr.CharSerialize.professionList.professionList) do
+    self.cacheSlotSkillInfoMap[id] = {}
+    for slotId, skillId in pairs(professionInfo.slotSkillInfoMap) do
+      self.cacheSlotSkillInfoMap[id][slotId] = skillId
+    end
+  end
+end
+
+function WeaponData:UpdateSlotSkill(slotId, skillId)
+  local professionVm = Z.VMMgr.GetVM("profession")
+  local professionId = professionVm:GetContainerProfession()
+  self.cacheSlotSkillInfoMap[professionId][slotId] = skillId
+end
+
+function WeaponData:GetWeaponSlotSkill(slotId)
+  local professionVm = Z.VMMgr.GetVM("profession")
+  local professionId = professionVm:GetContainerProfession()
+  return self.cacheSlotSkillInfoMap[professionId][slotId] or 0
 end
 
 function WeaponData:GetResonancePropIdByDrawId(drawId)

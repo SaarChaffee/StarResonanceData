@@ -7,4 +7,3 @@ enum EQuestStepStatus {
     QuestStepFinish = 1;
     QuestStepFail = 2;
 }
-

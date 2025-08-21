@@ -9,11 +9,10 @@ message QuestData {
     uint32 id = 1;
     uint32 stepId = 2;
     uint32 state = 3;
-    map<int32, int32> targetNum = 4;
-    map<int32, int32> targetMaxNum = 5;
+    repeated zproto.QuestData.TargetNumEntry targetNum = 4;
+    repeated zproto.QuestData.TargetMaxNumEntry targetMaxNum = 5;
     int64 stepLimitTime = 6;
     zproto.EQuestStepStatus stepStatus = 7;
     uint32 addLimitTime = 8;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.QuestData.TargetTypeEntry targetType = 9;
 }
-

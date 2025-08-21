@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_activity_award.proto";
+import "enum_e_activity_status.proto";
+import "enum_e_activity_type.proto";
+
+message Activity {
+    int64 activityUuid = 1;
+    uint32 activityConfigId = 2;
+    repeated zproto.Activity.ActivityNameEntry activityName = 3;
+    zproto.EActivityType activityType = 4;
+    uint64 startTime = 5;
+    uint64 endTime = 6;
+    repeated zproto.Activity.NoticeEntry notice = 8;
+    int32 orderId = 9;
+    zproto.EActivityStatus status = 10;
+    repeated zproto.Activity.AwardListEntry awardList = 11;
+}

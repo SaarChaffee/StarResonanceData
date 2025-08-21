@@ -22,6 +22,11 @@ function Weapon_resonance_obtain_popupView:OnActive()
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
   self.uiBinder.node_effect:CreatEFFGO(windowOpenEffect, Vector3.zero)
   self.uiBinder.node_effect:SetEffectGoVisible(true)
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   self.uiBinder.animDoTween:Play(Z.DOTweenAnimType.Open)
   Z.AudioMgr:Play("sys_general_award")
   self:initData()

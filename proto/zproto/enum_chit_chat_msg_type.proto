@@ -11,4 +11,3 @@ enum ChitChatMsgType {
     ChatMsgVoice = 5;
     ChatMsgHypertext = 6;
 }
-

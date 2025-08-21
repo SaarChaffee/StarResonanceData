@@ -37,8 +37,9 @@ function Weekly_hunt_target_reward_popupView:initUi()
   self.weeklyHuntData_:SetClimbUpRuleTableRow(ruleRow)
   if ruleRow then
     self.reawardLoopView_:Init(ruleRow.ProcessId)
+    local surpluseTime, _ = Z.TimeTools.GetLeftTimeByTimerId(ruleRow.TimerId)
     self.surplusTimeLab_.text = Lang("WeeklyhuntAwardResetTime", {
-      str = Z.TimeTools.FormatToDHM(Z.TimeTools.GetTimeLeftInSpecifiedTime(ruleRow.TimerId))
+      str = Z.TimeFormatTools.FormatToDHMS(surpluseTime)
     })
   end
   local currentId = Z.ContainerMgr.CharSerialize.weeklyTower.maxClimbUpId

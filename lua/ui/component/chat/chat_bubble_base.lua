@@ -19,13 +19,20 @@ function ChatBubbleBase:OnRefresh(data)
     return
   end
   self.data_ = data
+  self.channelHuntNameWidth_ = 0
   self:refreshChannelName()
-  self:refreshSendTime()
+  self:refreshChannelImage()
   self:refreshHuntTitle()
+  self:refreshPlayerNewbie()
+  self:refreshPlayerlName()
+  self:refreshSendTime()
   self:refreshSelfHead()
 end
 
 function ChatBubbleBase:OnUnInit()
+  if not self.uiBinder.lab_channel then
+    return
+  end
   self.uiBinder.lab_channel.text = ""
 end
 
@@ -36,7 +43,7 @@ function ChatBubbleBase:refreshSelfHead()
       if Z.ChatMsgHelper.GetCharId(self.data_) ~= charId or not self.uiBinder then
         return
       end
-      playerPortraitHgr.InsertNewPortraitBySocialData(self.uiBinder.node_player_head, socialData)
+      playerPortraitHgr.InsertNewPortraitBySocialData(self.uiBinder.node_player_head, socialData, nil, self.parent.UIView.cancelSource:CreateToken())
     end)
   else
     local chatHyperLink = Z.ChatMsgHelper.GetChatHyperlink(self.data_)
@@ -47,6 +54,9 @@ function ChatBubbleBase:refreshSelfHead()
 end
 
 function ChatBubbleBase:refreshChannelName()
+  if not self.uiBinder.lab_channel then
+    return
+  end
   self.isShowChannelOrName_ = false
   if self.parent.UIView:IsComprehensive() then
     local channelId = Z.ChatMsgHelper.GetChannelId(self.data_)
@@ -65,11 +75,48 @@ function ChatBubbleBase:refreshChannelName()
     self.uiBinder.lab_channel.text = ""
     self.uiBinder.lab_channel_ref:SetWidth(0)
   end
+end
+
+function ChatBubbleBase:refreshChannelImage()
+  if not self.uiBinder.img_channel then
+    return
+  end
+  if not Z.IsPCUI then
+    return
+  end
+  local channelId = Z.ChatMsgHelper.GetChannelId(self.data_)
+  self.uiBinder.img_channel:SetImage(Z.ChatMsgHelper.GetChatChannelIconByChannelId(channelId))
+  self.channelHuntNameWidth_ = self.channelHuntNameWidth_ + 50
+end
+
+function ChatBubbleBase:refreshPlayerNewbie()
+  if not self.uiBinder.img_newbie then
+    return
+  end
+  if Z.VMMgr.GetVM("player"):IsShowNewbie(Z.ChatMsgHelper.GetPlayerIsNewbie(self.data_)) then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, true)
+    if self.uiBinder.lab_name_ref then
+      local width = Z.IsPCUI and 28 or 36
+      local offest = Z.ChatMsgHelper.GetIsSelfMessage(self.data_) and -1 or 1
+      self.uiBinder.lab_name_ref:SetAnchorPosition(width * offest, 0)
+      self.channelHuntNameWidth_ = self.channelHuntNameWidth_ + width
+    end
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, false)
+    if self.uiBinder.lab_name_ref then
+      self.uiBinder.lab_name_ref:SetAnchorPosition(0, 0)
+    end
+  end
+end
+
+function ChatBubbleBase:refreshPlayerlName()
   local showName = self.friendMainVm_.GetPlayerShowName(Z.ChatMsgHelper.GetCharId(self.data_), Z.ChatMsgHelper.GetPlayerName(self.data_))
   self.uiBinder.lab_name.text = showName
   if showName ~= "" then
     self.isShowChannelOrName_ = true
   end
+  local size = self.uiBinder.lab_name:GetPreferredValues(showName)
+  self.channelHuntNameWidth_ = self.channelHuntNameWidth_ + size.x + 10
 end
 
 function ChatBubbleBase:refreshHuntTitle()
@@ -86,20 +133,24 @@ function ChatBubbleBase:refreshHuntTitle()
   local str = ""
   if isHuntStar == true then
     str = Lang("HuntListAward")
-    local size = self.uiBinder.lab_channel:GetPreferredValues(str, 300, 30)
+    local offestY = Z.IsPCUI and 16 or 30
+    local size = self.uiBinder.lab_hunt:GetPreferredValues(str, 300, offestY)
     sizeX = size.x
   end
   self.uiBinder.lab_hunt.text = str
   self.uiBinder.node_hunt:SetWidth(sizeX)
+  self.channelHuntNameWidth_ = self.channelHuntNameWidth_ + sizeX
 end
 
 function ChatBubbleBase:refreshSendTime()
+  local timeContent
   if Z.ChatMsgHelper.GetSendTime(self.data_) == "" then
-    self.uiBinder.lab_time.text = ""
+    timeContent = ""
   else
-    local timeData = Z.TimeTools.Tp2YMDHMS(Z.ChatMsgHelper.GetSendTime(self.data_))
-    self.uiBinder.lab_time.text = string.format("%02d:%02d", timeData.hour, timeData.min)
+    local timeData = Z.TimeFormatTools.Tp2YMDHMS(Z.ChatMsgHelper.GetSendTime(self.data_))
+    timeContent = string.format("%02d:%02d", timeData.hour, timeData.min)
   end
+  self.uiBinder.lab_time.text = timeContent
 end
 
 return ChatBubbleBase

@@ -8,8 +8,6 @@ message PivotAwardTableBase {
     int32 Id = 1463;
     int_array AwardId = 1197;
 }
-
 message PivotAwardTableMgr {
-    map<int32, .bokura.PivotAwardTableBase> datas = 1;
+    repeated bokura.PivotAwardTableMgr.DatasEntry datas = 1;
 }
-

@@ -7,4 +7,3 @@ message ApplicationInfo {
     int32 source = 2;
     int64 timeStamp = 3;
 }
-

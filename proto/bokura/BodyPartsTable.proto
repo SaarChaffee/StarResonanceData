@@ -26,8 +26,6 @@ message BodyPartsTableBase {
     int32 IsLockColliderIdx = 1361;
     int_array Tags = 232;
 }
-
 message BodyPartsTableMgr {
-    map<int32, .bokura.BodyPartsTableBase> datas = 1;
+    repeated bokura.BodyPartsTableMgr.DatasEntry datas = 1;
 }
-

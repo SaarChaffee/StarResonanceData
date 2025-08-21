@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message KickOutRequest {
-    uint32 vMemId = 2;
+    int64 vMemId = 3;
 }
-

@@ -15,8 +15,6 @@ message TempAttrTableBase {
     int32 UpperLimit = 1615;
     bool IsSyncClient = 880;
 }
-
 message TempAttrTableMgr {
-    map<int64, .bokura.TempAttrTableBase> datas = 1;
+    repeated bokura.TempAttrTableMgr.DatasEntry datas = 1;
 }
-

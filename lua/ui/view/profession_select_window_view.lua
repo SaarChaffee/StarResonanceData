@@ -6,17 +6,11 @@ local profession_loop_item = require("ui.component.profession.profession_loop_it
 
 function Profession_select_windowView:ctor()
   self.uiBinder = nil
-  if Z.IsPCUI then
-    Z.UIConfig.profession_select_window.PrefabPath = "professsion/profession_select_window_pc"
-  else
-    Z.UIConfig.profession_select_window.PrefabPath = "professsion/profession_select_window"
-  end
   super.ctor(self, "profession_select_window")
 end
 
 function Profession_select_windowView:OnActive()
   Z.UnrealSceneMgr:InitSceneCamera()
-  self:onStartAnimatedShow()
   self:initZWidget()
   self:initData()
   self:initFunc()
@@ -32,14 +26,6 @@ function Profession_select_windowView:OnActive()
     self:initWeaponList()
   end
   self:BindEvent()
-  if not self.viewData.isFaceView then
-    local creatTime = Z.ContainerMgr.CharSerialize.charBase.createTime
-    local sameDay = Z.TimeTools.CheckIsSameDay(creatTime, math.floor(Z.TimeTools.Now() / 1000))
-    local getAllProfession = self.professionVm_:CheckUnlockAllProfession()
-    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_time_tips_root, sameDay and not getAllProfession)
-  else
-    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_time_tips_root, false)
-  end
 end
 
 function Profession_select_windowView:BindEvent()
@@ -68,10 +54,12 @@ function Profession_select_windowView:OnDeActive()
   self:stopWeaponSkillSound()
   self.professionLoopRect_:UnInit()
   self.professionLoopRect_ = nil
+  self.selectSkillUnit_ = nil
   self:showModel()
   self:clearTimer()
   Z.CommonTipsVM.CloseRichText()
   Z.CommonTipsVM.CloseTipsTitleContent()
+  Z.CommonTipsVM.CloseSkillTips()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   Z.ContainerMgr.CharSerialize.professionList.Watcher:UnregWatcher(self.onContainerChanged)
   self.uiBinder.Ref:SetVisible(self.loadingMask_, false)
@@ -88,7 +76,6 @@ function Profession_select_windowView:initZWidget()
   self.professionLoop_ = self.uiBinder.loop_item
   self.professionName_ = self.uiBinder.lab_name
   self.img_talent_icon_ = self.uiBinder.img_talent_icon
-  self.btn_talent_icon_ = self.uiBinder.btn_talent_icon
   self.startTog1_ = self.uiBinder.tog_star_level_1
   self.startTog2_ = self.uiBinder.tog_star_level_2
   self.startTog3_ = self.uiBinder.tog_star_level_3
@@ -99,6 +86,7 @@ function Profession_select_windowView:initZWidget()
   self.skill3_ = self.uiBinder.cont_skill_3
   self.skill4_ = self.uiBinder.cont_skill_4
   self.skill5_ = self.uiBinder.cont_skill_5
+  self.skill6_ = self.uiBinder.cont_skill_6
   self.selectWeaponBtn_ = self.uiBinder.btn_weapon_choice
   self.returnBtn_ = self.uiBinder.btn_return_pinch
   self.professionVideo_ = self.uiBinder.group_video
@@ -109,25 +97,34 @@ function Profession_select_windowView:initZWidget()
   self.loadingMask_ = self.uiBinder.img_loading_mask
   self.btnChange = self.uiBinder.btn_change
   self.btnChangeBinder = self.uiBinder.btn_change_binder
-  self.btnTalentJump = self.uiBinder.btn_talent_view
   self.btnTrace = self.uiBinder.btn_trace
-  self.uiBinder.Ref:SetVisible(self.btnTalentJump, not self.viewData.isFaceView)
   self.uiBinder.Ref:SetVisible(self.btnTrace, not self.viewData.isFaceView)
   self.uiBinder.Ref:SetVisible(self.btnChange, not self.viewData.isFaceView)
   self.uiBinder.Ref:SetVisible(self.selectWeaponBtn_, self.viewData.isFaceView)
   self.uiBinder.Ref:SetVisible(self.returnBtn_, self.viewData.isFaceView)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_all_skil_select, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_base, true)
 end
 
 function Profession_select_windowView:initData()
-  self.professionLoopRect_ = loopListView.new(self, self.professionLoop_, profession_loop_item, "profession_choose_tpl")
+  self.professionLoopRect_ = loopListView.new(self, self.professionLoop_, profession_loop_item, "profession_choose_tpl", true)
   self.professionSkill_ = {
     [1] = self.skill1_,
     [2] = self.skill2_,
     [3] = self.skill3_,
     [4] = self.skill4_,
-    [5] = self.skill5_
+    [5] = self.skill5_,
+    [6] = self.skill6_
+  }
+  self.talentTogs_ = {
+    [1] = self.uiBinder.tog_1,
+    [2] = self.uiBinder.tog_2
+  }
+  self.togLabels_ = {
+    [1] = self.uiBinder.tog_1_lab,
+    [2] = self.uiBinder.tog_2_lab
+  }
+  self.togOnLabels_ = {
+    [1] = self.uiBinder.tog_1_lab_on,
+    [2] = self.uiBinder.tog_2_lab_on
   }
   self.startTog_ = {
     self.startTog1_,
@@ -138,6 +135,7 @@ function Profession_select_windowView:initData()
   }
   self.curProfessionSysTable_ = nil
   self.curProfessionSkillIndex_ = 1
+  self.selectTogIndex_ = 1
   self.skillTogCount_ = 3
   self.initLoop_ = false
   self.questId_ = nil
@@ -160,7 +158,6 @@ function Profession_select_windowView:initFunc()
   end)
   self:AddClick(self.selectWeaponBtn_, function()
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("DescFaceConfirm"), function()
-      Z.DialogViewDataMgr:CloseDialogView()
       self:onConfirmCreateRoleClick()
     end)
   end)
@@ -175,7 +172,6 @@ function Profession_select_windowView:initFunc()
     end
     Z.DialogViewDataMgr:OpenNormalDialog(string.format(Lang("profession_change_dialog"), professionRow.Name, professionRow.Name), function()
       self.professionVm_:AsyncChangeProfession(self.selectProfessionId_, self.cancelSource:CreateToken())
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   end)
   self:AddAsyncClick(self.btnTrace, function()
@@ -205,10 +201,6 @@ function Profession_select_windowView:initFunc()
       self.professionVm_:AsyncAcceptProfessionQuest(self.selectProfessionId_, self.cancelSource:CreateToken())
     end
   end)
-  self:AddAsyncClick(self.btnTalentJump, function()
-    local talentSkillVM = Z.VMMgr.GetVM("talent_skill")
-    talentSkillVM.OpenTalentSkillMainWindow(self.selectProfessionId_)
-  end)
   self.professionVideo_:AddListener(function()
     self.uiBinder.Ref:SetVisible(self.videoBtn_, false)
   end, function()
@@ -220,22 +212,20 @@ function Profession_select_windowView:initFunc()
   self:AddAsyncClick(self.videoBtn_, function()
     self.uiBinder.Ref:SetVisible(self.videoBtn_, false)
     self.professionVideo_:PlayCurrent(true)
-    self:setWeaponSkillSound(false, true)
-  end)
-  self:AddAsyncClick(self.allVideoBtn_, function()
-    self.uiBinder.Ref:SetVisible(self.videoBtn_, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_all_skil_select, true)
-    if self.curProfessionSkillIndex_ > 0 then
-      self.professionSkill_[self.curProfessionSkillIndex_].Ref:SetVisible(self.professionSkill_[self.curProfessionSkillIndex_].img_on, false)
-    end
-    if self.curProfessionSysTable_.SkillIdsVideo[1] then
-      self.professionVideo_:Prepare(self.curProfessionSysTable_.SkillIdsVideo[1][2] .. ".mp4", false, true)
-    end
-    self.curProfessionSkillIndex_ = -1
-    self.professionVideo_:PlayCurrent(true)
     self:setWeaponSkillSound(true)
   end)
   self.uiBinder.Ref:SetVisible(self.videoBtn_, false)
+  for index, value in ipairs(self.talentTogs_) do
+    value.group = self.uiBinder.togs_group
+    value:RemoveAllListeners()
+    value.isOn = false
+    value:AddListener(function(isOn)
+      if isOn then
+        self.selectTogIndex_ = index
+        self:refreshTalentStageInfo()
+      end
+    end)
+  end
 end
 
 function Profession_select_windowView:onQuestAccept(questId)
@@ -252,15 +242,14 @@ function Profession_select_windowView:onConfirmCreateRoleClick()
   end
   local loginVM = Z.VMMgr.GetVM("login")
   local data = Z.DataMgr.Get("player_data")
-  if data.CharInfo ~= nil and table.zcount(data.CharInfo) > 0 then
-    logGreen("[Account] already have the character")
-    loginVM:KickOffByClient(E.KickOffClientErrCode.RepeatCreateChar)
-    return
-  end
   self.uiBinder.Ref:SetVisible(self.loadingMask_, true)
   self.IsResponseInput = false
   local faceVM = Z.VMMgr.GetVM("face")
+  faceVM.CheckLocalFaceData()
   local reply = loginVM:AsyncCreateChar(data.AccountName, self.faceData_.Gender, self.faceData_.BodySize, faceVM.ConvertOptionDictToProtoData(), self.curProfessionSysTable_.Id)
+  if reply ~= nil and reply.errCode ~= nil then
+    Z.SDKReport.ReportEvent(Z.SDKReportEvent.CharacterCreated, reply.errCode)
+  end
   if reply.errCode ~= 0 then
     Z.TipsVM.ShowTips(reply.errCode)
     loginVM:KickOffByServer(reply.errCode)
@@ -268,10 +257,13 @@ function Profession_select_windowView:onConfirmCreateRoleClick()
     self.IsResponseInput = true
     return
   end
-  Z.SDKReport.ReportEvent(Z.SDKReportEvent.CharacterCreated)
   logGreen("[Account]CreateChar success with return:{0}", table.ztostring(reply))
-  data.CharInfo = reply.charInfo
-  local charId = reply.charInfo.baseInfo.charId
+  if data.CharDataList == nil then
+    data.CharDataList = {}
+  end
+  data.CharDataList[#data.CharDataList + 1] = reply.socialData
+  data:SortCharDataList(reply.socialData.charId)
+  local charId = reply.socialData.charId
   loginVM:BeginSelectChar(charId, function()
     self.uiBinder.Ref:SetVisible(self.loadingMask_, false)
     self.IsResponseInput = true
@@ -365,66 +357,77 @@ function Profession_select_windowView:OnSelectWeapon(professionId)
   self.selectProfessionId_ = professionId
   self.curProfessionSysTable_ = professionRow
   self.professionName_.text = professionRow.Name
+  self.uiBinder.img_profession:SetImage(self.curProfessionSysTable_.Icon)
   Z.RichTextHelper.SetTmpLabTextWithCommonLinkNew(self.weaponDesc_, professionRow.Intro)
-  for i = 1, #self.startTog_ do
-    self.startTog_[i].isOn = i <= professionRow.Factor
-  end
   local talentConfig = Z.TableMgr.GetTable("TalentTagTableMgr").GetRow(self.curProfessionSysTable_.Talent)
   self.uiBinder.lab_job.text = talentConfig.TagName
   self.img_talent_icon_:SetImage(talentConfig.TagIconMark)
-  self:AddAsyncClick(self.btn_talent_icon_, function()
+  self:AddAsyncClick(self.uiBinder.btn_talent_icon, function()
     Z.CommonTipsVM.ShowTipsTitleContent(self.uiBinder.node_tips_pos, talentConfig.TagName, talentConfig.DetailsDes)
   end)
-  for i = 1, #professionRow.ShowSkill do
-    local config = Z.TableMgr.GetTable("SkillTableMgr").GetRow(professionRow.ShowSkill[i])
-    if config then
-      self.professionSkill_[i].img_icon:SetImage(config.Icon)
-    end
-    self.professionSkill_[i].Ref:SetVisible(self.professionSkill_[i].img_on, false)
-    self:AddClick(self.professionSkill_[i].img_bg, function()
-      if not self:CheckCanChangeSelectSkill() then
-        Z.TipsVM.ShowTipsLang(100000)
-        return
-      end
-      self.uiBinder.Ref:SetVisible(self.uiBinder.img_all_skil_select, false)
-      if self.curProfessionSkillIndex_ ~= i and self.curProfessionSkillIndex_ ~= -1 then
-        self.professionSkill_[self.curProfessionSkillIndex_].Ref:SetVisible(self.professionSkill_[self.curProfessionSkillIndex_].img_on, false)
-      end
-      self.curProfessionSkillIndex_ = i
-      self.professionSkill_[self.curProfessionSkillIndex_].Ref:SetVisible(self.professionSkill_[self.curProfessionSkillIndex_].img_on, true)
-      self:setWeaponSkillVideo()
-      self:ResetChangeSkillCd()
-    end)
-  end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_all_skil_select, false)
-  if 1 <= self.curProfessionSkillIndex_ then
-    self.professionSkill_[self.curProfessionSkillIndex_].Ref:SetVisible(self.professionSkill_[self.curProfessionSkillIndex_].img_on, false)
-    self.curProfessionSkillIndex_ = -1
-  end
-  if self.curProfessionSkillIndex_ ~= -1 then
-    self.professionSkill_[self.curProfessionSkillIndex_].Ref:SetVisible(self.professionSkill_[self.curProfessionSkillIndex_].img_on, true)
+  if self.talentTogs_[1].isOn then
+    self:refreshTalentStageInfo()
   else
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_all_skil_select, true)
-    if self.curProfessionSysTable_.SkillIdsVideo[1] then
-      self.professionVideo_:Prepare(self.curProfessionSysTable_.SkillIdsVideo[1][2] .. ".mp4", false, true)
-      self.uiBinder.Ref:SetVisible(self.videoBtn_, false)
-      self:setWeaponSkillSound(true)
-    end
+    self.talentTogs_[1].isOn = true
   end
-  self:setWeaponSkillVideo()
+  for index, value in ipairs(self.togLabels_) do
+    local talentRow = Z.TableMgr.GetTable("TalentStageTableMgr").GetRow(self.curProfessionSysTable_.ShowTalentStage[index])
+    value.text = talentRow.Name[2]
+    self.togOnLabels_[index].text = talentRow.Name[2]
+  end
   self:ResetChangeWeaponCd()
 end
 
+function Profession_select_windowView:refreshTalentStageInfo()
+  self.talentStageRow_ = Z.TableMgr.GetTable("TalentStageTableMgr").GetRow(self.curProfessionSysTable_.ShowTalentStage[self.selectTogIndex_])
+  if not self.talentStageRow_ then
+    return
+  end
+  for i = 1, #self.startTog_ do
+    self.startTog_[i].isOn = i <= self.talentStageRow_.Factor
+  end
+  self.uiBinder.lab_type_info.text = self.talentStageRow_.MainDesShow
+  self.uiBinder.lab_skill.text = string.format(Lang("profession_talent_desc"), self.talentStageRow_.Name[2])
+  local content = ""
+  for _, value in ipairs(self.talentStageRow_.MainAttrShow) do
+    local fightAttrRow = Z.TableMgr.GetTable("FightAttrTableMgr").GetRow(value)
+    if fightAttrRow then
+      content = content .. fightAttrRow.OfficialName .. " "
+    end
+  end
+  self.uiBinder.lab_attr.text = content
+  for index, value in ipairs(self.professionSkill_) do
+    local skillId = self.talentStageRow_.MainSkillShow[index]
+    if skillId == nil then
+      value.Ref.UIComp:SetVisible(false)
+    else
+      do
+        local config = Z.TableMgr.GetTable("SkillTableMgr").GetRow(skillId)
+        if config then
+          value.img_icon:SetImage(config.Icon)
+        end
+        value.Ref:SetVisible(value.img_on, false)
+        self:AddClick(value.img_bg, function()
+          Z.CommonTipsVM.OpenSkillTips(skillId, self.uiBinder.tips_root.anchoredPosition, Vector2.New(0.5, 0))
+          if self.selectSkillUnit_ then
+            self.selectSkillUnit_.Ref:SetVisible(self.selectSkillUnit_.img_on, false)
+          end
+          self.selectSkillUnit_ = value
+          self.selectSkillUnit_.Ref:SetVisible(self.selectSkillUnit_.img_on, true)
+        end)
+      end
+    end
+  end
+  self:setWeaponSkillVideo()
+end
+
 function Profession_select_windowView:setWeaponSkillVideo()
-  if self.curProfessionSysTable_.SkillIdsVideo[self.curProfessionSkillIndex_ + 1] == nil then
+  if self.talentStageRow_.MainVideoShow == nil then
     return
   end
-  if self.curProfessionSysTable_.SkillIdsVideo[self.curProfessionSkillIndex_ + 1][2] == nil then
-    return
-  end
-  self.professionVideo_:Prepare(self.curProfessionSysTable_.SkillIdsVideo[self.curProfessionSkillIndex_ + 1][2] .. ".mp4", false, true)
+  self.professionVideo_:Prepare(self.talentStageRow_.MainVideoShow .. ".mp4", false, true)
   self.uiBinder.Ref:SetVisible(self.videoBtn_, true)
-  self:setWeaponSkillSound(false)
+  self:setWeaponSkillSound()
 end
 
 function Profession_select_windowView:stopWeaponSkillSound()
@@ -434,7 +437,7 @@ function Profession_select_windowView:stopWeaponSkillSound()
   end
 end
 
-function Profession_select_windowView:setWeaponSkillSound(isFirstVideo, isAgain)
+function Profession_select_windowView:setWeaponSkillSound(isAgain)
   if isAgain then
     if self.curProfessionSoundName_ then
       Z.AudioMgr:StopSound(self.curProfessionSoundName_)
@@ -443,12 +446,7 @@ function Profession_select_windowView:setWeaponSkillSound(isFirstVideo, isAgain)
     return
   end
   self:stopWeaponSkillSound()
-  local path
-  if isFirstVideo then
-    path = self.curProfessionSysTable_.SkillIdsVideo[1][2]
-  else
-    path = self.curProfessionSysTable_.SkillIdsVideo[self.curProfessionSkillIndex_ + 1][2]
-  end
+  local path = self.talentStageRow_.MainVideoShow
   local lastBackslash = string.find(path, "/[^/]*$")
   if lastBackslash == nil then
     return

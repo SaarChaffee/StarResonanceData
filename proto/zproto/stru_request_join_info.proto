@@ -9,4 +9,3 @@ message RequestJoinInfo {
     zproto.UserSummaryData socialData = 1;
     zproto.ApplyJoinInfo applyInfo = 2;
 }
-

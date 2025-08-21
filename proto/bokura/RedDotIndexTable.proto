@@ -18,8 +18,6 @@ message RedDotIndexTableBase {
     int_array Size = 1135;
     int32 ServerType = 718;
 }
-
 message RedDotIndexTableMgr {
-    map<int32, .bokura.RedDotIndexTableBase> datas = 1;
+    repeated bokura.RedDotIndexTableMgr.DatasEntry datas = 1;
 }
-

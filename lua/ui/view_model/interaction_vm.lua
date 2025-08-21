@@ -3,16 +3,7 @@ local itemHelper = require("ui.component.interaction.interaction_item_helper")
 local interactionMgr = require("ui.component.interaction.interaction_mgr")
 local interactionActionMgr = require("ui.component.interaction.interaction_action")
 local interactionData = Z.DataMgr.Get("interaction_data")
-local checkHandelData = function(uuid, interactionCfgId)
-  local handleDataList = interactionData:GetData()
-  for i = 1, #handleDataList do
-    if handleDataList[i]:GetNew() and handleDataList[i]:GetUuid() == uuid and handleDataList[i]:GetInteractionCfgId() == interactionCfgId then
-      return false
-    end
-  end
-  return true
-end
-local getInteractiveName = function(uuid, btnId, defaultName, interactionCfgId)
+local asyncgetInteractiveName = function(uuid, btnId, defaultName, interactionCfgId)
   local btnCfg = Z.TableMgr.GetTable("InteractBtnTableMgr").GetRow(btnId)
   if btnCfg == nil then
     return defaultName
@@ -32,7 +23,7 @@ local getInteractiveName = function(uuid, btnId, defaultName, interactionCfgId)
     if btnCfg.BtnType == Z.EInteractionBtnType.EDungeon:ToInt() then
       Z.Placeholder.SetDungeonName(holderParam, actionStageData)
     elseif btnCfg.BtnType == Z.EInteractionBtnType.EHeroNormalDungeon:ToInt() then
-      Z.Placeholder.SetHeroNormalDungeonName(holderParam, actionStageData)
+      Z.Placeholder.AsyncSetHeroNormalDungeonName(holderParam, actionStageData)
     elseif btnCfg.BtnType == Z.EInteractionBtnType.EHeroChallengeDungeon:ToInt() then
       Z.Placeholder.SetHeroChallengeDungeonName(holderParam, actionStageData)
     end
@@ -45,16 +36,16 @@ local addInteractionOption = function(uiData)
   if uiData == nil then
     return
   end
-  if not Z.StatusSwitchMgr:CheckSwitchEnable(Z.EStatusSwitch.ActionInteractive) then
+  if not Z.StatusSwitchMgr:TrySwitchToState(Z.EStatusSwitch.ActionInteractive) then
     return
   end
   local uuid = uiData.uuid
   local interactionCfgId = uiData.interactionCfgId
-  if checkHandelData(uuid, interactionCfgId) == false then
+  if interactionData:HasData(uuid, interactionCfgId) then
     return
   end
   Z.CoroUtil.create_coro_xpcall(function()
-    interactionMgr.InitInteraction(uiData)
+    interactionMgr.AsyncInitInteraction(uiData)
     local data = interactionData:GetData()
     if data then
       interactMgr:SetInteractionCount(#data)
@@ -67,24 +58,22 @@ end
 local doInteractionActionEndTrigger = function(uuid, interactionCfgId, templateId, actionData)
   interactionActionMgr.DoInteractionEndTriggerAction(uuid, interactionCfgId, templateId, actionData)
 end
+local doInteractionActionAbort = function(uuid, interactionCfgId, templateId, actionData)
+  interactionActionMgr.DoInteractionActionAbort(uuid, interactionCfgId, templateId, actionData)
+  local talkVM = Z.VMMgr.GetVM("talk")
+  talkVM.StopWaitNpcTalkState(uuid)
+end
+local doInteractionActionEnd = function(uuid, interactionCfgId, templateId, actionData)
+  interactionActionMgr.DoInteractionActionEnd(uuid, interactionCfgId, templateId, actionData)
+  local talkVM = Z.VMMgr.GetVM("talk")
+  talkVM.StopWaitNpcTalkState(uuid)
+end
 local doInteractionActionBack = function(isSuccess, uuid, templateId, interactionCfgId, actionType)
   interactionActionMgr.DoInteractionActionBack(isSuccess, uuid, templateId, interactionCfgId, actionType)
 end
-local refreshSelectOption = function()
-  if not Z.IsPCUI then
-    return
-  end
-  local handleDataList = interactionData:GetData()
-  for key, value in pairs(handleDataList) do
-    local unit = value:GetUnit()
-    if unit and unit.cont_key_icon then
-      itemHelper.IsShowContKyeIcon(unit, key == 1)
-      itemHelper.SetSelectState(unit, key == 1)
-    end
-  end
-end
 local deleteInteractionOption = function(uiData)
   if uiData == nil then
+    logError("deleteInteractionOption uiData is nil")
     return
   end
   local uuid = uiData.uuid
@@ -96,47 +85,55 @@ local deleteInteractionOption = function(uiData)
     if handlerData:GetNew() then
       if uuid == handlerData:GetUuid() and interactionCfgId == handlerData:GetInteractionCfgId() then
         interactionData:DeleteData(i)
-        Z.EventMgr:Dispatch(Z.ConstValue.RemoveOption, handlerData)
       end
     else
       local triggerData = uiData.triggerData
       if btnType == handlerData:GetInteractionBtnType() and handlerData:IsCanDelete(triggerData) then
         interactionData:DeleteData(i)
-        Z.EventMgr:Dispatch(Z.ConstValue.RemoveOption, handlerData)
       end
     end
   end
   Z.EventMgr:Dispatch(Z.ConstValue.DeActiveOption)
   local data = interactionData:GetData()
   interactMgr:SetInteractionCount(#data)
-  refreshSelectOption()
 end
-local deleteInteractionOptionByUnitName = function(unitName)
-  Z.EventMgr:Dispatch(Z.ConstValue.DeActiveOptionByName, unitName)
+local interactionUIProgressBegin = function(uiData)
+  if uiData == nil then
+    return
+  end
+  local uuid = uiData.uuid
+  local duration = uiData.duration
+  local btnDataList = interactionData:GetData()
+  for i = #btnDataList, 1, -1 do
+    local btnData = btnDataList[i]
+    if btnData:GetUuid() == uuid and btnData:GetInteractionCfgId() == uiData.interactionCfgId then
+      btnData:SetProgressTime(duration)
+      Z.EventMgr:Dispatch(Z.ConstValue.InteractionProgressBegin, btnData)
+    end
+  end
+end
+local interactionUIProgressEnd = function(uiData)
+  if uiData == nil then
+    return
+  end
+  local uuid = uiData.uuid
+  local btnDataList = interactionData:GetData()
+  for i = #btnDataList, 1, -1 do
+    local btnData = btnDataList[i]
+    if btnData:GetUuid() == uuid and btnData:GetInteractionCfgId() == uiData.interactionCfgId then
+      btnData:SetProgressTime(0)
+      Z.EventMgr:Dispatch(Z.ConstValue.InteractionProgressEnd, btnData)
+    end
+  end
 end
 local selectInteractionOption = function(selectIndex)
   if not Z.IsPCUI then
     return
   end
-  local handleDataList = interactionData:GetData()
-  if not handleDataList[selectIndex] then
-    return
-  end
-  for key, value in pairs(handleDataList) do
-    local unit = value:GetUnit()
-    if unit and unit.cont_key_icon then
-      itemHelper.IsShowContKyeIcon(unit, key == selectIndex)
-      itemHelper.SetSelectState(unit, key == selectIndex)
-    end
-  end
   Z.EventMgr:Dispatch(Z.ConstValue.SelectInteractionOption, selectIndex)
 end
 local onPointClickListener = function(index)
   if not Z.IsPCUI then
-    return
-  end
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
-  if stateId ~= Z.PbEnum("EActorState", "ActorStateDefault") and stateId ~= Z.PbEnum("EActorState", "ActorStateSwim") and stateId ~= Z.PbEnum("EActorState", "ActorStatePedalWall") then
     return
   end
   local handleDataList = interactionData:GetData()
@@ -162,20 +159,45 @@ local asyncInteractPersonEntity = function(uuid, cancelToken)
   local ret = proxy.PersonalObjectAction(uuid, cancelToken)
   Z.TipsVM.ShowTips(ret)
 end
+local openInteractionSkipView = function()
+  Z.UIMgr:OpenView("interaction_skip_window")
+end
+local closeInteractionSkipView = function()
+  Z.UIMgr:CloseView("interaction_skip_window")
+end
+local checkHasInterationDataByUidAndEntType = function(uid, entType)
+  local entityVM = Z.VMMgr.GetVM("entity")
+  local handleDataList = interactionData:GetData()
+  for i = 1, #handleDataList do
+    if handleDataList[i]:GetNew() then
+      local dataUid = entityVM.UuidToEntId(handleDataList[i]:GetUuid())
+      local dataEntType = entityVM.UuidToEntType(handleDataList[i]:GetUuid())
+      if dataUid == uid and dataEntType == entType then
+        return true
+      end
+    end
+  end
+  return false
+end
 local ret = {
   OnLogin = onLogin,
   AddInteractionOption = addInteractionOption,
   DeleteInteractionOption = deleteInteractionOption,
-  DeleteInteractionOptionByUnitName = deleteInteractionOptionByUnitName,
   DoInteractionAction = doInteractionAction,
   DoInteractionActionEndTrigger = doInteractionActionEndTrigger,
+  DoInteractionActionAbort = doInteractionActionAbort,
+  DoInteractionActionEnd = doInteractionActionEnd,
   DoInteractionActionBack = doInteractionActionBack,
   SelectInteractionOption = selectInteractionOption,
   OnPointClickListener = onPointClickListener,
-  RefreshSelectOption = refreshSelectOption,
+  InteractionUIProgressBegin = interactionUIProgressBegin,
+  InteractionUIProgressEnd = interactionUIProgressEnd,
   AsyncUserOptionSelect = asyncUserOptionSelect,
   AsyncInterruptCollect = asyncInterruptCollect,
   AsyncInteractPersonEntity = asyncInteractPersonEntity,
-  GetInteractiveName = getInteractiveName
+  AsyncGetInteractiveName = asyncgetInteractiveName,
+  OpenInteractionSkipView = openInteractionSkipView,
+  CloseInteractionSkipView = closeInteractionSkipView,
+  CheckHasInterationDataByUidAndEntType = checkHasInterationDataByUidAndEntType
 }
 return ret

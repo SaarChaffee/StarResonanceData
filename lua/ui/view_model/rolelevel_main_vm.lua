@@ -1,10 +1,11 @@
 local WorldProxy = require("zproxy.world_proxy")
 local itemShowVm = Z.VMMgr.GetVM("item_show")
 local EXPERIENCE_TIPS_COLOR = Color.New(0.9490196078431372, 0.9529411764705882, 0.9098039215686274, 1)
-local openRolelevelAwardPanel = function()
-  Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Explore_03, "rolelevel_mian", function()
-    Z.UIMgr:OpenView("rolelevel_mian")
-  end, Z.ConstValue.UnrealSceneConfigPaths.Backdrop_Explore)
+local openRolelevelAwardPanel = function(pageIndex)
+  local viewData = {
+    pageIndex = tonumber(pageIndex)
+  }
+  Z.UIMgr:OpenView("rolelevel_mian", viewData)
 end
 local closeRolelevelAwardPanel = function()
   Z.UIMgr:CloseView("rolelevel_mian")
@@ -46,11 +47,11 @@ end
 local refreshServerRed = function()
   local data = Z.DataMgr.Get("role_level_data")
   local nowLevel = Z.ContainerMgr.CharSerialize.roleLevel.level
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.RoleLevelMain, getRedCount())
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.RoleLevelMain, getRedCount())
   data:SetRedLevel(nowLevel)
 end
 local refreshClientRed = function()
-  Z.RedPointMgr.RefreshClientNodeCount(E.RedType.RoleLevelMain, getRedCount())
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.RoleLevelMain, getRedCount(), true)
 end
 local checkIsHaveNowAward = function()
   local data = Z.DataMgr.Get("role_level_data")
@@ -71,11 +72,11 @@ local openRoleLevelWindow = function()
     preLevel = roleLevelData:GetRoleLevel(),
     curLevel = Z.ContainerMgr.CharSerialize.roleLevel.level
   }
-  roleLevelData:SetRoleLevle(Z.ContainerMgr.CharSerialize.roleLevel.level)
-  Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.FunctionOpen, "rolelevel_acquire_window", param, 0)
+  roleLevelData:SetRoleLevel(Z.ContainerMgr.CharSerialize.roleLevel.level)
+  Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.FunctionOpen, "main_upgrade_window", param, 0)
 end
 local closeRoleLevelWindow = function()
-  Z.UIMgr:CloseView("rolelevel_acquire_window")
+  Z.UIMgr:CloseView("main_upgrade_window")
 end
 local regWatcher = function(container, dirtys)
   if not dirtys.level then
@@ -192,6 +193,10 @@ local insightBtnCall = function()
     Z.CoroUtil.create_coro_xpcall(function()
       local cancelSource = Z.CancelSource.Rent()
       Z.VMMgr.GetVM("role_info_main").CloseView()
+      if not Z.EntityMgr.PlayerEnt then
+        logError("PlayerEnt is nil")
+        return
+      end
       local curInsightState = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrInsightFlag")).Value
       local insightVm = Z.VMMgr.GetVM("insight")
       if curInsightState == 1 then
@@ -248,6 +253,21 @@ local openRoleLevelWayWindow = function()
     Z.UIMgr:OpenView("rolelevel_way_window", viewData)
   end
 end
+local getRecommendFightValue = function()
+  local value = 0
+  local level = Z.ContainerMgr.CharSerialize.roleLevel.level
+  local data = Z.DataMgr.Get("role_level_data")
+  for _, v in pairs(data.PlayerLevelTableDatas) do
+    if level >= v.Level then
+      value = value + v.FightValue
+    end
+  end
+  return value
+end
+local isBlessExpFuncOn = function()
+  local funcVm = Z.VMMgr.GetVM("gotofunc")
+  return funcVm.CheckFuncCanUse(E.FunctionID.BlessExp, true)
+end
 local ret = {
   OpenRolelevelAwardPanel = openRolelevelAwardPanel,
   CloseRolelevelAwardPanel = closeRolelevelAwardPanel,
@@ -265,6 +285,8 @@ local ret = {
   RefreshClientRed = refreshClientRed,
   InitRoleData = initRoleData,
   OpenRoleLevelWindow = openRoleLevelWindow,
-  OpenRoleLevelWayWindow = openRoleLevelWayWindow
+  OpenRoleLevelWayWindow = openRoleLevelWayWindow,
+  GetRecommendFightValue = getRecommendFightValue,
+  IsBlessExpFuncOn = isBlessExpFuncOn
 }
 return ret

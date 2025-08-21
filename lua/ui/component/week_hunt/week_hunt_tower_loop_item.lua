@@ -10,6 +10,7 @@ function WeekHuntTowerdLoopItem:ctor()
   self.seasonData_ = Z.DataMgr.Get("season_data")
   self.teamVm_ = Z.VMMgr.GetVM("team")
   self.socialVm_ = Z.VMMgr.GetVM("social")
+  self.timerMgr = Z.TimerMgr.new()
 end
 
 function WeekHuntTowerdLoopItem:OnInit()
@@ -39,11 +40,43 @@ function WeekHuntTowerdLoopItem:OnRefresh(data)
     layer = Z.RichTextHelper.ApplyColorTag(layer, "#b5b5b4")
   end
   self.uiBinder.lab_layer_num.text = layer
+  self:StopTimer()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_lock, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_have, true)
+  self.dungeonCfg_ = Z.TableMgr.GetRow("DungeonsTableMgr", self.data_.climbUpLayerRows[1].DungeonId, true)
+  if self.dungeonCfg_ then
+    for _, value in ipairs(self.dungeonCfg_.Condition) do
+      if value[1] == E.ConditionType.TimeInterval then
+        local _, beforeLeftTime_ = Z.TimeTools.GetLeftTimeByTimerId(value[2])
+        self.uiBinder.Ref:SetVisible(self.uiBinder.node_lock, 0 < beforeLeftTime_)
+        self.uiBinder.Ref:SetVisible(self.uiBinder.node_have, beforeLeftTime_ < 0)
+        if 0 < beforeLeftTime_ then
+          local timeStr_ = Z.TimeFormatTools.FormatToDHMS(beforeLeftTime_)
+          self.uiBinder.lab_lock.text = Lang("remainderLimit", {str = timeStr_})
+          local func = function()
+            beforeLeftTime_ = beforeLeftTime_ - 1
+            if 0 < beforeLeftTime_ then
+              local timeStr_ = Z.TimeFormatTools.FormatToDHMS(beforeLeftTime_)
+              self.uiBinder.lab_lock.text = Lang("remainderLimit", {str = timeStr_})
+            else
+              local data_ = self:GetCurData()
+              self:OnRefresh(data_)
+            end
+          end
+          self.timer = self.timerMgr:StartTimer(func, 1, beforeLeftTime_ + 1)
+        end
+        break
+      end
+    end
+  end
   Z.CoroUtil.create_coro_xpcall(function()
     self:loadLayers()
     self:loadHead()
   end)()
   self:setUnitSelectedState(self.IsSelected, true)
+  if self.IsSelected then
+    self.uiView_:OnSelectedLayer(self.data_, true)
+  end
 end
 
 function WeekHuntTowerdLoopItem:loadLayers()
@@ -84,7 +117,7 @@ function WeekHuntTowerdLoopItem:loadHead()
         playerPortraitHgr.InsertNewPortraitBySocialData(unit, socialData, function()
           local idCardVM = Z.VMMgr.GetVM("idcard")
           idCardVM.AsyncGetCardData(charId, self.uiView_.cancelSource:CreateToken())
-        end)
+        end, self.uiView_.cancelSource:CreateToken())
         self.headUnits_[name] = unit
       end
     end
@@ -112,13 +145,21 @@ end
 
 function WeekHuntTowerdLoopItem:OnSelected(isSelected)
   if isSelected then
-    self.uiView_:OnSelectedLayer(self.data_)
+    self.uiView_:OnSelectedLayer(self.data_, false)
   end
   self:setUnitSelectedState(isSelected)
 end
 
 function WeekHuntTowerdLoopItem:OnUnInit()
+  self:StopTimer()
   self:removeUnits()
+end
+
+function WeekHuntTowerdLoopItem:StopTimer()
+  if self.timer then
+    self.timer:Stop()
+    self.timer = nil
+  end
 end
 
 function WeekHuntTowerdLoopItem:removeUnits()

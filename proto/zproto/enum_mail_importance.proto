@@ -6,4 +6,3 @@ enum MailImportance {
     MailImportanceNormal = 0;
     MailImportanceImportant = 1;
 }
-

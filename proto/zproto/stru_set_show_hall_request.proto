@@ -6,4 +6,3 @@ message SetShowHallRequest {
     bool isShow = 2;
     bool isServerSet = 3;
 }
-

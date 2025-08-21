@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
-message TeamActivityVoteResultRequest {
-    int32 retCode = 2;
-    int64 vCharId = 3;
-}
+import "enum_e_team_vote_ret.proto";
 
+message TeamActivityVoteResultRequest {
+    zproto.ETeamVoteRet code = 1;
+    int64 vCharId = 2;
+}

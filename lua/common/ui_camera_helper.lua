@@ -12,6 +12,9 @@ function UICameraHelper.OpenUICamera(cameraState)
   if cameraState == E.CameraState.MiscSystem then
     local ids = ZUtil.Pool.Collections.ZList_int.Rent()
     ids:Add(E.ESystemCameraId.WeaponRole)
+    if Z.IsPCUI then
+      ids:Add(E.ESystemCameraId.WeaponRoleScreen)
+    end
     Z.CameraMgr:EnterRoleInfo(ids)
     ZUtil.Pool.Collections.ZList_int.Return(ids)
   else
@@ -31,7 +34,7 @@ function UICameraHelper.SetCameraFocus(isDepth, focus, aperture)
   if Z.IsPCUI then
     focus = focus or 0
     aperture = aperture or 0
-    Z.CameraFrameCtrl:SetUICameraFoces(isDepth, focus, aperture)
+    Z.CameraFrameCtrl:SetUICameraFocus(isDepth, focus, aperture)
   end
 end
 

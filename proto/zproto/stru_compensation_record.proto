@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_compensation_data.proto";
+import "stru_dirty_mask.proto";
+
+message CompensationRecord {
+    repeated zproto.CompensationRecord.CompensationDataEntry compensationData = 1;
+}

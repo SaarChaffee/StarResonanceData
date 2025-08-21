@@ -6,4 +6,3 @@ enum EDungeonTimerDirection {
     DungeonTimerDirectionDown = 0;
     DungeonTimerDirectionUp = 1;
 }
-

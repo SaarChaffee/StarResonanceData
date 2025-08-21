@@ -22,8 +22,6 @@ message HelpLibraryTableBase {
     mlstring Button = 1927;
     int32 FunctionId = 149;
 }
-
 message HelpLibraryTableMgr {
-    map<int32, .bokura.HelpLibraryTableBase> datas = 1;
+    repeated bokura.HelpLibraryTableMgr.DatasEntry datas = 1;
 }
-

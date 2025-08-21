@@ -23,5 +23,6 @@ message DeviceInfo {
     string IOS_CAID = 18;
     string platformUserTag = 19;
     string MAC = 20;
+    string userAgent = 21;
+    string OLD_CAID = 22;
 }
-

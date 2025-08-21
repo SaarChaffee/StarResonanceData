@@ -5,4 +5,3 @@ package zproto;
 message InviteToWarehouseRequest {
     int64 inviteeCharId = 1;
 }
-

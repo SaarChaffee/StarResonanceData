@@ -3,7 +3,7 @@ local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Quest_trackView = class("Quest_trackView", super)
 
-function Quest_trackView:ctor()
+function Quest_trackView:ctor(parent)
   self.uiBinder = nil
   local assetPath = Z.IsPCUI and "main/track/quest_track_sub_pc" or "main/track/quest_track_sub"
   super.ctor(self, "quest_track_sub", assetPath, UI.ECacheLv.None)
@@ -201,7 +201,6 @@ function Quest_trackView:onQuestStepChange(questId, stepId)
       self:addTipState(questId, E.QuestTrackViewState.StepChange)
     end
   end
-  self:enableTimeLimitUI(true, true)
 end
 
 function Quest_trackView:onQuestFinish(questId)
@@ -212,6 +211,9 @@ function Quest_trackView:onQuestFinish(questId)
 end
 
 function Quest_trackView:onClickQuestTip()
+  if not Z.UIMgr:CheckMainUIActionLimit(Z.RewiredActionsConst.TrackQuest) then
+    return
+  end
   if self.stateData_ then
     local questTrackVM = Z.VMMgr.GetVM("quest_track")
     if questTrackVM.CheckIsAllowReplaceTrack(true) then
@@ -237,21 +239,20 @@ end
 
 function Quest_trackView:enableTimeLimitUI(isEnable, isFirstOpen)
   local questTimeLimitVM = Z.VMMgr.GetVM("quest_time_limit")
-  local parkourData
+  local parkourData = {isOpenView = false}
   local quest = questTimeLimitVM.GetTrackingQuestInTimeLimitStep(false)
-  if quest == nil then
+  if not quest then
+    Z.EventMgr:Dispatch(Z.ConstValue.Quest.SetParkourSingleActive, parkourData)
     return
   end
   local stepTimeLimitInfo = questTimeLimitVM.GetQuestStepTimeLimitInfo(quest)
-  if stepTimeLimitInfo == nil or not stepTimeLimitInfo.IsShowUI then
+  if not stepTimeLimitInfo or not stepTimeLimitInfo.IsShowUI then
+    Z.EventMgr:Dispatch(Z.ConstValue.Quest.SetParkourSingleActive, parkourData)
     return
   end
   self.questData_:SetQuestTimeLimitMessageId(quest.id, stepTimeLimitInfo.FailMessageId, stepTimeLimitInfo.SucceedMessageId)
-  if isEnable then
-    parkourData = {isOpenView = true, isFirstOpen = isFirstOpen}
-  else
-    parkourData = {isOpenView = false}
-  end
+  parkourData.isOpenView = isEnable
+  parkourData.isFirstOpen = isFirstOpen and isEnable or nil
   Z.EventMgr:Dispatch(Z.ConstValue.Quest.SetParkourSingleActive, parkourData)
 end
 

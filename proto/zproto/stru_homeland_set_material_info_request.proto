@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message HomelandSetMaterialInfoRequest {
+    int32 structureType = 1;
+    int32 materialId = 2;
+    bool isOuter = 3;
+}

@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
-message QuitTeamReply {
-    int32 errCode = 1;
-    bool isKickOut = 2;
-}
+import "enum_e_error_code.proto";
 
+message QuitTeamReply {
+    bool isKickOut = 1;
+    zproto.EErrorCode errCode = 2;
+}

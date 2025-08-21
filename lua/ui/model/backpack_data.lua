@@ -10,6 +10,7 @@ function BackpackData:ctor()
     [6] = E.BackpackFuncId.ResonanceSkill
   }
   self.SortState = false
+  self.CurrentUseItemUuid = nil
 end
 
 function BackpackData:Init()

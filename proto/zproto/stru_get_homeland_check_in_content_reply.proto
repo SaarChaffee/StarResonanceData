@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message GetHomelandCheckInContentReply {
+    string checkInContent = 1;
+    zproto.EErrorCode errCode = 2;
+}

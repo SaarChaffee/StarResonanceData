@@ -9,8 +9,6 @@ message PhotographBase {
     string Parameter = 893;
     number_array Value = 616;
 }
-
 message PhotographMgr {
-    map<int32, .bokura.PhotographBase> datas = 1;
+    repeated bokura.PhotographMgr.DatasEntry datas = 1;
 }
-

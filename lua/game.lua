@@ -39,6 +39,7 @@ local game = {
     Z.StageMgr.OnLeaveScene()
     Z.ServiceMgr.OnLeaveScene()
     Z.QteMgr.OnLeaveScene()
+    Z.LocalUserDataMgr.Save()
   end,
   OnLeaveStage = function()
     Z.StageMgr.OnLeaveStage()
@@ -57,20 +58,18 @@ local game = {
     Z.ServiceMgr.OnEnterScene(sceneId)
     Z.QteMgr.OnEnterScene()
     Z.VMMgr.GetVM("snapshot").ChangeSwitchCenceState(false)
-    Z.QueueTipManager:OnEnterScene()
     if sceneId ~= 1 then
       Z.VMMgr.GetVM("season_quest_sub").InitQuestSeason()
       Z.VMMgr.GetVM("explore_monster").InitExploreMonster()
-      Z.VMMgr.GetVM("planetmemory").InitRedpoint()
-      local shopVM = Z.VMMgr.GetVM("shop")
-      shopVM.SetMallItemRed()
     end
   end,
   OnEndSwitchScene = function(sceneId)
   end,
+  OnSceneSwitchComplete = function(sceneId)
+    Z.EventMgr:Dispatch(Z.ConstValue.OnSceneSwitchComplete)
+  end,
   OnDead = function()
     Z.VMMgr.GetVM("dead").OpenDeadView()
-    Z.QueueTipManager:OnEnterScene()
   end,
   OnResurrection = function()
     local deadVm = Z.VMMgr.GetVM("dead")
@@ -80,24 +79,28 @@ local game = {
   end,
   OnResurrectionEnd = function()
     Z.UIMgr:OpenView(Z.ConstValue.MainViewName)
+    Z.ServiceMgr.OnResurrectionEnd()
   end,
   OnLogin = function()
-    Z.RedPointMgr.InitRedDotNode()
+    Z.RedPointMgr.Init()
     Z.ServiceMgr.OnLogin()
     Z.VMMgr.OnLogin()
     Z.DataMgr.Get("head_snapshot_data"):Init()
-    Z.QueueTipManager:OnLogin()
+    Z.QueueTipManager:Init()
   end,
   OnEnterGame = function()
   end,
   OnLogout = function()
+    Z.RedPointMgr.UnInit()
     Z.ServiceMgr.OnLogout()
-    Z.QueueTipManager:OnLogout()
+    Z.QueueTipManager:UnInit()
   end,
-  OnReconnect = function()
+  OnReconnect = function(isSelectedChar)
     Z.NetWaitHelper.SetSwitchingTag(false)
-    Z.ServiceMgr.OnReconnect()
-    Z.DataMgr.OnReconnect()
+    if isSelectedChar then
+      Z.ServiceMgr.OnReconnect()
+      Z.DataMgr.OnReconnect()
+    end
     Z.CameraMgr:SetDefaultCullingMask()
   end,
   OpenLoading = function(loadingType)
@@ -106,8 +109,10 @@ local game = {
   CloseLoading = function()
     Z.VMMgr.GetVM("loading").CloseUILoading()
   end,
-  SetLoadingProgress = function(progress)
-    Z.VMMgr.GetVM("loading").SetLoadingProgress(progress)
+  OnApplicationFocus = function(focus)
+    if focus then
+      Z.EventMgr:Dispatch(Z.ConstValue.GameOnApplicationFocus)
+    end
   end
 }
 return game

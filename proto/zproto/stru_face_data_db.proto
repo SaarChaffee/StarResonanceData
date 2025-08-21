@@ -5,8 +5,7 @@ package zproto;
 import "stru_int_vec3_db.proto";
 
 message FaceDataDb {
-    map<int32, int32> faceInfo = 1;
-    map<int32, .zproto.IntVec3Db> colorInfo = 2;
+    repeated zproto.FaceDataDb.FaceInfoEntry faceInfo = 1;
+    repeated zproto.FaceDataDb.ColorInfoEntry colorInfo = 2;
     float height = 3;
 }
-

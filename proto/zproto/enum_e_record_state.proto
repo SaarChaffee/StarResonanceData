@@ -7,4 +7,3 @@ enum ERecordState {
     ERecordState_Perfect = 1;
     ERecordState_Broken = 2;
 }
-

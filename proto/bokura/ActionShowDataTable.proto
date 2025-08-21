@@ -17,8 +17,6 @@ message ActionShowDataTableBase {
     bool IsUpend = 494;
     bool EnhanceDamping = 1754;
 }
-
 message ActionShowDataTableMgr {
-    map<int64, .bokura.ActionShowDataTableBase> datas = 1;
+    repeated bokura.ActionShowDataTableMgr.DatasEntry datas = 1;
 }
-

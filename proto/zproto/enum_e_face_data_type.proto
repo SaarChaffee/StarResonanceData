@@ -73,4 +73,3 @@ enum EFaceDataType {
     LipstickColor = 40801;
     BeardColor = 40901;
 }
-

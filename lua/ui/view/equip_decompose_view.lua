@@ -6,7 +6,7 @@ local itemClass = require("common.item_binder")
 
 function Equip_decomposeView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "equip_decompose_sub", "equip/equip_decompose_sub", UI.ECacheLv.None)
+  super.ctor(self, "equip_decompose_sub", "equip/equip_decompose_sub", UI.ECacheLv.None, true)
   self.parent_ = parent
   self.equip_list_view_ = equip_list_view_.new(self)
   self.equipTableMgr_ = Z.TableMgr.GetTable("EquipTableMgr")
@@ -14,6 +14,8 @@ function Equip_decomposeView:ctor(parent)
   self.equipVm_ = Z.VMMgr.GetVM("equip_system")
   self.itemsVm_ = Z.VMMgr.GetVM("items")
   self.awardPreviewVM_ = Z.VMMgr.GetVM("awardpreview")
+  self.enchantVm_ = Z.VMMgr.GetVM("equip_enchant")
+  self.itemSortFactoryVm_ = Z.VMMgr.GetVM("item_sort_factory")
 end
 
 function Equip_decomposeView:initUiBinders()
@@ -43,27 +45,32 @@ function Equip_decomposeView:OnActive()
   end)
   self:AddClick(self.oneAddBtn_, function()
     if self.equip_list_view_.curPartId_ then
-      local part = self.equip_list_view_.curPartId_
       self.allEquipInfos_ = self.itemsVm_.GetItemIds(E.BackPackItemPackageType.Equip, self.filterFuncs_, nil)
       local data = {}
       local equipTabMgr = Z.TableMgr.GetTable("EquipTableMgr")
       local itemTabMgr = Z.TableMgr.GetTable("ItemTableMgr")
       local isShowTips = false
+      local dataIndex = 1
       for _, value in pairs(self.allEquipInfos_) do
         local equipTableData = equipTabMgr.GetRow(value.configId)
         local itemTabMgrData = itemTabMgr.GetRow(value.configId)
         local itemInfo = self.itemsVm_.GetItemInfo(value.itemUuid, E.BackPackItemPackageType.Equip)
-        if itemInfo and itemTabMgrData and equipTableData and equipTableData.EquipPart == part and itemTabMgrData.Quality <= E.ItemQuality.Blue then
-          data[value.itemUuid] = value.configId
+        if itemInfo and itemTabMgrData and equipTableData and itemTabMgrData.Quality <= E.ItemQuality.Blue then
+          data[dataIndex] = {
+            itemUuid = value.itemUuid,
+            configId = value.configId
+          }
+          dataIndex = dataIndex + 1
           if self.equipVm_.CheckCanRecast(nil, value.configId) and itemInfo.equipAttr.perfectionValue > Z.Global.EquipPerfectvalDecomTips then
             isShowTips = true
           end
         end
       end
-      if table.zcount(data) == 0 then
+      if dataIndex == 1 then
         Z.TipsVM.ShowTips(150020)
         return
       end
+      table.sort(data, self:getSortFunc())
       if isShowTips then
         self.equipVm_.OpenDayDialog(function()
           self:checkAllItem(data)
@@ -81,10 +88,17 @@ function Equip_decomposeView:OnActive()
   self:BindEvents()
 end
 
+function Equip_decomposeView:getSortFunc()
+  return self.itemSortFactoryVm_.GetItemSortFunc(E.BackPackItemPackageType.Equip, {
+    equipSortType = E.BackPackItemPackageType.Equip,
+    isAscending = false
+  })
+end
+
 function Equip_decomposeView:checkAllItem(data)
   self.equip_list_view_:AddSelectedItems(data)
-  for k, v in pairs(data) do
-    self:onItemSelected(k, v, true)
+  for k, v in ipairs(data) do
+    self:onItemSelected(v.itemUuid, v.configId, true)
   end
 end
 
@@ -224,7 +238,25 @@ function Equip_decomposeView:getMaterialView(itemUuid, configId)
   if equipTableRow then
     for _, row in pairs(equipDecomposeRows) do
       if row.DecomposeId == equipTableRow.DecomposeId and item.equipAttr.perfectionValue >= row.RecastNum[1] and item.equipAttr.perfectionValue <= row.RecastNum[2] then
-        return self.awardPreviewVM_.GetAllAwardPreListByIds(row.DecomposeAwardPackID)
+        self.curEquipEnchantInfo_ = Z.ContainerMgr.CharSerialize.equip.equipEnchant[itemUuid]
+        local awardIds = {
+          row.DecomposeAwardPackID
+        }
+        if self.curEquipEnchantInfo_ then
+          local curEnchantRow = self.enchantVm_.GetEnchantItemByTypeAndLevel(self.curEquipEnchantInfo_.enchantItemTypeId, self.curEquipEnchantInfo_.enchantLevel)
+          if curEnchantRow then
+            for _, v in ipairs(row.EnchantAddAwardPackID) do
+              if v[1] <= curEnchantRow.EnchantItemLevel and v[2] >= curEnchantRow.EnchantItemLevel then
+                awardIds[2] = v[3]
+                break
+              end
+            end
+          end
+        end
+        for i = 1, item.equipAttr.totalRecastCount do
+          awardIds[#awardIds + 1] = row.RecastAddAwardPackID
+        end
+        return self.awardPreviewVM_.GetAllAwardPreListByIds(awardIds)
       end
     end
   end
@@ -249,7 +281,7 @@ function Equip_decomposeView:addMaterial(materialInfo)
     materialItem.awardNumExtend = materialItem.awardNumExtend + (materialInfo.awardNumExtend or 0)
   end
   if self.materialUnitInfo_[configId].unit then
-    local lab = materialItem.awardNumExtend == 0 and materialItem.count or materialItem.count .. "~" .. materialItem.awardNumExtend
+    local lab = materialItem.awardNumExtend == 0 or materialItem.count == materialItem.awardNumExtend and materialItem.count or materialItem.count .. "~" .. materialItem.awardNumExtend
     self.itemClassTab_["material" .. configId]:SetLab(lab)
     return
   end
@@ -268,7 +300,7 @@ function Equip_decomposeView:addMaterial(materialInfo)
       return
     end
     self.itemClassTab_[unitName] = itemClass.new(self)
-    local lab = materialItem.awardNumExtend == 0 and materialItem.count or materialItem.count .. "~" .. materialItem.awardNumExtend
+    local lab = materialItem.awardNumExtend == 0 or materialItem.count == materialItem.awardNumExtend and materialItem.count or materialItem.count .. "~" .. materialItem.awardNumExtend
     self.itemClassTab_[unitName]:Init({
       uiBinder = unit,
       configId = configId,
@@ -306,9 +338,20 @@ function Equip_decomposeView:onConfirmBtnClick()
     Z.TipsVM.ShowTipsLang(410004)
     return
   end
-  Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("EquipDecomposePrompt"), function()
-    self:asyncDecompose()
-  end, nil, E.DlgPreferencesType.Never, E.DlgPreferencesKeyType.Equip_Decompose_Prompt)
+  local func = function()
+    Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("EquipDecomposePrompt"), function()
+      self:asyncDecompose()
+    end, nil, E.DlgPreferencesType.Never, E.DlgPreferencesKeyType.Equip_Decompose_Prompt)
+  end
+  for uuid, value in pairs(self.selectedItems_) do
+    if self.equipVm_.CheckIsFocusEquip(value.configId) then
+      Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("EquipBreakDownExclusiveEquipTips"), function()
+        func()
+      end, nil, E.DlgPreferencesType.Login, E.DlgPreferencesKeyType.Equip_Decompose_Prompt)
+      return
+    end
+  end
+  func()
 end
 
 function Equip_decomposeView:clearAll()

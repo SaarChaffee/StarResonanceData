@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_build_furniture_info.proto";
+import "enum_e_error_code.proto";
+
+message GetHomelandBuildFurnitureInfoReply {
+    repeated zproto.CommunityBuildFurnitureInfo furnitureInfo = 1;
+    zproto.EErrorCode errCode = 2;
+}

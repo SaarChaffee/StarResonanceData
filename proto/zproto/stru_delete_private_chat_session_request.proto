@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message DeletePrivateChatSessionRequest {
-    uint32 targetId = 2;
+    uint32 targetId = 1;
 }
-

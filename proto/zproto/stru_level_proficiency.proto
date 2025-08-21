@@ -6,8 +6,6 @@ import "stru_unlock_proficiency.proto";
 import "stru_dirty_mask.proto";
 
 message LevelProficiency {
-    map<int32, int32> usingProficiencyMap = 1;
-    map<int32, .zproto.UnlockProficiency> unlockProficiencyMap = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.LevelProficiency.UsingProficiencyMapEntry usingProficiencyMap = 1;
+    repeated zproto.LevelProficiency.UnlockProficiencyMapEntry unlockProficiencyMap = 2;
 }
-

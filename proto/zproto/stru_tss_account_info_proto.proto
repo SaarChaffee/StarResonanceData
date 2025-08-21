@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+message TssAccountInfoProto {
+    string account = 1;
+    uint32 accountType = 2;
+    uint32 platId = 3;
+    uint32 gameId = 4;
+    uint32 worldId = 5;
+    uint32 channelId = 6;
+    int64 roleId = 7;
+    bytes antiData = 8;
+    string accountId = 9;
+    string clientIp = 10;
+    string roleName = 11;
+    uint32 index = 12;
+}

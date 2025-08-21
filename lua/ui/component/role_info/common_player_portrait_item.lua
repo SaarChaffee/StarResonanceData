@@ -57,6 +57,7 @@ function CommonPlayerPortraitItem:Refresh()
         local professionSystemTableRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
         if professionSystemTableRow then
           self.unit.img_icon.Img:SetImage(professionSystemTableRow.Icon)
+          self.unit.img_icon.Img:SetColorByHex(professionSystemTableRow.TalentColor)
           self.unit.img_label:SetVisible(true)
         else
           self.unit.img_label:SetVisible(false)

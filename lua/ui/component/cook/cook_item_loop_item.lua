@@ -3,6 +3,7 @@ local CookItem = class("CookItem", super)
 local itemClass = require("common.item_binder")
 
 function CookItem:ctor()
+  self.lifeProfessionData_ = Z.DataMgr.Get("life_profession_data")
 end
 
 function CookItem:OnInit()
@@ -11,6 +12,7 @@ end
 function CookItem:OnRefresh(data)
   self.uiView_ = self.parent.UIView
   self.data_ = data
+  self.isUnlock_ = true
   self.itemClass_ = itemClass.new(self.uiView_)
   local itemPreviewData = {
     uiBinder = self.uiBinder,
@@ -22,6 +24,15 @@ function CookItem:OnRefresh(data)
   itemPreviewData.labType = E.ItemLabType.Num
   self.itemClass_:Init(itemPreviewData)
   self:SetShowClose(false)
+  local conditionDescList = Z.ConditionHelper.GetConditionDescList({
+    self.data_.cookMaterialConfig.UseCondition
+  })
+  if conditionDescList and 0 < #conditionDescList and conditionDescList[1].IsUnlock == false then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_unlock_life, true)
+    self.isUnlock_ = false
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_unlock_life, false)
+  end
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_more_selected, false)
   if self.uiView_:IsNeedSelected(self.data_.configId) then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_more_selected, true)
@@ -38,6 +49,10 @@ function CookItem:OnBeforePlayAnim()
 end
 
 function CookItem:OnPointerClick(go, eventData)
+  if not self.isUnlock_ then
+    Z.TipsVM.ShowTips(1002007)
+    return
+  end
   local flag = self.uiView_:OnSelectedFood(self.data_)
   if flag then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_more_selected, true)

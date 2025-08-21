@@ -4,16 +4,12 @@ local Season_mainView = class("Season_mainView", super)
 
 function Season_mainView:ctor()
   self.uiBinder = nil
-  super.ctor(self, "season_main")
+  super.ctor(self, "season_main", "season/season_main", true)
   self.commonVM_ = Z.VMMgr.GetVM("common")
   self.vm = Z.VMMgr.GetVM("season")
   self.seasonData_ = Z.DataMgr.Get("season_data")
   self.bpCardData_ = Z.DataMgr.Get("battlepass_data")
   self.goToFuncVM_ = Z.VMMgr.GetVM("gotofunc")
-  
-  function self.onInputAction_(inputActionEventData)
-    self:OnInputBack()
-  end
 end
 
 function Season_mainView:OnActive()
@@ -31,7 +27,6 @@ function Season_mainView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   Z.UnrealSceneMgr:SwicthVirtualStyle(E.UnrealSceneSlantingLightStyle.Turquoise)
   self:initBinder()
-  self:RegisterInputActions()
   Z.CoroUtil.create_coro_xpcall(function()
     self:initPages()
   end)()
@@ -55,7 +50,6 @@ end
 
 function Season_mainView:OnDeActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
-  self:UnRegisterInputActions()
   for _, view in pairs(self.curPageViewTab_) do
     view:DeActive()
   end
@@ -169,14 +163,6 @@ function Season_mainView:onPageToggleIsOn(index)
 end
 
 function Season_mainView:startAnimatedShow()
-end
-
-function Season_mainView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Season)
-end
-
-function Season_mainView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Season)
 end
 
 function Season_mainView:OnDestory()

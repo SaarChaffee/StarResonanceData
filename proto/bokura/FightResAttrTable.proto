@@ -7,8 +7,6 @@ message FightResAttrTableBase {
     string Name = 439;
     bool CanCost = 690;
 }
-
 message FightResAttrTableMgr {
-    map<int64, .bokura.FightResAttrTableBase> datas = 1;
+    repeated bokura.FightResAttrTableMgr.DatasEntry datas = 1;
 }
-

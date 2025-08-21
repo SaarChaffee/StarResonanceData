@@ -12,8 +12,6 @@ message ProfileImageTableBase {
     string Image = 958;
     int32 Unlock = 1666;
 }
-
 message ProfileImageTableMgr {
-    map<int32, .bokura.ProfileImageTableBase> datas = 1;
+    repeated bokura.ProfileImageTableMgr.DatasEntry datas = 1;
 }
-

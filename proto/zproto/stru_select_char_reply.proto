@@ -2,10 +2,8 @@ syntax = "proto3";
 
 package zproto;
 
-import "stru_char_info_db.proto";
+import "enum_e_error_code.proto";
 
 message SelectCharReply {
-    int32 errCode = 1;
-    zproto.CharInfoDb charInfo = 2;
+    zproto.EErrorCode errCode = 1;
 }
-

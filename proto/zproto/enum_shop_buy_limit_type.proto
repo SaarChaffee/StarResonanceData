@@ -6,4 +6,3 @@ enum ShopBuyLimitType {
     ShopBuyLimitNone = 0;
     ShopBuyLimitLevel = 1;
 }
-

@@ -2,7 +2,6 @@ local super = require("ui.ui_view_base")
 local Album_mainView = class("Album_mainView", super)
 
 function Album_mainView:ctor()
-  self.panel = nil
   self.uiBinder = nil
   super.ctor(self, "album_main")
   self.viewData = nil
@@ -30,6 +29,7 @@ function Album_mainView:ctor()
       self.commonVM_.CommonPlayTogAnim(self.uiBinder.binder_temporary_album_union.anim_tog, cancelSource)
     end
   }
+  self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
 end
 
 function Album_mainView:OnActive()
@@ -63,13 +63,7 @@ function Album_mainView:initView()
 end
 
 function Album_mainView:setTogOnByOpenSource()
-  if self.viewData and self.viewData == E.AlbumOpenSource.Personal then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.temporary_album_node, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.cloud_album_node, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.temporary_album_union_node, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.cloud_album_union_node, false)
-    self.uiBinder.binder_cloud_album.tog_tab_select.isOn = true
-  elseif self.viewData and self.viewData == E.AlbumOpenSource.Union or self.viewData == E.AlbumOpenSource.UnionElectronicScreen then
+  if self.viewData and self.viewData == E.AlbumOpenSource.Union or self.viewData == E.AlbumOpenSource.UnionElectronicScreen then
     self.uiBinder.Ref:SetVisible(self.uiBinder.temporary_album_node, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.cloud_album_node, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.temporary_album_union_node, false)
@@ -243,8 +237,10 @@ end
 
 function Album_mainView:checkIsShowUnion()
   local isShow = self.albumMainVM_.CheckIsShowUnion()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.temporary_album_union_node, isShow)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.cloud_album_union_node, isShow)
+  local isOn = self.gotoFuncVM_.CheckFuncCanUse(E.AlbumFuncId.UnionTemporary, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.temporary_album_union_node, isShow and isOn)
+  isOn = self.gotoFuncVM_.CheckFuncCanUse(E.AlbumFuncId.UnionCloud, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.cloud_album_union_node, isShow and isOn)
 end
 
 return Album_mainView

@@ -12,12 +12,15 @@ function BuffTipsItem:OnRefresh(data)
   self.uiBinder.Ref:SetVisible(self.uiBinder.lab_digit, data.Layer > 1)
   self.uiBinder.lab_digit.text = data.Layer
   self.uiBinder.lab_name.text = data.Name
-  self.uiBinder.lab_level.text = Lang("Lv") .. data.Level
+  self.uiBinder.lab_level.text = Lang("Level", {
+    val = data.Level
+  })
   local size = self.uiBinder.lab_info:GetPreferredValues(data.Desc, 402, 31)
   self.uiBinder.lab_info.text = data.Desc
   if not data.DurationTime or data.DurationTime <= 0 then
     self.uiBinder.lab_time.text = ""
     self.uiBinder.img_progress:Stop()
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_progress, false)
   else
     local nowTime = Z.NumTools.GetPreciseDecimal(Z.ServerTime:GetServerTime() / 1000, 1)
     local nowValue = nowTime - data.CreateTime
@@ -28,6 +31,7 @@ function BuffTipsItem:OnRefresh(data)
       begin = 1 - nowValue / data.DurationTime
     end
     self.uiBinder.img_progress:Play(begin, 0, data.DurationTime - nowValue, nil, data.BuffTime)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_progress, true)
   end
   local offset = 0
   if self.Index == #self.parent.DataList then

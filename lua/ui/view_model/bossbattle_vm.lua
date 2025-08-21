@@ -61,6 +61,9 @@ local displayBossUI = function(bossUuid, isEnable, isALive)
       closeBossUI()
     end
     setBossUuid(uuid)
+    if not monsterData.MainViewHideTag then
+      return
+    end
     Z.UIMgr:OpenView("bossbattle")
   else
     setBossUuid(nil)
@@ -94,6 +97,10 @@ local checkBossBattleComplete = function()
   end
   return true
 end
+local setMainViewHideTag = function(isVisible)
+  monsterData:SetMainViewHideTag(isVisible)
+  displayBossUI(-1)
+end
 local ret = {
   SetBossTop = setBossTop,
   DisplayBossUI = displayBossUI,
@@ -101,6 +108,7 @@ local ret = {
   SetBossUuid = setBossUuid,
   GetBossUuid = getBossUuid,
   CheckHasBoss = checkHasBoss,
-  CheckBossBattleComplete = checkBossBattleComplete
+  CheckBossBattleComplete = checkBossBattleComplete,
+  SetMainViewHideTag = setMainViewHideTag
 }
 return ret

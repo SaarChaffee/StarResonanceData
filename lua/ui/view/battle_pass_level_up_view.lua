@@ -7,6 +7,7 @@ function BattlePassLevelUpTipsView:ctor()
 end
 
 function BattlePassLevelUpTipsView:OnActive()
+  Z.AudioMgr:Play("UI_Event_Magic_B")
   self:setViewInfo()
 end
 
@@ -18,10 +19,7 @@ function BattlePassLevelUpTipsView:OnDeActive()
 end
 
 function BattlePassLevelUpTipsView:onStartAnimEnd()
-  self.timerMgr:StartTimer(function()
-    self:playAnimation("anim_cont_level_up_tpl_end")
-    Z.UIMgr:CloseView(self.viewConfigKey)
-  end, 1.5)
+  Z.UIMgr:CloseView(self.viewConfigKey)
 end
 
 function BattlePassLevelUpTipsView:onStartAnimShow()

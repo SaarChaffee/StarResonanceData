@@ -7,4 +7,3 @@ enum EInteractionType {
     EInteractionTypePlayer = 1;
     EInteractionTypeNotPlayer = 2;
 }
-

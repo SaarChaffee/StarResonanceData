@@ -2,9 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
+
 message GetCurSeasonReply {
     int32 seasonId = 1;
     int32 day = 2;
-    int32 errCode = 3;
+    zproto.EErrorCode errCode = 3;
 }
-

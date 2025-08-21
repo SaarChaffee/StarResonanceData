@@ -9,6 +9,4 @@ message EquipInfo {
     uint64 itemUuid = 2;
     uint32 equipSlotRefineLevel = 3;
     uint32 equipSlotRefineFailedCount = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

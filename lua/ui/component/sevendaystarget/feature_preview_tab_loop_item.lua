@@ -38,6 +38,7 @@ function FeaturePreviewTabLoopItem:OnRefresh(data)
 end
 
 function FeaturePreviewTabLoopItem:OnUnInit()
+  sevendaysRed.RemoveFuncPreviewRedItem(self.data.Id, self.parentUIView)
 end
 
 function FeaturePreviewTabLoopItem:OnRecycle()

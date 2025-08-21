@@ -8,4 +8,3 @@ message TakeOutWarehouseRequest {
     int32 itemNum = 3;
     int64 ownerCharId = 4;
 }
-

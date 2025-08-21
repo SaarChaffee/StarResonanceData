@@ -6,28 +6,38 @@ local checkIsSameGroup = function(sceneId)
   if curSceneId == sceneId then
     return true
   end
-  local curMapInfoRow = Z.TableMgr.GetRow("MapInfoTableMgr", curSceneId)
-  local targetMapInfoRow = Z.TableMgr.GetRow("MapInfoTableMgr", sceneId)
+  local curMapInfoRow = Z.TableMgr.GetRow("MapInfoTableMgr", curSceneId, true)
+  local targetMapInfoRow = Z.TableMgr.GetRow("MapInfoTableMgr", sceneId, true)
   if curMapInfoRow and targetMapInfoRow and curMapInfoRow.GroupId ~= 0 and curMapInfoRow.GroupId == targetMapInfoRow.GroupId then
     return true
   end
   return false
 end
-local checekSceneID = function(sceneId)
-  local mainvm = Z.VMMgr.GetVM("mainui")
-  if not mainvm.CheckSceneShowMainMap() then
-    Z.TipsVM.ShowTipsLang(121002)
+local checkSceneID = function(sceneId, isIgnoreTips)
+  local mainVM = Z.VMMgr.GetVM("mainui")
+  if not mainVM.CheckSceneShowMainMap() then
+    if not isIgnoreTips then
+      Z.TipsVM.ShowTipsLang(121002)
+    end
     return false
   elseif not checkIsSameGroup(sceneId) then
-    Z.TipsVM.ShowTipsLang(121004)
+    if not isIgnoreTips then
+      Z.TipsVM.ShowTipsLang(121004)
+    end
     return false
   else
     return true
   end
-  return true
 end
 local openEnlargedminimap = function(sceneId, callback)
-  if checekSceneID(sceneId) == true then
+  if sceneId ~= nil then
+    sceneId = tonumber(sceneId)
+    if sceneId == nil or sceneId == 0 then
+      logError("[OpenEnlargedminimap] error, sceneId is nil or 0")
+      return
+    end
+  end
+  if checkSceneID(sceneId) == true then
     local viewData = {}
     viewData.sceneId = sceneId
     viewData.callback = callback
@@ -41,6 +51,6 @@ local ret = {
   OpenEnlargedminimap = openEnlargedminimap,
   OpenDungeonMainWindow = openDungeonMainWindow,
   CheckIsSameGroup = checkIsSameGroup,
-  ChecekSceneID = checekSceneID
+  CheckSceneID = checkSceneID
 }
 return ret

@@ -12,8 +12,6 @@ message ZoneEntityGlobalTableBase {
     number_array ZoneParam = 444;
     int32 SourceType = 380;
 }
-
 message ZoneEntityGlobalTableMgr {
-    map<int32, .bokura.ZoneEntityGlobalTableBase> datas = 1;
+    repeated bokura.ZoneEntityGlobalTableMgr.DatasEntry datas = 1;
 }
-

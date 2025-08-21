@@ -11,9 +11,8 @@ function StyleIconLoopItem:OnInit()
 end
 
 function StyleIconLoopItem:OnRefresh(data)
-  self.isSelected_ = false
   self.styleData_ = data
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.IsSelected)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_red, false)
   local faceId = self.styleData_.Id
   if 0 < faceId then
@@ -31,9 +30,8 @@ function StyleIconLoopItem:OnRefresh(data)
 end
 
 function StyleIconLoopItem:OnSelected(isSelected, isClick)
-  self.isSelected_ = isSelected
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, isSelected)
-  if self.isSelected_ then
+  if self.IsSelected then
     if isClick then
       Z.AudioMgr:Play("sys_general_frame")
     end
@@ -42,14 +40,13 @@ function StyleIconLoopItem:OnSelected(isSelected, isClick)
 end
 
 function StyleIconLoopItem:OnPointerClick(go, eventData)
-  if not self.isSelected_ then
+  if not self.IsSelected then
     self.parentView_:OnClickFaceStyle(self.styleData_.Id)
   end
 end
 
 function StyleIconLoopItem:OnUnInit()
   Z.EventMgr:RemoveObjAll(self)
-  self.isSelected_ = false
   self.parentView_ = nil
 end
 

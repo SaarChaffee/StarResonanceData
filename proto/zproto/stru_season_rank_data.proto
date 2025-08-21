@@ -5,7 +5,5 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message SeasonRankData {
-    map<uint32, uint32> seasonRanks = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.SeasonRankData.SeasonRanksEntry seasonRanks = 1;
 }
-

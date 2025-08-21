@@ -2,12 +2,13 @@ syntax = "proto3";
 
 package zproto;
 
+import "stru_community_homeland_recipe.proto";
 import "stru_dirty_mask.proto";
 
 message CommunityHomeData {
-    int32 sceneId = 1;
-    int64 communityId = 2;
-    int32 fieldId = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    int64 communityId = 1;
+    int64 homelandId = 2;
+    int32 buyCount = 3;
+    repeated zproto.CommunityHomeData.UnlockedRecipesEntry unlockedRecipes = 4;
+    int32 level = 5;
 }
-

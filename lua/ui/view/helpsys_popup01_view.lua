@@ -26,6 +26,11 @@ function Helpsys_popup01View:OnActive()
   if data == nil or next(dataTable) == nil then
     return
   end
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   self.uiBinder.lab_title_name.text = data.Title
   Z.CoroUtil.create_coro_xpcall(function()
     local uiUnit

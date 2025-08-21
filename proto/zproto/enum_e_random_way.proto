@@ -9,4 +9,3 @@ enum ERandomWay {
     ERandomWayRate = 3;
     ERandomWayWeight = 4;
 }
-

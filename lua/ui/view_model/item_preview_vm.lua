@@ -12,7 +12,7 @@ function ItemPreview.GotoPreview(configId)
 end
 
 function ItemPreview.GetIsHavePreview(configId)
-  if fashionVm.CheckIsFashion(configId) then
+  if fashionVm.CheckIsFashionPreview(configId) then
     return true
   end
   local hasPreview, _ = ItemPreview.GetIsHavePreviewAward(configId)

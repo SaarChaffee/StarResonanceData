@@ -13,8 +13,6 @@ message MonsterExploreTableBase {
     float ModelRetio = 941;
     mlstring Condition = 1634;
 }
-
 message MonsterExploreTableMgr {
-    map<int32, .bokura.MonsterExploreTableBase> datas = 1;
+    repeated bokura.MonsterExploreTableMgr.DatasEntry datas = 1;
 }
-

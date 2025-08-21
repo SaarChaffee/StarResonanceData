@@ -17,8 +17,6 @@ function Bag_selectpack_popup_newView:OnActive()
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
   self.uiBinder.node_effect:CreatEFFGO(windowOpenEffect, Vector3.zero)
   self.uiBinder.node_effect:SetEffectGoVisible(true)
-  self.uiBinder.anim:PlayOnce("anim_bag_selectpack_popup_new_open_01")
-  self.uiBinder.anim_dotween:Play(Z.DOTweenAnimType.Open)
   self.uiBinder.btn_no:AddListener(function()
     Z.UIMgr:CloseView(self.viewConfigKey)
   end)
@@ -41,7 +39,13 @@ function Bag_selectpack_popup_newView:OnDeActive()
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_effect)
 end
 
-function Bag_selectpack_popup_newView:OnRefresh()
+function Bag_selectpack_popup_newView:OnShow()
+  self.uiBinder.anim:PlayOnce("anim_bag_selectpack_popup_new_open_01")
+  self.uiBinder.anim_dotween:Play(Z.DOTweenAnimType.Open)
+end
+
+function Bag_selectpack_popup_newView:OnHide()
+  self.uiBinder.anim:PlayOnce("anim_bag_selectpack_popup_new_open_start")
 end
 
 function Bag_selectpack_popup_newView:initSelectData()
@@ -115,18 +119,8 @@ function Bag_selectpack_popup_newView:useItem()
   local selectData = {
     [self.selectIndex_] = 1
   }
-  local param = {}
-  param.useNum = 1
+  local param = itemsVM.AssembleUseItemParam(self.viewData.itemId, self.viewData.itemUuid, 1)
   param.select = selectData
-  if self.viewData.itemUuid ~= nil then
-    param.itemUuid = self.viewData.itemUuid
-  else
-    local itemData = Z.DataMgr.Get("items_data")
-    local uuidList = itemData:GetItemUuidsByConfigId(self.viewData.itemId)
-    if uuidList and 0 < #uuidList then
-      param.itemUuid = uuidList[1]
-    end
-  end
   itemsVM.AsyncUseItemByUuid(param, self.cancelSource:CreateToken())
 end
 

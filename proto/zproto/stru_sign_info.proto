@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_sign_status_list.proto";
+import "stru_dirty_mask.proto";
+
+message SignInfo {
+    repeated zproto.SignInfo.SignInfoEntry signInfo = 1;
+}

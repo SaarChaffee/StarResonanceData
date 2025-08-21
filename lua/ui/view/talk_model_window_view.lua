@@ -77,10 +77,10 @@ function Talk_model_windowView:OnRefresh()
     self:refreshCameraTrans()
     self:disableModelDynamicBone()
     local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
-    coro(1, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
+    coro(1, Z.PlayerLoopTiming.LastUpdate, self.cancelSource:CreateToken())
     self:refreshSpeakerModelBeforeEnter()
     local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
-    coro(1, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
+    coro(1, Z.PlayerLoopTiming.LastUpdate, self.cancelSource:CreateToken())
     local isNeedWaitEnter = self:newSpeakerEnter()
     if isNeedWaitEnter then
       local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayForLua)
@@ -98,14 +98,13 @@ function Talk_model_windowView:OnRefresh()
 end
 
 function Talk_model_windowView:OnDeActive()
-  self.talkVM_.CloseCommonTalkDialog()
   Z.SceneMaskMgr:ClearSceneMaskTexture(self.viewConfigKey)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   self.lastSpeakerPosDict_ = nil
   for _, model in pairs(self.modelDict_) do
-    model.RenderComp:SetGlobalOutLineMagnification(1, Z.ModelRenderType.Hair)
-    model.RenderComp:SetGlobalOutLineMagnification(1, Z.ModelRenderType.HEAD)
-    model.RenderComp:SetGlobalOutLineMagnification(1, Z.ModelRenderType.BODY)
+    model.RenderComp:SetGlobalOutLineMagnification(1, Z.ModelRenderMask.Hair)
+    model.RenderComp:SetGlobalOutLineMagnification(1, Z.ModelRenderMask.HEAD)
+    model.RenderComp:SetGlobalOutLineMagnification(1, Z.ModelRenderMask.BODY)
   end
   self.modelDict_ = nil
   self.isInit_ = nil
@@ -115,9 +114,11 @@ function Talk_model_windowView:OnDeActive()
   self.modelOutlineMagnificationHead_ = nil
   self.modelOutlineMagnificationBody_ = nil
   Z.EventMgr:RemoveObjAll(self)
+  self.modelTalkComp_:UnInit()
 end
 
 function Talk_model_windowView:asyncInit()
+  self.modelTalkComp_:Init()
   local coro = Z.CoroUtil.async_to_sync(self.modelTalkComp_.AsyncInit)
   coro(self.modelTalkComp_)
   self:loadSpeakerModel()
@@ -130,8 +131,13 @@ function Talk_model_windowView:disableModelDynamicBone()
   for _, data in ipairs(self.viewData.SpeakerList) do
     local speakerId = self.curSpeakerPosDict_[data.SpeakerPosId]
     local model = self.modelDict_[speakerId]
-    if model and isChangeSpeaker then
-      model:SetLuaAttr(Z.ModelAttr.EModelDynamicBoneEnabled, false)
+    if model then
+      if isChangeSpeaker then
+        model:SetLuaAttr(Z.ModelAttr.EModelDynamicBoneEnabled, false)
+      end
+      self:setModelAction(model, data.ActionList, speakerId == 0)
+      self:setModelIdleAnim(model, data.IdleAnimation)
+      self:setModelEmotion(model, data.NewEmotionId)
     end
   end
 end
@@ -157,13 +163,8 @@ function Talk_model_windowView:refreshSpeakerModelAfterEnter()
   for _, data in ipairs(self.viewData.SpeakerList) do
     local speakerId = self.curSpeakerPosDict_[data.SpeakerPosId]
     local model = self.modelDict_[speakerId]
-    if model then
-      if isChangeSpeaker then
-        model:SetLuaAttr(Z.ModelAttr.EModelDynamicBoneEnabled, true)
-      end
-      self:setModelAction(model, data.ActionList, speakerId == 0)
-      self:setModelIdleAnim(model, data.IdleAnimation, data.MaleIdleAnimation)
-      self:setModelEmotion(model, data.NewEmotionId)
+    if model and isChangeSpeaker then
+      model:SetLuaAttr(Z.ModelAttr.EModelDynamicBoneEnabled, true)
     end
   end
 end
@@ -181,7 +182,7 @@ function Talk_model_windowView:setModelStencil(model, data)
 end
 
 function Talk_model_windowView:setModelPos(model, data)
-  self.modelTalkComp_:SetModelPos(model, data.SpeakerPosId, Vector3.New(data.SpeakerPosOffset, 0, 0), data.SpeakerPosFade, self.cancelSource:CreateToken())
+  self.modelTalkComp_:SetModelPos(model, data.SpeakerPosId, Vector3.New(data.SpeakerPosOffset, data.SpeakerHeightOffset, 0), data.SpeakerPosFade, self.cancelSource:CreateToken())
 end
 
 function Talk_model_windowView:setModelRotation(model, data)
@@ -205,7 +206,7 @@ function Talk_model_windowView:setModelLookAt(model, data)
       model:SetLuaIntAttr(Z.ModelAttr.EModelDialogueLookAtPos, index)
       local targetSpeakerId = self.curSpeakerPosDict_[targetData.SpeakerPosId]
       local targetModel = self.modelDict_[targetSpeakerId]
-      Z.ModelHelper.SetLookAtModel(model, targetModel, data.LookAtPointName)
+      Z.ModelHelper.SetLookAtModel(model, targetModel.ModelUuid, data.LookAtPointName)
     end
   elseif lookAtType == ELookAtType.Position then
     local pos = data.LookAtPos
@@ -219,19 +220,16 @@ function Talk_model_windowView:setModelAction(model, actionList, isPlayer)
     for _, name in ipairs(actionList) do
       clipNames:Add(name)
     end
-    model:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent(clipNames, 0.2, -1, nil, true, isPlayer))
+    model:SetLuaAnimBase(Z.AnimBaseData.Rent(clipNames, 0.2, -1, nil, true, isPlayer))
     clipNames:Recycle()
   else
-    model:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent(Panda.ZAnim.EAnimBase.EIdle))
+    model:SetLuaAnimBase(Z.AnimBaseData.Rent(Panda.ZAnim.EAnimBase.EIdle))
   end
 end
 
-function Talk_model_windowView:setModelIdleAnim(model, anim, maleAnim)
+function Talk_model_windowView:setModelIdleAnim(model, anim)
   if anim and anim ~= "" then
     local clip = anim
-    if maleAnim and maleAnim ~= "" and model.EModelGender == Panda.ZGame.EModelGender.EM then
-      clip = maleAnim
-    end
     local data = Z.AnimBaseData.Rent(clip, Panda.ZAnim.EAnimBase.EIdle)
     model:SetLuaAttr(Z.ModelAttr.EModelAnimOverrideByName, data)
   end
@@ -239,9 +237,9 @@ end
 
 function Talk_model_windowView:setModelEmotion(model, emotionId)
   if 0 < emotionId then
-    model:SetAttrEmoteInfo(emotionId, -1, true)
+    model:SetLuaAttrEmoteInfo(emotionId, -1, true, false, 0, false, true)
   else
-    model:SetAttrEmoteInfo(0)
+    model:SetLuaAttrEmoteInfo(0)
   end
 end
 
@@ -255,7 +253,7 @@ function Talk_model_windowView:loadSpeakerModel()
     if not model then
       local preFunc = function(model)
         model:SetLuaAttr(Z.ModelAttr.EInModelTalk, true)
-        self:setModelIdleAnim(model, data.IdleAnimation, data.MaleIdleAnimation)
+        self:setModelIdleAnim(model, data.IdleAnimation)
       end
       if speakerId == 0 then
         local coro = Z.CoroUtil.async_to_sync(self.modelTalkComp_.CloneModelByLua)
@@ -278,11 +276,11 @@ function Talk_model_windowView:loadSpeakerModel()
         end
       end
       if model then
-        Z.ModelHelper.SetAlpha(model, Z.ModelRenderType.All, 0, Panda.ZGame.EModelAlphaSourceType.EDisappear, false)
+        Z.ModelHelper.SetAlpha(model, Z.ModelRenderMask.All, 0, Panda.ZGame.EModelAlphaSourceType.EDisappear, false)
         if model.RenderComp then
-          model.RenderComp:SetGlobalOutLineMagnification(self.modelOutlineMagnificationHair_, Z.ModelRenderType.Hair)
-          model.RenderComp:SetGlobalOutLineMagnification(self.modelOutlineMagnificationHead_, Z.ModelRenderType.HEAD)
-          model.RenderComp:SetGlobalOutLineMagnification(self.modelOutlineMagnificationBody_, Z.ModelRenderType.BODY)
+          model.RenderComp:SetGlobalOutLineMagnification(self.modelOutlineMagnificationHair_, Z.ModelRenderMask.Hair)
+          model.RenderComp:SetGlobalOutLineMagnification(self.modelOutlineMagnificationHead_, Z.ModelRenderMask.HEAD)
+          model.RenderComp:SetGlobalOutLineMagnification(self.modelOutlineMagnificationBody_, Z.ModelRenderMask.BODY)
         end
         self.modelDict_[speakerId] = model
       end
@@ -375,9 +373,8 @@ function Talk_model_windowView:setModelFadeOut(model, isInstant)
 end
 
 function Talk_model_windowView:refreshLipAnim(dialogData)
-  local lipSyncDataClass = Panda.ZGame.LipSyncData
   for _, model in pairs(self.modelDict_) do
-    model:SetLuaAttr(Z.ModelAttr.EModelLipSync, lipSyncDataClass.New(""))
+    model:SetLuaAttrLipData()
   end
   if dialogData.IsDisableLip then
     return
@@ -388,16 +385,13 @@ function Talk_model_windowView:refreshLipAnim(dialogData)
     if model and not temp[npcId] then
       temp[npcId] = true
       local audioPath = dialogData.AudioPath
-      local lipData
       if audioPath and audioPath ~= "" then
-        lipData = lipSyncDataClass.New(audioPath)
+        model:SetLuaAttrLipData(0, audioPath)
       else
         local content = self:getContentStr(dialogData.Content)
         local time = math.max(string.zlenNormalize(content) / 20, 0.5) * 2
-        lipData = lipSyncDataClass.New(time)
+        model:SetLuaAttrLipData(time)
       end
-      model:SetLuaAttr(Z.ModelAttr.EModelLipSync, lipData)
-      model:SetLuaIntAttr(Z.ModelAttr.EModelLipSyncEmotion, dialogData.LipId)
     end
   end
 end
@@ -429,13 +423,28 @@ function Talk_model_windowView:asyncCaptureScreen()
   local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
   coro(1, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
   self.modelTalkComp_:SetTalkCullingMaskActive(false)
-  self.uiBinder.scenemask:CustomCaptureScreen(self.viewConfigKey, true)
-  local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
-  coro(1, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
+  Z.CameraMgr:RefreshCameraCullingMask(false, false)
+  self.isCaptureScreenCompleted_ = false
+  self.uiBinder.scenemask:CustomCaptureScreen(self.viewConfigKey, true, function(texture)
+    self:onCaptureScreenCompleted()
+  end)
+  while not self.isCaptureScreenCompleted_ do
+    if not self.IsActive then
+      logError("[ModelTalk] \230\136\170\229\155\190\230\151\182\229\133\179\233\151\173\231\149\140\233\157\162")
+      return
+    end
+    local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
+    coro(1, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
+  end
+  Z.UIMgr:UpdateCameraState()
   self.modelTalkComp_:SetTalkCullingMaskActive(true)
   self.modelTalkComp_:SetTalkCameraParamActive(true)
   local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayFrameForLua)
   coro(1, Z.PlayerLoopTiming.Update, self.cancelSource:CreateToken())
+end
+
+function Talk_model_windowView:onCaptureScreenCompleted()
+  self.isCaptureScreenCompleted_ = true
 end
 
 function Talk_model_windowView:isChangeSpeaker()

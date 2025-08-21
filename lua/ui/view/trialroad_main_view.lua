@@ -5,6 +5,7 @@ local loopListView = require("ui.component.loop_list_view")
 local trialroad_challenge_loop_item = require("ui.component.trialroad.trialroad_challenge_loop_item")
 local trialroad_room_loop_item = require("ui.component.trialroad.trialroad_room_loop_item")
 local trialRoadRed_ = require("rednode.trialroad_red")
+local competencyAssessView = require("ui.view.competency_assessment_sub_view")
 
 function Trialroad_mainView:ctor()
   self.uiBinder = nil
@@ -12,13 +13,17 @@ function Trialroad_mainView:ctor()
   self.trialRoadVM_ = Z.VMMgr.GetVM("trialroad")
   self.trialRoadData_ = Z.DataMgr.Get("trialroad_data")
   self.helpsysVM_ = Z.VMMgr.GetVM("helpsys")
-  self.planetmemoryVm_ = Z.VMMgr.GetVM("planetmemory")
   self.curTrialRoadType_ = E.TrialRoadType.Power
   self.selectRoom_ = nil
   self.dungeonsTableMgr_ = Z.TableMgr.GetTable("DungeonsTableMgr")
   self.isQuantityEnough_ = false
   self.isRFEnough_ = false
+  self.challengeTargetsUnits_ = {}
+  self.challengeTargets_ = {}
+  self.unitTokenDict_ = {}
   self.socialVm_ = Z.VMMgr.GetVM("social")
+  self.capabilityAssessVM_ = Z.VMMgr.GetVM("capability_assessment")
+  self.competencyAssessView_ = competencyAssessView.new()
 end
 
 function Trialroad_mainView:OnActive()
@@ -28,14 +33,24 @@ function Trialroad_mainView:OnActive()
   self:initBtnEvent()
   self:bindEvent()
   self:initLoopListView()
+  self:showOrHideTop(false)
+end
+
+function Trialroad_mainView:showOrHideTop(hide)
+  self.uiBinder.node_title_close_new.Ref.UIComp:SetVisible(not hide)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_type, not hide)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.loop_item_left, not hide)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_treasure, not hide)
 end
 
 function Trialroad_mainView:bindEvent()
   Z.EventMgr:Add(Z.ConstValue.TrialRoad.RefreshRoomTarget, self.refreshChallengeInfo, self)
+  Z.EventMgr:Add(Z.ConstValue.CompetencyAssess.IsHideLeftView, self.showOrHideTop, self)
 end
 
 function Trialroad_mainView:unBindEvent()
   Z.EventMgr:Remove(Z.ConstValue.TrialRoad.RefreshRoomTarget, self.refreshChallengeInfo, self)
+  Z.EventMgr:Remove(Z.ConstValue.CompetencyAssess.IsHideLeftView, self.showOrHideTop, self)
 end
 
 function Trialroad_mainView:initBinder()
@@ -48,6 +63,8 @@ function Trialroad_mainView:initBinder()
   self.enterBtn_ = self.uiBinder.btn_go_copy
   self.levelLimit_ = self.uiBinder.img_level
   self.lab_level_limit = self.uiBinder.lab_level
+  self.lab_suggest_ = self.uiBinder.lab_recommendations
+  self.btnCompetencyAssess_ = self.uiBinder.btn_strength_assessment
 end
 
 function Trialroad_mainView:initBtnEvent()
@@ -81,15 +98,11 @@ function Trialroad_mainView:initBtnEvent()
 end
 
 function Trialroad_mainView:initLoopListView()
-  self.challengeListView_ = loopListView.new(self, self.uiBinder.group_challenge.loop_item, trialroad_challenge_loop_item, "trialroad_list_tpl")
-  self.challengeListView_:Init({})
   self.roomListView_ = loopListView.new(self, self.uiBinder.loop_item_left, trialroad_room_loop_item, "trialroad_picture_tpl")
   self.roomListView_:Init({})
 end
 
 function Trialroad_mainView:unInitLoopListView()
-  self.challengeListView_:UnInit()
-  self.challengeListView_ = nil
   self.roomListView_:UnInit()
   self.roomListView_ = nil
 end
@@ -104,8 +117,15 @@ end
 function Trialroad_mainView:OnDeActive()
   self:unBindEvent()
   self:unInitLoopListView()
-  self.planetmemoryVm_.CloseMonsterTips()
+  self.trialRoadVM_.CloseMonsterTips()
+  self.competencyAssessView_:DeActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
+  for index, value in ipairs(self.challengeTargets_) do
+    value:UnInit()
+  end
+  self.challengeTargets_ = {}
+  self:ClearAllUnits()
+  self.challengeTargetsUnits_ = {}
 end
 
 function Trialroad_mainView:OnRefresh()
@@ -122,9 +142,7 @@ function Trialroad_mainView:OnRefresh()
   self.tog_Power_:SetIsOnWithoutCallBack(startType_ == E.TrialRoadType.Power)
   self.tog_Auxiliary_:SetIsOnWithoutCallBack(startType_ == E.TrialRoadType.Auxiliary)
   self.tog_Guard_:SetIsOnWithoutCallBack(startType_ == E.TrialRoadType.Guard)
-  self:refreshRoomInfo()
   self:refreshEnterBtnState()
-  self:refreshInfo()
   self:refreshRed()
 end
 
@@ -152,8 +170,20 @@ function Trialroad_mainView:refreshInfo()
   if dungeonCfgData == nil then
     return
   end
+  self:AddClick(self.btnCompetencyAssess_, function()
+    local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+    local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.CompetencyAssess)
+    if not isOn then
+      return
+    end
+    self.competencyAssessView_:Active({
+      dungeonId = self.selectRoom_.TrialRoadInfo.DungeonId
+    }, self.uiBinder.Trans)
+  end)
   self.uiBinder.rimg_picture:SetImage(self.selectRoom_.TrialRoadInfo.BackGroundPic)
   self.uiBinder.img_type:SetImage(self.trialRoadData_.DictTypeIconPath[self.curTrialRoadType_])
+  local _, suggest = self.capabilityAssessVM_.GetAllAttrValue(dungeonCfgData.AssessId)
+  self.lab_suggest_.text = Lang("ReviewSuggestions") .. suggest
   self:refreshRF()
   self:refreshLevelLimit(dungeonCfgData)
   self.labTaskExplain_.text = dungeonCfgData.Content
@@ -208,7 +238,7 @@ function Trialroad_mainView:reqEnterRoom()
   if not self.weaponSameCheck_ then
     self.weaponSameCheck_ = true
     self.reqSync = false
-    self:EnterRoomCheckDialog(Lang("TrialRoadEnterRoomSure"))
+    self:changeWeaponDialog(Lang("TrialRoadEnterRoomSure"))
   elseif not self.selectRoom_.IsUnLockTime then
     Z.TipsVM.ShowTipsLang(15001011)
   elseif not self.isQuantityEnough_ then
@@ -246,7 +276,6 @@ end
 
 function Trialroad_mainView:refreshEnterBtnState()
   self.isQuantityEnough_ = self:refreshConsumeInfo()
-  local roomId = self.planetMemoryId_
   local isOn = true
   if not self.selectRoom_.IsLastFinish or not self.isQuantityEnough_ then
     isOn = false
@@ -289,7 +318,13 @@ end
 function Trialroad_mainView:EnterRoomCheckDialog(desc)
   Z.DialogViewDataMgr:OpenNormalDialog(desc, function()
     self:reqEnterRoom()
-    Z.DialogViewDataMgr:CloseDialogView()
+  end)
+end
+
+function Trialroad_mainView:changeWeaponDialog(desc)
+  Z.DialogViewDataMgr:OpenNormalDialog(desc, function()
+    local professionVm = Z.VMMgr.GetVM("profession")
+    professionVm.OpenProfessionSelectView()
   end)
 end
 
@@ -302,7 +337,7 @@ function Trialroad_mainView:refreshMonsterInfo()
 end
 
 function Trialroad_mainView:OnMonsterInfoBtnClick()
-  self.planetmemoryVm_.OpenMonsterTips(self.selectRoom_.TrialRoadInfo.TargetMonster, self.selectRoom_.TrialRoadInfo.GsLimit)
+  self.trialRoadVM_.OpenMonsterTips(self.selectRoom_.TrialRoadInfo.TargetMonster, self.selectRoom_.TrialRoadInfo.GsLimit)
 end
 
 function Trialroad_mainView:RequestGetTargetReward(targetId)
@@ -313,11 +348,28 @@ function Trialroad_mainView:RequestGetTargetReward(targetId)
 end
 
 function Trialroad_mainView:refreshChallengeInfo()
-  if self.selectRoom_.ListRoomTarget and next(self.selectRoom_.ListRoomTarget) then
-    self.challengeListView_:RefreshListView(self.selectRoom_.ListRoomTarget)
-  else
-    self.challengeListView_:RefreshListView({})
+  local path = self.uiBinder.season_main_pcd:GetString("trialroadItem")
+  local root = self.uiBinder.trial_item_root
+  for _, token in pairs(self.unitTokenDict_) do
+    Z.CancelSource.ReleaseToken(token)
   end
+  Z.CoroUtil.create_coro_xpcall(function()
+    for index, value in pairs(self.selectRoom_.ListRoomTarget) do
+      local unitName = "trialroad_challenge_" .. index
+      local token = self.cancelSource:CreateToken()
+      self.unitTokenDict_[unitName] = token
+      if self.challengeTargetsUnits_[index] == nil then
+        self.challengeTargetsUnits_[index] = self:AsyncLoadUiUnit(path, unitName, root, token)
+      end
+      local unit = self.challengeTargetsUnits_[index]
+      if self.challengeTargets_[index] == nil then
+        self.challengeTargets_[index] = trialroad_challenge_loop_item.new(self)
+      else
+        self.challengeTargets_[index]:Recycle()
+      end
+      self.challengeTargets_[index]:Init(value, unit)
+    end
+  end)()
 end
 
 function Trialroad_mainView:refreshRoomInfo()

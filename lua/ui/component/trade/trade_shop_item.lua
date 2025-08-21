@@ -75,4 +75,9 @@ function TradeShopItem:OnUnInit()
   Z.EventMgr:Remove(Z.ConstValue.Trade.TradeItemFocusChange, self.OnFocusChange, self)
 end
 
+function TradeShopItem:OnRecycle()
+  self.uiBinder.rimg_icon.enabled = false
+  self.uiBinder.rimg_price.enabled = false
+end
+
 return TradeShopItem

@@ -30,7 +30,7 @@ function WeeklyHuntRed.weeklyTowerChange()
     redCountTab[layer] = 0
   end
   for layer, value in pairs(processId) do
-    Z.RedPointMgr.RefreshServerNodeCount(value, redCountTab[layer])
+    Z.RedPointMgr.UpdateNodeCount(value, redCountTab[layer])
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Recommendedplay.FunctionRed, E.FunctionID.WeeklyHunt, Z.RedPointMgr.GetRedState(E.RedType.WeeklyHuntTarget))
 end

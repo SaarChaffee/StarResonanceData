@@ -2,9 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
+import "stru_check_image_request.proto";
 import "stru_create_album_reply.proto";
 import "stru_create_album_request.proto";
-import "stru_del_func_photo_reply.proto";
 import "stru_del_func_photo_request.proto";
 import "stru_delete_album_reply.proto";
 import "stru_delete_album_request.proto";
@@ -30,6 +31,8 @@ import "stru_move_photo_to_album_reply.proto";
 import "stru_move_photo_to_album_request.proto";
 import "stru_set_album_cover_reply.proto";
 import "stru_set_album_cover_request.proto";
+import "stru_set_photo_scheme_name_reply.proto";
+import "stru_set_photo_scheme_name_request.proto";
 import "stru_upload_photo_successful_reply.proto";
 import "stru_upload_photo_successful_request.proto";
 
@@ -37,136 +40,103 @@ message Photograph {
     message GetPhotoUpToken {
         zproto.GetPhotoUpTokenRequest vRequest = 1;
     }
-
     message DeletePhoto_Ret {
-        uint32 ret_code = 1;
-        zproto.DeletePhotoReply ret = 2;
+        zproto.DeletePhotoReply ret = 1;
     }
-
     message DeletePhoto {
         zproto.DeletePhotoRequest vRequest = 1;
     }
-
     message GetAllAlbums_Ret {
-        uint32 ret_code = 1;
-        zproto.GetAllAlbumsReply ret = 2;
+        zproto.GetAllAlbumsReply ret = 1;
     }
-
     message GetAllAlbums {
         zproto.GetAllAlbumsRequest vRequest = 1;
     }
-
     message GetAlbumPhotos_Ret {
-        uint32 ret_code = 1;
-        zproto.GetAlbumPhotosReply ret = 2;
+        zproto.GetAlbumPhotosReply ret = 1;
     }
-
     message GetAlbumPhotos {
         zproto.GetAlbumPhotosRequest vRequest = 1;
     }
-
     message CreateAlbum_Ret {
-        uint32 ret_code = 1;
-        zproto.CreateAlbumReply ret = 2;
+        zproto.CreateAlbumReply ret = 1;
     }
-
     message CreateAlbum {
         zproto.CreateAlbumRequest vRequest = 1;
     }
-
     message DeleteAlbum_Ret {
-        uint32 ret_code = 1;
-        zproto.DeleteAlbumReply ret = 2;
+        zproto.DeleteAlbumReply ret = 1;
     }
-
     message DeleteAlbum {
         zproto.DeleteAlbumRequest vRequest = 1;
     }
-
     message EditAlbumRight_Ret {
-        uint32 ret_code = 1;
-        zproto.EditAlbumRightReply ret = 2;
+        zproto.EditAlbumRightReply ret = 1;
     }
-
     message EditAlbumRight {
         zproto.EditAlbumRightRequest vRequest = 1;
     }
-
     message EditAlbumName_Ret {
-        uint32 ret_code = 1;
-        zproto.EditAlbumNameReply ret = 2;
+        zproto.EditAlbumNameReply ret = 1;
     }
-
     message EditAlbumName {
         zproto.EditAlbumNameRequest vRequest = 1;
     }
-
     message SetAlbumCover_Ret {
-        uint32 ret_code = 1;
-        zproto.SetAlbumCoverReply ret = 2;
+        zproto.SetAlbumCoverReply ret = 1;
     }
-
     message SetAlbumCover {
         zproto.SetAlbumCoverRequest vRequest = 1;
     }
-
     message MovePhotoToAlbum_Ret {
-        uint32 ret_code = 1;
-        zproto.MovePhotoToAlbumReply ret = 2;
+        zproto.MovePhotoToAlbumReply ret = 1;
     }
-
     message MovePhotoToAlbum {
         zproto.MovePhotoToAlbumRequest vRequest = 1;
     }
-
     message GetAvatarToken {
         zproto.GetAvatarTokenRequest vRequest = 1;
     }
-
     message GetPhoto_Ret {
-        uint32 ret_code = 1;
-        zproto.GetPhotoReply ret = 2;
+        zproto.GetPhotoReply ret = 1;
     }
-
     message GetPhoto {
         zproto.GetPhotoRequest vRequest = 1;
     }
-
     message UploadPhotoSuccessful_Ret {
-        uint32 ret_code = 1;
-        zproto.UploadPhotoSuccessfulReply ret = 2;
+        zproto.UploadPhotoSuccessfulReply ret = 1;
     }
-
     message UploadPhotoSuccessful {
         zproto.UploadPhotoSuccessfulRequest vRequest = 1;
     }
-
     message GetReviewAvatarInfo_Ret {
-        uint32 ret_code = 1;
-        zproto.GetReviewAvatarInfoReply ret = 2;
+        zproto.GetReviewAvatarInfoReply ret = 1;
     }
-
     message GetReviewAvatarInfo {
         zproto.GetReviewAvatarInfoRequest vRequest = 1;
     }
-
     message GetFuncPhotoList_Ret {
-        uint32 ret_code = 1;
-        zproto.GetFuncPhotoListReply ret = 2;
+        zproto.GetFuncPhotoListReply ret = 1;
     }
-
     message GetFuncPhotoList {
         zproto.GetFuncPhotoListRequest vRequest = 1;
     }
-
     message DelFuncPhoto_Ret {
-        uint32 ret_code = 1;
-        zproto.DelFuncPhotoReply ret = 2;
+        zproto.EErrorCode ret = 1;
     }
-
     message DelFuncPhoto {
         zproto.DelFuncPhotoRequest vRequest = 1;
     }
-
+    message SetPhotoSchemeName_Ret {
+        zproto.SetPhotoSchemeNameReply ret = 1;
+    }
+    message SetPhotoSchemeName {
+        zproto.SetPhotoSchemeNameRequest vRequest = 1;
+    }
+    message CheckImage_Ret {
+        zproto.EErrorCode ret = 1;
+    }
+    message CheckImage {
+        zproto.CheckImageRequest vRequest = 1;
+    }
 }
-

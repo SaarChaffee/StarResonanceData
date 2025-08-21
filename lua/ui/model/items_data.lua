@@ -8,6 +8,7 @@ function ItemData:ctor()
   self.groupCd_ = {}
   self.recastTips = true
   self.ignoreItemTips_ = false
+  self.itemTotalCount_ = {}
 end
 
 function ItemData:Init(...)
@@ -23,10 +24,16 @@ function ItemData:InitItemIdsMap()
   self:ClearItemIdsMap()
   self.itemConfigIdUuidsMap_ = {}
   self.itemUuidPackageIdMap_ = {}
+  self.itemTotalCount_ = {}
   local itemPackage = Z.ContainerMgr.CharSerialize.itemPackage
   for _, package in pairs(itemPackage.packages) do
     for _, item in pairs(package.items) do
       self:UpdateItem(item)
+      if self.itemTotalCount_[item.configId] == nil then
+        self.itemTotalCount_[item.configId] = item.count
+      else
+        self.itemTotalCount_[item.configId] = self.itemTotalCount_[item.configId] + item.count
+      end
     end
   end
 end
@@ -127,6 +134,40 @@ end
 
 function ItemData:GetIgnoreItemTips()
   return self.ignoreItemTips_
+end
+
+function ItemData:GetItemTotalCount(config)
+  if self.itemTotalCount_[config] ~= nil then
+    return self.itemTotalCount_[config]
+  end
+  return 0
+end
+
+function ItemData:ChangeItemTotalCount(config, changeValue)
+  if self.itemTotalCount_[config] ~= nil then
+    self.itemTotalCount_[config] = self.itemTotalCount_[config] + changeValue
+  else
+    self.itemTotalCount_[config] = changeValue
+  end
+  self.itemTotalCount_[config] = math.max(0, self.itemTotalCount_[config])
+end
+
+function ItemData:SetItemTotalCount(config, count)
+  self.itemTotalCount_[config] = count
+end
+
+function ItemData:GetAllQuickUseItemConfigWithCount()
+  if self.quickUseItemMap then
+    return self.quickUseItemMap
+  end
+  self.quickUseItemMap = {}
+  for k, v in pairs(self.ItemTableDatas) do
+    local itemFunctionTableRow = Z.TableMgr.GetTable("ItemFunctionTableMgr").GetRow(v.Id, true)
+    if itemFunctionTableRow and itemFunctionTableRow.CanQuick == 1 then
+      table.insert(self.quickUseItemMap, v.Id)
+    end
+  end
+  return self.quickUseItemMap
 end
 
 return ItemData

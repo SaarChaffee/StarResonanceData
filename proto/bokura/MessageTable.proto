@@ -19,8 +19,6 @@ message MessageTableBase {
     int32 Interrupt = 1764;
     string Audio = 1970;
 }
-
 message MessageTableMgr {
-    map<int32, .bokura.MessageTableBase> datas = 1;
+    repeated bokura.MessageTableMgr.DatasEntry datas = 1;
 }
-

@@ -9,4 +9,3 @@ message UseSlotRequest {
     zproto.EUseSlotType useType = 2;
     bytes extraData = 3;
 }
-

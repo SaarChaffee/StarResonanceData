@@ -15,8 +15,6 @@ message ModelSpecialTableBase {
     int32 LookAtSpeed = 275;
     int32 LookAtDistance = 1940;
 }
-
 message ModelSpecialTableMgr {
-    map<int32, .bokura.ModelSpecialTableBase> datas = 1;
+    repeated bokura.ModelSpecialTableMgr.DatasEntry datas = 1;
 }
-

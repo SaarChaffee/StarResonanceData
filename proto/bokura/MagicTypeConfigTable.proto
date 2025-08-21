@@ -12,8 +12,6 @@ message MagicTypeConfigTableBase {
     int_array Indexs = 1541;
     string_array Descs = 1085;
 }
-
 message MagicTypeConfigTableMgr {
-    map<int32, .bokura.MagicTypeConfigTableBase> datas = 1;
+    repeated bokura.MagicTypeConfigTableMgr.DatasEntry datas = 1;
 }
-

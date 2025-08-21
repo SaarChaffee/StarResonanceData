@@ -2,8 +2,8 @@ local refreshSeasonData = function(seasonId)
   logGreen("[Season] \229\189\147\229\137\141\232\181\155\229\173\163Id: " .. seasonId)
   local seasonData = Z.DataMgr.Get("season_data")
   seasonData.CurSeasonId = seasonId
-  local seasonAchievement = Z.DataMgr.Get("season_achievement_data")
-  seasonAchievement:SetSeason(seasonId)
+  local achievement = Z.DataMgr.Get("achievement_data")
+  achievement:SetSeason(seasonId)
   local seasonCultivateData = Z.DataMgr.Get("season_cultivate_data")
   seasonCultivateData:SetSeason(seasonId)
   local seasonTitleData = Z.DataMgr.Get("season_title_data")
@@ -29,22 +29,23 @@ local getCurSeasonTimeShow = function()
   local seasonGlobalRow = Z.TableMgr.GetTable("SeasonGlobalTableMgr").GetRow(seasonData.CurSeasonId)
   if seasonGlobalRow then
     seasonName = seasonGlobalRow.SeasonName
-    local timerCfg = Z.TableMgr.GetTable("TimerTableMgr").GetRow(seasonGlobalRow.SeasonTimeId)
-    if timerCfg then
-      local startTimestamp = Z.TimeTools.TimerTabaleTimeParse(timerCfg.starttime)
-      local endTimestamp = Z.TimeTools.TimerTabaleTimeParse(timerCfg.endtime)
-      local startTimeData = Z.TimeTools.Tp2YMDHMS(math.floor(startTimestamp))
-      local endTimeData = Z.TimeTools.Tp2YMDHMS(math.floor(endTimestamp))
-      seasonTimeStr = string.format("%d.%d.%d ~ %d.%d.%d", startTimeData.year, startTimeData.month, startTimeData.day, endTimeData.year, endTimeData.month, endTimeData.day)
+    local startTime, endTime, _ = Z.TimeTools.GetWholeStartEndTimeByTimerId(seasonGlobalRow.SeasonTimeId)
+    if startTime and endTime then
+      local startTimeData = Z.TimeFormatTools.TicksFormatTime(startTime * 1000, E.TimeFormatType.YMD)
+      local endTimeData = Z.TimeFormatTools.TicksFormatTime(endTime * 1000, E.TimeFormatType.YMD)
+      seasonTimeStr = string.zconcat(startTimeData, " ~ ", endTimeData)
     end
   end
   return seasonName, seasonTimeStr
 end
-local openSeasonMainView = function(id, subId)
+local openSeasonMainView = function(id, subId, configID)
   local data = Z.DataMgr.Get("season_data")
   local pageIndex = data:GetPageSortByFuncId(tonumber(id))
   data:SetCurShowPage(pageIndex)
   data:SetSubPageId(tonumber(subId))
+  if configID then
+    data:SetCurSelectItem(configID)
+  end
   local args = {
     EndCallback = function()
       Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.BackdropSeason_01, "season_main", function()
@@ -91,8 +92,7 @@ local asyncGetCurSeason = function()
     local proxy = require("zproxy.world_proxy")
     local ret = proxy.GetCurSeason(seasonData.CancelSource:CreateToken())
     if ret.errCode == 0 then
-      local planetData = Z.DataMgr.Get("planetmemory_data")
-      planetData:SetSeasonData(ret.seasonId, ret.day)
+      seasonData:SetSeasonData(ret.seasonId, ret.day)
     else
       Z.TipsVM.ShowTips(ret.errCode)
     end
@@ -104,9 +104,7 @@ local getSeasonByTime = function(time)
   end
   local seasonData = Z.DataMgr.Get("season_data")
   for seasonId, cfg in pairs(seasonData.SeasonGlobalTableDatas) do
-    local seasonTimeCfg = Z.TableMgr.GetTable("TimerTableMgr").GetRow(cfg.SeasonTimeId)
-    local startTime = Z.TimeTools.TimerTabaleTimeParse(seasonTimeCfg.starttime)
-    local endTime = Z.TimeTools.TimerTabaleTimeParse(seasonTimeCfg.endtime)
+    local startTime, endTime, _ = Z.TimeTools.GetWholeStartEndTimeByTimerId(cfg.SeasonTimeId)
     if time >= startTime and time <= endTime then
       local diffTime = time - startTime
       local day = math.ceil(diffTime / 3600 / 24)
@@ -125,9 +123,7 @@ local getSeasonStartEndTime = function(seasonId)
   end
   local seasonCfg = Z.TableMgr.GetTable("SeasonGlobalTableMgr").GetRow(seasonId)
   if seasonCfg then
-    local seasonTimeCfg = Z.TableMgr.GetTable("TimerTableMgr").GetRow(seasonCfg.SeasonTimeId)
-    local startTime = Z.TimeTools.TimerTabaleTimeParse(seasonTimeCfg.starttime)
-    local endTime = Z.TimeTools.TimerTabaleTimeParse(seasonTimeCfg.endtime)
+    local startTime, endTime, _ = Z.TimeTools.GetWholeStartEndTimeByTimerId(seasonCfg.SeasonTimeId)
     return startTime, endTime
   end
   return nil, nil
@@ -139,7 +135,7 @@ local getSeasonWeekBySevenDays = function()
   end
   local now = Z.TimeTools.Now() / 1000
   local diff = now - seasonStartTime
-  local diffInWeeks = diff / 86400
+  local diffInWeeks = math.floor(diff / 86400)
   return diffInWeeks
 end
 local getSeasonWeekBySunday = function()
@@ -147,21 +143,19 @@ local getSeasonWeekBySunday = function()
   if seasonStartTime == nil then
     return nil
   end
-  local now = Z.TimeTools.Now() / 1000
-  local seasonWeekStart = Z.TimeTools.GetWeekStartTime(os.date("*t", seasonStartTime))
-  local nowWeekStart = Z.TimeTools.GetWeekStartTime(os.date("*t", now))
-  local diffInSeconds = nowWeekStart - seasonWeekStart
-  local diffInWeeks = diffInSeconds / 604800
-  return math.floor(diffInWeeks)
+  local now = math.floor(Z.TimeTools.Now() / 1000)
+  local seasonWeekStart = Z.TimeTools.GetWeekStartTime(seasonStartTime)
+  local nowWeekStart = Z.TimeTools.GetWeekStartTime(now)
+  local diffSeconds = nowWeekStart - seasonWeekStart
+  return math.floor(diffSeconds / 604800) + 1
 end
 local getSeasonEquipGs = function()
-  local planetData = Z.DataMgr.Get("planetmemory_data")
-  local seasonId = planetData:GetNowSeasonId()
-  local day = planetData:GetSeasonDay()
+  local seasonData = Z.DataMgr.Get("season_data")
+  local seasonId = seasonData:GetNowSeasonId()
+  local day = seasonData:GetSeasonDay()
   if seasonId == 0 or day == 0 then
     return 0
   end
-  local seasonData = Z.DataMgr.Get("season_data")
   for id, seasonCfgData in pairs(seasonData.SeasonDailyTableDatas) do
     if seasonCfgData.Season == seasonId and seasonCfgData.Day == day then
       return seasonCfgData.DailyEquipLevel
@@ -173,10 +167,7 @@ local getSeasonTimeText = function(seasonId)
   local seasonGlobalTableMgr = Z.TableMgr.GetTable("SeasonGlobalTableMgr")
   local seasonConfig = seasonGlobalTableMgr.GetRow(seasonId)
   if seasonConfig then
-    local seasonTimeCfg = Z.TableMgr.GetTable("TimerTableMgr").GetRow(seasonConfig.SeasonTimeId)
-    if seasonTimeCfg then
-      return seasonTimeCfg.starttime .. "-" .. seasonTimeCfg.endtime
-    end
+    return Z.TimeTools.GetTimeOpenDesc(seasonConfig.SeasonTimeId)
   end
   return ""
 end

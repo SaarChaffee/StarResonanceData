@@ -8,6 +8,4 @@ message ActionInfo {
     int32 actionId = 1;
     int32 period = 2;
     float percent = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

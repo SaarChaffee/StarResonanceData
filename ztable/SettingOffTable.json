@@ -1,0 +1,101 @@
+{
+  "51001": {
+    "Id": 51001,
+    "Name": "",
+    "PivotId": 50001,
+    "Button": "",
+    "RemindRadius": {
+      "x": 10.0,
+      "y": 300.0
+    },
+    "InteractionTemplate": 2002
+  },
+  "51002": {
+    "Id": 51002,
+    "Name": "",
+    "PivotId": 50002,
+    "Button": "",
+    "RemindRadius": {
+      "x": 10.0,
+      "y": 300.0
+    },
+    "InteractionTemplate": 2002
+  },
+  "51003": {
+    "Id": 51003,
+    "Name": "",
+    "PivotId": 50003,
+    "Button": "",
+    "RemindRadius": {
+      "x": 10.0,
+      "y": 300.0
+    },
+    "InteractionTemplate": 2002
+  },
+  "51004": {
+    "Id": 51004,
+    "Name": "",
+    "PivotId": 50004,
+    "Button": "",
+    "RemindRadius": {
+      "x": 10.0,
+      "y": 300.0
+    },
+    "InteractionTemplate": 2002
+  },
+  "51005": {
+    "Id": 51005,
+    "Name": "",
+    "PivotId": 50005,
+    "Button": "",
+    "RemindRadius": {
+      "x": 10.0,
+      "y": 300.0
+    },
+    "InteractionTemplate": 2002
+  },
+  "51006": {
+    "Id": 51006,
+    "Name": "",
+    "PivotId": 50006,
+    "Button": "",
+    "RemindRadius": {
+      "x": 10.0,
+      "y": 300.0
+    },
+    "InteractionTemplate": 2002
+  },
+  "51007": {
+    "Id": 51007,
+    "Name": "",
+    "PivotId": 50007,
+    "Button": "",
+    "RemindRadius": {
+      "x": 10.0,
+      "y": 300.0
+    },
+    "InteractionTemplate": 2002
+  },
+  "51008": {
+    "Id": 51008,
+    "Name": "",
+    "PivotId": 50008,
+    "Button": "",
+    "RemindRadius": {
+      "x": 10.0,
+      "y": 300.0
+    },
+    "InteractionTemplate": 2002
+  },
+  "51009": {
+    "Id": 51009,
+    "Name": "",
+    "PivotId": 50009,
+    "Button": "",
+    "RemindRadius": {
+      "x": 10.0,
+      "y": 300.0
+    },
+    "InteractionTemplate": 2002
+  }
+}

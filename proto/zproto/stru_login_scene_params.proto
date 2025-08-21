@@ -7,4 +7,3 @@ message LoginSceneParams {
     int32 lastSceneId = 2;
     int32 bornSceneId = 3;
 }
-

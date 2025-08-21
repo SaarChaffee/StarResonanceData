@@ -2,11 +2,13 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_show_team.proto";
 
 message GetNearTeamListReply {
-    int32 errCode = 1;
-    repeated zproto.ShowTeam teamList = 2;
-    bool isRefresh = 3;
+    repeated zproto.ShowTeam teamList = 1;
+    bool isRefresh = 2;
+    int32 memberCount = 4;
+    bool IgnoreSelfTalent = 5;
+    zproto.EErrorCode errCode = 6;
 }
-

@@ -14,4 +14,3 @@ message ExchangeSellItemData {
     int32 price = 6;
     zproto.EExchangeItemState state = 7;
 }
-

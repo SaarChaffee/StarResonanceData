@@ -2,7 +2,11 @@ local UI = Z.UI
 local super = require("ui.ui_view_base")
 local Tips_richTextView = class("Tips_richTextView", super)
 E.EUnderLineTipsType = {WithTitle = 1, NoTitle = 2}
-local TextDescriptionType = {Normal = 1, Replace = 2}
+local TextDescriptionType = {
+  Normal = 1,
+  SkillReplace = 2,
+  AttrDescription = 3
+}
 
 function Tips_richTextView:ctor()
   self.uiBinder = nil
@@ -70,10 +74,15 @@ function Tips_richTextView:ParseTextDescriptionConfig(config)
     if config.Type then
       if config.Type == TextDescriptionType.Normal then
         res = config.Description
-      elseif config.Type == TextDescriptionType.Replace then
+      elseif config.Type == TextDescriptionType.SkillReplace then
         local skillConfig = Z.TableMgr.GetTable("SkillTableMgr").GetRow(config.Par)
         if skillConfig then
           res = skillConfig.Desc
+        end
+      elseif config.Type == TextDescriptionType.AttrDescription then
+        local attrDescription = Z.TableMgr.GetTable("AttrDescriptionMgr").GetRow(config.Par)
+        if attrDescription and attrDescription.Description then
+          res = attrDescription.Description
         end
       end
     else

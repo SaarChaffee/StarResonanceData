@@ -9,4 +9,15 @@ function EquipSystemData:ctor()
   self.EquipModelName = "equipModel"
 end
 
+function EquipSystemData:Init()
+  self.CancelSource = Z.CancelSource.Rent()
+end
+
+function EquipSystemData:UnInit()
+  self.CancelSource:Recycle()
+end
+
+function EquipSystemData:Clear()
+end
+
 return EquipSystemData

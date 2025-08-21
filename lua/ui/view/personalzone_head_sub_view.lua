@@ -100,6 +100,16 @@ end
 function Personalzone_head_subView:OnDeActive()
   self.headLoopScroll_:UnInit()
   self.headLoopScroll_ = nil
+  local type
+  if self.viewData == E.FunctionID.PersonalzoneHead then
+    type = DEFINE.ProfileImageType.Head
+  elseif self.viewData == E.FunctionID.PersonalzoneHeadFrame then
+    type = DEFINE.ProfileImageType.HeadFrame
+  end
+  if type then
+    self.personalZoneData_:ClearAddReddotByType(type)
+    self.personalZoneVM_.CheckRed()
+  end
 end
 
 function Personalzone_head_subView:OnRefresh()
@@ -132,6 +142,7 @@ function Personalzone_head_subView:refreshInfo()
     local viewData = {}
     viewData.charId = self.charId_
     viewData.modelId = self.modelId_
+    viewData.token = self.cancelSource:CreateToken()
     if self.viewData == E.FunctionID.PersonalzoneHead then
       viewData.id = self.curId_
       viewData.isShowCombinationIcon = false

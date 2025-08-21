@@ -11,8 +11,6 @@ message BuffDataTableBase {
     int64_array MaterialArray = 1946;
     int64_array WWiseArray = 1945;
 }
-
 message BuffDataTableMgr {
-    map<int64, .bokura.BuffDataTableBase> datas = 1;
+    repeated bokura.BuffDataTableMgr.DatasEntry datas = 1;
 }
-

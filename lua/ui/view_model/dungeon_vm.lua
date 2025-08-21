@@ -1,5 +1,4 @@
 local initRedpointTag_ = false
-local homeVm = Z.VMMgr.GetVM("home")
 local herodungeonRed = require("rednode.hero_dungeon_red")
 local getCurrDungeonType = function()
   local dungeonId = Z.StageMgr.GetCurrentDungeonId()
@@ -111,7 +110,7 @@ local refreshRedpoint = function(dungeonId)
     local id = getRedPointID(dungeonId)
     if 0 < id then
       local count = calculateRedpointCount(dungeonId)
-      Z.RedPointMgr.RefreshServerNodeCount(id, count)
+      Z.RedPointMgr.UpdateNodeCount(id, count)
     end
   end)()
 end
@@ -121,7 +120,8 @@ local refreshRedPointByAward = function(dungeonId)
     local id = getRedPointID(dungeonId)
     if 0 < id then
       local count = calculateRedpointCount(dungeonId)
-      Z.RedPointMgr.RefreshClientNodeCount(id, count)
+      Z.RedPointMgr.UpdateNodeCount(id, count, true)
+      Z.EventMgr:Dispatch(Z.ConstValue.Recommendedplay.DungeonRed, dungeonId, 0 < count)
     end
   end)()
 end
@@ -139,7 +139,7 @@ local initRedpoint = function(dungeons)
     if cfgData and next(cfgData) then
       for _, data in ipairs(cfgData) do
         if pioneerInfo.progress >= data.preValue and not pioneerInfo.awards[data.rewardId] then
-          Z.RedPointMgr.RefreshServerNodeCount(getRedPointID(dungeons[i]), 1)
+          Z.RedPointMgr.UpdateNodeCount(getRedPointID(dungeons[i]), 1)
           break
         end
       end
@@ -166,8 +166,8 @@ local initDungeonRedpoint = function()
 end
 local asyncGetSeasonDungeonList = function()
   local cancelSource = Z.CancelSource.Rent()
-  local worldProxy = require("zproxy.season_proxy")
-  local ret = worldProxy.GetSeasonDungeonList({}, cancelSource:CreateToken())
+  local worldProxy = require("zproxy.world_proxy")
+  local ret = worldProxy.GetSeasonDungeonList(cancelSource:CreateToken())
   if ret then
     local dungeonData = Z.DataMgr.Get("dungeon_data")
     dungeonData:SetDungeonList(ret.dungeonIdList)
@@ -210,6 +210,13 @@ local updateDungeonData = function(exit, dirtyKeys)
             unionVM_:OpenSettlementSuccessWindow()
           end
         end
+      elseif dungeonType == E.DungeonType.MasterChallengeDungeon then
+        local heroDungeonCopyVm = Z.VMMgr.GetVM("hero_dungeon_copy_window")
+        if flowInfo.result == E.DungeonResult.DungeonResultFailed then
+          heroDungeonCopyVm.OpenMasterDungeonFailWindow()
+        elseif flowInfo.result == E.DungeonResult.DungeonResultSuccess and exit then
+          heroDungeonCopyVm.OpenHeroView()
+        end
       else
         Z.UIMgr:CloseView("dead")
         local heroDungeonCopyVm = Z.VMMgr.GetVM("hero_dungeon_copy_window")
@@ -222,12 +229,13 @@ local updateDungeonData = function(exit, dirtyKeys)
     end
   elseif dungeonType == E.DungeonType.WorldBoss and dungeonSyncData.settlement.worldBossSettlement then
     if state == E.DungeonState.DungeonStateSettlement then
+      local bossBattleVM = Z.VMMgr.GetVM("bossbattle")
+      bossBattleVM.SetBossUuid(nil)
+      bossBattleVM.CloseBossUI()
       local worldBossVM = Z.VMMgr.GetVM("world_boss")
       worldBossVM:OpenWorldBossSettlementView()
     end
   elseif resultType == E.DungeonResultHudType.TrialRoad then
-    Z.DataMgr.Get("planetmemory_data"):SetPlanetCopyState(flowInfo)
-    Z.EventMgr:Dispatch(Z.ConstValue.PlanetMemory.FlowInfoChange, flowInfo)
     if state == E.DungeonState.DungeonStateSettlement then
       logGreen("[Dungeon] State " .. flowInfo.state .. " Result " .. flowInfo.result)
       local trialroadVM_ = Z.VMMgr.GetVM("trialroad")
@@ -238,10 +246,6 @@ local updateDungeonData = function(exit, dirtyKeys)
       end
     end
   elseif dungeonType == E.DungeonType.WeeklyTower then
-    if flowInfo.result == E.DungeonResult.DungeonResultFailed then
-      local weeklyHuntVM_ = Z.VMMgr.GetVM("weekly_hunt")
-      weeklyHuntVM_.ResultFailed()
-    end
   elseif dungeonType == E.DungeonType.Parkour then
     setWorldEventDungeonsData("parkourtips", "parkour_tooltip_data", flowInfo)
   elseif dungeonType == E.DungeonType.Flux then
@@ -274,13 +278,16 @@ local initDungeonTimerData = function()
     timerData = getTimerDataByVmAndData("hero_dungeon_main")
   elseif dungeonType == E.DungeonType.Union then
     timerData = getTimerDataByVmAndData("union")
+  elseif dungeonType == E.DungeonType.MasterChallengeDungeon then
+    timerData = getTimerDataByVmAndData("hero_dungeon_main")
   end
   return timerData
 end
 local updateDungeonTimerInfo = function(container, dirtyKeys)
   local dungeonTimerVm = Z.VMMgr.GetVM("dungeon_timer")
   dungeonTimerVm.SetDungeonHideTag(false)
-  if not Z.StageMgr.GetIsInDungeon() then
+  local timerInfo = Z.ContainerMgr.DungeonSyncData.timerInfo
+  if not Z.StageMgr.GetIsInDungeon() or not timerInfo.startTime then
     return
   end
   local timerData = initDungeonTimerData()
@@ -318,21 +325,6 @@ local watcherDungeonKeyInfoChange = function()
   local herokey = Z.ContainerMgr.DungeonSyncData.heroKey
   herokey.Watcher:RegWatcher(onDungeonherokeyChange)
 end
-local onDungeonHomelandChange = function(target, dirtyKeys)
-  homeVm.SetHomelandInfo()
-end
-local watcherDungeonHomelandInfo = function()
-  local herokey = Z.ContainerMgr.DungeonSyncData.homeland.homelandInfo
-  herokey.Watcher:RegWatcher(onDungeonHomelandChange)
-  homeVm.SetHomelandInfo()
-end
-local onDungeonCommunityChange = function(target, dirtyKeys)
-  homeVm.SetnCommunityInfo()
-end
-local watcherDungeonCommunityInfo = function()
-  local herokey = Z.ContainerMgr.DungeonSyncData.community.communityInfo
-  herokey.Watcher:RegWatcher(onDungeonCommunityChange)
-end
 local onDungeonWeekTargetChange = function(target, dirtyKeys)
   herodungeonRed.InitRed()
 end
@@ -356,14 +348,22 @@ local watcherDungeonDataChange = function()
   watcherDungeonTimerInfoChange()
   watcherDungeonVoteChange()
   watcherDungeonKeyInfoChange()
-  watcherDungeonHomelandInfo()
-  watcherDungeonCommunityInfo()
   watcherDungeonWeekTargetChange()
 end
 local onSyncAllContainerData = function()
   watcherDungeonDataChange()
   updateDungeonData(false)
   updateDungeonTimerInfo()
+end
+local getDungeonIsUnlock = function(dungeonId)
+  local dungeonData = Z.DataMgr.Get("dungeon_data")
+  local dungeonList = dungeonData:GetDungeonList()
+  for index, id in ipairs(dungeonList) do
+    if dungeonId == id then
+      return true
+    end
+  end
+  return false
 end
 local getHerDungeonData = function(id)
   local dungeonData = Z.DataMgr.Get("dungeon_data")
@@ -445,28 +445,32 @@ local checkMonsterAndAffixTipShow = function()
       end
     end
   end
+  local affixArray
   local dungeonId = Z.StageMgr.GetCurrentDungeonId()
   local trialroadVM_ = Z.VMMgr.GetVM("trialroad")
   if trialroadVM_.IsTrialRoad() then
     local dungeonsRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
     if dungeonsRow and dungeonsRow.Affix and next(dungeonsRow.Affix) then
-      return true
+      affixArray = dungeonsRow.Affix
     end
   elseif getCurrDungeonType() == E.DungeonType.WeeklyTower then
     local weelklyHuntVm_ = Z.VMMgr.GetVM("weekly_hunt")
-    local affixArray = weelklyHuntVm_.GetAffixByDungeonId(dungeonId)
-    if affixArray and next(affixArray) then
-      return true
-    end
+    affixArray = weelklyHuntVm_.GetAffixByDungeonId(dungeonId)
   else
-    local affixArray_ = Z.DataMgr.Get("hero_dungeon_main_data"):GetAffixArray()
-    if affixArray_ and next(affixArray_) then
-      return true
+    affixArray = Z.DataMgr.Get("hero_dungeon_main_data"):GetAffixArray()
+  end
+  if affixArray then
+    local mgr = Z.TableMgr.GetTable("AffixTableMgr")
+    for _, affixId in pairs(affixArray) do
+      local affCfgData = mgr.GetRow(affixId)
+      if affCfgData and affCfgData.IsShowUI then
+        return true
+      end
     end
   end
   return false
 end
-local openMonsterAndAffixTip = function(trans)
+local openMonsterAndAffixTip = function(trans, autoClose)
   local monsterTipsData = {}
   local planetRoomInfo = Z.ContainerMgr.DungeonSyncData.planetRoomInfo
   if planetRoomInfo then
@@ -510,9 +514,10 @@ local openMonsterAndAffixTip = function(trans)
     affixArray_ = Z.DataMgr.Get("hero_dungeon_main_data"):GetAffixArray()
   end
   local affixDesList = {}
+  local mgr = Z.TableMgr.GetTable("AffixTableMgr")
   for _, affixId in pairs(affixArray_) do
-    local affCfgData = Z.TableMgr.GetTable("AffixTableMgr").GetRow(affixId)
-    if affCfgData then
+    local affCfgData = mgr.GetRow(affixId)
+    if affCfgData and affCfgData.IsShowUI then
       local affixName = affCfgData.Name
       local des = affCfgData.Description
       local colorStr = AffixColor[affCfgData.EffectType]
@@ -534,6 +539,7 @@ local openMonsterAndAffixTip = function(trans)
   viewData.monsterList = monsterTipsData
   viewData.affixList = affixDesList
   viewData.extraParams = extraParams
+  viewData.AutoClose = autoClose
   Z.UIMgr:OpenView("dungeon_monster_affix_tips", viewData)
 end
 local closeMonsterAndAffixTip = function()
@@ -542,6 +548,21 @@ end
 local getDungeonValValue = function(valName)
   if Z.ContainerMgr.DungeonSyncData.dungeonVar.dungeonVarData then
     for k, v in ipairs(Z.ContainerMgr.DungeonSyncData.dungeonVar.dungeonVarData) do
+      if v.name == valName then
+        return v.value
+      end
+    end
+  end
+  return ""
+end
+local getDungeonPersonValValue = function(charid, valName)
+  if Z.ContainerMgr.DungeonSyncData.dungeonVarAll.dungeonVarAllMap then
+    local personDungenVar = Z.ContainerMgr.DungeonSyncData.dungeonVarAll.dungeonVarAllMap[charid]
+    if personDungenVar == nil then
+      logError("getDungeonPersonValValue: personDungenVar is nil, charid: " .. charid)
+      return ""
+    end
+    for k, v in ipairs(personDungenVar.dungeonVarData) do
       if v.name == valName then
         return v.value
       end
@@ -624,6 +645,8 @@ local ret = {
   GetDungeonValValue = getDungeonValValue,
   HasScoreLevel = hasScoreLevel,
   GetScoreProgress = getScoreProgress,
-  GetHeroDungeonGroup = getHeroDungeonGroup
+  GetHeroDungeonGroup = getHeroDungeonGroup,
+  GetDungeonIsUnlock = getDungeonIsUnlock,
+  GetDungeonPersonValValue = getDungeonPersonValValue
 }
 return ret

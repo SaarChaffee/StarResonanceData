@@ -1,6 +1,6 @@
 local super = require("ui.player_ctrl_btns.player_ctrl_btn_base")
 local DashCtrlBtn = class("DashCtrlBtn", super)
-local keyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 local DotShowData = {
   [3] = {
     progressFactor = {
@@ -49,6 +49,7 @@ function DashCtrlBtn:ctor(key, panel)
   self.currentCDKey_ = ""
   self.uiMaxLayer_ = 0
   self.chargeMax_ = 0
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function DashCtrlBtn:GetUIUnitPath()
@@ -62,12 +63,16 @@ function DashCtrlBtn:OnActive()
 end
 
 function DashCtrlBtn:OnDeActive()
+  if self.stateWatcher ~= nil then
+    self.stateWatcher:Dispose()
+    self.stateWatcher = nil
+  end
   self:UnInitComponent()
 end
 
 function DashCtrlBtn:InitComponent()
   Z.GuideMgr:SetSteerIdByComp(self.uiBinder.steer_icon, E.DynamicSteerType.KeyBoardId, 8)
-  keyIconHelper.InitKeyIcon(self, self.uiBinder.binder_key, 8)
+  self.inputKeyDescComp_:Init(8, self.uiBinder.binder_key)
   self.uiBinder.binder_count_down.count_down:Init()
   self.uiBinder.event_trigger.onDown:AddListener(function()
     if self.uiBinder == nil or self.isDisable_ then
@@ -92,6 +97,7 @@ function DashCtrlBtn:InitComponent()
 end
 
 function DashCtrlBtn:UnInitComponent()
+  self.inputKeyDescComp_:UnInit()
   self.uiBinder.binder_count_down.count_down:UnInit()
   self.uiBinder.event_trigger.onDown:RemoveAllListeners()
   self.uiBinder.event_trigger.onUp:RemoveAllListeners()
@@ -117,7 +123,6 @@ function DashCtrlBtn:OnCDLayerChanged(key)
     else
       self.curChargeCount_ = self.chargeMax_
     end
-    self:RefreshChargeCount()
   end
 end
 
@@ -131,12 +136,16 @@ function DashCtrlBtn:BindLuaAttrWatchers()
   self:BindEntityLuaAttrWatcher({
     Z.PbAttrEnum("AttrBattleRushChargeBegin")
   }, Z.EntityMgr.PlayerEnt, self.CreateRushCD)
-  self:BindEntityLuaAttrWatcher({
-    Z.LocalAttr.EAttrState
-  }, Z.EntityMgr.PlayerEnt, self.refreshEnable, true)
+  self.stateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
+    self:refreshEnable()
+  end)
 end
 
 function DashCtrlBtn:CreateRushCD()
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local weaponId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrProfessionId")).Value
   if weaponId == 0 then
     return
@@ -162,6 +171,10 @@ function DashCtrlBtn:CreateRushCD()
 end
 
 function DashCtrlBtn:refreshRushMaxCharge()
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   if self.uiBinder == nil then
     return
   end
@@ -182,10 +195,13 @@ function DashCtrlBtn:refreshRushMaxCharge()
   else
     self.curChargeCount_ = self.chargeMax_
   end
-  self:RefreshChargeCount()
 end
 
 function DashCtrlBtn:refreshRushIcon()
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local running = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EParkourRunning)
   if running.Value then
     self.uiBinder.img_icon_normal:SetImage(RUSH_IMG_PATH_1)
@@ -195,7 +211,11 @@ function DashCtrlBtn:refreshRushIcon()
 end
 
 function DashCtrlBtn:refreshEnable()
-  local state = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
+  local state = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
   if state == Z.PbEnum("EActorState", "ActorStatePedalWall") then
     self.uiBinder.img_icon_normal:SetColor(RUSH_IMG_COLOR_1)
   else

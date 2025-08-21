@@ -44,6 +44,8 @@ function env_skill_item:InitItem(contItem, configResonance, configSkill, parentV
       end
     end
   end)
+  self.parentView_.parent_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.contItem_.eff_loop)
+  self.parentView_.parent_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.contItem_.eff_switch)
 end
 
 function env_skill_item:RefreshItem()
@@ -62,8 +64,13 @@ function env_skill_item:RefreshItem()
     self.contItem_.eff_loop:SetEffectGoVisible(state == SkillState.Equip)
     self.contItem_.lab_name.text = self.configSkill_.Name
     if state ~= SkillState.Lock and state ~= SkillState.NotActive then
-      self.contItem_.img_bar_icon.fillAmount = 1
-      self.contItem_.img_bar_icon.fillAmount = state == SkillState.Expired and 0 or remainTime / allTime
+      if state == SkillState.Expired then
+        self.contItem_.img_bar_icon.fillAmount = 0
+      elseif remainTime == -1 then
+        self.contItem_.img_bar_icon.fillAmount = 1
+      else
+        self.contItem_.img_bar_icon.fillAmount = remainTime / allTime
+      end
       if state == SkillState.Expired or state == SkillState.NotActive then
         self.contItem_.img_icon:SetColor(Color_State_Enum.Disable)
       else
@@ -129,6 +136,8 @@ end
 function env_skill_item:DestroyItem()
   Z.EventMgr:Remove(Z.ConstValue.OnResonanceSelectFinish, self.RefreshSelectState, self)
   Z.EventMgr:Remove(Z.ConstValue.OnResonanceSkill, self.RefreshItem, self)
+  self.parentView_.parent_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.contItem_.eff_loop)
+  self.parentView_.parent_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.contItem_.eff_switch)
   self.contItem_ = nil
   self.configResonance_ = nil
   self.configSkill_ = nil
@@ -182,7 +191,7 @@ function env_skill_item:AsyncChangeResonanceSkill()
       Z.TipsVM.ShowTipsLang(1381002)
       return
     end
-    if 0 >= self.envVm_.GetResonanceRemainTime(selectResonanceId) then
+    if self.envVm_.CheckResonanceExpired(selectResonanceId) then
       Z.TipsVM.ShowTipsLang(1381003)
       return
     end

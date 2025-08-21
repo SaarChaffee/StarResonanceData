@@ -18,23 +18,8 @@ function ShopTog1LoopItem:OnRefresh(data)
   self.uiBinder.lab_on_content.text = nameCfg and nameCfg.Name or ""
   self.uiBinder.lab_off_content.text = nameCfg and nameCfg.Name or ""
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_line_off, self.Index ~= #self.parent.DataList)
-  if self.shopTabData_.fristLevelTabData.Id ~= E.MallType.ERecharge then
-    local redNodeId = string.zconcat(E.RedType.Shop, E.RedType.ShopOneTab, self.shopTabData_.fristLevelTabData.Id)
-    Z.RedPointMgr.LoadRedDotItem(redNodeId, self.parent.UIView, self.uiBinder.node_dot)
-  end
-  if self.shopTabData_.fristLevelTabData.FunctionId == E.FunctionID.MysteriousShop then
-    Z.RedPointMgr.LoadRedDotItem(E.RedType.MysteriousShopRed, self.parent.UIView, self.uiBinder.node_dot)
-  end
+  Z.RedPointMgr.LoadRedDotItem(data.redNodeId, self.parent.UIView, self.uiBinder.node_dot)
   self:setIsOn(false)
-  if self.shopTabData_.fristLevelTabData.Icon ~= "" then
-    self.uiBinder.img_icon_on:SetImage(self.shopTabData_.fristLevelTabData.Icon)
-    self.uiBinder.img_icon_off:SetImage(self.shopTabData_.fristLevelTabData.Icon)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_on, true)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_off, true)
-  else
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_on, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_off, false)
-  end
 end
 
 function ShopTog1LoopItem:OnSelected(isSelected, isClick)
@@ -43,16 +28,13 @@ function ShopTog1LoopItem:OnSelected(isSelected, isClick)
     if isClick then
       Z.AudioMgr:Play("UI_Tab_Special")
     end
-    if self.shopTabData_.fristLevelTabData.FunctionId == E.FunctionID.MysteriousShop then
-      Z.RedPointMgr.OnClickRedDot(E.RedType.MysteriousShopRed)
-    end
-    self.parent.UIView:Tog1Click(self.shopTabData_)
+    Z.RedPointMgr.OnClickRedDot(self.shopTabData_.redNodeId)
+    self.parent.UIView:OnClickFirstShop(self.shopTabData_, self.Index, isClick)
   end
 end
 
 function ShopTog1LoopItem:setIsOn(isOn)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_on, isOn)
-  self.uiBinder.node_eff:SetEffectGoVisible(isOn)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_off, not isOn)
 end
 

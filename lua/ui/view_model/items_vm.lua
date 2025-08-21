@@ -3,6 +3,7 @@ local itemTypeTableMgr_ = Z.TableMgr.GetTable("ItemTypeTableMgr")
 local itemFunctionTbl = Z.TableMgr.GetTable("ItemFunctionTableMgr")
 local backPackData_ = Z.DataMgr.Get("backpack_data")
 local itemsData = Z.DataMgr.Get("items_data")
+local itemsLocalizedData = Z.DataMgr.Get("items_localized_data")
 local worldProxy = require("zproxy.world_proxy")
 local unionVM = Z.VMMgr.GetVM("union")
 local awardPreviewVm = Z.VMMgr.GetVM("awardpreview")
@@ -40,7 +41,7 @@ function ItemsVM.GetSingleItemCreateTime(packageId, configId)
   end
   for _, item in pairs(package.items) do
     if item.configId == configId then
-      return Z.TimeTools.FormatTimeToYMD(item.createTime)
+      return Z.TimeFormatTools.TicksFormatTime(item.createTime, E.TimeFormatType.YMD)
     end
   end
   return ""
@@ -245,27 +246,35 @@ function ItemsVM.GetItemTotalCount(configId)
   if configId == nil or configId == 0 then
     return 0
   end
-  local ret = 0
-  local packageType = ItemsVM.GetPackageTypebyItemId(configId)
-  if packageType == nil then
-    return 0
-  end
-  if packageType == E.BackPackItemPackageType.UnionResource then
-    return unionVM:GetUnionResourceCount(configId)
-  else
-    local package = ItemsVM.GetPackageInfobyItemId(configId)
-    local itemUuids = itemsData:GetItemUuidsByConfigId(configId)
-    if itemUuids == nil or #itemUuids < 1 then
+  local isCurrency = ItemsVM.CheckPackageTypeByConfigId(configId, E.BackPackItemPackageType.Currency)
+  if isCurrency then
+    local itemCurrency = Z.ContainerMgr.CharSerialize.itemCurrency
+    if itemCurrency == nil or itemCurrency.currencyDatas == nil then
       return 0
     end
-    for _, itemUuid in ipairs(itemUuids) do
-      local item = package.items[itemUuid]
-      if item then
-        ret = ret + item.count
+    if not itemCurrency.currencyDatas[configId] then
+      return 0
+    end
+    return itemCurrency.currencyDatas[configId].count
+  else
+    return itemsData:GetItemTotalCount(configId)
+  end
+end
+
+function ItemsVM.GetItemTotalCountByBindFlag(configId, bindFlag)
+  if configId == nil or bindFlag == nil then
+    return 0
+  end
+  local totalCount = 0
+  local package = ItemsVM.GetPackageInfobyItemId(configId)
+  if package and package.items then
+    for _, item in pairs(package.items) do
+      if item.configId == configId and item.bindFlag == bindFlag then
+        totalCount = totalCount + item.count
       end
     end
   end
-  return ret
+  return totalCount
 end
 
 function ItemsVM.GetItemIds(packageType, itemFilterFuncs, itemSortfunc, isShortcuts)
@@ -380,7 +389,7 @@ function ItemsVM.CheckItemIsPackageWithLimit(configId)
   else
     for index, itemData in ipairs(awardList) do
       if ItemsVM.CheckItemIsLimited(itemData.awardId, itemData.awardNum) then
-        return true
+        return true, itemData.awardId
       end
     end
   end
@@ -405,6 +414,25 @@ function ItemsVM.CheckItemIsLimited(itemConfigId, itemNum)
     end
   end
   return false
+end
+
+function ItemsVM.AssembleUseItemParam(configId, itemUuid, useNum, bindFlag)
+  local param = {}
+  if itemUuid == nil then
+    local package = ItemsVM.GetPackageInfobyItemId(configId)
+    if package and package.items then
+      for _, item in pairs(package.items) do
+        if item.configId == configId and (bindFlag == nil or bindFlag == item.bindFlag) then
+          param.itemUuid = item.uuid
+          break
+        end
+      end
+    end
+  else
+    param.itemUuid = itemUuid
+  end
+  param.useNum = useNum or 1
+  return param
 end
 
 function ItemsVM.AsyncUseItemByUuid(useItemParam, token)
@@ -432,21 +460,21 @@ function ItemsVM.AsyncUseItemByUuid(useItemParam, token)
     return
   end
   ItemsVM.setItemPublicCdByConfigId(configId)
-  if ItemsVM.CheckItemIsPackageWithLimit(configId) then
-    local onConfirmCB = function()
-      Z.DialogViewDataMgr:CloseDialogView()
-    end
+  local isPackageLimit, limitItemId = ItemsVM.CheckItemIsPackageWithLimit(configId)
+  if isPackageLimit then
+    limitItemId = limitItemId or configId
     local dialogViewData = {
       dlgType = E.DlgType.OK,
       labDesc = Lang("ItemIsPackageWithLimit", {
-        val = ItemsVM.ApplyItemNameWithQualityTag(configId)
+        val = ItemsVM.ApplyItemNameWithQualityTag(limitItemId)
       }),
-      onConfirm = onConfirmCB,
       labYes = Lang("Confirm")
     }
-    Z.DialogViewDataMgr:OpenDialogView(dialogViewData, E.EDialogViewDataType.System, true)
+    Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
     return
   end
+  local backPackData = Z.DataMgr.Get("backpack_data")
+  backPackData.CurrentUseItemUuid = useItemParam.itemUuid
   local ret = worldProxy.UseItem(useItemParam, token)
   if ret == 0 then
     if itemFuncRow.SoundEffect and itemFuncRow.SoundEffect ~= "" then
@@ -461,18 +489,13 @@ function ItemsVM.AsyncUseItemByUuid(useItemParam, token)
   return ret
 end
 
-function ItemsVM.AsyncUseItemByConfigId(configId, token, useNum)
-  local uuidList = itemsData:GetItemUuidsByConfigId(configId)
-  if uuidList and 0 < #uuidList then
-    local useItemParam = {}
-    useItemParam.itemUuid = uuidList[1]
-    useItemParam.useNum = useNum or 1
-    return ItemsVM.AsyncUseItemByUuid(useItemParam, token)
-  end
+function ItemsVM.AsyncUseItemByConfigId(configId, token, useNum, bindFlag)
+  local useItemParam = ItemsVM.AssembleUseItemParam(configId, nil, useNum, bindFlag)
+  return ItemsVM.AsyncUseItemByUuid(useItemParam, token)
 end
 
 function ItemsVM.OpenBatchUseView(configId, itemUuid, itemCount)
-  if itemUuid == nil and itemCount < 2 then
+  if itemCount <= 1 then
     return false
   end
   local itemFuctionTableMgr = Z.TableMgr.GetTable("ItemFunctionTableMgr")
@@ -480,7 +503,7 @@ function ItemsVM.OpenBatchUseView(configId, itemUuid, itemCount)
   if funcData == nil then
     return
   end
-  if funcData.ItemBatch <= 1 then
+  if 1 >= funcData.ItemBatch then
     return false
   end
   local usePopVm_ = Z.VMMgr.GetVM("use_item_popup")
@@ -534,7 +557,7 @@ function ItemsVM.OpenSelectGiftPackageView(configId, itemUuid, itemCount)
   viewData.itemUuid = itemUuid
   viewData.itemId = configId
   viewData.awardId = awardId
-  viewData.ItemBatchCount = funcData.ItemBatch
+  viewData.ItemBatchCount = funcData.ItemBatch or 1
   viewData.awardNum = itemCount
   if bagPackType == Z.PbEnum("EAwardType", "EAwardTypeSelect") then
     if funcData.Parameter[2] == "1" then
@@ -619,7 +642,7 @@ function ItemsVM.GetKeyAffixStr(itemUuid, type)
     local count = table.zcount(affix)
     for key, value in ipairs(affix) do
       local cfg = affixCfgs.GetRow(value)
-      if cfg then
+      if cfg and cfg.IsShowUI then
         local affixName = cfg.Name
         local colorStr = AffixColor[cfg.EffectType]
         if colorStr then
@@ -677,13 +700,36 @@ function ItemsVM.GetItemIcon(configID, gender)
   if gender == nil then
     gender = Z.ContainerMgr.CharSerialize.charBase.gender
   end
+  local iconName = ""
   if itemConfig then
     if gender == 2 and itemConfig.Icon2 ~= nil and string.len(itemConfig.Icon2) > 0 then
-      return itemConfig.Icon2
+      iconName = itemConfig.Icon2
+    else
+      iconName = itemConfig.Icon
     end
-    return itemConfig.Icon
   end
-  return ""
+  local itemLanguageIcon = itemsLocalizedData:GetItemIcon(configID, iconName)
+  return itemLanguageIcon
+end
+
+function ItemsVM.GetItemLargeIcon(configID, gender)
+  local smallIcon = ItemsVM.GetItemIcon(configID, gender)
+  local largeIcon = string.zconcat(smallIcon, "_l")
+  return largeIcon
+end
+
+function ItemsVM.GetAllQuickUseItemWithCount()
+  local itemList = {}
+  local allItemTable = itemsData:GetAllQuickUseItemConfigWithCount()
+  for k, v in pairs(allItemTable) do
+    local itemID = v
+    if ItemsVM.GetItemTotalCount(itemID) > 0 then
+      local item = {}
+      item.Id = itemID
+      table.insert(itemList, item)
+    end
+  end
+  return itemList
 end
 
 return ItemsVM

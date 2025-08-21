@@ -24,7 +24,7 @@ function BagSelectPackSingleLoopItem:OnRefresh(data)
     local itemData = {
       uiBinder = self.uiBinder,
       configId = self.data_.itemId,
-      labType = E.ItemLabType.Str,
+      labType = E.ItemLabType.Num,
       lab = self.data_.itemNum,
       isBind = self.data_.bindInfo == 1,
       isSquareItem = true,

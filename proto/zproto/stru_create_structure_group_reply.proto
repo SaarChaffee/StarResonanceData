@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message CreateStructureGroupReply {
+    zproto.EErrorCode errCode = 1;
+    int64 groupId = 2;
+}

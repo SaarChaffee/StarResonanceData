@@ -7,7 +7,7 @@ local path = "ui/prefabs/interaction/interaction_item_tpl"
 function Home_edit_option_windowView:ctor()
   self.uiBinder = nil
   super.ctor(self, "home_edit_option_window")
-  self.vm_ = Z.VMMgr.GetVM("home")
+  self.vm_ = Z.VMMgr.GetVM("home_editor")
 end
 
 function Home_edit_option_windowView:initBinders()
@@ -34,7 +34,6 @@ function Home_edit_option_windowView:OnActive()
           itemHelper.AddCommonListener(unit)
           self:AddClick(unit.btn_interaction, function()
             local enitityId = value.entityId
-            Z.DIServiceMgr.HomeService:SelectEntity(enitityId, false)
             Z.EventMgr:Dispatch(Z.ConstValue.Home.HomeEntitySelectingSingle, enitityId, value.configId)
             self.vm_.CloseOptionView()
           end)
@@ -42,6 +41,11 @@ function Home_edit_option_windowView:OnActive()
       end
     end
   end)()
+  Z.EventMgr:Add(Z.ConstValue.Home.ExitEditState, self.exitEditSate)
+end
+
+function Home_edit_option_windowView:exitEditSate()
+  self.vm_.CloseOptionView()
 end
 
 function Home_edit_option_windowView:OnDeActive()

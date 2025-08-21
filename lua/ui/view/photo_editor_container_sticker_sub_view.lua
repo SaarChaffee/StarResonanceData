@@ -1,7 +1,7 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Photo_editor_container_sticker_subView = class("Photo_editor_container_sticker_subView", super)
-local IconPath = "ui/atlas/photograph_decoration/stickers/"
+local IconPath = "ui/textures/photograph_decoration/stickers/"
 
 function Photo_editor_container_sticker_subView:ctor(parent)
   self.uiBinder = nil
@@ -17,9 +17,18 @@ function Photo_editor_container_sticker_subView:OnActive()
   self.lastState_ = nil
   local itemList = self.camerasysData_:GetDecorateStickerCfg()
   self:ClearAllUnits()
+  self:bindEvent()
   Z.CoroUtil.create_coro_xpcall(function()
     self:CreateItems(itemList)
   end)()
+end
+
+function Photo_editor_container_sticker_subView:bindEvent()
+  Z.EventMgr:Add(Z.ConstValue.Camera.DecorateNumberUpdate, self.refreshDecorateCount, self)
+end
+
+function Photo_editor_container_sticker_subView:removeEvent()
+  Z.EventMgr:Remove(Z.ConstValue.Camera.DecorateNumberUpdate, self.refreshDecorateCount, self)
 end
 
 function Photo_editor_container_sticker_subView:updateListItem()
@@ -36,7 +45,7 @@ function Photo_editor_container_sticker_subView:CreateItems(itemList)
   for k, v in pairs(itemList) do
     local name = string.format("sticker_%s", v.Id)
     local item = self:AsyncLoadUiUnit(unitPath, name, self.uiBinder.rect_layout)
-    item.img_icon:SetImage(string.format("%s%s_2", IconPath, v.Res))
+    item.img_icon:SetImage(string.format("%s%s", IconPath, v.Res))
     item.tog_icon:RemoveAllListeners()
     item.tog_icon:SetIsOnWithoutCallBack(false)
     item.tog_icon:AddListener(function(isOn)
@@ -69,6 +78,7 @@ end
 
 function Photo_editor_container_sticker_subView:OnDeActive()
   self.lastState_ = nil
+  self:removeEvent()
 end
 
 return Photo_editor_container_sticker_subView

@@ -120,8 +120,8 @@ local GlobalParkour = {
   GlideOriginEnergyLimit = 30,
   ParkourHangWallOriginEnergyConsume = 0,
   MoveDashOriginEnergyConsume = 0,
-  RushOriginEnergyConsume = 70,
-  RunToPedalWallWaitTime = 0.2,
+  RushOriginEnergyConsume = 0,
+  RunToPedalWallWaitTime = 0.5,
   ParkourPedalWallRaisedObstRayBackDis = 0.2,
   ShimmyJumpCameraBlurIntensity = 0.5,
   ShimmyJumpCameraBlurDistance = 0.3,
@@ -189,6 +189,8 @@ local GlobalParkour = {
   MoveDashBattleOriginEnergyConsume = 120,
   ParkourRunBattleOriginEnergyConsume1stPhase = 20,
   ParkourRunBattleOriginEnergyConsume2ndPhase = 40,
-  ParkourRunBattleOriginEnergyConsume3rdPhase = 60
+  ParkourRunBattleOriginEnergyConsume3rdPhase = 60,
+  BattleRushOriginEnergyConsume = 150,
+  BattleRiseOriginEnergyCooldown = 2
 }
 return read_onlyHelper.Read_only(GlobalParkour)

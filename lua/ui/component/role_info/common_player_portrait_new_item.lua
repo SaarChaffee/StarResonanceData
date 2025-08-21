@@ -10,6 +10,7 @@ function CommonPlayerPortraitNewItem:Init(uiBinder, viewData)
   self.socialData = nil
   self.viewData = viewData
   self.uiBinder = uiBinder
+  self.token_ = viewData.token
   if viewData.func then
     self.uiBinder.img_bg:AddListener(Z.CoroUtil.create_coro_xpcall(viewData.func, nil))
   end
@@ -21,9 +22,10 @@ function CommonPlayerPortraitNewItem:UnInit()
   self.uiBinder = nil
 end
 
-function CommonPlayerPortraitNewItem:InitSocialData(uiBinder, socialData, func)
+function CommonPlayerPortraitNewItem:InitSocialData(uiBinder, socialData, func, token)
   self.socialData = socialData
   self.uiBinder = uiBinder
+  self.token_ = token
   if func then
     self.uiBinder.img_bg:AddListener(Z.CoroUtil.create_coro_xpcall(func, nil))
   end
@@ -65,6 +67,7 @@ function CommonPlayerPortraitNewItem:Refresh()
         local professionSystemTableRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
         if professionSystemTableRow then
           self.uiBinder.img_icon:SetImage(professionSystemTableRow.Icon)
+          self.uiBinder.img_icon:SetColorByHex(professionSystemTableRow.TalentColor)
           self.uiBinder.Ref:SetVisible(self.uiBinder.img_label, true)
         end
       else
@@ -101,7 +104,7 @@ end
 
 function CommonPlayerPortraitNewItem:SetModelPortrait(modelId)
   local path = self.snapshotVm_.GetModelHeadPortrait(modelId)
-  if path == nil or self.uiBinder == nil then
+  if not (path ~= nil and self.uiBinder ~= nil and self.token_) or Z.CancelSource.IsCanceled(self.token_) then
     return
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_portrait, true)
@@ -116,13 +119,16 @@ function CommonPlayerPortraitNewItem:SetHeadPicture(headPath)
 end
 
 function CommonPlayerPortraitNewItem:SetImgPortrait(headId)
+  if self.uiBinder == nil or self.token_ == nil then
+    return
+  end
   if not headId then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_portrait, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_portrait, false)
     return
   end
   local path = self.snapshotVm_.GetConfigHeadProtrait(headId)
-  if path == nil or self.uiBinder == nil then
+  if path == nil or self.uiBinder == nil or Z.CancelSource.IsCanceled(self.token_) then
     return
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_portrait, true)
@@ -131,7 +137,7 @@ function CommonPlayerPortraitNewItem:SetImgPortrait(headId)
 end
 
 function CommonPlayerPortraitNewItem:SetRimgPortrait(headId)
-  if self.uiBinder == nil then
+  if not (self.uiBinder ~= nil and self.token_) or Z.CancelSource.IsCanceled(self.token_) then
     return
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_portrait, false)
@@ -140,7 +146,7 @@ function CommonPlayerPortraitNewItem:SetRimgPortrait(headId)
 end
 
 function CommonPlayerPortraitNewItem:SetHeadFrame(headFrameId)
-  if self.uiBinder == nil or not self.uiBinder.img_frame then
+  if not (self.uiBinder ~= nil and self.uiBinder.img_frame and self.token_) or Z.CancelSource.IsCanceled(self.token_) then
     return
   end
   local personalZoneData = Z.DataMgr.Get("personal_zone_data")

@@ -5,24 +5,25 @@ local MODEL_SIZE = 2.5
 local ARMBAND_MOUNT_RES_NAME = "ch_c_armband_bizhang"
 local MALE_FADE_MAT_PATH = "materials/unrealscene/ui_fade_male"
 local FEMALE_FADE_MAT_PATH = "materials/unrealscene/ui_fade_female"
+local FADE_MAT_PATH = "materials/unrealscene/ui_fade_normal"
 local ARMHAND_EFFECT_PATH = "effect/character/badge/p_fx_badge_dan_levelup_1"
 
 function Season_title_subView:ctor()
   self.uiBinder = nil
-  super.ctor(self, "season_title_sub", "season_title/season_title_new_sub", UI.ECacheLv.None)
+  super.ctor(self, "season_title_sub", "season_title/season_title_new_sub", UI.ECacheLv.None, true)
   self.seasonVM_ = Z.VMMgr.GetVM("season")
   self.seasonData_ = Z.DataMgr.Get("season_data")
   self.seasonTitleVM_ = Z.VMMgr.GetVM("season_title")
   self.seasonTitleData_ = Z.DataMgr.Get("season_title_data")
   self.fashionData_ = Z.DataMgr.Get("fashion_data")
   self.itemTableMgr_ = Z.TableMgr.GetTable("ItemTableMgr")
-  self.BpTipView = require("ui.view.season_lv_tips_view").new()
+  self.BpTipView_ = require("ui.view.season_lv_tips_view").new()
   self.isCanUpRankStar_ = false
   self.curArmbandRewardIndex_ = -1
   self.showModel_ = nil
   local charBase = Z.ContainerMgr.CharSerialize.charBase
   self.modelId_ = Z.ModelManager:GetModelIdByGenderAndSize(charBase.gender, charBase.bodySize)
-  self.itemTipOffset = Vector2.New(-200, -200)
+  self.bpTipOffset_ = Vector2.New(-200, -100)
   self.tipsId_ = nil
   self.showRankStarAttr_ = Z.PbAttrEnum("AttrShowRankStar")
 end
@@ -33,22 +34,18 @@ function Season_title_subView:initBinder()
   local dataList = Z.Global.RankConditionItemIconId
   self.conditions_ = {}
   self.conditions_[1] = {
-    conditionId = E.ConditionType.BpLevel,
+    conditionId = 0,
     unit = self.cont_left_.node_season_condition_1
   }
   self.conditions_[2] = {
     conditionId = 0,
     unit = self.cont_left_.node_season_condition_2
   }
-  self.conditions_[3] = {
-    conditionId = 0,
-    unit = self.cont_left_.node_season_condition_3
-  }
   if dataList[1] and dataList[1][2] then
-    self.conditions_[2].conditionId = dataList[1][2]
+    self.conditions_[1].conditionId = dataList[1][2]
   end
   if dataList[2] and dataList[2][2] then
-    self.conditions_[3].conditionId = dataList[2][2]
+    self.conditions_[2].conditionId = dataList[2][2]
   end
   self.node_stars_ = {}
   self.node_stars_[1] = self.cont_left_.node_star_1
@@ -91,6 +88,7 @@ function Season_title_subView:OnActive()
     end
     self.curArmbandRewardIndex_ = self.curArmbandRewardIndex_ - 1
     self:refreshArmbandReward()
+    self:onRewardIndexChange()
   end)
   self:AddAsyncClick(self.cont_right_.btn_arrow_right, function()
     if self.curArmbandRewardIndex_ >= #self.allArmbandRewardConfigList_ then
@@ -98,6 +96,7 @@ function Season_title_subView:OnActive()
     end
     self.curArmbandRewardIndex_ = self.curArmbandRewardIndex_ + 1
     self:refreshArmbandReward()
+    self:onRewardIndexChange()
   end)
   self:AddAsyncListener(self.uiBinder.cont_right.tog_use, self.uiBinder.cont_right.tog_use.AddListener, function(isOn)
     self:onTogUseChanged(isOn)
@@ -110,6 +109,13 @@ function Season_title_subView:OnActive()
   self:refreshTotalInfo()
   self:BindEvents()
   self:BindLuaAttrWatchers()
+end
+
+function Season_title_subView:onRewardIndexChange()
+  local config = self.allArmbandRewardConfigList_[self.curArmbandRewardIndex_]
+  if config then
+    self:refreshConditions(config)
+  end
 end
 
 function Season_title_subView:OnDeActive()
@@ -126,7 +132,7 @@ function Season_title_subView:OnDeActive()
   end
   self.nextConifg_ = nil
   self:closeSourceTip()
-  self.BpTipView:DeActive()
+  self.BpTipView_:DeActive()
   if self.effectModelId_ then
     Z.UnrealSceneMgr:ClearEffect(self.effectModelId_)
     self.effectModelId_ = nil
@@ -184,7 +190,8 @@ function Season_title_subView:refreshRankStar(rankStar)
   end
   local allConfigs = self.seasonTitleData_:GetAllConfigs()
   if allConfigs[config.RankId] then
-    if #allConfigs[config.RankId] <= #self.node_stars_ then
+    self.showStars = #allConfigs[config.RankId] <= #self.node_stars_
+    if self.showStars then
       self.cont_left_.Ref:SetVisible(self.cont_left_.layout_star, true)
       self.cont_left_.Ref:SetVisible(self.cont_left_.node_star_high, false)
       for key, value in ipairs(self.node_stars_) do
@@ -211,30 +218,28 @@ function Season_title_subView:refreshRankStar(rankStar)
   if config.BackRankId and config.BackRankId ~= 0 then
     self.nextConifg_ = seasonRankTableMgr.GetRow(config.BackRankId)
   end
-  if self.nextConifg_ then
-    self.isCanUpRankStar_ = Z.ConditionHelper.CheckCondition(self.nextConifg_.Conditions, false)
+  self:refreshConditions(self.nextConifg_)
+end
+
+function Season_title_subView:refreshConditions(config)
+  local isCurRank = self.curArmbandRewardIndex_ == self.seasonTitleVM_.GetCurArmbandIndex()
+  if isCurRank then
+    config = self.nextConifg_
+  end
+  self.cont_left_.Ref:SetVisible(self.cont_left_.layout_star, isCurRank and self.showStars)
+  self.cont_left_.Ref:SetVisible(self.cont_left_.node_star_high, isCurRank and not self.showStars)
+  if config then
+    self.isCanUpRankStar_ = Z.ConditionHelper.CheckCondition(config.Conditions, false)
     self.cont_left_.btn_get.IsDisabled = not self.isCanUpRankStar_
     self.cont_left_.Ref:SetVisible(self.cont_left_.btn_get, false)
     self.cont_right_.Ref:SetVisible(self.cont_right_.img_red, self.isCanUpRankStar_)
     for _, value in pairs(self.conditions_) do
       self.cont_left_.Ref:SetVisible(value.unit.Ref, false)
       value.unit.btn:RemoveAllListeners()
-      if self.nextConifg_.Conditions and self.nextConifg_.Conditions and 0 < #self.nextConifg_.Conditions then
-        self.cont_left_.Ref:SetVisible(self.cont_left_.btn_get, true)
-        for _, condition in ipairs(self.nextConifg_.Conditions) do
-          if condition[1] == E.ConditionType.BpLevel then
-            if value.conditionId == condition[1] then
-              self.cont_left_.Ref:SetVisible(value.unit.Ref, true)
-              self:AddClick(value.unit.btn, function()
-                self:clickSeasonCondition(condition)
-              end)
-              local bResult, tips, progress = Z.ConditionHelper.GetSingleConditionDesc(condition[1], condition[2])
-              local color = bResult and E.TextStyleTag.White or E.TextStyleTag.Red
-              progress = Z.RichTextHelper.ApplyStyleTag(progress, color)
-              value.unit.lab_level_schedule.text = progress
-              break
-            end
-          elseif condition[1] == E.ConditionType.Item and value.conditionId == condition[2] then
+      if config.Conditions and config.Conditions and #config.Conditions > 0 then
+        self.cont_left_.Ref:SetVisible(self.cont_left_.btn_get, isCurRank)
+        for _, condition in ipairs(config.Conditions) do
+          if value.conditionId == condition[2] then
             self.cont_left_.Ref:SetVisible(value.unit.Ref, true)
             self:AddClick(value.unit.btn, function()
               self:clickSeasonCondition(condition)
@@ -286,7 +291,8 @@ function Season_title_subView:showModel()
   local rate = rootCanvas.localScale.x / 0.00925 * MODEL_SIZE
   local pos = Z.UnrealSceneMgr:GetTransPos("pos")
   pos.x = pos.x + 1.5
-  local modelHeight = Z.EntityMgr.PlayerEnt.Model:GetAttrGoHeight()
+  local modelScale = Z.EntityMgr.PlayerEnt.Model:GetLuaAttrGoScaleFinal()
+  local modelHeight = Z.EntityMgr.PlayerEnt.Model:GetAttrGoHeight() / modelScale
   local screenPosition = Z.UIRoot.UICam:WorldToScreenPoint(self.cont_right_.node_model_position.position)
   local cameraPosition = Z.CameraMgr.MainCamera.transform.position
   screenPosition.z = Z.NumTools.Distance(cameraPosition, pos)
@@ -294,6 +300,7 @@ function Season_title_subView:showModel()
   local posOffset = modelHeight * rate
   worldPosition.y = worldPosition.y - posOffset
   self.showModel_ = Z.UnrealSceneMgr:GetCachePlayerModel(function(model)
+    model:SetLuaAttr(Z.ModelAttr.ECameraAlpha, 0)
     model:SetLuaAttr(Z.ModelAttr.EModelDynamicBoneEnabled, false)
     model:SetAttrGoPosition(worldPosition)
     model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, -130, 0)))
@@ -302,27 +309,36 @@ function Season_title_subView:showModel()
     model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
     local ModelClipDataClass = Panda.ZGame.ModelClipData
     local zList = ZUtil.Pool.Collections.ZList_Panda_ZGame_ModelClipData.Rent()
-    zList:Add(ModelClipDataClass.New(Vector4.New(0.16, 0, 1, 0), Z.ModelRenderType.BODY))
+    zList:Add(ModelClipDataClass.New(Vector4.New(0.25, 0, 1, 1), Z.ModelRenderMask.Mount))
+    zList:Add(ModelClipDataClass.New(Vector4.New(0.25, 0, 1, 1), Z.ModelRenderMask.BODY))
     model:SetLuaAttr(Z.ModelAttr.EModelClipData, zList)
     zList:Recycle()
-    self:setCurArmbandMount(model)
     self.zListString_:Clear()
     self.zListString_:Add(isMale and Z.Global.SeasonArmbandShowAction[1] or Z.Global.SeasonArmbandShowAction[2])
-    model:SetLuaAttr(Z.ModelAttr.EModelAnimBase, Z.AnimBaseData.Rent(self.zListString_))
+    model:SetLuaAnimBase(Z.AnimBaseData.Rent(self.zListString_))
     local emoteId = isMale and Z.Global.SeasonArmbandShowExpression[1] or Z.Global.SeasonArmbandShowExpression[2]
-    model:SetAttrEmoteInfo(emoteId, -1)
+    model:SetLuaAttrEmoteInfo(emoteId, -1)
   end, function(model)
     if not self.IsActive then
       return
     end
-    model.RenderComp:SwitchUIFadeMat(isMale and MALE_FADE_MAT_PATH or FEMALE_FADE_MAT_PATH, self.cancelSource:CreateToken())
+    Z.CoroUtil.create_coro_xpcall(function()
+      local asyncSwitchMount = Z.CoroUtil.async_to_sync(model.RenderComp.SwitchUIFadeMat)
+      asyncSwitchMount(model.RenderComp, FADE_MAT_PATH, self.cancelSource:CreateToken(), Z.ModelRenderMask.Mount)
+      local asyncSwitchBody = Z.CoroUtil.async_to_sync(model.RenderComp.SwitchUIFadeMat)
+      local matPath = isMale and MALE_FADE_MAT_PATH or FEMALE_FADE_MAT_PATH
+      asyncSwitchBody(model.RenderComp, matPath, self.cancelSource:CreateToken(), Z.ModelRenderMask.BODY)
+      self:setCurArmbandMount(model)
+      model:SetLuaAttr(Z.ModelAttr.ECameraAlpha, 1)
+    end)()
   end)
   self:createPosCheckTimer(cameraPosition, screenPosition, pos, posOffset)
 end
 
 function Season_title_subView:clearModel()
   if self.showModel_ then
-    self.showModel_.RenderComp:ResetUIFadeMat()
+    self.showModel_.RenderComp:ResetUIFadeMat(Z.ModelRenderMask.Mount)
+    self.showModel_.RenderComp:ResetUIFadeMat(Z.ModelRenderMask.BODY)
     Z.UnrealSceneMgr:ClearModel(self.showModel_)
     self.showModel_ = nil
   end
@@ -382,25 +398,14 @@ end
 function Season_title_subView:clickSeasonCondition(condition)
   self:closeSourceTip()
   if condition and 0 < #condition then
-    if condition[1] == E.ConditionType.BpLevel then
-      self.BpTipView:Active(nil, self.uiBinder.season_title_sub)
-    elseif condition[1] == E.ConditionType.Item then
-      local extraParams = {
-        posOffset = self.itemTipOffset
-      }
-      self.tipsId_ = Z.TipsVM.ShowItemTipsView(self.uiBinder.cont_left.Trans, condition[2], nil, extraParams)
-    end
+    self.tipsId_ = Z.TipsVM.ShowItemTipsView(self.uiBinder.cont_left.node_season_condition_1.Trans, condition[2])
   end
 end
 
 function Season_title_subView:openNotEnoughItemTips(condition)
   self:closeSourceTip()
   if condition and 0 < #condition then
-    if condition[1] == E.ConditionType.BpLevel then
-      self.BpTipView:Active(nil, self.uiBinder.season_title_sub)
-    elseif condition[1] == E.ConditionType.Item then
-      self.tipsId_ = Z.TipsVM.OpenSourceTips(condition[2], self.uiBinder.cont_right.rect_get)
-    end
+    self.tipsId_ = Z.TipsVM.OpenSourceTips(condition[2], self.uiBinder.cont_right.rect_get)
   end
 end
 
@@ -487,6 +492,9 @@ function Season_title_subView:setCurArmbandMount(model)
 end
 
 function Season_title_subView:onStartAnimShow()
+  if Z.IsPCUI then
+    return
+  end
   self.uiBinder.anim_season:CoroPlayOnce("anim_season_title_new_sub", self.cancelSource:CreateToken(), function()
   end, function(err)
     if err == ZUtil.ZCancelSource.CancelException then

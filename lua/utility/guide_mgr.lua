@@ -27,18 +27,15 @@ function GuideManager:setLoadItemSteerData()
   for key, guideCfgData in pairs(self.notActiveGuideTab_) do
     local type = tonumber(guideCfgData.data.DynamicUI[1])
     if type then
-      for i = 2, #guideCfgData.data.DynamicUI do
-        local parm = tonumber(guideCfgData.data.DynamicUI[i])
-        if parm then
-          if self.loadItemSteerDic_[type] == nil then
-            self.loadItemSteerDic_[type] = {}
-          end
-          if self.loadItemSteerDic_[type][parm] == nil then
-            self.loadItemSteerDic_[type][parm] = {}
-          end
-          table.insert(self.loadItemSteerDic_[type][parm], guideCfgData.data.Id)
-        end
+      local parm = table.concat(guideCfgData.data.DynamicUI, "=", 2)
+      parm = tonumber(parm) or parm
+      if self.loadItemSteerDic_[type] == nil then
+        self.loadItemSteerDic_[type] = {}
       end
+      if self.loadItemSteerDic_[type][parm] == nil then
+        self.loadItemSteerDic_[type][parm] = {}
+      end
+      table.insert(self.loadItemSteerDic_[type][parm], guideCfgData.data.Id)
     end
   end
 end
@@ -76,9 +73,14 @@ end
 
 function GuideManager:ctor()
   self.isInitFinish_ = false
+  self.blockSteerMap_ = {}
 end
 
 function GuideManager:OpenView()
+  if self:IsBlocked() then
+    self:CloseView()
+    return
+  end
   if table.zcount(self.nowGuideData_) == 0 then
     self:CloseView()
     return
@@ -112,6 +114,19 @@ function GuideManager:OpenView()
   Z.UIMgr:OpenView("steer_tips_window", self.nowGuideData_)
 end
 
+function GuideManager:IsBlocked()
+  return next(self.blockSteerMap_) ~= nil
+end
+
+function GuideManager:SetBlockSteer(blockSteerType, blockState)
+  if blockState then
+    self.blockSteerMap_[blockSteerType] = true
+  else
+    self.blockSteerMap_[blockSteerType] = nil
+  end
+  self:RefreshGuideView()
+end
+
 function GuideManager:CloseView()
   if Z.UIMgr:IsActive("steer_tips_window") then
     Z.UIMgr:CloseView("steer_tips_window")
@@ -119,6 +134,9 @@ function GuideManager:CloseView()
 end
 
 function GuideManager:RefreshGuideView()
+  if self.activeGuideTab_ == nil then
+    return
+  end
   if table.zcount(self.activeGuideTab_) == 0 then
     self:CloseView()
     return
@@ -128,6 +146,9 @@ function GuideManager:RefreshGuideView()
 end
 
 function GuideManager:Clear()
+  if self.isInitFinish_ == false then
+    return
+  end
   self.isInitFinish_ = false
   if self.cancelSource then
     self.cancelSource:Recycle()
@@ -135,6 +156,9 @@ function GuideManager:Clear()
   end
   if self.timerMgr then
     self.timerMgr:Clear()
+  end
+  for timerId, value in pairs(self.timerIds_) do
+    Z.DIServiceMgr.ZCfgTimerService:UnRegisterTimerAction(timerId, value)
   end
   GuideEventSystem:UnInit()
 end
@@ -165,10 +189,29 @@ function GuideManager:InitGuideData()
   self.nowShowGuideIdDic_ = {}
   self.inputEventTab_ = {}
   self.guideTimeTab_ = {}
+  self.timerIds_ = {}
   self.timerMgr = Z.TimerMgr.new()
   self.cancelSource = Z.CancelSource.Rent()
   self:InitCfgData()
   self.isInitFinish_ = true
+  self:addTimeEvent()
+end
+
+function GuideManager:timeEvent(timerId, state, offestIndex)
+  if state == E.TimerExeType.CycleStart or state == E.TimerExeType.Start then
+    GuideManager:onChangeEvent(E.SteerType.Timer, timerId)
+  else
+    GuideManager:onRemoveEvent(E.SteerType.Timer, timerId)
+  end
+end
+
+function GuideManager:addTimeEvent()
+  for timerId, value in pairs(self.timerIds_) do
+    self.timerIds_[timerId] = function(state, offestIndex)
+      GuideManager:timeEvent(timerId, state, offestIndex)
+    end
+    Z.DIServiceMgr.ZCfgTimerService:RegisterTimerAction(timerId, self.timerIds_[timerId])
+  end
 end
 
 function GuideManager:stopTime(guideId)
@@ -255,12 +298,16 @@ function GuideManager:setNowShowGuide()
   end
 end
 
+function GuideManager:IsGuideShow(guideId)
+  return self.nowGuideData_[guideId] ~= nil
+end
+
 function GuideManager:OnChangeIdList(eventType, ...)
   local isRefresh = false
-  local isActive = false
   local platformType = Z.IsPCUI and ShowType.Pc or ShowType.Mobile
   for key, guideId in pairs((...)) do
     for i = #self.notActiveGuideTab_, 1, -1 do
+      local isActive = false
       local guiData = self.notActiveGuideTab_[i].data
       if guiData.Id == guideId then
         if guiData.Pcchoice == ShowType.All then
@@ -287,7 +334,6 @@ end
 function GuideManager:onChangeEvent(eventType, ...)
   local paramType = type(...)
   local isRefresh = false
-  local isActive = false
   local platformType = Z.IsPCUI and ShowType.Pc or ShowType.Mobile
   if paramType == "table" then
     self:OnChangeIdList(eventType, ...)
@@ -295,6 +341,7 @@ function GuideManager:onChangeEvent(eventType, ...)
     for i = #self.notActiveGuideTab_, 1, -1 do
       local trigger = self.notActiveGuideTab_[i].triggerParms
       local guiData = self.notActiveGuideTab_[i].data
+      local isActive = false
       if guiData.Pcchoice == ShowType.All then
         isActive = true
       elseif guiData.Pcchoice == platformType then
@@ -480,6 +527,12 @@ function GuideManager:getGuideDataByCfgData(guideCfgData)
   for i = 1, #triggerTypes do
     local tp = tonumber(triggerTypes[i])
     if tp then
+      if tp == E.SteerType.Timer then
+        local timerId = tonumber(triggerParms[i])
+        if timerId then
+          self.timerIds_[timerId] = true
+        end
+      end
       table.insert(guideData.triggerParms, {
         tp = tp,
         parm = triggerParms[i]
@@ -491,6 +544,12 @@ function GuideManager:getGuideDataByCfgData(guideCfgData)
   for i = 1, #finishTypes do
     local tp = tonumber(finishTypes[i])
     if tp then
+      if tp == E.SteerType.Timer then
+        local timerId = tonumber(finishParmss[i])
+        if timerId then
+          self.timerIds_[timerId] = true
+        end
+      end
       table.insert(guideData.finishParms, {
         tp = tp,
         parm = finishParmss[i]

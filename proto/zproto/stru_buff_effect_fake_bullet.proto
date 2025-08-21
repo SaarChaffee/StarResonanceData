@@ -11,4 +11,3 @@ message BuffEffectFakeBullet {
     int32 buffId = 4;
     zproto.Vec3 bulletOffset = 5;
 }
-

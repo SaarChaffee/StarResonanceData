@@ -8,8 +8,6 @@ message EffectTableBase {
     string Path = 172;
     float PlayTime = 1323;
 }
-
 message EffectTableMgr {
-    map<int32, .bokura.EffectTableBase> datas = 1;
+    repeated bokura.EffectTableMgr.DatasEntry datas = 1;
 }
-

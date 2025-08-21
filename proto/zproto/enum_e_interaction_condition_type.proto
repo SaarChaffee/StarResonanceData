@@ -8,4 +8,3 @@ enum EInteractionConditionType {
     InteractionConditionTypeEquip = 2;
     InteractionConditionTypeQuest = 3;
 }
-

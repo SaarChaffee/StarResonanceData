@@ -6,8 +6,6 @@ import "stru_pivot_info.proto";
 import "stru_dirty_mask.proto";
 
 message Pivot {
-    map<int32, .zproto.PivotInfo> pivots = 1;
-    map<int32, .zproto.PivotInfo> mapPivots = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.Pivot.PivotsEntry pivots = 1;
+    repeated zproto.Pivot.MapPivotsEntry mapPivots = 2;
 }
-

@@ -2,12 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
-import "enum_shop_type.proto";
+import "stru_buy_shop_item_info.proto";
 
 message BuyShopItemRequest {
-    zproto.ShopType shopType = 1;
-    int32 tabId = 2;
-    int32 itemId = 3;
-    int32 buyCount = 4;
+    repeated zproto.BuyShopItemRequest.BuyShopItemInfoEntry buyShopItemInfo = 2;
+    string extData = 6;
 }
-

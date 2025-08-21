@@ -6,9 +6,7 @@ import "stru_int_vec3.proto";
 import "stru_dirty_mask.proto";
 
 message FaceData {
-    map<int32, int32> faceInfo = 1;
-    map<int32, .zproto.IntVec3> colorInfo = 2;
+    repeated zproto.FaceData.FaceInfoEntry faceInfo = 1;
+    repeated zproto.FaceData.ColorInfoEntry colorInfo = 2;
     float height = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

@@ -55,8 +55,6 @@ message MonsterTableBase {
     int_array BloodMark = 1298;
     float HudPosParam = 1941;
 }
-
 message MonsterTableMgr {
-    map<int32, .bokura.MonsterTableBase> datas = 1;
+    repeated bokura.MonsterTableMgr.DatasEntry datas = 1;
 }
-

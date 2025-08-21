@@ -11,4 +11,3 @@ enum EInstructionType {
     InstructionType_Stop = 7;
     InstructionType_PreLogout = 8;
 }
-

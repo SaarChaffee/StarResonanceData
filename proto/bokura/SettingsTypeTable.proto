@@ -8,8 +8,6 @@ message SettingsTypeTableBase {
     string Name = 439;
     int32 Sort = 1643;
 }
-
 message SettingsTypeTableMgr {
-    map<int32, .bokura.SettingsTypeTableBase> datas = 1;
+    repeated bokura.SettingsTypeTableMgr.DatasEntry datas = 1;
 }
-

@@ -96,6 +96,14 @@ function AlbumMainData:GetTemporaryAlbumPhoto()
     end
   end
   vm.ClearUnSafeAlbumPhoto(self.temporaryAlbumPhotoUnSafa_)
+  if temp and table.zcount(temp) > 0 then
+    table.sort(temp, function(left, right)
+      if left.shotTime > right.shotTime then
+        return true
+      end
+      return false
+    end)
+  end
   return temp
 end
 

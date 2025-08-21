@@ -7,4 +7,3 @@ enum EStiffStage {
     StiffEnd = 1;
     StiffStandup = 2;
 }
-

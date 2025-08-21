@@ -7,8 +7,6 @@ message AnimShortNameTableBase {
     string NameDesign = 1649;
     string AnimShortName = 165;
 }
-
 message AnimShortNameTableMgr {
-    map<int32, .bokura.AnimShortNameTableBase> datas = 1;
+    repeated bokura.AnimShortNameTableMgr.DatasEntry datas = 1;
 }
-

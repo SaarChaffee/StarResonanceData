@@ -9,4 +9,3 @@ enum EDisappearType {
     EDisappearTransferLeave = 3;
     EDisappearTransferPassLineLeave = 4;
 }
-

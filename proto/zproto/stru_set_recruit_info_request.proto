@@ -9,4 +9,3 @@ message SetRecruitInfoRequest {
     zproto.RecruitInfo recruitInfo = 3;
     string slogan = 4;
 }
-

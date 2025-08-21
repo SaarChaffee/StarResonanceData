@@ -12,8 +12,6 @@ message MapStickerTargetTableBase {
     int32 SceneId = 1506;
     string Des = 266;
 }
-
 message MapStickerTargetTableMgr {
-    map<int32, .bokura.MapStickerTargetTableBase> datas = 1;
+    repeated bokura.MapStickerTargetTableMgr.DatasEntry datas = 1;
 }
-

@@ -34,6 +34,7 @@ end
 function Worldquest_interactive_windowView:OnDeActive()
   self:unInitLoopListView()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
+  Z.CommonTipsVM.CloseTipsTitleContent()
 end
 
 function Worldquest_interactive_windowView:OnRefresh()
@@ -77,8 +78,7 @@ function Worldquest_interactive_windowView:refreshFinishNum()
 end
 
 function Worldquest_interactive_windowView:refreshRightUI()
-  local countTxt_ = Z.RichTextHelper.ApplyColorTag(Z.ContainerMgr.CharSerialize.worldEventMap.acceptCount, "#DDFF16")
-  self.uiBinder.group_right.lab_num.text = countTxt_
+  self.uiBinder.group_right.lab_num.text = Z.ContainerMgr.CharSerialize.worldEventMap.acceptCount
   local index_ = 1
   local keys_ = {}
   for _, v in pairs(Z.ContainerMgr.CharSerialize.worldEventMap.eventMap) do
@@ -116,7 +116,7 @@ function Worldquest_interactive_windowView:refreshRightEventUI(index, dailyEvent
     binder.rimg_picture:SetImage(dailyEventCfg.EventBanner)
     binder.lab_player_name.text = dailyEventCfg.Name
     local showBtn_ = not isFinish and self.worldQuestData_.AcceptWorldQuest
-    binder.Ref:SetVisible(binder.group_finish, not showBtn_)
+    binder.Ref:SetVisible(binder.group_finish, not showBtn_ and not isFinish)
     binder.Ref:SetVisible(binder.btn_ok, showBtn_)
     binder.Ref:SetVisible(binder.img_finish, isFinish)
     local dataList_ = self.awardPreviewVM_.GetAllAwardPreListByIds(dailyEventCfg.Award)
@@ -159,8 +159,8 @@ function Worldquest_interactive_windowView:acceptWorldQuest()
     local success_ = questVM.AsyncAcceptQuest(Z.Global.WorldEventQuestId)
     if success_ then
       Z.TipsVM.ShowTips(1381016)
+      self.worldQuestVM_.OpenWorldQuestWorldMap()
     end
-    Z.DialogViewDataMgr:CloseDialogView()
   end)
 end
 

@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message ChangeGroupNameReply {
-    int32 errorCode = 2;
-    int32 errCode = 3;
-}
-

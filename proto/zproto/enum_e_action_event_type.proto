@@ -5,4 +5,3 @@ package zproto;
 enum EActionEventType {
     ReqSwitchScene = 0;
 }
-

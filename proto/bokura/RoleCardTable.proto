@@ -14,8 +14,6 @@ message RoleCardTableBase {
     string Check = 1274;
     string Icon = 1153;
 }
-
 message RoleCardTableMgr {
-    map<int32, .bokura.RoleCardTableBase> datas = 1;
+    repeated bokura.RoleCardTableMgr.DatasEntry datas = 1;
 }
-

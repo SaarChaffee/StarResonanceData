@@ -26,7 +26,7 @@ function FishingRed.InitFishIllustratedRed()
   for area, typeList in pairs(countDict) do
     for type, count in pairs(typeList) do
       local key = "FishingType_" .. area .. "_" .. type
-      Z.RedPointMgr.RefreshServerNodeCount(key, count)
+      Z.RedPointMgr.UpdateNodeCount(key, count)
     end
   end
 end
@@ -47,10 +47,10 @@ function FishingRed.InitLevelRewardRed()
         count = count + 1
       end
       Z.RedPointMgr.AddChildNodeData(E.RedType.FishingShopLevel, E.RedType.FishingLevelAwardBtn, rewardKey)
-      Z.RedPointMgr.RefreshServerNodeCount(rewardKey, countTmp)
+      Z.RedPointMgr.UpdateNodeCount(rewardKey, countTmp)
     end
   end
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.FishingLevelAwardAllBtn, count)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.FishingLevelAwardAllBtn, count)
 end
 
 function FishingRed.RefreshIllustratedItemRed()
@@ -75,7 +75,7 @@ function FishingRed.RefreshIllustratedItemRed()
   for area, typeList in pairs(countDict) do
     for type, count in pairs(typeList) do
       local key = "FishingType_" .. area .. "_" .. type
-      Z.RedPointMgr.RefreshServerNodeCount(key, count)
+      Z.RedPointMgr.UpdateNodeCount(key, count)
     end
   end
 end
@@ -95,10 +95,10 @@ function FishingRed.RefreshLevelRewardRed()
         countTmp = 1
         count = count + 1
       end
-      Z.RedPointMgr.RefreshServerNodeCount(rewardKey, countTmp)
+      Z.RedPointMgr.UpdateNodeCount(rewardKey, countTmp)
     end
   end
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.FishingLevelAwardAllBtn, count)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.FishingLevelAwardAllBtn, count)
 end
 
 function FishingRed.LoadIllustratedAreaTabRedItem(area, view, parentTrans)

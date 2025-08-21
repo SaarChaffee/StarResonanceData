@@ -7,8 +7,6 @@ message WindTunnelTableBase {
     string Name = 439;
     string EffectPath = 1536;
 }
-
 message WindTunnelTableMgr {
-    map<int32, .bokura.WindTunnelTableBase> datas = 1;
+    repeated bokura.WindTunnelTableMgr.DatasEntry datas = 1;
 }
-

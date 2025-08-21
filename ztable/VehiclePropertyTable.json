@@ -1,0 +1,38 @@
+{
+  "1": {
+    "Id": 1,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/vehicle/vehicle_icon_01"
+  },
+  "2": {
+    "Id": 2,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/vehicle/vehicle_icon_02"
+  },
+  "3": {
+    "Id": 3,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/vehicle/vehicle_icon_03"
+  },
+  "4": {
+    "Id": 4,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/vehicle/vehicle_icon_04"
+  },
+  "11": {
+    "Id": 11,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/vehicle/vehicle_icon_06"
+  },
+  "12": {
+    "Id": 12,
+    "Name": "",
+    "Desc": "",
+    "Icon": "ui/atlas/vehicle/vehicle_icon_05"
+  }
+}

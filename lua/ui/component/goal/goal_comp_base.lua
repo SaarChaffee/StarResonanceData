@@ -17,7 +17,6 @@ function GoalCompBase:Init(uiBinder)
   
   function self:refreshZoneInfo(isEnter, zoneUid)
     if self:getGoalZoneUid() == zoneUid then
-      self.isPlayerInZone_ = Z.LuaBridge.IsPlayerInZone(self:getGoalZoneUid())
       self:updateGoalDistance()
     end
   end
@@ -25,7 +24,6 @@ function GoalCompBase:Init(uiBinder)
   Z.EventMgr:Add(Z.ConstValue.PlayerEnterOrExitZone, self.refreshZoneInfo, self)
   
   function self.refreshVisualLayerInfo()
-    self.isSameVisualLayer_ = self:getIsInGoalVisualLayer()
     self:updateGoalDistance()
   end
   
@@ -57,6 +55,10 @@ function GoalCompBase:getDescUIData()
   error("func must be override!")
 end
 
+function GoalCompBase:isHideGoalDistanceLab()
+  return false
+end
+
 function GoalCompBase:refreshAll()
   local desc = self:getGoalContentDesc()
   if desc and desc ~= "" then
@@ -65,8 +67,6 @@ function GoalCompBase:refreshAll()
   else
     self.uiBinder_.Ref.UIComp:SetVisible(false)
   end
-  self.isPlayerInZone_ = Z.LuaBridge.IsPlayerInZone(self:getGoalZoneUid())
-  self.isSameVisualLayer_ = self:getIsInGoalVisualLayer()
   self:updateGoalDistance()
 end
 
@@ -76,6 +76,9 @@ function GoalCompBase:refreshGoalUI()
   self.uiBinder_.Ref:SetVisible(self.uiBinder_.img_goal_current, false)
   self.uiBinder_.Ref:SetVisible(self.uiBinder_.img_goal_lock, false)
   self.uiBinder_.Ref:SetVisible(self.uiBinder_.img_goal_link, false)
+  if self.uiType_ == E.GoalUIType.TrackBar then
+    self.uiBinder_.Ref:SetVisible(self.uiBinder_.group_slider, false)
+  end
   local data = self:getGoalGroupData()
   if not data then
     return
@@ -152,6 +155,7 @@ function GoalCompBase:refreshGoalUI()
   if refreshFunc then
     refreshFunc()
     self:updateGoalDistance()
+    self:updateProgressBar(targetNumDict[self.index_ - 1], targetMaxNumDict[self.index_ - 1])
   else
     self.uiBinder_.lab_target_desc.text = ""
     self.uiBinder_.Ref:SetVisible(self.uiBinder_.group_location, false)
@@ -191,6 +195,18 @@ function GoalCompBase:refreshGoalDesc(isActive)
 end
 
 function GoalCompBase:updateGoalDistance()
+  if self.uiBinder_ == nil then
+    logError("GoalCompBase:updateGoalDistance self.uiBinder_ is nil")
+    return
+  end
+  if self:isHideGoalDistanceLab() then
+    self.uiBinder_.goal_distance_update:ClearGoal()
+    self.uiBinder_.lab_distance.text = ""
+    self.uiBinder_.Ref:SetVisible(self.uiBinder_.group_location, false)
+    return
+  end
+  self.isPlayerInZone_ = Z.LuaBridge.IsPlayerInZone(self:getGoalZoneUid())
+  self.isSameVisualLayer_ = self:getIsInGoalVisualLayer()
   if not self.isSameVisualLayer_ then
     self.uiBinder_.goal_distance_update:ClearGoal()
     self.uiBinder_.lab_distance.text = Lang("NotInVisualLayer")
@@ -206,6 +222,23 @@ function GoalCompBase:updateGoalDistance()
     self.uiBinder_.goal_distance_update:SetGoalPos(goalPos.x, goalPos.y, goalPos.z)
   else
     self.uiBinder_.goal_distance_update:ClearGoal()
+  end
+end
+
+function GoalCompBase:updateProgressBar(targetNum, targetMaxNum)
+  local isShowProgressBar = self.stepRow_:IsShowGoalProgressBar(self.index_)
+  if self.uiType_ ~= E.GoalUIType.TrackBar then
+    return
+  end
+  if targetMaxNum == nil or targetMaxNum == 0 or not isShowProgressBar then
+    self.uiBinder_.Ref:SetVisible(self.uiBinder_.group_slider, false)
+  else
+    self.uiBinder_.Ref:SetVisible(self.uiBinder_.group_slider, true)
+    local progress = targetNum / targetMaxNum
+    if 1 < progress then
+      progress = 1
+    end
+    self.uiBinder_.slider_task.value = progress
   end
 end
 

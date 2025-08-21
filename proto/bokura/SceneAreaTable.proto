@@ -12,8 +12,6 @@ message SceneAreaTableBase {
     string BgmEvent = 515;
     number_array NamePosition = 1735;
 }
-
 message SceneAreaTableMgr {
-    map<int32, .bokura.SceneAreaTableBase> datas = 1;
+    repeated bokura.SceneAreaTableMgr.DatasEntry datas = 1;
 }
-

@@ -6,4 +6,3 @@ message SeasonBpAward {
     int32 targetId = 1;
     bool onekey = 2;
 }
-

@@ -3,14 +3,12 @@ syntax = "proto3";
 package zproto;
 
 import "stru_notify_building_upgrade_end_request.proto";
-import "stru_notify_create_union_result_request.proto";
 import "stru_notify_effect_buf_change_request.proto";
 import "stru_notify_invite_join_union_request.proto";
 import "stru_notify_official_limit_update_request.proto";
 import "stru_notify_request_list_num_request.proto";
 import "stru_notify_union_activity_progress_request.proto";
 import "stru_notify_union_activity_request.proto";
-import "stru_notify_union_change_name_request.proto";
 import "stru_notify_union_info_request.proto";
 import "stru_notify_union_official_change_request.proto";
 import "stru_notify_union_resource_change_request.proto";
@@ -21,58 +19,37 @@ message UnionNtf {
     message NotifyUnionInfo {
         zproto.NotifyUnionInfoRequest vRequest = 1;
     }
-
     message NotifyOfficialLimitUpdate {
         zproto.NotifyOfficialLimitUpdateRequest vRequest = 1;
     }
-
-    message NotifyUnionChangeName {
-        zproto.NotifyUnionChangeNameRequest vRequest = 1;
-    }
-
-    message NotifyCreateUnionResult {
-        zproto.NotifyCreateUnionResultRequest vRequest = 1;
-    }
-
     message NotifyUpdateMember {
         zproto.NotifyUpdateMemberRequest vRequest = 1;
     }
-
     message NotifyRequestListNum {
         zproto.NotifyRequestListNumRequest vRequest = 1;
     }
-
     message NotifyInviteJoinUnion {
         zproto.NotifyInviteJoinUnionRequest vRequest = 1;
     }
-
     message NotifyUnionActivity {
         zproto.NotifyUnionActivityRequest vRequest = 1;
     }
-
     message NotifyUnionActivityProgress {
         zproto.NotifyUnionActivityProgressRequest vRequest = 1;
     }
-
     message NotifyUnionResourceChange {
         zproto.NotifyUnionResourceChangeRequest vRequest = 1;
     }
-
     message NotifyBuildingUpgradeEnd {
         zproto.NotifyBuildingUpgradeEndRequest vRequest = 1;
     }
-
     message NotifyEffectBufChange {
         zproto.NotifyEffectBufChangeRequest vRequest = 1;
     }
-
     message NotifyUnionOfficialChange {
         zproto.NotifyUnionOfficialChangeRequest vRequest = 1;
     }
-
     message NotifyUnionSubFuncUnlock {
         zproto.NotifyUnionSubFuncUnlockRequest vRequest = 1;
     }
-
 }
-

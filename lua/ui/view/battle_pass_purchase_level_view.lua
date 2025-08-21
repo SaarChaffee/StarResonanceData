@@ -52,7 +52,7 @@ function BattlePass_purchase_levelView:initClickEvents()
       local shopVm = Z.VMMgr.GetVM("shop")
       shopVm.OpenShopView(E.FunctionID.PayFunction)
     else
-      local ret = self.battlePassVM_.AsyncBuyBattlePassLevel(self.curNum_, self.cancelSource:CreateToken())
+      local ret = self.battlePassVM_.AsyncBuyBattlePassLevel(self.curNum_, self.battlePassData_.CurBattlePassData.id, self.cancelSource:CreateToken())
       if ret == 0 then
         Z.UIMgr:CloseView("battle_pass_purchase_level")
       else
@@ -63,20 +63,19 @@ function BattlePass_purchase_levelView:initClickEvents()
 end
 
 function BattlePass_purchase_levelView:initParam()
-  self.battlePassContainer_ = self.battlePassVM_.GetBattlePassContainer()
-  if self.battlePassContainer_ then
-    self.bpCardGlobalInfo_ = self.battlePassVM_.GetBattlePassGlobalTableInfo(self.battlePassContainer_.id)
-    self.amountSpent_ = self.bpCardGlobalInfo_.LevelCost[2] * self.curNum_
-    local itemCount = self.itemVM_.GetItemTotalCount(self.bpCardGlobalInfo_.LevelCost[1])
-    self.battlePassLevelMaxNum_ = self.battlePassVM_.GetMaxLevel(self.battlePassContainer_.id)
-    self.maxNum_ = math.floor(itemCount / self.bpCardGlobalInfo_.LevelCost[2])
-  end
+  local curBattlePassData = self.battlePassVM_.GetCurrentBattlePassContainer()
+  self.bpCardGlobalInfo_ = self.battlePassVM_.GetBattlePassGlobalTableInfo(curBattlePassData.id)
+  self.amountSpent_ = self.bpCardGlobalInfo_.LevelCost[2] * self.curNum_
+  local itemCount = self.itemVM_.GetItemTotalCount(self.bpCardGlobalInfo_.LevelCost[1])
+  self.battlePassLevelMaxNum_ = self.battlePassVM_.GetMaxLevel(curBattlePassData.id)
+  self.maxNum_ = math.floor(itemCount / self.bpCardGlobalInfo_.LevelCost[2])
 end
 
 function BattlePass_purchase_levelView:OnActive()
   self.battlePassVM_ = Z.VMMgr.GetVM("battlepass")
   self.itemVM_ = Z.VMMgr.GetVM("items")
   self.awardPreviewVm = Z.VMMgr.GetVM("awardpreview")
+  self.battlePassData_ = Z.DataMgr.Get("battlepass_data")
   self:initParam()
   self:initWidgets()
   self:initClickEvents()
@@ -85,12 +84,13 @@ function BattlePass_purchase_levelView:OnActive()
 end
 
 function BattlePass_purchase_levelView:setViewInfo()
-  if not self.battlePassContainer_ then
+  local curBattlePassData = self.battlePassVM_.GetCurrentBattlePassContainer()
+  if not curBattlePassData or next(curBattlePassData) == nil then
     return
   end
   self.lab_num.text = self.curNum_
-  if self.maxNum_ + self.battlePassContainer_.level > self.battlePassLevelMaxNum_ then
-    self.maxNum_ = self.battlePassLevelMaxNum_ - self.battlePassContainer_.level
+  if self.maxNum_ + curBattlePassData.level > self.battlePassLevelMaxNum_ then
+    self.maxNum_ = self.battlePassLevelMaxNum_ - curBattlePassData.level
   end
   local maxNum = self.maxNum_
   self.slider_temp.maxValue = maxNum
@@ -104,7 +104,7 @@ function BattlePass_purchase_levelView:setViewInfo()
   self:setAmountLabelText()
   self.rimg_gold:SetImage(self.itemVM_.GetItemIcon(self.bpCardGlobalInfo_.LevelCost[1]))
   self.lab_purchase.text = Lang("PassBuyExpTips", {
-    val = self.battlePassContainer_.level + self.curNum_
+    val = curBattlePassData.level + self.curNum_
   })
   self:setLoopScroll(true)
   self.awardLoopScroll_:SetIsCenter(true)
@@ -114,7 +114,7 @@ function BattlePass_purchase_levelView:setViewInfo()
     self.curNum_ = num
     self.lab_num.text = self.curNum_
     self.lab_purchase.text = Lang("PassBuyExpTips", {
-      val = self.battlePassContainer_.level + self.curNum_
+      val = curBattlePassData.level + self.curNum_
     })
     self.amountSpent_ = self.bpCardGlobalInfo_.LevelCost[2] * self.curNum_
     self:setAmountLabelText()

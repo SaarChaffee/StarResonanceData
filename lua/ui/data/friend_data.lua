@@ -33,6 +33,9 @@ function FriendData:RefreshPlayerSocialData(socialData)
     self:SetPlayerProfileInfo(socialData.avatarInfo.profile)
     self:SetPlayerAvatorInfo(socialData.avatarInfo)
   end
+  if socialData and socialData.communityData then
+    self:SetHasCohabitant(socialData.communityData.hasCohabitant)
+  end
   self:SetInitInfo(true)
 end
 
@@ -86,6 +89,7 @@ function FriendData:InitData()
   self.sceneId_ = 0
   self.initInfo_ = false
   self.socialData_ = nil
+  self.hasCohabitant_ = false
 end
 
 function FriendData:GetIsBlack()
@@ -293,6 +297,14 @@ end
 
 function FriendData:GetApplyTimeStamp()
   return self.applyTimeStamp_
+end
+
+function FriendData:GetHasCohabitant()
+  return self.hasCohabitant_
+end
+
+function FriendData:SetHasCohabitant(value)
+  self.hasCohabitant_ = value
 end
 
 return FriendData

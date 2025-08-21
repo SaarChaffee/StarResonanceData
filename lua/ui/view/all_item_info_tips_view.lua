@@ -3,8 +3,7 @@ local super = require("ui.ui_view_base")
 local All_item_info_tipsView = class("All_item_info_tipsView", super)
 local itemTipsView = require("ui.view.tips_item_info_popup_view")
 local tipsPopupView = require("ui.view.tips_popup_view")
-local TipsUnderlinePopupView = require("ui.view.tips_underline_popup_view")
-local TipsUnderlineView = require("ui.view.tips_underline_view")
+local tipsPopupPcView = require("ui.view.tips_item_info_popup_bag_pc_view")
 
 function All_item_info_tipsView:ctor()
   self.uiBinder = nil
@@ -13,8 +12,7 @@ function All_item_info_tipsView:ctor()
   self.viewsType = {
     item_tips = itemTipsView,
     common_tips = tipsPopupView,
-    underline_popup_tips = TipsUnderlinePopupView,
-    underline_tips = TipsUnderlineView
+    item_tips_pc = tipsPopupPcView
   }
 end
 
@@ -91,9 +89,10 @@ function All_item_info_tipsView:refreshItemTips(tipsData)
 end
 
 function All_item_info_tipsView:getItemInfoView(tipsData)
-  local itemsVm = Z.VMMgr.GetVM("items")
   local viewKey
-  if tipsData.configId then
+  if tipsData.isPcTips then
+    viewKey = "item_tips_pc"
+  elseif tipsData.configId then
     viewKey = "item_tips"
   else
     viewKey = "common_tips"

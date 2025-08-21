@@ -12,22 +12,16 @@ message PhotographNtf {
     message GetPhotoTokenNtf {
         zproto.GetPhotoTokenNtfRequest vRequest = 1;
     }
-
     message UploadPhotoResultNtf {
         zproto.UploadPhotoResultNtfRequest vRequest = 1;
     }
-
     message UploadPictureResultNtf {
         zproto.UploadPictureResultNtfRequest vRequest = 1;
     }
-
     message RetAvatarToken {
         zproto.RetAvatarTokenRequest vRequest = 1;
     }
-
     message ReviewAvatarInfoNtf {
         zproto.ReviewAvatarInfoNtfRequest vRequest = 1;
     }
-
 }
-

@@ -7,4 +7,3 @@ enum ESpeakStatus {
     ESpeakStatusBegin = 1;
     ESpeakStatusEnd = 2;
 }
-

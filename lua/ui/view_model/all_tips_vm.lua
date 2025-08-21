@@ -37,20 +37,10 @@ E.TipsPopupNodeType = {
   Image = 24
 }
 
-function AllTipsVM.OpenSourceTips(configId, trans, itemUuid)
-  local viewData = {}
-  viewData.configId = configId
-  viewData.isOpenSource = true
-  viewData.posType = E.EItemTipsPopType.Bounds
-  viewData.isShowBg = true
-  viewData.parentTrans = trans
-  if itemUuid and 0 < itemUuid then
-    viewData.itemUuid = itemUuid
-    viewData.showType = E.EItemTipsShowType.Default
-  else
-    viewData.showType = E.EItemTipsShowType.OnlyClient
-  end
-  return AllTipsVM.OpenItemTipsView(viewData)
+function AllTipsVM.OpenSourceTips(configId, trans, itemUuid, extraParams)
+  extraParams = extraParams or {}
+  extraParams.isOpenSource = true
+  return AllTipsVM.ShowItemTipsView(trans, configId, itemUuid, extraParams)
 end
 
 function AllTipsVM.OpenItemTipsView(viewData)
@@ -104,13 +94,15 @@ function AllTipsVM.ShowItemTipsView(trans, configId, itemUuid, extraParams)
     itemUuid = itemUuid,
     posType = extraParams.posType or E.EItemTipsPopType.Bounds,
     posOffset = extraParams.posOffset,
+    screenPosition = extraParams.screenPosition,
     isIgnoreItemClick = extraParams.isIgnoreItemClick,
     itemInfo = extraParams.itemInfo,
     isHideSource = extraParams.isHideSource,
     goToCallFunc = extraParams.goToCallFunc,
     closeCallBack = extraParams.closeCallBack,
     tipsBindPressCheckComp = extraParams.tipsBindPressCheckComp,
-    isBind = extraParams.isBind
+    isBind = extraParams.isBind,
+    isOpenSource = extraParams.isOpenSource
   }
   if itemUuid and 0 < itemUuid then
     itemTipsViewData.showType = E.EItemTipsShowType.Default
@@ -234,13 +226,11 @@ function AllTipsVM.addTips(tipsType, tipsInfo)
     logError("No panel of the corresponding type exists : {0}", tipsInfo.config.Id)
     return
   end
-  if tipsType == E.TipsType.PopTip then
+  if tipsType == E.TipsType.PopTip or tipsType == E.TipsType.DungeonGreenTips or tipsType == E.TipsType.DungeonRedTips then
     noticeTipData:EnqueuePopData(tipsInfo)
     Z.UIMgr:OpenView(noticeTipsView)
   elseif tipsType == E.TipsType.CopyMode or tipsType == E.TipsType.DungeonSpecialTips or tipsType == E.TipsType.DungeonChallengeWinTips or tipsType == E.TipsType.DungeonChallengeFailTips then
     noticeTipData:EnqueueTopPopData(tipsInfo)
-  elseif tipsType == E.TipsType.DungeonGreenTips or tipsType == E.TipsType.DungeonRedTips then
-    Z.UIMgr:OpenView(noticeTipsView, tipsInfo)
   elseif tipsType == E.TipsType.Captions then
     noticeTipData:EnqueueNpcData(tipsInfo)
     Z.EventMgr:Dispatch("ShowNoticeCaption")
@@ -251,7 +241,7 @@ function AllTipsVM.addTips(tipsType, tipsInfo)
   elseif tipsType == E.TipsType.MiddleTips then
     noticeTipData:EnqueueMiddlePopData(tipsInfo)
     Z.UIMgr:OpenView(noticeTipsView, tipsInfo)
-  elseif tipsType == E.TipsType.QuestLetter then
+  elseif tipsType == E.TipsType.QuestLetter or tipsType == E.TipsType.QuestLetterWithBackground then
     Z.UIMgr:OpenView(noticeTipsView, tipsInfo)
   end
 end
@@ -315,7 +305,6 @@ function AllTipsVM.ShowTips(configIdOrContent, placeholderParam)
   elseif configIdOrContent == Z.PbEnum("EErrorCode", "ErrItemPackageGridNotEnough") then
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("BackPackFull"), function()
       Z.VMMgr.GetVM("gotofunc").GoToFunc(E.BackpackFuncId.Backpack)
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   else
     AllTipsVM.OpenViewById(configIdOrContent, placeholderParam)

@@ -54,24 +54,14 @@ end
 function TrialRoadData:UnInit()
   self.CancelSource:Recycle()
   self.dictRoomData_ = nil
-  self:ClearPlanetCopyState()
 end
 
 function TrialRoadData:Clear()
   self.dictRoomData_ = nil
-  self:ClearPlanetCopyState()
-end
-
-function TrialRoadData:SetPlanetCopyState(state)
-  self.planetCopyStateData_ = state
 end
 
 function TrialRoadData:ClearPlanetCopyState()
   self.planetCopyStateData_ = {}
-end
-
-function TrialRoadData:GetPlanetCopyState()
-  return self.planetCopyStateData_
 end
 
 function TrialRoadData:createTrialRoadData(trialRoadInfo)
@@ -100,6 +90,9 @@ end
 
 function TrialRoadData:RefreshRoomTargetState(roomId)
   local roomData = self:GetTrialRoadRoomDataById(roomId)
+  if not roomData then
+    return
+  end
   local targetProgressDict_ = Z.ContainerMgr.CharSerialize.trialRoad.roomTargetAward[roomId]
   for _, v in ipairs(roomData.ListRoomTarget) do
     if targetProgressDict_ and targetProgressDict_.targetProgress and targetProgressDict_.targetProgress[v.TargetId] then
@@ -126,23 +119,24 @@ end
 
 function TrialRoadData:RefreshTrialRoadRoomDataUnlockTime(roomData)
   if roomData ~= nil then
-    if roomData.TrialRoadInfo.UnlockTime == nil or next(roomData.TrialRoadInfo.UnlockTime) == nil then
+    local dungeonTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(roomData.TrialRoadInfo.DungeonId)
+    if not dungeonTableRow then
+      return nil
+    end
+    local bResult = true
+    local progress
+    for _, v in ipairs(dungeonTableRow.Condition) do
+      if v[1] == E.DungeonCondition.TimeIntervalConditionalLimitations then
+        bResult, _, progress = Z.ConditionHelper.GetSingleConditionDesc(v[1], v[2], v[3])
+      end
+    end
+    if bResult then
       roomData.IsUnLockTime = true
     else
-      local bResult, _, progress = Z.ConditionHelper.GetSingleConditionDesc(tonumber(roomData.TrialRoadInfo.UnlockTime[1]), tonumber(roomData.TrialRoadInfo.UnlockTime[2]), roomData.TrialRoadInfo.UnlockTime[3])
       roomData.IsUnLockTime = bResult
       if not bResult and progress then
-        local timeData = Z.TimeTools.Tp2YMDHMS(math.floor(progress))
-        local restTimeStr_
-        if timeData.day and timeData.day > 0 then
-          local dayStr_ = Lang("Day", {
-            val = string.format("%02d", timeData.day)
-          })
-          restTimeStr_ = dayStr_ .. string.format("%02d:%02d", timeData.hour, timeData.min)
-        else
-          restTimeStr_ = string.format("%02d:%02d:%02d", timeData.hour, timeData.min, timeData.sec)
-        end
-        return restTimeStr_
+        local timeData = Z.TimeFormatTools.FormatToDHMS(math.floor(progress), false, false)
+        return timeData
       end
     end
   end

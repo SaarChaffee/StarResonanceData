@@ -9,6 +9,4 @@ message UnionBuilding {
     int32 buildingLevel = 2;
     int64 upgradeFinishTime = 3;
     int64 hasSpeedUpSec = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

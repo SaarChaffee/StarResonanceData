@@ -5,4 +5,3 @@ package zproto;
 message ReqLeaveUnionRequest {
     int64 unionId = 2;
 }
-

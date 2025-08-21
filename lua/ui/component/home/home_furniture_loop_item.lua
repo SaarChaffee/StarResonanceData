@@ -40,7 +40,10 @@ function HomeFurnitureLoopItem:Refresh()
             local itemsVm = Z.VMMgr.GetVM("items")
             item.img_furniture_icon:SetImage(itemsVm.GetItemIcon(value.itemId))
             self.parent.uiView:AddClick(item.btn_click, function()
-              Z.DIServiceMgr.HomeService:SelectEntity(value.clientUuid, true)
+              Z.DIServiceMgr.HomeService:SelectEntities({
+                value.clientUuid
+              }, true)
+              Z.DIServiceMgr.HomeService:MoveCameraToEntity(value.clientUuid)
               Z.EventMgr:Dispatch(Z.ConstValue.Home.HomeEntitySelectingSingle, value.clientUuid, value.itemId)
             end)
           end

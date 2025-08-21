@@ -95,7 +95,8 @@ function cls.GetCoreNodeInfo(onlyChoose)
 end
 
 function cls.GetHoleExpInfo(holeId, addExp)
-  local totalExp = addExp + cls.GetHoleExpTotalCurrent(holeId)
+  local totalCanAddExp = cls.GetHoleExpTotalCanAdd(holeId)
+  local totalExp = Mathf.Min(addExp + cls.GetHoleExpTotalCurrent(holeId), totalCanAddExp)
   for level, exp in pairs(Data.seasonHoleExp_[holeId]) do
     if exp > totalExp then
       return level - 1, totalExp, exp
@@ -121,6 +122,19 @@ function cls.GetHoleExpTotalCanAdd(holeId)
     end
   end
   return Mathf.Max(canAdd, 0)
+end
+
+function cls.GetMaxLevelCanAddTo(holeId)
+  if not Data.seasonHoleExp_[holeId] then
+    logError("\230\178\161\230\156\137\232\191\153\228\184\170\229\173\148\228\189\141\231\154\132\231\187\143\233\170\140\228\191\161\230\129\175 {0}", holeId)
+    return 0
+  end
+  for level, exp in pairs(Data.seasonHoleExp_[holeId]) do
+    if not cls.CheckUpgradeCondition(holeId, level) then
+      return level - 1
+    end
+  end
+  return cls.GetHoleMaxLevel(holeId)
 end
 
 function cls.GetHoleExpTotalCurrent(holeId)
@@ -448,9 +462,54 @@ function cls.GetConditionDesc(condition)
       result.Desc = Lang("SeasonNodeConditionOutside", result.tipsParam)
     elseif result.tipsId == 124013 then
       result.Desc = Lang("SeasonNodeConditionCore", result.tipsParam)
+    elseif result.tipsId == 1004101 then
+      result.Progress = ""
+    elseif result.tipsId == 1500013 then
+      result.Progress = ""
     end
   end
   return results
+end
+
+function cls.GetOutNodeRecommendFightValue()
+  local point = 0
+  local holeInfos = Z.ContainerMgr.CharSerialize.seasonMedalInfo.normalHoleInfos
+  for _, hole in pairs(holeInfos) do
+    local config = cls.GetHoleConfigByLevel(hole.holeId, hole.holeLevel)
+    if config then
+      local attrConfig = cls.GetAttributeConfigByLevel(config.NodeId[1], hole.holeLevel)
+      if attrConfig then
+        point = point + attrConfig.FightValue
+      end
+    end
+  end
+  return point
+end
+
+function cls.GetCoreNodeRecommendFightValue()
+  local point = 0
+  local _, maxSlotCount_ = cls.GetCoreEffectiveNodeData()
+  for slotId = 1, maxSlotCount_ do
+    local data = cls.GetCoreNodeSlotInfoBySlotId(slotId)
+    if data then
+      local cfgData = cls.GetAttributeConfigByLevel(data.nodeId, data.nodeLevel)
+      if cfgData then
+        point = point + cfgData.FightValue
+      end
+    end
+  end
+  return point
+end
+
+function cls.GetRecommendFightValue()
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.SeasonCultivate, true)
+  if not isOn then
+    return 0
+  end
+  local pointOut = cls.GetOutNodeRecommendFightValue()
+  local pointCore = cls.GetCoreNodeRecommendFightValue()
+  return pointCore + pointOut
 end
 
 return cls

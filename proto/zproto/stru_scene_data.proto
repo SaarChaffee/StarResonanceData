@@ -14,7 +14,7 @@ message SceneData {
     zproto.Position levelPos = 5;
     uint32 levelMapId = 6;
     uint32 levelReviveId = 7;
-    map<uint32, uint32> recordId = 8;
+    repeated zproto.SceneData.RecordIdEntry recordId = 8;
     uint32 planeId = 9;
     uint32 sceneLayer = 10;
     bool canSwitchLayer = 11;
@@ -27,6 +27,4 @@ message SceneData {
     int32 sceneAreaId = 18;
     int32 levelAreaId = 19;
     int32 beforeFallSceneAreaId = 20;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

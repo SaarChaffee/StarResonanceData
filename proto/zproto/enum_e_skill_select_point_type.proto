@@ -7,4 +7,3 @@ enum ESkillSelectPointType {
     EHorizontalRayCast = 1;
     EFittedGroundPoint = 2;
 }
-

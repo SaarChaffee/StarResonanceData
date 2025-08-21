@@ -18,8 +18,6 @@ message TalentTagTableBase {
     int_array TalentAssociatedID = 1389;
     int_array FantasyHoleList = 997;
 }
-
 message TalentTagTableMgr {
-    map<int32, .bokura.TalentTagTableBase> datas = 1;
+    repeated bokura.TalentTagTableMgr.DatasEntry datas = 1;
 }
-

@@ -9,5 +9,5 @@ message UnionListData {
     zproto.UnionBaseData baseInfo = 1;
     bool isReq = 2;
     zproto.UserSummaryData presidentInfo = 3;
+    bool autoPass = 4;
 }
-

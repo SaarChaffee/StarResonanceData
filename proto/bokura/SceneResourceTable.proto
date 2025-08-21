@@ -7,8 +7,6 @@ message SceneResourceTableBase {
     int32 SceneLoadType = 1292;
     string SceneFile = 1293;
 }
-
 message SceneResourceTableMgr {
-    map<int32, .bokura.SceneResourceTableBase> datas = 1;
+    repeated bokura.SceneResourceTableMgr.DatasEntry datas = 1;
 }
-

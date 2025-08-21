@@ -12,7 +12,7 @@ end
 function RecycleLoopPreviewItem:OnRefresh(data)
   local itemData = {
     uiBinder = self.uiBinder,
-    uuid = data.itemUuid,
+    uuid = self.parent.UIView:GetCurFunctionId() ~= E.FunctionID.HomeFlowerRecycle and data.itemUuid or nil,
     configId = data.configId,
     lab = data.count,
     isBind = true

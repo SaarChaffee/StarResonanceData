@@ -1,21 +1,5 @@
 local equipVm_ = Z.VMMgr.GetVM("equip_system")
 local checkValid = function(itemUuid, configId, data)
-  local equipTableMgr = Z.TableMgr.GetTable("EquipTableMgr")
-  local equipTable = equipTableMgr.GetRow(configId, true)
-  if equipTable == nil then
-    return E.ItemBtnState.UnActive
-  end
-  local equipPartRow = Z.TableMgr.GetTable("EquipPartTableMgr").GetRow(equipTable.EquipPart)
-  if not equipPartRow or not Z.ConditionHelper.CheckCondition(equipPartRow.UnlockCondition) then
-    return E.ItemBtnState.UnActive
-  end
-  local itemsVM = Z.VMMgr.GetVM("items")
-  if itemsVM.CheckPackageTypeByItemUuid(itemUuid, E.BackPackItemPackageType.Equip) then
-    local equipVm = Z.VMMgr.GetVM("equip_system")
-    if equipVm.CheckEquipDecomonece(itemUuid, configId) then
-      return E.ItemBtnState.Active
-    end
-  end
   return E.ItemBtnState.UnActive
 end
 local onClick = function(itemUuid, configId, data)

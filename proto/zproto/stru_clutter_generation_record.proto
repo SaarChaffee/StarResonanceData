@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package zproto;
+
+message ClutterGenerationRecord {
+    bool generated = 1;
+}

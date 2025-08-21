@@ -3,40 +3,49 @@ local super = require("ui.ui_view_base")
 local Weapon_skill_mainView = class("Weapon_skill_mainView", super)
 local weaponSkillLevelView = require("ui.view.weapon_develop_skill_sub_view")
 local weaponResonanceSkillTipsView = require("ui.view.weapon_resonance_skill_tips_view")
+local envWindowView = require("ui.view.env_window_view")
 local loopGridView = require("ui.component.loop_grid_view")
 local weaponResonanceSkillLoopItem = require("ui.component.weapon.weapon_resonance_skill_loop_item")
-local itemFilter = require("ui.view.item_filters_view")
-local subFuncIdDict = {
-  [E.SkillType.WeaponSkill] = E.FunctionID.WeaponNormalSkill,
-  [E.SkillType.MysteriesSkill] = E.FunctionID.WeaponAoyiSkill
-}
+local inputKeyDescComp = require("input.input_key_desc_comp")
+local common_filter_helper = require("common.common_filter_helper")
 local maxSkillDistance = 90
 
 function Weapon_skill_mainView:ctor()
   self.uiBinder = nil
-  super.ctor(self, "weapon_skill_main")
-  self.itemFilter_ = itemFilter.new(self)
+  local assetPath
+  if Z.IsPCUI then
+    assetPath = "weapon_develop/weapon_skill_main_pc"
+  end
+  super.ctor(self, "weapon_skill_main", assetPath)
+  self.filterHelper_ = common_filter_helper.new(self)
   self.commonVM_ = Z.VMMgr.GetVM("common")
   self.weaponSkillVm_ = Z.VMMgr.GetVM("weapon_skill")
   self.weaponVm_ = Z.VMMgr.GetVM("weapon")
   self.professionVm_ = Z.VMMgr.GetVM("profession")
   self.helpsysVM_ = Z.VMMgr.GetVM("helpsys")
   self.funcVM_ = Z.VMMgr.GetVM("gotofunc")
+  self.weaponSkillSkinVm_ = Z.VMMgr.GetVM("weapon_skill_skin")
   self.subFuncIdDict_ = {
     [E.SkillType.WeaponSkill] = E.FunctionID.WeaponNormalSkill,
-    [E.SkillType.MysteriesSkill] = E.FunctionID.WeaponAoyiSkill
+    [E.SkillType.MysteriesSkill] = E.FunctionID.WeaponAoyiSkill,
+    [E.SkillType.EnvironmentSkill] = E.FunctionID.EnvResonance
   }
 end
 
 function Weapon_skill_mainView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
+  Z.AudioMgr:Play("UI_Event_FunctionDetail_Window")
+  Z.AudioMgr:Play("UI_Click_ChooseRole")
+  self.skillInputKeyDescComps_ = {}
+  self.equipSkillInputKeyDescComps_ = {}
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
   self:onStartAnimShow()
   self.EquipModel = false
   self.clearDirtyTag_ = false
   self.weaponSkillLevelUp_ = weaponSkillLevelView.new(self)
   self.weaponResonanceSkillTips_ = weaponResonanceSkillTipsView.new(self)
-  self.professionId_ = self.professionVm_:GetCurProfession()
+  self.envWindowView_ = envWindowView.new(self)
+  self.professionId_ = self.professionVm_:GetContainerProfession()
   self.skillDepth_ = {}
   self.skillEquip_ = {}
   self.skillShowEffEquip_ = {}
@@ -48,7 +57,8 @@ function Weapon_skill_mainView:OnActive()
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_right_trans, false)
   local togBinders = {
     [1] = self.uiBinder.tab_01,
-    [2] = self.uiBinder.tab_02
+    [2] = self.uiBinder.tab_02,
+    [3] = self.uiBinder.tab_03
   }
   for index, value in ipairs(togBinders) do
     local subFuncId = self.subFuncIdDict_[index]
@@ -95,7 +105,7 @@ function Weapon_skill_mainView:OnActive()
   self.uiBinder.Ref:SetVisible(self.uiBinder.copy_skill_item_trans, false)
   self.uiBinder.lab_name.text = Lang("Assemble")
   if not self.professionVm_:CheckProfessionEquipWeapon() then
-    local professionId = self.professionVm_:GetCurProfession()
+    local professionId = self.professionVm_:GetContainerProfession()
     local professionRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
     if professionRow == nil then
       return
@@ -134,8 +144,25 @@ function Weapon_skill_mainView:initButton()
       self.helpsysVM_.OpenFullScreenTipsView(400101)
     elseif self.SelectSkillType == E.SkillType.MysteriesSkill then
       self.helpsysVM_.OpenFullScreenTipsView(400102)
+    elseif self.SelectSkillType == E.SkillType.EnvironmentSkill then
+      self.helpsysVM_.OpenFullScreenTipsView(300014)
     end
   end)
+  self:AddAsyncClick(self.uiBinder.btn_skill_skin, function()
+    Z.VMMgr.GetVM("weapon_skill_skin"):OpenSkillSkinView(self.SelectSkillId, self.professionId_)
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_viewguide, function()
+    self:gotoHelpSysView()
+  end)
+end
+
+function Weapon_skill_mainView:gotoHelpSysView()
+  local talentSkillVM = Z.VMMgr.GetVM("talent_skill")
+  local talentStageId = talentSkillVM.GetCurProfessionTalentStage()
+  local talenStageRow = Z.TableMgr.GetTable("TalentStageTableMgr").GetRow(talentStageId)
+  if talenStageRow then
+    self.helpsysVM_.OpenMulHelpSysView(talenStageRow.StrategyPage)
+  end
 end
 
 function Weapon_skill_mainView:initSkillEquipSetting()
@@ -198,64 +225,69 @@ end
 
 function Weapon_skill_mainView:initFilter()
   self.filterDatas_ = nil
-  self.filterParam_ = {
-    [E.ItemFilterType.ResonanceSkillRarity] = {},
-    [E.ItemFilterType.ResonanceSkillType] = {}
+  self.filterParam_ = nil
+  local filterTypes = {
+    E.CommonFilterType.ResonanceSkillRarity,
+    E.CommonFilterType.ResonanceSkillType
   }
-  local skillConfigs = Z.TableMgr.GetTable("SkillAoyiTableMgr").GetDatas()
-  for k, value in pairs(skillConfigs) do
-    if not self.filterParam_[E.ItemFilterType.ResonanceSkillRarity][value.RarityType] then
-      self.filterParam_[E.ItemFilterType.ResonanceSkillRarity][value.RarityType] = Lang("ResonanceSkillRarityDesc_" .. value.RarityType)
-    end
-    if not self.filterParam_[E.ItemFilterType.ResonanceSkillType][value.ShowSkillType] then
-      self.filterParam_[E.ItemFilterType.ResonanceSkillType][value.ShowSkillType] = Lang("ShowSkillType_" .. value.ShowSkillType)
-    end
-  end
+  self.filterHelper_:Init(Lang("Screen"), filterTypes, self.uiBinder.node_filter_root, self.uiBinder.node_filter_pos, function(filterRes)
+    self:onSelectFilter(filterRes)
+  end)
+  self.filterHelper_:ActiveEliminateSub(self.filterDatas_)
   self:AddClick(self.uiBinder.btn_filter, function()
     self:openItemFilter()
   end)
 end
 
 function Weapon_skill_mainView:unInitFilter()
-  self.itemFilter_:DeActive()
+  self:clearFilter()
+end
+
+function Weapon_skill_mainView:clearFilter()
+  self.filterHelper_:DeActive()
   self.filterDatas_ = nil
   self.filterParam_ = nil
 end
 
 function Weapon_skill_mainView:openItemFilter()
   local viewData = {
-    parentView = self,
-    filterType = E.ItemFilterType.ResonanceSkillRarity + E.ItemFilterType.ResonanceSkillType,
-    existFilterTags = self.filterDatas_,
-    filterTypeParam = self.filterParam_
+    filterRes = self.filterParam_
   }
-  self.itemFilter_:Active(viewData, self.uiBinder.node_filter_pos)
+  self.filterHelper_:ActiveFilterSub(viewData)
 end
 
-function Weapon_skill_mainView:onSelectFilter(filterTgas)
-  if table.zcount(filterTgas) < 1 then
+function Weapon_skill_mainView:onSelectFilter(filterTags)
+  if table.zcount(filterTags) < 1 then
     self.filterDatas_ = nil
   end
-  self.filterDatas_ = filterTgas
+  self.filterDatas_ = filterTags
   self:refreshLoopGridView()
 end
 
 function Weapon_skill_mainView:initLoopGridView()
-  self.loopGridView_ = loopGridView.new(self, self.uiBinder.loop_grid_view, weaponResonanceSkillLoopItem, "weapon_resonance_skill_tpl")
+  local path = "weapon_resonance_skill_tpl"
+  if Z.IsPCUI then
+    path = "weapon_resonance_skill_tpl_pc"
+  end
+  self.loopGridView_ = loopGridView.new(self, self.uiBinder.loop_grid_view, weaponResonanceSkillLoopItem, path)
   local dataList = {}
   self.loopGridView_:Init(dataList)
 end
 
 function Weapon_skill_mainView:refreshLoopGridView()
+  local selectIndex
   local skillDataList = self.weaponSkillVm_:GetMysteriesSkillList(self.filterDatas_)
   if 0 < #skillDataList then
     if self.typeSelectSkillIds_[E.SkillType.MysteriesSkill] == nil then
       self.typeSelectSkillIds_[E.SkillType.MysteriesSkill] = skillDataList[1].Config.Id
     end
     local isInSkillArray = false
-    for __, value in ipairs(skillDataList) do
+    selectIndex = 1
+    for index, value in ipairs(skillDataList) do
       if value.Config.Id == self.SelectSkillId then
         isInSkillArray = true
+        selectIndex = index
+        break
       end
     end
     if isInSkillArray then
@@ -265,6 +297,10 @@ function Weapon_skill_mainView:refreshLoopGridView()
     end
   end
   self.loopGridView_:RefreshListView(skillDataList)
+  if selectIndex then
+    self.loopGridView_:SetSelected(selectIndex)
+    self.loopGridView_:MovePanelToItemIndex(selectIndex)
+  end
 end
 
 function Weapon_skill_mainView:unInitLoopGridView()
@@ -312,19 +348,17 @@ function Weapon_skill_mainView:refreshSkillEquipSetting()
       unit.node_eff_show:SetEffectGoVisible(false)
       unit.Ref:SetVisible(unit.lab_lock, false)
       unit.Ref:SetVisible(unit.img_lock, false)
-      if Z.IsPCUI and skillId ~= 0 then
-        unit.Ref:SetVisible(unit.img_pc, true)
-        local iconName, path = self.weaponSkillVm_:GetKeyCodeNameBySkillId(self.weaponSkillVm_:GetOriginSkillId(skillId))
-        if path then
-          unit.Ref:SetVisible(unit.img_pc_icon, true)
-          unit.img_pc_icon:SetImage(path)
-        else
-          unit.Ref:SetVisible(unit.img_pc_icon, false)
-        end
-        unit.lab_figure.text = iconName
-      else
-        unit.Ref:SetVisible(unit.img_pc, false)
+      local _, keyId = self.weaponSkillVm_:GetKeyCodeNameBySkillId(self.weaponSkillVm_:GetOriginSkillId(skillId))
+      if self.equipSkillInputKeyDescComps_[id] == nil then
+        self.equipSkillInputKeyDescComps_[id] = inputKeyDescComp.new()
       end
+      self.equipSkillInputKeyDescComps_[id]:Init(keyId, unit.com_icon_key)
+      if Z.IsPCUI and skillId ~= 0 then
+        self.equipSkillInputKeyDescComps_[id]:SetVisible(keyId ~= nil)
+      else
+        self.equipSkillInputKeyDescComps_[id]:SetVisible(false)
+      end
+      unit.Trans:SetAnchorPosition(0, 0)
       if isNormalStyle then
         unit.Ref:SetVisible(unit.img_mark, false)
         unit.Ref:SetVisible(unit.node_lab, false)
@@ -333,22 +367,26 @@ function Weapon_skill_mainView:refreshSkillEquipSetting()
         unit.Ref:SetVisible(unit.lab_name, false)
         local skillAoyiRow = Z.TableMgr.GetTable("SkillAoyiTableMgr").GetRow(skillId)
         if skillAoyiRow then
-          local bgImgPath = Z.ConstValue.Resonance_skill_bg .. skillAoyiRow.RarityType
+          local bgImgPath = Z.ConstValue.Resonance.skill_bg .. skillAoyiRow.RarityType
           unit.img_bg:SetImage(bgImgPath)
           local advanceLevel = self.weaponSkillVm_:GetSkillRemodelLevel(skillId)
           unit.lab_advance_level.text = advanceLevel
           unit.Ref:SetVisible(unit.img_advance_level, 0 < advanceLevel)
           unit.Ref:SetVisible(unit.node_red_dot, false)
+          local iconName, keyId = self.weaponSkillVm_:GetKeyCodeNameBySkillId(skillId)
+          self.equipSkillInputKeyDescComps_[id]:Init(keyId, unit.com_icon_key)
           if Z.IsPCUI then
-            unit.lab_key.text = self.weaponSkillVm_:GetKeyCodeNameBySkillId(self.weaponSkillVm_:GetOriginSkillId(skillId))
+            self.equipSkillInputKeyDescComps_[id]:SetVisible(keyId ~= nil)
+            unit.Trans:SetAnchorPosition(0, -32)
+          else
+            self.equipSkillInputKeyDescComps_[id]:SetVisible(false)
+            unit.Trans:SetAnchorPosition(0, -38)
           end
-          unit.Ref:SetVisible(unit.img_key, Z.IsPCUI)
           unit.Ref:SetVisible(unit.img_assemble, not Z.IsPCUI)
-          unit.Ref:SetVisible(unit.img_frame, false)
-          unit.img_on:SetImage(Z.ConstValue.Resonance_skill_select .. skillAoyiRow.RarityType)
+          unit.Ref:SetVisible(unit.img_char_bg, false)
         end
       end
-      local subFuncId = subFuncIdDict[skillType]
+      local subFuncId = self.subFuncIdDict_[skillType]
       local isFuncOpen = true
       if subFuncId then
         local isFuncOpen = self.funcVM_.CheckFuncCanUse(subFuncId, true)
@@ -370,7 +408,6 @@ function Weapon_skill_mainView:refreshSkillEquipSetting()
         end
       end
       unit.Ref:SetVisible(unit.img_lock, not slotUnlock or not isFuncOpen)
-      unit.Trans:SetAnchorPosition(0, 0)
       if skillId == 0 then
         unit.Ref:SetVisible(unit.img_icon, false)
       else
@@ -383,7 +420,7 @@ function Weapon_skill_mainView:refreshSkillEquipSetting()
           local nowSkillId = self.weaponSkillVm_:GetSkillBySlot(id)
           self.weaponSkillVm_:AsyncSkillInstall(id, self.SelectSkillId, self.cancelSource:CreateToken())
           local unlock = self.weaponSkillVm_:CheckSkillUnlock(self.SelectSkillId)
-          if nowSkillId and self.SelectSkillId ~= nowSkillId and unlock then
+          if nowSkillId and self.SelectSkillId ~= nowSkillId and unlock and self.skillShowEffEquip_[id] then
             self:onShowOrHideEff(id)
           end
         end
@@ -449,8 +486,15 @@ function Weapon_skill_mainView:onSkillTypeSelect()
     self.subFuncIdDict_[self.SelectSkillType]
   })
   self:clearSkillItemSelect()
-  self:refreshSkillLoop()
-  self:refreshSkillEquipLab()
+  if self.SelectSkillType == E.SkillType.EnvironmentSkill then
+    self.envWindowView_:Active({}, self.uiBinder.env_sub_root)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.skill_root, false)
+  else
+    self.envWindowView_:DeActive()
+    self.uiBinder.Ref:SetVisible(self.uiBinder.skill_root, true)
+    self:refreshSkillLoop()
+    self:refreshSkillEquipLab()
+  end
 end
 
 function Weapon_skill_mainView:refreshSkillEquipLab()
@@ -464,9 +508,12 @@ function Weapon_skill_mainView:refreshSkillLoop()
   self.skillUnitNames_ = {}
   self.skillTabDatas_ = {}
   self.skillUnits_ = {}
+  self.uiBinder.anim:Complete()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
   if self.SelectSkillType == E.SkillType.WeaponSkill then
     self:refreshNormalSkill()
     Z.RedPointMgr.LoadRedDotItem(E.RedType.SkillEquipBtn, self, self.uiBinder.btn_assemble.transform)
+    Z.RedPointMgr.LoadRedDotItem(E.RedType.SkillSkinBtn, self, self.uiBinder.btn_skill_skin.transform)
     Z.RedPointMgr.RemoveNodeItem(E.RedType.ResonanceSkillEquipBtn, self)
   elseif self.SelectSkillType == E.SkillType.MysteriesSkill then
     self:refreshAoyiSkill()
@@ -493,15 +540,17 @@ function Weapon_skill_mainView:refreshSkillUnit(data, unit)
   local upNodeId = self.weaponSkillVm_:GetSkillUpRedId(data.skillId)
   local unlockNodeId = self.weaponSkillVm_:GetSkillUnlockRedId(data.skillId)
   local equipNodeId = self.weaponSkillVm_:GetSkillEquipRedId(data.skillId)
+  local skillSkinUnlockNodeId = self.weaponSkillSkinVm_:GetSkillSkinUnlockRedId(data.skillId)
   if self.EquipModel then
     Z.RedPointMgr.LoadRedDotItem(equipNodeId, self, unit.red_root.transform)
   else
     Z.RedPointMgr.LoadRedDotItem(upNodeId, self, unit.red_root.transform)
     Z.RedPointMgr.LoadRedDotItem(remouldNodeId, self, unit.red_root.transform)
     Z.RedPointMgr.LoadRedDotItem(unlockNodeId, self, unit.red_root.transform)
+    Z.RedPointMgr.LoadRedDotItem(skillSkinUnlockNodeId, self, unit.red_root.transform)
   end
-  unit.Ref:SetVisible(unit.img_on, data.skillId == self.SelectSkillId)
-  if data.skillId == self.SelectSkillId then
+  unit.Ref:SetVisible(unit.img_on, repalceSkillId == self.SelectSkillId)
+  if repalceSkillId == self.SelectSkillId then
     self:ChangeSelectState(data.skillId, unit, false)
   end
   local isUnlock = self.weaponSkillVm_:CheckSkillUnlock(data.skillId)
@@ -536,22 +585,20 @@ function Weapon_skill_mainView:refreshSkillUnit(data, unit)
   local remodelLevel = self.weaponSkillVm_:GetSkillRemodelLevel(data.skillId)
   unit.Ref:SetVisible(unit.img_label, isUnlock)
   unit.lab_grade.text = Lang("Grade", {val = level})
-  unit.lab_order.text = remodelLevel
+  unit.lab_order.text = Lang("SkillAdvanceLevel", {val = remodelLevel})
   if Z.IsPCUI and isHadEquip then
-    local iconName, path = self.weaponSkillVm_:GetKeyCodeNameBySkillId(data.skillId)
-    unit.Ref:SetVisible(unit.img_pc, true)
-    if path then
-      unit.Ref:SetVisible(unit.img_pc_icon, true)
-      unit.img_pc_icon:SetImage(path)
+    local _, keyId = self.weaponSkillVm_:GetKeyCodeNameBySkillId(data.skillId)
+    if keyId then
+      unit.com_icon_key.Ref.UIComp:SetVisible(true)
+      if self.skillInputKeyDescComps_[data.skillId] == nil then
+        self.skillInputKeyDescComps_[data.skillId] = inputKeyDescComp.new()
+      end
+      self.skillInputKeyDescComps_[data.skillId]:Init(keyId, unit.com_icon_key)
     else
-      unit.Ref:SetVisible(unit.img_pc_icon, false)
+      unit.com_icon_key.Ref.UIComp:SetVisible(false)
     end
-    unit.lab_figure.text = iconName
   else
-    unit.Ref:SetVisible(unit.img_pc, false)
-  end
-  if self.SelectSkillType == E.SkillType.SupportSkill then
-    unit.lab_name.text = Lang("ShowSkillType_" .. data.type)
+    unit.com_icon_key.Ref.UIComp:SetVisible(false)
   end
   self.skillUnits_[data.skillId] = unit
   self:AddClick(unit.btn, function()
@@ -566,7 +613,14 @@ function Weapon_skill_mainView:removeSkillRed()
     return
   end
   for skillId, unit in pairs(self.skillUnits_) do
-    Z.RedPointMgr.RemoveChildernNodeItem(unit.red_root.transform, self)
+    local remouldNodeId = self.weaponSkillVm_:GetSkillRemouldRedId(skillId)
+    local upNodeId = self.weaponSkillVm_:GetSkillUpRedId(skillId)
+    local unlockNodeId = self.weaponSkillVm_:GetSkillUnlockRedId(skillId)
+    local equipNodeId = self.weaponSkillVm_:GetSkillEquipRedId(skillId)
+    Z.RedPointMgr.RemoveNodeItem(remouldNodeId, self)
+    Z.RedPointMgr.RemoveNodeItem(upNodeId, self)
+    Z.RedPointMgr.RemoveNodeItem(unlockNodeId, self)
+    Z.RedPointMgr.RemoveNodeItem(equipNodeId, self)
   end
 end
 
@@ -577,8 +631,10 @@ function Weapon_skill_mainView:refreshSkillEquipReddot()
       local upNodeId = self.weaponSkillVm_:GetSkillUpRedId(skillId)
       local unlockNodeId = self.weaponSkillVm_:GetSkillUnlockRedId(skillId)
       local equipNodeId = self.weaponSkillVm_:GetSkillEquipRedId(skillId)
+      local skillSkinUnlockNodeId = self.weaponSkillSkinVm_:GetSkillSkinUnlockRedId(skillId)
       if self.EquipModel then
         Z.RedPointMgr.LoadRedDotItem(equipNodeId, self, unit.red_root.transform)
+        Z.RedPointMgr.RemoveNodeItem(skillSkinUnlockNodeId, self)
         Z.RedPointMgr.RemoveNodeItem(upNodeId, self)
         Z.RedPointMgr.RemoveNodeItem(remouldNodeId, self)
         Z.RedPointMgr.RemoveNodeItem(unlockNodeId, self)
@@ -586,6 +642,7 @@ function Weapon_skill_mainView:refreshSkillEquipReddot()
         Z.RedPointMgr.LoadRedDotItem(upNodeId, self, unit.red_root.transform)
         Z.RedPointMgr.LoadRedDotItem(remouldNodeId, self, unit.red_root.transform)
         Z.RedPointMgr.LoadRedDotItem(unlockNodeId, self, unit.red_root.transform)
+        Z.RedPointMgr.LoadRedDotItem(skillSkinUnlockNodeId, self, unit.red_root.transform)
         Z.RedPointMgr.RemoveNodeItem(equipNodeId, self)
       end
     end
@@ -658,7 +715,16 @@ function Weapon_skill_mainView:OnItemBeginDrag(skillId)
   self:checkSkillUnitState()
   self:onSkillItemSelect(skillId, true)
   local skillRow = Z.TableMgr.GetTable("SkillTableMgr").GetRow(skillId)
-  self.uiBinder.copy_skill_item.img_icon:SetImage(skillRow.Icon)
+  local skillType = self.weaponSkillVm_:GetSkillTypeBySlotId(skillRow.SlotPositionId[1])
+  if skillType == E.SkillType.MysteriesSkill then
+    self.uiBinder.copy_skill_item.img_raw_icon:SetImage(skillRow.Icon)
+    self.uiBinder.copy_skill_item.Ref:SetVisible(self.uiBinder.copy_skill_item.img_raw_icon, true)
+    self.uiBinder.copy_skill_item.Ref:SetVisible(self.uiBinder.copy_skill_item.img_icon, false)
+  else
+    self.uiBinder.copy_skill_item.img_icon:SetImage(skillRow.Icon)
+    self.uiBinder.copy_skill_item.Ref:SetVisible(self.uiBinder.copy_skill_item.img_raw_icon, false)
+    self.uiBinder.copy_skill_item.Ref:SetVisible(self.uiBinder.copy_skill_item.img_icon, true)
+  end
   self.uiBinder.Ref:SetVisible(self.uiBinder.copy_skill_item_trans, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.mask, true)
 end
@@ -697,7 +763,9 @@ function Weapon_skill_mainView:OnItemEndDrag(canUnload)
     if self.skillEquip_[minDisSlotId] then
       Z.CoroUtil.create_coro_xpcall(function()
         self.weaponSkillVm_:AsyncSkillInstall(minDisSlotId, self.SelectSkillId, self.cancelSource:CreateToken())
-        self:onShowOrHideEff(minDisSlotId)
+        if self.skillShowEffEquip_[minDisSlotId] then
+          self:onShowOrHideEff(minDisSlotId)
+        end
       end)()
     end
   elseif self.weaponSkillVm_:CheckSkillEquip(self.SelectSkillId) and canUnload then
@@ -731,13 +799,9 @@ function Weapon_skill_mainView:refreshNormalSkillUnit(skillArray, index, showTit
   local count = 0
   for index_, value in ipairs(skillArray) do
     count = count + 1
-    if self.SelectSkillType == E.SkillType.SupportSkill then
-      table.insert(data, value)
-    else
-      local tmp = {}
-      tmp.skillId = value
-      table.insert(data, tmp)
-    end
+    local tmp = {}
+    tmp.skillId = value
+    table.insert(data, tmp)
     if index_ % 3 == 0 or index_ == #skillArray then
       local name = self.SelectSkillType .. "skill_tpl_" .. index .. "_" .. index_
       local unit = self:AsyncLoadUiUnit(path, name, parent)
@@ -786,7 +850,8 @@ function Weapon_skill_mainView:refreshNormalSkill()
     local isInSkillArray = false
     for _, skillArray in ipairs(data) do
       for __, skillId in ipairs(skillArray) do
-        if skillId == self.SelectSkillId then
+        local repalceSkillId = self.weaponSkillVm_:GetReplaceSkillId(skillId)
+        if repalceSkillId == self.SelectSkillId then
           isInSkillArray = true
         end
       end
@@ -934,6 +999,11 @@ function Weapon_skill_mainView:onSkillItemSelect(skillId, ingoreSetSkillId)
   if skillId == nil or skillId == 0 then
     return
   end
+  local skillSkinOpen = Z.VMMgr.GetVM("switch").CheckFuncSwitch(E.FunctionID.SkillSkin)
+  local repalceSkillId = self.weaponSkillVm_:GetOriginSkillId(skillId)
+  local unLock = self.weaponSkillVm_:CheckSkillUnlock(repalceSkillId)
+  local isHasSkin = self.weaponSkillSkinVm_:CheckSkillHasSkin(repalceSkillId)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_skill_skin, skillSkinOpen and isHasSkin and unLock)
   self.SelectSkillId = skillId
   if not ingoreSetSkillId then
     self.typeSelectSkillIds_[self.SelectSkillType] = skillId
@@ -959,13 +1029,16 @@ end
 function Weapon_skill_mainView:HideAllTipsSubView()
   self.weaponSkillLevelUp_:DeActive()
   self.weaponResonanceSkillTips_:DeActive()
+  self.envWindowView_:DeActive()
+  self:clearFilter()
 end
 
 function Weapon_skill_mainView:ShowTipsSubView(skillId, professionId)
   local viewData = {}
-  viewData.skillId = skillId
+  viewData.skillId = self.weaponSkillVm_:GetOriginSkillId(skillId)
   viewData.professionId = professionId
   viewData.skillType = self.SelectSkillType
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
   if self.SelectSkillType == E.SkillType.MysteriesSkill then
     self.weaponSkillLevelUp_:DeActive()
     self.weaponResonanceSkillTips_:Active(viewData, self.uiBinder.skill_sub_root)
@@ -975,7 +1048,31 @@ function Weapon_skill_mainView:ShowTipsSubView(skillId, professionId)
   end
 end
 
+function Weapon_skill_mainView:clearUnitEvent()
+  if self.skillUnitNames_ then
+    for _, unitName in ipairs(self.skillUnitNames_) do
+      local unitItem = self.units[unitName]
+      if unitItem then
+        unitItem.weapon_skill_1.event_trigger:ClearAll()
+      end
+    end
+    self.skillUnitNames_ = nil
+  end
+  if self.skillEquipUnits_ then
+    for _, unitItem in pairs(self.skillEquipUnits_) do
+      unitItem.event_trigger:ClearAll()
+    end
+    self.skillEquipUnits_ = nil
+  end
+end
+
 function Weapon_skill_mainView:OnDeActive()
+  for _, value in pairs(self.skillInputKeyDescComps_) do
+    value:UnInit()
+  end
+  for _, value in pairs(self.equipSkillInputKeyDescComps_) do
+    value:UnInit()
+  end
   self:HideAllTipsSubView()
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_loop_eff)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
@@ -983,6 +1080,7 @@ function Weapon_skill_mainView:OnDeActive()
   self:unInitLoopGridView()
   self:unInitFilter()
   self:unLoadRedDotItem()
+  self:clearUnitEvent()
   self.skillShowEffEquip_ = {}
   self.skillUnits_ = {}
   self.selectItem_ = nil
@@ -998,6 +1096,7 @@ end
 function Weapon_skill_mainView:loadRedDotItem()
   Z.RedPointMgr.LoadRedDotItem(E.RedType.WeaponResonanceTab, self, self.uiBinder.tab_02.Trans)
   Z.RedPointMgr.LoadRedDotItem(E.RedType.NormalSkillTab, self, self.uiBinder.tab_01.Trans)
+  Z.RedPointMgr.LoadRedDotItem(E.RedType.EnvSkillPageBtn, self, self.uiBinder.tab_03.Trans)
 end
 
 function Weapon_skill_mainView:unLoadRedDotItem()
@@ -1005,6 +1104,8 @@ function Weapon_skill_mainView:unLoadRedDotItem()
   Z.RedPointMgr.RemoveNodeItem(E.RedType.SkillEquipBtn, self)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.ResonanceSkillEquipBtn, self)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.NormalSkillTab, self)
+  Z.RedPointMgr.RemoveNodeItem(E.RedType.SkillSkinUnlock, self)
+  Z.RedPointMgr.LoadRedDotItem(E.RedType.EnvSkillPageBtn, self)
 end
 
 function Weapon_skill_mainView:onStartAnimShow()

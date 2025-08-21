@@ -15,8 +15,6 @@ message FantasyTableBase {
     int_table BuffPar = 1688;
     bool IsOnly = 175;
 }
-
 message FantasyTableMgr {
-    map<int32, .bokura.FantasyTableBase> datas = 1;
+    repeated bokura.FantasyTableMgr.DatasEntry datas = 1;
 }
-

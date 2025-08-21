@@ -10,9 +10,9 @@ local VibeLevel2ParamMap = {
   [3] = "cyan",
   [4] = "pink"
 }
-local CheckErrorCode = function(errorCode)
-  if errorCode and errorCode ~= 0 then
-    Z.TipsVM.ShowTips(errorCode)
+local CheckErrorCode = function(errCode)
+  if errCode and errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
     return false
   end
   return true
@@ -27,6 +27,9 @@ function UnionWarDanceVM:UnInitWatcher()
 end
 
 function UnionWarDanceVM:OpenDanceView()
+  if Z.CameraFrameCtrl:GetIsCameraState() then
+    return
+  end
   Z.UIMgr:OpenView("union_wardance_window")
 end
 
@@ -45,11 +48,11 @@ function UnionWarDanceVM:RequestBeginDance()
   end
 end
 
-function UnionWarDanceVM:ShowUnionWarDanceVibe(forceStart)
+function UnionWarDanceVM:ShowUnionWarDanceVibe()
   local memberCount = unionWarDanceData_:GetMemberCount()
   local vibeLevel = unionWarDanceData_:getCurSceneVibeLevel(memberCount)
   unionWarDanceData_.vibeLevel = vibeLevel
-  self:ChangeVibe(vibeLevel, forceStart)
+  self:ChangeVibe(vibeLevel)
 end
 
 function UnionWarDanceVM:isInWarDanceActivity()
@@ -138,6 +141,10 @@ function UnionWarDanceVM:StartUnionWarDanceMusic(forceStart)
   if subType ~= E.SceneSubType.Union then
     return
   end
+  local curSceneId = Z.StageMgr.GetCurrentSceneId()
+  if curSceneId ~= Z.UnionActivityConfig.UnionSceneID then
+    return
+  end
   if not self:isInWarDanceActivity() and not forceStart then
     return
   end
@@ -192,7 +199,7 @@ function UnionWarDanceVM:HideUnionWarDanceVibe()
   self:ChangeVibe(0)
 end
 
-function UnionWarDanceVM:ChangeVibe(vibeLevel, forceStart)
+function UnionWarDanceVM:ChangeVibe(vibeLevel)
   local scenceId = Z.StageMgr.GetCurrentSceneId()
   if scenceId == 0 then
     return
@@ -205,15 +212,19 @@ function UnionWarDanceVM:ChangeVibe(vibeLevel, forceStart)
   if subType ~= E.SceneSubType.Union then
     return
   end
-  if not self:isInWarDanceActivity() and not forceStart then
+  local curSceneId = Z.StageMgr.GetCurrentSceneId()
+  if curSceneId ~= Z.UnionActivityConfig.UnionSceneID then
     return
   end
-  Z.LevelMgr.FireSceneEvent({
+  local ps = {
     eventType = 12,
+    intParams = {1},
     strParams = {
+      "off",
       VibeLevel2ParamMap[vibeLevel]
     }
-  })
+  }
+  Z.LevelMgr.FireSceneEvent(ps)
 end
 
 function UnionWarDanceVM:BeginDance()
@@ -222,7 +233,6 @@ function UnionWarDanceVM:BeginDance()
   if curActionDuration == nil or curActionID == nil then
     return
   end
-  local actionDuration = actionData:GetDurationLoopTime(curActionID, E.ExpressionType.Action)
   local unionVM = Z.VMMgr.GetVM("union")
   local unionId = unionVM:GetPlayerUnionId()
   Z.CoroUtil.create_coro_xpcall(function()
@@ -233,7 +243,7 @@ function UnionWarDanceVM:BeginDance()
     if CheckErrorCode(reply) == false then
       return
     end
-    Z.ZAnimActionPlayMgr:PlayAction(curActionID, false, Z.ServerTime:GetDanceNormalizedTime(actionDuration))
+    Z.ZAnimActionPlayMgr:PlayAction(curActionID, true, 0, -1, false, 0, true)
   end)()
 end
 
@@ -265,14 +275,14 @@ function UnionWarDanceVM:AsyncEnterUnionWardance(cancelToken)
   local vRequest = {}
   vRequest.unionId = unionId
   vRequest.enterType = Z.PbEnum("UnionEnterScene", "UnionEnterSceneDance")
-  local errrCode = worldProxy_.EnterUnionScene(vRequest, cancelToken)
-  CheckErrorCode(errrCode)
+  local errCode = worldProxy_.EnterUnionScene(vRequest, cancelToken)
+  CheckErrorCode(errCode)
 end
 
 function UnionWarDanceVM:AsyncGetPersonalReward(cancelToken)
   local request = {}
-  local reply = worldProxy_.GetDanceBallAward(request, cancelToken)
-  CheckErrorCode(reply)
+  local errCode = worldProxy_.GetDanceBallAward(request, cancelToken)
+  CheckErrorCode(errCode)
 end
 
 return UnionWarDanceVM

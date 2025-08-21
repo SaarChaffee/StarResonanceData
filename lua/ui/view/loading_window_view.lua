@@ -11,11 +11,12 @@ function UILoadingView:ctor()
   super.ctor(self, "loading_window")
   self.uiBinder = nil
   self.loadingVM_ = Z.VMMgr.GetVM("loading")
-  self.loadingData_ = Z.DataMgr.Get("loading_data")
   self.curLoadingType_ = nil
+  self.loadingData_ = Z.DataMgr.Get("loading_data")
 end
 
 function UILoadingView:OnActive()
+  Z.InputMgr:EnableInput(false, Panda.ZGame.EInputMgrEableSource.Loading)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:bindEvents()
   self:InitComp()
@@ -25,17 +26,15 @@ function UILoadingView:OnDeActive()
   self:unBindEvents()
   self:UnInitComp()
   self.curLoadingType_ = nil
-  self.loadingData_:SetTargetProgress(0)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
+  Z.InputMgr:EnableInput(true, Panda.ZGame.EInputMgrEableSource.Loading)
   self.ViewConfig.IsFullScreen = false
 end
 
 function UILoadingView:bindEvents()
-  Z.EventMgr:Add(Z.ConstValue.Loading.UpdateLoadingProgress, self.updateProgressAnim, self)
 end
 
 function UILoadingView:unBindEvents()
-  Z.EventMgr:Remove(Z.ConstValue.Loading.UpdateLoadingProgress, self.updateProgressAnim, self)
 end
 
 function UILoadingView:OnRefresh()
@@ -46,8 +45,20 @@ function UILoadingView:InitComp()
   if self.viewData == E.LoadingType.Progress then
     Z.AudioMgr:Play("Loading_On")
   end
-  self.uiBinder.img_fillmount_temp.fillAmount = 0
-  self.uiBinder.rimg_list:SwitchTexture()
+  if self.uiBinder.rimg_bg.texture == nil then
+    self.uiBinder.rimg_bg:SetColor(Color.black)
+    self.uiBinder.rimg_bg:SetImageWithCallback(self.loadingData_:GetRandomBg(), function()
+      if not self.IsActive or not self.uiBinder then
+        return
+      end
+      self.uiBinder.rimg_bg:SetColor(Color.white)
+    end)
+  else
+    self.uiBinder.rimg_bg:SetColor(Color.white)
+  end
+  local title, content = self.loadingData_:GetRandomLabel()
+  self.uiBinder.lab_title.text = title
+  self.uiBinder.lab_content.text = content
   self.uiBinder.aspect_fitter_progress:SetFullRect()
   self.uiBinder.aspect_fitter_white:SetFullRect()
   self.uiBinder.aspect_fitter_black:SetFullRect()
@@ -57,9 +68,8 @@ function UILoadingView:UnInitComp()
   if self.viewData == E.LoadingType.Progress then
     Z.AudioMgr:Play("Loading_Off")
   end
-  self.uiBinder.rimg_list:LoadNextTexture()
+  self.uiBinder.rimg_bg:SetImage(self.loadingData_:GetRandomBg())
   self.uiBinder.anim_light:PlayLoop("Stop")
-  self.uiBinder.dotween_progress:ClearAll()
   self.uiBinder.dotween_white:ClearAll()
   self.uiBinder.dotween_black:ClearAll()
 end
@@ -86,7 +96,6 @@ function UILoadingView:RefreshLoadingByType()
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_black, self.curLoadingType_ == E.LoadingType.Black)
   if self.curLoadingType_ == E.LoadingType.Progress then
     self.uiBinder.anim_light:PlayLoop("loading")
-    self:updateProgressAnim()
     self.ViewConfig.IsFullScreen = true
     Z.UIMgr:UpdateCameraState()
   elseif self.curLoadingType_ == E.LoadingType.White then
@@ -100,26 +109,6 @@ function UILoadingView:RefreshLoadingByType()
       Z.UIMgr:UpdateCameraState()
     end)
   end
-end
-
-function UILoadingView:checkProgressComplete(curProgress)
-  if Mathf.Approximately(curProgress, 1) then
-    self.uiBinder.dotween_progress:ClearAll()
-    self.timerMgr:StartTimer(function()
-      self.loadingVM_.CloseUILoading()
-    end, 0.2)
-    return
-  end
-end
-
-function UILoadingView:updateProgressAnim()
-  local curProgress = self.uiBinder.img_fillmount_temp.fillAmount
-  local targetProgress = math.max(curProgress, self.loadingData_:GetTargetProgress())
-  self:checkProgressComplete(curProgress)
-  self.uiBinder.dotween_progress:DoFloat(curProgress, targetProgress, 1, function(value)
-    self.uiBinder.img_fillmount_temp.fillAmount = value
-    self:checkProgressComplete(value)
-  end)
 end
 
 function UILoadingView:fadeInWhiteAnim(callback)

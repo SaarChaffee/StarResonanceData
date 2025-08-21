@@ -9,4 +9,3 @@ message UnionMember {
     int64 weekActivePoints = 4;
     int64 historyActivePoints = 5;
 }
-

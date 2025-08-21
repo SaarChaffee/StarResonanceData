@@ -16,7 +16,7 @@ end
 local applyCaptain = function(memData)
   local info = {
     charId = memData.basicData.charID,
-    tipsType = E.InvitationTipsType.Leader,
+    tipsType = E.InvitationTipsType.TeamLeader,
     content = Lang("RequestToBeCaptain"),
     func = applyCaptainCall,
     cd = Z.Global.TeamApplyCaptainLastTime,
@@ -34,7 +34,7 @@ end
 local transferCaptain = function(leaderData)
   local info = {
     charId = leaderData.basicData.charID,
-    tipsType = E.InvitationTipsType.Transfer,
+    tipsType = E.InvitationTipsType.TeamTransfer,
     content = Lang("ChangeCaptain"),
     func = transferCaptainCall,
     cd = Z.Global.TeamApplyCaptainLastTime,
@@ -45,24 +45,17 @@ local transferCaptain = function(leaderData)
 end
 local applyTeamCall = function(callData, flag, cancelSource)
   local teamVM_ = Z.VMMgr.GetVM("team")
-  local members = teamVM_.GetTeamMemData()
-  if flag then
-    if not teamVM_.CheckIsInTeam() then
-      Z.TipsVM.ShowTipsLang(1000617)
-      return
-    end
-    if 4 <= #members then
-      Z.TipsVM.ShowTipsLang(1000619)
-      return
-    end
-  end
-  teamVM_.AsyncDealApplyJoin(callData.charId, flag, cancelSource:CreateToken())
-  teamVM_.AsyncLeaderGetApplyList(false, cancelSource:CreateToken())
+  teamVM_.AsyncDealApplyJoin(callData.charId, flag, teamData.CancelSource:CreateToken())
+  teamVM_.AsyncLeaderGetApplyList(false, teamData.CancelSource:CreateToken())
 end
 local applyTeam = function(applyInfo)
+  local chatSettingVm = Z.VMMgr.GetVM("chat_setting")
+  if not chatSettingVm.CheckApplyType(E.ESocialApplyType.ETeamApply, applyInfo.charId) then
+    return
+  end
   local info = {
     charId = applyInfo.charId,
-    tipsType = E.InvitationTipsType.Request,
+    tipsType = E.InvitationTipsType.TeamRequest,
     content = Lang("RequestJoinTeam"),
     func = applyTeamCall,
     cd = Z.Global.TeamApplyCaptainLastTime,
@@ -72,7 +65,7 @@ local applyTeam = function(applyInfo)
     curTalentPoolId = applyInfo.curTalentPoolId
   }
   teamData:SetApplyList(applyInfo.charId)
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.TeamApplyButton, teamData:GetApplyCount())
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.TeamApplyButton, teamData:GetApplyCount())
   Z.EventMgr:Dispatch(Z.ConstValue.InvitationRefreshTips, info)
 end
 local receiveInvitedCall = function(callData, flag, cancelSource)
@@ -86,7 +79,6 @@ local receiveInvitedCall = function(callData, flag, cancelSource)
       end
       Z.DialogViewDataMgr:OpenNormalDialog(Lang("QuitAgreeTeam"), function()
         teamVM_.AsyncQuitReplyTeam(callData.teamId, cancelSource)
-        Z.DialogViewDataMgr:CloseDialogView()
       end)
     else
       teamVM_.AsyncReplyBeInvitation(callData.teamId, true, cancelSource:CreateToken())
@@ -95,16 +87,21 @@ local receiveInvitedCall = function(callData, flag, cancelSource)
     teamVM_.AsyncReplyBeInvitation(callData.teamId, false, cancelSource:CreateToken())
   end
 end
-local receiveInvited = function(inviteMemData, teamId, targetId, teamNum)
+local receiveInvited = function(inviteMemData, teamId, targetId, teamNum, memberType)
   local teamTargetData = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetId)
   if teamTargetData == nil then
     return
   end
+  local chatSettingVm = Z.VMMgr.GetVM("chat_setting")
+  if not chatSettingVm.CheckApplyType(E.ESocialApplyType.ETeamApply, inviteMemData.basicData.charID) then
+    return
+  end
   local targetName = teamTargetData.Name
+  local teamMaxNum = (memberType == nil or memberType == E.ETeamMemberType.Five) and Z.Global.TeamMaxNum or 20
   local inviteInfo = {
     charId = inviteMemData.basicData.charID,
-    tipsType = E.InvitationTipsType.Invite,
-    content = targetName .. " " .. teamNum .. "/" .. 4,
+    tipsType = E.InvitationTipsType.TeamInvite,
+    content = string.zconcat(targetName, " ", teamNum, "/", teamMaxNum),
     func = receiveInvitedCall,
     cd = Z.Global.TeamInviteLastTime,
     funcParam = {teamId = teamId},
@@ -130,6 +127,27 @@ local callTogether = function(charId)
   }
   Z.EventMgr:Dispatch(Z.ConstValue.InvitationRefreshTips, inviteInfo)
 end
+local callInviteJoinDungeons = function(charId, groupKey, dungeonId)
+  local teamVM = Z.VMMgr.GetVM("team")
+  local teamData = Z.DataMgr.Get("team_data")
+  local dungeonRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
+  local memberData = teamData.TeamInfo.members[charId]
+  if not dungeonRow then
+    return
+  end
+  local inviteInfo = {
+    charId = charId,
+    tipsType = E.InvitationTipsType.Summon,
+    content = Lang("DungeonCallTogether", {
+      val1 = memberData.socialData.basicData.name,
+      val2 = dungeonRow.Name
+    }),
+    func = teamVM.AsyncJoinDungeons,
+    funcParam = {groupKey = groupKey, dungeonId = dungeonId},
+    cd = Z.Global.DungeonSummonedTime
+  }
+  Z.EventMgr:Dispatch(Z.ConstValue.InvitationRefreshTips, inviteInfo)
+end
 local ret = {
   CloseTeamTipsView = closeTeamTipsView,
   OpenTeamTipsView = openTeamTipsView,
@@ -137,6 +155,7 @@ local ret = {
   ReceiveInvited = receiveInvited,
   ApplyCaptain = applyCaptain,
   TransferCaptain = transferCaptain,
-  CallTogether = callTogether
+  CallTogether = callTogether,
+  CallInviteJoinDungeons = callInviteJoinDungeons
 }
 return ret

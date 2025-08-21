@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityBuildFurnitureInfo {
+    int64 buildUuid = 1;
+    int32 furnitureId = 2;
+    int32 furnitureCount = 3;
+    int64 charId = 4;
+    int64 startTime = 5;
+    int64 endTime = 6;
+    int32 accelerateCount = 7;
+    repeated zproto.CommunityBuildFurnitureInfo.AccelerateItemsEntry accelerateItems = 8;
+}

@@ -5,7 +5,6 @@ function CamerasUnionBgItem:ctor()
 end
 
 function CamerasUnionBgItem:OnInit()
-  self.currentSelect_ = 0
   self.view_ = self.parent.UIView
   self.unionBgGO_ = nil
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_use, false)

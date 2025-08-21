@@ -11,4 +11,3 @@ message UploadPictureResultNtfRequest {
     zproto.EPictureType pictureType = 3;
     zproto.PictureInfo pictureInfo = 4;
 }
-

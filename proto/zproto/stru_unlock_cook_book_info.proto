@@ -4,6 +4,5 @@ package zproto;
 
 message UnlockCookBookInfo {
     repeated int32 bookList = 1;
-    map<int32, int32> foodList = 2;
+    repeated zproto.UnlockCookBookInfo.FoodListEntry foodList = 2;
 }
-

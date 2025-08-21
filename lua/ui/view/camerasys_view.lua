@@ -5,37 +5,48 @@ local albumMainData = Z.DataMgr.Get("album_main_data")
 local bigFilterPath = "ui/textures/photograph/"
 local decorateData = Z.DataMgr.Get("decorate_add_data")
 local CameraViewHideType = {All = 0, ShotHideControlUi = 1}
-local THUMB_WIDTH = 512
-local THUMB_HEIGHT = 288
+local PHOTO_SIZE = {
+  ThumbSize = {Width = 512, Height = 288},
+  HeadSize = {Width = 300, Height = 300},
+  BodySize = {Width = 468, Height = 774}
+}
 
 function CamerasysView:ctor()
-  self.panel = nil
   self.uiBinder = nil
-  super.ctor(self, "camerasys")
-  self.settingSubView_ = require("ui/view/camerasys_right_sub_view").new(self)
+  super.ctor(self, "camerasys", nil)
+  self.settingSubView_ = require("ui/view/camerasys_right_sub_mobile_view").new(self)
   self.joystickView_ = require("ui/view/zjoystick_view").new()
   self.decorateAddView_ = require("ui/view/decorate_add_view").new(self)
+  self.fighterBtnView_ = require("ui/view/fighterbtns_view").new(self)
+  self.blessingSubView_ = require("ui/view/camera_blessing_sub_view").new(self)
+  self.cameraActionSlider_ = require("ui/view/camera_action_slider_view").new(self)
   self.posInfoList_ = {}
   self.photoTaskId_ = 0
   self.decorateModelFuncId_ = 102013
   self.isUpdateAnimSlider_ = false
   self.switchVM_ = Z.VMMgr.GetVM("switch")
   self.cameraVm = Z.VMMgr.GetVM("camerasys")
+  self.cameraMemberVM_ = Z.VMMgr.GetVM("camera_member")
+  self.cameraMemberData_ = Z.DataMgr.Get("camerasys_member_data")
   self.expressionVm_ = Z.VMMgr.GetVM("expression")
   self.viewNodeIsShow_ = true
   self.cameraTypeActiveTog_ = nil
-  
-  function self.onInputAction_(inputActionEventData)
-    self:OnInputBack()
-  end
+  self.funcVM_ = Z.VMMgr.GetVM("gotofunc")
+  self.faceVM_ = Z.VMMgr.GetVM("face")
 end
 
 function CamerasysView:OnActive()
   Z.AudioMgr:Play("UI_Button_Camera")
   self.viewNodeIsShow_ = true
+  self.IsPreFaceMode_ = Z.IsPreFaceMode
+  self.isFashionState_ = self.cameraVm.CheckIsFashionState()
+  self.cloudGameShareContent_ = self.viewData
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 2884640, true)
+  self.isSkillIgnore_ = true
   self.isTogIgnore_ = false
+  self.isPlayerBloodBarIgnore_ = false
   self.isUnRealSceneIgnore_ = false
+  self.tempAngle_ = cameraData:GetCameraAngleRange()
   Z.UnrealSceneMgr:ShowUnrealScene()
   if cameraData.IsOfficialPhotoTask then
     self:Hide()
@@ -48,6 +59,7 @@ function CamerasysView:OnActive()
   end
   Z.CameraFrameCtrl:RecordCameraInitialParameters()
   self.rotationOffset_ = 0
+  self:bindEvents()
   self:initView()
   self:initBtn()
   self:addListenerPhotoShow()
@@ -55,69 +67,108 @@ function CamerasysView:OnActive()
   self:addListenerCameraPatternTog()
   self:addListenerFovSlider()
   self:checkPhotoTask()
-  self.isDefaultFov_ = true
-  self.isARFov_ = true
-  self.isSelfFov_ = true
+  self.cameraMemberData_:SetSelectMemberCharId(Z.ContainerMgr.CharSerialize.charId)
   self.isChangeScheme_ = false
   self.friendsMainVm_ = Z.VMMgr.GetVM("friends_main")
   self.friendsMainData_ = Z.DataMgr.Get("friend_main_data")
   Z.CoroUtil.create_coro_xpcall(function()
     self.friendsMainVm_.AsyncSetPersonalState(E.PersonalizationStatus.EStatusPhoto, false)
   end)()
-  self:BindLuaAttrWatchers()
-  self:BindEvents()
-  self:RegisterInputActions()
-  Z.ModelHelper.SetLookAtIKParam(Z.EntityMgr.PlayerEnt.Model, 1)
-  Z.EntityMgr.PlayerEnt.Model:SetLuaAttr(Z.ModelAttr.EModelForceLook, true)
-  if cameraData.CameraPatternType == E.CameraState.UnrealScene then
-    local keyName = "cameraFocusHead"
-    if cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Body then
-      keyName = "cameraFocusBody"
+  self:bindLuaAttrWatchers()
+  if Z.EntityMgr.PlayerEnt and Z.EntityMgr.PlayerEnt.Model then
+    Z.ModelHelper.SetLookAtIKParam(Z.EntityMgr.PlayerEnt.Model, 1)
+    Z.EntityMgr.PlayerEnt.Model:SetLuaAttrLookAtEyeOpen(true)
+    if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
+      local keyName = "cameraFocusBody"
+      if cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Head then
+        keyName = "cameraFocusHead"
+      end
+      local modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
+      local modelOffset = Z.UnrealSceneMgr:GetLookAtOffsetByModelId(modelId)
+      local modelPinchHeight = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelPinchHeight).Value
+      local heightOffset = self.cameraVm.GetHeightOffSet(modelPinchHeight)
+      Z.UnrealSceneMgr:DoCameraAnimLookAtOffset(keyName, Vector3.New(modelOffset.x, modelOffset.y + heightOffset, 0))
+      self:calculateUnionMaskDragLimit()
     end
-    local modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
-    local modelOffset = Z.UnrealSceneMgr:GetLookAtOffsetByModelId(modelId)
-    local modelPinchHeight = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelPinchHeight).Value
-    local heightOffset = self.cameraVm.GetHeightOffSet(modelPinchHeight)
-    Z.UnrealSceneMgr:DoCameraAnimLookAtOffset(keyName, Vector3.New(modelOffset.x, modelOffset.y + heightOffset, 0))
-    self:calculateUnionMaskDragLimit(true)
   end
-  self:setDefaultCameraShortcuts()
-end
-
-function CamerasysView:calculateUnionMaskDragLimit(isDelay)
   Z.CoroUtil.create_coro_xpcall(function()
-    if isDelay then
-      Z.Delay(0.7, self.cancelSource:CreateToken())
-    end
-    local max, min = self.cameraVm.GetUnionBgBoundsLimit(self.unionBgGO_)
-    local headTrans = self.uiBinder.trans_body_mask
-    if cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Head then
-      headTrans = self.uiBinder.trans_head_mask
-    end
-    local isOk, localMax = ZTransformUtility.ScreenPointToLocalPointInRectangle(headTrans, Vector2.New(max.x, max.y), nil)
-    local isOk, localMin = ZTransformUtility.ScreenPointToLocalPointInRectangle(headTrans, Vector2.New(min.x, min.y), nil)
-    self.unionDragLimitMax_ = localMax
-    self.unionDragLimitMin_ = localMin
+    self:initCameraMember()
   end)()
 end
 
+function CamerasysView:initCameraMember()
+  if cameraData.IsOfficialPhotoTask or cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
+    return
+  end
+  Z.CameraFrameCtrl:SetEntityShow(E.CameraSystemShowEntityType.CameraTeamMember, false)
+  cameraData.IsHideCameraMember = true
+  local socialVM = Z.VMMgr.GetVM("social")
+  local myCharId = Z.ContainerMgr.CharSerialize.charId
+  local mySocialData = socialVM.AsyncGetHeadAndHeadFrameInfo(myCharId, self.cancelSource:CreateToken())
+  self.cameraMemberVM_:AddMemberToList(myCharId, mySocialData, true)
+  self.uiBinder.lab_switch_name.text = mySocialData.basicData.name
+  self.cameraVm.InitSelfLookAtCamera()
+  local memberListData = self.cameraMemberVM_:GetLocalMemberListData()
+  if not memberListData then
+    return
+  end
+  for k, v in pairs(memberListData) do
+    local socialData = socialVM.AsyncGetHeadAndHeadFrameInfo(v, self.cancelSource:CreateToken())
+    self.cameraMemberVM_:AddMemberToList(v, socialData)
+  end
+  if table.zcount(memberListData) > 0 then
+    self.blessingSubView_:Active(nil, self.uiBinder.node_left_info)
+    self:setLeftNodeIsShow(false)
+  end
+end
+
+function CamerasysView:calculateUnionMaskDragLimit()
+  local headTrans = self.uiBinder.trans_body_mask
+  if cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Head then
+    headTrans = self.uiBinder.trans_head_mask
+  end
+  self.unionDragLimitMax_ = Vector2.New(headTrans.rect.width * 0.5, headTrans.rect.height * 0.5)
+  self.unionDragLimitMin_ = Vector2.New(-headTrans.rect.width * 0.5, -headTrans.rect.height * 0.5)
+end
+
 function CamerasysView:initView()
-  if not Z.IsPCUI and cameraData.CameraPatternType ~= E.CameraState.UnrealScene then
+  local isUnionTakePhotoState = cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto
+  self.decorateAddView_:Active(nil, self.uiBinder.node_decorate)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, false)
+  if not isUnionTakePhotoState then
     self.joystickView_:Active(nil, self.uiBinder.node_joystick)
   end
-  self.decorateAddView_:Active(nil, self.uiBinder.node_decorate)
+  if self.isFashionState_ then
+    self:calculateUnionMaskDragLimit()
+  end
+  if cameraData.CameraPatternType ~= E.TakePhotoSate.UnionTakePhoto then
+    self.fighterBtnView_:Active(nil, self.uiBinder.node_joystick)
+    self.fighterBtnView_:SetPlayerStateNodeIsShow(false)
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_action_slider, false)
+  Z.IgnoreMgr:SetBattleUIIgnore(Panda.ZGame.EBattleUIMask.Blood, true, Panda.ZGame.EIgnoreMaskSource.EUIView)
+  self.isPlayerBloodBarIgnore_ = true
+  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_ignore, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_lens_rotation, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_decorate, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_frame_layer_big, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_frame_fill_big, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_setting_trans, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_photograph_frame, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_ignore, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_joystick, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_shot, not self.isFashionState_)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_hide_hud, not self.isFashionState_)
   self.uiBinder.Ref:SetVisible(self.uiBinder.rayimg_btn, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, cameraData.CameraPatternType == E.CameraState.Default)
+  self.uiBinder.slider_angle.value = self.cameraVm.GetRangePerc(self.tempAngle_, true)
+  self.uiBinder.slider_angle:AddListener(function(value)
+    self.tempAngle_.value = self.cameraVm.GetRangeValue(value, self.tempAngle_)
+    Z.CameraFrameCtrl:SetAngle(self.tempAngle_.value)
+  end)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_body_mask, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_head_mask, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_player_rotation, cameraData.CameraPatternType == E.CameraState.Default or cameraData.CameraPatternType == E.CameraState.UnrealScene)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_player_rotation, cameraData.CameraPatternType == E.TakePhotoSate.Default or cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto)
   self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
   if cameraData.HeadImgOriSize then
     self.uiBinder.rimg_frame_head:SetSizeDelta(cameraData.HeadImgOriSize.x, cameraData.HeadImgOriSize.y)
@@ -131,7 +182,7 @@ function CamerasysView:initView()
   if cameraData.BodyImgOriPos then
     self.uiBinder.rimg_frame_systemic.anchoredPosition = cameraData.BodyImgOriPos
   end
-  if cameraData.CameraPatternType == E.CameraState.UnrealScene then
+  if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     local zoomRange = Z.Global.Photograph_BusinessCardCameraOffsetRangeA
     if cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Head then
       zoomRange = Z.Global.Photograph_BusinessCardCameraOffsetRangeB
@@ -140,8 +191,28 @@ function CamerasysView:initView()
     Z.UnrealSceneMgr:SetUnrealSceneCameraZoomRange(zoomRange[1], zoomRange[2])
     self.unionBgGO_ = Z.UnrealSceneMgr:GetGOByBinderName("UnionBg")
     self.unionBgGO_:SetActive(true)
-    self:createPlayerModel()
+    self.unrealSkyBoxGo_ = Z.UnrealSceneMgr:GetGOByBinderName("skyBox")
+    self.unrealSkyBoxGo_:SetActive(false)
+    Z.CameraFrameCtrl:SetUnionCameraBgTile(self.unionBgGO_)
+    local unionBgCfg = cameraData:GetUnionBgCfg()
+    if unionBgCfg then
+      Z.CameraFrameCtrl:SetGOTexture(self.unionBgGO_, unionBgCfg[1].Res)
+    end
+    if cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Fashion then
+      self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, true)
+      self.uiBinder.Ref:SetVisible(self.uiBinder.btn_generate_qr_code, not self.IsPreFaceMode_)
+      self:initFaceModel()
+    else
+      self:createPlayerModel()
+    end
   end
+  local sliderViewData = {
+    OpenSourceType = E.ExpressionOpenSourceType.Camera
+  }
+  if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
+    sliderViewData.ZModel = self.playerModel_
+  end
+  self.cameraActionSlider_:Active(sliderViewData, self.uiBinder.node_action_slider)
 end
 
 function CamerasysView:createPlayerModel()
@@ -157,18 +228,20 @@ function CamerasysView:createPlayerModel()
 end
 
 function CamerasysView:initBtn()
-  self.uiBinder.btn_jump.onDown:AddListener(function()
-    Z.PlayerInputController:Jump(true)
+  self.uiBinder.head_event_trigger_drag.onDrag:RemoveAllListeners()
+  self.uiBinder.head_event_trigger_drag.onDrag:AddListener(function(go, eventData)
+    self:onHeadLookAtImageDrag(eventData)
   end)
-  self.uiBinder.btn_jump.onUp:AddListener(function()
-    Z.PlayerInputController:Jump(false)
+  self.uiBinder.eyes_event_trigger_drag.onDrag:RemoveAllListeners()
+  self.uiBinder.eyes_event_trigger_drag.onDrag:AddListener(function(go, eventData)
+    self:onEyesLookAtImageDrag(eventData)
   end)
-  self.uiBinder.event_trigger_drag.onDrag:RemoveAllListeners()
-  self.uiBinder.event_trigger_drag.onDrag:AddListener(function(go, eventData)
-    self:onLookAtImageDrag(eventData)
+  self.uiBinder.head_event_trigger_drag.onEndDrag:RemoveAllListeners()
+  self.uiBinder.head_event_trigger_drag.onEndDrag:AddListener(function(go, eventData)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_face_frame, false)
   end)
-  self.uiBinder.event_trigger_drag.onEndDrag:RemoveAllListeners()
-  self.uiBinder.event_trigger_drag.onEndDrag:AddListener(function(go, eventData)
+  self.uiBinder.eyes_event_trigger_drag.onEndDrag:RemoveAllListeners()
+  self.uiBinder.eyes_event_trigger_drag.onEndDrag:AddListener(function(go, eventData)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_face_frame, false)
   end)
   self:AddClick(self.uiBinder.btn_album_entrance, function()
@@ -186,6 +259,7 @@ function CamerasysView:initBtn()
   self.uiBinder.tog_ignore:AddListener(function(isOn)
     self:setPlayerMoveIgnore(isOn)
   end)
+  self.uiBinder.tog_ignore:SetIsOnWithoutCallBack(self.isTogIgnore_)
   self:AddClick(self.uiBinder.rayimg_btn, function()
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_shot, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_btn_show_hud, true)
@@ -204,17 +278,36 @@ function CamerasysView:initBtn()
   self.uiBinder.event_trigger_frame_head.onDrag:AddListener(function(go, pointerData)
     self:unionImgMove(self.uiBinder.img_head_mask, self.uiBinder.rimg_frame_head, pointerData)
   end)
+  self:AddClick(self.uiBinder.btn_switch, function()
+    self.blessingSubView_:Active(nil, self.uiBinder.node_left_info)
+    self:setLeftNodeIsShow(false)
+  end)
+  self:AddClick(self.uiBinder.btn_picture_sharing, function()
+    self:takePhoto()
+  end)
+  self:AddClick(self.uiBinder.btn_generate_qr_code, function()
+    if string.zisEmpty(self.cloudGameShareContent_) then
+      return
+    end
+    Z.LuaBridge.SystemCopy(self.cloudGameShareContent_)
+    Z.TipsVM.ShowTips(120016)
+  end)
+end
+
+function CamerasysView:setLeftNodeIsShow(isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_left, isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_mobile, isShow)
 end
 
 function CamerasysView:setPlayerMoveIgnore(isOn)
   if cameraData.IsOfficialPhotoTask then
     return
   end
-  if cameraData.CameraPatternType == E.CameraState.Default then
-    Z.CameraFrameCtrl.IsCameraIgnoreMove = isOn
-    self.uiBinder.node_shortcut_key_move.alpha = isOn and 1 or 0.5
-  end
   self.isTogIgnore_ = isOn
+  local canShowByCameraPattern = cameraData.CameraPatternType == E.TakePhotoSate.Default or cameraData.CameraPatternType == E.TakePhotoSate.Battle
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, isOn and canShowByCameraPattern)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.slider_angle, isOn and canShowByCameraPattern)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_joystick, not isOn)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 25165848, isOn)
 end
 
@@ -234,77 +327,182 @@ function CamerasysView:addListenerPhotoShow()
     self:takePhoto()
   end)
   self:AddClick(self.uiBinder.cont_camera_btn_return, function()
-    Z.UIMgr:CloseView("camerasys")
+    Z.UIMgr:CloseView(self.viewConfigKey)
   end)
 end
 
 function CamerasysView:takePhoto()
-  if cameraData.IsBlockTakePhotoAction then
+  local focusViewConfigKey = Z.UIMgr:GetFocusViewConfigKey()
+  if focusViewConfigKey == nil or focusViewConfigKey ~= self.viewConfigKey then
     return
   end
-  self:setNodeVisible(false, CameraViewHideType.ShotHideControlUi)
+  self:setNodeVisible(false, CameraViewHideType.All)
   Z.EventMgr:Dispatch(Z.ConstValue.Camera.DecorateDeActive)
   self:hideButtonsWhenTakingPhotos(false)
   Z.UIRoot:SetClickEffectIsShow(false)
   self.cameraVm.ShowOrHideNoticePopView(false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, false)
-  local eventData = {}
-  eventData.type = E.DecorateLayerType.CamerasysType
-  Z.EventMgr:Dispatch(Z.ConstValue.Camera.TextSizeGet, eventData)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.cont_camera_btn_return, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_unlock_bg, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_shot, false)
   Z.CoroUtil.create_coro_xpcall(function()
-    local oriId
-    if cameraData.CameraPatternType == E.CameraState.UnrealScene then
-      self.uiBinder.Ref:SetVisible(self.uiBinder.node_setting_trans, false)
-      oriId = self:asyncTakePhotoByRect()
-    else
-      oriId = self:asyncGetOriPhoto()
-      self.cameraVm.SendShotTLog()
+    local oriId = self:asyncTakePhoto()
+    if not oriId or oriId == 0 then
+      self:resetUI()
+      return
     end
-    if cameraData.CameraPatternType == E.CameraState.UnrealScene then
-      local imgData = {textureId = oriId}
-      if cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Body then
-        imgData.snapType = E.PictureType.EProfileHalfBody
-        self.cameraVm.OpenIdCardView(self.cancelSource:CreateToken(), imgData)
+    if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
+      if cameraData.UnrealSceneModeSubType ~= E.UnionCameraSubType.Fashion then
+        self.uiBinder.Ref:SetVisible(self.uiBinder.node_setting_trans, false)
+        self:handleUnrealScene(oriId)
       else
-        imgData.snapType = E.PictureType.EProfileSnapShot
-        self.cameraVm.OpenHeadView(imgData)
+        self:setBlessingViewIsShow(false)
+        self:handleFashion(oriId)
+        self:setBlessingViewIsShow(true)
       end
-      self.uiBinder.Ref:SetVisible(self.uiBinder.node_setting_trans, true)
     else
-      local asyncCall = Z.CoroUtil.async_to_sync(Z.LuaBridge.TakeScreenShot)
-      local effectId = asyncCall(self.cancelSource:CreateToken(), E.NativeTextureCallToken.CamerasysView)
-      local thumbId = Z.LuaBridge.ResizeTextureSizeForAlbum(effectId, E.NativeTextureCallToken.CamerasysView, THUMB_WIDTH, THUMB_HEIGHT)
-      cameraData:SetMainCameraPhotoData(oriId, effectId, thumbId)
-      self.cameraVm.OpenCameraPhotoMain()
+      self:setBlessingViewIsShow(false)
+      self:handleNormalScene(oriId)
+      self:setBlessingViewIsShow(true)
     end
-    Z.UIRoot:SetClickEffectIsShow(true)
-    self.cameraVm.ShowOrHideNoticePopView(true)
-    self:setNodeVisible(true, CameraViewHideType.ShotHideControlUi)
-    self:hideButtonsWhenTakingPhotos(true)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, cameraData.IsFreeFollow)
+    self:resetUI()
   end)()
+  if self:shouldFinishPhotoTask() then
+    self:executePhotoTaskCompletion()
+  end
+  self:trackCameraPattern()
+  self:setMultiPlayerPhotoTargetFinish()
+end
+
+function CamerasysView:setMultiPlayerPhotoTargetFinish()
+  local memberDatas = self.cameraMemberData_:AssemblyMemberListData(true)
+  local memberCnt = table.zcount(memberDatas)
+  if 1 < memberCnt then
+    local goalVM = Z.VMMgr.GetVM("goal")
+    goalVM.SetGoalFinish(E.GoalType.TargetMultiPlayerPhoto, memberCnt)
+  end
+end
+
+function CamerasysView:asyncTakePhoto()
+  if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
+    return self:asyncTakePhotoByRect()
+  else
+    self.cameraVm.SendShotTLog()
+    return self:asyncGetOriPhoto()
+  end
+end
+
+function CamerasysView:handleUnrealScene(oriId)
+  local imgData = {}
+  if not oriId or oriId == 0 then
+    return
+  end
+  local isBody = cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Body
+  local width = isBody and PHOTO_SIZE.BodySize.Width or PHOTO_SIZE.HeadSize.Width
+  local height = isBody and PHOTO_SIZE.BodySize.Height or PHOTO_SIZE.HeadSize.Height
+  local resizePhotoId = Z.LuaBridge.ResizeTextureSizeForAlbum(oriId, E.NativeTextureCallToken.CamerasysView, width, height)
+  imgData.snapType = isBody and E.PictureType.EProfileHalfBody or E.PictureType.EProfileSnapShot
+  imgData.textureId = resizePhotoId
+  if isBody then
+    self.cameraVm.OpenIdCardView(self.cancelSource:CreateToken(), imgData)
+  else
+    self.cameraVm.OpenHeadView(imgData)
+  end
+  Z.LuaBridge.ReleaseScreenShot(oriId)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_setting_trans, true)
+end
+
+function CamerasysView:handleFashion(oriId)
+  local imgData = {}
+  if not oriId or oriId == 0 then
+    return
+  end
+  local width = PHOTO_SIZE.BodySize.Width
+  local height = PHOTO_SIZE.BodySize.Height
+  local resizePhotoId = Z.LuaBridge.ResizeTextureSizeForAlbum(oriId, E.NativeTextureCallToken.CamerasysView, width, height)
+  imgData.snapType = E.PictureType.EProfileHalfBody
+  imgData.textureId = resizePhotoId
+  imgData.shareCode = self.cloudGameShareContent_
+  local viewConfigKey = self.IsPreFaceMode_ and "camera_cloud_game_share" or "camera_cloud_game_share_code_window"
+  Z.UIMgr:OpenView(viewConfigKey, imgData)
+  Z.LuaBridge.ReleaseScreenShot(oriId)
+end
+
+function CamerasysView:handleNormalScene(oriId)
+  local photoWidth, photoHeight = self.cameraVm.GetTakePhotoSize()
+  local rect = self:getScreenshotRect(photoWidth, photoHeight)
+  local asyncCall = Z.CoroUtil.async_to_sync(Z.LuaBridge.TakeScreenShotByAspectWithRect)
+  local effectId = asyncCall(Z.UIRoot.CurScreenSize.x, Z.UIRoot.CurScreenSize.y, self.cancelSource:CreateToken(), E.NativeTextureCallToken.CamerasysView, rect.x, rect.y, photoWidth, photoHeight)
+  if photoWidth > Z.UIRoot.DESIGNSIZE_WIDTH or photoHeight > Z.UIRoot.DESIGNSIZE_HEIGHT then
+    oriId, effectId = self:getResizeTexture(oriId, effectId)
+  end
+  local thumbId = Z.LuaBridge.ResizeTextureSizeForAlbum(effectId, E.NativeTextureCallToken.CamerasysView, PHOTO_SIZE.ThumbSize.Width, PHOTO_SIZE.ThumbSize.Height)
+  cameraData:SetMainCameraPhotoData(oriId, effectId, thumbId)
+  self.cameraVm.OpenCameraPhotoMain(self.cloudGameShareContent_)
+end
+
+function CamerasysView:getResizeTexture(oriId, effectId, photoWidth, photoHeight)
+  local designWidth = Z.UIRoot.DESIGNSIZE_WIDTH
+  local designHeight = Z.UIRoot.DESIGNSIZE_HEIGHT
+  local resizeOriId = Z.LuaBridge.ResizeTextureSizeForAlbum(oriId, E.NativeTextureCallToken.CamerasysView, designWidth, designHeight)
+  local resizeEffectId = Z.LuaBridge.ResizeTextureSizeForAlbum(effectId, E.NativeTextureCallToken.CamerasysView, designWidth, designHeight)
+  Z.LuaBridge.ReleaseScreenShot(oriId)
+  Z.LuaBridge.ReleaseScreenShot(effectId)
+  return resizeOriId, resizeEffectId
+end
+
+function CamerasysView:getScreenshotRect(photoWidth, photoHeight)
+  local offset = Vector2.New(Z.UIRoot.CurScreenSize.x / 2, Z.UIRoot.CurScreenSize.y / 2)
+  local normalScreenSize = Z.UIRoot.DESIGNSIZE_WIDTH / Z.UIRoot.DESIGNSIZE_HEIGHT
+  local screenSize = Z.UIRoot.CurScreenSize.x / Z.UIRoot.CurScreenSize.y
+  local rectPosX, rectPosY = 0, 0
+  if normalScreenSize <= screenSize then
+    rectPosX = -photoWidth / 2 + offset.x
+  else
+    rectPosY = -photoHeight / 2 + offset.y
+  end
+  return Vector2.New(rectPosX, rectPosY)
+end
+
+function CamerasysView:resetUI()
+  Z.UIRoot:SetClickEffectIsShow(true)
+  self.cameraVm.ShowOrHideNoticePopView(true)
+  self:setNodeVisible(true, CameraViewHideType.All)
+  self:hideButtonsWhenTakingPhotos(true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, cameraData.IsFreeFollow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.cont_camera_btn_return, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_unlock_bg, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_shot, not self.isFashionState_)
+end
+
+function CamerasysView:shouldFinishPhotoTask()
   if self.photoTaskId_ and self.photoTaskId_ ~= 0 then
-    local setGoalFinish = false
     if cameraData.IsOfficialPhotoTask then
-      setGoalFinish = true
-    else
-      local photoConfig = Z.TableMgr.GetTable("PhotoParamTableMgr").GetRow(self.photoTaskId_)
-      if self.inCamera_ and photoConfig and self.nearestDistance_ > photoConfig.DistanceTake.X and self.nearestDistance_ < photoConfig.DistanceTake.Y then
-        for _, value in ipairs(photoConfig.TargetId) do
-          if not Z.PhotoQuestMgr:CheckPhotoQuestConditions(value) then
-            break
-          end
-        end
-        setGoalFinish = true
-      end
+      return true
     end
-    if setGoalFinish and self.posInfoList_[self.photoTaskId_] and self.posInfoList_[self.photoTaskId_].func then
-      self.posInfoList_[self.photoTaskId_].func()
+    local photoConfig = Z.TableMgr.GetTable("PhotoParamTableMgr").GetRow(self.photoTaskId_)
+    if self.inCamera_ and photoConfig and self.nearestDistance_ > photoConfig.DistanceTake.X and self.nearestDistance_ < photoConfig.DistanceTake.Y then
+      for _, value in ipairs(photoConfig.TargetId) do
+        if not Z.PhotoQuestMgr:CheckPhotoQuestConditions(value) then
+          return false
+        end
+      end
+      return true
     end
   end
+  return false
+end
+
+function CamerasysView:executePhotoTaskCompletion()
+  if self.posInfoList_[self.photoTaskId_] and self.posInfoList_[self.photoTaskId_].func then
+    self.posInfoList_[self.photoTaskId_].func()
+  end
+end
+
+function CamerasysView:trackCameraPattern()
   local goalVM = Z.VMMgr.GetVM("goal")
   goalVM.SetGoalFinish(E.GoalType.CameraPatternType, E.CameraTargetStage[cameraData.CameraPatternType])
-  if cameraData.CameraPatternType == E.CameraState.Default or cameraData.CameraPatternType == E.CameraState.AR then
+  if cameraData.CameraPatternType == E.TakePhotoSate.Default or cameraData.CameraPatternType == E.TakePhotoSate.AR then
     self:checkCameraTarget()
   end
 end
@@ -335,13 +533,16 @@ function CamerasysView:checkCameraTarget()
 end
 
 function CamerasysView:hideButtonsWhenTakingPhotos(isShow)
+  if cameraData.IsOfficialPhotoTask or self.isFashionState_ then
+    return
+  end
   if not isShow then
     self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_hide_hud, false)
   else
     self.uiBinder.tog_btn_hide_hud.isOn = false
+    self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_hide_hud, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_btn_show_hud, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_btn_hide_btn, true)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_hide_hud, true)
   end
 end
 
@@ -351,32 +552,36 @@ function CamerasysView:setNodeVisible(isShow, hideType)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_album_container, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.layout_top_right_icon, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.anim_btn_group, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_jump, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_slider_zoom_root, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_item, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_player_rotation, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_joystick, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_member, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.tog_ignore, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_hide_hud, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_shot, isShow)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.slider_angle, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.cont_camera_btn_return, isShow)
     return
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_shot, isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_all_active, isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_album_container, isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_ignore, isShow)
   if isShow == false then
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, isShow)
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, cameraData.IsFreeFollow)
   end
-  if cameraData.CameraPatternType == E.CameraState.Default then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, isShow)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.tog_ignore, isShow)
+  if cameraData.CameraPatternType == E.TakePhotoSate.Default or cameraData.CameraPatternType == E.TakePhotoSate.Battle then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.slider_angle, isShow)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_lens_rotation, isShow and self.isTogIgnore_)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, isShow and self.isTogIgnore_)
   end
   if hideType == CameraViewHideType.All then
     self.viewNodeIsShow_ = isShow
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_setting_trans, isShow)
   end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, isShow and self.isFashionState_)
 end
 
 function CamerasysView:asyncTakePhotoByRect()
@@ -410,7 +615,7 @@ function CamerasysView:asyncTakePhotoByRect()
   else
     Z.CameraFrameCtrl:SetFilterAsync(data.filterData)
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_body_mask, cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Body)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_body_mask, cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Body or cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Fashion)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_head_mask, cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Head)
   return oriId
 end
@@ -422,11 +627,10 @@ function CamerasysView:asyncGetOriPhoto()
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_frame_layer_big, false)
   local frameFBV = self.uiBinder.Ref:GetUIComp(self.uiBinder.rimg_frame_fill_big).IsVisible
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_frame_fill_big, false)
-  local asyncCall = Z.CoroUtil.async_to_sync(Z.LuaBridge.TakeScreenShot)
-  local oriId = asyncCall(self.cancelSource:CreateToken(), E.NativeTextureCallToken.CamerasysViewOri)
   local photoWidth, photoHeight = self.cameraVm.GetTakePhotoSize()
-  local resizeOriId = Z.LuaBridge.ResizeTextureSizeForAlbum(oriId, E.NativeTextureCallToken.CamerasysViewOri, photoWidth, photoHeight)
-  Z.LuaBridge.ReleaseScreenShot(oriId)
+  local rect = self:getScreenshotRect(photoWidth, photoHeight)
+  local asyncCall = Z.CoroUtil.async_to_sync(Z.LuaBridge.TakeScreenShotByAspectWithRect)
+  local oriId = asyncCall(Z.UIRoot.CurScreenSize.x, Z.UIRoot.CurScreenSize.y, self.cancelSource:CreateToken(), E.NativeTextureCallToken.CamerasysView, rect.x, rect.y, photoWidth, photoHeight)
   Z.EventMgr:Dispatch(Z.ConstValue.Camera.AllDecorateVisible, true)
   local data = decorateData:GetMoviescreenData()
   Z.CameraFrameCtrl:SetExposure(data.exposure)
@@ -439,22 +643,28 @@ function CamerasysView:asyncGetOriPhoto()
   else
     Z.CameraFrameCtrl:SetFilterAsync(data.filterData)
   end
-  return resizeOriId
+  return oriId
 end
 
 function CamerasysView:addListenerFuncBtn()
-  local isSettingSwitch = self.switchVM_.CheckFuncSwitch(self.decorateModelFuncId_)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_decorate, isSettingSwitch)
-  self:AddClick(self.uiBinder.tog_btn_action, function()
-    cameraData:SetTopTagIndex(E.CamerasysTopType.Action)
-    self:openSettingContainerAnim()
-  end)
-  self:AddClick(self.uiBinder.tog_btn_decorate, function()
-    cameraData:SetTopTagIndex(E.CamerasysTopType.Decorate)
-    self:openSettingContainerAnim()
-  end)
-  self:AddClick(self.uiBinder.tog_btn_setting, function()
+  self:AddClick(self.uiBinder.btn_setting, function()
     cameraData:SetTopTagIndex(E.CamerasysTopType.Setting)
+    cameraData:SetSettingViewSecondaryLogicIndex(-1)
+    self:openSettingContainerAnim()
+  end)
+  self:AddClick(self.uiBinder.btn_action, function()
+    cameraData:SetTopTagIndex(E.CamerasysTopType.Action)
+    cameraData:SetSettingViewSecondaryLogicIndex(E.CameraSystemSubFunctionType.CommonAction)
+    self:openSettingContainerAnim()
+  end)
+  self:AddClick(self.uiBinder.btn_filter, function()
+    cameraData:SetTopTagIndex(E.CamerasysTopType.Decorate)
+    cameraData:SetSettingViewSecondaryLogicIndex(-1)
+    self:openSettingContainerAnim()
+  end)
+  self:AddClick(self.uiBinder.btn_gaze, function()
+    cameraData:SetTopTagIndex(E.CamerasysTopType.Action)
+    cameraData:SetSettingViewSecondaryLogicIndex(E.CameraSystemSubFunctionType.LookAt)
     self:openSettingContainerAnim()
   end)
 end
@@ -463,43 +673,70 @@ function CamerasysView:addListenerCameraPatternTog()
   self.uiBinder.tog_album_icon_full_view:RemoveAllListeners()
   self.uiBinder.tog_album_icon_standard:RemoveAllListeners()
   self.uiBinder.tog_album_icon_ar:RemoveAllListeners()
+  self.uiBinder.tog_album_icon_battle:RemoveAllListeners()
+  if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
+    self:setPatternType(E.TakePhotoSate.UnionTakePhoto)
+    return
+  end
+  self.uiBinder.tog_album_icon_battle.group = self.uiBinder.anim_btn_group2
   self.uiBinder.tog_album_icon_full_view.group = self.uiBinder.anim_btn_group2
   self.uiBinder.tog_album_icon_standard.group = self.uiBinder.anim_btn_group2
   self.uiBinder.tog_album_icon_ar.group = self.uiBinder.anim_btn_group2
-  self:AddAsyncClick(self.uiBinder.tog_album_icon_full_view, function()
-    if self.uiBinder.tog_album_icon_full_view.isOn and cameraData.CameraPatternType ~= E.CameraState.Default then
-      self:setPatternType(E.CameraState.Default)
+  self.uiBinder.tog_album_icon_full_view:AddListener(function(isOn)
+    if isOn and cameraData.CameraPatternType ~= E.TakePhotoSate.Default then
+      self:setPatternType(E.TakePhotoSate.Default)
     end
   end)
-  self:AddAsyncClick(self.uiBinder.tog_album_icon_standard, function()
-    if self.uiBinder.tog_album_icon_standard.isOn and cameraData.CameraPatternType ~= E.CameraState.SelfPhoto then
-      self:setPatternType(E.CameraState.SelfPhoto)
+  self.uiBinder.tog_album_icon_standard:AddListener(function(isOn)
+    if isOn and cameraData.CameraPatternType ~= E.TakePhotoSate.SelfPhoto then
+      self:setPatternType(E.TakePhotoSate.SelfPhoto)
     end
   end)
-  self:AddAsyncClick(self.uiBinder.tog_album_icon_ar, function()
-    if self.uiBinder.tog_album_icon_ar.isOn and cameraData.CameraPatternType ~= E.CameraState.AR then
-      self:setPatternType(E.CameraState.AR)
+  self.uiBinder.tog_album_icon_ar:AddListener(function(isOn)
+    if isOn and cameraData.CameraPatternType ~= E.TakePhotoSate.AR then
+      if not UnityEngine.SystemInfo.supportsGyroscope then
+        Z.TipsVM.ShowTipsLang(1000055)
+      end
+      self:setPatternType(E.TakePhotoSate.AR)
+    end
+  end)
+  self.uiBinder.tog_album_icon_battle:AddListener(function(isOn)
+    if isOn then
+      if self.cameraVm.BanSkill() then
+        self.uiBinder.tog_album_icon_battle:SetIsOnWithoutCallBack(false)
+        self.uiBinder.tog_album_icon_full_view.isOn = true
+        Z.TipsVM.ShowTipsLang(1000043)
+        return
+      end
+      if cameraData.CameraPatternType ~= E.TakePhotoSate.Battle then
+        self:setPatternType(E.TakePhotoSate.Battle)
+      end
     end
   end)
   self.uiBinder.tog_album_icon_full_view.isOn = true
 end
 
 function CamerasysView:setPatternType(patternType)
-  if patternType == E.CameraState.Default then
-    local nowType = cameraData.CameraPatternType
+  self.uiBinder.slider_zoom.value = 0
+  if patternType == E.TakePhotoSate.Default or patternType == E.TakePhotoSate.Battle then
     local valueData = {}
     valueData.nowType = cameraData.CameraPatternType
-    valueData.targetType = E.CameraState.Default
+    valueData.targetType = E.TakePhotoSate.Default
     Z.EventMgr:Dispatch(Z.ConstValue.Camera.PatternTypeChange, valueData)
-    cameraData.CameraPatternType = E.CameraState.Default
-    self:changeCameraTypeAnim(nowType)
+    cameraData.CameraPatternType = patternType
     self:updateCameraPattern()
+    local tipsConfigId = 1000013
     self.cameraTypeActiveTog_ = self.uiBinder.tog_album_icon_full_view
+    if patternType == E.TakePhotoSate.Battle then
+      tipsConfigId = 1000044
+      self.cameraTypeActiveTog_ = self.uiBinder.tog_album_icon_battle
+    end
     local tbData_zoom = cameraData:GetCameraFOVRange()
-    self.uiBinder.slider_zoom.value = self.cameraVm.GetRangePerc(tbData_zoom, self.isDefaultFov_)
-    Z.TipsVM.ShowTipsLang(1000013)
-    self.isDefaultFov_ = false
-  elseif patternType == E.CameraState.SelfPhoto then
+    self.uiBinder.slider_zoom.value = self.cameraVm.GetRangePerc(tbData_zoom, true)
+    Z.TipsVM.ShowTipsLang(tipsConfigId)
+    self.fighterBtnView_:Show()
+    self:refreshFightView(patternType)
+  elseif patternType == E.TakePhotoSate.SelfPhoto then
     if not self.cameraVm.IsEnterSelfPhoto() then
       Z.TipsVM.ShowTipsLang(1000016)
       if self.cameraTypeActiveTog_ then
@@ -507,61 +744,87 @@ function CamerasysView:setPatternType(patternType)
       end
       return
     end
-    local nowType = cameraData.CameraPatternType
     local valueData = {}
     valueData.nowType = cameraData.CameraPatternType
-    valueData.targetType = E.CameraState.SelfPhoto
+    valueData.targetType = E.TakePhotoSate.SelfPhoto
     Z.EventMgr:Dispatch(Z.ConstValue.Camera.PatternTypeChange, valueData)
-    cameraData.CameraPatternType = E.CameraState.SelfPhoto
-    self:changeCameraTypeAnim(nowType)
+    cameraData.CameraPatternType = E.TakePhotoSate.SelfPhoto
     self:updateCameraPattern()
     self.cameraTypeActiveTog_ = self.uiBinder.tog_album_icon_standard
     local tbData_zoom = cameraData:GetCameraFOVSelfRange()
-    self.uiBinder.slider_zoom.value = self.cameraVm.GetRangePerc(tbData_zoom, self.isARFov_)
+    self.uiBinder.slider_zoom.value = self.cameraVm.GetRangePerc(tbData_zoom, true)
     Z.TipsVM.ShowTipsLang(1000015)
-    self.isARFov_ = false
-  elseif patternType == E.CameraState.AR then
-    local nowType = cameraData.CameraPatternType
+    self.fighterBtnView_:Hide()
+  elseif patternType == E.TakePhotoSate.AR then
     local valueData = {}
     valueData.nowType = cameraData.CameraPatternType
-    valueData.targetType = E.CameraState.AR
+    valueData.targetType = E.TakePhotoSate.AR
     Z.EventMgr:Dispatch(Z.ConstValue.Camera.PatternTypeChange, valueData)
-    cameraData.CameraPatternType = E.CameraState.AR
-    self:changeCameraTypeAnim(nowType)
+    cameraData.CameraPatternType = E.TakePhotoSate.AR
     self:updateCameraPattern()
     self.cameraTypeActiveTog_ = self.uiBinder.tog_album_icon_ar
     local tbData_zoom = cameraData:GetCameraFOVARRange()
-    self.uiBinder.slider_zoom.value = self.cameraVm.GetRangePerc(tbData_zoom, self.isSelfFov_)
+    self.uiBinder.slider_zoom.value = self.cameraVm.GetRangePerc(tbData_zoom, true)
     Z.TipsVM.ShowTipsLang(1000014)
-    self.isSelfFov_ = false
+    self.fighterBtnView_:Hide()
+  elseif patternType == E.TakePhotoSate.UnionTakePhoto then
+    self:updateCameraPattern()
+    self.fighterBtnView_:Hide()
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, patternType == E.CameraState.Default)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_player_rotation, patternType == E.CameraState.Default or patternType == E.CameraState.UnrealScene)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_ignore, patternType == E.CameraState.Default)
-  self:setDefaultCameraShortcuts()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_ignore, patternType ~= E.TakePhotoSate.UnionTakePhoto)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.slider_angle, (patternType == E.TakePhotoSate.Default or patternType == E.TakePhotoSate.Battle) and self.isTogIgnore_)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, (patternType == E.TakePhotoSate.Default or patternType == E.TakePhotoSate.Battle) and self.isTogIgnore_)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_player_rotation, patternType == E.TakePhotoSate.Default or patternType == E.TakePhotoSate.UnionTakePhoto)
+  local isShowLookAt = patternType == E.TakePhotoSate.Default and patternType == E.TakePhotoSate.Battle
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_gaze, isShowLookAt)
+  self:refreshLeftFunctionBtn()
+end
+
+function CamerasysView:refreshLeftFunctionBtn()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_setting, self.cameraVm.CheckMobileUiShowState(cameraData.MobileMainViewBtnEnum.Setting))
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_album_entrance, self.cameraVm.CheckMobileUiShowState(cameraData.MobileMainViewBtnEnum.Album))
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_action, self.cameraVm.CheckMobileUiShowState(cameraData.MobileMainViewBtnEnum.Action))
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_filter, self.cameraVm.CheckMobileUiShowState(cameraData.MobileMainViewBtnEnum.Decoration))
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_gaze, self.cameraVm.CheckMobileUiShowState(cameraData.MobileMainViewBtnEnum.LookAt))
+end
+
+function CamerasysView:refreshFightView(patternType)
+  if patternType == E.TakePhotoSate.Default then
+    self.fighterBtnView_:ForceChangeSkillPanel(false)
+    if not self.isSkillIgnore_ then
+      Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 1056, true)
+      self.isSkillIgnore_ = true
+    end
+  elseif patternType == E.TakePhotoSate.Battle then
+    self.fighterBtnView_:ForceChangeSkillPanel(true)
+    if self.isSkillIgnore_ then
+      Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 1056, false)
+      self.isSkillIgnore_ = false
+    end
+  end
 end
 
 function CamerasysView:updateCameraPattern()
   local showData
-  if cameraData.CameraPatternType == E.CameraState.Default then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_action, true)
+  if cameraData.CameraPatternType == E.TakePhotoSate.Default or cameraData.CameraPatternType == E.TakePhotoSate.Battle then
     showData = cameraData:GetShowEntityData()
     self:setShowEntity(showData)
-  elseif cameraData.CameraPatternType == E.CameraState.SelfPhoto then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_action, true)
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.SelfPhoto then
     showData = cameraData:GetShowEntitySelfPhotoData()
     self:setShowEntity(showData)
-  elseif cameraData.CameraPatternType == E.CameraState.AR then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_action, false)
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.AR then
     showData = cameraData:GetShowEntityARData()
     self:setShowEntity(showData)
-  elseif cameraData.CameraPatternType == E.CameraState.UnrealScene then
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     self:setUnrealSceneState()
   end
-  local oneSelfHideState = cameraData.CameraPatternType ~= E.CameraState.AR
-  Z.CameraFrameCtrl:SetEntityShow(E.CamerasysShowEntityType.Oneself, oneSelfHideState)
-  cameraData.IsHideSelfModel = not oneSelfHideState
-  Z.CameraFrameCtrl:SetPhotoType(cameraData.CameraPatternType)
+  if cameraData.CameraPatternType ~= E.TakePhotoSate.UnionTakePhoto then
+    local oneSelfHideState = cameraData.CameraPatternType ~= E.TakePhotoSate.AR
+    Z.CameraFrameCtrl:SetEntityShow(E.CameraSystemShowEntityType.Oneself, oneSelfHideState)
+    cameraData.IsHideSelfModel = not oneSelfHideState
+  end
+  local cameraStateType = self.cameraVm.ConversionTakePhotoType(cameraData.CameraPatternType)
+  Z.CameraFrameCtrl:SetPhotoType(cameraStateType)
   self.cameraVm.SetCameraPatternShotSet()
   if not self.isChangeScheme_ then
     cameraData:InitTagIndex()
@@ -569,49 +832,20 @@ function CamerasysView:updateCameraPattern()
   end
 end
 
-function CamerasysView:setDefaultCameraShortcuts()
-  local isDefaultMode = cameraData.CameraPatternType == E.CameraState.Default
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_jump, not Z.IsPCUI)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_mobile, not Z.IsPCUI)
-  if isDefaultMode and Z.IsPCUI then
-    self:setPlayerMoveIgnore(true)
-    self.uiBinder.tog_ignore:SetIsOnWithoutCallBack(true)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_shortcut_key, true)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_camera_move_shortcuts, cameraData.IsOfficialPhotoTask == false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_camera_free_shortcuts, cameraData.IsOfficialPhotoTask == false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab_shortcuts, cameraData.IsOfficialPhotoTask == false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_hide_shortcuts, cameraData.IsOfficialPhotoTask == false)
-  else
-    if self.isTogIgnore_ then
-      self:setPlayerMoveIgnore(false)
-      self.uiBinder.tog_ignore:SetIsOnWithoutCallBack(false)
-    end
-    Z.CameraFrameCtrl.IsCameraIgnoreMove = false
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_shortcut_key, Z.IsPCUI)
-    if Z.IsPCUI then
-      self.uiBinder.Ref:SetVisible(self.uiBinder.node_camera_move_shortcuts, false)
-      self.uiBinder.Ref:SetVisible(self.uiBinder.node_camera_free_shortcuts, false)
-      self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab_shortcuts, false)
-      self.uiBinder.Ref:SetVisible(self.uiBinder.node_hide_shortcuts, cameraData.IsOfficialPhotoTask == false)
-    end
-  end
-end
-
 function CamerasysView:setUnrealSceneState()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_action, true)
   local showData = cameraData:GetShowEntityData()
   self:setShowEntity(showData)
   self.uiBinder.Ref:SetVisible(self.uiBinder.anim_btn_group, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_jump, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_hide_hud, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.tog_ignore, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.slider_angle, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_body_mask, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_head_mask, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_album_entrance, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_decorate, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_slider_zoom_root, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_member, false)
   self:initUnionUnrealData()
   if not self.isUnRealSceneIgnore_ then
     Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 12582924, true)
@@ -619,15 +853,18 @@ function CamerasysView:setUnrealSceneState()
   end
   local rootCanvas = Z.UIRoot.RootCanvas.transform
   local rate = 0.00925926 / rootCanvas.localScale.x
-  if cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Body then
+  local width, height
+  if cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Body or cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Fashion then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_body_mask, true)
-    self.uiBinder.rimg_frame_systemic:SetWidth(cameraData.BodyImgOriSize.x * rate)
-    self.uiBinder.rimg_frame_systemic:SetHeight(cameraData.BodyImgOriSize.y * rate)
+    width, height = self.cameraVm.GetUnionSelectBoxSize(cameraData.BodyImgOriSize, rate, true)
+    self.uiBinder.rimg_frame_systemic:SetWidth(width)
+    self.uiBinder.rimg_frame_systemic:SetHeight(height)
     self:setImgAreaClip(self.uiBinder.img_body_mask, self.uiBinder.rimg_frame_systemic)
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_head_mask, true)
-    self.uiBinder.rimg_frame_head:SetWidth(cameraData.HeadImgOriSize.x * rate)
-    self.uiBinder.rimg_frame_head:SetHeight(cameraData.HeadImgOriSize.y * rate)
+    width, height = self.cameraVm.GetUnionSelectBoxSize(cameraData.HeadImgOriSize, rate)
+    self.uiBinder.rimg_frame_head:SetWidth(width)
+    self.uiBinder.rimg_frame_head:SetHeight(height)
     self:setImgAreaClip(self.uiBinder.img_head_mask, self.uiBinder.rimg_frame_head)
   end
 end
@@ -675,11 +912,11 @@ end
 
 function CamerasysView:addListenerFovSlider()
   local tbData_zoom
-  if cameraData.CameraPatternType == E.CameraState.Default or cameraData.CameraPatternType == E.CameraState.UnrealScene then
+  if cameraData.CameraPatternType == E.TakePhotoSate.Default or cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     tbData_zoom = cameraData:GetCameraFOVRange()
-  elseif cameraData.CameraPatternType == E.CameraState.SelfPhoto then
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.SelfPhoto then
     tbData_zoom = cameraData:GetCameraFOVSelfRange()
-  elseif cameraData.CameraPatternType == E.CameraState.AR then
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.AR then
     tbData_zoom = cameraData:GetCameraFOVARRange()
   end
   self.uiBinder.slider_zoom:RemoveAllListeners()
@@ -687,11 +924,11 @@ function CamerasysView:addListenerFovSlider()
   Z.CameraFrameCtrl:SetCameraSize(tbData_zoom.define)
   self.uiBinder.slider_zoom:AddListener(function(val)
     local zoom
-    if cameraData.CameraPatternType == E.CameraState.Default or cameraData.CameraPatternType == E.CameraState.UnrealScene then
+    if cameraData.CameraPatternType == E.TakePhotoSate.Default or cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto or cameraData.CameraPatternType == E.TakePhotoSate.Battle then
       zoom = cameraData:GetCameraFOVRange()
-    elseif cameraData.CameraPatternType == E.CameraState.SelfPhoto then
+    elseif cameraData.CameraPatternType == E.TakePhotoSate.SelfPhoto then
       zoom = cameraData:GetCameraFOVSelfRange()
-    elseif cameraData.CameraPatternType == E.CameraState.AR then
+    elseif cameraData.CameraPatternType == E.TakePhotoSate.AR then
       zoom = cameraData:GetCameraFOVARRange()
     end
     zoom.value = self.cameraVm.GetRangeValue(val, zoom)
@@ -711,9 +948,11 @@ function CamerasysView:addListenerFovSlider()
       self.uiBinder.slider_zoom.value = self.uiBinder.slider_zoom.value - 0.1
     end
   end)
-  local model = Z.EntityMgr.MainEnt.Model
-  if cameraData.CameraPatternType == E.CameraState.UnrealScene then
+  local model
+  if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     model = self.playerModel_
+  else
+    model = Z.EntityMgr.MainEnt.Model
   end
   self.rotationOffset_ = self.cameraVm.GetModelDefaultRotation(model)
   local normalizedValue = self.cameraVm.GetRotationSliderValueNormalized(self.rotationOffset_)
@@ -721,9 +960,14 @@ function CamerasysView:addListenerFovSlider()
   self.uiBinder.slider_rotation.value = normalizedValue
   self.uiBinder.lab_rotation_num.text = math.floor(normalizedValue)
   self.uiBinder.slider_rotation:AddListener(function()
-    if cameraData.CameraPatternType == E.CameraState.UnrealScene then
+    if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
       self:setPlayerRotation(self.playerModel_)
     else
+      local curSelectMemberData = self.cameraMemberData_:GetSelectMemberData()
+      if not curSelectMemberData.baseData.isSelf then
+        self:setPlayerRotation(curSelectMemberData.baseData.model)
+        return
+      end
       local val = self.uiBinder.slider_rotation.value
       self.uiBinder.lab_rotation_num.text = math.floor(val)
       Z.LuaBridge.SetEntityRotation(Z.EntityMgr.MainEnt, Quaternion.Euler(Vector3.New(0, val + self.rotationOffset_, 0)))
@@ -740,7 +984,7 @@ function CamerasysView:updateNodeScrollView()
   local rightViewData = {
     OpenSourceType = E.ExpressionOpenSourceType.Camera
   }
-  if cameraData.CameraPatternType == E.CameraState.UnrealScene then
+  if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     rightViewData.ZModel = self.playerModel_
   end
   self.settingSubView_:Active(rightViewData, self.uiBinder.node_setting_trans)
@@ -756,10 +1000,52 @@ function CamerasysView:camerasysDecorateSet(data)
   dec_:Active(data, self.uiBinder.node_item)
 end
 
+function CamerasysView:resetModelLookAt()
+  if not Z.EntityMgr.PlayerEnt then
+    return
+  end
+  Z.ModelHelper.ResetLookAtIKParam(Z.EntityMgr.PlayerEnt.Model)
+  Z.EntityMgr.PlayerEnt.Model:SetLuaAttrLookAtEyeOpen(false)
+  Z.ModelHelper.SetLookAtTransform(Z.EntityMgr.PlayerEnt.Model, nil)
+  if cameraData.IsControlEveryOne then
+    local selectMemberData = self.cameraMemberVM_:AssembledLookAtMemberData()
+    for k, v in pairs(selectMemberData) do
+      local model = v.baseData.model
+      Z.ModelHelper.ResetLookAtIKParam(model)
+      model:SetLuaAttrLookAtEyeOpen(false)
+      Z.ModelHelper.SetLookAtTransform(model, nil)
+    end
+  end
+end
+
 function CamerasysView:OnDeActive()
+  self:resetModelLookAt()
+  self.cameraMemberData_:SetSelectMemberCharId(0)
+  if Z.EntityMgr.PlayerEnt then
+    local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
+    if stateId == Z.PbEnum("EActorState", "ActorStateAction") then
+      Z.ZAnimActionPlayMgr:ResetAction()
+    end
+  end
+  cameraData:ClearFaceModelInfo()
+  if cameraData.IsHideCameraMember then
+    Z.CameraFrameCtrl:SetEntityShow(E.CameraSystemShowEntityType.CameraTeamMember, true)
+    cameraData.IsHideCameraMember = false
+  end
+  self.cameraMemberVM_:SaveMemberListData()
+  self.cameraMemberData_:ClearMemberModel()
+  self.cameraMemberData_.MemberListData = {}
+  if self.isPlayerBloodBarIgnore_ then
+    Z.IgnoreMgr:SetBattleUIIgnore(Panda.ZGame.EBattleUIMask.Blood, false, Panda.ZGame.EIgnoreMaskSource.EUIView)
+    self.isPlayerBloodBarIgnore_ = false
+  end
   if self.unionBgGO_ then
     self.unionBgGO_:SetActive(false)
     self.unionBgGO_ = nil
+  end
+  if self.unrealSkyBoxGo_ then
+    self.unrealSkyBoxGo_:SetActive(true)
+    self.unrealSkyBoxGo_ = nil
   end
   if self.unionDragLimitMax_ then
     self.unionDragLimitMax_ = nil
@@ -784,8 +1070,7 @@ function CamerasysView:OnDeActive()
   cameraData:ResetHeadAndEyesFollow()
   Z.LuaBridge.SetHudSwitch(true)
   cameraData.CameraSchemeSelectIndex = 0
-  self:UnRegisterInputActions()
-  self:UnBindEvents()
+  self:unBindEvents()
   self.cameraVm.ResetEntityVisible()
   if cameraData.IsOfficialPhotoTask then
     cameraData.IsOfficialPhotoTask = false
@@ -797,16 +1082,27 @@ function CamerasysView:OnDeActive()
       ZUtil.Pool.Collections.ZList_int.Return(idList)
     end
   end
-  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 2884640, false)
+  if not self.isSkillIgnore_ then
+    Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 2883584, false)
+  else
+    Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 2884640, false)
+  end
+  self.fighterBtnView_:DeActive()
   self.joystickView_:DeActive()
   self.decorateAddView_:DeActive()
   self.settingSubView_:DeActive()
+  self.blessingSubView_:DeActive()
+  self.cameraActionSlider_:DeActive()
   if self.playerPosWatcher ~= nil then
     self.playerPosWatcher:Dispose()
     self.playerPosWatcher = nil
   end
-  self:UnBindEntityLuaAttrWatcher(self.playerActorStateWatcher)
-  self.playerActorStateWatcher = nil
+  self:UnBindEntityLuaAttrWatcher(self.buffWatcher)
+  if self.playerStateWatcher ~= nil then
+    self.playerStateWatcher:Dispose()
+    self.playerStateWatcher = nil
+  end
+  self.buffWatcher = nil
   self.uiBinder.img_photo_rocker_bg:RemoveAllListeners()
   self.onDragFunc_ = nil
   self.onBeginDragFunc_ = nil
@@ -815,13 +1111,12 @@ function CamerasysView:OnDeActive()
   cameraData.CameraSchemeSelectId = -1
   decorateData:SetDecoreateNum(0)
   decorateData:ClearDecorateData()
-  Z.CameraFrameCtrl.IsCameraIgnoreMove = false
-  Z.CameraFrameCtrl:ResetCameraInitialParameters()
+  Z.CameraFrameCtrl:ResetCameraInitialParameters(cameraData.CameraPatternType ~= E.TakePhotoSate.UnionTakePhoto)
   Z.CoroUtil.create_coro_xpcall(function()
     self.friendsMainVm_.AsyncSetPersonalState(E.PersonalizationStatus.EStatusPhoto, true)
   end)()
   if cameraData.IsHideSelfModel then
-    Z.CameraFrameCtrl:SetEntityShow(E.CamerasysShowEntityType.Oneself, true)
+    Z.CameraFrameCtrl:SetEntityShow(E.CameraSystemShowEntityType.Oneself, true)
     cameraData.IsHideSelfModel = false
   end
   if self.playerModel_ then
@@ -830,7 +1125,7 @@ function CamerasysView:OnDeActive()
   end
 end
 
-function CamerasysView:BindEvents()
+function CamerasysView:bindEvents()
   Z.EventMgr:Add(Z.ConstValue.Camera.UpdateSettingView, self.updateNodeScrollView, self)
   Z.EventMgr:Add(Z.ConstValue.Camera.ViewShow, self.camerasysViewShow, self)
   Z.EventMgr:Add(Z.ConstValue.Camera.DecorateSet, self.camerasysDecorateSet, self)
@@ -839,11 +1134,9 @@ function CamerasysView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Camera.PatternTypeEvent, self.camerasysPatternTypeEvent, self)
   Z.EventMgr:Add(Z.ConstValue.Camera.SwitchPatternTypeEvent, self.switchPatternTypeEvent, self)
   Z.EventMgr:Add(Z.ConstValue.Camera.SetFreeLookAt, self.setFreeLookAt, self)
-  if Z.IsPCUI then
-    Z.EventMgr:Add(Z.ConstValue.Camera.TakePhoto, self.takePhoto, self)
-    Z.EventMgr:Add(Z.ConstValue.Camera.PhotoViewShowOrHide, self.photoViewShowOrHide, self)
-    Z.EventMgr:Add(Z.ConstValue.Camera.PhotoPlayerMoveShield, self.photoPlayerMoveShield, self)
-  end
+  Z.EventMgr:Add(Z.ConstValue.Camera.ExpressionPlaySlider, self.SetActionSliderTransVisible, self)
+  Z.EventMgr:Add(Z.ConstValue.CameraMember.SelectCameraMemberChanged, self.onSelectMemberChanged, self)
+  Z.EventMgr:Add(Z.ConstValue.FaceAttrChange, self.onFaceAttrChange, self)
   
   function self.onDragFunc_(val)
     Z.CameraFrameCtrl:SetCameraOffsetByJoystick(val)
@@ -870,29 +1163,35 @@ function CamerasysView:photoViewShowOrHide()
   self:setNodeVisible(not self.viewNodeIsShow_, CameraViewHideType.All)
 end
 
-function CamerasysView:photoPlayerMoveShield()
-  if cameraData.CameraPatternType ~= E.CameraState.Default then
-    return
-  end
-  self:setPlayerMoveIgnore(not self.isTogIgnore_)
-end
-
-function CamerasysView:setFreeLookAt(isOn)
-  self.uiBinder.trans_drag.position = Vector3.zero
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, isOn)
-  if isOn then
-    Z.EntityMgr.PlayerEnt.Model:SetLuaAttr(Z.ModelAttr.EModelForceLook, true)
-    self:updateFaceFramePos()
+function CamerasysView:setFreeLookAt(isOn, isHead)
+  if isHead then
+    self.uiBinder.head_trans_drag.position = Vector3.zero
+    if isOn then
+      self:updateFaceFramePos()
+    end
   else
-    Z.ModelHelper.ResetLookAtIKParam(Z.EntityMgr.PlayerEnt.Model)
-    Z.EntityMgr.PlayerEnt.Model:SetLuaAttr(Z.ModelAttr.EModelForceLook, false)
-    Z.ModelHelper.SetLookAtTransform(Z.EntityMgr.PlayerEnt.Model, nil)
+    self.uiBinder.eyes_trans_drag.position = Vector3.zero
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.eyes_trans_drag, cameraData.IsEyeFollow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.head_trans_drag, cameraData.IsHeadFollow)
+  if cameraData.IsEyeFollow == false and cameraData.IsHeadFollow == false then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, false)
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_drag, true)
   end
 end
 
 function CamerasysView:updateFaceFramePos()
+  if cameraData.IsControlEveryOne == true then
+    return
+  end
+  local selectMemberData = self.cameraMemberData_:GetSelectMemberData()
+  local model = selectMemberData.baseData.model
+  if not model then
+    return
+  end
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_face_frame, true)
-  local headPos = Z.EntityMgr.PlayerEnt.Model:GetHeadPosition()
+  local headPos = model:GetHeadPosition()
   local screenPosition = Z.CameraMgr.MainCamera:WorldToScreenPoint(headPos)
   local _, uiPos = ZTransformUtility.ScreenPointToLocalPointInRectangle(self.uiBinder.node_drag, screenPosition, nil)
   self.uiBinder.node_face_frame:SetAnchorPosition(uiPos.x, uiPos.y + 30)
@@ -900,30 +1199,30 @@ end
 
 function CamerasysView:camerasysPatternTypeEvent(patternType)
   self.isChangeScheme_ = true
-  if patternType == E.CameraState.Default then
+  if patternType == E.TakePhotoSate.Default then
     self.uiBinder.tog_album_icon_full_view.isOn = true
-  elseif patternType == E.CameraState.SelfPhoto then
+  elseif patternType == E.TakePhotoSate.SelfPhoto then
     self.uiBinder.tog_album_icon_standard.isOn = true
-  elseif patternType == E.CameraState.AR then
+  elseif patternType == E.TakePhotoSate.AR then
     self.uiBinder.tog_album_icon_ar.isOn = true
+  elseif patternType == E.TakePhotoSate.Battle then
+    self.uiBinder.tog_album_icon_battle.isOn = true
   end
 end
 
 function CamerasysView:camerasysHurtEvent()
-  if cameraData.CameraPatternType ~= E.CameraState.SelfPhoto then
+  if cameraData.CameraPatternType ~= E.TakePhotoSate.SelfPhoto then
     return
   end
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
+  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttrState()
   if stateId == Z.PbEnum("EActorState", "ActorStateSelfPhoto") then
     self.uiBinder.tog_album_icon_full_view.isOn = true
   end
 end
 
 function CamerasysView:camerasysDecorateLayerSet(valueData)
-  local splData = string.split(valueData.Res, "=")
-  local icon = splData[1]
-  local frameType = tonumber(splData[2])
-  local path = string.format("%s%s", bigFilterPath, icon)
+  local frameType = valueData.Parameter
+  local path = string.format("%s%s", bigFilterPath, valueData.Res)
   if frameType == E.CameraFrameType.None then
     self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_frame_layer_big, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_frame_fill_big, false)
@@ -938,7 +1237,7 @@ function CamerasysView:camerasysDecorateLayerSet(valueData)
   end
 end
 
-function CamerasysView:UnBindEvents()
+function CamerasysView:unBindEvents()
   Z.EventMgr:Remove(Z.ConstValue.Camera.UpdateSettingView, self.updateNodeScrollView, self)
   Z.EventMgr:Remove(Z.ConstValue.Camera.ViewShow, self.camerasysViewShow, self)
   Z.EventMgr:Remove(Z.ConstValue.Camera.DecorateSet, self.camerasysDecorateSet, self)
@@ -947,43 +1246,54 @@ function CamerasysView:UnBindEvents()
   Z.EventMgr:Remove(Z.ConstValue.Camera.PatternTypeEvent, self.camerasysPatternTypeEvent, self)
   Z.EventMgr:Remove(Z.ConstValue.Camera.SwitchPatternTypeEvent, self.switchPatternTypeEvent, self)
   Z.EventMgr:Remove(Z.ConstValue.Camera.SetFreeLookAt, self.setFreeLookAt, self)
-  if Z.IsPCUI then
-    Z.EventMgr:Remove(Z.ConstValue.Camera.TakePhoto, self.takePhoto, self)
-    Z.EventMgr:Remove(Z.ConstValue.Camera.PhotoViewShowOrHide, self.photoViewShowOrHide, self)
-    Z.EventMgr:Remove(Z.ConstValue.Camera.PhotoPlayerMoveShield, self.photoPlayerMoveShield, self)
-  end
+  Z.EventMgr:Remove(Z.ConstValue.Camera.ExpressionPlaySlider, self.SetActionSliderTransVisible, self)
+  Z.EventMgr:Remove(Z.ConstValue.CameraMember.SelectCameraMemberChanged, self.onSelectMemberChanged, self)
+  Z.EventMgr:Remove(Z.ConstValue.FaceAttrChange, self.onFaceAttrChange, self)
 end
 
 function CamerasysView:setRightFuncShow(isShow)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_hide_hud, isShow)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_shot, isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_btn_hide_hud, isShow and not self.isFashionState_)
   self.uiBinder.Ref:SetVisible(self.uiBinder.layout_top_right_icon, isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.anim_btn_group2, isShow)
-  if cameraData.CameraPatternType == E.CameraState.UnrealScene then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_jump, false)
+  if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.slider_angle, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_album_entrance, false)
   else
-    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_jump, isShow and not Z.IgnoreMgr:IsInputIgnore(Panda.ZGame.EInputMask.Jump))
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, isShow and cameraData.CameraPatternType == E.CameraState.Default)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_photo_rocker_bg, isShow and cameraData.CameraPatternType == E.TakePhotoSate.Default and self.isTogIgnore_)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_lens_rotation, isShow and cameraData.CameraPatternType == E.TakePhotoSate.Default and self.isTogIgnore_)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.slider_angle, isShow and self.isTogIgnore_ and (cameraData.CameraPatternType == E.TakePhotoSate.Default or cameraData.patternType == E.TakePhotoSate.Battle))
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_album_entrance, isShow)
   end
 end
 
-function CamerasysView:BindLuaAttrWatchers()
+function CamerasysView:bindLuaAttrWatchers()
   if Z.EntityMgr.PlayerEnt ~= nil then
     self.playerPosWatcher = Z.DIServiceMgr.PlayerAttrComponentWatcherService:OnAttrVirtualPosChanged(function()
       self:updatePosEvent()
     end)
-    self.playerActorStateWatcher = self:BindEntityLuaAttrWatcher({
-      Z.LocalAttr.EAttrState
-    }, Z.EntityMgr.PlayerEnt, self.updateActorStateEvent, true)
+    self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
+      self:updateActorStateEvent()
+    end)
+    self.buffWatcher = self:BindEntityLuaAttrWatcher({
+      Z.LocalAttr.ENowBuffList
+    }, Z.EntityMgr.PlayerEnt, self.onBuffChange, true)
+  end
+end
+
+function CamerasysView:onBuffChange()
+  local isBanSkill = self.cameraVm.BanSkill()
+  if isBanSkill and cameraData.CameraPatternType == E.TakePhotoSate.Battle then
+    self:setPatternType(E.TakePhotoSate.Default)
   end
 end
 
 function CamerasysView:updateActorStateEvent()
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
-  if cameraData.CameraPatternType == E.CameraState.SelfPhoto then
+  if not Z.EntityMgr.PlayerEnt then
+    return
+  end
+  local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
+  if cameraData.CameraPatternType == E.TakePhotoSate.SelfPhoto then
     if stateId == Z.PbEnum("EActorState", "ActorStateDefault") then
       local canSwitchStateList = {
         Z.PbEnum("EMoveType", "MoveIdle"),
@@ -1009,10 +1319,9 @@ end
 function CamerasysView:updatePosEvent()
   if not cameraData.IsFocusTag and cameraData.IsDepthTag then
     local playerPos_ = Z.EntityMgr.PlayerEnt:GetLocalAttrVirtualPos()
-    self:setFocusTargetPos(playerPos_.x, playerPos_.y, playerPos_.z)
+    local x, y, z = playerPos_.x, playerPos_.y, playerPos_.z
+    self:setFocusTargetPos(x, y, z)
   end
-  local expressionData = Z.DataMgr.Get("expression_data")
-  expressionData:ClearCurPlayData()
   self:getNearestPointInfo()
 end
 
@@ -1046,28 +1355,6 @@ end
 function CamerasysView:closeSettingContainerAnim()
   self.uiBinder.node_setting_anim:Restart(Z.DOTweenAnimType.Close)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_setting_trans, false)
-end
-
-function CamerasysView:changeCameraTypeAnim(nowType)
-  if nowType == E.CameraState.Default then
-    if cameraData.CameraPatternType == E.CameraState.SelfPhoto then
-      self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_2)
-    elseif cameraData.CameraPatternType == E.CameraState.AR then
-      self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_3)
-    end
-  elseif nowType == E.CameraState.SelfPhoto then
-    if cameraData.CameraPatternType == E.CameraState.Default then
-      self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
-    elseif cameraData.CameraPatternType == E.CameraState.AR then
-      self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
-    end
-  elseif nowType == E.CameraState.AR then
-    if cameraData.CameraPatternType == E.CameraState.SelfPhoto then
-      self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_4)
-    elseif cameraData.CameraPatternType == E.CameraState.Default then
-      self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_5)
-    end
-  end
 end
 
 function CamerasysView:checkPhotoTask()
@@ -1180,7 +1467,7 @@ function CamerasysView:refreshPhotoTaskInfo()
 end
 
 function CamerasysView:getNearestPointInfo()
-  if cameraData.IsOfficialPhotoTask then
+  if cameraData.IsOfficialPhotoTask or cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     return
   end
   local lastPhotoTaskId = self.photoTaskId_
@@ -1192,25 +1479,28 @@ end
 
 function CamerasysView:OnInputBack()
   if not albumMainData.IsUpLoadState then
-    Z.UIMgr:CloseView("camerasys")
+    Z.UIMgr:CloseView(self.viewConfigKey)
   end
 end
 
-function CamerasysView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Photograph)
+function CamerasysView:OnMountsTrigger()
+  if Z.IgnoreMgr:IsInputIgnore(Panda.ZGame.EInputMask.UIInteract) then
+    return false
+  end
+  local mainUIVM = Z.VMMgr.GetVM("mainui")
+  mainUIVM.GotoMainUIFunc(E.FunctionID.VehicleRide)
 end
 
-function CamerasysView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Photograph)
+function CamerasysView:OnTriggerInputAction(inputActionEventData)
+  if inputActionEventData.actionId == Z.RewiredActionsConst.Mounts then
+    self:OnMountsTrigger()
+  end
 end
 
 function CamerasysView:setRightPanelVisible(isShow)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_shot, isShow)
-  if cameraData.CameraPatternType == E.CameraState.UnrealScene then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_jump, false)
+  if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     self.uiBinder.Ref:SetVisible(self.uiBinder.anim_btn_group, false)
   else
-    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_jump, isShow)
     self.uiBinder.Ref:SetVisible(self.uiBinder.anim_btn_group, isShow and not cameraData.IsOfficialPhotoTask)
   end
 end
@@ -1224,36 +1514,188 @@ function CamerasysView:setPlayerRotation(model)
   model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, val + self.rotationOffset_, 0)))
 end
 
-function CamerasysView:onLookAtImageDrag(eventData)
+function CamerasysView:onHeadLookAtImageDrag(eventData)
+  if self.cameraMemberData_.HeadLock then
+    return
+  end
   local transDragWidth, transDragHeight = 0, 0
-  transDragWidth, transDragHeight = self.uiBinder.trans_drag:GetAnchorPosition(transDragWidth, transDragHeight)
+  transDragWidth, transDragHeight = self.uiBinder.head_trans_drag:GetAnchorPosition(transDragWidth, transDragHeight)
   local posX, posY = self.cameraVm.PosKeepBounds(transDragWidth + eventData.delta.x, transDragHeight + eventData.delta.y)
-  self.uiBinder.trans_drag:SetAnchorPosition(posX, posY)
-  self:coordinateTransformation(posX, posY)
+  self.uiBinder.head_trans_drag:SetAnchorPosition(posX, posY)
+  self:coordinateTransformation(true)
 end
 
-function CamerasysView:coordinateTransformation()
-  local screenPosition = Z.UIRoot.UICam:WorldToScreenPoint(self.uiBinder.trans_drag.position)
-  local playerPos = Z.EntityMgr.PlayerEnt.Model:GetAttrGoPosition()
+function CamerasysView:onEyesLookAtImageDrag(eventData)
+  if self.cameraMemberData_.EyesLock then
+    return
+  end
+  local transDragWidth, transDragHeight = 0, 0
+  transDragWidth, transDragHeight = self.uiBinder.eyes_trans_drag:GetAnchorPosition(transDragWidth, transDragHeight)
+  local posX, posY = self.cameraVm.PosKeepBounds(transDragWidth + eventData.delta.x, transDragHeight + eventData.delta.y)
+  self.uiBinder.eyes_trans_drag:SetAnchorPosition(posX, posY)
+  self:coordinateTransformation(false)
+end
+
+function CamerasysView:coordinateTransformation(isHead)
+  local selectMemberData = self.cameraMemberData_:GetSelectMemberData()
+  local model = selectMemberData.baseData.model
+  if not model then
+    return
+  end
+  local position = isHead and self.uiBinder.head_trans_drag.position or self.uiBinder.eyes_trans_drag.position
+  local screenPosition = Z.UIRoot.UICam:WorldToScreenPoint(position)
+  local playerPos = model:GetAttrGoPosition()
   local newScreenPos = Vector3.New(screenPosition.x, screenPosition.y, Z.NumTools.Distance(Z.CameraMgr.MainCamera.transform.position, playerPos))
   local worldPosition = Z.CameraMgr.MainCamera:ScreenToWorldPoint(newScreenPos)
-  local localPosition = Z.ModelHelper.WorldPosToLocal(Z.EntityMgr.PlayerEnt.Model, worldPosition)
+  local localPosition = Z.ModelHelper.LuaWorldPosToLocal(Z.EntityMgr.PlayerEnt.Model, worldPosition)
   localPosition.z = 0.2
-  Z.ModelHelper.SetLookAtPos(Z.EntityMgr.PlayerEnt.Model, localPosition, false)
+  if isHead then
+    selectMemberData.lookAtData.headCurPos = localPosition
+  else
+    selectMemberData.lookAtData.eyesCurPos = localPosition
+  end
+  Z.ModelHelper.SetLookAtPos(model, localPosition, isHead)
   self:updateFaceFramePos()
 end
 
 function CamerasysView:CustomClose()
-  if cameraData.CameraPatternType == E.CameraState.UnrealScene then
+  if cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     Z.UnrealSceneMgr:SetUnrealSceneCameraZoomRange(0.2, 1.2)
     Z.UnrealSceneMgr:CloseUnrealScene("camerasys")
   end
-  cameraData.CameraPatternType = E.CameraState.Default
+  cameraData.CameraPatternType = E.TakePhotoSate.Default
+end
+
+function CamerasysView:onSelectMemberChanged()
+  local selectMemberData = self.cameraMemberData_:GetSelectMemberData()
+  if not selectMemberData then
+    return
+  end
+  self.uiBinder.lab_switch_name.text = selectMemberData.socialData.basicData.name
+  self:refreshLeftFunctionBtn()
 end
 
 function CamerasysView:UpdateAfterVisibleChanged(visible)
-  Z.UIConfig[self.viewConfigKey].IsUnrealScene = cameraData.CameraPatternType == E.CameraState.UnrealScene
+  Z.UIConfig[self.viewConfigKey].IsUnrealScene = cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto
   super.UpdateAfterVisibleChanged(self, visible)
+end
+
+function CamerasysView:SetActionSliderTransVisible(isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_action_slider, isShow)
+end
+
+function CamerasysView:RefreshActionSlider(model, memberData, isShow)
+  if not memberData then
+    return
+  end
+  local expressionData = Z.DataMgr.Get("expression_data")
+  if memberData.baseData.isSelf then
+    local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
+    local isActionState = stateId == Z.PbEnum("EActorState", "ActorStateAction")
+    local actionId = Z.EntityMgr.PlayerEnt.Model:GetLuaAttrActionInfoActionId()
+    expressionData:SetCurPlayingId(actionId)
+    self.cameraActionSlider_:Active({
+      OpenSourceType = E.ExpressionOpenSourceType.Camera,
+      ZModel = nil
+    }, self.uiBinder.node_action_slider)
+    Z.EventMgr:Dispatch(Z.ConstValue.Camera.ExpressionPlaySlider, isActionState)
+    return
+  end
+  if self.cameraActionSlider_ and self.cameraActionSlider_.IsActive then
+    self.cameraActionSlider_:Show()
+  end
+  self.cameraActionSlider_:Active({
+    OpenSourceType = E.ExpressionOpenSourceType.Camera,
+    ZModel = model
+  }, self.uiBinder.node_action_slider)
+  if not isShow then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_action_slider, false)
+  else
+    expressionData:SetLogicExpressionType(E.ExpressionType.Action)
+    expressionData:SetCurPlayingId(memberData.actionData.actionId)
+    Z.EventMgr:Dispatch(Z.ConstValue.Camera.ExpressionPlaySlider, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_action_slider, true)
+  end
+  if self.settingSubView_.IsActive and self.settingSubView_.IsVisible then
+    self.settingSubView_:SetActionSliderIsShow(memberData.baseData.isSelf)
+  end
+end
+
+function CamerasysView:setBlessingViewIsShow(isShow)
+  if self.blessingSubView_ and self.blessingSubView_.IsActive then
+    if isShow then
+      self.blessingSubView_:Show()
+    else
+      self.blessingSubView_:Hide()
+    end
+  end
+end
+
+function CamerasysView:getKeyIdAndDescByFuncId(funcId)
+  local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
+  for keyId, row in pairs(keyTbl.GetDatas()) do
+    if row.KeyboardDes == 2 and row.FunctionId == funcId then
+      return keyId, row.SetDes
+    end
+  end
+end
+
+function CamerasysView:initFaceModel()
+  local faceData = Z.DataMgr.Get("face_data")
+  local gender = faceData:GetPlayerGender()
+  local bodySize = faceData:GetPlayerBodySize()
+  local modelId = Z.ModelManager:GetModelIdByGenderAndSize(gender, bodySize)
+  cameraData:SetFaceModelInfo(gender, bodySize, modelId)
+  self.playerModel_ = Z.UnrealSceneMgr:GetCacheModel(faceData.FaceModelName)
+  if not self.playerModel_ then
+    Z.UnrealSceneMgr:GetCachePlayerModel(function(model)
+      model:SetAttrGoPosition(Z.UnrealSceneMgr:GetTransPos("pos"))
+      model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, 180, 0)))
+      local equipZList = self.faceVM_.GetDefaultEquipZList(gender)
+      model:SetLuaAttr(Z.LocalAttr.EWearEquip, equipZList)
+      equipZList:Recycle()
+      model:SetLuaAttrLookAtEnable(true)
+    end, function(model)
+      self.playerModel_ = model
+      Z.UIMgr:FadeOut()
+      local attrVM = Z.VMMgr.GetVM("face_attr")
+      attrVM.UpdateAllFaceAttr()
+    end)
+  else
+    self.playerModel_:SetAttrGoPosition(Z.UnrealSceneMgr:GetTransPos("pos"))
+    self.playerModel_:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, 180, 0)))
+    self.playerModel_:SetLuaAttr(Z.ModelAttr.EModelRenderInvisible, false)
+    Z.ModelHelper.SetRenderLayerMaskByRenderType(self.playerModel_, Z.ZRenderingLayerUtils.RENDERING_LAYER_MASK_DEFAULT, Z.ModelRenderMask.All)
+    self.playerModel_:SetAttrGoLayer(Panda.Utility.ZLayerUtils.LAYER_UNREALSCENE)
+    Z.UIMgr:FadeOut()
+  end
+end
+
+function CamerasysView:onFaceAttrChange(attrType, ...)
+  if not self.playerModel_ then
+    return
+  end
+  local arg = {
+    ...
+  }
+  if attrType == Z.ModelAttr.EModelCHairGradient then
+    self:setModelAttr("SetLuaHairGradientAttr", table.unpack(arg))
+  elseif attrType == Z.ModelAttr.EModelHairWearId then
+    self:setModelAttr("SetLuaIntAttr", attrType, table.unpack(arg))
+  elseif attrType == Z.ModelAttr.EModelPinchHeight then
+    self:setModelAttr("SetLuaAttr", attrType, table.unpack(arg))
+  else
+    self:setModelAttr("SetLuaAttr", attrType, table.unpack(arg))
+  end
+end
+
+function CamerasysView:setModelAttr(funcName, ...)
+  local arg = {
+    ...
+  }
+  if self.playerModel_ then
+    self.playerModel_[funcName](self.playerModel_, table.unpack(arg))
+  end
 end
 
 return CamerasysView

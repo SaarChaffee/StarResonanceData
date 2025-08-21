@@ -7,4 +7,3 @@ enum MonsterTargetAward {
     MonsterTargetAwardGet = 1;
     MonsterTargetAwardReceived = 2;
 }
-

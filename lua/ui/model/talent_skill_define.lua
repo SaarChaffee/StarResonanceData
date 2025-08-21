@@ -8,7 +8,7 @@ DEF.TalentAttrInfoSubViewType = {
   TalentBD = 5
 }
 DEF.TalentTreePrefabPath = "ui/prefabs/talent_new/talent_tree_%s_%s_%s"
-DEF.TalentTreeMaxStage = 3
+DEF.TalentTreeMaxStage = 2
 DEF.TalentTreeStageIconPath = {
   [1] = "ui/atlas/talent/talent_class_1",
   [2] = "ui/atlas/talent/talent_class_2",

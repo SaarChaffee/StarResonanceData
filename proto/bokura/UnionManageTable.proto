@@ -12,8 +12,6 @@ message UnionManageTableBase {
     int32 ShowSort = 1506;
     int_array UnionAuthoritySit = 166;
 }
-
 message UnionManageTableMgr {
-    map<int32, .bokura.UnionManageTableBase> datas = 1;
+    repeated bokura.UnionManageTableMgr.DatasEntry datas = 1;
 }
-

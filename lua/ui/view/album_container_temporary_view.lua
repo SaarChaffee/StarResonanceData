@@ -3,9 +3,8 @@ local super = require("ui.ui_subview_base")
 local Album_container_temporaryView = class("Album_container_temporaryView", super)
 
 function Album_container_temporaryView:ctor(parent)
-  self.panel = nil
   self.uiBinder = nil
-  super.ctor(self, "album_container_temporary", "photograph/album_container_temporary_sub", UI.ECacheLv.None, parent)
+  super.ctor(self, "album_container_temporary", "photograph/album_container_temporary_sub", UI.ECacheLv.None)
 end
 
 function Album_container_temporaryView:OnActive()
@@ -43,7 +42,7 @@ end
 function Album_container_temporaryView:onUploadBtnClick()
   local selectedNum = self.albumMainData_:GetSelectedAlbumNumber()
   if selectedNum <= 0 then
-    Z.TipsVM.ShowTipsLang(1000027)
+    Z.TipsVM.ShowTipsLang(1000024)
     return
   end
   Z.VMMgr.GetVM("album_main").AlbumUpLoadStart(selectedNum)
@@ -53,26 +52,23 @@ function Album_container_temporaryView:onUploadBtnClick()
 end
 
 function Album_container_temporaryView:onDeleteBtnClick()
+  local delData = self.albumMainData_:GetSelectedAlbumPhoto()
+  if not delData or table.zcount(delData) == 0 then
+    Z.TipsVM.ShowTipsLang(1000027)
+    return
+  end
   Z.DialogViewDataMgr:OpenNormalDialog(Lang("ConfirmationDelTemp"), function()
-    local delData = self.albumMainData_:GetSelectedAlbumPhoto()
     for _, value in pairs(delData) do
       self.albumMainVM_.DeleteLocalPhoto(value)
     end
     self:updateItemList()
     self:toggleMultipleState(false, E.AlbumSelectType.Select, true)
     Z.TipsVM.ShowTipsLang(1000008)
-    Z.DialogViewDataMgr:CloseDialogView()
   end)
 end
 
 function Album_container_temporaryView:updateItemList()
   local photoData = self.albumMainData_:GetTemporaryAlbumPhoto()
-  table.sort(photoData, function(left, right)
-    if left.shotTime > right.shotTime then
-      return true
-    end
-    return false
-  end)
   self:refFuncBtn(photoData)
   self.uiBinder.layout_group_anim.GroupAnimType = Panda.ZUi.DOTweenAnimType.Open
   self:refTempPhotoCount(#photoData)

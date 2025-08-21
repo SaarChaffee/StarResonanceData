@@ -65,8 +65,6 @@ message SkillTableBase {
     number_array UIWarningParam = 1110;
     bool InheritMotionSpeed = 1917;
 }
-
 message SkillTableMgr {
-    map<int32, .bokura.SkillTableBase> datas = 1;
+    repeated bokura.SkillTableMgr.DatasEntry datas = 1;
 }
-

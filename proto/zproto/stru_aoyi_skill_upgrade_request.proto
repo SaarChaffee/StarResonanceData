@@ -6,4 +6,3 @@ message AoyiSkillUpgradeRequest {
     int32 skillId = 1;
     int32 targetLevel = 2;
 }
-

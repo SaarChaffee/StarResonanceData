@@ -23,6 +23,9 @@ function UnionPositionEditItem:Init(uiBinder)
   self.uiBinder.input_position:AddEndEditListener(function(text)
     self:onInputEndEdit(text)
   end)
+  self.uiBinder.input_position:AddListener(function()
+    self:onNameInputChanged()
+  end)
 end
 
 function UnionPositionEditItem:UnInit()
@@ -39,7 +42,7 @@ end
 
 function UnionPositionEditItem:onInputEndEdit(text)
   local oldText = self.uiBinder.lab_position.text
-  local textLength = string.zlen(text)
+  local textLength = string.zlenNormalize(text)
   local limitArray = Z.Global.MemberTitleLength
   if textLength < limitArray[1] or textLength > limitArray[2] then
     Z.TipsVM.ShowTipsLang(1000542)
@@ -73,13 +76,21 @@ function UnionPositionEditItem:onInputEndEdit(text)
       local modifyOfficialDataList = {}
       modifyOfficialDataList[#modifyOfficialDataList + 1] = modifyOfficialData
       local reply = self.unionVM_:AsyncReqChangeOfficials(self.unionVM_:GetPlayerUnionId(), E.UnionPowerDef.ModifyPositionName, modifyOfficialDataList, self.unionData_.CancelSource:CreateToken())
-      if reply.errorCode == 0 then
+      if reply.errCode == 0 then
         Z.TipsVM.ShowTipsLang(1000528)
         self:closeInputField(text)
       else
         self:closeInputField(oldText)
       end
     end)()
+  end
+end
+
+function UnionPositionEditItem:onNameInputChanged()
+  local length = string.zlenNormalize(self.uiBinder.input_position.text)
+  local maxLimit = Z.Global.MemberTitleLength[2]
+  if length > maxLimit then
+    self.uiBinder.input_position.text = string.zcutNormalize(self.uiBinder.input_position.text, maxLimit)
   end
 end
 

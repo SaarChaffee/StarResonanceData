@@ -32,6 +32,11 @@ function Pub_mixology_recipe_mainView:initWidgets()
   self.recipeItemTrans_ = self.uiBinder.node_icon
   self.scenemask_ = self.uiBinder.scenemask
   self.prefabCache_ = self.uiBinder.prefab_cache
+  self.areaNameLab_ = self.uiBinder.lab_area_name
+  self.areaLab_ = self.uiBinder.lab_area
+  self.typeLab_ = self.uiBinder.lab_pub_type
+  self.typeDes_ = self.uiBinder.lab_type_des
+  self.riconImg_ = self.uiBinder.rimg_icon
 end
 
 function Pub_mixology_recipe_mainView:SelectLoopItem(data)
@@ -44,6 +49,10 @@ function Pub_mixology_recipe_mainView:SelectLoopItem(data)
   if path == "" or path == nil then
     return
   end
+  self.areaNameLab_.text = data.MadeIn
+  self.typeLab_.text = data.Tag
+  self.typeDes_.text = data.Title
+  self.riconImg_:SetImage(data.Icon)
   Z.CoroUtil.create_coro_xpcall(function()
     for key, value in pairs(data.Recipe) do
       local itemId = value[1]

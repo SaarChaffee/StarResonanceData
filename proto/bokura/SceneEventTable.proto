@@ -12,8 +12,6 @@ message SceneEventTableBase {
     int_table CompleteAction = 559;
     int32 Time = 601;
 }
-
 message SceneEventTableMgr {
-    map<int32, .bokura.SceneEventTableBase> datas = 1;
+    repeated bokura.SceneEventTableMgr.DatasEntry datas = 1;
 }
-

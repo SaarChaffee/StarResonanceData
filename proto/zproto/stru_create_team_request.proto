@@ -2,10 +2,12 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_team_member_type.proto";
+
 message CreateTeamRequest {
     int64 charId = 2;
     uint32 targetId = 3;
     bool isAutoMatch = 4;
     bool isShowInHall = 5;
+    zproto.ETeamMemberType teamMemberType = 6;
 }
-

@@ -5,4 +5,3 @@ package zproto;
 message SetPersonalZoneTitleRequest {
     int32 titleId = 1;
 }
-

@@ -19,8 +19,8 @@ enum EEntityFilterType {
     EntityFilterType_CombatState = 13;
     EntityFilterType_CantHit = 14;
     EntityFilterType_ProfessionRange = 15;
+    EntityFilterType_Summoner = 16;
     EntityFilterType_Dead = 100;
     EntityFilterType_Hit = 101;
     EntityFilterType_Self = 102;
 }
-

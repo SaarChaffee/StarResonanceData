@@ -8,14 +8,16 @@ local attrTransHeadName = {
   [E.FightAttrId.HastePct] = "HasteToHastePct",
   [E.FightAttrId.LuckyStrikeProb] = "LuckToLuckyStrikeProb",
   [E.FightAttrId.VersatilityPct] = "VersatilityToVersatilityPct",
-  [E.FightAttrId.MasteryPct] = "MasteryToMasteryPct"
+  [E.FightAttrId.MasteryPct] = "MasteryToMasteryPct",
+  [E.FightAttrId.BlockPct] = "BlockToBlockRate"
 }
 local attrTransDict = {
   [E.FightAttrId.Crit] = E.FightAttrId.Cri,
   [E.FightAttrId.HastePct] = E.FightAttrId.Haste,
   [E.FightAttrId.LuckyStrikeProb] = E.FightAttrId.Luck,
   [E.FightAttrId.VersatilityPct] = E.FightAttrId.Versatility,
-  [E.FightAttrId.MasteryPct] = E.FightAttrId.Mastery
+  [E.FightAttrId.MasteryPct] = E.FightAttrId.Mastery,
+  [E.FightAttrId.BlockPct] = E.FightAttrId.Block
 }
 local RightSubType = {
   Equip = 1,
@@ -31,10 +33,17 @@ local DEFINE = require("ui.model.personalzone_define")
 
 function Weapon_role_mainView:ctor()
   self.uiBinder = nil
-  super.ctor(self, "weapon_role_main")
+  local assetPath
+  if Z.IsPCUI then
+    assetPath = "weapon/weapon_role_main_pc"
+  else
+    assetPath = "weapon/weapon_role_main"
+  end
+  super.ctor(self, "weapon_role_main", assetPath)
 end
 
 function Weapon_role_mainView:OnActive()
+  Z.AudioMgr:Play("UI_Event_CharacterAttributes_Open")
   self:startAnimatedShow()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self.vm_ = Z.VMMgr.GetVM("role_info_attr_detail")
@@ -47,9 +56,13 @@ function Weapon_role_mainView:OnActive()
   self.weaponData_ = Z.DataMgr.Get("weapon_data")
   self.funcVm_ = Z.VMMgr.GetVM("gotofunc")
   self.modVm_ = Z.VMMgr.GetVM("mod")
+  self.rfVM_ = Z.VMMgr.GetVM("recommend_fightvalue")
   self.fightAttrParseVm_ = Z.VMMgr.GetVM("fight_attr_parse")
+  self.rolelevelVm_ = Z.VMMgr.GetVM("rolelevel_main")
+  self.rolelevelData_ = Z.DataMgr.Get("role_level_data")
+  self.sdkVM_ = Z.VMMgr.GetVM("sdk")
   self.charBase_ = Z.ContainerMgr.CharSerialize.charBase
-  self:AddAsyncClick(self.uiBinder.btn_detail, function()
+  self:AddAsyncClick(self.uiBinder.btn_details, function()
     self.vm_.OpenRoleAttrDetailView()
     Z.GuideMgr:CloseView()
   end)
@@ -75,15 +88,32 @@ function Weapon_role_mainView:OnActive()
   self:AddAsyncClick(self.uiBinder.btn_gs_info, function()
     Z.CommonTipsVM.ShowTipsTitleContent(self.uiBinder.gs_root, Lang("CommonGS"), Lang("gs_desc"))
   end)
+  self:AddClick(self.uiBinder.btn_score, function()
+    self.rfVM_.OpenMainView()
+  end)
+  self:AddAsyncClick(self.uiBinder.uibinder_qqprivilege.btn, function()
+    self.sdkVM_.PrivilegeBtnClick()
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_wechatprivilege, function()
+    self.sdkVM_.PrivilegeBtnClick()
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_privilege, function()
+    self.sdkVM_.PrivilegeBtnClick()
+  end)
+  self:AddClick(self.uiBinder.btn_newbie, function()
+    Z.CommonTipsVM.ShowTipsTitleContent(self.uiBinder.img_newbie, Lang("MengXinCjiemianDesTitle"), Lang("MengXinCjiemianDes"))
+  end)
   self.uiBinder.btn_equip.isOn = false
   self.uiBinder.btn_equip:AddListener(function(isOn)
     if isOn then
+      Z.AudioMgr:Play("UI_Event_CharacterAttributes_Switch")
       self:openRightSubView(RightSubType.Equip)
     end
   end)
   self.uiBinder.btn_skill.isOn = false
   self.uiBinder.btn_skill:AddListener(function(isOn)
     if isOn then
+      Z.AudioMgr:Play("UI_Event_CharacterAttributes_Switch")
       self:openRightSubView(RightSubType.Skill)
     end
   end)
@@ -92,6 +122,7 @@ function Weapon_role_mainView:OnActive()
     if isOn then
       local isModUnlock = self.funcVm_.CheckFuncCanUse(E.FunctionID.Mod)
       if isModUnlock then
+        Z.AudioMgr:Play("UI_Event_CharacterAttributes_Switch")
         self:openRightSubView(RightSubType.Mod)
       else
         self.tog_[self.curSubType].isOn = true
@@ -103,28 +134,19 @@ function Weapon_role_mainView:OnActive()
     [RightSubType.Skill] = self.uiBinder.btn_skill,
     [RightSubType.Mod] = self.uiBinder.btn_mod
   }
-  
-  function self.onInputAction_(inputActionEventData)
-    self:OnInputBack()
-  end
-  
+  Z.RedPointMgr.LoadRedDotItem(E.RedType.RoleMainRolelevelPageBtn, self, self.uiBinder.btn_find.transform)
   Z.RedPointMgr.LoadRedDotItem(E.RedType.PersonalzoneHead, self, self.uiBinder.com_head.Trans)
   Z.RedPointMgr.LoadRedDotItem(E.RedType.PersonalzoneHeadFrame, self, self.uiBinder.com_head.Trans)
-  Z.RedPointMgr.LoadRedDotItem(E.RedType.PersonalzoneCard, self, self.uiBinder.uibinder_player.Trans)
+  Z.RedPointMgr.LoadRedDotItem(E.RedType.PersonalzoneCard, self, self.uiBinder.uibinder_player.node_red)
   Z.RedPointMgr.LoadRedDotItem(E.RedType.PersonalzoneTitle, self, self.uiBinder.rect_lab)
   self:showAttrs()
   self:showRoleInfo()
+  self:privilegeRefresh()
   self:loadRedDotItem()
   self:BindEvents()
-  self:RegisterInputActions()
   self.subViews_ = {}
   self.curSubView_ = nil
-  if Z.EntityMgr.PlayerEnt:GetLuaRidingId() == 0 then
-    Z.UICameraHelper.SetCameraFocus(true, Z.Global.CameraFocusMainView[1], Z.Global.CameraFocusMainView[2])
-    self.weaponVm_.SwitchEntityShow(false)
-  else
-    self.weaponVm_.SwitchEntityShow(true)
-  end
+  self.weaponVm_.SwitchEntityShow(false)
 end
 
 function Weapon_role_mainView:GetCacheData()
@@ -148,14 +170,6 @@ function Weapon_role_mainView:openRightSubView(type)
   self.curSubView_:Active(nil, self.uiBinder.node_right)
 end
 
-function Weapon_role_mainView:onChangeSubViewType(subViewType)
-  if self.curSubView_ then
-    self.curSubView_:DeActive()
-  end
-  self.curSubView_ = self.subViews_[subViewType]
-  self.curSubView_:Active(nil, self.uiBinder.node_right)
-end
-
 function Weapon_role_mainView:OnDeActive()
   if self.curSubView_ then
     self.curSubView_:DeActive()
@@ -171,12 +185,11 @@ function Weapon_role_mainView:OnDeActive()
   playerPortraitHgr_.ClearActiveItem(self.portraitUnit_)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   self.weaponVm_.SwitchEntityShow(true)
-  self:UnRegisterInputActions()
   Z.RedPointMgr.RemoveNodeItem(E.RedType.PersonalzoneHead)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.PersonalzoneHeadFrame)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.PersonalzoneCard)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.PersonalzoneTitle)
-  Z.UICameraHelper.SetCameraFocus(false)
+  Z.RedPointMgr.RemoveNodeItem(E.RedType.RoleMainRolelevelPageBtn)
 end
 
 function Weapon_role_mainView:BindEvents()
@@ -184,6 +197,8 @@ function Weapon_role_mainView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Player.ChangeNameResultNtf, self.onChangeNameResultNtf, self)
   Z.EventMgr:Add(Z.ConstValue.PersonalZone.OnTitleRefresh, self.onChangeTitle, self)
   Z.EventMgr:Add(Z.ConstValue.PersonalZone.OnCardRefresh, self.refreshCardBg, self)
+  Z.EventMgr:Add(Z.ConstValue.Vehicle.UpdateRiding, self.onRidingChange, self)
+  Z.EventMgr:Add(Z.ConstValue.SDK.TencentPrivilegeRefresh, self.privilegeRefresh, self)
 end
 
 function Weapon_role_mainView:UnBindEvents()
@@ -191,6 +206,8 @@ function Weapon_role_mainView:UnBindEvents()
   Z.EventMgr:Remove(Z.ConstValue.Player.ChangeNameResultNtf, self.onChangeNameResultNtf, self)
   Z.EventMgr:Remove(Z.ConstValue.PersonalZone.OnTitleRefresh, self.onChangeTitle, self)
   Z.EventMgr:Remove(Z.ConstValue.PersonalZone.OnCardRefresh, self.refreshCardBg, self)
+  Z.EventMgr:Remove(Z.ConstValue.Vehicle.UpdateRiding, self.onRidingChange, self)
+  Z.EventMgr:Remove(Z.ConstValue.SDK.TencentPrivilegeRefresh, self.privilegeRefresh, self)
 end
 
 function Weapon_role_mainView:loadRedDotItem()
@@ -225,6 +242,7 @@ function Weapon_role_mainView:showAttrs()
   self.uiBinder.lab_gs.text = ""
   local vm = Z.VMMgr.GetVM("role_info_attr_detail")
   local attrs = vm.GetRoleMainAttr()
+  local recommendAttrs, recommendDescAttrs = self.fightAttrParseVm_.GetRecommendFightAttrId()
   Z.CoroUtil.create_coro_xpcall(function()
     for index, value in ipairs(attrs) do
       local path = self.uiBinder.uiprefab_cashdata:GetString("weapon_attr_unit")
@@ -238,8 +256,13 @@ function Weapon_role_mainView:showAttrs()
       if fightAttrCfg then
         unit.lab_name.text = fightAttrCfg.OfficialName
         unit.img_icon:SetImage(fightAttrCfg.Icon)
+        unit.Ref:SetVisible(unit.img_recommend, table.zcontains(recommendAttrs, value.AttrId))
+        unit.btn_praise.interactable = table.zcontains(recommendAttrs, value.AttrId)
         self:AddAsyncClick(unit.btn, function()
           self:showAttrDetails(value.AttrId)
+        end)
+        self:AddAsyncClick(unit.btn_praise, function()
+          self.fightAttrParseVm_.ShowRecommendAttrsTips(self.uiBinder.node_tips_pos, recommendDescAttrs)
         end)
       end
     end
@@ -252,7 +275,7 @@ function Weapon_role_mainView:showAttrDetails(Id)
     local desc = fightAttrData.AttrDes
     if Id == E.FightAttrId.MasteryPct then
       local tableSkillVm = Z.VMMgr.GetVM("talent_skill")
-      local professionId = Z.VMMgr.GetVM("profession").GetCurProfession()
+      local professionId = Z.VMMgr.GetVM("profession").GetContainerProfession()
       local bdType = tableSkillVm.CheckCurTalentBDType()
       local professionRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
       for _, value in ipairs(professionRow.MasteryDes) do
@@ -286,8 +309,9 @@ function Weapon_role_mainView:showRoleInfo()
   if playerVM:IsNamed() then
     self.uiBinder.lab_player_name.text = self.charBase_.name
   else
-    self.uiBinder.lab_player_name.text = ""
+    self.uiBinder.lab_player_name.text = Lang("EmptyRoleName")
   end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrIsNewbie")).Value))
   local gender = self.charBase_.gender
   self:onChangeTitle()
   self:refreshCardBg()
@@ -298,6 +322,7 @@ function Weapon_role_mainView:showRoleInfo()
     viewData.modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
     viewData.charId = Z.EntityMgr.PlayerEnt.EntId
     viewData.headFrameId = nil
+    viewData.token = self.cancelSource:CreateToken()
     if socialData.avatarInfo and socialData.avatarInfo.avatarFrameId then
       viewData.headFrameId = socialData.avatarInfo.avatarFrameId
     end
@@ -309,7 +334,7 @@ function Weapon_role_mainView:showRoleInfo()
     
     self.portraitUnit_ = playerPortraitHgr_.InsertNewPortrait(self.uiBinder.com_head, viewData)
   end)()
-  self.uiBinder.lab_gs.text = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrFightPoint")).Value
+  self.uiBinder.lab_gs.text = self.rfVM_.GetTotalPoint()
   local roleLv = Z.ContainerMgr.CharSerialize.roleLevel.level
   self.uiBinder.lab_grade.text = string.format(Lang("RoleLevelAcquireNodeAttrTip"), roleLv)
   local roleLevelCfg = Z.TableMgr.GetTable("PlayerLevelTableMgr").GetRow(roleLv)
@@ -318,6 +343,38 @@ function Weapon_role_mainView:showRoleInfo()
     local curExp = Z.ContainerMgr.CharSerialize.roleLevel.curLevelExp
     self.uiBinder.img_progress.fillAmount = curExp / maxExp
     self.uiBinder.lab_experience.text = curExp .. "/" .. maxExp
+  end
+  local roleLevelInfo = Z.ContainerMgr.CharSerialize.roleLevel
+  if roleLevelInfo.level == self.rolelevelData_.MaxPlayerLevel then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_highest, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_double, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_icondouble, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_experience, false)
+    self.uiBinder.img_progress.fillAmount = 1
+    self.uiBinder.img_green.fillAmount = 1
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_highest, false)
+    if self.rolelevelVm_.IsBlessExpFuncOn() then
+      if roleLevelInfo.level < roleLevelInfo.prevSeasonMaxLv then
+        self.uiBinder.Ref:SetVisible(self.uiBinder.img_double, true)
+        self.uiBinder.Ref:SetVisible(self.uiBinder.img_icondouble, true)
+        self.uiBinder.img_green.fillAmount = 1
+      else
+        local doubleExp = roleLevelInfo.blessExpPool - roleLevelInfo.grantBlessExp
+        if 0 < doubleExp then
+          self.uiBinder.Ref:SetVisible(self.uiBinder.img_double, true)
+          self.uiBinder.Ref:SetVisible(self.uiBinder.img_icondouble, true)
+        else
+          self.uiBinder.Ref:SetVisible(self.uiBinder.img_double, false)
+          self.uiBinder.Ref:SetVisible(self.uiBinder.img_icondouble, false)
+        end
+        self.uiBinder.img_green.fillAmount = (roleLevelInfo.curLevelExp + doubleExp) / roleLevelCfg.Exp
+      end
+    else
+      self.uiBinder.Ref:SetVisible(self.uiBinder.img_double, false)
+      self.uiBinder.Ref:SetVisible(self.uiBinder.img_icondouble, false)
+      self.uiBinder.img_green.fillAmount = 0
+    end
   end
   local seasonData = Z.DataMgr.Get("season_title_data")
   local seasonTitleId = seasonData:GetCurRankInfo().curRanKStar
@@ -334,7 +391,8 @@ function Weapon_role_mainView:onChangePortrait(avatarId, frameId)
     id = avatarId,
     modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value,
     charId = Z.EntityMgr.PlayerEnt.EntId,
-    headFrameId = frameId
+    headFrameId = frameId,
+    token = self.cancelSource:CreateToken()
   }
   playerPortraitHgr_.RefreshNewProtrait(self.uiBinder.com_head, viewData, self.portraitUnit_)
 end
@@ -364,18 +422,30 @@ function Weapon_role_mainView:startAnimatedShow()
   self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
-function Weapon_role_mainView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Role)
-end
-
-function Weapon_role_mainView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Role)
-end
-
 function Weapon_role_mainView:refreshCardBg()
   local personalzoneVM = Z.VMMgr.GetVM("personal_zone")
   local cardBgId = personalzoneVM.GetCurProfileImageId(DEFINE.ProfileImageType.Card)
   personalzoneVM.IDCardHelperBase(self.uiBinder.uibinder_player, cardBgId)
+end
+
+function Weapon_role_mainView:onRidingChange()
+  self.weaponVm_.CloseWeaponRoleView()
+end
+
+function Weapon_role_mainView:privilegeRefresh(isPrivilege)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_wechatprivilege, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_privilege, false)
+  self.uiBinder.uibinder_qqprivilege.Ref.UIComp:SetVisible(false)
+  if isPrivilege == nil then
+    isPrivilege = self.sdkVM_.IsShowPrivilege()
+  end
+  if self.sdkVM_.CheckSDKFunctionCanShow(E.FunctionID.TencentQQPrivilege) then
+    self.uiBinder.uibinder_qqprivilege.Ref.UIComp:SetVisible(true)
+    self.uiBinder.uibinder_qqprivilege.Ref:SetVisible(self.uiBinder.uibinder_qqprivilege.img_mask, not isPrivilege)
+  elseif self.sdkVM_.CheckSDKFunctionCanShow(E.FunctionID.TencentWeChatPrivilege) then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_wechatprivilege, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_privilege, isPrivilege)
+  end
 end
 
 return Weapon_role_mainView

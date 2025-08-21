@@ -2,8 +2,11 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
+
 message GmResult {
     bool success = 1;
     string failReason = 2;
+    repeated string retParams = 3;
+    zproto.EErrorCode errCode = 4;
 }
-

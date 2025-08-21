@@ -19,7 +19,7 @@ local ParkourListItemPath = {
 
 function ParkourStyleItem:ctor(panel, key, id)
   self.panel_ = panel
-  self.parent_ = panel.panel.parkour_list_pos
+  self.parent_ = panel.uiBinder.parkour_list_pos
   self.curState_ = E.ParkourStyleItemLifeCycle.None
   self.nextState_ = E.ParkourStyleItemLifeCycle.None
   self.configId_ = id
@@ -40,7 +40,7 @@ function ParkourStyleItem:createUIUnit()
     local cancelSource = self.panel_.cancelSource:CreateToken()
     if not self.uiUnit_ then
       local path = Z.IsPCUI and ParkourListItemPath[1] or ParkourListItemPath[2]
-      self.uiUnit_ = self.panel_:AsyncLoadUiUnit(path, self.key_, self.parent_.Trans)
+      self.uiUnit_ = self.panel_:AsyncLoadUiUnit(path, self.key_, self.parent_)
       if Z.CancelSource.IsCanceled(cancelSource) or not self.uiUnit_ then
         return
       end

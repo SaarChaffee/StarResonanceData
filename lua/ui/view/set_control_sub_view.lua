@@ -20,11 +20,49 @@ function Set_control_subView:OnActive()
   self.global_config_tab_ = {}
   self.global_config_tab_[E.SettingID.HorizontalSensitivity] = Z.Global.CameraHorizontalRange
   self.global_config_tab_[E.SettingID.VerticalSensitivity] = Z.Global.CameraVerticalRange
+  self:initSettingUIDict()
   self:setBattle()
   self:setGliding()
-  self:setVfx()
   self:setCamera()
   self:setLensCompensate()
+  self.uiBinder.cont_battle.cont_mouse_restrictions.Ref.UIComp:SetVisible(Z.GameContext.IsPC)
+end
+
+function Set_control_subView:initSettingUIDict()
+  self.setting2UIDict_ = {}
+  self.setting2UIDict_[E.SettingID.CameraLockFirst] = self.uiBinder.cont_battle.cont_lock_open
+  self.setting2UIDict_[E.SettingID.ShowSkillTag] = self.uiBinder.cont_battle.cont_skill_tog
+  self.setting2UIDict_[E.SettingID.AutoBattle] = self.uiBinder.cont_battle.cont_auto_battle_tog
+  self.setting2UIDict_[E.SettingID.LockOpen] = self.uiBinder.cont_battle.cont_lock_camera_open
+  self.setting2UIDict_[E.SettingID.CameraSeismicScreen] = self.uiBinder.cont_battle.cont_camera_seismic_screen
+  self.setting2UIDict_[E.SettingID.PulseScreen] = self.uiBinder.cont_battle.cont_pulse_screen
+  self.setting2UIDict_[E.SettingID.SkillController] = self.uiBinder.cont_battle.cont_skill_roulette
+  self.setting2UIDict_[E.SettingID.SkillControllerPcUp] = self.uiBinder.cont_battle.cont_skill_press
+  self.setting2UIDict_[E.SettingID.CameraMove] = self.uiBinder.cont_battle.cont_camera_move
+  self.setting2UIDict_[E.SettingID.RemoveMouseRestrictions] = self.uiBinder.cont_battle.cont_mouse_restrictions
+  self.setting2UIDict_[E.SettingID.GlideDirectionCtrl] = self.uiBinder.cont_gliding.cont_lock_direction
+  self.setting2UIDict_[E.SettingID.GlideDiveCtrl] = self.uiBinder.cont_gliding.cont_lock_dive
+  self.setting2UIDict_[E.SettingID.HorizontalSensitivity] = self.uiBinder.cont_lens.cont_set_lens_horizontal
+  self.setting2UIDict_[E.SettingID.VerticalSensitivity] = self.uiBinder.cont_lens.cont_set_lens_vertical
+  self.setting2UIDict_[E.SettingID.CameraTemplate] = self.uiBinder.cont_lens_compensate.cont_camera_zoom_template
+  self.setting2UIDict_[E.SettingID.PitchAngleCorrection] = self.uiBinder.cont_lens_compensate.cont_camera_pitching_template
+  self.setting2UIDict_[E.SettingID.BattleZoomCorrection] = self.uiBinder.cont_lens_compensate.cont_camera_zoom_detection
+  self.setting2UIDict_[E.SettingID.BattlePitchAngkeCorrection] = self.uiBinder.cont_lens_compensate.cont_camera_pitching_detection
+  self.setting2UIDict_[E.SettingID.CameraTranslationRotate] = self.uiBinder.cont_lens_compensate.cont_camera_translation_rotate
+  self.setting2UIDict_[E.SettingID.CameraReleasingSkill] = self.uiBinder.cont_lens_compensate.cont_camera_releasing_skill
+  self.setting2UIDict_[E.SettingID.CameraReleasingSkillAngle] = self.uiBinder.cont_lens_compensate.cont_camera_releasingskillangle
+  self.setting2UIDict_[E.SettingID.CameraSeek] = self.uiBinder.cont_lens_compensate.cont_camera_seek
+  self.setting2UIDict_[E.SettingID.CameraMelee] = self.uiBinder.cont_lens_compensate.cont_camera_melee
+end
+
+function Set_control_subView:refreshAllSettingVisible()
+  local settingVisibleData = Z.DataMgr.Get("setting_visible_data")
+  for k, v in pairs(self.setting2UIDict_) do
+    local show = settingVisibleData:CheckVisible(k)
+    if not show then
+      v.Ref.UIComp:SetVisible(show)
+    end
+  end
 end
 
 function Set_control_subView:setBattle()
@@ -57,13 +95,68 @@ function Set_control_subView:setBattle()
     Z.EventMgr:Dispatch(Z.ConstValue.ShowSkillLableChange, isOn)
   end)
   local autoBattleOpen = self.settingVM_.Get(E.SettingID.AutoBattle)
-  self.uiBinder.cont_battle.cont_auto_battle_tog.cont_switch.switch.IsOn = autoBattleOpen
+  local equipWeapon = Z.VMMgr.GetVM("profession").CheckProfessionEquipWeapon()
+  self.uiBinder.cont_battle.cont_auto_battle_tog.cont_switch.switch.IsOn = autoBattleOpen and equipWeapon
   self.uiBinder.cont_battle.cont_auto_battle_tog.cont_switch.switch:AddListener(function(isOn)
+    if isOn and not equipWeapon then
+      Z.TipsVM.ShowTips(150009)
+      self.uiBinder.cont_battle.cont_auto_battle_tog.cont_switch.switch.IsOn = false
+      return
+    end
     self.settingVM_.Set(E.SettingID.AutoBattle, isOn)
     Z.EventMgr:Dispatch(Z.ConstValue.AutoBattleChange, isOn)
+    if Z.EntityMgr.PlayerEnt ~= nil then
+      if Z.IsPCUI then
+        Z.EntityMgr.PlayerEnt:SetLuaAttr(Z.LocalAttr.EAutoBattleSwitch, isOn)
+      elseif isOn == false then
+        Panda.ZGame.ZBattleUtils.StopPlayerAIBattle()
+      end
+    end
   end)
   self:AddClick(self.uiBinder.cont_battle.cont_auto_battle_tog.btn_tips, function()
-    self:OpenMinTips(20003, self.uiBinder.cont_battle.cont_auto_battle_tog.btn_tips_trans)
+    local tipsId = Z.IsPCUI and 20008 or 20003
+    self:OpenMinTips(tipsId, self.uiBinder.cont_battle.cont_auto_battle_tog.btn_tips_trans)
+  end)
+  self:AddClick(self.uiBinder.cont_battle.cont_auto_battle_set.btn_tips, function()
+    self:OpenMinTips(20009, self.uiBinder.cont_battle.cont_auto_battle_tog.btn_tips_trans)
+  end)
+  self:AddAsyncClick(self.uiBinder.cont_battle.cont_auto_battle_set.btn_set, function()
+    local fighterbtnVm = Z.VMMgr.GetVM("fighterbtns")
+    Z.UIMgr:GotoMainView()
+    fighterbtnVm:OpenSetAutoBattleSlotView()
+  end)
+  local skillFreeUseOpen = self.settingVM_.Get(E.SettingID.SkillController)
+  self.uiBinder.cont_battle.cont_skill_roulette.cont_switch.switch.IsOn = skillFreeUseOpen
+  self.uiBinder.cont_battle.cont_skill_roulette.cont_switch.switch:AddListener(function(isOn)
+    self.settingVM_.Set(E.SettingID.SkillController, isOn)
+    self.uiBinder.cont_battle.cont_skill_press.Ref.UIComp:SetVisible(isOn and Z.IsPCUI)
+  end)
+  self:AddClick(self.uiBinder.cont_battle.cont_skill_roulette.btn_tips, function()
+    local tipsId = Z.IsPCUI and 20013 or 20012
+    self:OpenMinTips(tipsId, self.uiBinder.cont_battle.cont_skill_roulette.btn_tips_trans)
+  end)
+  self.uiBinder.cont_battle.cont_skill_press.Ref.UIComp:SetVisible(skillFreeUseOpen and Z.IsPCUI)
+  local skillPressCtrl = self.uiBinder.cont_battle.cont_skill_press
+  local skillPressionTog1 = skillPressCtrl.cont_option1.tog_option
+  local skillPressionTog2 = skillPressCtrl.cont_option2.tog_option
+  skillPressionTog1.group = skillPressCtrl.togs_options
+  skillPressionTog2.group = skillPressCtrl.togs_options
+  local SkillControllerPcUp = self.settingVM_.Get(E.SettingID.SkillControllerPcUp)
+  skillPressionTog1:SetIsOnWithoutCallBack(SkillControllerPcUp == E.FreeSkillUseMode.Click)
+  skillPressionTog2:SetIsOnWithoutCallBack(SkillControllerPcUp == E.FreeSkillUseMode.Release)
+  self:AddClick(self.uiBinder.cont_battle.cont_skill_press.btn_tips, function()
+    local tipsId = 20022
+    self:OpenMinTips(tipsId, self.uiBinder.cont_battle.cont_skill_press.btn_tips_trans)
+  end)
+  self:AddAsyncListener(skillPressionTog1, skillPressionTog1.AddListener, function(isOn)
+    if isOn then
+      self.settingVM_.Set(E.SettingID.SkillControllerPcUp, E.FreeSkillUseMode.Click)
+    end
+  end)
+  self:AddAsyncListener(skillPressionTog2, skillPressionTog2.AddListener, function(isOn)
+    if isOn then
+      self.settingVM_.Set(E.SettingID.SkillControllerPcUp, E.FreeSkillUseMode.Release)
+    end
   end)
   local cameraSeismicScreen = self.settingVM_.Get(E.SettingID.CameraSeismicScreen)
   self.uiBinder.cont_battle.cont_camera_seismic_screen.cont_switch.switch.IsOn = cameraSeismicScreen
@@ -80,6 +173,22 @@ function Set_control_subView:setBattle()
   end)
   self:AddClick(self.uiBinder.cont_battle.cont_pulse_screen.btn_tips, function()
     self:OpenMinTips(20007, self.uiBinder.cont_battle.cont_pulse_screen.btn_tips_trans)
+  end)
+  local cameraMove = self.settingVM_.Get(E.SettingID.CameraMove)
+  self.uiBinder.cont_battle.cont_camera_move.cont_switch.switch.IsOn = cameraMove
+  self.uiBinder.cont_battle.cont_camera_move.cont_switch.switch:AddListener(function(isOn)
+    self.settingVM_.Set(E.SettingID.CameraMove, isOn)
+  end)
+  self:AddClick(self.uiBinder.cont_battle.cont_camera_move.btn_tips, function()
+    self:OpenMinTips(20014, self.uiBinder.cont_battle.cont_camera_move.btn_tips_trans)
+  end)
+  local removeMouseRestrictions = self.settingVM_.Get(E.SettingID.RemoveMouseRestrictions)
+  self.uiBinder.cont_battle.cont_mouse_restrictions.cont_switch.switch.IsOn = removeMouseRestrictions
+  self.uiBinder.cont_battle.cont_mouse_restrictions.cont_switch.switch:AddListener(function(isOn)
+    self.settingVM_.Set(E.SettingID.RemoveMouseRestrictions, isOn)
+  end)
+  self:AddClick(self.uiBinder.cont_battle.cont_mouse_restrictions.btn_tips, function()
+    self:OpenMinTips(20020, self.uiBinder.cont_battle.cont_mouse_restrictions.btn_tips_trans)
   end)
 end
 
@@ -115,6 +224,7 @@ function Set_control_subView:OnDeActive()
 end
 
 function Set_control_subView:OnRefresh()
+  self:refreshAllSettingVisible()
 end
 
 function Set_control_subView:setCamera()
@@ -143,6 +253,16 @@ function Set_control_subView:setLensCompensate()
   self:initLensCompensateItem(E.SettingID.BattleZoomCorrection, trans_, "CamBattleZoomCorrection")
   trans_ = self.uiBinder.cont_lens_compensate.cont_camera_pitching_detection
   self:initLensCompensateItem(E.SettingID.BattlePitchAngkeCorrection, trans_, "CamBattlePitchAngleCorrection")
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_translation_rotate
+  self:initLensCompensateItem(E.SettingID.CameraTranslationRotate, trans_, 20015)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_releasing_skill
+  self:initLensCompensateItem(E.SettingID.CameraReleasingSkill, trans_, 20016)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_releasingskillangle
+  self:initLensCompensateItem(E.SettingID.CameraReleasingSkillAngle, trans_, 20017)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_seek
+  self:initLensCompensateItem(E.SettingID.CameraSeek, trans_, 20018)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_melee
+  self:initLensCompensateItem(E.SettingID.CameraMelee, trans_, 20019)
 end
 
 function Set_control_subView:initLensCompensateItem(settingId_, trans_, langStr_)
@@ -150,19 +270,26 @@ function Set_control_subView:initLensCompensateItem(settingId_, trans_, langStr_
   local switch_ = trans_.cont_switch
   switch_.switch.IsOn = isOpen == true
   switch_.switch:AddListener(function(isOn)
-    local cameraConfigId_ = self.settingVM_.GetLensCompensateId(settingId_)
-    if cameraConfigId_ then
+    local cameraConfigIds_ = self.settingVM_.GetLensCompensateId(settingId_)
+    if cameraConfigIds_ then
       self.settingVM_.Set(settingId_, isOn)
       local switchNum_ = isOn == true and 1 or 0
-      local opens_ = {switchNum_}
-      local ids_ = {cameraConfigId_}
+      local opens_ = {}
+      local ids_ = cameraConfigIds_
+      for k, v in pairs(ids_) do
+        table.insert(opens_, switchNum_)
+      end
       Z.CameraMgr:SwitchCameraTemplate(opens_, ids_, 0)
     end
   end)
   local directionTip_Btn_ = trans_.btn_tips
   local directionTip_Trans_ = trans_.btn_tips_trans
   self:AddClick(directionTip_Btn_, function()
-    self:showTip(directionTip_Trans_, Lang(langStr_))
+    if type(langStr_) == "string" then
+      self:showTip(directionTip_Trans_, Lang(langStr_))
+    else
+      self:OpenMinTips(langStr_, directionTip_Trans_)
+    end
   end)
 end
 
@@ -238,56 +365,6 @@ function Set_control_subView:setGliding()
       self.settingVM_.SetPlayerGlideAttr(nil, E.GlideDiveCtrlMode.Down)
     end
   end)
-end
-
-function Set_control_subView:setVfx()
-  self:setVfxInternal(self.uiBinder.cont_vfx_level.cont_self, E.SettingID.EffSelf)
-  self:setVfxInternal(self.uiBinder.cont_vfx_level.cont_enemy, E.SettingID.EffEnemy)
-  self:setVfxInternal(self.uiBinder.cont_vfx_level.cont_team, E.SettingID.EffTeammate)
-  self:setVfxInternal(self.uiBinder.cont_vfx_level.cont_other, E.SettingID.EffOther)
-end
-
-function Set_control_subView:setVfxInternal(container, settingId)
-  local group = container.node_list
-  local toggles = {
-    [E.SettingVFXLevel.Off] = container.tog_option1,
-    [E.SettingVFXLevel.Simple] = container.tog_option2,
-    [E.SettingVFXLevel.Delicacy] = container.tog_option3,
-    [E.SettingVFXLevel.Normal] = container.tog_option4
-  }
-  local level = self.settingVM_.GetVFXLevelEnum(settingId)
-  self:setVfxLevelByIdx(settingId, level)
-  for idx, tog in pairs(toggles) do
-    tog:SetIsOnWithoutCallBack(false)
-  end
-  for idx, tog in pairs(toggles) do
-    tog.group = group
-    tog:AddListener(function(isOn)
-      if isOn then
-        if idx == 1 then
-          Z.DialogViewDataMgr:OpenNormalDialog(Lang("CloseVfxConfirm"), function()
-            self:setVfxLevelByIdx(settingId, idx)
-            Z.DialogViewDataMgr:CloseDialogView()
-          end, function()
-            tog:SetIsOnWithoutCallBack(false)
-            toggles[level]:SetIsOnWithoutCallBack(true)
-            Z.DialogViewDataMgr:CloseDialogView()
-          end)
-        else
-          self:setVfxLevelByIdx(settingId, idx)
-        end
-      end
-    end)
-  end
-  for idx, tog in pairs(toggles) do
-    tog:SetIsOnWithoutCallBack(idx == level)
-  end
-end
-
-function Set_control_subView:setVfxLevelByIdx(settingId, idx)
-  local level = self.settingVM_.ConvertEnumToVFXLevel(idx)
-  self.settingVM_.Set(settingId, level)
-  Z.LuaBridge.ImportEffectLimitGradeConf()
 end
 
 return Set_control_subView

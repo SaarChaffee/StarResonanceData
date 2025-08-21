@@ -15,7 +15,7 @@ function TrialRoadRed.initRoomRedItem(dataDict, nodeName)
         if target.TargetState == E.TrialRoadTargetState.UnGetReward then
           count_ = 1
         end
-        Z.RedPointMgr.RefreshServerNodeCount(targetdStr_, count_)
+        Z.RedPointMgr.UpdateNodeCount(targetdStr_, count_)
       end
     end
   end
@@ -45,7 +45,7 @@ function TrialRoadRed.RefreshTrialRoadRoomTargetItemRed(roomId)
       if target.TargetState == E.TrialRoadTargetState.UnGetReward then
         count_ = 1
       end
-      Z.RedPointMgr.RefreshServerNodeCount(targetdStr_, count_)
+      Z.RedPointMgr.UpdateNodeCount(targetdStr_, count_)
     end
   end
 end
@@ -96,7 +96,7 @@ function TrialRoadRed.InitTrialRoadGradeTargetItemRed()
         count_ = 1
       end
     end
-    Z.RedPointMgr.RefreshServerNodeCount(gradeStr_, count_)
+    Z.RedPointMgr.UpdateNodeCount(gradeStr_, count_)
   end
 end
 
@@ -116,7 +116,7 @@ function TrialRoadRed.RefreshTrialRoadGradeTargetItemRed()
         count_ = 1
       end
     end
-    Z.RedPointMgr.RefreshServerNodeCount(gradeStr_, count_)
+    Z.RedPointMgr.UpdateNodeCount(gradeStr_, count_)
   end
 end
 

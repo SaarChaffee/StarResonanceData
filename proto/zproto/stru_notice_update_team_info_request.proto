@@ -5,6 +5,5 @@ package zproto;
 import "stru_team_base_info.proto";
 
 message NoticeUpdateTeamInfoRequest {
-    zproto.TeamBaseInfo baseInfo = 2;
+    zproto.TeamBaseInfo baseInfo = 1;
 }
-

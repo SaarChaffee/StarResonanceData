@@ -46,9 +46,9 @@ end
 
 function Union_set_name_tplView:onInputNameChanged()
   local nameContent = self.uiBinder.input_name.text
-  local length = string.zlen(nameContent)
+  local length = string.zlenNormalize(nameContent)
   if length > self.charMaxLimit_ then
-    self.uiBinder.input_name.text = string.zcut(nameContent, self.charMaxLimit_)
+    self.uiBinder.input_name.text = string.zcutNormalize(nameContent, self.charMaxLimit_)
   else
     self.uiBinder.lab_digit.text = string.zconcat(length, "/", self.charMaxLimit_)
   end
@@ -68,7 +68,7 @@ function Union_set_name_tplView:setLabInfo()
     local changeNameTime = self.unionInfo_.changeNameTime
     local leftTime = changeNameTime + modifyNameCD - curServerTime
     if 0 < leftTime then
-      self.uiBinder.lab_time.text = Z.TimeTools.FormatToDHM(leftTime)
+      self.uiBinder.lab_time.text = Z.TimeFormatTools.FormatToDHMS(leftTime)
       isShowTime = true
     end
   end
@@ -126,7 +126,7 @@ function Union_set_name_tplView:checkItemEnough()
 end
 
 function Union_set_name_tplView:checkVaild()
-  local strLen = string.zlen(self.uiBinder.input_name.text)
+  local strLen = string.zlenNormalize(self.uiBinder.input_name.text)
   if strLen < self.charMinLimit_ or strLen > self.charMaxLimit_ then
     Z.TipsVM.ShowTipsLang(1000503)
     return false

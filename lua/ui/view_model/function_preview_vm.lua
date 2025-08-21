@@ -1,8 +1,12 @@
 local reqGetAward = function(funcId, cancelToken)
   local worldProxy = require("zproxy.world_proxy")
   local ret = worldProxy.DrawnFunctionOpenAward(funcId, cancelToken)
-  if ret ~= 0 then
-    Z.TipsVM.ShowTips(ret)
+  if ret.items ~= nil then
+    local itemShowVM = Z.VMMgr.GetVM("item_show")
+    itemShowVM.OpenItemShowViewByItems(ret.items)
+  end
+  if ret.errCode ~= 0 then
+    Z.TipsVM.ShowTips(ret.errCode)
     return false
   else
     return true

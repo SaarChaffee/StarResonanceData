@@ -11,4 +11,3 @@ message ExchangeSaleRecord {
     int64 time = 4;
     zproto.Item itemInfo = 5;
 }
-

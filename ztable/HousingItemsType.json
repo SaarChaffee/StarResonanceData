@@ -1,0 +1,282 @@
+{
+  "101": {
+    "Id": 101,
+    "Name": "",
+    "GroupId": 1,
+    "Sort": 1,
+    "ArrangeLimit": 1000
+  },
+  "102": {
+    "Id": 102,
+    "Name": "",
+    "GroupId": 1,
+    "Sort": 2,
+    "ArrangeLimit": 1000
+  },
+  "201": {
+    "Id": 201,
+    "Name": "",
+    "GroupId": 2,
+    "Sort": 3,
+    "ArrangeLimit": 1000
+  },
+  "301": {
+    "Id": 301,
+    "Name": "",
+    "GroupId": 3,
+    "Sort": 4,
+    "ArrangeLimit": 1000
+  },
+  "401": {
+    "Id": 401,
+    "Name": "",
+    "GroupId": 4,
+    "Sort": 5,
+    "ArrangeLimit": 1000
+  },
+  "501": {
+    "Id": 501,
+    "Name": "",
+    "GroupId": 5,
+    "Sort": 6,
+    "ArrangeLimit": 1000
+  },
+  "502": {
+    "Id": 502,
+    "Name": "",
+    "GroupId": 5,
+    "Sort": 7,
+    "ArrangeLimit": 1000
+  },
+  "503": {
+    "Id": 503,
+    "Name": "",
+    "GroupId": 5,
+    "Sort": 8,
+    "ArrangeLimit": 1000
+  },
+  "504": {
+    "Id": 504,
+    "Name": "",
+    "GroupId": 5,
+    "Sort": 9,
+    "ArrangeLimit": 1000
+  },
+  "505": {
+    "Id": 505,
+    "Name": "",
+    "GroupId": 5,
+    "Sort": 10,
+    "ArrangeLimit": 1000
+  },
+  "601": {
+    "Id": 601,
+    "Name": "",
+    "GroupId": 6,
+    "Sort": 10,
+    "ArrangeLimit": 1000
+  },
+  "701": {
+    "Id": 701,
+    "Name": "",
+    "GroupId": 7,
+    "Sort": 11,
+    "ArrangeLimit": 1000
+  },
+  "702": {
+    "Id": 702,
+    "Name": "",
+    "GroupId": 7,
+    "Sort": 12,
+    "ArrangeLimit": 1000
+  },
+  "703": {
+    "Id": 703,
+    "Name": "",
+    "GroupId": 7,
+    "Sort": 13,
+    "ArrangeLimit": 1000
+  },
+  "704": {
+    "Id": 704,
+    "Name": "",
+    "GroupId": 7,
+    "Sort": 14,
+    "ArrangeLimit": 1000
+  },
+  "801": {
+    "Id": 801,
+    "Name": "",
+    "GroupId": 8,
+    "Sort": 15,
+    "ArrangeLimit": 1000
+  },
+  "802": {
+    "Id": 802,
+    "Name": "",
+    "GroupId": 8,
+    "Sort": 16,
+    "ArrangeLimit": 1000
+  },
+  "803": {
+    "Id": 803,
+    "Name": "",
+    "GroupId": 8,
+    "Sort": 17,
+    "ArrangeLimit": 1000
+  },
+  "804": {
+    "Id": 804,
+    "Name": "",
+    "GroupId": 8,
+    "Sort": 18,
+    "ArrangeLimit": 1000
+  },
+  "901": {
+    "Id": 901,
+    "Name": "",
+    "GroupId": 9,
+    "Sort": 18,
+    "ArrangeLimit": 1000
+  },
+  "1001": {
+    "Id": 1001,
+    "Name": "",
+    "GroupId": 10,
+    "Sort": 19,
+    "ArrangeLimit": 1000
+  },
+  "1101": {
+    "Id": 1101,
+    "Name": "",
+    "GroupId": 11,
+    "Sort": 20,
+    "ArrangeLimit": 1000
+  },
+  "1201": {
+    "Id": 1201,
+    "Name": "",
+    "GroupId": 12,
+    "Sort": 20,
+    "ArrangeLimit": 1000
+  },
+  "1202": {
+    "Id": 1202,
+    "Name": "",
+    "GroupId": 12,
+    "Sort": 21,
+    "ArrangeLimit": 1000
+  },
+  "1301": {
+    "Id": 1301,
+    "Name": "",
+    "GroupId": 13,
+    "Sort": 22,
+    "ArrangeLimit": 1000
+  },
+  "1302": {
+    "Id": 1302,
+    "Name": "",
+    "GroupId": 13,
+    "Sort": 23,
+    "ArrangeLimit": 1000
+  },
+  "1303": {
+    "Id": 1303,
+    "Name": "",
+    "GroupId": 13,
+    "Sort": 24,
+    "ArrangeLimit": 1000
+  },
+  "1304": {
+    "Id": 1304,
+    "Name": "",
+    "GroupId": 13,
+    "Sort": 25,
+    "ArrangeLimit": 1000
+  },
+  "1305": {
+    "Id": 1305,
+    "Name": "",
+    "GroupId": 13,
+    "Sort": 26,
+    "ArrangeLimit": 1000
+  },
+  "1306": {
+    "Id": 1306,
+    "Name": "",
+    "GroupId": 13,
+    "Sort": 27,
+    "ArrangeLimit": 1000
+  },
+  "1307": {
+    "Id": 1307,
+    "Name": "",
+    "GroupId": 13,
+    "Sort": 28,
+    "ArrangeLimit": 1000
+  },
+  "1308": {
+    "Id": 1308,
+    "Name": "",
+    "GroupId": 13,
+    "Sort": 30,
+    "ArrangeLimit": 1000
+  },
+  "1309": {
+    "Id": 1309,
+    "Name": "",
+    "GroupId": 13,
+    "Sort": 29,
+    "ArrangeLimit": 1000
+  },
+  "1401": {
+    "Id": 1401,
+    "Name": "",
+    "GroupId": 14,
+    "Sort": 31,
+    "ArrangeLimit": 1
+  },
+  "1501": {
+    "Id": 1501,
+    "Name": "",
+    "GroupId": 15,
+    "Sort": 32,
+    "ArrangeLimit": 1000
+  },
+  "1502": {
+    "Id": 1502,
+    "Name": "",
+    "GroupId": 15,
+    "Sort": 33,
+    "ArrangeLimit": 1000
+  },
+  "1503": {
+    "Id": 1503,
+    "Name": "",
+    "GroupId": 15,
+    "Sort": 34,
+    "ArrangeLimit": 1000
+  },
+  "1504": {
+    "Id": 1504,
+    "Name": "",
+    "GroupId": 15,
+    "Sort": 35,
+    "ArrangeLimit": 1000
+  },
+  "1505": {
+    "Id": 1505,
+    "Name": "",
+    "GroupId": 15,
+    "Sort": 36,
+    "ArrangeLimit": 1000
+  },
+  "1506": {
+    "Id": 1506,
+    "Name": "",
+    "GroupId": 15,
+    "Sort": 37,
+    "ArrangeLimit": 1000
+  }
+}

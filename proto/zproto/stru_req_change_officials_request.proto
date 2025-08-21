@@ -9,4 +9,3 @@ message ReqChangeOfficialsRequest {
     repeated zproto.UnionOfficial changeOfficials = 3;
     int32 changeType = 4;
 }
-

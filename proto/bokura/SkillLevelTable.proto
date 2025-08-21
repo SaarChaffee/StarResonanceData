@@ -9,8 +9,6 @@ message SkillLevelTableBase {
     int_table Cost = 1056;
     int_table ExtraCost = 1788;
 }
-
 message SkillLevelTableMgr {
-    map<int32, .bokura.SkillLevelTableBase> datas = 1;
+    repeated bokura.SkillLevelTableMgr.DatasEntry datas = 1;
 }
-

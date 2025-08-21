@@ -91,6 +91,25 @@ local worldQuestTransfer = function(eventId, cancelToken)
     return false
   end
 end
+local handleWorldQuestAccept = function(questId)
+  local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(questId)
+  if questRow.QuestType == E.QuestType.WorldQuest then
+    local worldQuestData_ = Z.DataMgr.Get("worldquest_data")
+    worldQuestData_.AcceptWorldQuest = true
+    Z.LevelMgr:OnLevelEventTrigger(E.LevelEventType.OnWorldQuestRefresh)
+    Z.EventMgr:Dispatch(Z.ConstValue.WorldQuestListChange)
+  end
+end
+local openWorldQuestWorldMap = function()
+  for _, v in pairs(Z.ContainerMgr.CharSerialize.worldEventMap.eventMap) do
+    local eventInfoConfig = Z.TableMgr.GetTable("DailyWorldEventTableMgr").GetRow(v.id)
+    if eventInfoConfig then
+      local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+      gotoFuncVM.GoToFunc(E.FunctionID.Map, eventInfoConfig.Scene)
+      break
+    end
+  end
+end
 local ret = {
   GetRewardByQuestId = getRewardByQuestId,
   CheckIsWorldDungeonAndFinish = checkIsWorldDungeonAndFinish,
@@ -102,6 +121,8 @@ local ret = {
   WorldQuestInteractive = worldQuestInteractive,
   OpenWorldQuestMapJump = openWorldQuestMapJump,
   WorldQuestEventRemove = worldQuestEventRemove,
-  WorldQuestTransfer = worldQuestTransfer
+  WorldQuestTransfer = worldQuestTransfer,
+  HandleWorldQuestAccept = handleWorldQuestAccept,
+  OpenWorldQuestWorldMap = openWorldQuestWorldMap
 }
 return ret

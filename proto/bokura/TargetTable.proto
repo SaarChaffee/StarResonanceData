@@ -19,8 +19,6 @@ message TargetTableBase {
     mlstring_array SpVariableName = 2006;
     int_array IsShowSpVariableProgress = 800;
 }
-
 message TargetTableMgr {
-    map<int32, .bokura.TargetTableBase> datas = 1;
+    repeated bokura.TargetTableMgr.DatasEntry datas = 1;
 }
-

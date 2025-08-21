@@ -2,19 +2,17 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_team_activity.proto";
 import "stru_team_base_info.proto";
 import "stru_team_mem_data.proto";
 import "stru_team_mem_real_time_voice_info.proto";
-import "stru_user_detailed_data.proto";
 
 message GetTeamInfoReply {
-    int32 errCode = 2;
-    zproto.TeamBaseInfo baseInfo = 3;
-    repeated zproto.TeamMemData memberData = 4;
-    zproto.TeamActivity teamActivity = 5;
-    map<int64, .zproto.TeamMemRealTimeVoiceInfo> memRealTimeVoiceInfos = 6;
-    repeated zproto.UserDetailedData memSocialData = 7;
-    map<int64, int32> memVoiceId = 8;
+    zproto.TeamBaseInfo baseInfo = 1;
+    repeated zproto.TeamMemData memberData = 2;
+    zproto.TeamActivity teamActivity = 3;
+    repeated zproto.GetTeamInfoReply.MemRealTimeVoiceInfosEntry memRealTimeVoiceInfos = 4;
+    repeated zproto.GetTeamInfoReply.MemVoiceIdEntry memVoiceId = 6;
+    zproto.EErrorCode errCode = 7;
 }
-

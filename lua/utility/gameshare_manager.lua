@@ -27,7 +27,7 @@ function GameShareManager:GetShareChannel()
   return self.shareChannel_
 end
 
-function GameShareManager:ShareLink(title, link, shareplatform, thumb, des)
+function GameShareManager:ShareLink(title, link, shareplatform, thumb, des, extra)
   local thumbPath = ""
   if thumb then
     if type(thumb) == "string" then
@@ -39,10 +39,10 @@ function GameShareManager:ShareLink(title, link, shareplatform, thumb, des)
       thumbPath = Z.SDKShare.SaveImageToLocal(TEMPSHAREIMAGEPATH, TEMPSHARETHUMBNAIL, thumb)
     end
   end
-  Z.SDKShare.ShareLink(title, link, thumbPath, des, shareplatform)
+  Z.SDKShare.ShareLink(title, link, shareplatform, thumbPath, des, extra)
 end
 
-function GameShareManager:ShareImage(title, shareimage, shareplatform, thumb, des)
+function GameShareManager:ShareImage(title, shareimage, shareplatform, thumb, des, extra)
   local shareImagePath
   if shareimage then
     if type(shareimage) == "string" then
@@ -65,16 +65,16 @@ function GameShareManager:ShareImage(title, shareimage, shareplatform, thumb, de
       thumbPath = Z.SDKShare.SaveImageToLocal(TEMPSHAREIMAGEPATH, TEMPSHARETHUMBNAIL, thumb)
     end
   end
-  Z.SDKShare.ShareImage(title, shareImagePath, shareplatform, thumbPath, des)
+  Z.SDKShare.ShareImage(title, shareImagePath, shareplatform, thumbPath, des, extra)
 end
 
-function GameShareManager:ShareImageAutoThumb(title, shareimage, shareplatform, des)
+function GameShareManager:ShareImageAutoThumb(title, shareimage, shareplatform, des, extra)
   local shareTexture = Z.SDKShare.GetTextureById(shareimage)
   local shareImagePath = Z.SDKShare.SaveImageToLocal(TEMPSHAREIMAGEPATH, TEMPSHAREIMAGE, shareTexture)
   local thumb = Z.LuaBridge.ResizeTextureSizeForAlbum(shareimage, E.NativeTextureCallToken.GameShare, THUMB_WIDTH, THUMB_HEIGHT)
   local thumbTexture = Z.SDKShare.GetTextureById(thumb)
   local thumbPath = Z.SDKShare.SaveImageToLocal(TEMPSHAREIMAGEPATH, TEMPSHARETHUMBNAIL, thumbTexture)
-  Z.SDKShare.ShareImage(title, shareImagePath, shareplatform, thumbPath, des)
+  Z.SDKShare.ShareImage(title, shareImagePath, shareplatform, thumbPath, des, extra)
 end
 
 return GameShareManager

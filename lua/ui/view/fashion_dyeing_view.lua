@@ -7,10 +7,11 @@ local loopListView = require("ui.component.loop_list_view")
 local unlockItem = require("ui.component.fashion.fashion_unlock_loop_item")
 local loopGridView = require("ui.component.loop_grid_view")
 local recommendItem = require("ui.component.fashion.fashion_recommend_item")
+local recommendAreaColorItem = require("ui.component.fashion.fashion_recommend_area_color_item")
 
 function Fashion_dyeingView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "fashion_dyeing_sub", "fashion/fashion_dyeing_sub", UI.ECacheLv.None)
+  super.ctor(self, "fashion_dyeing_sub", "fashion/fashion_dyeing_sub", UI.ECacheLv.None, true)
   self.parentView_ = parent
   self.fashionVM_ = Z.VMMgr.GetVM("fashion")
   self.fashionData_ = Z.DataMgr.Get("fashion_data")
@@ -27,9 +28,19 @@ function Fashion_dyeingView:GetCurFashionId()
 end
 
 function Fashion_dyeingView:Save()
-  if self.fashionVM_.GetFashionUuid(self.fashionId_) then
-    if self:isCurColorSameAsServerColor() then
+  if self.fashionVM_.GetFashionIsUnlock(self.fashionId_) then
+    local colorChange, colorReset = self:isColorChange()
+    if not colorChange then
       Z.TipsVM.ShowTipsLang(120006)
+    elseif colorReset then
+      local dialogViewData = {
+        dlgType = E.DlgType.YesNo,
+        labDesc = Lang("DescFashionColorReset"),
+        onConfirm = function()
+          self.fashionVM_.AsyncSendFashionColor(self.fashionId_, self.cancelSource:CreateToken())
+        end
+      }
+      Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
     else
       local saveVM = Z.VMMgr.GetVM("fashion_save_tips")
       local lockedAreaList = {}
@@ -52,9 +63,19 @@ function Fashion_dyeingView:Save()
 end
 
 function Fashion_dyeingView:ConfirmSaveWithCost()
-  if self.fashionVM_.GetFashionUuid(self.fashionId_) then
-    if not self:isColorChange() then
+  if self.fashionVM_.GetFashionIsUnlock(self.fashionId_) then
+    local colorChange, colorReset = self:isColorChange()
+    if not colorChange then
       Z.TipsVM.ShowTipsLang(120006)
+    elseif colorReset then
+      local dialogViewData = {
+        dlgType = E.DlgType.YesNo,
+        labDesc = Lang("DescFashionColorReset"),
+        onConfirm = function()
+          self.fashionVM_.AsyncSendFashionColor(self.fashionId_, self.cancelSource:CreateToken())
+        end
+      }
+      Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
     elseif #self.fashionCostData_ > 0 then
       local itemsVM = Z.VMMgr.GetVM("items")
       for _, data in ipairs(self.fashionCostData_) do
@@ -85,24 +106,44 @@ function Fashion_dyeingView:ConfirmSaveWithCost()
 end
 
 function Fashion_dyeingView:OnActive()
+  self.isClearOptionList_ = false
   self.parentView_:SetScrollContent(self.uiBinder.Trans)
-  self.colorPalette_:Init(self.uiBinder.cont_palette)
+  self.uiBinder.Trans:SetOffsetMin(0, 0)
+  self.uiBinder.Trans:SetOffsetMax(0, 0)
+  self.uiBinder.Trans:SetWidth(Z.IsPCUI and 316 or 424)
+  self.colorPalette_:Init(self.uiBinder.cont_palette, Z.IsPCUI)
   self.colorPalette_:SetColorChangeCB(function(hsv)
     self.hsv_ = hsv
-    self.fashionVM_.SetFashionColor(self.fashionId_, self.area_, hsv)
+    self.fashionVM_.SetFashionColor(self.fashionId_, self.area_, hsv, false, true)
     self:refreshCostData()
+    self.colorPalette_:SetResetColorState(false)
+    if self.loopAreaRecommend_ then
+      self.loopAreaRecommend_:ClearAllSelect()
+    end
   end)
-  self.unlockScrollRect_ = loopListView.new(self, self.uiBinder.loop_unlock, unlockItem, "com_item_square_8")
+  self.colorPalette_:SetColorStartChangeCB(function()
+    if not self.isClearOptionList_ then
+      self.isClearOptionList_ = true
+      self.fashionVM_.ClearOptionList()
+    end
+    self.fashionVM_.RecordFashionChange(true)
+  end)
+  self.colorPalette_:SetColorEndChangeCB(function()
+    self.fashionVM_.RecordFashionChange(false)
+  end)
+  self.unlockScrollRect_ = loopListView.new(self, self.uiBinder.loop_unlock, unlockItem, "com_item_square_8", true)
   self.unlockScrollRect_:Init({})
   self:AddAsyncClick(self.uiBinder.btn_unlock, function()
     self:onClickUnlock()
   end)
   self.colorPalette_:SetColorResetCB(function()
-    self.colorPalette_:ResetSelectHSVWithoutNotify()
+    local fashionData = Z.DataMgr.Get("fashion_data")
+    local serverColor = fashionData:GetServerFashionColor(self.fashionId_, self.area_)
+    self.fashionVM_.SetFashionColor(self.fashionId_, self.area_, serverColor)
+    self:refreshPaletteSelect()
+    self.fashionVM_.RefreshWearAttr()
     self:refreshCostData()
   end)
-  self.colorPalette_:SetResetBtn(true)
-  self:initColorRecommend()
   self:BindEvents()
   
   function self.onContainerDataChange_(container, dirtyKeys)
@@ -110,6 +151,10 @@ function Fashion_dyeingView:OnActive()
   end
   
   Z.ContainerMgr.CharSerialize.fashion.Watcher:RegWatcher(self.onContainerDataChange_)
+  if self.viewData.isPreview then
+    return
+  end
+  Z.EventMgr:Dispatch(Z.ConstValue.Fashion.FashionSystemShowCustomBtn, true, "ConfirmStaining", self.ConfirmSaveWithCost, false, self)
 end
 
 function Fashion_dyeingView:OnRefresh()
@@ -121,8 +166,10 @@ function Fashion_dyeingView:OnRefresh()
     v = 0
   }
   self.fashionCostData_ = {}
-  self:setPaletteColorGroup()
+  self:initColorRecommend()
+  self:initPaletteColorGroup()
   self:initAreaTog()
+  self:initAreaColorRecommend()
   self:refreshCostData()
 end
 
@@ -137,8 +184,20 @@ function Fashion_dyeingView:OnDeActive()
   self.area_ = nil
   self.hsv_ = nil
   self.curAreaList_ = nil
+  self.loopAreaRecommend_:UnInit()
+  self.loopAreaRecommend_ = nil
   self:ClearTips()
   Z.ContainerMgr.CharSerialize.fashion.Watcher:UnregWatcher(self.onContainerDataChange_)
+  Z.EventMgr:Remove(Z.ConstValue.Fashion.FashionViewRefresh, self.refreshFashion, self)
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.AddItem, self.refreshFashionCost, self)
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.ItemCountChange, self.refreshFashionCost, self)
+  Z.EventMgr:Dispatch(Z.ConstValue.Fashion.FashionSystemShowCustomBtn, false)
+end
+
+function Fashion_dyeingView:refreshFashion()
+  self.loopAreaRecommend_:ClearAllSelect()
+  self:refreshAreaDefaultColor()
+  self:refreshCostData()
 end
 
 function Fashion_dyeingView:ClearTips()
@@ -149,11 +208,11 @@ function Fashion_dyeingView:ClearTips()
 end
 
 function Fashion_dyeingView:initColorRecommend()
-  local fashionRow = Z.TableMgr.GetTable("FashionTableMgr").GetRow(self.viewData.fashionId)
-  if not fashionRow then
+  self.fashionRow_ = Z.TableMgr.GetTable("FashionTableMgr").GetRow(self.fashionId_)
+  if not self.fashionRow_ then
     return
   end
-  if fashionRow.Recommend and #fashionRow.Recommend > 0 then
+  if self.fashionRow_.Recommend and #self.fashionRow_.Recommend > 0 then
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_color_select, true)
     self.uiBinder.tog_recommend.group = self.uiBinder.togs_select
     self.uiBinder.tog_color_area.group = self.uiBinder.togs_select
@@ -165,12 +224,11 @@ function Fashion_dyeingView:initColorRecommend()
     end)
     self.uiBinder.tog_color_area:AddListener(function(isOn)
       if isOn then
-        self:refreshColorState(false)
         self:refreshAreaDefaultColor()
       end
     end)
-    self.loop_recommend_ = loopGridView.new(self, self.uiBinder.loop_recommend, recommendItem, "fashion_color_item")
-    self.loop_recommend_:Init(fashionRow.Recommend)
+    self.loop_recommend_ = loopGridView.new(self, self.uiBinder.loop_recommend, recommendItem, "fashion_color_item", true)
+    self.loop_recommend_:Init(self.fashionRow_.Recommend)
     self.loop_recommend_:ClearAllSelect()
     self.uiBinder.tog_recommend.isOn = false
     self.uiBinder.tog_recommend.isOn = true
@@ -178,6 +236,44 @@ function Fashion_dyeingView:initColorRecommend()
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_color_select, false)
     self:refreshColorState(false)
   end
+end
+
+function Fashion_dyeingView:initAreaColorRecommend()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.loop_grid_color, false)
+  if not self.colorConfig_ then
+    return
+  end
+  if table.zcount(self.colorConfig_.Recommend) == 0 then
+    return
+  end
+  local colorRecommend = {
+    [1] = {}
+  }
+  for i = 1, #self.colorConfig_.Recommend do
+    colorRecommend[#colorRecommend + 1] = self.colorConfig_.Recommend[i]
+  end
+  self.loopAreaRecommend_ = loopGridView.new(self, self.uiBinder.loop_grid_color, recommendAreaColorItem, "fashion_color_item", true)
+  self.loopAreaRecommend_:Init(colorRecommend)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.loop_grid_color, true)
+end
+
+function Fashion_dyeingView:OnSelectAreaColor(colorData)
+  if table.zcount(colorData) == 0 then
+    self.hsv_ = self.fashionVM_.GetFashionDefaultColorByArea(self.fashionId_, self.area_)
+  else
+    self.hsv_ = {
+      h = colorData[1],
+      s = colorData[2],
+      v = colorData[3]
+    }
+  end
+  self.fashionVM_.SetFashionColor(self.fashionId_, self.area_, self.hsv_)
+  if table.zcount(colorData) == 0 then
+    self.colorPalette_:SetResetColorState(true)
+  else
+    self:refreshAreaDefaultColor()
+  end
+  self:refreshCostData()
 end
 
 function Fashion_dyeingView:refreshColorState(isColorRecommend)
@@ -202,41 +298,43 @@ function Fashion_dyeingView:SetFashionColor(colorInfo)
   self:refreshCostData()
 end
 
-function Fashion_dyeingView:setPaletteColorGroup()
-  local fashionRow = Z.TableMgr.GetTable("FashionTableMgr").GetRow(self.fashionId_)
-  if fashionRow then
-    local colorConfig = self.colorPalette_:RefreshPaletteByColorGroupId(fashionRow.ColorGroupId, true)
-    if colorConfig and colorConfig.Type == E.EHueModifiedMode.Board then
-      self.uiBinder.Ref:SetVisible(self.uiBinder.btn_unlock, false)
-    else
-      self.uiBinder.Ref:SetVisible(self.uiBinder.btn_unlock, true)
-    end
-    self:refreshAreaDefaultColor()
+function Fashion_dyeingView:initPaletteColorGroup()
+  if not self.fashionRow_ then
+    return
+  end
+  self.colorPalette_:RefreshPaletteByColorGroupId(self.fashionRow_.ColorGroupId)
+  self.colorConfig_ = self.colorPalette_:GetColorConfigRow()
+  if self.colorConfig_ and self.colorConfig_.Type == E.EHueModifiedMode.Board then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_unlock, false)
+  else
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_unlock, true)
   end
 end
 
 function Fashion_dyeingView:initAreaTog()
   self.uiBinder.togs_area:ClearAll()
   self.curAreaList_ = {}
-  for i = 1, 4 do
+  for i = 1, 5 do
     local widget = self.uiBinder[string.zconcat("tog_area", i)]
     self.uiBinder.Ref:SetVisible(widget, false)
     widget:RemoveAllListeners()
     widget.isOn = false
   end
-  local fashionRow = Z.TableMgr.GetTable("FashionTableMgr").GetRow(self.fashionId_)
-  if not fashionRow then
+  if not self.fashionRow_ then
     return
   end
   local selectArea, selectWidget
-  for i, area in ipairs(fashionRow.ColorPart) do
+  for i, area in ipairs(self.fashionRow_.ColorPart) do
     local widget = self.uiBinder[string.zconcat("tog_area", i)]
     self.uiBinder.Ref:SetVisible(widget, true)
     widget.group = self.uiBinder.togs_area
     widget:AddListener(function(isOn)
       if isOn then
         self.area_ = area
-        self:setPaletteSelect()
+        self:refreshPaletteSelect()
+        if self.loopAreaRecommend_ then
+          self.loopAreaRecommend_:ClearAllSelect()
+        end
       end
     end)
     if self.area_ == area or not selectArea then
@@ -247,12 +345,28 @@ function Fashion_dyeingView:initAreaTog()
   end
   selectWidget.isOn = true
   self.area_ = selectArea
-  self:setPaletteSelect()
+  self:refreshPaletteSelect()
 end
 
-function Fashion_dyeingView:setPaletteSelect()
-  self:refreshAreaDefaultColor()
-  self:refreshAreaServerColor()
+function Fashion_dyeingView:refreshPaletteSelect()
+  local fashionData = Z.DataMgr.Get("fashion_data")
+  local modifiedColor = fashionData:GetColor(self.fashionId_)[self.area_]
+  local defaultColor = self.fashionVM_.GetFashionDefaultColorByArea(self.fashionId_, self.area_)
+  self.colorPalette_:SetDefaultColor(defaultColor, true)
+  if modifiedColor then
+    self.colorPalette_:SelectItemByHSVWithoutNotify(modifiedColor)
+    self.colorPalette_:SetResetColorState(false)
+  else
+    local fashionData = Z.DataMgr.Get("fashion_data")
+    local serverColor = fashionData:GetServerFashionColor(self.fashionId_, self.area_)
+    if serverColor then
+      self.colorPalette_:SelectItemByHSVWithoutNotify(serverColor)
+      self.colorPalette_:SetResetColorState(false)
+    else
+      self.colorPalette_:SelectItemByHSVWithoutNotify(defaultColor)
+      self.colorPalette_:SetResetColorState(true)
+    end
+  end
 end
 
 function Fashion_dyeingView:getModifiedColor()
@@ -265,32 +379,41 @@ function Fashion_dyeingView:getModifiedColor()
 end
 
 function Fashion_dyeingView:isColorChange()
-  local fashionRow = Z.TableMgr.GetTable("FashionTableMgr").GetRow(self.fashionId_)
-  if not fashionRow then
+  if not self.fashionRow_ then
     return false
   end
-  local colorGroupTable = Z.TableMgr.GetTable("ColorGroupTableMgr").GetRow(fashionRow.ColorGroupId)
+  local colorGroupTable = Z.TableMgr.GetTable("ColorGroupTableMgr").GetRow(self.fashionRow_.ColorGroupId)
   if not colorGroupTable then
     return false
   end
+  local colorChange = false
+  local colorReset = true
   local fashionData = Z.DataMgr.Get("fashion_data")
-  for _, area in ipairs(fashionRow.ColorPart) do
+  for _, area in ipairs(self.fashionRow_.ColorPart) do
     local curColor = fashionData:GetColor(self.fashionId_)[area]
     if curColor then
       local serverColor = fashionData:GetServerFashionColor(self.fashionId_, area)
-      if serverColor then
-        if curColor.h ~= serverColor.h or curColor.s ~= serverColor.s or curColor.v ~= serverColor.v then
-          return true
-        end
-      else
+      if not self:isColorEqual(curColor, serverColor) then
+        colorChange = true
         local defaultColor = self.fashionVM_.GetFashionDefaultColorByArea(self.fashionId_, area)
-        if curColor.h ~= defaultColor.h or curColor.s ~= defaultColor.s or curColor.v ~= defaultColor.v then
-          return true
+        if not self:isColorEqual(curColor, defaultColor) then
+          colorReset = false
         end
       end
     end
   end
-  return false
+  return colorChange, colorReset
+end
+
+function Fashion_dyeingView:isColorEqual(first, second)
+  if not first or not second then
+    return false
+  end
+  if math.abs(first.h - second.h) < 1.0E-4 and 1.0E-4 > math.abs(first.s - second.s) and 1.0E-4 > math.abs(first.v - second.v) then
+    return true
+  else
+    return false
+  end
 end
 
 function Fashion_dyeingView:isColorSameAsServerColor(area)
@@ -316,27 +439,23 @@ function Fashion_dyeingView:refreshUnlockUIByColorItemIndex(itemIndex)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_unlock, true)
   if isUnlocked then
     self.unlockScrollRect_:RefreshListView({}, false)
-  else
-    local fashionRow = Z.TableMgr.GetTable("FashionTableMgr").GetRow(self.fashionId_)
-    if fashionRow then
-      local groupId = fashionRow.ColorGroupId
-      local dataList = self.fashionData_:GetUnlockItemDataListByColorGroupIdAndIndex(groupId, colorIndex)
-      self.unlockScrollRect_:RefreshListView(dataList, false)
-    end
+  elseif self.fashionRow_ then
+    local groupId = self.fashionRow_.ColorGroupId
+    local dataList = self.fashionData_:GetUnlockItemDataListByColorGroupIdAndIndex(groupId, colorIndex)
+    self.unlockScrollRect_:RefreshListView(dataList, false)
   end
 end
 
 function Fashion_dyeingView:onClickUnlock()
-  if not self.fashionVM_.GetFashionUuid(self.fashionId_) then
+  if not self.fashionVM_.GetFashionIsUnlock(self.fashionId_) then
     Z.TipsVM.ShowTipsLang(120012)
     return
   end
-  local fashionRow = Z.TableMgr.GetTable("FashionTableMgr").GetRow(self.fashionId_)
-  if not fashionRow then
+  if not self.fashionRow_ then
     return
   end
   local itemsVM = Z.VMMgr.GetVM("items")
-  local groupId = fashionRow.ColorGroupId
+  local groupId = self.fashionRow_.ColorGroupId
   local colorIndex = self.colorPalette_:GetCurColorIndex()
   local dataList = self.fashionData_:GetUnlockItemDataListByColorGroupIdAndIndex(groupId, colorIndex)
   for _, data in ipairs(dataList) do
@@ -370,6 +489,20 @@ function Fashion_dyeingView:refreshCostData()
   self.unlockScrollRect_:RefreshListView(self.fashionCostData_, false)
 end
 
+function Fashion_dyeingView:refreshFashionCost(item)
+  local isHave = false
+  for i = 1, #self.fashionCostData_ do
+    if item.configId == self.fashionCostData_[i].ItemId then
+      isHave = true
+      break
+    end
+  end
+  if not isHave then
+    return
+  end
+  self.unlockScrollRect_:RefreshListView(self.fashionCostData_, false)
+end
+
 local comp = function(left, right)
   local itemTbl = Z.TableMgr.GetTable("ItemTableMgr")
   local itemTblLeft = itemTbl.GetRow(left.ItemId)
@@ -385,11 +518,10 @@ local comp = function(left, right)
 end
 
 function Fashion_dyeingView:calcCostData()
-  local fashionRow = Z.TableMgr.GetTable("FashionTableMgr").GetRow(self.fashionId_)
-  if not fashionRow then
+  if not self.fashionRow_ then
     return {}
   end
-  local colorGroupTable = Z.TableMgr.GetTable("ColorGroupTableMgr").GetRow(fashionRow.ColorGroupId)
+  local colorGroupTable = Z.TableMgr.GetTable("ColorGroupTableMgr").GetRow(self.fashionRow_.ColorGroupId)
   if not colorGroupTable then
     return {}
   end
@@ -397,7 +529,7 @@ function Fashion_dyeingView:calcCostData()
   local svIsHighCost = false
   local svIsCost = false
   self.fashionCostData_ = {}
-  for _, area in ipairs(fashionRow.ColorPart) do
+  for _, area in ipairs(self.fashionRow_.ColorPart) do
     if not self:isColorSameAsServerColor(area) then
       local fashionData = Z.DataMgr.Get("fashion_data")
       local curColor = fashionData:GetColor(self.fashionId_)[area]
@@ -445,9 +577,12 @@ function Fashion_dyeingView:calcColorHCost(colorGroupTable, color, costData)
       hMin = hMax
     end
   end
-  for i = 2, #hCostData - 1 do
+  for i = 2, #hCostData - 1, 2 do
     local itemId = hCostData[i]
     local itemCount = hCostData[i + 1]
+    if not itemCount then
+      break
+    end
     if costData[itemId] then
       costData[itemId] = itemCount + costData[itemId]
     else
@@ -478,13 +613,15 @@ end
 
 function Fashion_dyeingView:onConfirmUnlockFashionColor(colorIndex)
   self.fashionVM_.AsyncUnlockFashionColor(self.fashionId_, colorIndex, self.cancelSource:CreateToken())
-  Z.DialogViewDataMgr:CloseDialogView()
 end
 
 function Fashion_dyeingView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.FashionColorChange, self.onFashionColorChange, self)
   Z.EventMgr:Add(Z.ConstValue.FashionColorUnlock, self.onFashionColorUnlock, self)
   Z.EventMgr:Add(Z.ConstValue.FashionColorSave, self.onFashionColorSave, self)
+  Z.EventMgr:Add(Z.ConstValue.Fashion.FashionViewRefresh, self.refreshFashion, self)
+  Z.EventMgr:Add(Z.ConstValue.Backpack.AddItem, self.refreshFashionCost, self)
+  Z.EventMgr:Add(Z.ConstValue.Backpack.ItemCountChange, self.refreshFashionCost, self)
 end
 
 function Fashion_dyeingView:onFashionColorChange()
@@ -508,23 +645,48 @@ function Fashion_dyeingView:onFashionColorSave(fashionId)
   self:refreshCostData()
 end
 
+function Fashion_dyeingView:isColorEquals(color1, color2)
+  if not color1 or not color2 then
+    return
+  end
+  return color1.h == color2.h and color1.s == color2.s and color1.v == color2.v
+end
+
 function Fashion_dyeingView:refreshAreaDefaultColor()
+  if not self.area_ then
+    return
+  end
   local defaultColor = self.fashionVM_.GetFashionDefaultColorByArea(self.fashionId_, self.area_)
   self.colorPalette_:SetDefaultColor(defaultColor, true)
   local modifiedColor = self:getModifiedColor()
   local color = modifiedColor or defaultColor
   self.colorPalette_:SelectItemByHSVWithoutNotify(color)
+  if not modifiedColor or self:isColorEquals(defaultColor, modifiedColor) then
+    self.colorPalette_:SetResetColorState(true)
+  else
+    self.colorPalette_:SetResetColorState(false)
+  end
 end
 
 function Fashion_dyeingView:refreshAreaServerColor()
+  if not self.area_ then
+    return
+  end
   local defaultColor = self.fashionVM_.GetFashionDefaultColorByArea(self.fashionId_, self.area_)
   if self.viewData.isPreview then
     self.colorPalette_:SetServerColor(defaultColor, true)
+    self.colorPalette_:SetResetColorState(true)
   else
     local fashionData = Z.DataMgr.Get("fashion_data")
     local serverColor = fashionData:GetServerFashionColor(self.fashionId_, self.area_)
-    serverColor = serverColor or defaultColor
-    self.colorPalette_:SetServerColor(serverColor, true)
+    local color = serverColor or defaultColor
+    self.colorPalette_:SetServerColor(color, true)
+    local modifiedColor = self:getModifiedColor() or serverColor
+    if not modifiedColor or self:isColorEquals(defaultColor, modifiedColor) then
+      self.colorPalette_:SetResetColorState(true)
+    else
+      self.colorPalette_:SetResetColorState(false)
+    end
   end
 end
 

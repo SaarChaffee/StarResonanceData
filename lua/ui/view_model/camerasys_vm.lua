@@ -1,5 +1,6 @@
 local cjson = require("cjson")
 local UNREAL_SCENE_CONFIG_PATH = "unrealscene/unrealsceneconfig_take_photo"
+local CLOUD_FACE_UNREAL_CONFIG_PATH = "unrealscene/unrealsceneconfig_cloud_face"
 local setTopTagIndex = function(index)
   local camerasysData = Z.DataMgr.Get("camerasys_data")
   if camerasysData:GetTagIndex().TopTagIndex ~= index then
@@ -55,29 +56,31 @@ local setShowState = function(index, state, mold, patternType)
     camerasysData:SetShowUIState(index, state)
   end
 end
-local setHeadLookAt = function(isOn)
-  if Z.EntityMgr.PlayerEnt then
-    if isOn then
-      local mainCamTrans = Z.CameraMgr.MainCamTrans
-      if mainCamTrans then
-        local playerModel = Z.EntityMgr.PlayerEnt.Model
-        Z.ModelHelper.SetLookAtIKParam(playerModel, 1)
-        playerModel:SetLuaAttr(Z.ModelAttr.EModelForceLook, true)
-        Z.ModelHelper.SetLookAtTransform(playerModel, mainCamTrans)
+local setHeadLookAt = function(isOn, model, isEyes)
+  if not model then
+    return
+  end
+  if isOn then
+    local mainCamTrans = Z.CameraMgr.MainCamTrans
+    if mainCamTrans then
+      if isEyes then
+        Z.ModelHelper.SetLookAtTransform(model, mainCamTrans, false, false)
+      else
+        Z.ModelHelper.SetLookAtIKParam(model, 1)
+        model:SetLuaAttrLookAtHeadClose(false)
+        Z.ModelHelper.SetLookAtTransform(model, mainCamTrans)
       end
-    else
-      local playerModel = Z.EntityMgr.PlayerEnt.Model
-      Z.ModelHelper.ResetLookAtIKParam(playerModel)
-      playerModel:SetLuaAttr(Z.ModelAttr.EModelForceLook, false)
-      Z.ModelHelper.SetLookAtTransform(playerModel, nil)
     end
+  else
+    Z.ModelHelper.ResetLookAtIKParam(model)
+    model:SetLuaAttrLookAtHeadClose(true)
+    Z.ModelHelper.SetLookAtTransform(model, nil)
   end
 end
 local setEyesLookAt = function(isOn)
   if Z.EntityMgr.PlayerEnt then
     local playerModel = Z.EntityMgr.PlayerEnt.Model
-    playerModel:SetLuaAttr(Z.ModelAttr.EModelAnimLookAtWeight, isOn and 0 or 1)
-    playerModel:SetLuaAttr(Z.ModelAttr.EModelEyesForce, isOn)
+    playerModel:SetLuaAttrLookAtEyeOpen(isOn)
   end
 end
 local getTempAlbumNumWithEnd = function(data)
@@ -145,6 +148,7 @@ local savePhotoToTempAlbum = function(oriId, effecId, thumbId)
   Z.DataMgr.Get("album_main_data"):AddTempPhotoData(photoKey, cachePhotoData)
   tempPhotoCache.tempPhotoCacheDict[photoKey] = cachePhotoData
   Z.LsqLiteMgr.UpdataData("album_info", "zproto.tempPhotoCache", roleKey, tempPhotoCache)
+  Z.EventMgr:Dispatch(Z.ConstValue.Camera.SaveLocalPhoto)
 end
 local saveCloudPhotoToTempAlbum = function(oriId, effectUrl, effectThumbUrl, decorateInfo)
   local oriPhotoPath = Z.CameraFrameCtrl:SaveToCacheAlbum(E.CachePhotoType.CacheOriPhoto, oriId, true)
@@ -215,7 +219,7 @@ local saveCameraSchemeInfoEX = function(dataValue)
   local selectData = {}
   selectData.data = curSchemeInfo
   selectData.index = camerasysData.CameraSchemeSelectIndex
-  Z.EventMgr:Dispatch(Z.ConstValue.Camera.RefSchemeLsit, selectData)
+  Z.EventMgr:Dispatch(Z.ConstValue.Camera.RefSchemeList, selectData)
 end
 local saveCameraSchemeInfo = function()
   local camerasysData = Z.DataMgr.Get("camerasys_data")
@@ -237,7 +241,7 @@ local saveCameraSchemeInfo = function()
   local selectData = {}
   selectData.data = curSchemeInfo
   selectData.index = camerasysData.CameraSchemeReplaceInfo.index
-  Z.EventMgr:Dispatch(Z.ConstValue.Camera.RefSchemeLsit, selectData)
+  Z.EventMgr:Dispatch(Z.ConstValue.Camera.RefSchemeList, selectData)
 end
 local addCameraSchemeInfo = function()
   local camerasysData = Z.DataMgr.Get("camerasys_data")
@@ -267,12 +271,16 @@ local deleteCameraSchemeInfo = function(dataValue)
   Z.LsqLiteMgr.UpdataData("camera_scheme_info", "zproto.cameraSchemeCache", roleKey, cameraSchemeCache)
 end
 local isEnterSelfPhoto = function()
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return false
+  end
   local isEnter = false
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
+  local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
   if Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EMultiActionState).Value ~= 0 then
     isEnter = false
   elseif Z.EntityMgr.PlayerEnt.IsRiding == true then
-    isEnter = Z.StatusSwitchMgr:CheckSwitchEnable(Z.EStatusSwitch.ActorStateSelfPhoto)
+    isEnter = Z.StatusSwitchMgr:TrySwitchToState(Z.EStatusSwitch.ActorStateSelfPhoto)
   elseif stateId == Z.PbEnum("EActorState", "ActorStateDefault") then
     local canSwitchStateList = {
       Z.PbEnum("EMoveType", "MoveIdle"),
@@ -302,6 +310,7 @@ local resetEntityVisible = function()
   for k, v in pairs(camerasysData.CameraEntityVisible) do
     if v == true then
       Z.CameraFrameCtrl:SetEntityShow(k, true)
+      setShowState(k, true, E.CamerasysContrShowType.Entity, camerasysData.CameraPatternType)
       v = false
     end
   end
@@ -318,12 +327,12 @@ local setSchemoCameraValue = function(dataValue)
     return
   end
   local cameraPatternType = dataValue.cameraPatternType
-  if cameraPatternType == E.CameraState.SelfPhoto and not isEnterSelfPhoto() then
+  if cameraPatternType == E.TakePhotoSate.SelfPhoto and not isEnterSelfPhoto() then
     return false
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Camera.PatternTypeEvent, cameraPatternType)
   if dataValue.horizontal then
-    if cameraPatternType == E.CameraState.SelfPhoto then
+    if cameraPatternType == E.TakePhotoSate.SelfPhoto then
       camerasysData.CameraSelfHorizontalRange.value = dataValue.horizontal
     else
       camerasysData.CameraHorizontalRange.value = dataValue.horizontal
@@ -331,7 +340,7 @@ local setSchemoCameraValue = function(dataValue)
     Z.CameraFrameCtrl:SetHorizontal(dataValue.horizontal)
   end
   if dataValue.vertical then
-    if cameraPatternType == E.CameraState.SelfPhoto then
+    if cameraPatternType == E.TakePhotoSate.SelfPhoto then
       camerasysData.CameraSelfVerticalRange.value = dataValue.vertical
     else
       camerasysData.CameraVerticalRange.value = dataValue.vertical
@@ -364,7 +373,7 @@ local setSchemoCameraValue = function(dataValue)
     Z.CameraFrameCtrl:SetNearBlend(camerasysData.NearBlendRange.value)
     Z.CameraFrameCtrl:SetFarBlend(camerasysData.FarBlendRange.value)
   end
-  Z.CameraFrameCtrl:SetIsFcousTarget(not camerasysData.IsFocusTag)
+  Z.CameraFrameCtrl:SetIsFocusTarget(not camerasysData.IsFocusTag)
   camerasysData.DOFFocalLengthRange.value = dataValue.focus
   if dataValue.focusTag then
     Z.CameraFrameCtrl:SetFocus(camerasysData.DOFFocalLengthRange.value)
@@ -451,14 +460,14 @@ end
 local setCameraPatternShotSet = function()
   local camerasysData = Z.DataMgr.Get("camerasys_data")
   local tbDatar_horizontal, tbDatar_vertical
-  if camerasysData.CameraPatternType == E.CameraState.SelfPhoto then
+  if camerasysData.CameraPatternType == E.TakePhotoSate.SelfPhoto then
     tbDatar_horizontal = camerasysData:GetCameraSelfHorizontalRange()
     tbDatar_vertical = camerasysData:GetCameraSelfVerticalRange()
   else
     tbDatar_horizontal = camerasysData:GetCameraHorizontalRange()
     tbDatar_vertical = camerasysData:GetCameraVerticalRange()
   end
-  if camerasysData.CameraPatternType ~= E.CameraState.UnrealScene then
+  if camerasysData.CameraPatternType ~= E.TakePhotoSate.UnionTakePhoto then
     Z.CameraFrameCtrl:SetVertical(tbDatar_vertical.value)
     Z.CameraFrameCtrl:SetHorizontal(tbDatar_horizontal.value)
   end
@@ -479,26 +488,6 @@ local posKeepBounds = function(posX, posY)
     posY = minY
   end
   return posX, posY
-end
-local getUnionBgBoundsLimit = function(go)
-  local screenVertexArray = Z.CameraFrameCtrl:GetUnionBgVerticesWorldPos(go)
-  if not screenVertexArray then
-    return
-  end
-  local max = screenVertexArray[3]
-  local min = screenVertexArray[0]
-  screenVertexArray:Recycle()
-  if max.y > Z.UIRoot.CurScreenSize.y then
-    max.y = Z.UIRoot.CurScreenSize.y
-  elseif 0 > max.y then
-    max.y = 0
-  end
-  if min.y > Z.UIRoot.CurScreenSize.y then
-    min.y = Z.UIRoot.CurScreenSize.y
-  elseif 0 > min.y then
-    min.y = 0
-  end
-  return max, min
 end
 local unionClipPositionKeepBounds = function(posX, posY, max, min, moveNodeWidth, moveNodeHeight)
   local widthHalf = moveNodeWidth / 2
@@ -521,51 +510,83 @@ local openCameraView = function(taskId)
     camerasysData.IsOfficialPhotoTask = true
     camerasysData.PhotoTaskId = taskId
   end
-  Z.UIMgr:OpenView("camerasys")
+  local viewConfigKey = Z.IsPCUI and "camerasys_main_pc" or "camerasys"
+  Z.UIMgr:OpenView(viewConfigKey)
   setShowState(E.CamerasysShowUIType.Name, false, E.CamerasysContrShowType.UI)
 end
 local openCameraViewByUnrealWithHead = function()
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.UnionHeadCamera)
+  if not isOn then
+    return
+  end
   Z.UIMgr:GotoMainView()
   local camerasysData = Z.DataMgr.Get("camerasys_data")
-  camerasysData.CameraPatternType = E.CameraState.UnrealScene
+  camerasysData.CameraPatternType = E.TakePhotoSate.UnionTakePhoto
   camerasysData.UnrealSceneModeSubType = E.UnionCameraSubType.Head
   local args = {
     EndCallback = function()
       Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.BackdropSeason_01, "camerasys", function()
-        Z.UIMgr:OpenView("camerasys")
+        local viewConfigKey = Z.IsPCUI and "camerasys_main_pc" or "camerasys"
+        Z.UIMgr:OpenView(viewConfigKey)
       end, UNREAL_SCENE_CONFIG_PATH)
     end
   }
   Z.UIMgr:FadeIn(args)
 end
 local openCameraViewByUnrealWithIdCard = function()
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.UnionCardCamera)
+  if not isOn then
+    return
+  end
   Z.UIMgr:GotoMainView()
   local camerasysData = Z.DataMgr.Get("camerasys_data")
-  camerasysData.CameraPatternType = E.CameraState.UnrealScene
+  camerasysData.CameraPatternType = E.TakePhotoSate.UnionTakePhoto
   camerasysData.UnrealSceneModeSubType = E.UnionCameraSubType.Body
   local args = {
     EndCallback = function()
       Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.BackdropSeason_01, "camerasys", function()
-        Z.UIMgr:OpenView("camerasys")
+        local viewConfigKey = Z.IsPCUI and "camerasys_main_pc" or "camerasys"
+        Z.UIMgr:OpenView(viewConfigKey)
       end, UNREAL_SCENE_CONFIG_PATH)
     end
   }
   Z.UIMgr:FadeIn(args)
 end
 local gotoMainUIAndopenCameraView = function()
-  if Z.StatusSwitchMgr:CheckSwitchEnable(Z.EStatusSwitch.StatusCamera) then
+  if Z.StatusSwitchMgr:TrySwitchToState(Z.EStatusSwitch.StatusCamera) then
     Z.UIMgr:GotoMainView()
-    Z.UIMgr:OpenView("camerasys")
+    local viewConfigKey = Z.IsPCUI and "camerasys_main_pc" or "camerasys"
+    Z.UIMgr:OpenView(viewConfigKey)
   end
+end
+local openCameraViewByUnrealWithFaceData = function(shareCode)
+  local camerasysData = Z.DataMgr.Get("camerasys_data")
+  camerasysData.CameraPatternType = E.TakePhotoSate.UnionTakePhoto
+  camerasysData.UnrealSceneModeSubType = E.UnionCameraSubType.Fashion
+  local args = {
+    EndCallback = function()
+      Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.BackdropSeason_01, "camerasys", function()
+        local viewConfigKey = Z.IsPCUI and "camerasys_main_pc" or "camerasys"
+        Z.UIMgr:OpenView(viewConfigKey, shareCode)
+      end, CLOUD_FACE_UNREAL_CONFIG_PATH)
+    end
+  }
+  Z.UIMgr:FadeIn(args)
 end
 local closeCameraViewByPhotoTask = function()
   local camerasysData = Z.DataMgr.Get("camerasys_data")
   if camerasysData.IsOfficialPhotoTask then
-    Z.UIMgr:CloseView("camerasys")
+    if Z.IsPCUI then
+      Z.UIMgr:CloseView("camerasys_main_pc")
+    else
+      Z.UIMgr:CloseView("camerasys")
+    end
   end
 end
-local openCameraPhotoMain = function()
-  Z.UIMgr:OpenView("camera_photo_main")
+local openCameraPhotoMain = function(content)
+  Z.UIMgr:OpenView("camera_photo_main", content)
 end
 local closeCameraPhotoMain = function()
   if Z.UIMgr:IsActive("camera_photo_main") then
@@ -579,24 +600,22 @@ local calculatePercentageValue = function(min, max, percentage)
   return math.floor(result)
 end
 local showOrHideNoticePopView = function(isShow)
-  local noticePopView = Z.UIMgr:GetView("noticetip_pop")
-  local teamTipsView = Z.UIMgr:GetView("team_tips")
-  local acquireTipView = Z.UIMgr:GetView("acquiretip")
-  local talent_award_window = Z.UIMgr:GetView("talent_award_window")
-  local tips_unlock_condition = Z.UIMgr:GetView("tips_unlock_condition")
   local tempTable = {
-    noticePopView,
-    teamTipsView,
-    acquireTipView,
-    talent_award_window,
-    tips_unlock_condition
+    "noticetip_pop",
+    "team_tips",
+    "acquiretip",
+    "talent_award_window",
+    "tips_unlock_condition",
+    "season_achievement_finish_popup",
+    "steer_tips_window"
   }
   for k, v in pairs(tempTable) do
-    if v then
+    local view = Z.UIMgr:GetView(v)
+    if view then
       if isShow then
-        v:Show()
+        view:Show()
       else
-        v:Hide()
+        view:Hide()
       end
     end
   end
@@ -610,13 +629,20 @@ local openHeadView = function(viewData)
 end
 local cameraFuncTogIndexToLogicIndex = function()
   local camerasysData = Z.DataMgr.Get("camerasys_data")
+  local cameraMemberData = Z.DataMgr.Get("camerasys_member_data")
   local tagIndexTable = camerasysData:GetTagIndex()
   local tagList = camerasysData.funcTbDefault[tagIndexTable.TopTagIndex]
-  if camerasysData.CameraPatternType == E.CameraState.SelfPhoto then
+  local selectMemberData = cameraMemberData:GetSelectMemberData()
+  if selectMemberData and not selectMemberData.baseData.isSelf and tagIndexTable.TopTagIndex == E.CamerasysTopType.Action then
+    tagList = {
+      E.CamerasysFuncType.LookAt
+    }
+  end
+  if camerasysData.CameraPatternType == E.TakePhotoSate.SelfPhoto then
     tagList = camerasysData.funcTbSelfPhoto[tagIndexTable.TopTagIndex]
-  elseif camerasysData.CameraPatternType == E.CameraState.AR then
+  elseif camerasysData.CameraPatternType == E.TakePhotoSate.AR then
     tagList = camerasysData.funcTbAR[tagIndexTable.TopTagIndex]
-  elseif camerasysData.CameraPatternType == E.CameraState.UnrealScene then
+  elseif camerasysData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
     tagList = camerasysData.funcTbUnrealScene[tagIndexTable.TopTagIndex]
   end
   return tagList[tagIndexTable.NodeTagIndex]
@@ -639,7 +665,7 @@ local getHeadOrBodyPhotoToken = function(textureId, snapType)
   worldProxy.GetAvatarToken(req)
 end
 local getTakePhotoSize = function()
-  local normalScreenSize = 1.7777777777777777
+  local normalScreenSize = Z.UIRoot.DESIGNSIZE_WIDTH / Z.UIRoot.DESIGNSIZE_HEIGHT
   local photoWidth = Z.UIRoot.CurScreenSize.x
   local photoHeight = Z.UIRoot.CurScreenSize.y
   local screenSize = photoWidth / photoHeight
@@ -678,16 +704,19 @@ local getHeightOffSet = function(currentHeightVal)
 end
 local checkIsPcUIAndDefaultCamera = function()
   local camerasysData = Z.DataMgr.Get("camerasys_data")
-  return Z.IsPCUI and camerasysData.CameraPatternType == E.CameraState.Default
+  return Z.IsPCUI and camerasysData.CameraPatternType == E.E.TakePhotoSate.Default.Default
 end
 local getPhotoShareRow = function()
   local shareTable = Z.TableMgr.GetTable("PhotoShareTableMgr")
-  local channelId = Z.SDKLogin.InstallChannel
+  local channelId = Z.SDKTencent.InstallChannel
   if string.zisEmpty(channelId) then
     return nil
   end
   channelId = tonumber(channelId)
-  local shareRow = shareTable.GetRow(channelId)
+  if channelId == nil then
+    return nil
+  end
+  local shareRow = shareTable.GetRow(channelId, true)
   return shareRow
 end
 local sendShotTLog = function()
@@ -700,6 +729,249 @@ local sendShotTLog = function()
   local posStr = string.format("%.2f=%.2f=%.2f", pos.x, pos.y, pos.z)
   local str = string.zconcat(camerasysData.CameraPatternType, "|", posStr, "|", camerasysData.FilterIndex, "|", camerasysData.FrameIndex)
   WorldProxy.UploadTLogBody("TakePhoto", str)
+end
+local asyncSetPhotoSchemeName = function(schemeId, schemeName, cancelToken)
+  local photographProxy = require("zproxy.photograph_proxy")
+  local requestData = {schemeId = schemeId, schemeName = schemeName}
+  local ret = photographProxy.SetPhotoSchemeName(requestData, cancelToken)
+  if ret == nil or ret.errCode == 0 then
+    return ret
+  else
+    Z.TipsVM.ShowTips(ret.errCode)
+  end
+  return ret
+end
+local conversionTakePhotoType = function(takePhotoType)
+  local cameraType = E.CameraState.Default
+  if takePhotoType == E.TakePhotoSate.Default or takePhotoType == E.TakePhotoSate.Battle then
+    cameraType = E.CameraState.Default
+  elseif takePhotoType == E.TakePhotoSate.SelfPhoto then
+    cameraType = E.CameraState.SelfPhoto
+  elseif takePhotoType == E.TakePhotoSate.AR then
+    cameraType = E.CameraState.AR
+  elseif takePhotoType == E.TakePhotoSate.UnionTakePhoto then
+    cameraType = E.CameraState.UnrealScene
+  end
+  return cameraType
+end
+local banSkill = function()
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return false
+  end
+  local buffDataList = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.ENowBuffList)
+  local banSkill = false
+  if buffDataList then
+    buffDataList = buffDataList.Value
+    for i = 0, buffDataList.count - 1 do
+      if buffDataList[i].BuffBaseId == 681701 then
+        banSkill = true
+      end
+    end
+  end
+  return banSkill
+end
+local setShowEntity = function(showData)
+  local showEntity = {}
+  local camerasysData = Z.DataMgr.Get("camerasys_data")
+  local allData = camerasysData.ShowEntityAllCfg
+  for key, value in pairs(allData) do
+    local temp = {}
+    temp.type = value.type
+    temp.state = value.state
+    showEntity[temp.type] = temp
+  end
+  for key, value in pairs(showData) do
+    if showEntity[value.type] then
+      showEntity[value.type].state = value.state
+    end
+  end
+end
+local getPlayerPos = function()
+  if not Z.EntityMgr.PlayerEnt then
+    return nil
+  end
+  local playerPos_ = Z.EntityMgr.PlayerEnt:GetLocalAttrVirtualPos()
+  return playerPos_.x, playerPos_.y, playerPos_.z
+end
+local initSelfLookAtCamera = function()
+  if not Z.EntityMgr.PlayerEnt then
+    return
+  end
+  local cameraMemberData = Z.DataMgr.Get("camerasys_member_data")
+  local model = Z.EntityMgr.PlayerEnt.Model
+  model:SetLuaAttrLookAtEyeOpen(true)
+  setHeadLookAt(true, model)
+  setHeadLookAt(true, model, true)
+  local myCharId = Z.ContainerMgr.CharSerialize.charId
+  local myMemberData = cameraMemberData:GetMemberDataByCharId(myCharId)
+  myMemberData.lookAtData.headMode = E.CameraPlayerLookAtType.Camera
+  myMemberData.lookAtData.eyesMode = E.CameraPlayerLookAtType.Camera
+end
+local setCameraFov = function()
+  local cameraData = Z.DataMgr.Get("camerasys_data")
+  local zoom
+  if cameraData.CameraPatternType == E.TakePhotoSate.Default or cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto or cameraData.CameraPatternType == E.TakePhotoSate.Battle then
+    zoom = cameraData:GetCameraFOVRange()
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.SelfPhoto then
+    zoom = cameraData:GetCameraFOVSelfRange()
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.AR then
+    zoom = cameraData:GetCameraFOVARRange()
+  end
+  local val = getRangePerc(zoom)
+  zoom.value = getRangeValue(val, zoom)
+  Z.CameraFrameCtrl:SetCameraSize(zoom.value)
+end
+local checkCurrentModeIsShow = function(photographUiTableData)
+  local cameraData = Z.DataMgr.Get("camerasys_data")
+  if cameraData.CameraPatternType == E.TakePhotoSate.Default then
+    return photographUiTableData.GeneralMode
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.SelfPhoto then
+    return photographUiTableData.SelfPhotoMode
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.AR then
+    return photographUiTableData.VrMode
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto then
+    return photographUiTableData.IdCardMode
+  elseif cameraData.CameraPatternType == E.TakePhotoSate.Battle then
+    return photographUiTableData.FightMode
+  end
+end
+local getPcFunctionData = function(type)
+  local data = {}
+  local photographUiTableData = Z.TableMgr.GetTable("PhotographUiTableMgr").GetDatas()
+  local platform = Z.IsPCUI and E.CameraSystemPlatform.Pc or E.CameraSystemPlatform.Mobile
+  for k, v in pairs(photographUiTableData) do
+    local currentModeIsShow = checkCurrentModeIsShow(v)
+    if (v.Platform == E.CameraSystemPlatform.General or v.Platform == platform) and v.ParentId == type and currentModeIsShow then
+      table.insert(data, v)
+    end
+  end
+  table.sort(data, function(a, b)
+    return a.SortId < b.SortId
+  end)
+  return data
+end
+local getPcPhotographUiTableRow = function(type)
+  local photographUiTableData = Z.TableMgr.GetTable("PhotographUiTableMgr").GetRow(type)
+  if not photographUiTableData then
+    return
+  end
+  return photographUiTableData
+end
+local setCameraActionDisplayExpressionType = function(subFuncType)
+  local expressionData = Z.DataMgr.Get("expression_data")
+  if subFuncType == E.CameraSystemSubFunctionType.CommonAction then
+    expressionData:SetLogicExpressionType(E.ExpressionType.Action)
+    expressionData:SetDisplayExpressionType(E.DisplayExpressionType.CommonAction)
+  elseif subFuncType == E.CameraSystemSubFunctionType.LoopAction then
+    expressionData:SetLogicExpressionType(E.ExpressionType.Action)
+    expressionData:SetDisplayExpressionType(E.DisplayExpressionType.LoopAction)
+  elseif subFuncType == E.CameraSystemSubFunctionType.Emote then
+    expressionData:SetLogicExpressionType(E.ExpressionType.Emote)
+    expressionData:SetDisplayExpressionType(E.DisplayExpressionType.Emote)
+  end
+end
+local getFirstLevelTabData = function()
+  local tempData = {}
+  local photographUiTableData
+  local platform = Z.IsPCUI and E.CameraSystemPlatform.Pc or E.CameraSystemPlatform.Mobile
+  for k, v in pairs(E.CameraSystemFunctionType) do
+    photographUiTableData = Z.TableMgr.GetTable("PhotographUiTableMgr").GetRow(v)
+    local currentModeIsShow = checkCurrentModeIsShow(photographUiTableData)
+    local functionData = {
+      id = v,
+      name = photographUiTableData.Name,
+      icon = photographUiTableData.Icon,
+      sortId = photographUiTableData.SortId,
+      isShow = (photographUiTableData.Platform == E.CameraSystemPlatform.General or photographUiTableData.Platform == platform) and currentModeIsShow
+    }
+    table.insert(tempData, functionData)
+  end
+  return tempData
+end
+local setImgAreaClip = function(maskImg, imgNode)
+  if not maskImg then
+    return
+  end
+  local imgNodeLocalPos = imgNode.localPosition
+  local offset = Vector2.New(Z.UIRoot.CurCanvasSize.x / 2, Z.UIRoot.CurCanvasSize.y / 2)
+  local rectLeftPosX = (offset.x - imgNode.rect.width / 2 + imgNodeLocalPos.x) / (offset.x * 2)
+  local rectLeftPosY = (offset.y - imgNode.rect.height / 2 + imgNodeLocalPos.y) / (offset.y * 2)
+  local rectRightPosX = (offset.x + imgNode.rect.width / 2 + imgNodeLocalPos.x) / (offset.x * 2)
+  local rectRightPosY = (offset.y + imgNode.rect.height / 2 + imgNodeLocalPos.y) / (offset.y * 2)
+  local area = Vector4.New(rectLeftPosX, rectLeftPosY, rectRightPosX, rectRightPosY)
+  maskImg:SetAreaClip(area)
+end
+local getUnionSelectBoxSize = function(imgSize, rate, isBody)
+  local curCanvasSizeY = Z.UIRoot.CurCanvasSize.y
+  local curCanvasSizeX = Z.UIRoot.CurCanvasSize.x
+  local width = imgSize.x * rate
+  local height = imgSize.y * rate
+  if curCanvasSizeY < height then
+    height = curCanvasSizeY
+    if not isBody then
+      width = curCanvasSizeY
+    end
+  end
+  if curCanvasSizeX < width then
+    width = curCanvasSizeX
+    if not isBody then
+      height = curCanvasSizeX
+    end
+  end
+  return width, height
+end
+local checkMobileUiShowState = function(id, isControlByOther)
+  local photographUiTableRow = Z.TableMgr.GetTable("PhotographUiTableMgr").GetRow(id)
+  if isControlByOther and photographUiTableRow.OthersModel ~= 2 then
+    return photographUiTableRow.OthersModel == 1 and true or false
+  end
+  local currentModeIsShow = checkCurrentModeIsShow(photographUiTableRow)
+  return currentModeIsShow
+end
+local getMobileFunctionData = function(type, isControlByOther)
+  local data = {}
+  local photographUiTableData = Z.TableMgr.GetTable("PhotographUiTableMgr").GetDatas()
+  local platform = Z.IsPCUI and E.CameraSystemPlatform.Pc or E.CameraSystemPlatform.Mobile
+  for k, v in pairs(photographUiTableData) do
+    local currentModeIsShow = checkMobileUiShowState(v.Id, isControlByOther)
+    if (v.Platform == E.CameraSystemPlatform.General or v.Platform == platform) and v.ParentId == type and currentModeIsShow then
+      table.insert(data, v)
+    end
+  end
+  table.sort(data, function(a, b)
+    return a.SortId < b.SortId
+  end)
+  return data
+end
+local checkIsFashionState = function()
+  local cameraData = Z.DataMgr.Get("camerasys_data")
+  local isFashionState = cameraData.CameraPatternType == E.TakePhotoSate.UnionTakePhoto and cameraData.UnrealSceneModeSubType == E.UnionCameraSubType.Fashion
+  return isFashionState
+end
+local sendCloudFaceData = function(shareCode)
+  local externalMessage = {
+    eventName = "ugc_play_end"
+  }
+  local externalMessageSerial = cjson.encode(externalMessage)
+  logError("externalMessageSerial = {0}", externalMessageSerial)
+  Z.SDKDevices.SendMessageToCloudGameDevice(externalMessageSerial)
+  local dataTable = {
+    type = "CG_GAME_EVENT_PINCH_FACE_DONE",
+    data = {faceContent = shareCode}
+  }
+  local serial = cjson.encode(dataTable)
+  logError("CG_GAME_EVENT_PINCH_FACE_DONE = {0}", serial)
+  Z.SDKDevices.SendMessageToCloudGameDevice(serial)
+end
+local sendCloudFaceCopyData = function(shareCode)
+  local dataTable = {
+    dataType = "CG_GAME_EVENT_COPY_TEXT",
+    copyContent = shareCode
+  }
+  local serial = cjson.encode(dataTable)
+  logError("CG_GAME_EVENT_COPY_TEXT = {0}", serial)
+  Z.SDKDevices.SendMessageToCloudGameDevice(serial)
 end
 local ret = {
   SetTopTagIndex = setTopTagIndex,
@@ -743,11 +1015,29 @@ local ret = {
   GetRotationSliderValueNormalized = getRotationSliderValueNormalized,
   GotoMainUIAndopenCameraView = gotoMainUIAndopenCameraView,
   GetHeightOffSet = getHeightOffSet,
-  GetUnionBgBoundsLimit = getUnionBgBoundsLimit,
   UnionClipPositionKeepBounds = unionClipPositionKeepBounds,
   ResetEntityVisible = resetEntityVisible,
   CheckIsPcUIAndDefaultCamera = checkIsPcUIAndDefaultCamera,
   GetPhotoShareRow = getPhotoShareRow,
-  SendShotTLog = sendShotTLog
+  SendShotTLog = sendShotTLog,
+  ConversionTakePhotoType = conversionTakePhotoType,
+  BanSkill = banSkill,
+  SetShowEntity = setShowEntity,
+  GetPlayerPos = getPlayerPos,
+  SetCameraFov = setCameraFov,
+  GetPcFunctionData = getPcFunctionData,
+  GetPcPhotographUiTableRow = getPcPhotographUiTableRow,
+  SetCameraActionDisplayExpressionType = setCameraActionDisplayExpressionType,
+  GetFirstLevelTabData = getFirstLevelTabData,
+  SetImgAreaClip = setImgAreaClip,
+  InitSelfLookAtCamera = initSelfLookAtCamera,
+  CheckMobileUiShowState = checkMobileUiShowState,
+  GetMobileFunctionData = getMobileFunctionData,
+  OpenCameraViewByUnrealWithFaceData = openCameraViewByUnrealWithFaceData,
+  CheckIsFashionState = checkIsFashionState,
+  SendCloudFaceData = sendCloudFaceData,
+  GetUnionSelectBoxSize = getUnionSelectBoxSize,
+  SendCloudFaceCopyData = sendCloudFaceCopyData,
+  AsyncSetPhotoSchemeName = asyncSetPhotoSchemeName
 }
 return ret

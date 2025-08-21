@@ -12,8 +12,10 @@ function ModFantasyListTplItem:OnRefresh(data)
   self.config_ = self.modData_:GetEffectTableConfig(self.data_.id, self.data_.lv)
   if self.config_ then
     self.uiBinder.lab_name.text = self.config_.EffectName
-    self.uiBinder.lab_lv.text = Lang("Lv") .. self.data_.lv .. "/" .. self.data_.maxLv
-    ModGlossaryItemTplItem.RefreshTpl(self.uiBinder.node_item, self.data_.id, self.data_.lv)
+    self.uiBinder.lab_lv.text = Lang("Level", {
+      val = self.data_.lv .. "/" .. self.data_.maxLv
+    })
+    ModGlossaryItemTplItem.RefreshTpl(self.uiBinder.node_item, self.data_.id)
   end
   local desc = self.modVM_.ParseModEffectDesc(self.data_.id, self.data_.lv)
   Z.RichTextHelper.SetTmpLabTextWithCommonLinkNew(self.uiBinder.lab_info_off, desc)

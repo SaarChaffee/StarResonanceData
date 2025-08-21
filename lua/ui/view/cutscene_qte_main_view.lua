@@ -48,7 +48,6 @@ function Cutscene_qte_mainView:OnRefresh()
 end
 
 function Cutscene_qte_mainView:OnDeActive()
-  self:UnRegisterInputActions()
 end
 
 function Cutscene_qte_mainView:createBtnUnit(qteId, percentX, percentY)
@@ -125,8 +124,6 @@ function Cutscene_qte_mainView:addClickOnceCallback(unit, qteId)
     function self.qteKeyOnRelese_(inputActionEventData)
       self:refreshBtnUIByPress(unit, false)
     end
-    
-    self:RegisterInputActions()
   end
 end
 
@@ -166,8 +163,6 @@ function Cutscene_qte_mainView:addClickMultiCallback(unit, qteId, clickNum)
     function self.qteKeyOnRelese_(inputActionEventData)
       self:refreshBtnUIByPress(unit, false)
     end
-    
-    self:RegisterInputActions()
   end
 end
 
@@ -207,8 +202,6 @@ function Cutscene_qte_mainView:addLongPressCallback(unit, qteId, pressTime)
     function self.qteKeyOnRelese_(inputActionEventData)
       self:refreshBtnUIByPress(unit, false)
     end
-    
-    self:RegisterInputActions()
   end
 end
 
@@ -259,16 +252,15 @@ function Cutscene_qte_mainView:onCutsceneQteFail(qteId)
   end
 end
 
-function Cutscene_qte_mainView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.qteKeyOnPress_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.CutsceneQTE)
-  Z.InputMgr:AddInputEventDelegate(self.qteKeyOnRelese_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.CutsceneQTE)
-end
-
-function Cutscene_qte_mainView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.qteKeyOnPress_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.CutsceneQTE)
-  Z.InputMgr:RemoveInputEventDelegate(self.qteKeyOnRelese_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.CutsceneQTE)
-  self.qteKeyOnPress_ = nil
-  self.qteKeyOnRelese_ = nil
+function Cutscene_qte_mainView:OnTriggerInputAction(inputActionEventData)
+  if inputActionEventData.actionId == Z.RewiredActionsConst.CutsceneQTE then
+    if inputActionEventData.eventType == Z.InputActionEventType.ButtonJustPressed and self.qteKeyOnPress_ then
+      self.qteKeyOnPress_(inputActionEventData)
+    end
+    if inputActionEventData.eventType == Z.InputActionEventType.ButtonJustReleased and self.qteKeyOnRelese_ then
+      self.qteKeyOnRelese_(inputActionEventData)
+    end
+  end
 end
 
 return Cutscene_qte_mainView

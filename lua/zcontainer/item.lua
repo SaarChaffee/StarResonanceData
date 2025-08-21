@@ -108,6 +108,39 @@ local mergeDataFuncs = {
     local last = container.__data__.rewardId
     container.__data__.rewardId = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("rewardId", last)
+  end,
+  [17] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt32(buffer)
+      container.geneSequence.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("geneSequence", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.geneSequence.__data__[dk]
+      container.geneSequence.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("geneSequence", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt32(buffer)
+      local last = container.geneSequence.__data__[dk]
+      container.geneSequence.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("geneSequence", dk, last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -185,6 +218,9 @@ local resetData = function(container, pbData)
   if not pbData.rewardId then
     container.__data__.rewardId = 0
   end
+  if not pbData.geneSequence then
+    container.__data__.geneSequence = {}
+  end
   setForbidenMt(container)
   container.equipAttr:ResetData(pbData.equipAttr)
   container.__data__.equipAttr = nil
@@ -201,6 +237,9 @@ local resetData = function(container, pbData)
     container.extendAttr[k]:ResetData(v)
   end
   container.__data__.extendAttr = nil
+  container.geneSequence.__data__ = pbData.geneSequence
+  setForbidenMt(container.geneSequence)
+  container.__data__.geneSequence = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -375,6 +414,27 @@ local getContainerElem = function(container)
     dataType = 0,
     data = container.rewardId
   }
+  if container.geneSequence ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.geneSequence) do
+      data[key] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.geneSequence = {
+      fieldId = 17,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.geneSequence = {
+      fieldId = 17,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -389,11 +449,15 @@ local new = function()
     affixData = require("zcontainer.affix_data").New(),
     extendAttr = {
       __data__ = {}
+    },
+    geneSequence = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.extendAttr)
+  setForbidenMt(ret.geneSequence)
   return ret
 end
 return {New = new}

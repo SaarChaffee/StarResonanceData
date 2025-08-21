@@ -27,6 +27,9 @@ local getEndTimeStamp = function()
   end
   local t = timerInfo.startTime
   t = t + timerInfo.dungeonTimes
+  if timerInfo.direction == E.DungeonTimerDirection.DungeonTimerDirectionDown then
+    t = t + timerInfo.pauseTotalTime
+  end
   return t * 1000
 end
 local ret = {

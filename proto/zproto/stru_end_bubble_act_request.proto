@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package zproto;
+
+message EndBubbleActRequest {
+    int32 bubbleActId = 1;
+}

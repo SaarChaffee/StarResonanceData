@@ -6,4 +6,3 @@ enum ShopLimitBuyType {
     ShopLimitBuyNormal = 0;
     ShopLimitBuyAccumulate = 1;
 }
-

@@ -131,7 +131,9 @@ function ret.GetSkillDecs(skillFightLevelId, remodelLevel, isResonanceSkill)
             end
           end
         end
-        local cd = tostring(skillFightLevelTableRow.PVECoolTime - reduceNumber):gsub("%.0+$", "") .. Lang("EquipSecondsText")
+        local cd = Lang("Seconds", {
+          val = tostring(skillFightLevelTableRow.PVECoolTime - reduceNumber):gsub("%.0+$", "")
+        })
         return cd
       end,
       chargetime = function()
@@ -147,7 +149,9 @@ function ret.GetSkillDecs(skillFightLevelId, remodelLevel, isResonanceSkill)
         if skillRow == nil then
           return ""
         end
-        return tostring((skillRow.EnergyChargeTime - reduceNumber) / 1000):gsub("%.0+$", "") .. Lang("EquipSecondsText")
+        return Lang("Seconds", {
+          val = tostring((skillRow.EnergyChargeTime - reduceNumber) / 1000):gsub("%.0+$", "")
+        })
       end
     }
   }
@@ -296,6 +300,10 @@ end
 
 function ret.GetPlayerCommonSkillInfo()
   local skillInfo = {}
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return skillInfo
+  end
   local skillList = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrCommonSkillList"))
   if skillList then
     local count = skillList.Value.count
@@ -338,13 +346,17 @@ function ret.ContrastSkillDecs(preSkillDes, nowSkillDes)
       for number in string.gmatch(value.Num, "%d+%.?%d*%%?") do
         table.insert(nowNums, number)
       end
+      for _, number in ipairs(nowNums) do
+        local str = string.gsub(number, "%%", "%%%%")
+        value.Num = value.Num:gsub(str, "?rep ", 1, true)
+      end
       for index, number in ipairs(nowNums) do
         local num1 = number:gsub("%%", "")
         local num2 = preNums[index]:gsub("%%", "")
         if tonumber(num1) ~= tonumber(num2) then
-          value.Num = string.gsub(value.Num, number:gsub("%%", "%%%%"), Z.RichTextHelper.ApplyStyleTag(number, E.TextStyleTag.SkillNumChange):gsub("%%", "%%%%"), index)
+          value.Num = string.gsub(value.Num, "?rep ", Z.RichTextHelper.ApplyStyleTag(number, E.TextStyleTag.SkillNumChange):gsub("%%", "%%%%"), 1)
         else
-          value.Num = string.gsub(value.Num, number:gsub("%%", "%%%%"), Z.RichTextHelper.ApplyStyleTag(number, E.TextStyleTag.SkillNum):gsub("%%", "%%%%"), index)
+          value.Num = string.gsub(value.Num, "?rep ", Z.RichTextHelper.ApplyStyleTag(number, E.TextStyleTag.SkillNum):gsub("%%", "%%%%"), 1)
         end
       end
     else
@@ -363,10 +375,13 @@ function ret.GetSkillDecsWithColor(skillDes)
     for number in string.gmatch(value.Num, "%d+%.?%d*%%?") do
       table.insert(preNums, number)
     end
-    for index, number in ipairs(preNums) do
+    for _, number in ipairs(preNums) do
       local str = string.gsub(number, "%%", "%%%%")
+      value.Num = value.Num:gsub(str, "?rep ", 1, true)
+    end
+    for _, number in ipairs(preNums) do
       local replace = string.gsub(Z.RichTextHelper.ApplyStyleTag(number, E.TextStyleTag.SkillNum), "%%", "%%%%")
-      value.Num = string.gsub(value.Num, str, replace, index)
+      value.Num = string.gsub(value.Num, "?rep ", replace, 1)
     end
   end
   return skillDes

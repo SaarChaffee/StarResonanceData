@@ -1,8 +1,8 @@
 local super = require("ui.component.interaction.interaction_btn_base")
 local InteractionBtnStaticObj = class("InteractionBtnStaticObj", super)
 
-function InteractionBtnStaticObj:Init(uiData)
-  super.Init(self, uiData)
+function InteractionBtnStaticObj:AsyncInit(uiData)
+  super.AsyncInit(self, uiData)
   local ids = string.zsplit(uiData.triggerData, "|")
   self.objId_ = tonumber(ids[1])
   self.posId_ = tonumber(ids[2])

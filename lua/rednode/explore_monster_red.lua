@@ -2,11 +2,11 @@ local ExploreMonsterRed = {}
 ExploreMonsterRed.package = {}
 
 function ExploreMonsterRed.AddNewRed()
-  for i = 1, 3 do
+  for i = 1, 4 do
     local childRedId = ExploreMonsterRed.GetTabRedDotID(i)
     Z.RedPointMgr.AddChildNodeData(E.RedType.MonsterHuntMapBtn, E.RedType.MonsterHuntLeftTab, childRedId)
     local count_ = ExploreMonsterRed.RefreshTabRedItem(i)
-    Z.RedPointMgr.RefreshServerNodeCount(childRedId, count_)
+    Z.RedPointMgr.UpdateNodeCount(childRedId, count_)
   end
 end
 

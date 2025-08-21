@@ -4,7 +4,6 @@ local monsterExploreTargetTableMgr_ = Z.TableMgr.GetTable("MonsterHuntTargetTabl
 local monsterHuntLevelTableMgr_ = Z.TableMgr.GetTable("MonsterHuntLevelTableMgr")
 local proxy = require("zproxy.world_proxy")
 local exploreMonsterRed = require("rednode.explore_monster_red")
-local hasInitRedDot = false
 E.MonsterHuntTargetAwardState = {
   Null = 0,
   Get = 1,
@@ -196,6 +195,10 @@ end
 local getHuntLevelAwardReceiveState = function()
   return Z.ContainerMgr.CharSerialize.monsterHuntInfo
 end
+local getMonsterHuntMaxLevel = function()
+  local data = monsterHuntLevelTableMgr_.GetDatas()
+  return table.zcount(data)
+end
 local getMonsterHuntLevelMaxExp = function(curLevel)
   local maxExp_ = 1
   local levelData_ = monsterHuntLevelTableMgr_.GetRow(curLevel)
@@ -238,7 +241,7 @@ local jumpExploreMonsterWindow = function(monsterId)
   local sceneId, pageType
   if monsterHuntListTableRow then
     sceneId = monsterHuntListTableRow.Scene
-    pageType = 4 - monsterHuntListTableRow.Type
+    pageType = monsterHuntListTableRow.Type
   end
   openExploreMonsterWindow(sceneId, pageType, monsterId)
 end
@@ -291,51 +294,10 @@ local updateExploreMonsterRedpoint = function()
     end
   end
   if 0 < count then
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.MonsterExplore, count)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.MonsterExplore, count)
   else
-    Z.RedPointMgr.RefreshClientNodeCount(E.RedType.MonsterExplore, count)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.MonsterExplore, count, true)
   end
-end
-local onExploreDataChanged = function()
-  local datas = Z.ContainerMgr.CharSerialize.monsterExploreList.monsterExploreList
-  local dataMgr = Z.DataMgr.Get("explore_monster_data")
-  local exploreCfgs, targetCfgs
-  local sceneId = Z.StageMgr.GetCurrentSceneId()
-  for id, data in pairs(datas) do
-    if dataMgr:GetMarkByID(sceneId, id) then
-      exploreCfgs = exploreCfgs or MonsterHuntListTableMgr_
-      targetCfgs = targetCfgs or monsterExploreTargetTableMgr_
-      local cfg = exploreCfgs.GetRow(id)
-      if cfg then
-        local targetId, done = 0, true
-        for i, target in ipairs(cfg.Target) do
-          targetId = target[2]
-          local targetCfg = targetCfgs.GetRow(targetId)
-          if targetCfg and (not data.targetNum[targetId] or data.targetNum[targetId] < targetCfg.Num) then
-            done = false
-            break
-          end
-        end
-        if done then
-          dataMgr:CancelMark(sceneId, id)
-        end
-      end
-    end
-  end
-  dataMgr:ClearTargetShowContent()
-  dataMgr:ClearExploreArrowContent()
-  local guideVM = Z.VMMgr.GetVM("goal_guide")
-  guideVM.SetGuideGoals(E.GoalGuideSource.MonsterExplore, {})
-  updateExploreMonsterRedpoint()
-  Z.EventMgr:Dispatch(Z.ConstValue.Explore_Monster.target)
-  Z.EventMgr:Dispatch(Z.ConstValue.Explore_Monster.arrow)
-end
-local onMonsterHuntDataChanged = function()
-  local count = exploreMonsterRed.RefreshTabRedItem(0)
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.MonsterHuntTargetReceiveBtn, count)
-  local count2 = exploreMonsterRed.RefreshLevelRedItem()
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.MonsterHuntLevel, count2)
-  exploreMonsterRed.AddNewRed()
 end
 local getTabRedDotId = function(tabId)
   local id = exploreMonsterRed.GetTabRedDotID(tabId)
@@ -344,12 +306,6 @@ end
 local initExploreMonster = function()
   initMarkMonsterData()
   updateExploreMonsterRedpoint()
-  Z.ContainerMgr.CharSerialize.monsterExploreList.Watcher:RegWatcher(onExploreDataChanged)
-  Z.ContainerMgr.CharSerialize.monsterHuntInfo.Watcher:RegWatcher(onMonsterHuntDataChanged)
-  if hasInitRedDot == false then
-    onMonsterHuntDataChanged()
-    hasInitRedDot = true
-  end
 end
 local checkMonsterIsMark = function(sceneId, monsterId)
   local dataMgr = Z.DataMgr.Get("explore_monster_data")
@@ -403,6 +359,10 @@ local checkExploreTargets = function(dataMgr)
   return true
 end
 local checkTargetInRangeById = function(id, dataMgr, playerEnt)
+  if not playerEnt then
+    logError("checkTargetInRangeById playerEnt is nil")
+    return false
+  end
   local uuid = dataMgr:GetMonsterUUid(id)
   if not uuid or uuid <= 0 then
     return false
@@ -413,7 +373,7 @@ local checkTargetInRangeById = function(id, dataMgr, playerEnt)
     dataMgr:SetExploreTimeStamp(Z.TimeTools.Now())
     return false
   end
-  local state = entity:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
+  local state = entity:GetLuaAttrState()
   if state == Z.PbEnum("EActorState", "ActorStateDead") then
     return false
   end
@@ -624,7 +584,7 @@ local checkExploreMonsterTimerCall = function()
   local dataMgr = Z.DataMgr.Get("explore_monster_data")
   local state
   if Z.EntityMgr.PlayerEnt then
-    state = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrState"))
+    state = Z.EntityMgr.PlayerEnt:GetLuaAttrState()
   end
   if state and state.Value and state.Value == Z.PbEnum("EActorState", "ActorStateDead") then
     dataMgr:ClearTargetShowContent()
@@ -690,6 +650,7 @@ local ret = {
   GetMonsterHuntLevel = getMonsterHuntLevel,
   GetMonsterHuntLevelExp = getMonsterHuntLevelExp,
   GetMonsterHuntLevelMaxExp = getMonsterHuntLevelMaxExp,
+  GetMonsterHuntMaxLevel = getMonsterHuntMaxLevel,
   GetAllMonsterHuntLevelData = getAllMonsterHuntLevelData,
   GetHuntLevelAwardReceiveState = getHuntLevelAwardReceiveState,
   OpenExploreMonsterDepleteWindow = openExploreMonsterDepleteWindow,
@@ -700,6 +661,7 @@ local ret = {
   OpenExploreMonsterLevelUpWindow = openExploreMonsterLevelUpWindow,
   CloseExploreMonsterLevelUpWindow = closeExploreMonsterLevelUpWindow,
   GetTabRedDotId = getTabRedDotId,
-  GetMonsterCameraTarget = getMonsterCameraTarget
+  GetMonsterCameraTarget = getMonsterCameraTarget,
+  UpdateExploreMonsterRedpoint = updateExploreMonsterRedpoint
 }
 return ret

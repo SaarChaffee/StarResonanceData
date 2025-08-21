@@ -14,18 +14,21 @@ function UnionPositionMemberItem:OnInit()
 end
 
 function UnionPositionMemberItem:OnRefresh(data)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(data.socialData.basicData.isNewbie))
   self.uiBinder.lab_name.text = data.socialData.basicData.name
   self.uiBinder.lab_gs.text = data.socialData.fightPoint or 0
   self.uiBinder.lab_position.text = self.unionVM_:GetOfficialName(data.baseData.officialId)
   local isPresident = data.baseData.officialId == E.UnionPositionDef.President
   local isShowBtn = self.unionVM_:CheckPlayerPower(E.UnionPowerDef.SetMemberPosition) and not isPresident
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_modify, isShowBtn)
+  local personalzoneVm = Z.VMMgr.GetVM("personal_zone")
+  personalzoneVm.SetPersonalInfoBgBySocialData(data.socialData, self.uiBinder.rimg_card)
   if self.headItem_ then
     self.headItem_:UnInit()
   end
   self.headItem_ = playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.binder_head, data.socialData, function()
     self:onHeadItemClick()
-  end)
+  end, self.parent.UIView.cancelSource:CreateToken())
 end
 
 function UnionPositionMemberItem:OnUnInit()

@@ -16,8 +16,6 @@ message NormalHeroDungeonTableBase {
     int_table ScoreRank = 741;
     int_array KeyReward = 1791;
 }
-
 message NormalHeroDungeonTableMgr {
-    map<int32, .bokura.NormalHeroDungeonTableBase> datas = 1;
+    repeated bokura.NormalHeroDungeonTableMgr.DatasEntry datas = 1;
 }
-

@@ -23,8 +23,6 @@ message ItemTableBase {
     int32 SpecialDisplayType = 1207;
     int32 QuickUse = 1109;
 }
-
 message ItemTableMgr {
-    map<int32, .bokura.ItemTableBase> datas = 1;
+    repeated bokura.ItemTableMgr.DatasEntry datas = 1;
 }
-

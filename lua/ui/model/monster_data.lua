@@ -8,6 +8,11 @@ function MonsterData:ctor()
   self.BossList = nil
   self.BossTopUuid = 0
   self.skillCDData = {}
+  self.MainViewHideTag = false
+end
+
+function MonsterData:Clear()
+  self.MainViewHideTag = false
 end
 
 function MonsterData:UpdateSkillCDData(skillLevelId, beginTime, duration, validCDTime)
@@ -47,6 +52,12 @@ end
 
 function MonsterData:GetSkillCDData()
   return self.skillCDData
+end
+
+function MonsterData:SetMainViewHideTag(isShow)
+  if self.MainViewHideTag ~= isShow then
+    self.MainViewHideTag = isShow
+  end
 end
 
 return MonsterData

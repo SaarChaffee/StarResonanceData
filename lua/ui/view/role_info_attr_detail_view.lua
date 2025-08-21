@@ -68,7 +68,7 @@ function Role_info_attr_detailView:setAttrDetailsUnit(unit, value)
   end
   unit.Ref.UIComp:SetVisible(true)
   unit.lab_attr.text = fightAttrData.OfficialName
-  unit.lab_num.text = self.fightAttrParseVm_.ParseFightAttrNumber(value.AttrId, Z.EntityMgr.PlayerEnt:GetLuaAttr(value.AttrId).Value, true)
+  unit.lab_num.text = self.fightAttrParseVm_.ParseFightAttrNumber(value.AttrId, self:GetAttrNum(value.AttrId), true)
   unit.Ref:SetVisible(unit.img_bg, self.index_ % 2 ~= 0)
   self.index_ = self.index_ + 1
   unit.btn_click:AddListener(function()
@@ -86,7 +86,7 @@ function Role_info_attr_detailView:setAttrDetailsUnit(unit, value)
     self.selectUnit_.rect_triangle:SetScale(1, -1)
     local colorTag = E.TextStyleTag.RoloLabAttr
     self.selectUnit_.lab_attr.text = Z.RichTextHelper.ApplyStyleTag(fightAttrData.OfficialName, colorTag)
-    local num = self.fightAttrParseVm_.ParseFightAttrNumber(value.AttrId, Z.EntityMgr.PlayerEnt:GetLuaAttr(value.AttrId).Value, true)
+    local num = self.fightAttrParseVm_.ParseFightAttrNumber(value.AttrId, self:GetAttrNum(value.AttrId), true)
     self.selectUnit_.lab_num.text = Z.RichTextHelper.ApplyStyleTag(num, colorTag)
     if self.preUnit_ then
       self.preUnit_.Ref:SetVisible(self.preUnit_.img_select, false)
@@ -98,7 +98,7 @@ function Role_info_attr_detailView:setAttrDetailsUnit(unit, value)
         return
       end
       self.preUnit_.lab_attr.text = Z.RichTextHelper.ApplyStyleTag(prefightAttrData.OfficialName, colorTag)
-      local value = self.fightAttrParseVm_.ParseFightAttrNumber(self.preSelectId_, Z.EntityMgr.PlayerEnt:GetLuaAttr(self.preSelectId_).Value, true)
+      local value = self.fightAttrParseVm_.ParseFightAttrNumber(self.preSelectId_, self:GetAttrNum(self.preSelectId_), true)
       self.preUnit_.lab_num.text = Z.RichTextHelper.ApplyStyleTag(value, colorTag)
     end
   end)
@@ -116,7 +116,7 @@ function Role_info_attr_detailView:clearSelect(unit, value)
     return
   end
   self.selectUnit_.lab_attr.text = Z.RichTextHelper.ApplyStyleTag(prefightAttrData.OfficialName, colorTag)
-  local value = self.fightAttrParseVm_.ParseFightAttrNumber(value, Z.EntityMgr.PlayerEnt:GetLuaAttr(value).Value, true)
+  local value = self.fightAttrParseVm_.ParseFightAttrNumber(value, self:GetAttrNum(value), true)
   self.selectUnit_.lab_num.text = Z.RichTextHelper.ApplyStyleTag(value, colorTag)
   self.preUnit_ = nil
   self.selectUnit_ = nil
@@ -147,6 +147,14 @@ function Role_info_attr_detailView:setDetailsExpand(unit, config)
   end
   self.uiBinder.layout_detailed:ForceRebuildLayoutImmediate()
   self.selectAttr_ = config
+end
+
+function Role_info_attr_detailView:GetAttrNum(attrId)
+  if attrId == Z.PbAttrEnum("AttrMaxOriginEnergy") then
+    return Z.EntityMgr.PlayerEnt:GetLuaMaxOriEnergy()
+  else
+    return Z.EntityMgr.PlayerEnt:GetLuaAttr(attrId).Value
+  end
 end
 
 return Role_info_attr_detailView

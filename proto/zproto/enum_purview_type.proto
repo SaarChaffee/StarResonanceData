@@ -16,4 +16,3 @@ enum PurviewType {
     PurviewTypeUnlockEScreenPhotoNum = 10;
     PurviewTypeAddPhotoNum = 11;
 }
-

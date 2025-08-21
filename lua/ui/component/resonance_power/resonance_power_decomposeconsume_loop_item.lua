@@ -2,9 +2,6 @@ local super = require("ui.component.loop_grid_view_item")
 local ResonancePowerDecomposeConsumeLoopItem = class("ResonancePowerDecomposeConsumeLoopItem", super)
 local item = require("common.item_binder")
 
-function ResonancePowerDecomposeConsumeLoopItem:ctor()
-end
-
 function ResonancePowerDecomposeConsumeLoopItem:OnInit()
   self.parentUIView = self.parent.UIView
   self.itemClass_ = item.new(self.parentUIView)
@@ -20,10 +17,6 @@ function ResonancePowerDecomposeConsumeLoopItem:OnRefresh(data)
   self:SetCanSelect(false)
   self.uuid_ = data.itemUuid
   self.configId = data.configId
-  self:setui()
-end
-
-function ResonancePowerDecomposeConsumeLoopItem:setui()
   self.itemClass_:Init({
     uiBinder = self.uiBinder,
     configId = self.configId,
@@ -31,6 +24,7 @@ function ResonancePowerDecomposeConsumeLoopItem:setui()
     isClickOpenTips = true,
     isShowOne = false
   })
+  self.itemClass_:SetLab(data.count)
 end
 
 return ResonancePowerDecomposeConsumeLoopItem

@@ -62,6 +62,8 @@ function Helpsys_window_right_tplView:SelectShow(index)
   if data.res == "" or data.res == nil then
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_video, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_rimg.Ref, false)
+    self.uiBinder.rect_scrollview:SetAnchorPosition(0, -20)
+    self.uiBinder.rect_scrollview:SetSizeDelta(0, -140)
   elseif string.find(data.res, "video") then
     self:playVideo(data.res)
   else
@@ -74,12 +76,16 @@ function Helpsys_window_right_tplView:playVideo(path)
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_video, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_rimg.Ref, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_play, false)
+  self.uiBinder.rect_scrollview:SetAnchorPosition(0, -660)
+  self.uiBinder.rect_scrollview:SetSizeDelta(0, -780)
   self.uiBinder.group_video:Prepare("helpsys/" .. path .. ".mp4", false, true)
 end
 
 function Helpsys_window_right_tplView:showImage(path)
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_video, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_rimg.Ref, true)
+  self.uiBinder.rect_scrollview:SetAnchorPosition(0, -660)
+  self.uiBinder.rect_scrollview:SetSizeDelta(0, -780)
   self.uiBinder.group_rimg.rimg:SetImage("ui/textures/helpsys/" .. path)
 end
 

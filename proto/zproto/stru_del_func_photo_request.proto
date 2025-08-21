@@ -9,4 +9,3 @@ message DelFuncPhotoRequest {
     int64 ownerId = 2;
     uint32 photoId = 3;
 }
-

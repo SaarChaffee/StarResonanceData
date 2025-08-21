@@ -2,9 +2,12 @@ syntax = "proto3";
 
 package zproto;
 
-message ReconnectReply {
-    int32 errCode = 1;
-    string accountId = 2;
-    int64 charId = 3;
-}
+import "enum_e_error_code.proto";
 
+message ReconnectReply {
+    string accountId = 1;
+    int64 charId = 2;
+    bool isPrivilege = 3;
+    bool isChangeAccount = 4;
+    zproto.EErrorCode errCode = 5;
+}

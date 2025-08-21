@@ -7,4 +7,3 @@ enum ERotType {
     RotCurve = 1;
     RotSpeed = 2;
 }
-

@@ -32,15 +32,10 @@ function TrackTargetTrialRoadItem:SetIcon(isComplete)
 end
 
 function TrackTargetTrialRoadItem:RefreshContent(isComplete, targetCfg, targetData)
-  if isComplete then
-    self.uiBinder.lab_info.text = Z.RichTextHelper.ApplyColorTag(targetCfg.TargetDes, self.trialroadData_.finishTargetColor)
-    local progressTXT_ = "(" .. targetData.nums .. " / " .. targetCfg.Num .. ")"
-    self.uiBinder.lab_num.text = Z.RichTextHelper.ApplyColorTag(progressTXT_, self.trialroadData_.finishTargetColor)
-  else
-    self.uiBinder.lab_info.text = Z.RichTextHelper.ApplyColorTag(targetCfg.TargetDes, self.trialroadData_.unfinishTargetColor)
-    local progressTXT_ = "(" .. targetData.nums .. " / " .. targetCfg.Num .. ")"
-    self.uiBinder.lab_num.text = Z.RichTextHelper.ApplyColorTag(progressTXT_, self.trialroadData_.unfinishTargetColor)
-  end
+  local targetDesColor = isComplete and self.trialroadData_.finishTargetColor or self.trialroadData_.unfinishTargetColor
+  self.uiBinder.lab_info.text = Z.RichTextHelper.ApplyColorTag(targetCfg.TargetDes, targetDesColor)
+  local progressTXT = string.format("(%d / %d)", targetData.nums, targetCfg.Num)
+  self.uiBinder.lab_num.text = Z.RichTextHelper.ApplyColorTag(progressTXT, targetDesColor)
 end
 
 function TrackTargetTrialRoadItem:OnLanguageChange()

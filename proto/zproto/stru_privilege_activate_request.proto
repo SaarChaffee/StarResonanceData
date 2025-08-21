@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_launch_param.proto";
+
+message PrivilegeActivateRequest {
+    zproto.LaunchParam launchParam = 3;
+}

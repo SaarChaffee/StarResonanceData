@@ -53,6 +53,12 @@ enum EInteractionAction {
     EInteractionActionRemoveTargetClientBuff = 48;
     EInteractionActionEnterAutoFlow = 49;
     EInteractionActionNpcTalkFlow = 51;
+    EInteractionActionStartFlowAndWait = 52;
+    EInteractionActionShowCutSceneAndWait = 53;
+    EInteractionActionSittingControl = 54;
+    EInteractionActionMagneticAttach = 55;
+    EInteractionActionSwitchCameraTemplate = 56;
+    EInteractionActionHomeFarm = 57;
     EInteractionActionLua = 999;
     EInteractionActionBase = 1000;
     EInteractionActionPivot = 1001;
@@ -81,6 +87,11 @@ enum EInteractionAction {
     EInteractionActionRemoveBuff = 1024;
     EInteractionActionAddBuffToTarget = 1025;
     EInteractionActionRemoveBuffToTarget = 1026;
+    EInteractionActionPaintToySwitchPage = 1027;
     EInteractionActionOpenTowerTreasureBox = 1030;
+    EInteractionActionRoughCollection = 1031;
+    EInteractionActionFineCollection = 1032;
+    EInteractionActionBubbleActStart = 1033;
+    EInteractionActionBubbleActEnd = 1034;
+    EInteractionActionRaidOpenBox = 1035;
 }
-

@@ -4,15 +4,20 @@ local Weapon_resonance_skill_tipsView = class("Weapon_resonance_skill_tipsView",
 local loopListView = require("ui.component.loop_list_view")
 local common_reward_loop_list_item = require("ui.component.common_reward_loop_list_item")
 local HEIGHT_ACTIVATE = 285
-local HEIGHT_ADVANCED = 100
+local HEIGHT_ADVANCED = 120
 
 function Weapon_resonance_skill_tipsView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "weapon_resonance_skill_tips", "weapon_develop/weapon_resonance_skill_tips", UI.ECacheLv.None)
+  local assetPath = "weapon_develop/weapon_resonance_skill_tips"
+  if Z.IsPCUI then
+    assetPath = "weapon_develop/weapon_resonance_skill_tips_pc"
+  end
+  super.ctor(self, "weapon_resonance_skill_tips", assetPath, UI.ECacheLv.None)
   self.weaponVM_ = Z.VMMgr.GetVM("weapon")
   self.weaponSkillVM_ = Z.VMMgr.GetVM("weapon_skill")
   self.skillVM_ = Z.VMMgr.GetVM("skill")
   self.itemsVM_ = Z.VMMgr.GetVM("items")
+  self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
 end
 
 function Weapon_resonance_skill_tipsView:OnActive()
@@ -34,10 +39,12 @@ end
 function Weapon_resonance_skill_tipsView:OnRefresh()
   self.costNotEnoughItem_ = nil
   self.curSkillId_ = self.viewData.skillId
-  self.curPorfessionId_ = self.viewData.professionId
-  self.curWeaponInfo_ = self.weaponVM_.GetWeaponInfo(self.curPorfessionId_)
+  self.curProfessionId_ = self.viewData.professionId
+  self.curAdvanceLevel_ = self.viewData.advanceLevel or self.weaponSkillVM_:GetSkillRemodelLevel(self.curSkillId_)
+  self.isAdvanceTips_ = self.viewData.advanceLevel ~= nil
+  self.curWeaponInfo_ = self.weaponVM_.GetWeaponInfo(self.curProfessionId_)
   self.isUnlock_ = self.weaponSkillVM_:CheckSkillUnlock(self.curSkillId_)
-  self.isEquiped_ = self.weaponSkillVM_:CheckSkillEquip(self.curSkillId_)
+  self.isEquip_ = self.weaponSkillVM_:CheckSkillEquip(self.curSkillId_)
   self.curSkillConfig_ = Z.TableMgr.GetTable("SkillTableMgr").GetRow(self.curSkillId_)
   self.curResonanceConfig_ = Z.TableMgr.GetTable("SkillAoyiTableMgr").GetRow(self.curSkillId_)
   if self.curSkillConfig_ then
@@ -48,6 +55,7 @@ end
 
 function Weapon_resonance_skill_tipsView:initData()
   self.tagItemDict_ = {}
+  self.advanceFuncUnlock_ = self.gotoFuncVM_.CheckFuncCanUse(E.ResonanceFuncId.Advance, true)
 end
 
 function Weapon_resonance_skill_tipsView:initComponent()
@@ -55,11 +63,16 @@ function Weapon_resonance_skill_tipsView:initComponent()
   self.uiBinder.Trans:SetSizeDelta(0, 0)
   self:initLoopListView()
   self:AddAsyncClick(self.uiBinder.btn_operate, function()
-    if self.isUnlock_ then
+    if self.isAdvanceTips_ then
+      self:operateAdvancedSkill()
+    elseif self.isUnlock_ then
       self:operateAdvancedSkill()
     else
       self:operateActivateSkill()
     end
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_lookeffect, function()
+    self:operateAdvancedSkill()
   end)
 end
 
@@ -82,7 +95,11 @@ function Weapon_resonance_skill_tipsView:refreshLoopListView(costTbl)
     end
   end
   self.loopListView_:RefreshListView(dataList)
-  self.uiBinder.btn_operate.IsDisabled = self.costNotEnoughItem_ ~= nil
+  if self.isAdvanceTips_ then
+    self.uiBinder.btn_operate.IsDisabled = self.costNotEnoughItem_ ~= nil or not self.isUnlock_
+  else
+    self.uiBinder.btn_operate.IsDisabled = self.costNotEnoughItem_ ~= nil
+  end
 end
 
 function Weapon_resonance_skill_tipsView:unInitLoopListView()
@@ -99,14 +116,15 @@ function Weapon_resonance_skill_tipsView:refreshSkillInfo()
 end
 
 function Weapon_resonance_skill_tipsView:refreshSkillBaseInfo()
-  local remodelLevel = self.weaponSkillVM_:GetSkillRemodelLevel(self.curSkillId_)
   local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.curResonanceConfig_.AoyiItemId)
   self.uiBinder.lab_name.text = self.curSkillConfig_.Name
   local binderCard = self.uiBinder.binder_card
-  binderCard.lab_advance_level.text = Lang("AdvanceLevel", {val = remodelLevel})
+  binderCard.lab_advance_level.text = Lang("AdvanceLevel", {
+    val = self.curAdvanceLevel_
+  })
   binderCard.rimg_icon:SetImage(self.itemsVM_.GetItemIcon(self.curResonanceConfig_.AoyiItemId))
-  binderCard.Ref:SetVisible(binderCard.trans_equip, self.isEquiped_)
-  binderCard.img_bg_quality:SetImage(Z.ConstValue.QualityImgTipsBg .. itemRow.Quality)
+  binderCard.Ref:SetVisible(binderCard.trans_equip, self.isEquip_)
+  binderCard.img_bg_quality:SetColor(Z.ConstValue.QualityBgColor[itemRow.Quality])
 end
 
 function Weapon_resonance_skill_tipsView:refreshSkillTags()
@@ -153,10 +171,9 @@ function Weapon_resonance_skill_tipsView:clearTagFrameTimer()
 end
 
 function Weapon_resonance_skill_tipsView:refreshSkillDesc()
-  local content = self.weaponSkillVM_:ParseResonanceSkillBaseDesc(self.curSkillId_)
+  local content = self.weaponSkillVM_:ParseResonanceSkillBaseDesc(self.curSkillId_, self.curAdvanceLevel_)
   Z.RichTextHelper.SetTmpLabTextWithCommonLinkNew(self.uiBinder.lab_normal_effect_desc, content)
-  local remodelLevel = self.weaponSkillVM_:GetSkillRemodelLevel(self.curSkillId_)
-  local attrDescList, buffDescList = self.weaponSkillVM_:ParseResonanceSkillDesc(self.curSkillId_, remodelLevel, true)
+  local attrDescList, buffDescList = self.weaponSkillVM_:ParseResonanceSkillDesc(self.curSkillId_, self.curAdvanceLevel_, true)
   local resultDescList = {}
   for i, info in ipairs(attrDescList) do
     table.insert(resultDescList, info.desc)
@@ -171,34 +188,62 @@ function Weapon_resonance_skill_tipsView:refreshSkillDesc()
     local content = table.concat(resultDescList)
     Z.RichTextHelper.SetTmpLabTextWithCommonLinkNew(self.uiBinder.lab_special_effect_desc, content)
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_special_effect_title, not isSpecialEffectEmpty)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_special_effect_desc, not isSpecialEffectEmpty)
-  self.uiBinder.lab_special_effect_title.text = Lang(remodelLevel == 0 and "PassiveEffect" or "AdvanceEffect")
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_special_effect_title, not isSpecialEffectEmpty)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.trans_special_effect_desc, not isSpecialEffectEmpty)
+  self.uiBinder.lab_special_effect_title.text = Lang("PassiveEffect")
 end
 
 function Weapon_resonance_skill_tipsView:refreshSkillCost()
-  if not self.isUnlock_ then
+  local isMaxLv = self.weaponSkillVM_:CheckResonanceSkillRemodelMax(self.curSkillId_)
+  local showCost = not isMaxLv
+  if self.isAdvanceTips_ then
+    local advanceConfig = self.weaponSkillVM_:GetResonanceSkillRemodelRow(self.curSkillId_, self.curAdvanceLevel_)
+    if advanceConfig then
+      self:refreshLoopListView(advanceConfig.UpgradeCost)
+    end
+    local serverAdvanceLevel = self.weaponSkillVM_:GetSkillRemodelLevel(self.curSkillId_)
+    if serverAdvanceLevel >= self.curAdvanceLevel_ then
+      showCost = false
+    end
+  elseif not self.isUnlock_ then
     local mysteriesConfig = self.weaponVM_.GetMysteriesSkillConfig(self.curSkillId_)
     if mysteriesConfig then
       self:refreshLoopListView(mysteriesConfig.SkillAdvancedItem)
     end
   else
     self.uiBinder.btn_operate.IsDisabled = false
+    showCost = false
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.trans_active_cost, not self.isUnlock_)
-  local isMaxAdvanceLevel = self.weaponSkillVM_:CheckResonanceSkillRemodelMax(self.curSkillId_)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_operate, not self.isUnlock_ or not isMaxAdvanceLevel)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_max_level, self.isUnlock_ and isMaxAdvanceLevel)
-  local bottomValue = self.isUnlock_ and HEIGHT_ADVANCED or HEIGHT_ACTIVATE
+  self.uiBinder.Ref:SetVisible(self.uiBinder.trans_active_cost, showCost)
+  local bottomValue = showCost and HEIGHT_ACTIVATE or HEIGHT_ADVANCED
   self.uiBinder.trans_scroll:SetOffsetMin(4, bottomValue)
 end
 
 function Weapon_resonance_skill_tipsView:refreshSkillButton()
-  if self.isUnlock_ then
+  local isMaxLv = self.weaponSkillVM_:CheckResonanceSkillRemodelMax(self.curSkillId_)
+  local isShowTips = false
+  if self.isAdvanceTips_ then
+    local serverAdvanceLevel = self.weaponSkillVM_:GetSkillRemodelLevel(self.curSkillId_)
     self.uiBinder.lab_operate.text = Lang("Advanced")
+    if not self.isUnlock_ then
+      self.uiBinder.lab_tips.text = Lang("AdvanceNotActiveTips")
+      isShowTips = true
+    elseif isMaxLv then
+      self.uiBinder.lab_tips.text = Lang("ResonanceMaxLevel2")
+      isShowTips = true
+    elseif serverAdvanceLevel >= self.curAdvanceLevel_ then
+      self.uiBinder.lab_tips.text = Lang("ResonanceAdvanceTip1")
+      isShowTips = true
+    elseif self.curAdvanceLevel_ > serverAdvanceLevel + 1 then
+      self.uiBinder.lab_tips.text = Lang("ResonanceAdvanceTip2")
+      isShowTips = true
+    end
+    self.uiBinder.lab_cost_title.text = Lang("AdvanceCost")
+  elseif self.isUnlock_ then
+    self.uiBinder.lab_operate.text = Lang(isMaxLv and "ResonanceMaxLevel2" or "Advanced")
+    self.uiBinder.lab_cost_title.text = Lang("ActivationCost")
     if not self.weaponSkillVM_:CheckResonanceSkillRemodelMax(self.curSkillId_) then
-      local nowRemodellv = self.weaponSkillVM_:GetSkillRemodelLevel(self.curSkillId_)
-      local nextLvRemodelRow = self.weaponSkillVM_:GetResonanceSkillRemodelRow(self.curSkillId_, nowRemodellv + 1)
+      local nextLvRemodelRow = self.weaponSkillVM_:GetResonanceSkillRemodelRow(self.curSkillId_, self.curAdvanceLevel_ + 1)
       if nextLvRemodelRow and nextLvRemodelRow.UlockSkillLevel then
         local conditionEnough = Z.ConditionHelper.CheckCondition(nextLvRemodelRow.UnlockCondition)
         if not conditionEnough then
@@ -213,7 +258,12 @@ function Weapon_resonance_skill_tipsView:refreshSkillButton()
     end
   else
     self.uiBinder.lab_operate.text = Lang("Activation")
+    self.uiBinder.lab_cost_title.text = Lang("ActivationCost")
   end
+  self:SetUIVisible(self.uiBinder.btn_lookeffect, self.advanceFuncUnlock_ and not self.isUnlock_ and not self.isAdvanceTips_)
+  self:SetUIVisible(self.uiBinder.lab_tips, isShowTips)
+  local isShowAdvanceBtn = not isShowTips and (not self.isUnlock_ or self.advanceFuncUnlock_)
+  self:SetUIVisible(self.uiBinder.btn_operate, isShowAdvanceBtn)
 end
 
 function Weapon_resonance_skill_tipsView:clearTagItem()
@@ -237,16 +287,33 @@ function Weapon_resonance_skill_tipsView:operateActivateSkill()
     self.sourceTipId_ = Z.TipsVM.OpenSourceTips(self.costNotEnoughItem_, self.uiBinder.trans_active_cost)
     return
   end
-  self.weaponSkillVM_:AsyncProfessionSkillUnlock(self.curSkillId_, E.SkillType.MysteriesSkill, self.curPorfessionId_, self.cancelSource:CreateToken())
+  self.weaponSkillVM_:AsyncProfessionSkillUnlock(self.curSkillId_, E.SkillType.MysteriesSkill, self.curProfessionId_, self.cancelSource:CreateToken())
 end
 
 function Weapon_resonance_skill_tipsView:operateAdvancedSkill()
-  if self.weaponSkillVM_:CheckResonanceSkillRemodelMax(self.curSkillId_) then
-    return
+  if self.isAdvanceTips_ then
+    if not self.isUnlock_ then
+      Z.TipsVM.ShowTips(150109)
+      return
+    end
+    if self.weaponSkillVM_:CheckResonanceSkillRemodelMax(self.curSkillId_) then
+      return
+    end
+    if self.costNotEnoughItem_ ~= nil then
+      Z.TipsVM.ShowTips(150107)
+      self:closeSourceTips()
+      self.sourceTipId_ = Z.TipsVM.OpenSourceTips(self.costNotEnoughItem_, self.uiBinder.trans_active_cost)
+      return
+    end
+    local advanceConfig = self.weaponSkillVM_:GetResonanceSkillRemodelRow(self.curSkillId_, self.curAdvanceLevel_)
+    if advanceConfig then
+      self.weaponSkillVM_:AsyncAoYiSkillRemodel(advanceConfig.Id, self.cancelSource:CreateToken())
+    end
+  else
+    self.weaponSkillVM_:OpenResonanceSkillAdvanceView({
+      skillId = self.curSkillId_
+    })
   end
-  self.weaponSkillVM_:OpenResonanceSkillAdvanceView({
-    skillId = self.curSkillId_
-  })
 end
 
 function Weapon_resonance_skill_tipsView:loadRedDotItem()
@@ -256,12 +323,14 @@ function Weapon_resonance_skill_tipsView:loadRedDotItem()
   end
   self.activeNodeId_ = activeNodeId
   Z.RedPointMgr.LoadRedDotItem(self.activeNodeId_, self, self.uiBinder.btn_operate.transform)
-  local advanceNodeId = self.weaponSkillVM_:GetResonanceAdvanceRedDotId(self.curSkillId_)
-  if self.advanceNodeId_ and self.advanceNodeId_ ~= advanceNodeId then
-    Z.RedPointMgr.RemoveNodeItem(self.advanceNodeId_, self)
+  if self.advanceFuncUnlock_ then
+    local advanceNodeId = self.weaponSkillVM_:GetResonanceAdvanceRedDotId(self.curSkillId_)
+    if self.advanceNodeId_ and self.advanceNodeId_ ~= advanceNodeId then
+      Z.RedPointMgr.RemoveNodeItem(self.advanceNodeId_, self)
+    end
+    self.advanceNodeId_ = advanceNodeId
+    Z.RedPointMgr.LoadRedDotItem(self.advanceNodeId_, self, self.uiBinder.btn_operate.transform)
   end
-  self.advanceNodeId_ = advanceNodeId
-  Z.RedPointMgr.LoadRedDotItem(self.advanceNodeId_, self, self.uiBinder.btn_operate.transform)
 end
 
 function Weapon_resonance_skill_tipsView:unLoadRedDotItem()
@@ -269,7 +338,7 @@ function Weapon_resonance_skill_tipsView:unLoadRedDotItem()
     Z.RedPointMgr.RemoveNodeItem(self.activeNodeId_, self)
     self.activeNodeId_ = nil
   end
-  if self.advanceNodeId_ then
+  if self.advanceFuncUnlock_ and self.advanceNodeId_ then
     Z.RedPointMgr.RemoveNodeItem(self.advanceNodeId_, self)
     self.advanceNodeId_ = nil
   end

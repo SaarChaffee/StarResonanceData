@@ -8,6 +8,4 @@ message ParkourRecord {
     uint32 time = 1;
     uint32 state = 2;
     uint32 perfectTime = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

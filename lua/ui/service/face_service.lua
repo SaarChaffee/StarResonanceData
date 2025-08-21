@@ -52,6 +52,8 @@ function FaceService:OnEnterScene()
   if Z.StageMgr.GetIsInGameScene() then
     self:initFaceData()
     faceRed.InitFaceUnlockCostData()
+    local faceData = Z.DataMgr.Get("face_data")
+    Z.LocalUserDataMgr.RemoveKeyByLua(E.LocalUserDataType.Account, faceData.FaceCacheData)
   end
 end
 

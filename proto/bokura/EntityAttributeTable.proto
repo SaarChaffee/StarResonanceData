@@ -28,8 +28,6 @@ message EntityAttributeTableBase {
     int32 CritResist = 1225;
     int_table MeterValue = 318;
 }
-
 message EntityAttributeTableMgr {
-    map<int32, .bokura.EntityAttributeTableBase> datas = 1;
+    repeated bokura.EntityAttributeTableMgr.DatasEntry datas = 1;
 }
-

@@ -8,8 +8,6 @@ message SpecialSkillSlotTableBase {
     int32 Id = 1463;
     int_array TagIds = 1393;
 }
-
 message SpecialSkillSlotTableMgr {
-    map<int32, .bokura.SpecialSkillSlotTableBase> datas = 1;
+    repeated bokura.SpecialSkillSlotTableMgr.DatasEntry datas = 1;
 }
-

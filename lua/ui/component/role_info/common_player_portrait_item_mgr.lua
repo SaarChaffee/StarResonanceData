@@ -73,20 +73,6 @@ local insertPortrait = function(go, viewData)
   setHeadImage(item, viewData)
   return item
 end
-local insertPortraitBySocialData = function(go, socialData, func)
-  if go == nil or socialData == nil then
-    return
-  end
-  local unit = commonPlayerPortraitItemUnit.new()
-  unit:InitSocialData(go, socialData, func)
-  setHeadImageBySocialData(unit, socialData)
-  return unit
-end
-local refreshProtrait = function(go, viewData, item)
-  item:Init(go, viewData)
-  item:Refresh()
-  setHeadImage(item, viewData)
-end
 local insertNewPortrait = function(uiBinder, viewData)
   if viewData == nil or uiBinder == nil then
     return
@@ -105,12 +91,12 @@ local refreshNewProtrait = function(uiBinder, viewData, binderItem)
   binderItem:Refresh()
   setHeadImage(binderItem, viewData)
 end
-local insertNewPortraitBySocialData = function(uiBinder, socialData, func)
+local insertNewPortraitBySocialData = function(uiBinder, socialData, func, token)
   if socialData == nil or uiBinder == nil then
     return
   end
   local binderItem = commonPlayerPortraitNewItem.new()
-  binderItem:InitSocialData(uiBinder, socialData, func)
+  binderItem:InitSocialData(uiBinder, socialData, func, token)
   setHeadImageBySocialData(binderItem, socialData)
   return binderItem
 end
@@ -136,40 +122,30 @@ local asyncCheckHead = function(headInfo, mask, token)
     end
   end
 end
-local isRefreshing = false
-local newHeadTab = {}
 local loadSocialData = function()
   Z.CoroUtil.create_coro_xpcall(function()
+    if headSnapshotData.IsRefreshPlayerHeadData then
+      return
+    end
     local CheckHeadCount = math.min(#headSnapshotData.LoadPlayerHeadData, headSnapshotData.TimeCheckCount)
-    isRefreshing = true
     if 0 < CheckHeadCount then
+      headSnapshotData.IsRefreshPlayerHeadData = true
+      headSnapshotData.RefreshPlayerHeadData = {}
       local loadIndex = #headSnapshotData.LoadPlayerHeadData - CheckHeadCount + 1
       for i = #headSnapshotData.LoadPlayerHeadData, loadIndex, -1 do
-        asyncCheckHead(headSnapshotData.LoadPlayerHeadData[i], headSnapshotData.PlayerHeadMask, headSnapshotData.CancelSource:CreateToken())
-        table.remove(headSnapshotData.LoadPlayerHeadData, i)
+        table.insert(headSnapshotData.RefreshPlayerHeadData, headSnapshotData.LoadPlayerHeadData[i])
+        headSnapshotData.LoadPlayerHeadData[i] = nil
       end
-    end
-    isRefreshing = false
-    if 0 < #newHeadTab then
-      for i = #newHeadTab, 1, -1 do
-        table.insert(headSnapshotData.LoadPlayerHeadData, 1, newHeadTab[i])
+      for i = #headSnapshotData.RefreshPlayerHeadData, 1, -1 do
+        asyncCheckHead(headSnapshotData.RefreshPlayerHeadData[i], headSnapshotData.PlayerHeadMask, headSnapshotData.CancelSource:CreateToken())
       end
-      newHeadTab = {}
+      headSnapshotData.RefreshPlayerHeadData = {}
     end
     if #headSnapshotData.LoadPlayerHeadData == 0 then
       Z.GlobalTimerMgr:StopTimer(E.GlobalTimerTag.LoadPlayerHead)
-      headSnapshotData.Timer = nil
     end
+    headSnapshotData.IsRefreshPlayerHeadData = false
   end)()
-end
-local checkPlayerHeadIsLoading = function(charId, callBackFunc)
-  for i = 1, #newHeadTab do
-    if newHeadTab[i].charId == charId then
-      table.insert(newHeadTab[i].callBackList, callBackFunc)
-      return true
-    end
-  end
-  return false
 end
 local loadSocialDataByCharId = function(charId, callBackFunc)
   if charId == nil or callBackFunc == nil then
@@ -181,18 +157,14 @@ local loadSocialDataByCharId = function(charId, callBackFunc)
       callBackFunc(charId, data)
     end
   else
-    if headSnapshotData:CheckPlayerHeadIsLoading(charId, callBackFunc) or checkPlayerHeadIsLoading(charId, callBackFunc) then
+    if headSnapshotData:CheckPlayerHeadInLoadingList(charId, callBackFunc) or headSnapshotData:CheckPlayerHeadIsLoading(charId, callBackFunc) then
       return
     end
     local playerHeadData = {}
     playerHeadData.charId = charId
     playerHeadData.callBackList = {}
     table.insert(playerHeadData.callBackList, callBackFunc)
-    if isRefreshing then
-      newHeadTab[#newHeadTab + 1] = playerHeadData
-    else
-      table.insert(headSnapshotData.LoadPlayerHeadData, 1, playerHeadData)
-    end
+    table.insert(headSnapshotData.LoadPlayerHeadData, 1, playerHeadData)
     if not Z.GlobalTimerMgr:IsHaveTimer(E.GlobalTimerTag.LoadPlayerHead) then
       Z.GlobalTimerMgr:StartTimer(E.GlobalTimerTag.LoadPlayerHead, function()
         loadSocialData()
@@ -207,10 +179,8 @@ local clearAllActiveItems = function()
 end
 local ret = {
   InsertPortrait = insertPortrait,
-  RefreshProtrait = refreshProtrait,
   ClearActiveItem = clearActiveItem,
   ClearAllActiveItems = clearAllActiveItems,
-  InsertPortraitBySocialData = insertPortraitBySocialData,
   InsertNewPortraitBySocialData = insertNewPortraitBySocialData,
   InsertNewPortraitByHeadPath = insertNewPortraitByHeadPath,
   LoadSocialDataByCharId = loadSocialDataByCharId,

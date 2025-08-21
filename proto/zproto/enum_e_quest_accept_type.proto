@@ -7,4 +7,3 @@ enum EQuestAcceptType {
     QuestAcceptTypeFlow = 1;
     QuestAcceptTypeItem = 2;
 }
-

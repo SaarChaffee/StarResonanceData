@@ -6,7 +6,5 @@ import "stru_timer_refresh_info.proto";
 import "stru_dirty_mask.proto";
 
 message TimerRefreshList {
-    map<uint32, .zproto.TimerRefreshInfo> refreshData = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.TimerRefreshList.RefreshDataEntry refreshData = 1;
 }
-

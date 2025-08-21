@@ -35,12 +35,11 @@ local quitFishingUI = function()
   Z.UIMgr:CloseView("fishing_main_window")
   fishingData:SetStage(E.FishingStage.Quit)
 end
-local quitFishingState = function(cancelToken)
+local asyncQuitFishingState = function(cancelToken)
   Z.CoroUtil.create_coro_xpcall(function()
     local worldProxy = require("zproxy.world_proxy")
     local ret = worldProxy.FishingExit(cancelToken)
     if ret == 0 then
-      Z.DIServiceMgr.FishingService:ExitFishing()
       quitFishingUI()
       local fishingSettingData = Z.DataMgr.Get("fishing_setting_data")
       fishingSettingData:WriteSettingData()
@@ -55,16 +54,18 @@ end
 local fishingProgressChange = function(progress)
   Z.DIServiceMgr.FishingService:FishingProgressChange(progress)
 end
-local fishingEnd = function(success, complete)
+
+local function fishingEnd(success, complete, cancelToken)
   local fishingData = Z.DataMgr.Get("fishing_data")
   if fishingData.IsRequestFishingEnd == false then
     fishingData.IsRequestFishingEnd = true
+    Z.DIServiceMgr.FishingService:FishingQTEEnd()
     Z.CoroUtil.create_coro_xpcall(function()
       local worldProxy = require("zproxy.world_proxy")
       local request = {}
       request.isSuccess = success
-      local ret = worldProxy.FishingResultReport(request, fishingData.CancelSource:CreateToken())
-      if ret.errorCode == 0 then
+      local ret = worldProxy.FishingResultReport(request, cancelToken)
+      if ret.errCode == 0 then
         if ret.durabilityExhausted or ret.isBurst then
           fishingData.FishingRod = nil
           Z.TipsVM.ShowTips(1381010)
@@ -74,46 +75,60 @@ local fishingEnd = function(success, complete)
           complete()
         end
       else
-        Z.TipsVM.ShowTips(Lang(Z.PbErrName(ret.errorCode)))
+        Z.TipsVM.ShowTips(Lang(Z.PbErrName(ret.errCode)))
       end
       fishingData.IsRequestFishingEnd = false
+    end, function(err)
+      if err == ZUtil.ZCancelSource.CancelException then
+        return
+      end
+      Z.TipsVM.ShowTips(204)
+      fishingData.IsRequestFishingEnd = false
+      if success then
+        fishingEnd(success, complete, cancelToken)
+        return
+      end
+      if complete then
+        complete()
+      end
     end)()
   end
 end
+
 local dragFishingRod = function()
   Z.DIServiceMgr.FishingService:DragFishingRod()
 end
-local fishingRodBreak = function()
+local fishingRodBreak = function(cancelToken)
   fishingEnd(false, function()
     Z.DIServiceMgr.FishingService:FishingRodBreak()
     local fishingData = Z.DataMgr.Get("fishing_data")
     fishingData:SetStage(E.FishingStage.EndRodBreak)
-  end)
+  end, cancelToken)
 end
-local fishingSuccess = function()
+local fishingSuccess = function(cancelToken)
   fishingEnd(true, function()
     local fishingData = Z.DataMgr.Get("fishing_data")
     Z.DIServiceMgr.FishingService:FishingSuccess(fishingData.TargetFish.Size)
     fishingData:SetStage(E.FishingStage.EndSuccess)
-  end)
+  end, cancelToken)
 end
-local fishRunAway = function()
+local fishRunAway = function(cancelToken)
   fishingEnd(false, function()
     Z.DIServiceMgr.FishingService:FishingRunAway()
     local fishingData = Z.DataMgr.Get("fishing_data")
     fishingData:SetStage(E.FishingStage.EndRunAway)
-  end)
+  end, cancelToken)
 end
 local harvestingFishingRod = function()
-  Z.DIServiceMgr.FishingService:HarvestingFishingRod()
   local fishingData = Z.DataMgr.Get("fishing_data")
   if fishingData.QTEData.FishBiteHook then
     local cfg_ = fishingData.FishRecordDict[fishingData.TargetFish.FishInfo.FishId].FishCfg
     local attrCfg_ = Z.TableMgr.GetTable("FishingAttrTableMgr").GetRow(cfg_.FishingAttrId)
     if attrCfg_ and attrCfg_.Qte == 1 then
+      Z.DIServiceMgr.FishingService:HarvestingFishingRod()
       fishingData:SetStage(E.FishingStage.QTE)
     else
-      fishingSuccess()
+      fishingSuccess(fishingData.CancelSource:CreateToken())
     end
   else
     local fishingData = Z.DataMgr.Get("fishing_data")
@@ -170,7 +185,6 @@ local enterFishingState = function()
   initFishData()
   local args = {
     EndCallback = function()
-      Z.UIMgr:GotoMainView()
       Z.UIMgr:OpenView("fishing_main_window")
     end
   }
@@ -204,6 +218,9 @@ end
 local throwFishingRod = function()
   Z.CoroUtil.create_coro_xpcall(function()
     local fishingData = Z.DataMgr.Get("fishing_data")
+    if fishingData.isThrowing then
+      return
+    end
     if fishingData.FishBait == nil or fishingData.FishBait == 0 then
       Z.TipsVM.ShowTips(1381012)
       return
@@ -213,7 +230,9 @@ local throwFishingRod = function()
       return
     end
     local worldProxy = require("zproxy.world_proxy")
+    fishingData.isThrowing = true
     local ret = worldProxy.FishingRod(fishingData.CancelSource:CreateToken())
+    fishingData.isThrowing = false
     if ret.errCode == 0 then
       fishingData:SetTargetFish(ret.fishId)
       Z.DIServiceMgr.FishingService:CastingFishingRod(ret.fishId, ret.waitMills, fishingData.TargetFish.FishSpeed, fishingData.TargetFish.FishPathInterval, fishingData.TargetFish.BiteTime, fishingData.TargetFish.FishStayInterval)
@@ -221,22 +240,35 @@ local throwFishingRod = function()
     else
       Z.TipsVM.ShowTips(Lang(Z.PbErrName(ret.errCode)))
     end
+  end, function(err)
+    if err == ZUtil.ZCancelSource.CancelException then
+      return
+    end
+    Z.TipsVM.ShowTips(204)
+    local fishingData = Z.DataMgr.Get("fishing_data")
+    fishingData.isThrowing = false
+    quitFishingUI()
   end)()
 end
-local getFishingRankData = function(forceRefresh, cancelToken)
-  local fishingData = Z.DataMgr.Get("fishing_data")
-  if forceRefresh or fishingData.RankDict == nil or table.zcount(fishingData.RankDict) == 0 then
-    local worldProxy = require("zproxy.world_proxy")
-    local ret = worldProxy.GetRankInfo({}, cancelToken)
-    if ret.errCode == 0 then
-      fishingData:SetRankDict(ret.records)
-      return fishingData.RankDict
-    else
-      Z.TipsVM.ShowTips(Lang(Z.PbErrName(ret.errCode)))
-    end
-  else
-    return fishingData.RankDict
+local asyncGetFishingRankTop = function(fishAreaId, cancelToken)
+  local request = {fishAreaId = fishAreaId}
+  local worldProxy = require("zproxy.world_proxy")
+  local ret = worldProxy.GetFishRankTop(request, cancelToken)
+  if ret.errCode and ret.errCode ~= 0 then
+    Z.TipsVM.ShowTips(ret.errCode)
+    return nil
   end
+  return ret.rankList
+end
+local asyncGetFishingRankData = function(fishId, fishRankType, cancelToken)
+  local request = {fishId = fishId, fishRankType = fishRankType}
+  local worldProxy = require("zproxy.world_proxy")
+  local ret = worldProxy.GetRankInfo(request, cancelToken)
+  if ret.errCode and ret.errCode ~= 0 then
+    Z.TipsVM.ShowTips(ret.errCode)
+    return nil
+  end
+  return ret.rankList
 end
 local openMainFuncWindow = function(funcId)
   funcId = funcId and tonumber(funcId)
@@ -317,10 +349,14 @@ local getLevelReward = function(level, cancelToken)
   local request = {}
   request.level = lv
   local ret = worldProxy.FishingGetLevelReward(request, cancelToken)
-  if ret == 0 then
+  if ret.items ~= nil then
+    local itemShowVM = Z.VMMgr.GetVM("item_show")
+    itemShowVM.OpenItemShowViewByItems(ret.items)
+  end
+  if ret.errCode == 0 then
     return true
   else
-    Z.TipsVM.ShowTips(Lang(Z.PbErrName(ret)))
+    Z.TipsVM.ShowTips(ret.errCode)
     return false
   end
 end
@@ -338,7 +374,18 @@ end
 local closeFishingLevelPopup = function()
   Z.UIMgr:CloseView("fishing_reward_popup")
 end
+local openRankingAwardPopup = function(fishId, isWorld)
+  Z.UIMgr:OpenView("fishing_ranking_reward_popup", {fishId = fishId, isWorld = isWorld})
+end
+local closeRankingAwardPopup = function()
+  Z.UIMgr:CloseView("fishing_ranking_reward_popup")
+end
 local shareIllustrateToChat = function(fishId, size)
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.ShareToChat)
+  if not isOn then
+    return
+  end
   local data = {}
   data.FishId = fishId
   data.Size = size
@@ -352,6 +399,11 @@ local shareIllustrateToChat = function(fishId, size)
   Z.EventMgr:Dispatch(Z.ConstValue.Chat.ChatInputState)
 end
 local shareArchievesToChat = function()
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.ShareToChat)
+  if not isOn then
+    return
+  end
   local data = {}
   local chatData_ = Z.DataMgr.Get("chat_main_data")
   chatData_:RefreshShareData("", data, E.ChatHyperLinkType.FishingArchives)
@@ -363,6 +415,11 @@ local shareArchievesToChat = function()
   Z.EventMgr:Dispatch(Z.ConstValue.Chat.ChatInputState)
 end
 local shareRankToChat = function(fishId, rank, size)
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.ShareToChat)
+  if not isOn then
+    return
+  end
   local data = {}
   data.FishId = fishId
   data.Rank = rank
@@ -383,7 +440,7 @@ local ret = {
   SetFishSwingDir = setFishSwingDir,
   SetPlayerSwingDir = setPlayerSwingDir,
   SetHookInWater = setHookInWater,
-  QuitFishingState = quitFishingState,
+  AsyncQuitFishingState = asyncQuitFishingState,
   QuitFishingUI = quitFishingUI,
   ThrowFishingRod = throwFishingRod,
   HarvestingFishingRod = harvestingFishingRod,
@@ -395,7 +452,8 @@ local ret = {
   SetFishingRodAsync = setFishingRodAsync,
   SetFishingBaitAsync = setFishingBaitAsync,
   FishingSuccessShowEnd = fishingSuccessShowEnd,
-  GetFishingRankData = getFishingRankData,
+  AsyncGetFishingRankTop = asyncGetFishingRankTop,
+  AsyncGetFishingRankData = asyncGetFishingRankData,
   OpenMainFuncWindow = openMainFuncWindow,
   CloseMainFuncWindow = closeMainFuncWindow,
   UseFishingResearch = useFishingResearch,
@@ -413,6 +471,8 @@ local ret = {
   ShareRankToChat = shareRankToChat,
   ShareArchievesToChat = shareArchievesToChat,
   ShareIllustrateToChat = shareIllustrateToChat,
-  ResetEntityAndUIVisible = resetEntityAndUIVisible
+  ResetEntityAndUIVisible = resetEntityAndUIVisible,
+  OpenRankingAwardPopup = openRankingAwardPopup,
+  CloseRankingAwardPopup = closeRankingAwardPopup
 }
 return ret

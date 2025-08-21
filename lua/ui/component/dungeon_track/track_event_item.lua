@@ -185,7 +185,7 @@ end
 function TrackEventItem:RefreshCountDownTime()
   if self.eventLastTime_ >= 0 then
     self.unit_.slider_task.value = self.eventLastTime_
-    self.unit_.lab_time.text = Z.TimeTools.S2HMSFormat(self.eventLastTime_)
+    self.unit_.lab_time.text = Z.TimeFormatTools.FormatToDHMS(math.floor(self.eventLastTime_), true)
     self.eventLastTime_ = self.eventLastTime_ - 1
     if #self.countDownTimeCfg_ == 2 then
       local percent = self.unit_.slider_task.value * 100 / self.unit_.slider_task.maxValue
@@ -205,7 +205,7 @@ function TrackEventItem:RefreshCountDownTime()
     end
   else
     self.unit_.slider_task.value = 0
-    self.unit_.lab_time.text = Z.TimeTools.S2HMSFormat(0)
+    self.unit_.lab_time.text = Z.TimeFormatTools.FormatToDHMS(0, true)
     self.parentView_.timerMgr.StopTimer(self.eventTimer_)
   end
 end

@@ -1,12 +1,15 @@
 local super = require("ui.ui_subview_base")
 local SeasonCultivateCore = class("SeasonCultivateCore", super)
-local ConditionUnitPath = GetLoadAssetPath("SeasonCultivateConditionUnit")
-local ItemUnitPath = GetLoadAssetPath("BackPack_Item_Unit_Addr2_8_New")
-local CoreAttributeUnitPath = GetLoadAssetPath("SeasonCultivateCoreAttributeUnit")
+local ConditionUnitPath
+if Z.IsPCUI then
+  ConditionUnitPath = GetLoadAssetPath("SeasonCultivateConditionUnit_PC")
+else
+  ConditionUnitPath = GetLoadAssetPath("SeasonCultivateConditionUnit")
+end
 local ItemClass = require("common.item_binder")
 
 function SeasonCultivateCore:ctor()
-  super.ctor(self, "season_cultivate_core", "season_cultivate/season_cultivate_core_sub", Z.UI.ECacheLv.None)
+  super.ctor(self, "season_cultivate_core", "season_cultivate/season_cultivate_core_sub", Z.UI.ECacheLv.None, true)
   self.seasonCultivateVM_ = Z.VMMgr.GetVM("season_cultivate")
   self.itemVM_ = Z.VMMgr.GetVM("items")
 end
@@ -148,6 +151,12 @@ function SeasonCultivateCore:resetAttr()
     self.upgradeHoleNodeId_ = nil
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.trans_attr, false)
+  local CoreAttributeUnitPath
+  if Z.IsPCUI then
+    CoreAttributeUnitPath = GetLoadAssetPath("SeasonCultivateCoreAttributeUnit_PC")
+  else
+    CoreAttributeUnitPath = GetLoadAssetPath("SeasonCultivateCoreAttributeUnit")
+  end
   for _, info in ipairs(infos) do
     local name = _formatStr("attribute_{0}", info.attrConfig.NodeId)
     local unit = self:AsyncLoadUiUnit(CoreAttributeUnitPath, name, self.uiBinder.trans_attr.transform, self.cancelSource:CreateToken())
@@ -280,6 +289,12 @@ function SeasonCultivateCore:resetItem()
     self.uiBinder.rimg_gold:SetImage(itemsVM.GetItemIcon(moneyId))
   end
   self.uiBinder.lab_digit.text = needMoneyText
+  local ItemUnitPath
+  if Z.IsPCUI then
+    ItemUnitPath = GetLoadAssetPath("BackPack_Item_Unit_Addr2_8_New_PC")
+  else
+    ItemUnitPath = GetLoadAssetPath("BackPack_Item_Unit_Addr2_8_New")
+  end
   for i, v in pairs(tempHole.NumberConsume) do
     if i ~= 1 then
       local itemId = v[1]
@@ -295,7 +310,8 @@ function SeasonCultivateCore:resetItem()
           isShowZero = true,
           lab = count,
           HideTag = false,
-          isSquareItem = true
+          isSquareItem = true,
+          isShowOne = true
         }
         local instance = self.itemClass_[itemId]
         if not instance then

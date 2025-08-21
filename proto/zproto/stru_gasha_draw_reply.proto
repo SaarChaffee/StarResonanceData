@@ -2,10 +2,12 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_item.proto";
+import "stru_replace_item_data.proto";
 
 message GashaDrawReply {
-    int32 errorCode = 1;
-    repeated zproto.Item items = 2;
+    repeated zproto.Item items = 1;
+    repeated zproto.GashaDrawReply.ReplaceItemsEntry replaceItems = 2;
+    zproto.EErrorCode errCode = 3;
 }
-

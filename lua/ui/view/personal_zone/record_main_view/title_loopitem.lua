@@ -6,7 +6,7 @@ function PersonalzoneTitileTplItem:ctor()
   self.personalZoneVM_ = Z.VMMgr.GetVM("personal_zone")
   self.colors_ = {
     [1] = Color.New(1, 1, 1, 1),
-    [2] = Color.New(1, 1, 1, 0.4)
+    [2] = Color.New(1, 1, 1, 0.05)
   }
 end
 

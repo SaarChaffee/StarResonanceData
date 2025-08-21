@@ -9,4 +9,3 @@ message CreateUnionRequest {
     bool autoApproval = 5;
     repeated uint32 tags = 6;
 }
-

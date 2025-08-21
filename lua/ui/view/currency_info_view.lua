@@ -14,7 +14,8 @@ function Currency_infoView:OnActive()
   self.uiBinder.Trans:SetLocalPos(0, 0)
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.uiBinder.Trans:SetOffsetMax(0, 0)
-  self.currencyScrollRect_ = loopListView_.new(self, self.uiBinder.loopscroll_currency, currency_loop_item_, "n_common_equip_repair")
+  local itemName = "n_common_equip_repair"
+  self.currencyScrollRect_ = loopListView_.new(self, self.uiBinder.loopscroll_currency, currency_loop_item_, itemName)
   self.currencyScrollRect_:Init({})
 end
 

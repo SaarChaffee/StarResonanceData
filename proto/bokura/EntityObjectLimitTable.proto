@@ -9,8 +9,6 @@ message EntityObjectLimitTableBase {
     int32 TimerLimit = 1970;
     int32 SaveVarLimit = 1828;
 }
-
 message EntityObjectLimitTableMgr {
-    map<int32, .bokura.EntityObjectLimitTableBase> datas = 1;
+    repeated bokura.EntityObjectLimitTableMgr.DatasEntry datas = 1;
 }
-

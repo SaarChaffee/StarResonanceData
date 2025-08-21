@@ -7,7 +7,7 @@ end
 function Scene:LoadComplete()
 end
 
-Scene.Seasons = {}
+Scene.Seasons = {2}
 
 function Scene:InitEvents()
   self.EventItems = {}
@@ -31,16 +31,6 @@ function Scene:InitEvents()
     count = -1,
     action = function(localSelf)
       Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1027})
-    end
-  }
-  self.EventItems[100832] = {
-    eventType = E.LevelEventType.TriggerEvent,
-    enable = true,
-    group = 0,
-    eventId = 100832,
-    count = -1,
-    action = function(localSelf)
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("HeroDungeon_Goblin/Guide_hard", 0, 0, 20, false, 0)
     end
   }
 end

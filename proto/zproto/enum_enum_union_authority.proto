@@ -20,4 +20,3 @@ enum EnumUnionAuthority {
     UnionAuthoritySetEScreenPhoto = 500220;
     UnionAuthorityEditAlbum = 500221;
 }
-

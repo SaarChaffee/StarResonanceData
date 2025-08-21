@@ -25,4 +25,3 @@ enum ESettingType {
     ChatFilter = 108;
     Appearance = 201;
 }
-

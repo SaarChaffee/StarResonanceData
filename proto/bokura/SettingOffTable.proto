@@ -12,8 +12,6 @@ message SettingOffTableBase {
     string SettingOffAnim = 2041;
     float RemindRadius = 2013;
 }
-
 message SettingOffTableMgr {
-    map<int32, .bokura.SettingOffTableBase> datas = 1;
+    repeated bokura.SettingOffTableMgr.DatasEntry datas = 1;
 }
-

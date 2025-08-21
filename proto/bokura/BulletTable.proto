@@ -21,8 +21,6 @@ message BulletTableBase {
     int32 DamageWeightType = 1350;
     bool FakeBullet = 1566;
 }
-
 message BulletTableMgr {
-    map<int32, .bokura.BulletTableBase> datas = 1;
+    repeated bokura.BulletTableMgr.DatasEntry datas = 1;
 }
-

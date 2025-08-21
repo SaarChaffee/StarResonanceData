@@ -19,7 +19,6 @@ function Scene:InitEvents()
     count = -1,
     action = function(localSelf)
       Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 1)
-      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({13, 14}, false)
     end
   }
   self.EventItems[21] = {
@@ -30,7 +29,6 @@ function Scene:InitEvents()
     count = -1,
     action = function(localSelf)
       Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
-      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1)
     end
   }
 end

@@ -13,13 +13,11 @@ function ModVM.EnterModView(modSlotId, showModEffectId)
   if modSlotId == nil then
     modSlotId = 1
   end
-  local isUnlock, level = ModVM.CheckSlotIsUnlock(modSlotId)
+  local isUnlock = ModVM.CheckSlotIsUnlock(modSlotId, true)
   if isUnlock then
     Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Module_01, "mod_main", function()
       Z.UIMgr:OpenView("mod_main", {modSlotId = modSlotId, showModEffectId = showModEffectId})
     end)
-  else
-    Z.TipsVM.ShowTipsLang(1500001, {val = level})
   end
 end
 
@@ -30,6 +28,16 @@ function ModVM.EnterModIntensifyView(intensifyType, uuid)
   end
   if intensifyType and type(intensifyType) == "string" then
     intensifyType = tonumber(intensifyType)
+  end
+  local isOn = true
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  if intensifyType == MOD_DEFINE.ModIntensifyType.Intensify then
+    isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.ModIntensify)
+  elseif intensifyType == MOD_DEFINE.ModIntensifyType.Decompose then
+    isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.ModDecompose)
+  end
+  if not isOn then
+    return
   end
   Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Module_01, "mod_intensify_window", function()
     Z.UIMgr:OpenView("mod_intensify_window", {intensifyType = intensifyType, uuid = uuid})
@@ -64,7 +72,8 @@ function ModVM.GetUnEquipSlotId()
   local modList = Z.ContainerMgr.CharSerialize.mod
   if modList and modList.modSlots then
     for i = 1, MOD_DEFINE.ModSlotMaxCount do
-      if modList.modSlots[i] == nil and ModVM.CheckSlotIsUnlock(i) then
+      local isUnlock, _, _, _, _ = ModVM.CheckSlotIsUnlock(i)
+      if modList.modSlots[i] == nil and isUnlock then
         slot = i
         break
       end
@@ -113,14 +122,14 @@ function ModVM.AsyncEquipMod(uuid, modSlotId, cancelToken)
   if modTableConfig == nil then
     return
   end
-  if not ModVM.CheckSlotIsUnlock(modSlotId) then
+  local isUnlock, _, _, _, _ = ModVM.CheckSlotIsUnlock(modSlotId)
+  if not isUnlock then
     Z.TipsVM.ShowTipsLang(1042105)
     return
   end
   local isEquip, slot = ModVM.IsModEquip(uuid)
   if isEquip and slot ~= modSlotId then
     local confirmFunc = function()
-      Z.DialogViewDataMgr:CloseDialogView()
       ModVM.AsyncInstallMod(uuid, modSlotId, cancelToken)
     end
     Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("Mod_Replace_Tips"), confirmFunc, nil, E.DlgPreferencesType.Login, E.DlgPreferencesKeyType.SameModExchangeSlot)
@@ -200,7 +209,8 @@ function ModVM.CheckModOnly(modId, modSlotId)
     local modList = Z.ContainerMgr.CharSerialize.mod
     if modList and modList.modSlots then
       for i = 1, MOD_DEFINE.ModSlotMaxCount do
-        if ModVM.CheckSlotIsUnlock(i) and modList.modSlots[i] ~= nil and i ~= modSlotId then
+        local isUnlock, _, _, _, _ = ModVM.CheckSlotIsUnlock(i)
+        if isUnlock and modList.modSlots[i] ~= nil and i ~= modSlotId then
           local modInfo = ItemsVM.GetItemInfo(modList.modSlots[i], E.BackPackItemPackageType.Mod)
           local equipModConfig = Z.TableMgr.GetTable("ModTableMgr").GetRow(modInfo.configId)
           if equipModConfig.IsOnly and equipModConfig.SimilarId == modTableConfig.SimilarId then
@@ -213,16 +223,22 @@ function ModVM.CheckModOnly(modId, modSlotId)
   return false
 end
 
-function ModVM.CheckSlotIsUnlock(modSlotId)
+function ModVM.CheckSlotIsUnlock(modSlotId, isShowTips)
   local modHoleTableConfig = Z.TableMgr.GetTable("ModHoleTableMgr").GetRow(modSlotId)
   if modHoleTableConfig then
-    local unlockLevel = 0
-    if modHoleTableConfig.UnlockLevel then
-      unlockLevel = modHoleTableConfig.UnlockLevel
+    if isShowTips then
+      return Z.ConditionHelper.CheckCondition(modHoleTableConfig.Conditions, isShowTips)
+    elseif modHoleTableConfig.Conditions then
+      for _, v in ipairs(modHoleTableConfig.Conditions) do
+        local res, unlockDesc, progress = Z.ConditionHelper.GetSingleConditionDesc(v[1], v[2])
+        if not res then
+          return res, v[1], v[2], unlockDesc, progress
+        end
+      end
     end
-    return unlockLevel <= Z.ContainerMgr.CharSerialize.roleLevel.level, unlockLevel
+    return true
   end
-  return false, 0
+  return true
 end
 
 function ModVM.GetEquipEffectSuccessTimesAndLevelAndNextLevelSuccessTimes(effectId)
@@ -302,7 +318,7 @@ function ModVM.GetModSuccessTimes(uuid)
       local itemInfo = itemsVM.GetItemInfo(uuid, E.BackPackItemPackageType.Mod)
       if itemInfo then
         for _, v in ipairs(itemInfo.modNewAttr.modParts) do
-          local temp1, temp2 = ModVM.TempGetModInitSuccessTimes(v)
+          local temp1, temp2 = ModVM.TempGetModInitSuccessTimes(v, itemInfo.modNewAttr.upgradeRecords)
           successTimes = successTimes + temp1
         end
       end
@@ -313,35 +329,35 @@ end
 
 function ModVM.GetModEffectIdAndSuccessTimesDetail(uuid, itemInfo)
   local itemsVM = Z.VMMgr.GetVM("items")
-  if itemInfo == nil then
-    itemInfo = itemsVM.GetItemInfo(uuid, E.BackPackItemPackageType.Mod)
-  end
+  local selfItemInfo = itemsVM.GetItemInfo(uuid, E.BackPackItemPackageType.Mod)
   local tempRes = {}
   local tempDetails = {}
-  if itemInfo then
-    for _, v in ipairs(itemInfo.modNewAttr.modParts) do
-      tempRes[v], tempDetails[v] = ModVM.TempGetModInitSuccessTimes(v)
+  if selfItemInfo then
+    itemInfo = selfItemInfo
+    if Z.ContainerMgr.CharSerialize.mod and Z.ContainerMgr.CharSerialize.mod.modInfos then
+      local modInfo = Z.ContainerMgr.CharSerialize.mod.modInfos[uuid]
+      if modInfo then
+        if modInfo.partIds then
+          for _, v in ipairs(modInfo.partIds) do
+            tempRes[v] = 0
+            tempDetails[v] = {}
+          end
+        end
+        if modInfo.upgradeRecords then
+          for _, upgraderecord in ipairs(modInfo.upgradeRecords) do
+            if upgraderecord.isSuccess and tempRes[upgraderecord.partId] then
+              tempRes[upgraderecord.partId] = tempRes[upgraderecord.partId] + 1
+            end
+            if tempDetails[upgraderecord.partId] then
+              table.insert(tempDetails[upgraderecord.partId], upgraderecord.isSuccess)
+            end
+          end
+        end
+      end
     end
-  end
-  if Z.ContainerMgr.CharSerialize.mod and Z.ContainerMgr.CharSerialize.mod.modInfos then
-    local modInfo = Z.ContainerMgr.CharSerialize.mod.modInfos[uuid]
-    if modInfo then
-      if modInfo.partIds then
-        for _, v in ipairs(modInfo.partIds) do
-          tempRes[v] = 0
-          tempDetails[v] = {}
-        end
-      end
-      if modInfo.upgradeRecords then
-        for _, upgraderecord in ipairs(modInfo.upgradeRecords) do
-          if upgraderecord.isSuccess and tempRes[upgraderecord.partId] then
-            tempRes[upgraderecord.partId] = tempRes[upgraderecord.partId] + 1
-          end
-          if tempDetails[upgraderecord.partId] then
-            table.insert(tempDetails[upgraderecord.partId], upgraderecord.isSuccess)
-          end
-        end
-      end
+  elseif itemInfo and itemInfo.modNewAttr then
+    for _, v in ipairs(itemInfo.modNewAttr.modParts) do
+      tempRes[v], tempDetails[v] = ModVM.TempGetModInitSuccessTimes(v, itemInfo.modNewAttr.upgradeRecords)
     end
   end
   local res = {}
@@ -358,14 +374,7 @@ function ModVM.GetModEffectIdAndSuccessTimesDetail(uuid, itemInfo)
 end
 
 function ModVM.GetModEffectIdAndSuccessTimes(uuid)
-  local itemsVM = Z.VMMgr.GetVM("items")
-  local itemInfo = itemsVM.GetItemInfo(uuid, E.BackPackItemPackageType.Mod)
   local tempRes = {}
-  if itemInfo then
-    for _, v in ipairs(itemInfo.modNewAttr.modParts) do
-      tempRes[v] = ModVM.TempGetModInitSuccessTimes(v)
-    end
-  end
   if Z.ContainerMgr.CharSerialize.mod and Z.ContainerMgr.CharSerialize.mod.modInfos then
     local modInfo = Z.ContainerMgr.CharSerialize.mod.modInfos[uuid]
     if modInfo then
@@ -423,8 +432,9 @@ end
 function ModVM.CalculateCurModSuccessRate(uuid)
   local itemsVM = Z.VMMgr.GetVM("items")
   local itemInfo = itemsVM.GetItemInfo(uuid, E.BackPackItemPackageType.Mod)
+  local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(itemInfo.configId)
   local modData = Z.DataMgr.Get("mod_data")
-  local successRate = modData:GetSuccessRate(itemInfo.quality)
+  local successRate = modData:GetSuccessRate(itemConfig.Quality)
   local curRate = successRate[2]
   local modList = Z.ContainerMgr.CharSerialize.mod
   if modList and modList.modInfos then
@@ -441,8 +451,11 @@ function ModVM.IsHaveRedDot(modSlotId)
   if not funcVm.CheckFuncCanUse(E.FunctionID.Mod, true) then
     return false
   end
-  if modSlotId and not ModVM.CheckSlotIsUnlock(modSlotId) then
-    return false
+  if modSlotId then
+    local isUnlock, _, _, _, _ = ModVM.CheckSlotIsUnlock(modSlotId)
+    if not isUnlock then
+      return false
+    end
   end
   local emptySlot = -1
   local equipModUuid = {}
@@ -452,10 +465,11 @@ function ModVM.IsHaveRedDot(modSlotId)
   for _, limit in pairs(limitNum) do
     tempModType[limit[1]] = limit[2]
   end
-  local modHoleTableConfigs = Z.TableMgr.GetTable("ModHoleTableMgr").GetDatas()
+  local modHoleTableConfigs = Z.DataMgr.Get("mod_data"):GetHoleConfigs()
   local modList = Z.ContainerMgr.CharSerialize.mod
   for _, config in pairs(modHoleTableConfigs) do
-    if ModVM.CheckSlotIsUnlock(config.Id) then
+    local holeIsUnlock, _, _, _, _ = ModVM.CheckSlotIsUnlock(config.Id)
+    if holeIsUnlock then
       if modList and modList.modSlots and modList.modSlots[config.Id] then
         local modUuid = modList.modSlots[config.Id]
         local itemData = ItemsVM.GetItemInfo(modUuid, E.BackPackItemPackageType.Mod)
@@ -602,19 +616,38 @@ function ModVM.OpenModSearchTips(transform)
   Z.UIMgr:OpenView("tips_approach", viewData)
 end
 
-function ModVM.TempGetModInitSuccessTimes(effectId)
-  local modData = Z.DataMgr.Get("mod_data")
-  local config = modData:GetEffectTableConfig(effectId, 0)
-  if config and not config.IsNegative then
-    return 1, {
-      [1] = true
-    }
+function ModVM.TempGetModInitSuccessTimes(effectId, upgradeRecords)
+  if upgradeRecords then
+    local level = 0
+    local tempDetails = {}
+    for _, upgraderecord in ipairs(upgradeRecords) do
+      if upgraderecord.partId == effectId then
+        if upgraderecord.isSuccess then
+          level = level + 1
+        end
+        table.insert(tempDetails, upgraderecord.isSuccess)
+      end
+    end
+    return level, tempDetails
+  else
+    local modData = Z.DataMgr.Get("mod_data")
+    local config = modData:GetEffectTableConfig(effectId, 0)
+    if config and not config.IsNegative then
+      return 1, {
+        [1] = true
+      }
+    end
+    return 0, {}
   end
-  return 0, {}
 end
 
 function ModVM.GetRecommendFightValue()
   local fightValue = 0
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.Mod, true)
+  if not isOn then
+    return fightValue
+  end
   local modData = Z.DataMgr.Get("mod_data")
   local successTimes = ModVM.GetAllEquipSuccessTimes()
   local modLinkEffectConfig = modData:GetModLinkEffectConfig(successTimes)
@@ -679,7 +712,6 @@ function ModVM.AsyncIntensify(uuid, effectId, cancelToken)
         Z.UIMgr:OpenView("mod_intensify_popup", {effectId = effectId, lv = curLv})
       else
         Z.AudioMgr:Play("UI_Event_Magic_C")
-        Z.TipsVM.ShowTips(1042111)
       end
     else
       Z.AudioMgr:Play("sys_general_cancel")
@@ -694,10 +726,13 @@ end
 function ModVM.AsyncDecomposeMods(uuids, cancelToken)
   local request = {modUuids = uuids}
   local reply = worldProxy.DecomposeMod(request, cancelToken)
-  if ModVM.CheckReply(reply) then
+  if reply.items ~= nil then
+    local itemShowVM = Z.VMMgr.GetVM("item_show")
+    itemShowVM.OpenItemShowViewByItems(reply.items)
+  end
+  if ModVM.CheckReply(reply.errCode) then
     Z.EventMgr:Dispatch(Z.ConstValue.Mod.OnModDecompose)
   end
-  return false
 end
 
 return ModVM

@@ -1,6 +1,12 @@
 local QuestStepConfig = class("QuestStepConfig")
+local progressBarColors = {
+  [0] = Color.New(1.0, 1.0, 1.0, 1),
+  [1] = Color.New(0.8392156862745098, 0.984313725490196, 0.3137254901960784, 1),
+  [2] = Color.New(0.803921568627451, 0 / 255, 0.803921568627451, 1)
+}
 
-function QuestStepConfig:ctor(stepRes)
+function QuestStepConfig:ctor(stepRes, questId)
+  self.QuestId = questId
   self.StepParam = {}
   self.StepTargetPos = {}
   self.StepTargetInfo = {}
@@ -10,11 +16,15 @@ function QuestStepConfig:ctor(stepRes)
   self.TimeLimitedStep = {}
   self.NpcTalkChange = {}
   self.QuestItems = {}
+  self.QuestTargetInfo = {}
+  self.GoalCount = 0
+  self.IsProactiveStep = false
   self:BuildQuestStepRow(stepRes)
 end
 
 function QuestStepConfig:BuildQuestStepRow(stepRes)
   self.stepRes = stepRes
+  self.StepId = stepRes.stepId
   self:processCompleteEvaluators(stepRes)
   self:processTargetCondition(stepRes)
   self:processTimeLimitedStep(stepRes)
@@ -26,10 +36,12 @@ end
 
 function QuestStepConfig:processCompleteEvaluators(stepRes)
   if stepRes.targetCompleteEvaluators then
+    self.GoalCount = stepRes.targetCompleteEvaluators.Count
     for i = 0, stepRes.targetCompleteEvaluators.Count - 1 do
       local goal = stepRes.targetCompleteEvaluators[i]
       local goalArray = goal:GetGoalArray()
       local tempParams = {}
+      table.insert(self.QuestTargetInfo, {})
       for t = 0, goalArray.Length - 1 do
         table.insert(tempParams, goalArray[t])
       end
@@ -50,6 +62,8 @@ function QuestStepConfig:processCompleteEvaluators(stepRes)
         self.TargetHideTrackedDic[i] = true
       end
       table.insert(self.StepTrackedSceneId, goalRes.trackedSceneId)
+      self.QuestTargetInfo[i + 1].hideTrackedDis = goalRes.hideTrackedDis
+      self.QuestTargetInfo[i + 1].showProgressBar = goalRes.showProgressBar
     end
   end
 end
@@ -92,7 +106,8 @@ function QuestStepConfig:processTimeLimitedStep(stepRes)
     end
   end
   for _, goalInfo in ipairs(self.StepParam) do
-    if tonumber(goalInfo[E.GoalParam.Type]) == E.GoalType.TargetTime then
+    local goalType = tonumber(goalInfo[E.GoalParam.Type])
+    if goalType == E.GoalType.TargetTime then
       table.insert(self.TimeLimitedStep, {
         StepTimeLimitType = E.StepTimeLimitType.TargetTime,
         Time = goalInfo[4],
@@ -100,6 +115,9 @@ function QuestStepConfig:processTimeLimitedStep(stepRes)
         SucceedMessageId = tonumber(goalInfo[6]) or 16002002,
         FailMessageId = tonumber(goalInfo[7]) or 16002003
       })
+    end
+    if not self.IsProactiveStep and self:IsProactiveGoal(goalType) then
+      self.IsProactiveStep = true
     end
   end
 end
@@ -150,7 +168,9 @@ function QuestStepConfig:processProgressBars(stepRes)
       showBar = barInfo.showBar,
       barName = barInfo.barNameProperty,
       maxValue = barInfo.maxValue,
-      initValue = barInfo.initValue
+      initValue = barInfo.initValue,
+      barColor = progressBarColors[barInfo.barColor:ToInt()],
+      progressBarVariableType = barInfo.variable
     }
     table.insert(self.ProgressBarInfos, progressBarInfo)
   end
@@ -168,6 +188,20 @@ function QuestStepConfig:GetStepProgressBarsInfo()
   return self.ProgressBarInfos
 end
 
+function QuestStepConfig:IsHideTrackedDis(goalIndex)
+  if goalIndex > self.GoalCount then
+    return true
+  end
+  return self.QuestTargetInfo[goalIndex].hideTrackedDis
+end
+
+function QuestStepConfig:IsShowGoalProgressBar(goalIndex)
+  if goalIndex > self.GoalCount then
+    return false
+  end
+  return self.QuestTargetInfo[goalIndex].showProgressBar
+end
+
 function QuestStepConfig:stringToBool(str)
   local lowerStr = string.lower(str)
   if lowerStr == "true" or lowerStr == "1" then
@@ -178,6 +212,10 @@ function QuestStepConfig:stringToBool(str)
     logError("Invalid boolean string: " .. str)
     return nil
   end
+end
+
+function QuestStepConfig:IsProactiveGoal(goalType)
+  return goalType == E.GoalType.NpcFlowTalk or goalType == E.GoalType.SubmitItem or goalType == E.GoalType.ShowItem
 end
 
 return QuestStepConfig

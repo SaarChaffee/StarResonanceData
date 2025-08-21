@@ -7,6 +7,4 @@ import "stru_dirty_mask.proto";
 message SeasonRankInfo {
     uint32 curRanKStar = 1;
     repeated uint32 receivedRankStar = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

@@ -8,18 +8,26 @@ local tog2_Item = require("ui.component.shop.shop_tog2_loop_item")
 
 function Shop_all_subView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "shop_all_sub", "shop/shop_all_sub", UI.ECacheLv.None)
+  super.ctor(self, "shop_all_sub", "shop/shop_all_sub", UI.ECacheLv.None, true)
+  self.shopData_ = Z.DataMgr.Get("shop_data")
 end
 
 function Shop_all_subView:OnActive()
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self:onShowAnimShow()
-  self.secondLoopListView_ = loopListView.new(self, self.uiBinder.loop_second, tog2_Item, "shop_tog2_tpl")
+  local togTplPath = Z.IsPCUI and "shop_tog2_tpl_pc" or "shop_tog2_tpl"
+  self.secondLoopListView_ = loopListView.new(self, self.uiBinder.loop_second, tog2_Item, togTplPath)
   self.secondLoopListView_:Init({})
-  self.itemLoopGridView_ = loopGridView.new(self, self.uiBinder.loop_all, shop_loop_item, "season_shop_item_tpl")
+  local itemTplPath = Z.IsPCUI and "season_shop_item_tpl_pc" or "season_shop_item_tpl"
+  self.itemLoopGridView_ = loopGridView.new(self, self.uiBinder.loop_all, shop_loop_item, itemTplPath)
   self.itemLoopGridView_:Init({})
-  self:refreshData()
+  if self.viewData and self.viewData.secondIndex then
+    self.selectedIndex_ = self.viewData.secondIndex
+  else
+    self.selectedIndex_ = 1
+  end
+  self:RefreshData()
 end
 
 function Shop_all_subView:OnDeActive()
@@ -27,38 +35,24 @@ function Shop_all_subView:OnDeActive()
   self.itemLoopGridView_:UnInit()
 end
 
-function Shop_all_subView:refreshData(isNoRefresSelected)
+function Shop_all_subView:RefreshData(isNoRefresSelected)
+  self.isNoRefresSelected_ = isNoRefresSelected
   local isShowSecondTab = #self.viewData.shopTabData.secondaryTabList > 1
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_tab, isShowSecondTab)
   if isShowSecondTab then
-    local index = 1
-    if isNoRefresSelected and self.selectedIndex_ then
-      index = self.selectedIndex_
-    end
-    if self.viewData.parentView.viewData and self.viewData.parentView.viewData.funcId2 then
-      local funcId = tonumber(self.viewData.parentView.viewData.funcId2)
-      for k, data in ipairs(self.viewData.shopTabData.secondaryTabList) do
-        if data.FunctionId == funcId then
-          index = k
-          break
-        end
-      end
-      self.viewData.parentView.viewData.funcId2 = nil
-    end
     self.secondLoopListView_:RefreshListView(self.viewData.shopTabData.secondaryTabList, false)
     self.secondLoopListView_:ClearAllSelect()
-    self.secondLoopListView_:SetSelected(index)
-  else
+    self.secondLoopListView_:SetSelected(self.selectedIndex_)
+  elseif #self.viewData.shopTabData.secondaryTabList > 0 then
     self:Tog2Click(self.viewData.shopTabData.secondaryTabList[1])
+  else
+    self.secondLoopListView_:RefreshListView({}, false)
+    self:Tog2Click(self.viewData.shopTabData.fristLevelTabData, -1)
   end
 end
 
 function Shop_all_subView:Tog2Click(shopTabData, index)
-  if index then
-    self.selectedIndex_ = index
-  else
-    self.selectedIndex_ = 1
-  end
+  self.selectedIndex_ = index or 1
   self.viewData.parentView:OpenCurrencyView(shopTabData.CurrencyDisplay)
   local showItemList = self:getShowData(shopTabData.Id)
   if showItemList == nil then
@@ -66,9 +60,42 @@ function Shop_all_subView:Tog2Click(shopTabData, index)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_all, false)
   else
     self.itemLoopGridView_:RefreshListView(showItemList.items, false)
-    self.itemLoopGridView_:MovePanelToItemIndex(1)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_all, true)
+    local isSelect = false
+    if self.viewData.configId then
+      for k, v in ipairs(showItemList.items) do
+        local mallItemCfgData = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(v.itemId)
+        if mallItemCfgData and mallItemCfgData.ItemId == self.viewData.configId and not self.isNoRefresSelected_ then
+          self.itemLoopGridView_:MovePanelToItemIndex(k)
+          self.itemLoopGridView_:SetSelected(k)
+          isSelect = true
+          break
+        end
+      end
+      self.viewData.configId = nil
+    end
+    if not isSelect and not self.isNoRefresSelected_ then
+      self.itemLoopGridView_:MovePanelToItemIndex(1)
+    end
+  end
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+  local top = Z.IsPCUI and -3 or 22
+  local bottom = Z.IsPCUI and -7 or -9
+  if shopTabData.RefreshIntervalType == 0 then
+    self.uiBinder.loop_second_ref:SetOffsetMin(0, bottom)
+    self.uiBinder.loop_second_ref:SetOffsetMax(0, top)
+  elseif shopTabData.RefreshIntervalType == 15 then
+    self.uiBinder.loop_second_ref:SetOffsetMin(0, bottom)
+    self.uiBinder.loop_second_ref:SetOffsetMax(500, top)
+  elseif shopTabData.RefreshIntervalType == 17 then
+    self.uiBinder.loop_second_ref:SetOffsetMin(0, bottom)
+    self.uiBinder.loop_second_ref:SetOffsetMax(500, top)
+  end
+  if shopTabData.ShowType == E.EShopType.CompensateShop then
+    self.uiBinder.lab_reset_time.text = Lang("shopResetTime2")
+  else
+    self.uiBinder.lab_reset_time.text = ""
   end
 end
 
@@ -81,7 +108,12 @@ function Shop_all_subView:getShowData(Id)
 end
 
 function Shop_all_subView:OpenBuyPopup(data, index)
-  local cfg = self.viewData.shopTabData.secondaryTabList[self.selectedIndex_]
+  local cfg
+  if self.selectedIndex_ == -1 then
+    cfg = self.viewData.shopTabData.fristLevelTabData
+  else
+    cfg = self.viewData.shopTabData.secondaryTabList[self.selectedIndex_]
+  end
   if cfg == nil then
     logError("[Shop] secondaryTabList[" .. index .. "] is nil")
     return
@@ -91,6 +123,18 @@ end
 
 function Shop_all_subView:onShowAnimShow()
   self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+end
+
+function Shop_all_subView:RigestTimerCall(key, func)
+  self.viewData.parentView:RigestTimerCall(key, func)
+end
+
+function Shop_all_subView:UnrigestTimerCall(key)
+  self.viewData.parentView:UnrigestTimerCall(key)
+end
+
+function Shop_all_subView:UpdateProp()
+  self.viewData.parentView:UpdateProp()
 end
 
 return Shop_all_subView

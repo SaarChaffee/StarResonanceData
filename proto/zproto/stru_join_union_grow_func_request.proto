@@ -6,4 +6,3 @@ message JoinUnionGrowFuncRequest {
     int64 unionId = 1;
     int32 growFuncPos = 2;
 }
-

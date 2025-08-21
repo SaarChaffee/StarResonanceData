@@ -1,7 +1,7 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Photo_editor_container_frame_subView = class("Photo_editor_container_frame_subView", super)
-local FilterPath = "ui/atlas/photograph_decoration/frame/"
+local FilterPath = "ui/textures/photograph_decoration/frame/"
 
 function Photo_editor_container_frame_subView:ctor(parent)
   self.uiBinder = nil
@@ -30,19 +30,17 @@ function Photo_editor_container_frame_subView:CreateItems(itemList)
     local name = string.format("frame_%s", k)
     local item = self:AsyncLoadUiUnit(unitPath, name, self.uiBinder.rect_content)
     item.tog_icon.group = self.uiBinder.toggroup_layout
-    local splData = string.split(v.Res, "=")
-    local icon = splData[1]
-    local frameType = tonumber(splData[2])
-    local path = string.format("%s%s", FilterPath, icon)
+    local frameType = v.Parameter
+    local path = string.format("%s%s", FilterPath, v.Res)
     item.img_icon:SetImage(path)
     if self.viewData.operate then
-      item.tog_icon:SetIsOnWithoutCallBack(self.viewData.operate(frameType, icon))
+      item.tog_icon:SetIsOnWithoutCallBack(self.viewData.operate(frameType, v.Res))
     else
       item.tog_icon:SetIsOnWithoutCallBack(false)
     end
     item.tog_icon:AddListener(function(isOn)
       if isOn then
-        self.viewData.callBack(frameType, icon)
+        self.viewData.callBack(frameType, v.Res)
       end
     end)
   end

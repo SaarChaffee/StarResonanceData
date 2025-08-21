@@ -8,6 +8,7 @@ end
 function EquipRefineData:Init()
   self.BaseSuccessRate = 0
   self.CurrentSuccessRate = 0
+  self.CurSelBlessingData = {}
 end
 
 function EquipRefineData:SetBaseSuccessRate(value)

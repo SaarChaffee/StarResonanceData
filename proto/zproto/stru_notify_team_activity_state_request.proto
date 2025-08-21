@@ -5,6 +5,5 @@ package zproto;
 import "stru_team_activity.proto";
 
 message NotifyTeamActivityStateRequest {
-    zproto.TeamActivity state = 2;
+    zproto.TeamActivity state = 1;
 }
-

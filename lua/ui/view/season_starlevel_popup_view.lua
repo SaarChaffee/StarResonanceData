@@ -13,6 +13,11 @@ function Season_starlevel_popupView:OnActive()
   self:AddClick(self.uiBinder.btn_close, function()
     Z.UIMgr:CloseView("season_starlevel_popup")
   end)
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
   self:initBinder()
   self.uiBinder.effect_uprank:SetEffectGoVisible(false)
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.effect_uprank)
@@ -21,27 +26,31 @@ function Season_starlevel_popupView:OnActive()
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.effect_3)
   local seasonRankTableMgr = Z.TableMgr.GetTable("SeasonRankTableMgr")
   if self.viewData and self.viewData.lastSeasonRankStar and self.viewData.curSeasonRankStar then
-    local lastRankConfig = seasonRankTableMgr.GetRow(self.viewData.lastSeasonRankStar)
-    local curRankConfig = seasonRankTableMgr.GetRow(self.viewData.curSeasonRankStar)
-    self.uiBinder.lab_name.text = lastRankConfig.Name
-    self.uiBinder.rimg_icon:SetImage(lastRankConfig.IconBig)
+    self.lastRankConfig_ = seasonRankTableMgr.GetRow(self.viewData.lastSeasonRankStar)
+    self.curRankConfig_ = seasonRankTableMgr.GetRow(self.viewData.curSeasonRankStar)
+    if self.lastRankConfig_ == nil or self.curRankConfig_ == nil then
+      return
+    end
+    self.uiBinder.lab_name.text = self.lastRankConfig_.Name
+    self.uiBinder.rimg_icon:SetImage(self.lastRankConfig_.IconBig)
     local allConfigs = self.seasonTitleData_:GetAllConfigs()
-    if allConfigs[lastRankConfig.RankId] then
-      if #allConfigs[lastRankConfig.RankId] <= #self.node_stars_ then
+    if allConfigs[self.lastRankConfig_.RankId] then
+      if #allConfigs[self.lastRankConfig_.RankId] <= #self.node_stars_ then
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_star_high, false)
         self.uiBinder.Ref:SetVisible(self.uiBinder.layout_star, true)
         for key, value in ipairs(self.node_stars_) do
-          if key <= lastRankConfig.StarLevel then
-            value.Ref:SetVisible(value.img_star_on, true)
-            value.Ref:SetVisible(value.img_star_light, true)
+          value.anim:Stop()
+          if key <= self.lastRankConfig_.StarLevel then
+            value.Ref:SetVisible(value.img_star_on, true, true)
+            value.Ref:SetVisible(value.img_star_light, true, true)
           else
-            value.Ref:SetVisible(value.img_star_on, false)
-            value.Ref:SetVisible(value.img_star_light, false)
+            value.Ref:SetVisible(value.img_star_on, false, true)
+            value.Ref:SetVisible(value.img_star_light, false, true)
           end
           value.Ref:SetVisible(value.effect, false)
         end
         for key, value in ipairs(self.node_stars_) do
-          if key <= #allConfigs[lastRankConfig.RankId] then
+          if key <= #allConfigs[self.lastRankConfig_.RankId] then
             value.Ref.UIComp:SetVisible(true)
           else
             value.Ref.UIComp:SetVisible(false)
@@ -50,24 +59,22 @@ function Season_starlevel_popupView:OnActive()
       else
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_star_high, true)
         self.uiBinder.Ref:SetVisible(self.uiBinder.layout_star, false)
-        self.uiBinder.lab_star_num.text = "x" .. lastRankConfig.StarLevel
+        self.uiBinder.lab_star_num.text = "x" .. self.lastRankConfig_.StarLevel
       end
     end
     Z.CoroUtil.create_coro_xpcall(function()
       local asyncCall = Z.CoroUtil.async_to_sync(self.uiBinder.anim.CoroPlayOnce)
       asyncCall(self.uiBinder.anim, "anim_season_starlevel_popup", self.cancelSource:CreateToken())
-      if lastRankConfig and curRankConfig then
-        if curRankConfig.RankId ~= lastRankConfig.RankId then
-          if #allConfigs[curRankConfig.RankId] <= #self.node_stars_ then
-            self:diffRankStarUpAnimPlay()
-          else
-            self:diffRankToMaxRankStarUpAnimPlay()
-          end
-        elseif #allConfigs[curRankConfig.RankId] <= #self.node_stars_ then
-          self:sameRankStarUpAnimPlay(lastRankConfig.StarLevel, curRankConfig.StarLevel)
+      if self.curRankConfig_.RankId ~= self.lastRankConfig_.RankId then
+        if #allConfigs[self.curRankConfig_.RankId] <= #self.node_stars_ then
+          self:diffRankStarUpAnimPlay()
         else
-          self:sameRankMaxRankStarUpAnimPlay(curRankConfig.StarLevel)
+          self:diffRankToMaxRankStarUpAnimPlay()
         end
+      elseif #allConfigs[self.curRankConfig_.RankId] <= #self.node_stars_ then
+        self:sameRankStarUpAnimPlay(self.lastRankConfig_.StarLevel, self.curRankConfig_.StarLevel)
+      else
+        self:sameRankMaxRankStarUpAnimPlay(self.curRankConfig_.StarLevel)
       end
     end)()
   end
@@ -121,11 +128,10 @@ function Season_starlevel_popupView:initBinder()
 end
 
 function Season_starlevel_popupView:starToMax()
-  local lastRankConfig = Z.TableMgr.GetTable("SeasonRankTableMgr").GetRow(self.viewData.lastSeasonRankStar)
   local allConfigs = self.seasonTitleData_:GetAllConfigs()
-  local lastMaxRankStar = #allConfigs[lastRankConfig.RankId]
+  local lastMaxRankStar = #allConfigs[self.lastRankConfig_.RankId]
   for key, value in ipairs(self.node_stars_) do
-    if key > lastRankConfig.StarLevel and key <= lastMaxRankStar then
+    if key > self.lastRankConfig_.StarLevel and key <= lastMaxRankStar then
       local asyncCall = Z.CoroUtil.async_to_sync(value.anim.CoroPlayOnce)
       asyncCall(value.anim, "anim_season_star_tpl_open_02", self.cancelSource:CreateToken())
       value.Ref:SetVisible(value.img_star_on, true)
@@ -136,26 +142,25 @@ function Season_starlevel_popupView:starToMax()
 end
 
 function Season_starlevel_popupView:diffRankStarUpAnimPlay()
-  Z.AudioMgr:Play("UI_Event_NameSuccess")
+  Z.AudioMgr:Play("UI_Event_AdvancedSuccess")
   self:starToMax()
   self.uiBinder.effect_uprank:SetEffectGoVisible(true)
-  local curRankConfig = Z.TableMgr.GetTable("SeasonRankTableMgr").GetRow(self.viewData.curSeasonRankStar)
-  self.uiBinder.lab_name.text = curRankConfig.Name
-  self.uiBinder.rimg_icon:SetImage(curRankConfig.IconBig)
+  self.uiBinder.lab_name.text = self.curRankConfig_.Name
+  self.uiBinder.rimg_icon:SetImage(self.curRankConfig_.IconBig)
   local allConfigs = self.seasonTitleData_:GetAllConfigs()
-  if allConfigs[curRankConfig.RankId] then
+  if allConfigs[self.curRankConfig_.RankId] then
     for key, value in ipairs(self.node_stars_) do
       value.Ref:SetVisible(value.img_star_on, false)
       value.Ref:SetVisible(value.img_star_light, false)
       value.Ref:SetVisible(value.effect, false)
-      if key <= #allConfigs[curRankConfig.RankId] then
+      if key <= #allConfigs[self.curRankConfig_.RankId] then
         value.Ref.UIComp:SetVisible(true)
       else
         value.Ref.UIComp:SetVisible(false)
       end
     end
     for key, value in ipairs(self.node_stars_) do
-      if key <= curRankConfig.StarLevel then
+      if key <= self.curRankConfig_.StarLevel then
         local asyncCall = Z.CoroUtil.async_to_sync(value.anim.CoroPlayOnce)
         asyncCall(value.anim, "anim_season_star_tpl_open_02", self.cancelSource:CreateToken())
         value.Ref:SetVisible(value.img_star_on, true)
@@ -167,21 +172,20 @@ function Season_starlevel_popupView:diffRankStarUpAnimPlay()
 end
 
 function Season_starlevel_popupView:diffRankToMaxRankStarUpAnimPlay()
-  Z.AudioMgr:Play("UI_Event_NameSuccess")
+  Z.AudioMgr:Play("UI_Event_AdvancedSuccess")
   self:starToMax()
   self.uiBinder.effect_uprank:SetEffectGoVisible(true)
-  local curRankConfig = Z.TableMgr.GetTable("SeasonRankTableMgr").GetRow(self.viewData.curSeasonRankStar)
-  self.uiBinder.lab_name.text = curRankConfig.Name
-  self.uiBinder.rimg_icon:SetImage(curRankConfig.IconBig)
+  self.uiBinder.lab_name.text = self.curRankConfig_.Name
+  self.uiBinder.rimg_icon:SetImage(self.curRankConfig_.IconBig)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_star_high, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.layout_star, false)
-  self.uiBinder.lab_star_num.text = "x" .. curRankConfig.StarLevel
+  self.uiBinder.lab_star_num.text = "x" .. self.curRankConfig_.StarLevel
   local asyncCall = Z.CoroUtil.async_to_sync(self.uiBinder.anim.CoroPlayOnce)
   asyncCall(self.uiBinder.anim, "anim_season_starlevel_popup_star", self.cancelSource:CreateToken())
 end
 
 function Season_starlevel_popupView:sameRankStarUpAnimPlay(startStar, endStar)
-  Z.AudioMgr:Play("UI_Event_NameSuccess")
+  Z.AudioMgr:Play("UI_Event_AdvancedSuccess")
   for key, value in ipairs(self.node_stars_) do
     if startStar < key and key <= endStar then
       local asyncCall = Z.CoroUtil.async_to_sync(value.anim.CoroPlayOnce)
@@ -191,7 +195,7 @@ function Season_starlevel_popupView:sameRankStarUpAnimPlay(startStar, endStar)
 end
 
 function Season_starlevel_popupView:sameRankMaxRankStarUpAnimPlay(starLevel)
-  Z.AudioMgr:Play("UI_Event_NameSuccess")
+  Z.AudioMgr:Play("UI_Event_AdvancedSuccess")
   self.uiBinder.lab_star_num.text = "x" .. starLevel
   local asyncCall = Z.CoroUtil.async_to_sync(self.uiBinder.anim.CoroPlayOnce)
   asyncCall(self.uiBinder.anim, "anim_season_starlevel_popup_star", self.cancelSource:CreateToken())

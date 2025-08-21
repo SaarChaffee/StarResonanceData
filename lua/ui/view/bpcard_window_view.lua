@@ -7,7 +7,8 @@ local battle_pass_content_sub = require("ui/view/cont_bpcard_pass_award_view")
 function Bpcard_windowView:ctor(parent)
   self.uiBinder = nil
   self.uiRootPanel_ = parent
-  super.ctor(self, "bpcard_window", "bpcard/bpcard_window", UI.ECacheLv.High)
+  self.battlePassVM_ = Z.VMMgr.GetVM("battlepass")
+  super.ctor(self, "bpcard_window", "bpcard/bpcard_window", UI.ECacheLv.High, true)
   self.curChoosePage_ = 0
   self.curPageViewTab_ = {
     [1] = {
@@ -16,10 +17,14 @@ function Bpcard_windowView:ctor(parent)
     },
     [2] = {
       funcId = E.FunctionID.SeasonPass,
-      view = battle_pass_content_sub.new(self)
+      view = battle_pass_content_sub.new(self),
+      checkFunc = function()
+        return self.battlePassVM_.GetCurrentBattlePassContainer()
+      end
     }
   }
   self.data_ = Z.DataMgr.Get("season_data")
+  self.gotofuncVM_ = Z.VMMgr.GetVM("gotofunc")
 end
 
 function Bpcard_windowView:OnActive()
@@ -32,12 +37,16 @@ function Bpcard_windowView:OnActive()
     [1] = self.tog_task.tog_tab_select_anim,
     [2] = self.tog_battlepass.tog_tab_select_anim
   }
+  local isBpUnlock = self.gotofuncVM_.CheckFuncCanUse(E.FunctionID.SeasonPass, true)
+  self.tog_battlepass.Ref.UIComp:SetVisible(isBpUnlock)
   self:initParam()
   self:initBtnClick()
   self:initRedPoint()
+  Z.EventMgr:Add(Z.ConstValue.BattlePassDataUpdate, self.setBpCardTogCanSwitch, self)
 end
 
 function Bpcard_windowView:OnDeActive()
+  Z.EventMgr:Remove(Z.ConstValue.BattlePassDataUpdate, self.setBpCardTogCanSwitch, self)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.SeasonActivationTab, self)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.BpCardTab, self)
   self.curChoosePage_ = 0
@@ -47,10 +56,10 @@ function Bpcard_windowView:OnDeActive()
     end
   end
   self.battlePassCardData_ = nil
-  self.bpCardGlobalInfo_ = nil
 end
 
 function Bpcard_windowView:OnRefresh()
+  self:setBpCardTogCanSwitch()
   local funcId = self.data_:GetSubPageId()
   local index = 1
   if funcId == 1 then
@@ -59,7 +68,7 @@ function Bpcard_windowView:OnRefresh()
     self.data_:SetSubPageId(nil)
     index = self:getIndex(funcId)
   end
-  if index == E.EBattlePassViewType.BattlePassCard then
+  if index == E.EBattlePassViewType.BattlePassCard and self.gotofuncVM_.CheckFuncCanUse(E.FunctionID.SeasonPass, true) then
     self:onPageToggleIsOn(2)
     self.tog_battlepass.tog_tab.isOn = true
   else
@@ -106,12 +115,10 @@ function Bpcard_windowView:initBtnClick()
 end
 
 function Bpcard_windowView:initParam()
-  self.battlePassVM_ = Z.VMMgr.GetVM("battlepass")
   self.battlePassData_ = Z.DataMgr.Get("battlepass_data")
-  self.battlePassContainer_ = Z.ContainerMgr.CharSerialize.seasonCenter.battlePass
-  self.bpCardGlobalInfo_ = self.battlePassVM_.GetBattlePassGlobalTableInfo(self.battlePassContainer_.id)
+  self.battlePassContainer_ = self.battlePassVM_.GetCurrentBattlePassContainer()
   self.battlePassCardData_ = self.battlePassVM_.AssemblyData()
-  self.battlePassData_.BattlePassLevel = self.battlePassContainer_.level
+  self.battlePassData_.BattlePassLevel = self.battlePassContainer_ ~= nil and self.battlePassContainer_.level or 1
 end
 
 function Bpcard_windowView:getIndex(funcId)
@@ -127,7 +134,7 @@ function Bpcard_windowView:getIndex(funcId)
 end
 
 function Bpcard_windowView:onPageToggleIsOn(index)
-  if self.curChoosePage_ == index then
+  if self.curChoosePage_ == index or self.curPageViewTab_[index].checkFunc ~= nil and self.curPageViewTab_[index].checkFunc() == nil then
     return
   end
   local curPageView = self.curPageViewTab_[self.curChoosePage_]
@@ -139,6 +146,12 @@ function Bpcard_windowView:onPageToggleIsOn(index)
   self.battlePassData_.BPCardPageIndex = index
   curPageView = self.curPageViewTab_[self.curChoosePage_]
   curPageView.view:Active(nil, self.left_node_root)
+end
+
+function Bpcard_windowView:setBpCardTogCanSwitch()
+  local bpCardData = self.battlePassVM_.GetCurrentBattlePassContainer()
+  self.tog_battlepass.tog_tab.IsToggleCanSwitch = bpCardData ~= nil
+  self.tog_battlepass.tog_tab.IsDisabled = bpCardData == nil
 end
 
 return Bpcard_windowView

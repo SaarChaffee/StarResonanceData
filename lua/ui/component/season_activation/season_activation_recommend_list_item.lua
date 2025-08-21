@@ -7,12 +7,21 @@ local rateAnim = {
 }
 
 function SeasonActivationRecommendListItem:OnInit()
-  self.itemList_ = {
-    self.uiBinder.node_item_1,
-    self.uiBinder.node_item_2
-  }
+  if Z.IsPCUI then
+    self.itemList_ = {
+      self.uiBinder.node_item_1,
+      self.uiBinder.node_item_2,
+      self.uiBinder.node_item_3
+    }
+  else
+    self.itemList_ = {
+      self.uiBinder.node_item_1,
+      self.uiBinder.node_item_2
+    }
+  end
   self.quickJumpVm_ = Z.VMMgr.GetVM("quick_jump")
   self.seasonActivationVm_ = Z.VMMgr.GetVM("season_activation")
+  self.privilegesData_ = Z.DataMgr.Get("privileges_data")
 end
 
 function SeasonActivationRecommendListItem:OnRefresh(data)
@@ -57,11 +66,16 @@ function SeasonActivationRecommendListItem:setItemData(data, item)
       item.lab_rate.color = imgPath[imgIndex].colorText
       self:onStartAnimShow(item, imgIndex)
     end
-    item.lab_num.text = tableData.Activation
-    item.lab_new_num.text = math.ceil(data.rewardRate / 100 * tableData.Activation)
+    local activation = tableData.Activation
+    local privilegesRate = self.privilegesData_:GetPrivilegesDataByFunction(E.PrivilegeSourceType.BattlePass, E.PrivilegeEffectType.DailyActivityBonus)
+    if privilegesRate then
+      activation = math.floor(activation * (1 + privilegesRate.value / 10000))
+    end
+    item.lab_num.text = activation
+    item.lab_new_num.text = math.ceil(data.rewardRate / 100 * activation)
     item.lab_rate.text = string.format("%d%%", data.rewardRate)
   end
-  if tableData.Cycle >= 1 then
+  if 1 <= tableData.Cycle then
     item.Ref:SetVisible(item.img_update, true)
   else
     item.Ref:SetVisible(item.img_finish, data.progress == tableData.Num)

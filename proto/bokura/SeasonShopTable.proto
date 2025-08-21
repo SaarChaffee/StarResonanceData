@@ -15,8 +15,6 @@ message SeasonShopTableBase {
     string Icon = 1153;
     int_array CurrencyDisplay = 1022;
 }
-
 message SeasonShopTableMgr {
-    map<int32, .bokura.SeasonShopTableBase> datas = 1;
+    repeated bokura.SeasonShopTableMgr.DatasEntry datas = 1;
 }
-

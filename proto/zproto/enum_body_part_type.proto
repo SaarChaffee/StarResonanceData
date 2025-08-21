@@ -7,4 +7,3 @@ enum BodyPartType {
     BodyPartTypePart = 1;
     BodyPartTypeMod = 2;
 }
-

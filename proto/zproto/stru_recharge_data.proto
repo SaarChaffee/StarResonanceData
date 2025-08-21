@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message RechargeData {
+    int64 accumulateAmount = 1;
+    int64 lastRechargeTime = 2;
+    int64 lastRechargeAmount = 3;
+    int64 lastDiamondAmount = 4;
+}

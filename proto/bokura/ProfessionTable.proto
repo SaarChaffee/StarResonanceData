@@ -18,8 +18,6 @@ message ProfessionTableBase {
     int_array ProfessionEffectId = 738;
     mlstring TipsDescription = 516;
 }
-
 message ProfessionTableMgr {
-    map<int32, .bokura.ProfessionTableBase> datas = 1;
+    repeated bokura.ProfessionTableMgr.DatasEntry datas = 1;
 }
-

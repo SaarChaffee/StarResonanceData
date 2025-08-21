@@ -6,4 +6,3 @@ message BuffAttrShowInfo {
     int32 id = 1;
     bool isGain = 2;
 }
-

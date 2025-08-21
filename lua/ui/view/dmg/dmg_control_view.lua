@@ -818,9 +818,6 @@ function Dmg_controlView:setBgColorAndAlpha(a)
 end
 
 function Dmg_controlView:OnDeActive()
-  if not Z.UIMgr:IsActive("dmg_data_panel") then
-    Z.DamageData:IsActiveUIPanel(false)
-  end
   self.attrView_:OnDeActive()
 end
 

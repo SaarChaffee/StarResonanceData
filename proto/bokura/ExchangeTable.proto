@@ -12,8 +12,6 @@ message ExchangeTableBase {
     int32 ShowType = 1131;
     string CurrencyDisplay = 1022;
 }
-
 message ExchangeTableMgr {
-    map<int32, .bokura.ExchangeTableBase> datas = 1;
+    repeated bokura.ExchangeTableMgr.DatasEntry datas = 1;
 }
-

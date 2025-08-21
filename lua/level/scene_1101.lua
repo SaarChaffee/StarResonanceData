@@ -295,66 +295,6 @@ function Scene:InitEvents()
       require("zproxy.world_proxy").UserDoAction("CtoB")
     end
   }
-  self.EventItems[1313] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 1313,
-    count = -1,
-    entity = {actorType = 5, tableUid = 47},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/dng_main_1101_tower_story_freeze")
-    end
-  }
-  self.EventItems[1314] = {
-    eventType = E.LevelEventType.OnZoneExitClient,
-    enable = true,
-    group = 0,
-    eventId = 1314,
-    count = -1,
-    entity = {actorType = 5, tableUid = 47},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/dng_main_1101_tower_story_freeze")
-    end
-  }
-  self.EventItems[1344] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 1344,
-    count = -1,
-    entity = {actorType = 5, tableUid = 248},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      require("zproxy.world_proxy").UserDoAction("enterE01")
-    end
-  }
-  self.EventItems[1345] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 1345,
-    count = -1,
-    entity = {actorType = 5, tableUid = 246},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      require("zproxy.world_proxy").UserDoAction("enterE01")
-    end
-  }
-  self.EventItems[1347] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
-    enable = true,
-    group = 0,
-    eventId = 1347,
-    count = 1,
-    entity = {actorType = 5, tableUid = 354},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      if localSelf.count == 0 then
-        return
-      else
-        localSelf.count = localSelf.count - 1
-      end
-      require("zproxy.world_proxy").UserDoAction("enterE")
-    end
-  }
   self.EventItems[1288] = {
     eventType = E.LevelEventType.OnSceneLeave,
     enable = true,
@@ -418,6 +358,45 @@ function Scene:InitEvents()
     action = function(localSelf)
       Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1001})
       Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1008})
+      do
+        local entityData = {actorType = 3, groupId = 55}
+        if entityData.groupId then
+          Z.LevelMgr.FireSceneEvent({
+            eventType = 24,
+            intParams = {
+              entityData.groupId
+            }
+          })
+        else
+          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
+        end
+      end
+      Z.LevelMgr.FireSceneEvent({
+        eventType = 1,
+        strParams = {"2000022", ""}
+      })
+    end
+  }
+  self.EventItems[1364] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 1364,
+    count = -1,
+    action = function(localSelf)
+      do
+        local entityData = {actorType = 3, groupId = 55}
+        if entityData.groupId then
+          Z.LevelMgr.FireSceneEvent({
+            eventType = 24,
+            intParams = {
+              entityData.groupId
+            }
+          })
+        else
+          Panda.ZGame.ZClientEntityMgr.Instance:CreateClientEntityLua(entityData.tableUid, entityData.actorType)
+        end
+      end
     end
   }
 end

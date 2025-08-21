@@ -5,15 +5,14 @@ function FishingMgr:bindEvent()
   Z.EventMgr:Add(Z.ConstValue.Fishing.FishingRodBreak, self.fishingRodBreak, self)
   Z.EventMgr:Add(Z.ConstValue.Fishing.FishRunAway, self.fishRunAway, self)
   Z.EventMgr:Add(Z.ConstValue.Fishing.FishingStateChange, self.setFishingStage, self)
-  self.playerActorStateWatcher = Z.EntityMgr:BindEntityLuaAttrWatcher(Z.EntityMgr.PlayerUuid, {
-    Z.AttrCreator.ToIndex(Z.LocalAttr.EAttrState)
-  }, function()
-    local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
+  self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
+    local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
     if stateId ~= Z.PbEnum("EActorState", "ActorStateFishing") then
       self:CloseMgr()
       self.fishingVM_.QuitFishingUI()
     end
   end)
+  self.cancelResourse = Z.CancelSource.Rent()
 end
 
 function FishingMgr:unBindEvent()
@@ -21,8 +20,10 @@ function FishingMgr:unBindEvent()
   Z.EventMgr:Remove(Z.ConstValue.Fishing.FishingRodBreak, self.fishingRodBreak, self)
   Z.EventMgr:Remove(Z.ConstValue.Fishing.FishRunAway, self.fishRunAway, self)
   Z.EventMgr:Remove(Z.ConstValue.Fishing.FishingStateChange, self.setFishingStage, self)
-  Z.EntityMgr:UnbindEntityLuaAttrWater(Z.EntityMgr.PlayerUuid, self.playerActorStateWatcher)
-  self.playerActorStateWatcher = nil
+  if self.playerStateWatcher ~= nil then
+    self.playerStateWatcher:Dispose()
+    self.playerStateWatcher = nil
+  end
 end
 
 function FishingMgr:CloseMgr()
@@ -30,6 +31,7 @@ function FishingMgr:CloseMgr()
     self:ClearTimer()
     self:unBindEvent()
     self.isFishing_ = false
+    self.cancelResourse:Recycle()
   end
 end
 
@@ -44,17 +46,17 @@ function FishingMgr:OpenMgr()
 end
 
 function FishingMgr:fishingSuccess()
-  self.fishingVM_.FishingSuccess()
+  self.fishingVM_.FishingSuccess(self.cancelResourse:CreateToken())
   self:ClearTimer()
 end
 
 function FishingMgr:fishingRodBreak()
-  self.fishingVM_.FishingRodBreak()
+  self.fishingVM_.FishingRodBreak(self.cancelResourse:CreateToken())
   self:ClearTimer()
 end
 
 function FishingMgr:fishRunAway()
-  self.fishingVM_.FishRunAway()
+  self.fishingVM_.FishRunAway(self.cancelResourse:CreateToken())
   self:ClearTimer()
 end
 

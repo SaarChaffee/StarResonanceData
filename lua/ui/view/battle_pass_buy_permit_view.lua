@@ -1,6 +1,8 @@
 local super = require("ui.ui_view_base")
 local BattlePass_buy_permitView = class("BattlePass_buy_permitView", super)
 local awardPreviewVm = Z.VMMgr.GetVM("awardpreview")
+local loopScrollRect_ = require("ui.component.loop_grid_view")
+local battle_pass_privileges_item = require("ui/component/battle_pass/battle_pass_privileges_item")
 local itemClass = require("common.item_binder")
 local BattlePassAwardTypeEnum = {
   Normal = 1,
@@ -14,19 +16,47 @@ function BattlePass_buy_permitView:ctor(parent)
 end
 
 function BattlePass_buy_permitView:OnActive()
+  Z.AudioMgr:Play("UI_Event_BP_Show")
+  self:onStartAnimShow()
   Z.UnrealSceneMgr:InitSceneCamera()
   self.battlePassVM_ = Z.VMMgr.GetVM("battlepass")
   self.battlePassData_ = Z.DataMgr.Get("battlepass_data")
+  self.shopVm_ = Z.VMMgr.GetVM("shop")
+  self.paymentData_ = Z.DataMgr.Get("payment_data")
+  self.paymentVm_ = Z.VMMgr.GetVM("payment")
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   Z.UnrealSceneMgr:SwicthVirtualStyle(E.UnrealSceneSlantingLightStyle.Turquoise)
   Z.UnrealSceneMgr:AsyncSetBackGround(E.SeasonUnRealBgPath.Scene)
+  Z.UnrealSceneMgr:SetUnrealCameraScreenXY(Vector2.New(0.52, 0.5))
+  Z.UnrealSceneMgr:DoCameraAnim("battlePassCardFocusBoby")
+  self:onInitModel()
   self:initWidgets()
   self:initParam()
   self:bindWatchers()
-  self:startAnimationShow()
+  self:initView()
+end
+
+function BattlePass_buy_permitView:initView()
+  if Z.IsPCUI then
+    self.battlePassLoopScrollRect_ = loopScrollRect_.new(self, self.uiBinder.loop_gird_privileges, battle_pass_privileges_item, "bpcard_privilege_tpl_pc")
+  else
+    self.battlePassLoopScrollRect_ = loopScrollRect_.new(self, self.uiBinder.loop_gird_privileges, battle_pass_privileges_item, "bpcard_privilege_tpl")
+  end
+  self.battlePassLoopScrollRect_:Init({})
+  self:refreshLoopScrollRect()
+end
+
+function BattlePass_buy_permitView:refreshLoopScrollRect()
+  local privilegesData = self.battlePassVM_.GetBpCardPrivilegesData(self.battlePassData_.CurBattlePassData.id)
+  if not self.battlePassLoopScrollRect_ or table.zcount(privilegesData) <= 0 then
+    return
+  end
+  self.battlePassLoopScrollRect_:RefreshListView(privilegesData)
 end
 
 function BattlePass_buy_permitView:OnDeActive()
+  self.battlePassLoopScrollRect_:UnInit()
+  self.battlePassLoopScrollRect_ = nil
   self:removeShowAwardItem()
   self:unBindWatchers()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
@@ -36,27 +66,6 @@ function BattlePass_buy_permitView:OnDeActive()
   end
 end
 
-function BattlePass_buy_permitView:onInitModel()
-  Z.CoroUtil.create_coro_xpcall(function()
-    Z.Delay(0.1, ZUtil.ZCancelSource.NeverCancelToken)
-    local rootCanvas = Z.UIRoot.RootCanvas.transform
-    local rate = rootCanvas.localScale.x / 0.00925
-    local pos = Z.UnrealSceneMgr:GetTransPos("pos")
-    pos.x = pos.x - 1.5
-    local screenPosition = Z.UIRoot.UICam:WorldToScreenPoint(self.model_node.position)
-    local newScreenPos = Vector3.New(screenPosition.x, screenPosition.y, Z.NumTools.Distance(Z.CameraMgr.MainCamera.transform.position, pos))
-    local worldPosition = Z.CameraMgr.MainCamera:ScreenToWorldPoint(newScreenPos)
-    self.playerModel_ = Z.UnrealSceneMgr:GetCachePlayerModel(function(model)
-      model:SetAttrGoPosition(worldPosition)
-      model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, 165, 0)))
-      model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
-      model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
-      local modelScale = model:GetLuaAttrGoScale()
-      model:SetLuaAttrGoScale(modelScale * rate)
-    end)
-  end)()
-end
-
 function BattlePass_buy_permitView:OnRefresh()
   self:setViewInfo()
   self:setPayBtnState()
@@ -64,18 +73,17 @@ function BattlePass_buy_permitView:OnRefresh()
 end
 
 function BattlePass_buy_permitView:bindWatchers()
-  function self.battlePassDataUpDateFunc_(container, dirtys)
-    if dirtys and (dirtys.buyNormalPas or dirtys.buyPrimePass) then
-      self:setPayBtnState()
-    end
+  Z.EventMgr:Add(Z.ConstValue.BattlePassDataUpdate, self.onBattlePassDataUpDateFunc, self)
+end
+
+function BattlePass_buy_permitView:onBattlePassDataUpDateFunc(dirtyTable)
+  if dirtyTable.buyNormalPas or dirtyTable.buyPrimePass then
+    self:setPayBtnState()
   end
-  
-  Z.ContainerMgr.CharSerialize.seasonCenter.battlePass.Watcher:RegWatcher(self.battlePassDataUpDateFunc_)
 end
 
 function BattlePass_buy_permitView:unBindWatchers()
-  Z.ContainerMgr.CharSerialize.seasonCenter.battlePass.Watcher:UnregWatcher(self.battlePassDataUpDateFunc_)
-  self.battlePassDataUpDateFunc_ = nil
+  Z.EventMgr:Remove(Z.ConstValue.BattlePassDataUpdate, self.onBattlePassDataUpDateFunc, self)
 end
 
 function BattlePass_buy_permitView:OnDestory()
@@ -83,9 +91,8 @@ function BattlePass_buy_permitView:OnDestory()
 end
 
 function BattlePass_buy_permitView:initParam()
-  self.battlePassContainer_ = self.battlePassVM_.GetBattlePassContainer()
-  self.battlePassInfo_ = self.battlePassVM_.GetBattlePassGlobalTableInfo(self.battlePassContainer_.id)
-  self.payInfo_ = self.battlePassVM_.GetBattlePassPayId(self.battlePassContainer_.id)
+  self.battlePassInfo_ = self.battlePassVM_.GetBattlePassGlobalTableInfo(self.battlePassData_.CurBattlePassData.id)
+  self.payInfo_ = self.battlePassVM_.GetBattlePassPayId(self.battlePassData_.CurBattlePassData.id)
   self.itemUnit_ = {}
   self.itemClassTab_ = {}
 end
@@ -114,7 +121,7 @@ function BattlePass_buy_permitView:initWidgets()
     self:payBtnClick(E.EBattlePassPurchaseType.Normal)
   end)
   self:AddAsyncClick(self.pay_btn_2, function()
-    if self.battlePassContainer_.buyNormalPas then
+    if self.battlePassData_.CurBattlePassData.buyNormalPas then
       self:payBtnClick(E.EBattlePassPurchaseType.Discount)
     else
       self:payBtnClick(E.EBattlePassPurchaseType.Super)
@@ -129,26 +136,70 @@ function BattlePass_buy_permitView:setViewInfo()
   self.lab_up.text = Lang("primepassextralevel", {
     val = self.battlePassInfo_.PrimePassAddLevel
   })
-  self.fashion_name_lab.text = self.battlePassVM_.GetFashionName(self.battlePassContainer_.id)
+  self.fashion_name_lab.text = self.battlePassVM_.GetFashionName(self.battlePassData_.CurBattlePassData.id)
   self.lab_normal_name_.text = self.battlePassInfo_.NormalPassName
   self.lab_pro_name_.text = self.battlePassInfo_.PrimePassName
+  self.uiBinder.lab_normal_return.text = Lang("BpCardReturn", {
+    val = self.battlePassInfo_.PassRoi[1]
+  })
+  self.uiBinder.lab_perfection_return.text = Lang("BpCardReturn", {
+    val = self.battlePassInfo_.PassRoi[2]
+  })
+  local passPicture = string.split(self.battlePassInfo_.PassPicture, "=")
+  self.uiBinder.img_icon_normal:SetImage(passPicture[3])
+  self.uiBinder.img_icon_noble:SetImage(passPicture[4])
+  self.uiBinder.rimg_bg_normal:SetImage(passPicture[5])
+  self.uiBinder.rimg_bg_noble:SetImage(passPicture[6])
 end
 
 function BattlePass_buy_permitView:setPayBtnState()
-  if not (self.payInfo_ and next(self.payInfo_)) or not self.battlePassContainer_ then
+  if not (self.payInfo_ and next(self.payInfo_)) or table.zcount(self.battlePassData_.CurBattlePassData) == 0 then
     return
   end
-  self.money_lab_1.text = self.payInfo_.normalPayInfo.Price
-  self.money_lab_2.text = self.payInfo_.primePayInfo.Price
-  if self.battlePassContainer_.buyNormalPas and not self.battlePassContainer_.buyPrimePass then
-    self.money_lab_2.text = self.payInfo_.discountPayInfo.Price
+  local curBattleData = self.battlePassData_.CurBattlePassData
+  local normalProductId = self.paymentData_:GetProdctsName(self.payInfo_.normalPayInfo.Id)
+  local primePayData = self.payInfo_.primePayInfo
+  if curBattleData.buyNormalPas and not curBattleData.buyPrimePass then
+    primePayData = self.payInfo_.discountPayInfo
   end
-  self.pay_btn_1.interactable = not self.battlePassContainer_.buyNormalPas or not self.battlePassContainer_.buyPrimePass
-  self.pay_btn_1.IsDisabled = self.battlePassContainer_.buyNormalPas or self.battlePassContainer_.buyPrimePass
-  self.pay_btn_2.interactable = not self.battlePassContainer_.buyPrimePass
-  self.pay_btn_2.IsDisabled = self.battlePassContainer_.buyPrimePass
-  self.uiBinder.Ref:SetVisible(self.money_lab_1, self.battlePassContainer_.buyNormalPas ~= true and self.battlePassContainer_.buyPrimePass ~= true)
-  self.uiBinder.Ref:SetVisible(self.money_lab_2, not self.battlePassContainer_.buyPrimePass)
+  local primeProductId = self.paymentData_:GetProdctsName(primePayData.Id)
+  local prodctionId = {normalProductId, primeProductId}
+  local priceNumber = {
+    self.payInfo_.normalPayInfo.Price,
+    primePayData.Price
+  }
+  local textGroup = {
+    self.money_lab_1,
+    self.money_lab_2
+  }
+  self:setPrice(prodctionId, priceNumber, textGroup)
+  self.pay_btn_1.interactable = not curBattleData.buyNormalPas and not curBattleData.buyPrimePass
+  self.pay_btn_1.IsDisabled = curBattleData.buyNormalPas or curBattleData.buyPrimePass
+  self.pay_btn_2.interactable = not curBattleData.buyPrimePass
+  self.pay_btn_2.IsDisabled = curBattleData.buyPrimePass
+end
+
+function BattlePass_buy_permitView:setPrice(serverProductIds, priceNumber, showTextLab)
+  self.paymentVm_:GetProductionInfos(serverProductIds, function(data)
+    local currencySymbol = self.shopVm_.GetShopItemCurrencySymbol()
+    local showPrice = {}
+    if data ~= nil then
+      for index, value in ipairs(serverProductIds) do
+        if data[index] == nil then
+          showPrice[index] = currencySymbol .. priceNumber[index]
+        else
+          showPrice[index] = data[index].DisplayPrice
+        end
+      end
+    else
+      for index, value in ipairs(priceNumber) do
+        showPrice[index] = currencySymbol .. value[index]
+      end
+    end
+    for index, value in ipairs(showTextLab) do
+      value.text = showPrice[index]
+    end
+  end)
 end
 
 function BattlePass_buy_permitView:payBtnClick(payType)
@@ -164,7 +215,7 @@ function BattlePass_buy_permitView:payBtnClick(payType)
   else
     payId = self.payInfo_.discountPayInfo.Id
   end
-  self.battlePassVM_.AsyncPayment(payId)
+  self.paymentVm_:AsyncPayment(self.paymentVm_:GetPayType(), payId)
 end
 
 function BattlePass_buy_permitView:onModelDrag(eventData)
@@ -244,7 +295,37 @@ function BattlePass_buy_permitView:GetPrefabCacheData(path)
   return self.prefabcache_root:GetString(path)
 end
 
+function BattlePass_buy_permitView:onInitModel()
+  local clipName = ""
+  if Z.ContainerMgr.CharSerialize.charBase.gender == Z.PbEnum("EGender", "GenderMale") then
+    clipName = "as_m_base_emo_bowl"
+  else
+    clipName = "as_f_base_emo_goodbyef"
+  end
+  Z.CoroUtil.create_coro_xpcall(function()
+    Z.Delay(0.1, ZUtil.ZCancelSource.NeverCancelToken)
+    local rootCanvas = Z.UIRoot.RootCanvas.transform
+    local rate = rootCanvas.localScale.x / 0.00925
+    local pos = Z.UnrealSceneMgr:GetTransPos("pos")
+    self.playerModel_ = Z.UnrealSceneMgr:GetCachePlayerModel(function(model)
+      model:SetLuaAttr(Z.ModelAttr.EModelAnimOverrideByName, Z.AnimBaseData.Rent(clipName, Panda.ZAnim.EAnimBase.EIdle))
+      model:SetAttrGoPosition(pos)
+      model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, 180, 0)))
+      model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
+      model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
+      model:SetLuaAttrLookAtEnable(true)
+      local modelScale = model:GetLuaAttrGoScale()
+      model:SetLuaAttrGoScale(modelScale * rate)
+      self:initFashion(model)
+    end, function(model)
+      local fashionVm = Z.VMMgr.GetVM("fashion")
+      fashionVm.SetModelAutoLookatCamera(model)
+    end)
+  end)()
+end
+
 function BattlePass_buy_permitView:initFashion(model)
+  self.fashionZlist_ = self.battlePassVM_.SetPlayerFashion(self.battlePassData_.CurBattlePassData.id)
   if not self.fashionZlist_ then
     return
   end
@@ -262,23 +343,20 @@ function BattlePass_buy_permitView:setAllModelAttr(model, funcName, ...)
   model[funcName](model, table.unpack(arg))
 end
 
-function BattlePass_buy_permitView:startAnimationShow()
-  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_collection_eff)
-  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_perfection_eff)
-  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.nood_perfection_eff_loop)
-  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.nood_collection_eff_icon)
-  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.nood_perfection_eff_icon)
-  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
-  local cancelSourceToken = self.cancelSource:CreateToken()
-  self.uiBinder.anim:CoroPlayOnce("anim_bpcard_buy_permit_window", cancelSourceToken, function()
-    self.uiBinder.node_loop_eff:SetEffectGoVisible(true)
-    self.uiBinder.nood_perfection_eff_loop:SetEffectGoVisible(true)
-  end, function(err)
-    if err == ZUtil.ZCancelSource.CancelException then
-      return
-    end
-    logError(err)
-  end)
+function BattlePass_buy_permitView:initFashion(model)
+  self.fashionZlist_ = self.battlePassVM_.SetPlayerFashion(self.battlePassData_.CurBattlePassData.id)
+  if not self.fashionZlist_ then
+    return
+  end
+  self:setAllModelAttr(model, "SetLuaAttr", Z.LocalAttr.EWearFashion, table.unpack({
+    self.fashionZlist_
+  }))
+  self.fashionZlist_:Recycle()
+  self.fashionZlist_ = nil
+end
+
+function BattlePass_buy_permitView:onStartAnimShow()
+  self.uiBinder.anim:PlayOnce("anim_bpcard_buy_permit_window")
 end
 
 return BattlePass_buy_permitView

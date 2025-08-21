@@ -14,5 +14,6 @@ message TransferParam {
     int32 visualLayerConfigId = 6;
     string sceneGuid = 7;
     string connectGuid = 8;
+    int64 subSceneUuid = 9;
+    bool isRevive = 10;
 }
-

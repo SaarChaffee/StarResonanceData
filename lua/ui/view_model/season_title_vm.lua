@@ -175,7 +175,7 @@ function SeasonTitleVM.AsyncAdvanceSeasonMaxRankStart()
   local reply = worldProxy.AdvanceSeasonMaxRankStart(seasonTitleData.CancelSource:CreateToken())
   if SeasonTitleVM.CheckReply(reply) then
     local isHaveUnReceivedRankReward = SeasonTitleVM.IsHaveRedDot()
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.SeasonTitle, isHaveUnReceivedRankReward and 1 or 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.SeasonTitle, isHaveUnReceivedRankReward and 1 or 0)
     viewData.curSeasonRankStar = seasonTitleData:GetCurRankInfo().curRanKStar
     Z.UIMgr:OpenView("season_starlevel_popup", viewData)
     Z.EventMgr:Dispatch(Z.ConstValue.SeasonTitle.TitleRankStarUpgrade)
@@ -187,23 +187,14 @@ end
 function SeasonTitleVM.AsyncReceiveSeasonRankAward(rankStar)
   local seasonTitleData = Z.DataMgr.Get("season_title_data")
   local reply = worldProxy.ReceiveSeasonRankAward(rankStar, seasonTitleData.CancelSource:CreateToken())
-  if SeasonTitleVM.CheckReply(reply) then
+  if reply.items ~= nil then
+    local itemShowVM = Z.VMMgr.GetVM("item_show")
+    itemShowVM.OpenItemShowViewByItems(reply.items)
+  end
+  if SeasonTitleVM.CheckReply(reply.errCode) then
     local isHaveUnReceivedRankReward = SeasonTitleVM.IsHaveRedDot()
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.SeasonTitle, isHaveUnReceivedRankReward and 1 or 0)
-    local seasonRankTableMgr = Z.TableMgr.GetTable("SeasonRankTableMgr")
-    local seasonRankConfig = seasonRankTableMgr.GetRow(rankStar)
-    if seasonRankConfig then
-      local rewardIds = Z.VMMgr.GetVM("awardpreview").GetAllAwardPreListByIds(seasonRankConfig.RewardId)
-      local data = {}
-      for _, value in ipairs(rewardIds) do
-        data[#data + 1] = {
-          configId = value.awardId,
-          count = value.awardNum
-        }
-      end
-      Z.VMMgr.GetVM("item_show").OpenItemShowView(data)
-      Z.EventMgr:Dispatch(Z.ConstValue.SeasonTitle.ReceivedRankReward)
-    end
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.SeasonTitle, isHaveUnReceivedRankReward and 1 or 0)
+    Z.EventMgr:Dispatch(Z.ConstValue.SeasonTitle.ReceivedRankReward)
     return true
   end
   return false

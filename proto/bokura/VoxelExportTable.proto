@@ -13,8 +13,6 @@ message VoxelExportTableBase {
     bool HasTerrain = 635;
     string TerrainFilePath = 1538;
 }
-
 message VoxelExportTableMgr {
-    map<int32, .bokura.VoxelExportTableBase> datas = 1;
+    repeated bokura.VoxelExportTableMgr.DatasEntry datas = 1;
 }
-

@@ -119,7 +119,7 @@ end
 
 function Helpsys_windowView:tabViewCallback(data)
   self:initBottomView(data)
-  Z.RedPointMgr.RefreshServerNodeCount(E.RedType.HelpsysItemRed .. data.Id, 0)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.HelpsysItemRed .. data.Id, 0)
 end
 
 function Helpsys_windowView:initBottomClick()

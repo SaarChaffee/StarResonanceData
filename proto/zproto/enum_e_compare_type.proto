@@ -11,4 +11,3 @@ enum ECompareType {
     ELess = 5;
     ELessAndEqual = 6;
 }
-

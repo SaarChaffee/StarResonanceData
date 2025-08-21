@@ -41,7 +41,17 @@ function FishingItemSelectLoopItem:refreshUI()
     if isFishBait then
       self.uiBinder.fishing_item_round.lab_content.text = self.itemsVM_.GetItemTotalCount(self.data.configId)
     elseif isFishingRod then
-      self.uiBinder.fishing_item_round.img_on.fillAmount = self.fishingData_:GetFishingRodDurability(self.data.uuid) / 100
+      local rodConfigId_ = self.itemsVM_.GetItemTabDataByUuid(self.data.uuid).Id
+      local fishingRodRow_ = Z.TableMgr.GetTable("FishingRodTableMgr").GetRow(rodConfigId_)
+      if not fishingRodRow_ then
+        return
+      end
+      local res = fishingRodRow_.Durability
+      local fillAmount = 0
+      if res ~= 0 then
+        fillAmount = self.fishingData_:GetFishingRodDurability(self.data.uuid) / res
+      end
+      self.uiBinder.fishing_item_round.img_on.fillAmount = fillAmount
     end
     local isSelect_ = false
     if isFishBait then
@@ -54,10 +64,10 @@ function FishingItemSelectLoopItem:refreshUI()
     self.uiBinder.btn_use:AddListener(function()
       if isFishBait then
         self.parentUIView:OnItemSelect(self.data.configId)
-        Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvnet, string.zconcat(E.SteerGuideEventType.Fishing, "=", 1))
+        Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvent, string.zconcat(E.SteerGuideEventType.Fishing, "=", 1))
       elseif isFishingRod then
         self.parentUIView:OnItemSelect(self.data.uuid)
-        Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvnet, string.zconcat(E.SteerGuideEventType.Fishing, "=", 2))
+        Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnGuideEvent, string.zconcat(E.SteerGuideEventType.Fishing, "=", 2))
       end
     end)
   end

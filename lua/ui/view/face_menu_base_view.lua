@@ -6,9 +6,10 @@ local loopGridView = require("ui.component.loop_grid_view")
 local loopListView = require("ui.component.loop_list_view")
 local styleItem = require("ui.component.face.style_icon_loop_item")
 local unlockItem = require("ui.component.face.face_unlock_loop_item")
+local faceRed = require("rednode.face_red")
 
 function FaceMenuBaseView:ctor(parentView, viewConfigKey, assetPath, cacheLv)
-  super.ctor(self, viewConfigKey, assetPath, cacheLv)
+  super.ctor(self, viewConfigKey, assetPath, cacheLv, true)
   self.parentView_ = parentView
   self.faceVM_ = Z.VMMgr.GetVM("face")
   self.faceMenuVM_ = Z.VMMgr.GetVM("face_menu")
@@ -38,29 +39,38 @@ end
 
 function FaceMenuBaseView:OnActive()
   self.parentView_:SetScrollContent(self.uiBinder.Trans)
+  self.uiBinder.Trans:SetWidth(Z.IsPCUI and 316 or 424)
   if self:IsAllowDyeing() then
-    self.colorPalette_:Init(self.uiBinder.cont_palette)
+    self.colorPalette_:Init(self.uiBinder.cont_palette, Z.IsPCUI)
     self.colorPalette_:SetColorChangeCB(function(hsv)
       self:OnColorChange(hsv)
     end)
     self.colorPalette_:SetColorStartChangeCB(function()
       self:ColorStartChangeCB()
     end)
+    self.colorPalette_:SetColorEndChangeCB(function()
+      self.faceVM_.CacheFaceData()
+    end)
     self.colorPalette_:SetColorResetCB(function()
-      if not self.colorAttr_ then
+      local colorAttr = self.colorAttr_
+      if not self.colorAttr_ and self.colorAttrList_ then
+        colorAttr = self.colorAttrList_[1]
+      end
+      if not colorAttr then
         return
       end
-      self.faceVM_.ResetToServerData(self.colorAttr_, self.colorAttrIndex_)
-      local color = self.faceVM_.GetFaceOptionByAttrType(self.colorAttr_, self.colorAttrIndex_)
+      self.faceVM_.ResetToServerData(colorAttr, self.colorAttrIndex_)
+      local color = self.faceVM_.GetFaceOptionByAttrType(colorAttr, self.colorAttrIndex_)
       self.colorPalette_:SetServerColor(color)
       self.colorPalette_:ResetSelectHSVWithoutNotify()
     end)
     self.colorPalette_:SetResetBtn(not self.isHideResetBtn_)
   end
   if self:isAllowStyleSelect() then
-    self.styleScrollRect_ = loopGridView.new(self, self.uiBinder.node_style.loopscroll_style, styleItem, "face_style_item_tpl")
+    self.styleScrollRect_ = loopGridView.new(self, self.uiBinder.node_style.loopscroll_style, styleItem, "face_style_item_tpl", true)
     self.unlockScrollRect_ = loopListView.new(self, self.uiBinder.node_style.loopscroll_unlock, unlockItem, "com_item_square_8")
-    self.styleScrollRect_:Init(self.faceMenuVM_.GetFaceStyleDataListByAttr(self.styleAttr_, self.styleAttrIndex_))
+    self.styleLoopItemData_ = self.faceMenuVM_.GetFaceStyleDataListByAttr(self.styleAttr_, self.styleAttrIndex_)
+    self.styleScrollRect_:Init(self.styleLoopItemData_)
     self.unlockScrollRect_:Init({})
     self:refreshFaceIdSelect()
     local faceId = self.faceVM_.GetFaceOptionByAttrType(self.styleAttr_, self.styleAttrIndex_)
@@ -79,6 +89,7 @@ function FaceMenuBaseView:OnDeActive()
     self.colorPalette_:UnInit()
   end
   Z.EventMgr:Remove(Z.ConstValue.Face.FaceRefreshMenuView, self.refreshFaceMenuView, self)
+  Z.EventMgr:Remove(Z.ConstValue.Face.FaceOptionCanUnlock, self.refreshStyleRed, self)
   if self.styleScrollRect_ then
     self.styleScrollRect_:UnInit()
     self.styleScrollRect_ = nil
@@ -89,67 +100,75 @@ function FaceMenuBaseView:OnDeActive()
   end
 end
 
-function FaceMenuBaseView:InitSlider(commonSlider, value, max, min, scale)
+function FaceMenuBaseView:InitSlider(commonSlider, type, paramIndex)
+  if not type then
+    return
+  end
+  local attrData = self.faceData_.FaceDef.ATTR_TABLE[type]
+  paramIndex = paramIndex or 1
+  local optionEnum = attrData.OptionList[paramIndex]
+  local faceOptionTable = Z.TableMgr.GetTable("FaceOptionTableMgr").GetRow(optionEnum)
+  if not faceOptionTable then
+    return
+  end
+  local value = self.faceVM_.GetFaceOptionByAttrType(type, paramIndex)
   local valueMin = -1
   local valueMax = 1
-  min = min or 10 * valueMin
-  max = max or 10 * valueMax
-  commonSlider.slider_sens.maxValue = max
-  commonSlider.slider_sens.minValue = min
-  self:SetSliderValueWithoutNotify(commonSlider, value, scale)
-end
-
-function FaceMenuBaseView:SetSliderValueWithoutNotify(commonSlider, value, scale)
-  scale = scale or 10
-  value = value * scale
-  commonSlider.slider_sens:SetValueWithoutNotify(value)
+  if faceOptionTable.Range and table.zcount(faceOptionTable.Range) > 0 then
+    valueMin = faceOptionTable.Range[1]
+    valueMax = faceOptionTable.Range[2]
+    value = math.max(valueMin, value)
+    value = math.min(valueMax, value)
+  end
+  local valueProportion = (value - valueMin) / (valueMax - valueMin)
+  local showMin = -10
+  local showMax = 10
+  if faceOptionTable.ShowRang and 0 < table.zcount(faceOptionTable.ShowRang) then
+    showMin = faceOptionTable.ShowRang[1]
+    showMax = faceOptionTable.ShowRang[2]
+  end
+  local showValue = valueProportion * (showMax - showMin) + showMin
+  commonSlider.slider_sens.maxValue = showMax
+  commonSlider.slider_sens.minValue = showMin
+  commonSlider.slider_sens:SetValueWithoutNotify(showValue)
   if commonSlider.lab_value then
-    commonSlider.lab_value.text = string.format("%d", math.floor(value + 0.5))
+    commonSlider.lab_value.text = string.format("%d", math.floor(showValue + 0.5))
   end
 end
 
-function FaceMenuBaseView:GetValueInRang(value, attrType, paramIndex, max, min)
-  if attrType then
-    local attrData = self.faceData_.FaceDef.ATTR_TABLE[attrType]
-    paramIndex = paramIndex or 1
-    local optionEnum = attrData.OptionList[paramIndex]
-    local faceOptionTable = Z.TableMgr.GetTable("FaceOptionTableMgr").GetRow(optionEnum)
-    if faceOptionTable and faceOptionTable.Range and table.zcount(faceOptionTable.Range) > 0 then
-      local valueMin = faceOptionTable.Range[1]
-      local valueMax = faceOptionTable.Range[2]
-      value = math.max(valueMin, value)
-      value = math.min(valueMax, value)
-      min = min or -1
-      max = max or 1
-      value = (value - valueMin) / (valueMax - valueMin) * (max - min) + min
-    end
+function FaceMenuBaseView:SetFaceAttrValueByShowValue(showValue, attrType, paramIndex)
+  if not attrType then
+    return
   end
-  return value
-end
-
-function FaceMenuBaseView:CheckValueRang(value, attrType, paramIndex, max, min)
-  if attrType then
-    local attrData = self.faceData_.FaceDef.ATTR_TABLE[attrType]
-    paramIndex = paramIndex or 1
-    local optionEnum = attrData.OptionList[paramIndex]
-    local faceOptionTable = Z.TableMgr.GetTable("FaceOptionTableMgr").GetRow(optionEnum)
-    if faceOptionTable and faceOptionTable.Range and table.zcount(faceOptionTable.Range) > 0 then
-      local valueMin = faceOptionTable.Range[1] * 10
-      local valueMax = faceOptionTable.Range[2] * 10
-      min = min or -10
-      max = max or 10
-      value = (valueMax - valueMin) * (value - min) / (max - min) + valueMin
-    end
+  local attrData = self.faceData_.FaceDef.ATTR_TABLE[attrType]
+  paramIndex = paramIndex or 1
+  local optionEnum = attrData.OptionList[paramIndex]
+  local faceOptionTable = Z.TableMgr.GetTable("FaceOptionTableMgr").GetRow(optionEnum)
+  if not faceOptionTable then
+    return
   end
-  return value
+  local showMin = -10
+  local showMax = 10
+  if faceOptionTable.ShowRang and table.zcount(faceOptionTable.ShowRang) > 0 then
+    showMin = faceOptionTable.ShowRang[1]
+    showMax = faceOptionTable.ShowRang[2]
+  end
+  local valueProportion = (showValue - showMin) / (showMax - showMin)
+  local valueMin = -1
+  local valueMax = 1
+  if faceOptionTable.Range and 0 < table.zcount(faceOptionTable.Range) then
+    valueMin = faceOptionTable.Range[1]
+    valueMax = faceOptionTable.Range[2]
+  end
+  local realValue = (valueMax - valueMin) * valueProportion + valueMin
+  self.faceVM_.SetFaceOptionByAttrType(attrType, realValue, paramIndex)
 end
 
 function FaceMenuBaseView:OnSliderValueChange(sliderContainer, attrType, value)
   if sliderContainer.lab_value then
     sliderContainer.lab_value.text = string.format("%d", math.floor(value + 0.5))
   end
-  value = self:CheckValueRang(value, attrType)
-  self.faceVM_.SetFaceOptionByAttrType(attrType, value / 10)
+  self:SetFaceAttrValueByShowValue(value, attrType)
 end
 
 function FaceMenuBaseView:OnClickFaceStyle(faceId)
@@ -158,6 +177,7 @@ function FaceMenuBaseView:OnClickFaceStyle(faceId)
     return
   end
   self.faceVM_.SetFaceOptionByAttrType(self.styleAttr_, faceId, self.styleAttrIndex_)
+  self.faceVM_.CacheFaceData()
 end
 
 function FaceMenuBaseView:OnSelectFaceStyle(faceId)
@@ -219,6 +239,8 @@ end
 function FaceMenuBaseView:refreshUnlockUIByFaceId(id, unlock)
   local isUnlocked = self.faceData_:GetFaceStyleItemIsUnlocked(id) or unlock
   self.uiBinder.node_style.Ref:SetVisible(self.uiBinder.node_style.node_unlock, not isUnlocked)
+  self.selectedId_ = id
+  self:refreshStyleRed()
   if isUnlocked then
     self.unlockScrollRect_:RefreshListView({}, false)
   else
@@ -227,10 +249,28 @@ function FaceMenuBaseView:refreshUnlockUIByFaceId(id, unlock)
   end
 end
 
+function FaceMenuBaseView:refreshStyleRed()
+  if self.uiBinder.node_style and self.uiBinder.node_style.node_unlock_red then
+    self.uiBinder.node_style.Ref:SetVisible(self.uiBinder.node_style.node_unlock_red, false)
+  end
+  if self.selectedId_ and self.selectedId_ > 0 then
+    local faceRow = Z.TableMgr.GetRow("FaceTableMgr", self.selectedId_)
+    if faceRow then
+      local isCheckRed = faceRed.IsShowFaceRedType(faceRow.Type)
+      local isUnlocked = self.faceData_:GetFaceStyleItemIsUnlocked(faceRow.Id)
+      if isCheckRed and not isUnlocked and 0 < #faceRow.Unlock then
+        local isCanUnlock = faceRed.CheckFaceCanUnlock(faceRow.Unlock)
+        self.uiBinder.node_style.Ref:SetVisible(self.uiBinder.node_style.node_unlock_red, isCanUnlock)
+      end
+    end
+  end
+end
+
 function FaceMenuBaseView:BindEvents()
   if self:isAllowStyleSelect() then
     Z.EventMgr:Add(Z.ConstValue.FaceStyleUnlock, self.onFaceStyleUnlock, self)
   end
+  Z.EventMgr:Add(Z.ConstValue.Face.FaceOptionCanUnlock, self.refreshStyleRed, self)
   Z.EventMgr:Add(Z.ConstValue.Face.FaceRefreshMenuView, self.refreshFaceMenuView, self)
 end
 
@@ -262,6 +302,7 @@ function FaceMenuBaseView:InitSliderFunc(slider, clickFunc, modelAttr, isDrag)
   end)
   slider:AddDragEndListener(function(value)
     isDrag = false
+    self.faceVM_.CacheFaceData()
   end)
 end
 

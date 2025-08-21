@@ -8,4 +8,3 @@ message PlaceHolder {
     zproto.PlaceHolderType type = 1;
     bytes bytesContent = 2;
 }
-

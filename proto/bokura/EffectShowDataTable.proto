@@ -26,8 +26,6 @@ message EffectShowDataTableBase {
     bool IsTargetPos = 291;
     bool BindTarget = 714;
 }
-
 message EffectShowDataTableMgr {
-    map<int64, .bokura.EffectShowDataTableBase> datas = 1;
+    repeated bokura.EffectShowDataTableMgr.DatasEntry datas = 1;
 }
-

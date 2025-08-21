@@ -12,16 +12,12 @@ function GashaActivityLoopItem:OnRefresh(data)
   self.uiBinder.anim:Play(Z.DOTweenAnimType.Open)
   self.uiBinder.img_vehicle_on:SetImage(self.data.Sticker[1])
   self.uiBinder.img_vehicle_off:SetImage(self.data.Sticker[2])
-  local hasLimit = false
   local timerId = data.TimerId
-  local timerConfig = Z.TableMgr.GetTable("TimerTableMgr").GetRow(timerId)
-  if not timerConfig then
-    hasLimit = false
-  elseif timerConfig.endtime and string.len(timerConfig.endtime) > 0 then
-    hasLimit = true
-  end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.nodeLimit1, hasLimit)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.nodeLimit2, hasLimit)
+  local hasLimit = Z.TimeTools.GetCycleStartEndTimeByTimeId(timerId)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.nodeLimit1, hasLimit and self.data.BannerTips ~= "")
+  self.uiBinder.Ref:SetVisible(self.uiBinder.nodeLimit2, hasLimit and self.data.BannerTips ~= "")
+  self.uiBinder.lab_tips_1.text = self.data.BannerTips
+  self.uiBinder.lab_tips_2.text = self.data.BannerTips
 end
 
 function GashaActivityLoopItem:OnSelected(isSelected)

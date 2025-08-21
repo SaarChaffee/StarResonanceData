@@ -16,8 +16,6 @@ message GMTableBase {
     mlstring_array CommandOrParameterRemark = 1184;
     bool AuToClose = 898;
 }
-
 message GMTableMgr {
-    map<int32, .bokura.GMTableBase> datas = 1;
+    repeated bokura.GMTableMgr.DatasEntry datas = 1;
 }
-

@@ -79,6 +79,12 @@ function BagSecondClassLoopItem:OnSelected(isSelected, isClick)
   self.parent:OnItemSizeChanged(self.Index)
 end
 
+function BagSecondClassLoopItem:OnPointerClick(go, eventData)
+  if Z.IsPCUI then
+    self.parent.UIView:OnPlayAnim(3)
+  end
+end
+
 function BagSecondClassLoopItem:OnStartPlayAnim()
 end
 

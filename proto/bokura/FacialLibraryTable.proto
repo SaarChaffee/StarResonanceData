@@ -20,8 +20,6 @@ message FacialLibraryTableBase {
     string ADJ_Face = 1054;
     string PreviewPicture = 981;
 }
-
 message FacialLibraryTableMgr {
-    map<int32, .bokura.FacialLibraryTableBase> datas = 1;
+    repeated bokura.FacialLibraryTableMgr.DatasEntry datas = 1;
 }
-

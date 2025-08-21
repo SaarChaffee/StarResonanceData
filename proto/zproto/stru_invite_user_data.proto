@@ -7,4 +7,3 @@ import "stru_avatar_info.proto";
 message InviteUserData {
     zproto.AvatarInfo avatarInfo = 1;
 }
-

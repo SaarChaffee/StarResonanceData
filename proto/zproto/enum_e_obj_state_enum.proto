@@ -10,4 +10,3 @@ enum EObjStateEnum {
     EObjStateBattle = 4;
     EObjStateNotVisible = 5;
 }
-

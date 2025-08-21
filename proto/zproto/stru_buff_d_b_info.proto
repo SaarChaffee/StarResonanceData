@@ -7,7 +7,5 @@ import "stru_dirty_mask.proto";
 
 message BuffDBInfo {
     uint32 maxID = 1;
-    map<uint32, .zproto.BuffDBData> allBuffDbData = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.BuffDBInfo.AllBuffDbDataEntry allBuffDbData = 2;
 }
-

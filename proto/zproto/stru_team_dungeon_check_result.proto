@@ -4,6 +4,5 @@ package zproto;
 
 message TeamDungeonCheckResult {
     int32 dungeonId = 1;
-    map<int64, int32> checkResult = 2;
+    repeated zproto.TeamDungeonCheckResult.CheckResultEntry checkResult = 2;
 }
-

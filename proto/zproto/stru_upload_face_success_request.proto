@@ -5,4 +5,3 @@ package zproto;
 message UploadFaceSuccessRequest {
     string faceCosUrl = 1;
 }
-

@@ -9,8 +9,6 @@ message GlobalTableBase {
     string Id = 1463;
     mlstring Value = 616;
 }
-
 message GlobalTableMgr {
-    map<int32, .bokura.GlobalTableBase> datas = 1;
+    repeated bokura.GlobalTableMgr.DatasEntry datas = 1;
 }
-

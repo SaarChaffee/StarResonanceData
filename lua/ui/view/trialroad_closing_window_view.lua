@@ -10,7 +10,7 @@ function Trialroad_closing_windowView:ctor()
 end
 
 function Trialroad_closing_windowView:OnActive()
-  Z.AudioMgr:Play("sys_player_enviroreso_in")
+  Z.AudioMgr:Play("UI_Event_Dungeon_Victory")
   self.dungeonId_ = Z.StageMgr.GetCurrentDungeonId()
   self.dungeonData_ = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.dungeonId_)
   self.trialroadVM_ = Z.VMMgr.GetVM("trialroad")
@@ -19,6 +19,8 @@ function Trialroad_closing_windowView:OnActive()
     self.trialroadVM_.CloseSettlementSuccessWindow()
   end)
   self.uiBinder.scenemask:SetSceneMaskByKey(self.SceneMaskKey)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff)
+  self.uiBinder.node_eff:SetEffectGoVisible(true)
   self.uiBinder.anim:PlayOnce("anim_trialroad_closing_window_an")
   self.taskListView_ = loopListView.new(self, self.uiBinder.loop_item, trialroad_task_loop_item, "trialroad_closing_task_tpl")
   self.taskListView_:Init({})
@@ -40,6 +42,8 @@ function Trialroad_closing_windowView:OnDeActive()
   self.taskListView_:UnInit()
   self.taskListView_ = nil
   Z.UITimelineDisplay:ClearTimeLine()
+  self.uiBinder.node_eff:SetEffectGoVisible(false)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_eff)
 end
 
 function Trialroad_closing_windowView:OnRefresh()

@@ -21,8 +21,6 @@ message SceneTagTableBase {
     int32 MiniShow = 591;
     mlstring Description = 75;
 }
-
 message SceneTagTableMgr {
-    map<int32, .bokura.SceneTagTableBase> datas = 1;
+    repeated bokura.SceneTagTableMgr.DatasEntry datas = 1;
 }
-

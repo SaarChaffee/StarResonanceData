@@ -9,19 +9,17 @@ end
 local events = {
   QUIT_GAME_NOTICE = function(quitType)
     logGreen("QUIT_GAME_NOTICE, Type is {0}", tostring(quitType))
-    Z.DialogViewDataMgr:OpenOKDialog(Lang("QuitGameNotice"), function()
-      Z.DialogViewDataMgr:CloseDialogView()
+    Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.OperationCenter, E.ESysDialogOperationCenterOrder.Normal, nil, Lang("QuitGameNotice"), function()
       Z.GameContext.QuitGame()
-    end, E.EDialogViewDataType.System, true)
+    end)
   end,
   ANTI_ADDICTION_NOTICE = function(isForceClose, content, title, duration)
     logGreen("ANTI_ADDICTION_NOTICE, isForceClose={0}, content={1}, title={2}, duration={3}", tostring(isForceClose), content, title, tostring(duration))
-    Z.DialogViewDataMgr:OpenOKDialogWithTitle(title, content, function()
-      Z.DialogViewDataMgr:CloseDialogView()
+    Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.OperationCenter, E.ESysDialogOperationCenterOrder.Normal, title, content, function()
       if isForceClose then
         Z.GameContext.QuitGame()
       end
-    end, E.EDialogViewDataType.System, true)
+    end)
   end,
   ON_AUTO_LOGIN = function(data)
     local loginVM = Z.VMMgr.GetVM("login")
@@ -33,6 +31,8 @@ local events = {
   end,
   ON_LOGOUT = function(data)
     logGreen("SDK logout ")
+    local loginVM = Z.VMMgr.GetVM("login")
+    loginVM:Logout(false)
   end,
   ON_VISUAL_LAYER_CHANGED = function()
     local deadVm = Z.VMMgr.GetVM("dead")
@@ -41,7 +41,7 @@ local events = {
     else
       Z.UIMgr:GotoMainView()
     end
-    Z.ServiceMgr:OnVisualLayerChange()
+    Z.ServiceMgr.OnVisualLayerChange()
     Z.EventMgr:Dispatch(Z.ConstValue.VisualLayerChange)
   end,
   DAGAME_SKILLCOUNT = function(count)
@@ -56,11 +56,13 @@ local events = {
       gmVM.SendCmd(Command, param, tagetId)
     end
   end,
-  DAGAME_DATA = function(data, count)
-    Z.VMMgr.GetVM("damage").SetGamadeData(data, count)
+  DAMAGE_DATA = function(data, count)
+    local dmgVm = Z.VMMgr.GetVM("damage")
+    dmgVm.SetDamageData(data, count)
   end,
-  ON_DAGAME_BUFF = function(buffData)
-    Z.VMMgr.GetVM("damage").SetBuffData(buffData)
+  ON_DAMAGE_BUFF = function(buffData)
+    local dmgVm = Z.VMMgr.GetVM("damage")
+    dmgVm.SetBuffData(buffData)
   end,
   ON_NORMAL_HIT_BUFF = function(buffData)
     Z.EventMgr:Dispatch(Z.ConstValue.Camera.HurtEvent)
@@ -74,10 +76,6 @@ local events = {
       local charID = entityVm.UuidToEntId(uuidList[0])
       multActionVM.SetInviteId(charID)
     end
-  end,
-  ON_UNREALSCENE_INFO = function(unRealSceneList)
-    local planetmemoryVM = Z.VMMgr.GetVM("planetmemory")
-    planetmemoryVM.RefPlanetmemoryMainUI(unRealSceneList)
   end,
   ON_MULTACTION_INFO = function(vOrigId, vActionId)
     local multActionVM = Z.VMMgr.GetVM("multaction")
@@ -257,9 +255,9 @@ local events = {
     local vm = Z.VMMgr.GetVM("talk_model")
     vm.CloseModelTalk(isForce)
   end,
-  ON_PLAY_CUTSCENE = function(cutsceneId, isInFlow)
+  ON_PLAY_CUTSCENE = function(cutsceneId, isInFlow, skipType)
     local vm = Z.VMMgr.GetVM("cutscene")
-    vm.OnPlayCutscene(cutsceneId, isInFlow)
+    vm.OnPlayCutscene(cutsceneId, isInFlow, skipType)
   end,
   ON_STOP_CUTSCENE = function(cutsceneId)
     local vm = Z.VMMgr.GetVM("cutscene")
@@ -353,8 +351,8 @@ local events = {
     Z.EventMgr:Dispatch(Z.ConstValue.Cutscene.PauseSeekCG, time)
   end,
   ON_ENTER_OR_EXIT_ZONE = function(isEnter, zoneUid)
-    local questTrackVM = Z.VMMgr.GetVM("quest_track")
-    questTrackVM.RefreshQuestGuideEffectVisible()
+    local questGoalGuideVm = Z.VMMgr.GetVM("quest_goal_guide")
+    questGoalGuideVm.RefreshQuestGuideEffectVisible()
     Z.EventMgr:Dispatch(Z.ConstValue.PlayerEnterOrExitZone, isEnter, zoneUid)
   end,
   ON_EPFLOW_START = function(flowId)
@@ -397,6 +395,14 @@ local events = {
     local vm = Z.VMMgr.GetVM("interaction")
     vm.DeleteInteractionOption(uiData)
   end,
+  INTERACTION_UI_PROGRESS_BEGIN = function(uiData)
+    local vm = Z.VMMgr.GetVM("interaction")
+    vm.InteractionUIProgressBegin(uiData)
+  end,
+  INTERACTION_UI_PROGRESS_END = function(uiData)
+    local vm = Z.VMMgr.GetVM("interaction")
+    vm.InteractionUIProgressEnd(uiData)
+  end,
   DO_INTERACTION = function(uuid, interactionCfgId, templateId, actionData)
     local vm = Z.VMMgr.GetVM("interaction")
     vm.DoInteractionAction(uuid, interactionCfgId, templateId, actionData)
@@ -404,6 +410,14 @@ local events = {
   DO_INTERACTION_END_TRIGGER = function(uuid, interactionCfgId, templateId, actionData)
     local vm = Z.VMMgr.GetVM("interaction")
     vm.DoInteractionActionEndTrigger(uuid, interactionCfgId, templateId, actionData)
+  end,
+  DO_INTERACTION_ABORT = function(uuid, interactionCfgId, templateId, actionData)
+    local vm = Z.VMMgr.GetVM("interaction")
+    vm.DoInteractionActionAbort(uuid, interactionCfgId, templateId, actionData)
+  end,
+  DO_INTERACTION_END = function(uuid, interactionCfgId, templateId, actionData)
+    local vm = Z.VMMgr.GetVM("interaction")
+    vm.DoInteractionActionEnd(uuid, interactionCfgId, templateId, actionData)
   end,
   INTERACTION_BACK = function(isSuccess, uuid, templateId, interactionCfgId, actionType)
     Z.EventMgr:Dispatch(Z.ConstValue.Interaction.OnInteractionBack, isSuccess, uuid, templateId, actionType)
@@ -531,12 +545,12 @@ local events = {
   CUTSCENE_HIDE_UI = function(isHide)
     Z.EventMgr:Dispatch(Z.ConstValue.Cutscene.CutsceneHideUI, isHide)
   end,
-  Voice_RecordUploaded = function(isSuccess, fileID, text)
-    Z.EventMgr:Dispatch(Z.ConstValue.Chat.ChatVoiceUpLoad, isSuccess, fileID, text)
+  Voice_RecordUploaded = function(isSuccess, errorCode, fileID, text, filePath)
+    Z.EventMgr:Dispatch(Z.ConstValue.Chat.ChatVoiceUpLoad, isSuccess, errorCode, fileID, text, filePath)
   end,
-  Voice_RecordDownloaded = function(isSuccess, filePath)
+  Voice_RecordDownloaded = function(isSuccess, filePath, fileId)
     local chatMainVM = Z.VMMgr.GetVM("chat_main")
-    chatMainVM.OnVoiceDownLoad(isSuccess, filePath)
+    chatMainVM.OnVoiceDownLoad(isSuccess, filePath, fileId)
   end,
   Voice_PlaybackStoped = function(filePath)
     local chatData = Z.DataMgr.Get("chat_main_data")
@@ -549,37 +563,67 @@ local events = {
     local chatMainData = Z.DataMgr.Get("chat_main_data")
     chatMainData.VoiceIsInit = isSuccess
   end,
-  Voice_JoinRoom = function(roomName, member)
+  Voice_JoinRoom = function(roomName, memberId)
     local teamVm = Z.VMMgr.GetVM("team")
-    teamVm.EnterVoiceRoom(roomName, member)
+    teamVm.OnSdkJoinRoom(roomName, memberId)
+    logGreen("[Voice_JoinRoom] roomName:{0} member:{1}", roomName, tostring(memberId))
   end,
-  Voice_MemberQuitRoom = function(roomName, memberId)
+  Voice_QuitRoom = function(roomName, memberId)
     local teamVm = Z.VMMgr.GetVM("team")
-    teamVm.QuitVoiceRoom(roomName, memberId)
+    teamVm.OnSdkQuitRoom(roomName, memberId)
+    logGreen("[Voice_QuitRoom] roomName:{0} member:{1}", roomName, tostring(memberId))
   end,
   Voice_MemberJoinRoom = function(roomName, memberId)
+  end,
+  Voice_MemberQuitRoom = function(roomName, memberId)
   end,
   Voice_MemberOpenMic = function(roomName, memberId)
   end,
   Voice_MemberCloseMic = function(roomName, memberId)
   end,
-  Voice_QuitRoom = function(roomName, memberId)
+  Voice_RoomOffline = function(roomName, memberId)
+    local teamVm = Z.VMMgr.GetVM("team")
+    teamVm.JoinTeamVoice()
+    teamVm.RecoverMicState()
+  end,
+  Voice_ReportPlayer = function(code, info)
+    logGreen("[Voice_ReportPlayer] code:{0} info:{1}", code, info)
   end,
   WEEKLYHUNTCOUNTDOWNNEXT = function(isShow)
     local weeklyHunt = Z.VMMgr.GetVM("weekly_hunt")
     weeklyHunt.Countdown(isShow)
   end,
-  HomeEntityCreated = function(entityId, configId)
-    logGreen("HomeEntityCreated entityId:{0} configId:{1}", entityId, configId)
-    Z.DIServiceMgr.HomeService:SelectEntity(entityId, false)
-    Z.EventMgr:Dispatch(Z.ConstValue.Home.HomeEntitySelectingSingle, entityId, configId)
-    local data = Z.DataMgr.Get("home_data")
-    data:CreatHomeFurniture(configId)
-    Z.EventMgr:Dispatch(Z.ConstValue.Home.RefreshWareHouseCount, configId)
+  HomeEntityCreated = function(clientUid, configId, serverUuid, operatorcharId, lastClientUid)
+    logGreen("HomeEntityCreated entityId:{0} configId:{1}", clientUid, configId)
+    local data = Z.DataMgr.Get("home_editor_data")
+    if data.CopyClientUidList[lastClientUid] then
+      local homeVm = Z.VMMgr.GetVM("home_editor")
+      homeVm.SetCopyInfo(lastClientUid, serverUuid, configId)
+    elseif serverUuid == 0 then
+      Z.EventMgr:Dispatch(Z.ConstValue.Home.HomeEntitySelectingSingle, clientUid, configId)
+      Z.DIServiceMgr.HomeService:SelectEntities({clientUid})
+      data:CreateHomeFurniture(configId)
+      Z.EventMgr:Dispatch(Z.ConstValue.Home.RefreshWareHouseCount, configId)
+    else
+      if operatorcharId == Z.ContainerMgr.CharSerialize.charId then
+        data:EntityDestroyed(configId)
+      end
+      data:AddHouseItem(configId, serverUuid)
+    end
+  end,
+  HomeEntityDestroyed = function(uuid, configId, serverUuid)
+    logGreen("HomeEntityDestroyed entityId:{0} configId:{1}", uuid, configId)
+    local data = Z.DataMgr.Get("home_editor_data")
+    if serverUuid == 0 or serverUuid == nil then
+      data:EntityDestroyed(configId)
+      Z.EventMgr:Dispatch(Z.ConstValue.Home.RefreshWareHouseCount, configId)
+    else
+      data:DelHouseItem(configId, serverUuid)
+    end
   end,
   HomeEntitySelectingSingle = function(entityId, configId)
     logGreen("HomeEntitySelectingSingle entityId:{0}", entityId)
-    local data = Z.DataMgr.Get("home_data")
+    local data = Z.DataMgr.Get("home_editor_data")
     if data.IsDrag then
       return
     end
@@ -587,12 +631,32 @@ local events = {
   end,
   HomeEntitySelecting = function(selectingEntityIds, selectingConfigIds)
     logGreen("HomeEntitySelecting selectingEntityIds:{0}", table.ztostring(selectingEntityIds))
-    local data = Z.DataMgr.Get("home_data")
+    local data = Z.DataMgr.Get("home_editor_data")
     if data.IsDrag then
       return
     end
-    local homeVm = Z.VMMgr.GetVM("home")
-    homeVm.OpenOptionView(selectingEntityIds, selectingConfigIds)
+    local tab = {}
+    for i = 0, selectingEntityIds.count - 1 do
+      tab[i + 1] = selectingEntityIds[i]
+    end
+    Z.EventMgr:Dispatch(Z.ConstValue.Home.HomeEntitySelecting, tab)
+  end,
+  HomeEntityCreatFailed = function(uidList)
+    local data = Z.DataMgr.Get("home_editor_data")
+    for i = 0, uidList.count - 1 do
+      for key, value in pairs(data.CopyUUidList) do
+        if value == uidList[i] then
+          data.CopyUUidList[key] = nil
+        end
+      end
+      data.CopyClientUidList[uidList[i]] = nil
+    end
+  end,
+  HomeEntityStructureUpdate = function(uuid)
+    Z.EventMgr:Dispatch(Z.ConstValue.Home.HomeEntityStructureUpdate, uuid)
+  end,
+  HomeDragControllerUpdate = function(pos, rot)
+    Z.EventMgr:Dispatch(Z.ConstValue.Home.HomeDragControllerUpdate, pos, rot)
   end,
   CONDITION_CHECK_FAIL_TIPS = function(condTbl)
     Z.ConditionHelper.CheckCondition(condTbl, true)
@@ -677,6 +741,48 @@ local events = {
   end,
   Time_Service_UnInit = function(...)
     Z.EventMgr:Dispatch(Z.ConstValue.Timer.TimerUnInited)
+  end,
+  SHOW_INTERACTION_SKIP_VIEW = function(...)
+    local vm = Z.VMMgr.GetVM("interaction")
+    vm.OpenInteractionSkipView()
+  end,
+  CLOSE_INTERACTION_SKIP_VIEW = function(...)
+    local vm = Z.VMMgr.GetVM("interaction")
+    vm.CloseInteractionSkipView()
+  end,
+  ON_BATTLE_RES_CD_CHANGE = function(...)
+    local args = {
+      ...
+    }
+    Z.EventMgr:Dispatch(Z.ConstValue.BattleResCdChange, args[1], args[2])
+  end,
+  ON_NOTIFY_ENTER_WORLD = function(sceneId)
+    Z.ServiceMgr.OnNotifyEnterWorld(sceneId)
+  end,
+  SET_PLAYER_SCENE_LINE_DATA = function(lineId, sceneGuid)
+    local data = Z.DataMgr.Get("sceneline_data")
+    data:SetPlayerSceneLineData(lineId, sceneGuid)
+  end,
+  SET_SCENE_LINE_RECYCLE_END_TIME = function(endTime)
+    local data = Z.DataMgr.Get("sceneline_data")
+    data:SetRecycleEndTime(endTime)
+  end,
+  OPEN_QUALITY_GRADE_SETTING_POPPUP_VIEW = function(...)
+    local settingVm = Z.VMMgr.GetVM("setting")
+    settingVm.OpenSettingPopupView()
+  end,
+  OPEN_STORY_MESSAGE_VIEW = function(configId)
+    local storyMessageVm = Z.VMMgr.GetVM("story_message")
+    storyMessageVm.OpenStoryMessageView(configId)
+  end,
+  ON_DEVICE_TYPE_CHANGE = function()
+    Z.EventMgr:Dispatch(Z.ConstValue.Device.DeviceTypeChange)
+  end,
+  ON_DEVICE_CONNECTED = function()
+    Z.EventMgr:Dispatch(Z.ConstValue.Device.Connected)
+  end,
+  ON_DEVICE_DISCONNECTED = function()
+    Z.EventMgr:Dispatch(Z.ConstValue.Device.Disconnected)
   end
 }
 local sendLuaEvent = function(eventName, ...)
@@ -687,5 +793,17 @@ local sendLuaEvent = function(eventName, ...)
   end
   fun(...)
 end
-local bridge = {SendLuaEvent = sendLuaEvent}
+local getHomeItemCount = function(configID)
+  local itemTableBase = Z.TableMgr.GetRow("ItemTableMgr", configID)
+  if not itemTableBase then
+    return 0
+  end
+  local data = Z.DataMgr.Get("home_editor_data")
+  if itemTableBase.Type == Z.GlobalHome.HomeSeedType or itemTableBase.Type == Z.GlobalHome.HomePollenType then
+    return data:GetSelfFurnitureWarehouseItemCount(configID)
+  else
+    return data:GetFurnitureWarehouseItemCount(configID)
+  end
+end
+local bridge = {SendLuaEvent = sendLuaEvent, GetHomeItemCount = getHomeItemCount}
 LuaBridge = bridge

@@ -8,4 +8,3 @@ enum ECampType {
     CampNeutral = 2;
     CampUnbreakable = 3;
 }
-

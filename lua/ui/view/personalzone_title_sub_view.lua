@@ -68,6 +68,8 @@ end
 function Personalzone_title_subView:OnDeActive()
   self.titleLoopScroll_:UnInit()
   self.titleLoopScroll_ = nil
+  self.personalZoneData_:ClearAddReddotByType(DEFINE.ProfileImageType.Title)
+  self.personalZoneVM_.CheckRed()
 end
 
 function Personalzone_title_subView:OnRefresh()

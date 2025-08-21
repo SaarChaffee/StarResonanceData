@@ -3,7 +3,10 @@ local WorldProxy = require("zproxy.world_proxy")
 local ErrCookMaterialNotMatch = Z.PbEnum("EErrorCode", "ErrCookMaterialNotMatch")
 local itemShowVm = Z.VMMgr.GetVM("item_show")
 local openCookView = function(cameraId)
-  Z.UIMgr:OpenView("cook_main", tonumber(cameraId))
+  Z.UIMgr:OpenView("cook_main", {
+    camID = tonumber(cameraId),
+    slowCam = true
+  })
 end
 local closeCookView = function()
   Z.UIMgr:CloseView("cook_main")
@@ -15,10 +18,8 @@ local closeCookRejuvenationPopup = function()
   Z.UIMgr:CloseView("cook_rejuvenation_popup")
 end
 local isUnlockCookBook = function(id)
-  if Z.ContainerMgr.CharSerialize.cookList.bookData[id] then
-    return true
-  end
-  return false
+  local lifeProfessionVM = Z.VMMgr.GetVM("life_profession")
+  return lifeProfessionVM.IsProductUnlocked(E.ELifeProfession.Cook, id)
 end
 local getCookBookCreateTime = function(id)
   if Z.ContainerMgr.CharSerialize.cookList.bookData[id] then
@@ -27,65 +28,43 @@ local getCookBookCreateTime = function(id)
   return 0
 end
 local getUnLockCookBookList = function()
+  local lifeProfessionVM = Z.VMMgr.GetVM("life_profession")
   local data = {}
-  local cookData = Z.DataMgr.Get("cook_data")
-  for k, id in pairs(cookData.DefaultUnlockCookIds) do
-    local row = Z.TableMgr.GetTable("CookRecipeTableMgr").GetRow(id, true)
-    if row then
-      data[#data + 1] = row
+  local productionInfoTable = lifeProfessionVM.GetLifeProfessionProductnfo(E.ELifeProfession.Cook)
+  for index, value in pairs(productionInfoTable) do
+    local lifeProductionListTableRow = Z.TableMgr.GetTable("LifeProductionListTableMgr").GetRow(value.productId)
+    if lifeProfessionVM.IsProductUnlocked(lifeProductionListTableRow.LifeProId, lifeProductionListTableRow.Id) then
+      data[#data + 1] = value
     end
   end
-  for k, v in pairs(Z.ContainerMgr.CharSerialize.cookList.bookData) do
-    if not cookData.DefaultUnlockCookIds[k] then
-      local row = Z.TableMgr.GetTable("CookRecipeTableMgr").GetRow(k, true)
-      if row then
-        data[#data + 1] = row
-      end
-    end
-  end
-  table.sort(data, function(a, b)
-    if a.SortId == b.SortId then
-      return a.Id < b.Id
-    end
-    return a.SortId < b.SortId
-  end)
   return data
 end
-local gerCookBookList = function()
-  local cookData = Z.DataMgr.Get("cook_data")
-  local data = {}
-  for _, cfg in pairs(cookData.CookRecipeTableRows) do
-    data[#data + 1] = cfg
-  end
-  table.sort(data, function(a, b)
-    local unlockA = isUnlockCookBook(a.Id) and 1 or 0
-    local unlockB = isUnlockCookBook(b.Id) and 1 or 0
-    if unlockA ~= unlockB then
-      return unlockA > unlockB
-    else
-      return a.Quality > b.Quality
-    end
-  end)
-  return data
-end
-local getExchangeNum = function(slot1Id, slot3Id, slot4Id, config)
+local getExchangeNum = function(slot1Id, slot2Id, slot3Id, slot4Id, config)
   if not config or slot1Id == nil or slot1Id == 0 then
     return 0
   end
-  local num = itemsVM.GetItemTotalCount(slot1Id) / config.QuickMakeMaterialExpend[1]
+  local num = itemsVM.GetItemTotalCount(slot1Id) / config.NeedMaterial[1][2]
+  if slot2Id and slot2Id ~= 0 then
+    local slot2Num = itemsVM.GetItemTotalCount(slot2Id) / config.NeedMaterial[2][2]
+    if num > slot2Num then
+      num = slot2Num
+    end
+  end
   if slot3Id and slot3Id ~= 0 then
-    local slot3Num = itemsVM.GetItemTotalCount(slot3Id) / config.QuickMakeMaterialExpend[2]
+    local slot3Num = itemsVM.GetItemTotalCount(slot3Id) / config.NeedMaterial[3][2]
     if num > slot3Num then
       num = slot3Num
     end
   end
   if slot4Id and slot4Id ~= 0 then
-    local slot4Num = itemsVM.GetItemTotalCount(slot4Id) / config.QuickMakeMaterialExpend[3]
+    local slot4Num = itemsVM.GetItemTotalCount(slot4Id) / config.NeedMaterial[4][2]
     if num > slot4Num then
       num = slot4Num
     end
   end
-  return math.floor(num)
+  local maxCount = math.floor(itemsVM.GetItemTotalCount(config.Cost[1]) / config.Cost[2])
+  num = math.min(num, maxCount)
+  return math.min(math.floor(num), Z.Global.LifeCastMaxCnt)
 end
 local getCookFoodItems = function()
   local foodItems = {}
@@ -124,52 +103,32 @@ local getCookFoodItems = function()
   return foodItems
 end
 local asyncFastCook = function(bookId, count, mainMaterials, cookMethods, cancelToken)
+  local materials = table.zmerge(mainMaterials, cookMethods)
   local vInfo = {
-    bookId = bookId,
+    recipeId = bookId,
     count = count,
-    mainMaterials = mainMaterials,
-    cookMethods = cookMethods
+    materials = materials
   }
-  local ret = WorldProxy.FastCook(vInfo, cancelToken)
-  Z.TipsVM.ShowTips(ret)
-  return ret
-end
-local openItemShowPopup = function(recipeId, foodId)
-  local count = 1
-  if foodId == 0 then
-    return
+  local ret = WorldProxy.LifeProfessionCooking(vInfo, cancelToken)
+  if ret.errCode ~= 0 then
+    Z.TipsVM.ShowTips(ret.errCode)
   end
-  local awardList = {}
+  return ret.errCode
+end
+local openItemShowPopup = function(ret)
   local name
-  if recipeId == 0 then
+  if ret.unlockRecipeId == 0 then
     name = Lang("UnLockCookFail")
-  elseif recipeId and not isUnlockCookBook(recipeId) then
+  elseif ret.isUnlockRecipe then
     name = Lang("UnLockNewCookBook")
   end
-  local itemInfo = {
-    configId = foodId,
-    count = count,
-    name = name
-  }
-  local cookRecipeTableRow = Z.TableMgr.GetTable("CookRecipeTableMgr").GetRow(recipeId)
-  if cookRecipeTableRow then
-    itemInfo.iconPath = cookRecipeTableRow.Icon
-    itemInfo.qualityPath = Z.ConstValue.Item.ItemQualityPath .. cookRecipeTableRow.Quality
-    itemInfo.lab = cookRecipeTableRow.RecipeName
-  end
-  awardList[1] = itemInfo
-  itemShowVm.OpenItemShowView(awardList, "sys_general_award_fail")
+  itemShowVm.OpenEquipAcquireViewByItems(ret.items, "sys_general_award_fail", name)
 end
 local asyncRdCook = function(mainMaterials, cookMethods, cancelToken)
-  local vInfo = {mainMaterials = mainMaterials, cookMethods = cookMethods}
-  local ret = WorldProxy.RdCook(vInfo, cancelToken)
-  if ret.errorCode == 0 then
-    openItemShowPopup(ret.recipeId, ret.foodId)
-  elseif ret.errorCode == ErrCookMaterialNotMatch then
-    openItemShowPopup(0, Z.Global.BasicDish)
-  else
-    Z.TipsVM.ShowTips(ret.errorCode)
-  end
+  local materials = table.zmerge(mainMaterials, cookMethods)
+  local vInfo = {materials = materials}
+  local ret = WorldProxy.LifeProfessionRDCooking(vInfo, cancelToken)
+  openItemShowPopup(ret)
 end
 local switchEntityShow = function(show)
   if show then
@@ -188,37 +147,6 @@ local switchEntityShow = function(show)
     Z.LuaBridge.SetHudSwitch(false)
   end
 end
-local getRecipeId = function(data)
-  if data == nil then
-    return 0
-  end
-  local cookData = Z.DataMgr.Get("cook_data")
-  local recipeCfgDatas = {}
-  for _, recipeCfgData in pairs(cookData.CookRecipeTableRows) do
-    local tab = {}
-    for _, value in pairs(recipeCfgData.ConsumableId) do
-      tab[value[1]] = value[2]
-    end
-    if 0 < table.zcount(tab) then
-      recipeCfgDatas[recipeCfgData.Id] = tab
-    end
-  end
-  for id, recipeCfgData in pairs(recipeCfgDatas) do
-    if table.zcount(recipeCfgData) == table.zcount(data) then
-      local flag = true
-      for key, value in pairs(data) do
-        if not recipeCfgData[value.foodId] or recipeCfgData[value.foodId] ~= value.count then
-          flag = false
-          break
-        end
-      end
-      if flag then
-        return id
-      end
-    end
-  end
-  return 0
-end
 local getFilterCookMaterialData = function(type, configId)
   local tab = {}
   local cookData = Z.DataMgr.Get("cook_data")
@@ -232,10 +160,24 @@ local getFilterCookMaterialData = function(type, configId)
   end
   return tab
 end
+local getAllCookMaterialData = function(type)
+  local tab = {}
+  local cookData = Z.DataMgr.Get("cook_data")
+  local data = cookData.CookMaterialData[type]
+  if data then
+    for key, value in pairs(data) do
+      tab[#tab + 1] = value
+    end
+  end
+  return tab
+end
 local getRecipeIdByTypeId = function(type)
   local cookData = Z.DataMgr.Get("cook_data")
   local itemTablrMgr = Z.TableMgr.GetTable("ItemTableMgr")
   local data = cookData.CookMaterialData[type]
+  if not data then
+    return
+  end
   table.sort(data, function(left, right)
     local leftCount = itemsVM.GetItemTotalCount(left.Id)
     local rightCount = itemsVM.GetItemTotalCount(right.Id)
@@ -261,41 +203,6 @@ local getRecipeIdByTypeId = function(type)
   if data and data[1] then
     return data[1].Id
   end
-end
-local setDefultUnlockCookData = function()
-  local cookData = Z.DataMgr.Get("cook_data")
-  if table.zcount(cookData.DefaultUnlockCookIds) > 0 then
-    return
-  end
-  local ids = {}
-  for k, v in pairs(cookData.CookRecipeTableRows) do
-    if v.Unlock then
-      ids[v.Id] = v.Id
-    end
-  end
-  cookData.DefaultUnlockCookIds = ids
-end
-local setCookMaterialData = function()
-  setDefultUnlockCookData()
-  local cookData = Z.DataMgr.Get("cook_data")
-  local data = {}
-  for k, v in pairs(cookData.CookMaterialTableDatas) do
-    if not data[v.TypeB] then
-      data[v.TypeB] = {}
-    end
-    data[v.TypeB][#data[v.TypeB] + 1] = v
-  end
-  cookData.CookMaterialData = data
-end
-local getCuisineRandom = function(quality)
-  local tab = {}
-  local cookCuisineRandomRow = Z.TableMgr.GetRow("CookCuisineRandomTableMgr", quality)
-  if cookCuisineRandomRow then
-    tab[1] = cookCuisineRandomRow.Lv1Probability
-    tab[2] = cookCuisineRandomRow.Lv2Probability
-    tab[3] = cookCuisineRandomRow.Lv3Probability
-  end
-  return tab
 end
 local getBuffDesById = function(id)
   local cookCuisineTableRow = Z.TableMgr.GetTable("CookCuisineTableMgr").GetRow(id, true)
@@ -323,17 +230,14 @@ local res = {
   GetUnLockCookBookList = getUnLockCookBookList,
   GetExchangeNum = getExchangeNum,
   GetCookFoodItems = getCookFoodItems,
-  GerCookBookList = gerCookBookList,
   IsUnlockCookBook = isUnlockCookBook,
   AsyncFastCook = asyncFastCook,
   AsyncRdCook = asyncRdCook,
   GetCookBookCreateTime = getCookBookCreateTime,
   SwitchEntityShow = switchEntityShow,
-  GetRecipeId = getRecipeId,
-  SetCookMaterialData = setCookMaterialData,
   GetRecipeIdByTypeId = getRecipeIdByTypeId,
-  GetCuisineRandom = getCuisineRandom,
   GetFilterCookMaterialData = getFilterCookMaterialData,
+  GetAllCookMaterialData = getAllCookMaterialData,
   GetBuffDesById = getBuffDesById
 }
 return res

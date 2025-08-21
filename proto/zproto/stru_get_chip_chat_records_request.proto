@@ -10,4 +10,3 @@ message GetChipChatRecordsRequest {
     uint32 recordNum = 4;
     int64 targetId = 5;
 }
-

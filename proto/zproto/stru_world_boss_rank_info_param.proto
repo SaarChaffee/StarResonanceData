@@ -7,4 +7,3 @@ import "stru_world_boss_rank_info.proto";
 message WorldBossRankInfoParam {
     repeated zproto.WorldBossRankInfo rankInfos = 1;
 }
-

@@ -7,4 +7,3 @@ import "stru_buff_attr_show_info.proto";
 message BuffAttrEffect {
     repeated zproto.BuffAttrShowInfo attrShowInfo = 1;
 }
-

@@ -10,9 +10,6 @@ function WorldBossVM:GetScoreItemRedName(score)
   return "world_boss_score_item" .. E.RedType.WorldBossScoreAwardItemRed .. score
 end
 
-function WorldBossVM:CheckIsIn()
-end
-
 function WorldBossVM.OpenWorldBoss()
   WorldBossVM.OpenWorldBossMainView()
 end
@@ -32,12 +29,18 @@ end
 function WorldBossVM:AsyncReceiveScoreReward(stageID, cancelToken)
   local param = {scoreStage = stageID}
   local ret = worldProxy.ReceiveScoreReward(param, cancelToken)
+  if ret ~= 0 then
+    Z.TipsVM.ShowTips(ret)
+  end
   return ret
 end
 
 function WorldBossVM:AsyncReceiveBossReward(stageID, cancelToken)
   local param = {stage = stageID}
   local ret = worldProxy.ReceiveBossReward(param, cancelToken)
+  if ret ~= 0 then
+    Z.TipsVM.ShowTips(ret)
+  end
   return ret
 end
 
@@ -77,15 +80,6 @@ function WorldBossVM:GetSelfRankAndScore()
   return rankIndex, score
 end
 
-function WorldBossVM:GetIsMatching()
-  local matchData_ = Z.DataMgr.Get("match_data")
-  if matchData_:GetMatchType() ~= E.MatchType.WorldBoss then
-    return false
-  end
-  local time = matchData_:GetMatchStartTime()
-  return 0 < time
-end
-
 function WorldBossVM.AsyncExitDungeon(cancelToken)
   local proxy = require("zproxy.world_proxy")
   proxy.LeaveScene(cancelToken)
@@ -99,14 +93,6 @@ function WorldBossVM.CloseWorldBossMainView()
   Z.UIMgr:CloseView("world_boss_main")
 end
 
-function WorldBossVM:OpenWorldBossMatchView()
-  Z.UIMgr:OpenView("world_boss_matching")
-end
-
-function WorldBossVM:CloseWorldBossMatchView()
-  Z.UIMgr:CloseView("world_boss_matching")
-end
-
 function WorldBossVM:OpenWorldBossScoreView()
   Z.UIMgr:OpenView("world_boss_bonus_points_popup")
 end
@@ -118,13 +104,6 @@ end
 function WorldBossVM:OpenWorldBossScheduleView()
   local funcVM = Z.VMMgr.GetVM("gotofunc")
   if not funcVM.FuncIsOn(E.FunctionID.WorldBoss) then
-    return
-  end
-  local recommendedPlayData_ = Z.DataMgr.Get("recommendedplay_data")
-  local seasonActTableRow = recommendedPlayData_:GetRecommendedPlayConfigByFunctionId(E.FunctionID.WorldBoss)
-  local isInTime = Z.TimeTools.CheckIsInTimeByTimeId(seasonActTableRow.OpenTimerId)
-  if not isInTime then
-    Z.TipsVM.ShowTipsLang(16002047)
     return
   end
   Z.UIMgr:OpenView("world_boss_full_schedule_popup")

@@ -5,7 +5,7 @@ local getItemfuncData = function(configId)
 end
 local checkValid = function(itemUuid, configId, data)
   local funcData = getItemfuncData(configId)
-  if funcData == nil then
+  if funcData == nil or funcData.Type == E.ItemFunctionType.FuncSwitch then
     return E.ItemBtnState.UnActive
   end
   return E.ItemBtnState.Active
@@ -17,10 +17,11 @@ local onClick = function(itemUuid, configId, data)
   if isOk then
     return true
   end
-  local param = {}
-  param.itemUuid = itemUuid
-  param.useNum = 1
-  ret = itemsVM.AsyncUseItemByUuid(param, data.cancelToken)
+  local itemsData = Z.DataMgr.Get("items_data")
+  local param = itemsVM.AssembleUseItemParam(configId, itemUuid, 1)
+  itemsData:CreatCancelSource()
+  ret = itemsVM.AsyncUseItemByUuid(param, itemsData.CancelSource:CreateToken())
+  itemsData:RecycleCancelSource()
   return ret
 end
 local getBtnName = function(itemUuid, configId)

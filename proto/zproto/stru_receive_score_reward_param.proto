@@ -5,4 +5,3 @@ package zproto;
 message ReceiveScoreRewardParam {
     int32 scoreStage = 1;
 }
-

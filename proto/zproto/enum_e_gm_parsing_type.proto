@@ -6,4 +6,3 @@ enum EGmParsingType {
     GmParsingJson = 0;
     GmParsingString = 1;
 }
-

@@ -1,11 +1,9 @@
 local super = require("ui.ui_subview_base")
 local SeasonCultivateNode = class("SeasonCultivateNode", super)
-local ConditionUnitPath = GetLoadAssetPath("SeasonCultivateConditionUnit")
-local ItemUnitPath = GetLoadAssetPath("BackPack_Item_Unit_Addr2_8_New")
 local ItemClass = require("common.item_binder")
 
 function SeasonCultivateNode:ctor()
-  super.ctor(self, "season_cultivate_node", "season_cultivate/season_cultivate_node_sub", Z.UI.ECacheLv.None)
+  super.ctor(self, "season_cultivate_node", "season_cultivate/season_cultivate_node_sub", Z.UI.ECacheLv.None, true)
   self.seasonVM_ = Z.VMMgr.GetVM("season")
   self.seasonCultivateVM_ = Z.VMMgr.GetVM("season_cultivate")
   self.itemVM_ = Z.VMMgr.GetVM("items")
@@ -71,7 +69,6 @@ function SeasonCultivateNode:OnActive()
       if count >= expendCount then
         self:onConfirmReset()
       end
-      Z.DialogViewDataMgr:CloseDialogView()
     end, nil, {itemData})
   end)
   self:AddAsyncClick(self.uiBinder.btn_square_new, function()
@@ -79,25 +76,52 @@ function SeasonCultivateNode:OnActive()
       return
     end
     local exp = self:calculateAddExp(false)
+    local totalCanAddExp = self.seasonCultivateVM_.GetHoleExpTotalCanAdd(self.viewData.holeConfig.HoleId)
+    local canAddExp = Mathf.Max(totalCanAddExp - self.seasonCultivateVM_.GetHoleExpTotalCurrent(self.viewData.holeConfig.HoleId), 0)
     if exp <= 0 then
       Z.TipsVM.ShowTips(124014)
       return
     end
-    local item = {}
-    for id, num in pairs(self.addItem_) do
-      if 0 < num then
-        item[id] = num
+    local confirmFunc = function()
+      local item = {}
+      for id, num in pairs(self.addItem_) do
+        if 0 < num then
+          item[id] = num
+        end
+      end
+      local success = self.seasonCultivateVM_.AsyncUpgradeSeasonNormalHole(self.viewData.holeConfig.HoleId, item, self.cancelSource:CreateToken())
+      if success then
+        local all = self.seasonCultivateVM_.GetAllNormalNodeInfo()
+        self.viewData = all[self.viewData.holeConfig.HoleId]
+        self:OnRefresh()
+        Z.EventMgr:Dispatch(Z.ConstValue.SeasonCultivate.OnUpgradeHole, self.viewData.holeConfig.HoleId)
       end
     end
-    local success = self.seasonCultivateVM_.AsyncUpgradeSeasonNormalHole(self.viewData.holeConfig.HoleId, item, self.cancelSource:CreateToken())
-    if success then
-      local all = self.seasonCultivateVM_.GetAllNormalNodeInfo()
-      self.viewData = all[self.viewData.holeConfig.HoleId]
-      self:OnRefresh()
-      Z.EventMgr:Dispatch(Z.ConstValue.SeasonCultivate.OnUpgradeHole, self.viewData.holeConfig.HoleId)
+    local canUpdateMax = self.seasonCultivateVM_.GetMaxLevelCanAddTo(self.viewData.holeConfig.HoleId)
+    local level, _, _ = self.seasonCultivateVM_.GetHoleExpInfo(self.viewData.holeConfig.HoleId, exp)
+    local maxLevel = self.seasonCultivateVM_.GetHoleMaxLevel(self.viewData.holeConfig.HoleId)
+    if exp > canAddExp and maxLevel ~= level then
+      local dialogViewData = {
+        dlgType = E.DlgType.YesNo,
+        onConfirm = confirmFunc,
+        labDesc = Lang("SeasonNodeMoreTips", {val = canUpdateMax})
+      }
+      Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
+    else
+      confirmFunc()
     end
   end)
   Z.EventMgr:Add(Z.ConstValue.SeasonCultivate.OnConfirmReset, self.onConfirmReset, self)
+end
+
+function SeasonCultivateNode:getIsPcPre()
+  local ConditionUnitPath
+  if Z.IsPCUI then
+    ConditionUnitPath = GetLoadAssetPath("SeasonCultivateConditionUnit_PC")
+  else
+    ConditionUnitPath = GetLoadAssetPath("SeasonCultivateConditionUnit")
+  end
+  return ConditionUnitPath
 end
 
 function SeasonCultivateNode:OnRefresh()
@@ -139,9 +163,9 @@ function SeasonCultivateNode:autoAdd()
   local canAddExp = Mathf.Max(totalCanAddExp - self.seasonCultivateVM_.GetHoleExpTotalCurrent(self.viewData.holeConfig.HoleId), 0)
   for itemId, perExp in pairs(self.expItemOffered_) do
     local hasCount = self.itemVM_.GetItemTotalCount(itemId)
-    local needCount = Mathf.Ceil(canAddExp / perExp)
+    local needCount = Mathf.Floor(canAddExp / perExp)
     local canAddCount = Mathf.Floor(canAddExp / perExp)
-    local moneyEnoughCount = Mathf.Floor(totalMoney / (perExp * self.expNeedMoneyNum_))
+    local moneyEnoughCount = Mathf.Ceil(totalMoney / (perExp * self.expNeedMoneyNum_))
     local addCount = Mathf.Min(hasCount, canAddCount, moneyEnoughCount)
     self.addItem_[itemId] = addCount
     if needCount <= addCount then
@@ -153,6 +177,12 @@ function SeasonCultivateNode:autoAdd()
 end
 
 function SeasonCultivateNode:setConsumeItem()
+  local ItemUnitPath
+  if Z.IsPCUI then
+    ItemUnitPath = GetLoadAssetPath("BackPack_Item_Unit_Addr2_8_New_PC")
+  else
+    ItemUnitPath = GetLoadAssetPath("BackPack_Item_Unit_Addr2_8_New")
+  end
   Z.CoroUtil.create_coro_xpcall(function()
     for _, v in pairs(self.itemUnit_) do
       self:RemoveUiUnit(v)
@@ -169,7 +199,8 @@ function SeasonCultivateNode:setConsumeItem()
           configId = itemId,
           isShowZero = true,
           lab = count,
-          isSquareItem = true
+          isSquareItem = true,
+          isShowOne = true
         }
         if 0 < count then
           function datas.clickCallFunc()
@@ -206,8 +237,31 @@ function SeasonCultivateNode:refreshItemRed(itemId)
     if self.addItem_ and self.addItem_[itemId] and self.addItem_[itemId] > 0 then
       isShowAdd = true
     end
-    itemClass:SetRedDot(self:checkAddItem(itemId) and hasMoney >= self.expNeedMoneyNum_ * (count + 1) and not isShowAdd)
+    itemClass:SetRedDot(self:checkAddItemRed(itemId) and hasMoney >= self.expNeedMoneyNum_ * (count + 1) and not isShowAdd)
   end
+end
+
+function SeasonCultivateNode:checkAddItemRed(itemId)
+  if not self.addItem_[itemId] then
+    self.addItem_[itemId] = 0
+  end
+  if self.isMaxLevel_ then
+    return false
+  end
+  local currentAddExp = self:calculateAddExp(false)
+  local canAddExp = Mathf.Max(self.seasonCultivateVM_.GetHoleExpTotalCanAdd(self.viewData.holeConfig.HoleId) - self.seasonCultivateVM_.GetHoleExpTotalCurrent(self.viewData.holeConfig.HoleId), 0)
+  if currentAddExp >= canAddExp then
+    return false
+  end
+  local addExp = self.expItemOffered_[itemId]
+  if canAddExp < addExp + currentAddExp then
+    return false
+  end
+  local count = self.itemVM_.GetItemTotalCount(itemId)
+  if count <= self.addItem_[itemId] then
+    return false
+  end
+  return true
 end
 
 function SeasonCultivateNode:checkAddItem(itemId, isShowError)
@@ -217,10 +271,10 @@ function SeasonCultivateNode:checkAddItem(itemId, isShowError)
   if self.isMaxLevel_ then
     return false
   end
-  local addExp = self.expItemOffered_[itemId] + self:calculateAddExp(false)
+  local currentAddExp = self:calculateAddExp(false)
   local canAddExp = Mathf.Max(self.seasonCultivateVM_.GetHoleExpTotalCanAdd(self.viewData.holeConfig.HoleId) - self.seasonCultivateVM_.GetHoleExpTotalCurrent(self.viewData.holeConfig.HoleId), 0)
-  if addExp > canAddExp then
-    self.seasonCultivateVM_.CheckUpgradeCondition(self.viewData.holeConfig.HoleId, self.currentLevel_ + 1, isShowError)
+  if currentAddExp >= canAddExp then
+    Z.TipsVM.ShowTips(150037)
     return false
   end
   local count = self.itemVM_.GetItemTotalCount(itemId)
@@ -317,6 +371,7 @@ function SeasonCultivateNode:setAddExp(addExp)
   local hasMoney = self.itemVM_.GetItemTotalCount(self.expNeedMoneyID_)
   local needMoneyText = tostring(self.needMoney_)
   self.uiBinder.Ref:SetVisible(self.uiBinder.trans_gold, self.needMoney_ > 0)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_gold_bg, self.needMoney_ > 0)
   if hasMoney < self.needMoney_ then
     needMoneyText = Z.RichTextHelper.ApplyStyleTag(needMoneyText, E.TextStyleTag.TipsRed)
   end
@@ -358,16 +413,16 @@ function SeasonCultivateNode:setAddExp(addExp)
     end
   end
   local exp = self:calculateAddExp(false)
-  local canAddExp = self.seasonCultivateVM_.GetHoleExpTotalCanAdd(self.viewData.holeConfig.HoleId)
   self.uiBinder.btn_square_new.IsDisabled = false
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_red, true)
-  if exp <= 0 or exp > canAddExp or hasMoney < self.needMoney_ then
+  if exp <= 0 or hasMoney < self.needMoney_ then
     self.uiBinder.btn_square_new.IsDisabled = true
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_red, false)
   end
 end
 
 function SeasonCultivateNode:addNodeCondition(condition)
+  local ConditionUnitPath = self:getIsPcPre()
   for i, v in pairs(condition) do
     local name = _formatStr("node_condition_{0}", i)
     local unit = self:AsyncLoadUiUnit(ConditionUnitPath, name, self.uiBinder.node_condition.transform, self.cancelSource:CreateToken())
@@ -394,13 +449,16 @@ function SeasonCultivateNode:addNodeCondition(condition)
 end
 
 function SeasonCultivateNode:addCondition(condition)
+  if Z.ConditionHelper.CheckCondition(condition) then
+    return
+  end
   local results = self.seasonCultivateVM_.GetConditionDesc(condition)
+  local ConditionUnitPath = self:getIsPcPre()
   for i, result in pairs(results) do
     local name = _formatStr("condition_{0}", i)
     local unit = self:AsyncLoadUiUnit(ConditionUnitPath, name, self.uiBinder.node_condition.transform, self.cancelSource:CreateToken())
     if unit then
       self.conditionUnit_[#self.conditionUnit_ + 1] = name
-      local color = result.IsUnlock and Color.New(0.7568628, 0.9646998, 0.422277, 1) or Color.New(1, 1, 1, 1)
       local text = result.Desc
       local numText = result.Progress
       if result.IsUnlock then

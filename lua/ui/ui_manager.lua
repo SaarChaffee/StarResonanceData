@@ -1,6 +1,11 @@
 local UI = Z.UI
 local UIManager = class("UIManager")
-local MAX_STACK_COUNT = 3
+local MAX_STACK_COUNT = 5
+local actionTriggerIngoreViewConfigKey = {
+  mainui_funcs_list = true,
+  socialize_main = true,
+  expression = true
+}
 
 function UIManager:ctor()
   self.viewsDict_ = {}
@@ -8,6 +13,7 @@ function UIManager:ctor()
   self.showMouseView_ = {}
   self.viewStack_ = {}
   self.IgnoreInputViewDict = {}
+  self.UIMaskIgnoreViewDict = {}
   Z.EventMgr:Add("InputUIBackKey", self.onInputUIBackKey, self)
 end
 
@@ -26,36 +32,63 @@ function UIManager:FadeOut(args)
 end
 
 function UIManager:LoadView(viewConfigKey, assetPath, token, loadedCallback)
-  local goUI = Z.UIRoot:GetCacheUI(viewConfigKey)
-  if goUI and loadedCallback ~= nil then
-    loadedCallback(goUI)
-  else
-    local loadPath = "ui/prefabs/" .. assetPath
-    Z.LuaBridge.CreateInstanceAsync(loadPath, token, function(goObj)
-      if loadedCallback ~= nil then
-        loadedCallback(goObj)
-      end
-    end, function(exception)
-      if exception ~= Z.CancelException then
-        logError("[UIManager:LoadView] Load Failed, viewConfigKey={0}, error={1}", viewConfigKey, exception.Message)
-      end
-    end)
-  end
+  local loadPath = "ui/prefabs/" .. assetPath
+  Z.LuaBridge.CreateInstanceAsync(loadPath, token, function(goObj)
+    if loadedCallback ~= nil then
+      loadedCallback(goObj)
+    end
+  end, function(exception)
+    if exception ~= Z.CancelException then
+      logError("[UIManager:LoadView] Load Failed, viewConfigKey={0}, error={1}", viewConfigKey, exception.Message)
+      Z.EventMgr:Dispatch(Z.ConstValue.UILoadFail, viewConfigKey, exception)
+    end
+  end)
 end
 
 function UIManager:UnLoadView(viewConfigKey, goObj)
-  local ui = self:GetView(viewConfigKey)
-  if ui and ui:needCached() then
-    Z.UIRoot:CacheUI(viewConfigKey, goObj)
-  else
-    Z.LuaBridge.ReleaseInstance(goObj)
-  end
+  Z.LuaBridge.ReleaseInstance(goObj)
+end
+
+function UIManager:PreloadObject(address, loadedCallback)
+  Z.LuaBridge.PreloadObject(address, function()
+    if loadedCallback ~= nil then
+      loadedCallback()
+    end
+  end, function(exception)
+    if exception ~= Z.CancelException then
+      logError("[UIManager]::PreloadObject Failed, address={0}, error={1}", address, exception.Message)
+    end
+  end)
+end
+
+function UIManager:ReleasePreloadObject(address)
+  Z.LuaBridge.ReleasePreloadObject(address)
+end
+
+function UIManager:PreloadAsset(address, assetType, loadedCallback)
+  Z.LuaBridge.PreloadAsset(address, assetType, function()
+    if loadedCallback ~= nil then
+      loadedCallback()
+    end
+  end, function(exception)
+    if exception ~= Z.CancelException then
+      logError("[UIManager]::PreloadAsset Failed, address={0}, error={1}", address, exception.Message)
+    end
+  end)
+end
+
+function UIManager:ReleasePreloadAsset(address)
+  Z.LuaBridge.ReleasePreloadAsset(address)
 end
 
 function UIManager:OpenView(viewConfigKey, viewData)
   local ui = self:GetView(viewConfigKey)
   if ui == nil then
-    ui = require("ui/view/" .. Z.UIConfig[viewConfigKey].LuaFileName).new()
+    local luaFileName = Z.UIConfig[viewConfigKey].LuaFileName
+    if Z.IsPCUI and Z.UIConfig[viewConfigKey].PCLuaFileName and Z.UIConfig[viewConfigKey].PCLuaFileName ~= "" then
+      luaFileName = Z.UIConfig[viewConfigKey].PCLuaFileName
+    end
+    ui = require("ui/view/" .. luaFileName).new()
     self.viewsDict_[viewConfigKey] = ui
   end
   local bottomStackInfo = self:GetCurBottomStackInfo()
@@ -78,11 +111,7 @@ function UIManager:OpenView(viewConfigKey, viewData)
       self:PushStack(ui, viewData)
       destoryUI = true
     end
-    if Z.EntityMgr.PlayerEnt and Z.EntityMgr.PlayerEnt:GetLuaRidingId() ~= 0 then
-      Z.UICameraHelper.OpenUICamera(E.CameraState.None)
-    else
-      Z.UICameraHelper.OpenUICamera(ui.ViewConfig.CameraState)
-    end
+    Z.UICameraHelper.OpenUICamera(ui.ViewConfig.CameraState)
     ui:Active(viewData)
     if destoryUI and topStackInfo and topStackInfo.view.viewConfigKey ~= viewConfigKey then
       topStackInfo.view:Destory()
@@ -109,11 +138,7 @@ function UIManager:CloseView(viewConfigKey)
     self:PopStack(ui)
     local topStackInfo = self:GetCurTopStackInfo()
     if topStackInfo and topStackInfo.view.ViewConfig.CameraState ~= E.CameraState.None then
-      if Z.EntityMgr.PlayerEnt and Z.EntityMgr.PlayerEnt:GetLuaRidingId() ~= 0 then
-        Z.UICameraHelper.OpenUICamera(E.CameraState.None)
-      else
-        Z.UICameraHelper.OpenUICamera(topStackInfo.view.ViewConfig.CameraState)
-      end
+      Z.UICameraHelper.OpenUICamera(topStackInfo.view.ViewConfig.CameraState)
     else
       Z.UICameraHelper.CloseUICamera()
     end
@@ -240,6 +265,7 @@ end
 
 function UIManager:DeActiveAll(isClearAll, ignoreViewKey)
   self.viewStack_ = {}
+  Z.EventMgr:Dispatch(Z.ConstValue.BeforeDeactiveAll)
   local waitCloseViewList = {}
   local waitCloseViewCount = 0
   local isNeedCloseUICamera = false
@@ -332,7 +358,11 @@ function UIManager:PopStack(ui)
   Z.ViewStatusSwitchMgr:TrySetStateActive(stackInfo.view.viewConfigKey, true)
 end
 
-local needRecoverStandaloneViewDict = {mainui_funcs_list = true, bag_selectpack_popup_new = true}
+local needRecoverStandaloneViewDict = {
+  mainui_funcs_list = true,
+  bag_selectpack_popup_new = true,
+  sys_dialog = true
+}
 
 function UIManager:checkCloseViewOnPushStack(viewConfigKey)
   local waitCloseViewList = {}
@@ -442,6 +472,26 @@ function UIManager:UpdateDepth(eLayer)
   end
 end
 
+function UIManager:CheckMainUIActionLimit(actionId)
+  local mainuiView = self:GetView("mainui")
+  if mainuiView == nil then
+    return false
+  end
+  if not mainuiView.IsVisible or not Z.UIRoot:GetLayerVisible(mainuiView.uiLayer) then
+    return false
+  end
+  if Z.IgnoreMgr:IsInputIgnore(Panda.ZGame.EInputMask.UIInteract) then
+    return false
+  end
+  if self:HasFocusView(actionTriggerIngoreViewConfigKey) then
+    return false
+  end
+  if actionId == Z.RewiredActionsConst.ExitUI then
+    return false
+  end
+  return true
+end
+
 function UIManager:HasFocusView(ignoreViewConfigKeyDict)
   local focusViewConfigKey = self:GetFocusViewConfigKey()
   if focusViewConfigKey == nil or focusViewConfigKey == Z.ConstValue.MainViewName then
@@ -494,6 +544,19 @@ function UIManager:SetUIViewInputIgnore(viewConfigKey, maskNum, isIgnore)
   local dict = self.IgnoreInputViewDict
   dict[viewConfigKey] = (dict[viewConfigKey] or 0) + (isIgnore and 1 or -1)
   Z.IgnoreMgr:SetInputIgnore(maskNum, isIgnore, Enum_EUIView)
+end
+
+function UIManager:GetUIViewInputIgnore(viewConfigKey)
+  return self.IgnoreInputViewDict[viewConfigKey] or 0
+end
+
+function UIManager:GetAllActiveViewNames()
+  local activeViewNames = {}
+  for i, viewConfigKey in ipairs(self.allOpenViewList_) do
+    local view = self:GetView(viewConfigKey)
+    table.insert(activeViewNames, viewConfigKey)
+  end
+  return table.concat(activeViewNames, "\n")
 end
 
 return UIManager

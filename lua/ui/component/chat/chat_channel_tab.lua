@@ -23,6 +23,7 @@ function ChatChannelTab:Selected(isSelected)
   end
   self.isSelected_ = isSelected
   if self.isSelected_ then
+    Z.AudioMgr:Play("sys_main_funcs_in")
     self:refreshState(true)
     self.parent.uiView:SwitchChannel(self.data_.Id)
   else

@@ -8,6 +8,4 @@ message RankData {
     int32 rank = 1;
     int64 charId = 2;
     int32 score = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

@@ -34,7 +34,6 @@ function AlbumLoopItem:onDeleteBtnClick()
     cancelSource:Recycle()
     Z.TipsVM.ShowTipsLang(1000005)
     Z.EventMgr:Dispatch(Z.ConstValue.Album.MainViewRef)
-    Z.DialogViewDataMgr:CloseDialogView()
   end
   local param = {
     album = {
@@ -71,7 +70,7 @@ function AlbumLoopItem:refreshIcon()
   local isShowEmpty = false
   if cover and next(cover) then
     isShowEmpty = false
-    album_main_vm.AsyncGetHttpAlbumPhoto(cover.cosUrl, E.PictureType.ECameraThumbnail, E.NativeTextureCallToken.album_loop_item, self.OnCallback, self)
+    album_main_vm.AsyncGetHttpAlbumPhoto(cover.cosUrl, E.PictureType.ECameraThumbnail, E.NativeTextureCallToken.album_loop_item, self.parent.uiView.cancelSource, self.OnCallback, self)
   else
     isShowEmpty = true
   end
@@ -127,7 +126,6 @@ function AlbumLoopItem:OnPointerClick(go, eventData)
         return
       end
       self.albumMainVM_.ShowAlbumCreatePopupView(E.AlbumPopupType.Create)
-    elseif self.parent.uiView.viewData == E.AlbumOpenSource.Personal and self.data_.access ~= E.AlbumJurisdictionType.All then
     else
       Z.UIMgr:OpenView("camera_photo_album_window", {
         albumShowInfo = self.data_,

@@ -7,4 +7,3 @@ import "stru_char_list.proto";
 message DeleteFriendRequest {
     zproto.CharList charList = 2;
 }
-

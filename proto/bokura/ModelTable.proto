@@ -47,8 +47,6 @@ message ModelTableBase {
     number_table StateAdditiveHitWeight = 1556;
     float BloodHudOffset = 189;
 }
-
 message ModelTableMgr {
-    map<int32, .bokura.ModelTableBase> datas = 1;
+    repeated bokura.ModelTableMgr.DatasEntry datas = 1;
 }
-

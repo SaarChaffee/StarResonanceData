@@ -156,19 +156,23 @@ function WeeklyHuntVm.Countdown(isShow)
 end
 
 function WeeklyHuntVm.ResultFailed()
-  local teamVm = Z.VMMgr.GetVM("team")
-  if teamVm.CheckIsInTeam() and not teamVm.GetYouIsLeader() then
+  local dungeonId = Z.StageMgr.GetCurrentDungeonId()
+  if not dungeonId and dungeonId == 0 then
     return
   end
-  Z.CoroUtil.create_coro_xpcall(function()
-    local dungeonData = Z.DataMgr.Get("dungeon_data")
-    dungeonData:CreatCancelSource()
-    local dungeonId = Z.StageMgr.GetCurrentDungeonId()
-    if dungeonId and dungeonId ~= 0 then
-      WeeklyHuntVm.Enterdungeon(dungeonId, dungeonData.CancelSource:CreateToken())
+  local teamVm = Z.VMMgr.GetVM("team")
+  local player = {name = ""}
+  local isReturn = false
+  local teamMembers = teamVm.GetTeamMemData()
+  for key, value in pairs(teamMembers) do
+    if value.socialData.basicData.sceneId ~= dungeonId or value.socialData.basicData.offlineTime ~= 0 then
+      player.name = player.name .. value.socialData.basicData.name
+      isReturn = true
     end
-    dungeonData:RecycleCancelSource()
-  end)()
+  end
+  if isReturn then
+    return
+  end
 end
 
 function WeeklyHuntVm.GetTargetAwardRedName(layer)

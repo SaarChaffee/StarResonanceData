@@ -5,4 +5,3 @@ package zproto;
 message SetPersonalZoneAvatarRequest {
     int32 avatarId = 1;
 }
-

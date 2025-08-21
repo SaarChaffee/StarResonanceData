@@ -9,4 +9,3 @@ message ThrowMoveInfo {
     int32 StageId = 4;
     int32 EventId = 5;
 }
-

@@ -6,6 +6,5 @@ import "stru_dirty_mask.proto";
 
 message ProfessionData {
     int32 professionId = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    int32 WeaponSkin = 2;
 }
-

@@ -1,7 +1,7 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Friends_manage_subView = class("Friends_manage_subView", super)
-local loopScrollRect = require("ui/component/loopscrollrect")
+local loopListView = require("ui.component.loop_list_view")
 local friend_group_item = require("ui.component.friends.friend_group_select_item")
 local allFriendGroupId = 1
 
@@ -11,6 +11,9 @@ function Friends_manage_subView:ctor(parent)
 end
 
 function Friends_manage_subView:OnActive()
+  self.uiBinder.Trans:SetOffsetMax(0, 0)
+  self.uiBinder.Trans:SetOffsetMin(0, 0)
+  self.uiBinder.Trans:SetWidth(766)
   self.friendsMainVm_ = Z.VMMgr.GetVM("friends_main")
   self.friendsMainData_ = Z.DataMgr.Get("friend_main_data")
   self:AddClick(self.uiBinder.btn_close, function()
@@ -24,19 +27,23 @@ function Friends_manage_subView:OnActive()
     self:createGroup()
   end)
   self.groupList_ = {}
-  self.friendGroupScrollRect_ = loopScrollRect.new(self.uiBinder.loopscroll_group, self, friend_group_item)
-  self.uiBinder.Trans:SetOffsetMax(0, 0)
-  self.uiBinder.Trans:SetOffsetMin(0, 0)
-  self.uiBinder.Trans:SetWidth(766)
+  self.friendLoopList_ = loopListView.new(self, self.uiBinder.loop_list, friend_group_item, "friends_group_select_tpl")
+  self.friendLoopList_:Init({})
   self:BindEvents()
 end
 
 function Friends_manage_subView:OnDeActive()
   self.groupList_ = {}
+  self.friendLoopList_:UnInit()
+  self:UnBindEvents()
 end
 
 function Friends_manage_subView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Friend.FriendGroupRefresh, self.refeshGruoupList, self)
+end
+
+function Friends_manage_subView:UnBindEvents()
+  Z.EventMgr:Remove(Z.ConstValue.Friend.FriendGroupRefresh, self.refeshGruoupList, self)
 end
 
 function Friends_manage_subView:OnRefresh()
@@ -52,10 +59,10 @@ function Friends_manage_subView:createGroup()
     title = Lang("FriendCreateGroup"),
     inputContent = Lang("FriendCreateGroupDefaultName"),
     onConfirm = function(name)
-      local ret = self.friendsMainVm_.AsyncCreateGroup(name, self.cancelSource:CreateToken())
-      if ret.errorCode == Z.PbEnum("EErrorCode", "ErrIllegalCharacter") then
+      local errCode = self.friendsMainVm_.AsyncCreateGroup(name, self.cancelSource:CreateToken())
+      if errCode == Z.PbEnum("EErrorCode", "ErrIllegalCharacter") then
         self.isCreating_ = false
-        return ret.errorCode
+        return errCode
       end
       self.isCreating_ = false
     end,
@@ -70,7 +77,6 @@ end
 
 function Friends_manage_subView:refeshGruoupList()
   local groupList = {}
-  self.friendGroupScrollRect_:ClearSelected()
   local chatGroupCfg = self.friendsMainData_:GetGroupTableData()
   if #chatGroupCfg < 1 then
     return
@@ -97,8 +103,9 @@ function Friends_manage_subView:refeshGruoupList()
       end
     end
   end
-  self.friendGroupScrollRect_:SetData(groupList, false, false, index - 1)
-  self.friendGroupScrollRect_:SetSelected(index - 1)
+  self.friendLoopList_:RefreshListView(groupList, false)
+  self.friendLoopList_:SetSelected(index)
+  self.friendLoopList_:MovePanelToItemIndex(index)
 end
 
 function Friends_manage_subView:ChangeGroup(groupId)

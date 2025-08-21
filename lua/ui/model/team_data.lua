@@ -23,8 +23,14 @@ function TeamData:Clear()
   self.leaveAndReplyTeam_ = nil
   self.applyList = {}
   self.lasterLeaderId = 0
-  self.memberReadyStates_ = nil
   self.VoiceRoomName = ""
+  self.DungeonPrepareBeginTime = 0
+  self.IsDungeonPrepareIng = false
+  self.IsOpenMic = false
+  self.DungeonPrepareCheckInfo = {}
+  self.IsNeedCurProfession = false
+  self.NeedMreMemberCount = 0
+  self.teamInviteCd_ = {}
 end
 
 function TeamData:Init()
@@ -45,6 +51,10 @@ function TeamData:UnInit()
 end
 
 function TeamData:setAttrETeammateList()
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local teammateList = ZUtil.Pool.Collections.ZList_int.Rent()
   for _, member in pairs(self.TeamInfo.members) do
     teammateList:Add(member.charId)
@@ -194,12 +204,31 @@ function TeamData:GetBlockVoiceState(charId)
   return self.blockVoiceDIc_[charId]
 end
 
-function TeamData:SetMemberReadyState(info)
-  self.memberReadyStates_ = info
+function TeamData:SetInviteCd(charId)
+  self.teamInviteCd_[charId] = Z.TimeTools.Now() / 1000
 end
 
-function TeamData:GetMemberReadyState()
-  return self.memberReadyStates_
+function TeamData:GetInviteCd(charId)
+  return self.teamInviteCd_[charId] or 0
+end
+
+function TeamData:GetLeaderLevel()
+  if self.TeamInfo == nil or self.TeamInfo.members == nil or self.TeamInfo.baseInfo == nil then
+    return 0
+  end
+  for k, v in pairs(self.TeamInfo.members) do
+    if v.charId == self.TeamInfo.baseInfo.leaderId and v.socialData and v.socialData.basicData then
+      return v.socialData.basicData.level
+    end
+  end
+  return 0
+end
+
+function TeamData:GetTeamMaxMember()
+  if self.TeamInfo == nil or self.TeamInfo.members == nil or self.TeamInfo.baseInfo == nil then
+    return 0
+  end
+  return self.TeamInfo.baseInfo.teamMemberType == E.ETeamMemberType.Five and Z.Global.TeamMaxNum or 20
 end
 
 return TeamData

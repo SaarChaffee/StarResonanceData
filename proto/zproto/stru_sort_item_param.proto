@@ -6,4 +6,3 @@ message SortItemParam {
     int64 srcItemUuid = 1;
     int64 dstItemUuid = 2;
 }
-

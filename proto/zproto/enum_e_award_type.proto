@@ -7,4 +7,3 @@ enum EAwardType {
     EAwardTypeBdMod = 1;
     EAwardTypeSelect = 2;
 }
-

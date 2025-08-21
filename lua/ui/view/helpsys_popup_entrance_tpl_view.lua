@@ -4,11 +4,6 @@ local Helpsys_popup_entrance_tplView = class("Helpsys_popup_entrance_tplView", s
 
 function Helpsys_popup_entrance_tplView:ctor()
   self.uiBinder = nil
-  if Z.IsPCUI then
-    Z.UIConfig.helpsys_popup_entrance_tpl.PrefabPath = "helpsys/helpsys_popup_entrance_tpl_pc"
-  else
-    Z.UIConfig.helpsys_popup_entrance_tpl.PrefabPath = "helpsys/helpsys_popup_entrance_tpl"
-  end
   super.ctor(self, "helpsys_popup_entrance_tpl")
   self.helpsysVM_ = Z.VMMgr.GetVM("helpsys")
   self.helpsysData_ = Z.DataMgr.Get("helpsys_data")
@@ -58,6 +53,13 @@ function Helpsys_popup_entrance_tplView:OnRefresh()
   self.barImg_.fillAmount = 1
   if self.timer then
   end
+  if Z.IsPCUI then
+    local keyVM = Z.VMMgr.GetVM("setting_key")
+    local keyCodeDesc = keyVM.GetKeyCodeDescListByKeyId(136)[1]
+    if keyCodeDesc then
+      self.uiBinder.lab_shortcut.text = keyCodeDesc
+    end
+  end
   self.timer = self.timerMgr:StartTimer(function()
     self.barImg_.fillAmount = self.barImg_.fillAmount - 1 / (10 * data.DurationTime)
   end, 0.1, 10 * data.DurationTime, true, function()
@@ -68,6 +70,13 @@ function Helpsys_popup_entrance_tplView:OnRefresh()
   Z.CoroUtil.create_coro_xpcall(function()
     self.helpsysVM_.AsyncSaveById(self.viewData.id, self.cancelSource:CreateToken())
   end)()
+end
+
+function Helpsys_popup_entrance_tplView:OnTriggerInputAction(inputActionEventData)
+  if not Z.PlayerInputController:IsGamepadComboValidForAction(inputActionEventData) then
+    return
+  end
+  self:gotoFunc()
 end
 
 return Helpsys_popup_entrance_tplView

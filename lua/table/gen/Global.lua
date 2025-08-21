@@ -17,19 +17,6 @@ local Global = {
   JumpDownControllableHeight = 0.5,
   MoveSlopeLimit = 45,
   MoveStepOffset = 0.25,
-  ClimbVelocity = 1,
-  ClimbStepDistance = 0.5,
-  ClimbableAngle = 50,
-  ClimbableDistance = 0.5,
-  ClimbableOffset = 1.5,
-  ClimbTopBraceDistance = 1.65,
-  ClimbRushDistance = 3,
-  ClimbRushVelocity = 8,
-  ClimbRushInterval = 0.7,
-  ShinCrossDistance = 1.4,
-  ShinCrossTime = 0.6,
-  ShinCrossVelocity = 3,
-  ShinTouchSwitchTime = 0.1,
   ShortSelectRange = 6,
   LongSelectRange = 10,
   SelectOffRange = 2,
@@ -44,7 +31,7 @@ local Global = {
   SkyLongPressTime = 0.3,
   SkillStateCacheTime = 0.5,
   DeadDissolutionTime = 1.5,
-  WeatherStartTime = "2024-08-09 00:18:00",
+  WeatherStartTime = "2025-04-01 00:00:00",
   MonsterResetTime = 3000,
   DummyId = 4,
   BulletId = 3,
@@ -61,7 +48,7 @@ local Global = {
     3,
     4
   },
-  ResidualBloodPer = 30,
+  ResidualBloodPer = 15,
   SkillDamageRangeMultiplier = 1,
   SkillDamageRangeOffsetY = -0.3,
   ChangeMapDelay = 2,
@@ -79,7 +66,7 @@ local Global = {
     [11] = "GMGropName11"
   },
   StiffMaxTime = 30000,
-  BornMap = 5002,
+  BornMap = 8,
   PlayerFOVToNpc = 90,
   ShowNpcHUD = 8,
   HideNpcHUDAfterShow = 11,
@@ -110,6 +97,11 @@ local Global = {
       "camera_menu_3",
       "4",
       "cameraMenu3"
+    },
+    {
+      "camera_menu_21",
+      "5",
+      "cameraMenu4"
     }
   },
   FacialDefaultDurationTime = 5000,
@@ -123,32 +115,21 @@ local Global = {
     "player_base",
     "player_skill",
     "scene_obj",
-    "mon_vo",
     "npc_vo",
-    "player_vo",
-    "hero_sf01",
     "Wpn_ScytheKatana",
     "Wpn_MagicWand",
     "Wpn_WindKnight",
     "Wpn_MagicHoop",
-    "hero_tls01",
     "Wpn_GuardBlade",
-    "hero_qp01",
-    "vo_fz01",
-    "vo_qq01",
-    "vo_sf01",
-    "vo_tdl01",
-    "vo_tm01",
-    "talent_dps",
-    "talent_tank",
-    "talent_sup",
-    "vo_story",
-    "Enemy_Common",
-    "Enemy_Impact",
+    "Vo_Story",
+    "Common_Effects",
+    "Common_Impacts",
     "Wpn_Tribebow",
     "Wpn_ShieldKnight",
+    "Wpn_Guitar",
     "Amb_3D",
-    "SFX_Vehicles"
+    "Vo_Player_Battle",
+    "Vo_Player_Action"
   },
   BodyPartHurtStateDuration = 200,
   EnduranceRecover = 20,
@@ -208,199 +189,199 @@ local Global = {
     {
       0,
       200,
-      1070010,
+      10008,
       2
     },
     {
       0,
       201,
-      1070010,
+      10008,
       2
     },
     {
       0,
       202,
-      1070010,
+      10008,
       2
     },
     {
       0,
       203,
-      1070010,
+      10008,
       2
     },
     {
       0,
       204,
-      1070010,
+      10008,
       2
     },
     {
       0,
       205,
-      1070010,
+      10008,
       2
     },
     {
       0,
       206,
-      1070010,
+      10008,
       2
     },
     {
       0,
       207,
-      1070010,
+      10008,
       2
     },
     {
       0,
       208,
-      1070010,
+      10008,
       2
     },
     {
       0,
       209,
-      1070010,
+      10008,
       2
     },
     {
       0,
       210,
-      1070010,
+      10008,
       2
     },
     {
       1,
       200,
-      1070010,
+      10008,
       2
     },
     {
       1,
       201,
-      1070010,
+      10008,
       2
     },
     {
       1,
       202,
-      1070010,
+      10008,
       2
     },
     {
       1,
       203,
-      1070010,
+      10008,
       2
     },
     {
       1,
       204,
-      1070010,
+      10008,
       2
     },
     {
       1,
       205,
-      1070010,
+      10008,
       2
     },
     {
       1,
       206,
-      1070010,
+      10008,
       2
     },
     {
       1,
       207,
-      1070010,
+      10008,
       2
     },
     {
       1,
       208,
-      1070010,
+      10008,
       2
     },
     {
       1,
       209,
-      1070010,
+      10008,
       2
     },
     {
       1,
       210,
-      1070010,
+      10008,
       2
     },
     {
       2,
       200,
-      1070010,
+      10008,
       5
     },
     {
       2,
       201,
-      1070010,
+      10008,
       5
     },
     {
       2,
       202,
-      1070010,
+      10008,
       5
     },
     {
       2,
       203,
-      1070010,
+      10008,
       5
     },
     {
       2,
       204,
-      1070010,
+      10008,
       5
     },
     {
       2,
       205,
-      1070010,
+      10008,
       5
     },
     {
       2,
       206,
-      1070010,
+      10008,
       5
     },
     {
       2,
       207,
-      1070010,
+      10008,
       5
     },
     {
       2,
       208,
-      1070010,
+      10008,
       5
     },
     {
       2,
       209,
-      1070010,
+      10008,
       5
     },
     {
       2,
       210,
-      1070010,
+      10008,
       5
     },
     {
@@ -540,42 +521,42 @@ local Global = {
   EquipExtraGsCost = {
     {
       201,
-      1070010,
+      10008,
       2
     },
     {
       202,
-      1070010,
+      10008,
       2
     },
     {
       203,
-      1070010,
+      10008,
       2
     },
     {
       204,
-      1070010,
+      10008,
       2
     },
     {
       205,
-      1070010,
+      10008,
       2
     },
     {
       206,
-      1070010,
+      10008,
       2
     },
     {
       207,
-      1070010,
+      10008,
       1
     },
     {
       208,
-      1070010,
+      10008,
       2
     }
   },
@@ -601,7 +582,7 @@ local Global = {
     {
       12.9,
       67.3,
-      43
+      42
     },
     {12.9, 67.3}
   },
@@ -633,7 +614,7 @@ local Global = {
     {
       34.1,
       67.3,
-      67.3
+      43
     },
     {34.1, 67.3}
   },
@@ -641,7 +622,7 @@ local Global = {
     {
       -0.3,
       0.05,
-      0
+      -0.09
     },
     {0, 100}
   },
@@ -649,7 +630,7 @@ local Global = {
     {
       -1,
       1,
-      0
+      0.14
     },
     {0, 100}
   },
@@ -658,17 +639,17 @@ local Global = {
     {
       12.9,
       67.3,
-      43
+      42
     },
     {12.9, 67.3}
   },
   Photograph_DOFApertureFactorRange = {
     {
       1,
-      32,
+      20,
       10
     },
-    {1, 32}
+    {1, 20}
   },
   Photograph_DOFFocalLengthRange = {
     {
@@ -902,7 +883,7 @@ local Global = {
   TeamApplyMaxNum = 6,
   TeamInputDescMax = 20,
   MaxComboCountDecayTime = 3,
-  ItemDropRadius = 3,
+  ItemDropRadius = 0,
   ItemDropOwnershipTime = 10,
   ItemDropDisappearTime = 20,
   ItemPickUpRadius = 5,
@@ -962,7 +943,7 @@ local Global = {
   GlideParamVMax = 100,
   GlideParamMinAngle = -90,
   GlideParamMaxAngle = 30,
-  GlideParamDefAngle = -10,
+  GlideParamDefAngle = 10,
   GlideParamVerRotSpeed = 64,
   GlideParamHorRotSpeed = 48,
   GlideParamAehAtmo = 0.04,
@@ -1005,7 +986,7 @@ local Global = {
   BulletMaxPenetrate = 64,
   ExploreProgressAwardText = {},
   TrapVoidModelId = 3,
-  DimensionShader = 1003,
+  DimensionBuff = 7920061,
   SwitchLayerDelayTime = 0.3,
   PartCheckTime = 2000,
   WeaponSwitchCd = 1,
@@ -1028,9 +1009,14 @@ local Global = {
     }
   },
   ChatStickersSort = {
-    [1] = "emoji_tab_icon_01",
-    [3] = "emoji_tab_icon_03",
-    [6] = "emoji_tab_icon_04"
+    [1] = "1=emoji_tab_icon_01=0",
+    [2] = "3=emoji_tab_icon_03=0",
+    [3] = "6=emoji_tab_icon_04=0",
+    [4] = "8=emoji_tab_icon_05=0",
+    [5] = "9=emoji_tab_icon_06=0",
+    [6] = "10=emoji_tab_icon_07=0",
+    [7] = "12=emoji_tab_icon_04=1",
+    [8] = "11=emoji_tab_icon_05=1"
   },
   PostSnapshotToHttpGap = 30,
   JumpResetStartVelocity = false,
@@ -1038,20 +1024,20 @@ local Global = {
     {
       1020001,
       10,
-      1070010,
-      1
+      10008,
+      10
     },
     {
       1020002,
       100,
-      1070010,
-      10
+      10008,
+      100
     },
     {
       1020003,
       500,
-      1070010,
-      50
+      10008,
+      500
     }
   },
   MonsterFormation = {
@@ -1109,7 +1095,7 @@ local Global = {
   MailContentLenMax = 600,
   MailNoAttachmentDeleteDay = 30,
   MailAttachmentDeleteDay = 30,
-  MailQuantityMax = 100,
+  MailQuantityMax = 300,
   MailListRefreshNum = 20,
   invincibilityWithBorn = 620701,
   DebugMode = 1,
@@ -1339,7 +1325,7 @@ local Global = {
   Chat_WorldChannelLinkLimit = 500,
   Chat_WorldChannelMinimumLoad = 25,
   Chat_MsgCharacterLimit = 140280,
-  ChatVoiceMsgMaxDuration = 60,
+  ChatVoiceMsgMaxDuration = 58,
   FriendRequestNoticeShowTime = 15,
   RecoverOffsetYRatio = 0.5,
   PivotCameraInit = 0,
@@ -1418,11 +1404,11 @@ local Global = {
   WindZoneSpeedDamping = 300,
   OfflineDelay = 300,
   EquipDurabilityAlert = 0,
-  SameScreenNumMin = 5,
-  SameScreenNumMax = 30,
+  SameScreenNumMin = 1,
+  SameScreenNumMax = 20,
   ReviveDefaultId = 10,
   ReviveText = 100132,
-  ReviveHudDistance = 8,
+  ReviveHudDistance = 15,
   ReviveInteractDistance = 3,
   GlideAttachVelocityWindRingMultiple = 2,
   CharStandardScale = {
@@ -1430,14 +1416,14 @@ local Global = {
     Vector3.New(0.76, 0.9, 0.98)
   },
   CharWeaponScaleRange = {
-    Vector2.New(0.9, 1.1),
-    Vector2.New(0.9, 1.1)
+    Vector2.New(1.05, 1),
+    Vector2.New(0.95, 0.9)
   },
   TeamCallCD = 15,
   HitWeight = {
     1,
-    1,
-    1,
+    0.5,
+    0.3,
     0
   },
   StiffProtectionNum = 3,
@@ -1545,12 +1531,12 @@ local Global = {
     0.25,
     0.34
   },
-  HandInHandLen = {0.62, 0.62},
-  HandInHandShouldHeight = {1.23, 1.23},
+  HandInHandLen = {0.65, 0.62},
+  HandInHandShouldHeight = {1.2, 1.2},
   HandInHandIKParam1 = {
     30,
     90,
-    10,
+    15,
     10,
     10
   },
@@ -1565,9 +1551,20 @@ local Global = {
   },
   RollCurveName = "curve/as_f_base_dodge_f.bytes",
   SeasonTargetStartTimeWeek = 24,
-  SeasonTargetStartServerTime = "2024-06-25 05:00:00",
+  SeasonTargetStartServerTime = "2025-02-24 05:00:00",
   InitialEquipment = {},
-  FaceSaveItem = {1074001, 1},
+  FaceSaveItem = {
+    {
+      1,
+      1074001,
+      1
+    },
+    {
+      2,
+      1074004,
+      1
+    }
+  },
   BagFullMailId = 1030,
   UnionDefaultJoinSwitch = 1,
   EnvironmentResonancePresetObject = {
@@ -1603,9 +1600,11 @@ local Global = {
     {714, 50000018},
     {715, 50000018},
     {716, 50000018},
+    {717, 50000018},
     {721, 50000018},
     {722, 50000018},
-    {723, 50000037}
+    {723, 50000037},
+    {731, 50000039}
   },
   GlideAttachVelocityWindZoneMultiple = 1.5,
   StiffGroundFriction = 10,
@@ -1627,9 +1626,11 @@ local Global = {
     {714, 50000015},
     {715, 50000015},
     {716, 50000015},
+    {717, 50000015},
     {721, 50000015},
     {722, 50000015},
-    {723, 50000036}
+    {723, 50000036},
+    {731, 50000038}
   },
   EquipShowActionM = {
     {
@@ -1824,9 +1825,12 @@ local Global = {
     201,
     10003,
     10005,
-    10002
+    10009,
+    10002,
+    10008,
+    20011
   },
-  ItemSortLast = {10001},
+  ItemSortLast = {10001, 20002},
   SwimSpeed = 3,
   SwimSprintSpeed = 6,
   SwimSprintMinTime = 0.93,
@@ -1887,8 +1891,8 @@ local Global = {
   },
   ClientViewFrameCount = {1, 30},
   ClientViewSize = 64,
-  FriendshipSelfValueDayLimit = 100,
-  FriendshipTotalValueDayLimit = 300,
+  FriendshipSelfValueDayLimit = 200,
+  FriendshipTotalValueDayLimit = 200,
   ResetTalentConsumables = {1070002, 1},
   ResetTalentFreeTimes = 999999999,
   BasicAttrType = {
@@ -1960,7 +1964,9 @@ local Global = {
     208,
     301,
     1003,
-    3309
+    3309,
+    1111,
+    1112
   },
   AwardNextLevelDailyCount = 302,
   CameraHorizontalRange = {
@@ -1981,7 +1987,7 @@ local Global = {
   },
   WorldEventMessageTimeIfOffLine = 30,
   AirLastTime = 20,
-  SameScreenNumMinPC = 5,
+  SameScreenNumMinPC = 1,
   SameScreenNumMaxPC = 150,
   LoginDayCounter = 9,
   BuffHudTipsTime = 0.7,
@@ -2005,7 +2011,7 @@ local Global = {
   NameCard = 1070001,
   NameCardMailId = 1060,
   RollMaxNum = 99,
-  BPCardMailId = 127,
+  BPCardMailId = 1027,
   RollChangeDelayTime = 2,
   RollLimitTime = 20,
   KeyRewardLimitId = 2,
@@ -2089,11 +2095,11 @@ local Global = {
   },
   CreatureHUDOffset = 0.5,
   CreatureMonsterHUDOffset = 1.1,
-  HudLoadDisMinSqr = 200,
+  HudLoadDisMinSqr = 400,
   HudLoadDisMaxSqr = 600,
   RollTime = 0.7,
   RunEndTime = 0.4,
-  MoveSkinWidth = 0.05,
+  MoveSkinWidth = 0.02,
   MotionSpeedFrame = 4,
   NpcLookAtMinDistance = 0.1,
   ModelDisAppearCfg = {key = 7000111, value = 1},
@@ -2110,7 +2116,7 @@ local Global = {
     {1, 10}
   },
   UnionListCD = 10,
-  PersonalPhotoLimit = 5,
+  PersonalPhotoLimit = 4,
   PerosonalMainUIPosition = {
     [1] = Vector2.New(-705, 392),
     [2] = Vector2.New(-330, 105),
@@ -2135,14 +2141,24 @@ local Global = {
   ProgressValueItem = {
     {
       1,
-      20006,
-      1
+      1220001,
+      100
+    },
+    {
+      1,
+      1220002,
+      500
+    },
+    {
+      1,
+      1220003,
+      4500
     }
   },
   ProgressMoneyNum = {
     1,
     10001,
-    1000
+    0
   },
   WeekText = {
     "\229\145\168\230\151\165",
@@ -2165,7 +2181,7 @@ local Global = {
   DungeonSingleModeTime = 3,
   HeroNormalDungeonNumber = {
     {1, 2},
-    {3, 4}
+    {3, 5}
   },
   CookBuff = 7000091,
   TransferInvincibleBuff = 521001,
@@ -2179,16 +2195,16 @@ local Global = {
     {
       10010003,
       999999,
-      15
+      33
     },
     {
       10010002,
       999999,
-      15
+      33
     }
   },
-  UnionActiveRefresh = 17,
-  UnionUpgradingNum = {3, 15},
+  UnionActiveRefresh = 34,
+  UnionUpgradingNum = {3, 33},
   UnionActiveAwardMailTime = 2592000,
   UnionDuration = 60,
   UnionActiveAwardMailId = 1070,
@@ -2210,8 +2226,8 @@ local Global = {
   LineRefreshCD = 3,
   AvatarDefaultId = 1,
   ActivationTimesCount = 2,
-  ActivationTimesWeight = {15, 85},
-  ActivationTimes = {500, 250},
+  ActivationTimesWeight = {30, 70},
+  ActivationTimes = {400, 200},
   ActivationTimesIcon = {
     [5] = "ui/atlas/season_activation/img_rate_bg_3",
     [2] = "ui/atlas/season_activation/img_rate_bg_2"
@@ -2226,12 +2242,12 @@ local Global = {
   ModEnhancedconsumption = {
     {
       2,
-      1070010,
+      10008,
       10
     },
     {
       3,
-      1070010,
+      10008,
       50
     },
     {
@@ -2241,8 +2257,8 @@ local Global = {
     }
   },
   EnhancementHoleNum = {
-    {2, 7},
-    {3, 7},
+    {2, 10},
+    {3, 10},
     {4, 10}
   },
   ModTypeLimitNum = {
@@ -2311,21 +2327,21 @@ local Global = {
   FishingBaitId = 1054008,
   UnionResolveUpNum = 8,
   UnionResolveUpProbability = 50,
-  UnionResolveKeepNum = 8,
+  UnionResolveKeepNum = 12,
   UnionResolveKeepProbability = 0,
   UnionResolveDownNum = 4,
   UnionResolveDownProbability = 20,
   UnionResolveBaseAwardId = 20500400,
   UnionResolveExtraAwardId = {
-    {5000, 20500410},
-    {10000, 20500420},
-    {20000, 20500430},
-    {40000, 20500440}
+    {2000, 20500410},
+    {5000, 20500420},
+    {10000, 20500430},
+    {20000, 20500440}
   },
-  UnionResolveMinValue = 5000,
+  UnionResolveMinValue = 2000,
   UnionResolveAutoGo = 280,
   UnionResolveAutoBack = 281,
-  UnionResolveMaxValue = 45249,
+  UnionResolveMaxValue = 25249,
   WarehouseFoundItem = {1073003, 1},
   WarehousePopulation = 4,
   WarehouseCapacity = 100,
@@ -2344,7 +2360,7 @@ local Global = {
   UnionPhotoAlbumTemporaryNumLimit = 20,
   UnionPhotoAlbumNumLimit = 50,
   UnionPhotoAlbumSendLimit = {
-    {15, 2}
+    {35, 2}
   },
   UnionPhotoAlbumTemporaryTimeLimit = 172800,
   UnionPhotoAlbumSendCoverNum = 1,
@@ -2403,7 +2419,7 @@ local Global = {
   EquipPerfectionConfig = {
     0,
     100,
-    3.87
+    0
   },
   EquipWeaponSlot = 200,
   EquipPerfectvalDecomTips = 80,
@@ -2508,9 +2524,7 @@ local Global = {
   BossTaregtHide = {5002},
   OfflineHideTime = 10000,
   RouletteOffBattleSwitchTime = 20,
-  ResearchRecipeCraftEnergyConsume = 0,
-  CookCuisineCraftEnergyConsume = 10,
-  CookCuisineMaterialConsume = 3,
+  ResearchRecipeCraftEnergyConsume = {5, 5},
   InvestigationGuideClueId = {100121, 100311},
   ExchangeSpecialItemId = {20003},
   UnionPunchClockItemId = {
@@ -2526,9 +2540,10 @@ local Global = {
     }
   },
   Photograph_CameraOffsetSpeedCoefficient = {
-    1.5,
-    0.03,
-    3,
+    0.8,
+    0.02,
+    2,
+    0.4,
     0.5
   },
   Photograph_CameraOffsetExtremumValue = {
@@ -2559,9 +2574,9 @@ local Global = {
   },
   BuyMaxTips = 51,
   FaceEquipment = {
-    2020001,
-    2030001,
-    2040001
+    2020101,
+    2030101,
+    2040101
   },
   SeasonArmbandShowAction = {
     "as_m_base_armband",
@@ -2575,57 +2590,77 @@ local Global = {
   EquipScreenGS = {
     {
       "10",
-      "20",
-      "10-20\232\163\133\231\173\137"
+      "40",
+      "10-40"
     },
     {
       "40",
-      "60",
-      "40-60\232\163\133\231\173\137"
+      "80",
+      "40-80"
+    },
+    {
+      "80",
+      "120",
+      "80-120"
+    },
+    {
+      "120",
+      "160",
+      "120-160"
+    },
+    {
+      "160",
+      "200",
+      "160-200"
+    },
+    {
+      "200",
+      "240",
+      "200-240"
     }
   },
   EquipScreenType = {
     {
       "0",
       "20",
-      "0-20\230\172\161"
+      "0-20"
     },
     {
       "21",
       "50",
-      "21-50\230\172\161"
+      "21-50"
     },
     {
       "51",
       "100",
-      "51-100\230\172\161"
+      "51-100"
     },
     {
       "101",
       "99999999",
-      "100\230\172\161\228\187\165\228\184\138"
+      "\229\164\167\228\186\142100"
     }
   },
   EquipScreenPerfectVal = {
     {
       "0",
       "30",
-      "0-30\233\151\180"
+      "0-30"
     },
     {
       "31",
       "60",
-      "31-60\233\151\180"
+      "31-60"
     },
     {
       "61",
       "80",
-      "61-80\233\151\180"
+      "61-80"
     },
     {
       "81",
       "100",
-      "81-100\233\151\180"
+      "81-100"
     }
   },
   UnstuckReviveId = 1,
@@ -2698,11 +2733,11 @@ local Global = {
   },
   EquipAttColourSuitable = "#ffffff",
   EquipAttColourNotSuitable = "#b5b5b4",
-  EquipAttColourNotActive = "#8d8d8d",
+  EquipAttColourNotActive = "#dadada",
   VehicleTogetherInteractRange = 5,
   VehicleTogetherApplyDuration = 20,
-  RecycleItemMax = 30,
-  RecycleItemNumMax = 99,
+  RecycleItemMax = 50,
+  RecycleItemNumMax = 999,
   DownshiftCoef = {1, 0.3},
   ModEffectDefaultSuccessTime = {
     {
@@ -2803,10 +2838,9 @@ local Global = {
   CameraFocusMixologyView = {1, 10},
   VehicleCollideCheckHeight = 1,
   RotationStickGroundData = {
-    180,
-    0.5,
+    0.65,
     45,
-    5
+    1
   },
   RideTurnVelocity = 540,
   AngleSpeedRotate = false,
@@ -2818,11 +2852,550 @@ local Global = {
       2
     }
   },
-  FireworkResourceOne = "effect/common_new/env/p_fx_scene_fireworksshow",
-  FireworkResourceTwo = "effect/common_new/env/p_fx_scene_fireworksshow_year",
-  FireworkResourceTimeOne = 344,
-  FireworkResourceTimeTwo = 344,
+  FireworkResourceOne = "bin/simple_timeline/simple_timeline_p_fx_scene_fireworksshow",
+  FireworkResourceTwo = "bin/simple_timeline/simple_timeline_p_fx_scene_fireworksshow_year",
+  FireworkResourceTimeOne = 482,
+  FireworkResourceTimeTwo = 482,
   PhotoShareDefaultCode = 1000,
-  SwimDrowningDeathReviveConfig = 12
+  MonthCardDay = 2592000,
+  MonthCardBuyTime = 3,
+  MapRatio = {
+    12,
+    2,
+    0.5,
+    0.15,
+    0.35,
+    0
+  },
+  SwimDrowningDeathReviveConfig = 12,
+  SkillPopMessageCd = 10,
+  ChemistryExperimentTriesLimit = {5, 15},
+  ChemistryExperimentCraftEnergyConsume = {0, 10},
+  ChemistryExperimentSuccessProbability = {30, 4},
+  ExtraPayFun = 800891,
+  PayConfirm = true,
+  PayConfirmDes = true,
+  FirstPayFun = 800890,
+  LifeProfessionWorkMaxHistoryCount = 50,
+  RideMoveStartTime = 0.3,
+  CastingConfirmTime = 5,
+  ChatHUDDuration = 5,
+  ChatFloatingWindowLimit = 7,
+  BulletDelayDestroyTime = 1,
+  UiWheelTabsShow = {
+    {
+      "camera_menu_1",
+      "6"
+    },
+    {
+      "camera_menu_18",
+      "7"
+    },
+    {
+      "camera_menu_17",
+      "8"
+    },
+    {
+      "camera_menu_5",
+      "4"
+    },
+    {
+      "camera_menu_15",
+      "5"
+    }
+  },
+  NpcHeadLookAtAngle = Vector2.New(60, 30),
+  HeadLookAtAngle = Vector2.New(60, 30),
+  RideJumpMaxAngleSpeed = 100,
+  ConsumableItemType = {
+    105,
+    108,
+    109,
+    112,
+    301
+  },
+  MonthCardAwardId = 50100000,
+  MonthCardAwardCount = 27,
+  MaxHitCount = 50,
+  AssitRefresh = 28,
+  FashionScoreResetTimer = 801,
+  FashionTargetUpperLimit = {
+    {802, 100},
+    {803, 200},
+    {804, 300}
+  },
+  FashionScoreTimeliness = 3,
+  FashionScoreScale = {
+    {1, 10000},
+    {2, 10000},
+    {3, 10000}
+  },
+  FashionPrivilegeSort = {
+    1,
+    2,
+    3
+  },
+  FashionLevelMailTime = 3,
+  FashionLevelItemId = 20011,
+  MaxRoleNumber = 3,
+  DeleteRoleTime = 168,
+  MaxEquipEnchantItemNum = 3,
+  SceneObjectModelDisAppearCfg = {key = 7000111, value = 1},
+  SceneObjectModelAppearCfg = {key = 7000112, value = 1},
+  SceneObjectModelDeathCfg = {key = 7000111, value = 1},
+  SceneObjectModelBornCfg = {key = 7000112, value = 1},
+  CollectionModelDisAppearCfg = {key = 7000111, value = 1},
+  CollectionModelAppearCfg = {key = 7000112, value = 1},
+  CollectionModelDeathCfg = {key = 7000111, value = 1},
+  CollectionModelBornCfg = {key = 7000112, value = 1},
+  DungeonPrepareTime = 20,
+  DungeonPrepareCD = 5,
+  DungeonTreasureMailID = 1303,
+  DungeonTreasureInteractID = 1202,
+  DungeonTreasureAwardCountID = 30,
+  DungeonPrepareBuffType = {101, 102},
+  DungeonPrepareRecoveryItemId = {
+    1015001,
+    1015002,
+    1015003
+  },
+  DungeonPrepareReviveItemId = {1054015},
+  DungeonPrepareFoodBuffDefaultIcon = "item_icons_cuisine24",
+  DungeonPrepareMedicineBuffDefaultIcon = "item_icons_light_syrup_01",
+  FashionColorGroupNum = {3, 3},
+  FashionColorGroupUnlock = {
+    {1074003, 5},
+    {1074002, 5}
+  },
+  FashionLevelScoreTime = 31536000,
+  NPCModelDisAppearCfg = {key = 7000111, value = 1},
+  NPCModelAppearCfg = {key = 7000112, value = 1},
+  NPCModelDeathCfg = {key = 7000111, value = 1},
+  NPCModelBornCfg = {key = 7000112, value = 1},
+  LifeProductionProHelpId = {
+    {201, 5050},
+    {202, 2103},
+    {203, 2102},
+    {204, 2113},
+    {205, 2114},
+    {206, 2115}
+  },
+  TakeShieldStiffBackForce = 2000,
+  TakeShieldActionTime = 0.5,
+  TalentRedDotLevelLimit = 25,
+  BkLvFix = {
+    1,
+    0.97,
+    0.92,
+    0.85,
+    0.72,
+    0.5,
+    0.25,
+    0.1
+  },
+  BasicHateParam = {10, 0},
+  GashaDelayTime = {
+    0.2,
+    0.35,
+    0.5,
+    0.65
+  },
+  GashaFlyInTime = {
+    0.46,
+    0.42,
+    0.38,
+    0.33
+  },
+  GashaFlySameTimeCount = 3,
+  GashaDelayTimeForSingle = 0.5,
+  GashaFlyInTimeForSingle = 0.5,
+  StaticInteractionSeatTurnVelocity = 270,
+  StaticInteractionActionCooldown = 0.5,
+  EquipRefineReddotLevelLimit = 8,
+  PlayerSkillReddotLevelLimit = 10,
+  PlayerSkillReddotGradeLimit = 3,
+  SkillFallBackCD = 1,
+  RideJumpEndToIdleTime = 0.3,
+  MagneticQueueSampleInterval = 3,
+  MagneticQueueSampleAngle = 30,
+  OpenMagnetFuncDynInteractionId = 6010,
+  MagneticQueueClientSampleInterval = 0.5,
+  MagneticQueueClientSampleAngle = 30,
+  MagneticQueueCircleMoveSpeed = 2,
+  MagneticAttachDirLimit = 75,
+  LifeManufactureLackMatMessages = {
+    {201, 1001902},
+    {202, 1001902},
+    {203, 1001902},
+    {204, 1001902},
+    {205, 1001902},
+    {206, 1001910}
+  },
+  LifeManufactureLackVigourMessages = {
+    {201, 1001903},
+    {202, 1001903},
+    {203, 1001903},
+    {204, 1001903},
+    {205, 1001903},
+    {206, 1001911}
+  },
+  LifeManufactureStopMessages = {
+    {201, 1001909},
+    {202, 1001909},
+    {203, 1001909},
+    {204, 1001909},
+    {205, 1001909},
+    {206, 1001912}
+  },
+  PhotographTeamMemberLimit = {30, 10},
+  PhotoLookAtEyeAngle = Vector2.New(90, 60),
+  PhotoLookAtSpeed = Vector2.New(0.2, 2),
+  Photograph_FightCameraVFOVRange = {
+    {
+      12.9,
+      67.3,
+      42
+    },
+    {12.9, 67.3}
+  },
+  PhotoMultiStateIcon = {
+    {
+      "1",
+      "ui/atlas/photograph/photo_state_camera"
+    },
+    {
+      "2",
+      "ui/atlas/photograph/photo_state_notnearby"
+    },
+    {
+      "3",
+      "ui/atlas/photograph/photo_state_busy"
+    },
+    {
+      "4",
+      "ui/atlas/photograph/photo_state_leave"
+    }
+  },
+  PhotoNearPlayerRefreshCD = 5,
+  ChatWheelTransferList = {
+    8,
+    7,
+    71,
+    72,
+    73,
+    74,
+    75
+  },
+  UseWheelExpressionCD = 1,
+  AssociationMinSetOutCargoVolume = 2000,
+  MagneticQueueCircleMinPassengerNumber = 2,
+  MagneticQueueMaxPassengerNumber = 20,
+  BlessExperienceId = {500500, 50000},
+  LifeWorkMaxLimitNum = 20,
+  DungeonPlayerFixPosRadius = 2,
+  FashionLevelTimeRemind = 1382400,
+  FashionLevelTimeTips = 1382400,
+  ShopBuyDoodSingleNumMax = {
+    {10002, 999999999},
+    {10005, 999999999},
+    {10008, 999999999}
+  },
+  ShopBuyDoodTypeNumMax = 30,
+  TencentDiamondToRmbProportion = 10,
+  ExploreWayPayType = {
+    2,
+    3,
+    998
+  },
+  MagneticQueueIntervalAdjustTime = 1,
+  ExplorTreasureFreshTimerId = 1103,
+  ContinuousRotateTime = 0.5,
+  TencentBindDiamondId = "PRO-6B58BB4ITDLK",
+  TencentDiamondId = "PRO-GHN6JO2SIJRC",
+  TencentGiftDiamondId = {
+    {
+      10011001,
+      10003,
+      6
+    },
+    {
+      10011002,
+      10003,
+      30
+    },
+    {
+      10011003,
+      10003,
+      120
+    },
+    {
+      10011004,
+      10003,
+      288
+    },
+    {
+      10011005,
+      10003,
+      528
+    },
+    {
+      10011006,
+      10003,
+      1296
+    }
+  },
+  TencentGiftShowTips = {3, 4},
+  HitBloodPer = 25,
+  PersonalMedalLimit = 5,
+  TencentBpShopItemId = 10995,
+  RotationStickGroundCurve = "curve/simple/stickground_rotate_speed.bytes",
+  EquipDefaultPerfectUpperLimit = 30,
+  UnlockToyMask = 15,
+  RevivedByTeammateBuff = 7000140,
+  TeamMaxNum = 5,
+  PCUIEmoteTabsShow = {
+    {
+      "2",
+      "ui/atlas/photograph/camera_menu_1"
+    },
+    {
+      "3",
+      "ui/atlas/photograph/camera_menu_2"
+    },
+    {
+      "5",
+      "ui/atlas/photograph/camera_interaction_btn_ash"
+    },
+    {
+      "4",
+      "ui/atlas/photograph/camera_menu_3"
+    },
+    {
+      "6",
+      "ui/atlas/photograph/camera_menu_21"
+    },
+    {
+      "0",
+      "ui/atlas/photograph/camera_menu_19"
+    },
+    {
+      "1",
+      "ui/atlas/photograph/camera_menu_12"
+    }
+  },
+  PhotoPCSliderStepSize = {
+    {1, 0.1},
+    {2, 0.1},
+    {3, 0.1},
+    {4, 0.1},
+    {5, 0.1},
+    {6, 0.1},
+    {7, 0.1},
+    {8, 0.1},
+    {9, 0.1},
+    {10, 0.1},
+    {11, 0.1},
+    {12, 0.1},
+    {13, 0.1},
+    {14, 0.1},
+    {15, 0.1},
+    {16, 0.1},
+    {17, 10}
+  },
+  ExchangeLimitHide = 99999,
+  BeRevivedDynamicInteractionId = 4001,
+  WorldShowMaxKillCnt = 40,
+  DungeonStartCountDownTime = 5,
+  DungeonReadyToGoTime = 2,
+  FightbackSkillSlot = 113,
+  QuickRiseSkillSlot = 114,
+  PhotographDecorateScaleRangeLarge = {
+    {
+      1.2,
+      4,
+      2
+    },
+    {1.2, 4}
+  },
+  TapEvaluationCondition = "2=10097=2",
+  FindActorMaxHitValue = 30,
+  AttackSimplyDefParam = 6500,
+  AttackSimplyRefineDefParam = 6500,
+  AttackSimplyDeltaLevelMultiParam = {
+    1,
+    2,
+    2,
+    3,
+    4,
+    5,
+    7,
+    9,
+    11,
+    13,
+    16,
+    19,
+    22,
+    25,
+    30
+  },
+  UnionGroupInviteLimit = 100,
+  UnionGroupChatLinkId = 1004020,
+  ChatVoiceMsgMaxLength = 350,
+  IndicatorTargetRemoveTime = 0.3,
+  IndicatorTargetMouseShock = 0.5,
+  IndicatorTargetRouletteShock = 0.1,
+  IndicatorRouletteShock = 0.2,
+  IndicatorCameraID = {200, 201},
+  PathFindingRunFirstDistance = 50,
+  PathFindingEndDistance = 1,
+  TowerFailCountDownTime = 1,
+  TowerFailMessage = {1006003, 1005902},
+  PathFindingCd = 0.5,
+  RelaxGainLimit = {
+    {10004, 35}
+  },
+  LipLang = {
+    "zh",
+    "en",
+    "ja",
+    "ko"
+  },
+  GamepadRotXSpeed = 40,
+  GamepadRotYSpeed = 40,
+  NewPeopleConditionLevel = {
+    {
+      1,
+      1,
+      10
+    }
+  },
+  NewPeopleFunctionId = 100502,
+  CompensationPointsPro = {
+    {
+      1,
+      1000,
+      1
+    },
+    {
+      1001,
+      10000,
+      2
+    },
+    {
+      10001,
+      30000,
+      5
+    },
+    {
+      30001,
+      50000,
+      8
+    },
+    {
+      50001,
+      999999999,
+      10
+    }
+  },
+  NewbieFriendPointEvent = {4, 5},
+  CompensationPointFunctionId = 800879,
+  FishRankResetTimerId = 10103,
+  EmoteNoFishQuickJump = {
+    1,
+    8,
+    5,
+    4732
+  },
+  TransferDefaultCameraId = 3001,
+  HouseManufactureDialogShowItem = {
+    {11010184, 1}
+  },
+  MatchWaitingTime = 600,
+  MatchWaitingConfirmTime = 20,
+  PersonalzonePhotoRow = {4, 3},
+  PersonalzoneMedalRow = {7, 3},
+  IdCardShowMedalCount = 5,
+  TeamCardShowMedalCount = 5,
+  PathFindingMoveHorizontalThreshold = 1,
+  PathFindingMoveVerticalThreshold = 1,
+  BuffAbnormalAbilityType = {
+    301,
+    302,
+    303,
+    304,
+    305
+  },
+  BuffAbnormalDecayTime = 15,
+  BuffAbnormalDecayPercent = {
+    1,
+    0.5,
+    0.25,
+    0
+  },
+  SkillAoyiSwitchSilentCd = 20000,
+  SkillAoyiModelSkin1 = {
+    {
+      1,
+      4,
+      1
+    },
+    {
+      5,
+      5,
+      2
+    }
+  },
+  SkillAoyiModelSkin2 = {
+    {
+      1,
+      4,
+      1
+    },
+    {
+      5,
+      5,
+      4
+    }
+  },
+  GamepadZoomSpeed = 1,
+  NewPeopleCancelCondition = {
+    {102, 360000}
+  },
+  NewPeopleGiftGameplayType = {
+    8,
+    9,
+    13,
+    16,
+    17
+  },
+  HelpNewPeopleGiftGameplayType = {
+    9,
+    13,
+    16,
+    17
+  },
+  NewPeopleGiftAwardPackageId = {
+    10004,
+    50,
+    55
+  },
+  HelpNewPeopleGiftAwardPackageId = {
+    10004,
+    20,
+    56
+  },
+  TeamTypeCD = 5,
+  LifeCastMaxCnt = 999,
+  ResonanceMaxLvSkin = 999999,
+  SwimWaterNormalAngleLimit = 30,
+  SeasonSigninMail = 2251,
+  SigninRefresh = 40055,
+  PhotoAlbumUploadMaxAmount = 10,
+  DungeonSummonedCD = 20,
+  ReceiveDungeonSummonedCD = 20,
+  DungeonSummonedTime = 20,
+  MailQuantityStorageMax = 300,
+  ActNoticeTime = 30,
+  UnionBossBuffFunctionId = 500125
 }
 return read_onlyHelper.Read_only(Global)

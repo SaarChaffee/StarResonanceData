@@ -16,6 +16,7 @@ function GuideEventSystem:Init()
   end
   
   function self.onInputAction_(inputActionData)
+    Z.GuideMgr:onRemoveEvent(E.SteerType.OnInputKey, inputActionData.actionId)
     Z.GuideMgr:onRemoveEvent(E.SteerType.AtWillOperation)
   end
   
@@ -24,9 +25,11 @@ function GuideEventSystem:Init()
   end
   
   Z.ContainerMgr.CharSerialize.equip.Watcher:RegWatcher(self.equipListChangeFunc_)
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed)
-  Z.EventMgr:Add(Z.ConstValue.UIOpen, self.onOpenViewEvent, self)
-  Z.EventMgr:Add(Z.ConstValue.UIClose, self.onCloseViewEvent, self)
+  Z.InputLuaBridge:AddInputEventDelegateWithoutActionId(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed)
+  Z.EventMgr:Add(Z.ConstValue.UIShow, self.onOpenViewEvent, self)
+  Z.EventMgr:Add(Z.ConstValue.UIHide, self.onCloseViewEvent, self)
+  Z.EventMgr:Add(Z.ConstValue.UILoadFinish, self.onOpenViewEvent, self)
+  Z.EventMgr:Add(Z.ConstValue.UIUnLoad, self.onCloseViewEvent, self)
   Z.EventMgr:Add(Z.ConstValue.SteerEventName.OnFinishCutscene, self.OnEndCutsceneEvent, self)
   Z.EventMgr:Add(Z.ConstValue.SceneActionEvent.EnterScene, self.OnEnterSceneEvent, self)
   Z.EventMgr:Add(Z.ConstValue.Backpack.AddItem, self.OnAddItemEvent, self)
@@ -41,7 +44,7 @@ function GuideEventSystem:Init()
   Z.EventMgr:Add(Z.ConstValue.SteerEventName.OnPlayCutscene, self.onPlayCutsceneEvent, self)
   Z.EventMgr:Add(Z.ConstValue.SteerEventName.OnClickAllArea, self.OnClickAlllAreaEvent, self)
   Z.EventMgr:Add(Z.ConstValue.SteerEventName.OnResonancEnvironment, self.OnResonancEnvironmentEvent, self)
-  Z.EventMgr:Add(Z.ConstValue.SteerEventName.OnGuideEvnet, self.onGuideEvent, self)
+  Z.EventMgr:Add(Z.ConstValue.SteerEventName.OnGuideEvent, self.onGuideEvent, self)
   Z.EventMgr:Add(Z.ConstValue.SteerEventName.OnFinishGuideEvent, self.finishGuide, self)
   Z.EventMgr:Add(Z.ConstValue.FashionAttrChange, self.onFashionAttrChange, self)
   Z.EventMgr:Add(Z.ConstValue.SteerEventName.OnFashionWearChange, self.onEntityFashionChange, self)
@@ -74,7 +77,7 @@ function GuideEventSystem:UnInit()
     end
     self.onItemPackageChangedWatcher_ = nil
   end
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed)
+  Z.InputLuaBridge:RemoveInputEventDelegateWithoutActionId(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed)
   Z.EventMgr:RemoveObjAll(self)
   isInit = false
 end
@@ -92,7 +95,7 @@ function GuideEventSystem:onOpenViewEvent(viewConfigKey)
   if not isInit then
     return
   end
-  if Z.UIConfig[viewConfigKey] and Z.UIConfig[viewConfigKey].IsRefreshSteer ~= false then
+  if not Z.UIConfig[viewConfigKey] or Z.UIConfig[viewConfigKey].IsRefreshSteer ~= false then
     Z.GuideMgr:onRemoveEvent(E.SteerType.OpenUi, viewConfigKey)
     Z.GuideMgr:onChangeEvent(E.SteerType.OpenUi, viewConfigKey)
   end

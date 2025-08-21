@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message EquipAttrSet {
+    repeated zproto.EquipAttrSet.BasicAttrEntry basicAttr = 1;
+    repeated zproto.EquipAttrSet.AdvanceAttrEntry advanceAttr = 2;
+    repeated zproto.EquipAttrSet.RecastAttrEntry recastAttr = 3;
+    repeated zproto.EquipAttrSet.RareQualityAttrEntry rareQualityAttr = 4;
+}

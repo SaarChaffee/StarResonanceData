@@ -3,13 +3,15 @@ syntax = "proto3";
 package zproto;
 
 import "stru_equip_attr.proto";
+import "stru_equip_enchant_info.proto";
 import "stru_equip_info.proto";
+import "stru_equip_suit_info.proto";
 import "stru_dirty_mask.proto";
 
 message EquipList {
-    map<int32, .zproto.EquipInfo> equipList = 1;
+    repeated zproto.EquipList.EquipListEntry equipList = 1;
     zproto.EquipAttr equipAttr = 2;
-    map<uint64, .zproto.EquipAttr> equipRecastInfo = 4;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.EquipList.EquipRecastInfoEntry equipRecastInfo = 4;
+    repeated zproto.EquipList.EquipEnchantEntry equipEnchant = 5;
+    repeated zproto.EquipList.SuitInfoDictEntry suitInfoDict = 6;
 }
-

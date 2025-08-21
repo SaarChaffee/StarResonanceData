@@ -1,0 +1,200 @@
+{
+  "101": {
+    "ProId": 101,
+    "Name": "",
+    "Des": "",
+    "Type": 1,
+    "Sort": 1,
+    "Weight": 2,
+    "FormulaResetCost": [],
+    "FunctionId": 501001,
+    "BgPic": "ui/textures/collection_profession/collection_profession_pic_5",
+    "Icon": "ui/atlas/life_profession/life_profession_collect",
+    "LevelUpIcon": "ui/atlas/level_up_icon/rolelevel_upgrade_collect",
+    "MapIcon": "ui/atlas/life_profession/life_icon_collect",
+    "LevelAward": [
+      2000101,
+      2000102,
+      2000103,
+      2000104,
+      2000105
+    ],
+    "HelpId": 2105
+  },
+  "102": {
+    "ProId": 102,
+    "Name": "",
+    "Des": "",
+    "Type": 1,
+    "Sort": 2,
+    "Weight": 2,
+    "FormulaResetCost": [],
+    "FunctionId": 501002,
+    "BgPic": "ui/textures/collection_profession/collection_profession_pic_8",
+    "Icon": "ui/atlas/life_profession/life_profession_mining",
+    "LevelUpIcon": "ui/atlas/level_up_icon/rolelevel_upgrade_mining",
+    "MapIcon": "ui/atlas/life_profession/life_icon_mining",
+    "LevelAward": [
+      2000701,
+      2000702,
+      2000703,
+      2000704,
+      2000705
+    ],
+    "HelpId": 2106
+  },
+  "103": {
+    "ProId": 103,
+    "Name": "",
+    "Des": "",
+    "Type": 1,
+    "Sort": 3,
+    "Weight": 2,
+    "FormulaResetCost": [],
+    "FunctionId": 501003,
+    "BgPic": "ui/textures/collection_profession/collection_profession_pic_4",
+    "Icon": "ui/atlas/life_profession/life_profession_stone",
+    "LevelUpIcon": "ui/atlas/level_up_icon/rolelevel_upgrade_stone",
+    "MapIcon": "ui/atlas/life_profession/life_icon_stone",
+    "LevelAward": [
+      2000801,
+      2000802,
+      2000803,
+      2000804,
+      2000805
+    ],
+    "HelpId": 2107
+  },
+  "201": {
+    "ProId": 201,
+    "Name": "",
+    "Des": "",
+    "Type": 3,
+    "Sort": 4,
+    "Weight": 1,
+    "FormulaResetCost": [],
+    "FunctionId": 501004,
+    "BgPic": "ui/textures/collection_profession/collection_profession_pic_3",
+    "Icon": "ui/atlas/life_profession/life_profession_cook",
+    "LevelUpIcon": "ui/atlas/level_up_icon/rolelevel_upgrade_cook",
+    "MapIcon": "ui/atlas/life_profession/life_icon_cook",
+    "LevelAward": [
+      2000201,
+      2000202,
+      2000203,
+      2000204,
+      2000205
+    ],
+    "HelpId": 5050
+  },
+  "202": {
+    "ProId": 202,
+    "Name": "",
+    "Des": "",
+    "Type": 2,
+    "Sort": 6,
+    "Weight": 1,
+    "FormulaResetCost": [],
+    "FunctionId": 501005,
+    "BgPic": "ui/textures/collection_profession/collection_profession_pic_2",
+    "Icon": "ui/atlas/life_profession/life_profession_refine",
+    "LevelUpIcon": "ui/atlas/level_up_icon/rolelevel_upgrade_refine",
+    "MapIcon": "ui/atlas/life_profession/life_icon_refine",
+    "LevelAward": [
+      2000301,
+      2000302,
+      2000303,
+      2000304,
+      2000305
+    ],
+    "HelpId": 2103
+  },
+  "203": {
+    "ProId": 203,
+    "Name": "",
+    "Des": "",
+    "Type": 2,
+    "Sort": 7,
+    "Weight": 1,
+    "FormulaResetCost": [],
+    "FunctionId": 501006,
+    "BgPic": "ui/textures/collection_profession/collection_profession_pic_6",
+    "Icon": "ui/atlas/life_profession/life_profession_foundry",
+    "LevelUpIcon": "ui/atlas/level_up_icon/rolelevel_upgrade_foundry",
+    "MapIcon": "ui/atlas/life_profession/life_icon_foundry",
+    "LevelAward": [
+      2000401,
+      2000402,
+      2000403,
+      2000404,
+      2000405
+    ],
+    "HelpId": 2110
+  },
+  "204": {
+    "ProId": 204,
+    "Name": "",
+    "Des": "",
+    "Type": 2,
+    "Sort": 8,
+    "Weight": 1,
+    "FormulaResetCost": [],
+    "FunctionId": 501007,
+    "BgPic": "ui/textures/collection_profession/collection_profession_pic_1",
+    "Icon": "ui/atlas/life_profession/life_profession_magiccraft",
+    "LevelUpIcon": "ui/atlas/level_up_icon/rolelevel_upgrade_magiccraft",
+    "MapIcon": "ui/atlas/life_profession/life_icon_magiccraft",
+    "LevelAward": [
+      2000501,
+      2000502,
+      2000503,
+      2000504,
+      2000505
+    ],
+    "HelpId": 2111
+  },
+  "205": {
+    "ProId": 205,
+    "Name": "",
+    "Des": "",
+    "Type": 2,
+    "Sort": 5,
+    "Weight": 1,
+    "FormulaResetCost": [],
+    "FunctionId": 501008,
+    "BgPic": "ui/textures/collection_profession/collection_profession_pic_10",
+    "Icon": "ui/atlas/life_profession/life_profession_woodwork",
+    "LevelUpIcon": "ui/atlas/level_up_icon/rolelevel_upgrade_woodwork",
+    "MapIcon": "ui/atlas/life_profession/life_icon_woodwork",
+    "LevelAward": [
+      2000601,
+      2000602,
+      2000603,
+      2000604,
+      2000605
+    ],
+    "HelpId": 2112
+  },
+  "206": {
+    "ProId": 206,
+    "Name": "",
+    "Des": "",
+    "Type": 2,
+    "Sort": 9,
+    "Weight": 1,
+    "FormulaResetCost": [],
+    "FunctionId": 501009,
+    "BgPic": "ui/textures/collection_profession/collection_profession_pic_9",
+    "Icon": "ui/atlas/life_profession/life_profession_tailor",
+    "LevelUpIcon": "ui/atlas/level_up_icon/rolelevel_upgrade_tailor",
+    "MapIcon": "ui/atlas/life_profession/life_icon_tailor",
+    "LevelAward": [
+      2000901,
+      2000902,
+      2000903,
+      2000904,
+      2000905
+    ],
+    "HelpId": 2115
+  }
+}

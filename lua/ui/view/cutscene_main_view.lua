@@ -19,22 +19,7 @@ function Cutscene_mainView:OnDeActive()
 end
 
 function Cutscene_mainView:OnRefresh()
-  self.quest_task_btn_com_:Refresh(self.viewData.IsInFlow, self.viewData.CutsceneId)
-  self:refreshPromptText()
-end
-
-function Cutscene_mainView:refreshPromptText()
-  self.uiBinder.talk_btns_binder.lab_prompt.text = Lang("Long_Press_Skip_PromptDefault")
-  local keyVM = Z.VMMgr.GetVM("setting_key")
-  local keyCode = keyVM.GetKeyCodeListByKeyId(1)[1]
-  if keyCode then
-    local contrastRow = Z.TableMgr.GetRow("SetKeyboardContrastTableMgr", keyCode)
-    if contrastRow then
-      self.uiBinder.talk_btns_binder.lab_prompt.text = Lang("Long_Press_Skip_Prompt", {
-        val = contrastRow.Keyboard
-      })
-    end
-  end
+  self.quest_task_btn_com_:Refresh(self.viewData.IsInFlow, self.viewData.CutsceneId, self.viewData.SkipType)
 end
 
 return Cutscene_mainView

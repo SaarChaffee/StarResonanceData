@@ -35,6 +35,11 @@ function QuestTaskBtnsCom:ctor()
   
   function self.whenPressF_()
     if not self:getIsAllowSkip() then
+      if self.skipBtnState_ == SkipBtnState.Pressing or self.startPressTime_ > 0 then
+        self.startPressTime_ = 0
+        self.uiBinder_.skip_progress.fillAmount = 0
+        self:refreshSkipBtnUIByState(SkipBtnState.Show, true)
+      end
       return
     end
     if not self.startPressTime_ or self.startPressTime_ <= 0 then
@@ -74,8 +79,10 @@ function QuestTaskBtnsCom:ctor()
     self:refreshAutoBtnUIByState(AutoPlayState.Show, false)
   end
   
-  function self.excKeyPress_()
-    self:onClickSkip()
+  function self.excKeyPress_(inputActionData)
+    if self:canResponeExitKey(inputActionData) then
+      self:onClickSkip()
+    end
   end
 end
 
@@ -85,6 +92,7 @@ function QuestTaskBtnsCom:Init(source, uiBinder, viewConfigKey)
   self.viewConfigKey_ = viewConfigKey
   self.uiBinder_ = uiBinder
   self.timerMgr_ = Z.TimerMgr.new()
+  self.startPressTime_ = 0
   self:setScale()
   self:bindEvent()
   self.skipBtnState_ = 1
@@ -102,13 +110,15 @@ function QuestTaskBtnsCom:UnInit()
   self.init_ = false
 end
 
-function QuestTaskBtnsCom:Refresh(isInFlow, cutsId)
+function QuestTaskBtnsCom:Refresh(isInFlow, cutsId, skipType)
   self.isInFlow_ = isInFlow
   self.cutsId_ = cutsId
+  self.skipType_ = skipType
   self:refreshSkipBtnUIByState(SkipBtnState.Show, true, ShowFirstDuration)
   self:refreshAutoBtnUIByState(AutoPlayState.Show, true)
   self:unRegisterInput()
   self:registerInput()
+  self:refreshPromptText()
   self.autoPlay_ = self.settingVM_.Get(E.ClientSettingID.AutoPlay)
   self:autoPlay(self.autoPlay_)
 end
@@ -138,22 +148,32 @@ function QuestTaskBtnsCom:registerInput()
   if not self.init_ then
     return
   end
-  Z.InputMgr:AddInputEventDelegate(self.onPressF_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Interact)
-  Z.InputMgr:AddInputEventDelegate(self.whenPressF_, Z.InputActionEventType.ButtonPressed, Z.RewiredActionsConst.Interact)
-  Z.InputMgr:AddInputEventDelegate(self.onReleseF_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.Interact)
-  Z.InputMgr:AddInputEventDelegate(self.anyActionPress_, Z.InputActionEventType.ButtonJustPressed)
-  Z.InputMgr:AddInputEventDelegate(self.excKeyPress_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.ExitUI)
+  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.onPressF_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Interact)
+  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.whenPressF_, Z.InputActionEventType.ButtonPressed, Z.RewiredActionsConst.Interact)
+  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.onReleseF_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.Interact)
+  Z.InputLuaBridge:AddInputEventDelegateWithoutActionId(self.anyActionPress_, Z.InputActionEventType.ButtonJustPressed)
+  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.excKeyPress_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.ExitUI)
 end
 
 function QuestTaskBtnsCom:unRegisterInput()
   if not self.init_ then
     return
   end
-  Z.InputMgr:RemoveInputEventDelegate(self.onPressF_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Interact)
-  Z.InputMgr:RemoveInputEventDelegate(self.whenPressF_, Z.InputActionEventType.ButtonPressed, Z.RewiredActionsConst.Interact)
-  Z.InputMgr:RemoveInputEventDelegate(self.onReleseF_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.Interact)
-  Z.InputMgr:RemoveInputEventDelegate(self.anyActionPress_, Z.InputActionEventType.ButtonJustPressed)
-  Z.InputMgr:RemoveInputEventDelegate(self.excKeyPress_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.ExitUI)
+  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.onPressF_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Interact)
+  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.whenPressF_, Z.InputActionEventType.ButtonPressed, Z.RewiredActionsConst.Interact)
+  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.onReleseF_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.Interact)
+  Z.InputLuaBridge:RemoveInputEventDelegateWithoutActionId(self.anyActionPress_, Z.InputActionEventType.ButtonJustPressed)
+  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.excKeyPress_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.ExitUI)
+end
+
+function QuestTaskBtnsCom:refreshPromptText()
+  local keyVM = Z.VMMgr.GetVM("setting_key")
+  local keyCodeDesc = keyVM.GetKeyCodeDescListByKeyId(1)[1]
+  if keyCodeDesc then
+    self.uiBinder_.lab_prompt.text = Lang("Long_Press_Skip_Prompt", {val = keyCodeDesc})
+    return
+  end
+  self.uiBinder_.lab_prompt.text = Lang("Long_Press_Skip_PromptDefault")
 end
 
 function QuestTaskBtnsCom:onClickSkip()
@@ -163,12 +183,10 @@ function QuestTaskBtnsCom:onClickSkip()
         self:unRegisterInput()
         local onConfirm = function()
           self:doSkip()
-          Z.DialogViewDataMgr:CloseDialogView()
           self.isShowSkipDialog = false
         end
         local onCancel = function()
           self:registerInput()
-          Z.DialogViewDataMgr:CloseDialogView()
           self.isShowSkipDialog = false
         end
         self.isShowSkipDialog = true
@@ -232,11 +250,13 @@ end
 
 function QuestTaskBtnsCom:getIsAllowSkip()
   if self.source_ == E.QuestTaskBtnsSource.Cutscene and not self.isInFlow_ then
-    local cutRow = Z.TableMgr.GetTable("CutsceneTableMgr").GetRow(self.cutsId_)
-    if cutRow and cutRow.CanSkip == 0 then
-      return true
+    if not self.skipType_ == nil then
+      local cutRow = Z.TableMgr.GetTable("CutsceneTableMgr").GetRow(self.cutsId_)
+      if cutRow and cutRow.CanSkip == 0 then
+        self.skipType_ = cutRow.CanSkip
+      end
     end
-    return false
+    return self.skipType_ == 0
   end
   local talkData = Z.DataMgr.Get("talk_data")
   return talkData:GetNodeIsAllowSkip()
@@ -335,6 +355,17 @@ function QuestTaskBtnsCom:setVisibleComp(comp, visible)
     return
   end
   self.uiBinder_.Ref:SetVisible(comp, visible)
+end
+
+function QuestTaskBtnsCom:canResponeExitKey()
+  local letterWindow = Z.UIMgr:GetView("quest_letter_window")
+  if letterWindow ~= nil and letterWindow.IsActive then
+    return false
+  end
+  if Z.InputMgr.InputDeviceType == Panda.ZInput.EInputDeviceType.Joystick then
+    return false
+  end
+  return true
 end
 
 return QuestTaskBtnsCom

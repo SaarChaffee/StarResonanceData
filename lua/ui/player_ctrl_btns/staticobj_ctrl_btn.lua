@@ -1,49 +1,51 @@
 local super = require("ui.player_ctrl_btns.player_ctrl_btn_base")
 local StaticObjCtrlBtn = class("StaticObjCtrlBtn", super)
-local keyIconHelper = require("ui.component.mainui.new_key_icon_helper")
+local inputKeyDescComp = require("input.input_key_desc_comp")
 
 function StaticObjCtrlBtn:ctor(key, panel)
   self.uiBinder = nil
   super.ctor(self, key, panel)
+  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function StaticObjCtrlBtn:GetUIUnitPath()
-  local path = "ui/prefabs/expression/expression_action_btn_double"
-  return Z.IsPCUI and path .. Z.ConstValue.PCAssetSuffix or path
+  local path = "ui/prefabs/controller/controller_staticobj_btn_tpl"
+  return path
 end
 
 function StaticObjCtrlBtn:OnActive()
-  local isShow = false
-  local id = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EStaticInteractionObjId).Value
-  local idCfg = Z.TableMgr.GetTable("StaticInteractiveObjectTableMgr").GetRow(id)
-  if idCfg ~= nil then
-    local classCfg = Z.TableMgr.GetTable("StaticInteractiveClassMgr").GetRow(idCfg.ClassId)
-    if classCfg ~= nil then
-      isShow = classCfg.ExitType == 2
-    end
-  end
-  self.uiBinder.Ref.UIComp:SetVisible(isShow)
-  if isShow == false then
+  self.isEndInteraction_ = false
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
     return
   end
-  self:AddListener()
+  self.uiBinder.Ref.UIComp:SetVisible(false)
   Z.GuideMgr:SetSteerIdByComp(self.uiBinder.steer_item, E.DynamicSteerType.KeyBoardId, 26)
-  keyIconHelper.InitKeyIcon(self, self.uiBinder.binder_key, 26)
+  self.inputKeyDescComp_:Init(26, self.uiBinder.binder_key)
+  self:AddListener()
+end
+
+function StaticObjCtrlBtn:RegisterEvent()
+  Z.EventMgr:Add("SHOW_INTERACTION_END_ACTION_BTN", self.showEndActionBtn, self)
+end
+
+function StaticObjCtrlBtn:showEndActionBtn(isShow)
+  self.uiBinder.Ref.UIComp:SetVisible(isShow)
+end
+
+function StaticObjCtrlBtn:UnregisterEvent()
+  Z.EventMgr:RemoveObjAll(self)
 end
 
 function StaticObjCtrlBtn:OnDeActive()
+  self.isEndInteraction_ = false
+  self.inputKeyDescComp_:UnInit()
 end
 
 function StaticObjCtrlBtn:AddListener()
   self:AddAsyncClick(self.uiBinder.btn_item, function()
-    Z.InteractionMgr:StaticObjInput(false, false)
+    Z.PlayerInputController:EndInteractionAction()
   end)
-end
-
-function StaticObjCtrlBtn:btnFuncCall()
-  Z.CoroUtil.create_coro_xpcall(function()
-    Z.InteractionMgr:StaticObjInput(false, false)
-  end)()
 end
 
 return StaticObjCtrlBtn

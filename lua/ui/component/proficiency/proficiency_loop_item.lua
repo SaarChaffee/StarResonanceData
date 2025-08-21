@@ -1,4 +1,4 @@
-local super = require("ui.component.loopscrollrectitem")
+local super = require("ui.component.loop_list_view_item")
 local ProficiencyItem = class("ProficiencyItem", super)
 
 function ProficiencyItem:ctor()
@@ -7,7 +7,7 @@ function ProficiencyItem:ctor()
 end
 
 function ProficiencyItem:OnInit()
-  self.parentView_ = self.parent.uiView
+  self.parentView_ = self.parent.UIView
   self.level_ = Z.ContainerMgr.CharSerialize.roleLevel.level
   self.nowSelectIdnex_ = 0
   self.cont_skill_list_ = {
@@ -15,21 +15,14 @@ function ProficiencyItem:OnInit()
     cont_skill_02 = self.uiBinder.cont_skill_02,
     cont_skill_03 = self.uiBinder.cont_skill_03
   }
-  self:AddClick(self.uiBinder.cont_skill_01.btn, function()
-    self:btnClickFunc(self.itemData_[1], self.uiBinder.cont_skill_01, 1)
-    self.nowSelectIdnex_ = 1
-  end)
-  self:AddClick(self.uiBinder.cont_skill_02.btn, function()
-    self:btnClickFunc(self.itemData_[2], self.uiBinder.cont_skill_02, 2)
-    self.nowSelectIdnex_ = 2
-  end)
-  self:AddClick(self.uiBinder.cont_skill_03.btn, function()
-    self:btnClickFunc(self.itemData_[1], self.uiBinder.cont_skill_03, 1)
-    self.nowSelectIdnex_ = 3
-  end)
-  self.parentView_.UiDepth:AddChildDepth(self.cont_skill_list_.cont_skill_01.eff_root_switch)
-  self.parentView_.UiDepth:AddChildDepth(self.cont_skill_list_.cont_skill_02.eff_root_switch)
-  self.parentView_.UiDepth:AddChildDepth(self.cont_skill_list_.cont_skill_03.eff_root_switch)
+  
+  function self.usingProficiencyChangeFunc_(container, dirtys)
+    if dirtys.usingProficiencyMap then
+      self:usingProficiencyChangeFunc()
+    end
+  end
+  
+  Z.ContainerMgr.CharSerialize.roleLevel.proficiencyInfo.Watcher:RegWatcher(self.usingProficiencyChangeFunc_)
 end
 
 function ProficiencyItem:btnClickFunc(data, item, index)
@@ -39,22 +32,21 @@ function ProficiencyItem:btnClickFunc(data, item, index)
   local isUnLock = self.proficiencyVm_.GetIsLockByLevelAndBuffId(data.LockItem, data.ActiveLevel, data.BuffId)
   local isActive = self.proficiencyVm_.IsActiveByItemData(data)
   local isGrade = self.level_ >= data.ActiveLevel
-  self.parentView_:SelectProficiencyItem(self.component.Index, self.itemData_, index, isActive, isUnLock, isGrade)
+  self.parentView_:SelectProficiencyItem(self.index_, self.itemData_, index, isActive, isUnLock, isGrade)
   if self.profilciencyData_.ProficiencyNewItem[data.BuffId] then
     self.profilciencyData_.ProficiencyNewItem[data.BuffId] = nil
-    Z.RedPointMgr.RefreshClientNodeCount(E.RedType.RoleMainRolelevelBtn, table.zcount(self.profilciencyData_.ProficiencyNewItem))
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.RoleMainRolelevelBtn, table.zcount(self.profilciencyData_.ProficiencyNewItem), true)
     item.Ref:SetVisible(item.img_dot, false)
   end
   self:setSelectState(item, true)
 end
 
 function ProficiencyItem:refreshItemStateByData(item, data)
-  local buffId = self.profilciencyData_:GetLevelActivationId(self.itemData_[1].ActiveLevel)
+  local buffId = Z.ContainerMgr.CharSerialize.roleLevel.proficiencyInfo.usingProficiencyMap[self.itemData_[1].ActiveLevel]
   if data.ActiveLevel > self.level_ then
     self:refreshItemStateByType(item, E.ProficiencyItemState.NotGrade)
   elseif buffId and buffId == data.BuffId then
     self:refreshItemStateByType(item, E.ProficiencyItemState.On)
-    self:playSelectAnima(item)
   else
     local isUnLock = self.proficiencyVm_.GetIsLockByLevelAndBuffId(data.LockItem, data.ActiveLevel, data.BuffId)
     if isUnLock then
@@ -101,10 +93,27 @@ function ProficiencyItem:refreshItemStateByType(item, type)
 end
 
 function ProficiencyItem:Refresh()
-  self.index_ = self.component.Index + 1
+  self.index_ = self.Index
   self.itemData_ = self.parent:GetDataByIndex(self.index_)
+  self.dataList_ = self.parent:GetData()
   self:initUi()
+  self:initItem()
   self:refreshState()
+end
+
+function ProficiencyItem:initItem()
+  self:AddAsyncListener(self.uiBinder.cont_skill_01.btn, function()
+    self:btnClickFunc(self.itemData_[1], self.uiBinder.cont_skill_01, 1)
+    self.nowSelectIdnex_ = 1
+  end)
+  self:AddAsyncListener(self.uiBinder.cont_skill_02.btn, function()
+    self:btnClickFunc(self.itemData_[2], self.uiBinder.cont_skill_02, 2)
+    self.nowSelectIdnex_ = 2
+  end)
+  self:AddAsyncListener(self.uiBinder.cont_skill_03.btn, function()
+    self:btnClickFunc(self.itemData_[1], self.uiBinder.cont_skill_03, 1)
+    self.nowSelectIdnex_ = 3
+  end)
 end
 
 function ProficiencyItem:initUi()
@@ -125,14 +134,16 @@ function ProficiencyItem:initUi()
     self:setItemIcon(self.uiBinder.cont_skill_03, leftBuffData.Icon)
   end
   local isShow = self.level_ >= self.itemData_[1].ActiveLevel
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_grade_on, isShow)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_grade_off, not isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_grade_on, isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_grade_off, not isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_dot_off, not isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_dot_on, isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_bg_on1, isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_bg_on2, isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_bg_off1, not isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_bg_off2, not isShow)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_up, self.Index == 1)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_down, self.Index == #self.dataList_ - 1)
   self.uiBinder.lab_grade_on.text = self.itemData_[1].ActiveLevel
   self.uiBinder.lab_grade_off.text = self.itemData_[1].ActiveLevel
   local diff = 0
@@ -150,14 +161,14 @@ function ProficiencyItem:initUi()
     self.uiBinder.cont_skill_03.Ref:SetVisible(self.uiBinder.cont_skill_03.node_not_unlocked, true)
   end
   self.uiBinder.img_line_on.fillAmount = diff
-  self.uiBinder.Ref:SetVisible(self.uiBinder.group_line, self.index_ ~= self.parent:GetCount())
+  self.uiBinder.Ref:SetVisible(self.uiBinder.group_line, self.index_ ~= #self.dataList_)
 end
 
-function ProficiencyItem:Selected(selected)
+function ProficiencyItem:OnSelected(selected)
   if not self.profilciencyData_.IsFrist then
     return
   end
-  if selected and self.component.Index == 0 then
+  if selected and self.index_ == 1 then
     self:SelectedFirst()
     self.profilciencyData_.IsFrist = false
   end
@@ -168,19 +179,51 @@ function ProficiencyItem:SelectedFirst()
   local isUnLock = self.proficiencyVm_.GetIsLockByLevelAndBuffId(self.itemData_[1].LockItem, self.itemData_[1].ActiveLevel, self.itemData_[1].BuffId)
   local isGrade = self.level_ >= self.itemData_[1].ActiveLevel
   if not buffId then
-    self.parentView_:SelectProficiencyItem(self.component.Index, self.itemData_, 1, false, isUnLock, isGrade)
+    self.parentView_:SelectProficiencyItem(self.index_, self.itemData_, 1, false, isUnLock, isGrade)
     self:setSelectState(self.uiBinder.cont_skill_01, true)
     self:setSelectState(self.uiBinder.cont_skill_03, true)
     self.nowSelectIdnex_ = self.itemData_[2] and 1 or 3
   elseif self.itemData_[1].BuffId == buffId then
-    self.parentView_:SelectProficiencyItem(self.component.Index, self.itemData_, 1, true, isUnLock, isGrade)
+    self.parentView_:SelectProficiencyItem(self.index_, self.itemData_, 1, true, isUnLock, isGrade)
     self:setSelectState(self.uiBinder.cont_skill_01, true)
     self:setSelectState(self.uiBinder.cont_skill_03, true)
     self.nowSelectIdnex_ = self.itemData_[2] and 1 or 3
   else
-    self.parentView_:SelectProficiencyItem(self.component.Index, self.itemData_, 2, true, isUnLock, isGrade)
+    self.parentView_:SelectProficiencyItem(self.index_, self.itemData_, 2, true, isUnLock, isGrade)
     self:setSelectState(self.uiBinder.cont_skill_02, true)
     self.nowSelectIdnex_ = 2
+  end
+end
+
+function ProficiencyItem:usingProficiencyChangeFunc()
+  for key, value in pairs(self.profilciencyData_.CurNotSerActiveLevelDic) do
+    local data = self.itemData_[1]
+    if self.nowSelectIdnex_ == 2 then
+      data = self.itemData_[2]
+    end
+    if data.ActiveLevel == key then
+      self:playAnim()
+      self:refreshState()
+      self.profilciencyData_.CurNotSerActiveLevelDic[key] = nil
+    end
+  end
+end
+
+function ProficiencyItem:refreshClick()
+  if self.nowSelectIdnex_ == 2 then
+    self:btnClickFunc(self.itemData_[2], self.uiBinder.cont_skill_02, 2)
+  else
+    self:btnClickFunc(self.itemData_[1], self.uiBinder["cont_skill_0" .. self.nowSelectIdnex_], 1)
+  end
+end
+
+function ProficiencyItem:playAnim()
+  if self.nowSelectIdnex_ == 2 then
+    self:btnClickFunc(self.itemData_[2], self.uiBinder.cont_skill_02, 2)
+    self:playUnLockAnima(self.uiBinder.cont_skill_02)
+  else
+    self:btnClickFunc(self.itemData_[1], self.uiBinder["cont_skill_0" .. self.nowSelectIdnex_], 1)
+    self:playUnLockAnima(self.uiBinder["cont_skill_0" .. self.nowSelectIdnex_])
   end
 end
 
@@ -190,50 +233,31 @@ function ProficiencyItem:UpdateData(data)
     self:setSelectState(self.uiBinder.cont_skill_02, false)
     self:setSelectState(self.uiBinder.cont_skill_03, false)
   else
-    if self.nowSelectIdnex_ == 2 then
-      self:btnClickFunc(self.itemData_[2], self.uiBinder.cont_skill_02, 2)
-      self:playUnLockAnima(self.uiBinder.cont_skill_02)
-    else
-      self:btnClickFunc(self.itemData_[1], self.uiBinder["cont_skill_0" .. self.nowSelectIdnex_], 1)
-      self:playUnLockAnima(self.uiBinder["cont_skill_0" .. self.nowSelectIdnex_])
+    if self.profilciencyData_.CurNotSerActiveLevelDic[self.itemData_.ActiveLevel] == nil then
+      return
     end
+    self:playAnim()
     self:refreshState()
   end
 end
 
 function ProficiencyItem:setSelectState(item, state)
   item.Ref:SetVisible(item.img_right, state)
-  self:playSelectAnima(item)
+  item.anim_skill:Restart(Z.DOTweenAnimType.Open)
 end
 
 function ProficiencyItem:playUnLockAnima(item)
   Z.AudioMgr:Play("UI_Event_Magic_C")
-  item.eff_root_switch:SetEffectGoVisible(true)
-end
-
-function ProficiencyItem:playSelectAnima(item)
-  item.anim_skill:PlayLoop("ui_anim_proficiency_skill_tpl_node_on_loop")
+  item.anim_eff:PlayOnce("anim_item_proficiency_light_01_tpl_open")
 end
 
 function ProficiencyItem:OnBeforePlayAnim()
-  self.uiBinder.anim_group.OnPlay:AddListener(function()
-    self.uiBinder.UIComp:SetVisible(true)
-  end)
-  local groupAnimComp = self.parent:GetContainerGroupAnimComp()
-  if groupAnimComp then
-    groupAnimComp:AddTweenContainer(self.uiBinder.anim_group)
-    self.uiBinder.UIComp:SetVisible(false)
-  end
 end
 
 function ProficiencyItem:OnUnInit()
-  self.cont_skill_list_.cont_skill_01.eff_root_switch:SetEffectGoVisible(false)
-  self.cont_skill_list_.cont_skill_02.eff_root_switch:SetEffectGoVisible(false)
-  self.cont_skill_list_.cont_skill_03.eff_root_switch:SetEffectGoVisible(false)
-  self.parentView_.UiDepth:RemoveChildDepth(self.cont_skill_list_.cont_skill_01.eff_root_switch)
-  self.parentView_.UiDepth:RemoveChildDepth(self.cont_skill_list_.cont_skill_02.eff_root_switch)
-  self.parentView_.UiDepth:RemoveChildDepth(self.cont_skill_list_.cont_skill_03.eff_root_switch)
+  Z.ContainerMgr.CharSerialize.roleLevel.proficiencyInfo.Watcher:UnregWatcher(self.usingProficiencyChangeFunc_)
   self.cont_skill_list_ = nil
+  self.dataList_ = nil
 end
 
 return ProficiencyItem

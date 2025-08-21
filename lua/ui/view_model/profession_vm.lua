@@ -2,6 +2,14 @@ local ProfessionVM = {}
 
 function ProfessionVM.OpenProfessionSelectView(isFaceView)
   local viewData = {isFaceView = isFaceView}
+  if isFaceView then
+  else
+    local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+    local isOn = gotoFuncVM.CheckFuncCanUse(E.FunctionID.SelectProfession)
+    if not isOn then
+      return
+    end
+  end
   Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Creation_01, "profession_select_window", function()
     Z.UIMgr:OpenView("profession_select_window", viewData)
   end, Z.ConstValue.UnrealSceneConfigPaths.Role)
@@ -12,12 +20,19 @@ function ProfessionVM:CloseProfessionSelectView()
 end
 
 function ProfessionVM:GetCurProfession()
+  if Z.EntityMgr.PlayerEnt == nil then
+    return self:GetContainerProfession()
+  end
+  return Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrProfessionId")).Value
+end
+
+function ProfessionVM:GetContainerProfession()
   return Z.ContainerMgr.CharSerialize.professionList.curProfessionId
 end
 
 function ProfessionVM:CheckProfessionUnlock(professionId)
   if professionId == nil then
-    professionId = self:GetCurProfession()
+    professionId = self:GetContainerProfession()
   end
   return Z.ContainerMgr.CharSerialize.professionList.professionList[professionId] ~= nil
 end
@@ -48,7 +63,6 @@ function ProfessionVM:AsyncChangeProfession(professionId, cancelToken)
     Z.TipsVM.ShowTips(ret)
     return false
   end
-  Z.EventMgr:Dispatch(Z.ConstValue.Hero.ChangeProfession, professionId)
   local professionRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
   if not professionRow then
     return true
@@ -56,7 +70,6 @@ function ProfessionVM:AsyncChangeProfession(professionId, cancelToken)
   Z.DialogViewDataMgr:OpenNormalDialog(Lang("ProfessionReplaceJumpTips", {
     val = professionRow.Name
   }), function()
-    Z.DialogViewDataMgr:CloseDialogView()
     local equipVm = Z.VMMgr.GetVM("equip_system")
     local viewData = {
       itemUuid = 0,

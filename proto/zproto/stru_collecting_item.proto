@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message CollectingItem {
+    int32 itemId = 1;
+    int64 collectedNum = 2;
+    int32 collectPrice = 3;
+    bool IsHigh = 4;
+}

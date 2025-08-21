@@ -6,4 +6,3 @@ enum EUnionActivityRankType {
     UnionActivityRankTypeNull = 0;
     UnionActivityRankTypeScore = 1;
 }
-

@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message SetPersonalZonePhotoRequest {
-    repeated int32 photos = 2;
+    repeated zproto.SetPersonalZonePhotoRequest.PhotosEntry photos = 3;
 }
-

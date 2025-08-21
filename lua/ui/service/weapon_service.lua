@@ -22,7 +22,6 @@ function WeaponService:OnLogin()
             Z.DialogViewDataMgr:OpenNormalDialog(Lang("profession_unlock_tips_" .. key), function()
               local talentSkillVM = Z.VMMgr.GetVM("talent_skill")
               talentSkillVM.OpenTalentSkillMainWindow(key)
-              Z.DialogViewDataMgr:CloseDialogView()
             end)
           end
         end
@@ -96,6 +95,10 @@ function WeaponService:onItemChange(item)
   if item == nil or item.configId == nil then
     return
   end
+  local weaponSkillVM = Z.VMMgr.GetVM("weapon_skill")
+  if not weaponSkillVM:IsResonanceCorrelativeItem(item.configId) then
+    return
+  end
   self:CheckSkillRedDot()
   self:CheckMakeRedDot()
 end
@@ -130,7 +133,7 @@ function WeaponService:checkResonanceActiveRedDot()
         isShowRed = isCostEnough
       end
     end
-    Z.RedPointMgr.RefreshServerNodeCount(nodeId, isShowRed and 1 or 0)
+    Z.RedPointMgr.UpdateNodeCount(nodeId, isShowRed and 1 or 0)
   end
 end
 
@@ -164,7 +167,7 @@ function WeaponService:checkResonanceAdvanceRedDot()
         end
       end
     end
-    Z.RedPointMgr.RefreshServerNodeCount(nodeId, isShowRed and 1 or 0)
+    Z.RedPointMgr.UpdateNodeCount(nodeId, isShowRed and 1 or 0)
   end
 end
 

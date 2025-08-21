@@ -6,7 +6,6 @@ function World_boss_sign_upView:ctor(parent)
   self.uiBinder = nil
   local assetPath = Z.IsPCUI and "worldboss/world_boss_sign_up_pc" or "worldboss/world_boss_sign_up"
   super.ctor(self, "world_boss_sign_up", assetPath, UI.ECacheLv.None)
-  self.worldBossData_ = Z.DataMgr.Get("world_boss_data")
   self.worldBossVM_ = Z.VMMgr.GetVM("world_boss")
 end
 
@@ -25,7 +24,7 @@ function World_boss_sign_upView:OnDeActive()
 end
 
 function World_boss_sign_upView:OnRefresh()
-  self:refreshState(E.MatchType.WorldBoss)
+  self:refreshState(E.MatchType.Activity)
 end
 
 function World_boss_sign_upView:BindEvents()
@@ -33,7 +32,7 @@ function World_boss_sign_upView:BindEvents()
 end
 
 function World_boss_sign_upView:refreshState(matchType)
-  if matchType ~= E.MatchType.WorldBoss then
+  if matchType ~= E.MatchType.Activity then
     return
   end
   local matchData_ = Z.DataMgr.Get("match_data")
@@ -46,10 +45,10 @@ function World_boss_sign_upView:refreshState(matchType)
       self.timer_ = nil
     end
     local time2 = (Z.TimeTools.Now() - matchTime) / 1000
-    self.uiBinder.lab_time.text = Z.TimeTools.S2HMSFormat(time2)
+    self.uiBinder.lab_time.text = Z.TimeFormatTools.FormatToDHMS(time2, true, true)
     self.timer_ = self.timerMgr:StartTimer(function()
       local time = (Z.TimeTools.Now() - matchTime) / 1000
-      self.uiBinder.lab_time.text = Z.TimeTools.S2HMSFormat(time)
+      self.uiBinder.lab_time.text = Z.TimeFormatTools.FormatToDHMS(time, true, true)
     end, 1, -1)
   end
 end

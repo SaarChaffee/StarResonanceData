@@ -1,0 +1,782 @@
+{
+  "32": {
+    "Id": 32,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "27": {
+    "Id": 27,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "303": {
+    "Id": 303,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "304": {
+    "Id": 304,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "305": {
+    "Id": 305,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "306": {
+    "Id": 306,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "307": {
+    "Id": 307,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "308": {
+    "Id": 308,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "9": {
+    "Id": 9,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "323": {
+    "Id": 323,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": "ui/atlas/mainui/main_icon_mouse_1"
+  },
+  "324": {
+    "Id": 324,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": "ui/atlas/mainui/main_icon_mouse_2"
+  },
+  "325": {
+    "Id": 325,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": "ui/atlas/mainui/main_icon_mouse_3"
+  },
+  "273": {
+    "Id": 273,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "274": {
+    "Id": 274,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "275": {
+    "Id": 275,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "276": {
+    "Id": 276,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "97": {
+    "Id": 97,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "98": {
+    "Id": 98,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "99": {
+    "Id": 99,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "100": {
+    "Id": 100,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "101": {
+    "Id": 101,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "102": {
+    "Id": 102,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "103": {
+    "Id": 103,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "104": {
+    "Id": 104,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "105": {
+    "Id": 105,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "106": {
+    "Id": 106,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "107": {
+    "Id": 107,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "108": {
+    "Id": 108,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "109": {
+    "Id": 109,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "110": {
+    "Id": 110,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "111": {
+    "Id": 111,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "112": {
+    "Id": 112,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "113": {
+    "Id": 113,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "114": {
+    "Id": 114,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "115": {
+    "Id": 115,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "116": {
+    "Id": 116,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "117": {
+    "Id": 117,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "118": {
+    "Id": 118,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "119": {
+    "Id": 119,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "120": {
+    "Id": 120,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "121": {
+    "Id": 121,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "122": {
+    "Id": 122,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "48": {
+    "Id": 48,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "49": {
+    "Id": 49,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": "12"
+  },
+  "50": {
+    "Id": 50,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": "13"
+  },
+  "51": {
+    "Id": 51,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": "14"
+  },
+  "52": {
+    "Id": 52,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "53": {
+    "Id": 53,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "54": {
+    "Id": 54,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "55": {
+    "Id": 55,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "56": {
+    "Id": 56,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "57": {
+    "Id": 57,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "282": {
+    "Id": 282,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "283": {
+    "Id": 283,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "284": {
+    "Id": 284,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "285": {
+    "Id": 285,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "286": {
+    "Id": 286,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "287": {
+    "Id": 287,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "288": {
+    "Id": 288,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "289": {
+    "Id": 289,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "290": {
+    "Id": 290,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "291": {
+    "Id": 291,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "292": {
+    "Id": 292,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "293": {
+    "Id": 293,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "256": {
+    "Id": 256,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "257": {
+    "Id": 257,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "258": {
+    "Id": 258,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "259": {
+    "Id": 259,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "260": {
+    "Id": 260,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "261": {
+    "Id": 261,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "262": {
+    "Id": 262,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "263": {
+    "Id": 263,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "264": {
+    "Id": 264,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "265": {
+    "Id": 265,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "13": {
+    "Id": 13,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "96": {
+    "Id": 96,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "326": {
+    "Id": 326,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "327": {
+    "Id": 327,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "328": {
+    "Id": 328,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "329": {
+    "Id": 329,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "44": {
+    "Id": 44,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "46": {
+    "Id": 46,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "45": {
+    "Id": 45,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "61": {
+    "Id": 61,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "92": {
+    "Id": 92,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "47": {
+    "Id": 47,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "93": {
+    "Id": 93,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "91": {
+    "Id": 91,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "1001": {
+    "Id": 1001,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1002": {
+    "Id": 1002,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1003": {
+    "Id": 1003,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1004": {
+    "Id": 1004,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1005": {
+    "Id": 1005,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1006": {
+    "Id": 1006,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1007": {
+    "Id": 1007,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1008": {
+    "Id": 1008,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1009": {
+    "Id": 1009,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1010": {
+    "Id": 1010,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1011": {
+    "Id": 1011,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1012": {
+    "Id": 1012,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1013": {
+    "Id": 1013,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1014": {
+    "Id": 1014,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1015": {
+    "Id": 1015,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1016": {
+    "Id": 1016,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1017": {
+    "Id": 1017,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1018": {
+    "Id": 1018,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1019": {
+    "Id": 1019,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1020": {
+    "Id": 1020,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "1021": {
+    "Id": 1021,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2001": {
+    "Id": 2001,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2002": {
+    "Id": 2002,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2003": {
+    "Id": 2003,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2004": {
+    "Id": 2004,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2005": {
+    "Id": 2005,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2006": {
+    "Id": 2006,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2007": {
+    "Id": 2007,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2008": {
+    "Id": 2008,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2009": {
+    "Id": 2009,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2010": {
+    "Id": 2010,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2011": {
+    "Id": 2011,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2012": {
+    "Id": 2012,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2013": {
+    "Id": 2013,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2014": {
+    "Id": 2014,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2015": {
+    "Id": 2015,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2016": {
+    "Id": 2016,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2017": {
+    "Id": 2017,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2018": {
+    "Id": 2018,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "2019": {
+    "Id": 2019,
+    "Keyboard": "",
+    "ShowType": 1,
+    "ImageWay": ""
+  },
+  "39": {
+    "Id": 39,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  },
+  "59": {
+    "Id": 59,
+    "Keyboard": "",
+    "ShowType": 0,
+    "ImageWay": ""
+  }
+}

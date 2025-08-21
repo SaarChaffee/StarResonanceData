@@ -16,7 +16,9 @@ function AlbumNewlybuildItem:Refresh()
   end
   self.uiBinder.lab_album_name.text = self.data_.name
   self.num = #self.data_.photoIds
-  self.uiBinder.lab_album_quantity.text = self.num .. Lang("PhotoNum")
+  self.uiBinder.lab_album_quantity.text = Lang("PhotoNum", {
+    val = self.num
+  })
   self:refreshIcon()
 end
 
@@ -28,7 +30,7 @@ function AlbumNewlybuildItem:refreshIcon()
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_mask, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_temp_bg, false)
-    Z.VMMgr.GetVM("album_main").AsyncGetHttpAlbumPhoto(cover.cosUrl, E.PictureType.ECameraThumbnail, E.NativeTextureCallToken.alnum_newlybuild_item, self.OnCallback, self)
+    Z.VMMgr.GetVM("album_main").AsyncGetHttpAlbumPhoto(cover.cosUrl, E.PictureType.ECameraThumbnail, E.NativeTextureCallToken.alnum_newlybuild_item, self.parent.uiView.cancelSource, self.OnCallback, self)
   end
 end
 

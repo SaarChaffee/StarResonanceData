@@ -21,8 +21,6 @@ message SeasonRankTableBase {
     int32 PromotionType = 106;
     int32 BackRankId = 1617;
 }
-
 message SeasonRankTableMgr {
-    map<int32, .bokura.SeasonRankTableBase> datas = 1;
+    repeated bokura.SeasonRankTableMgr.DatasEntry datas = 1;
 }
-

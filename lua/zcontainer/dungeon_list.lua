@@ -51,6 +51,44 @@ local mergeDataFuncs = {
   [5] = function(container, buffer, watcherList)
     container.weekTarget:MergeData(buffer, watcherList)
     container.Watcher:MarkDirty("weekTarget", {})
+  end,
+  [7] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local v = require("zcontainer.raid_record").New()
+      v:MergeData(buffer, watcherList)
+      container.raidRecordTable.__data__[dk] = v
+      container.Watcher:MarkMapDirty("raidRecordTable", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.raidRecordTable.__data__[dk]
+      container.raidRecordTable.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("raidRecordTable", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local last = container.raidRecordTable.__data__[dk]
+      if last == nil then
+        logWarning("last is nil: " .. dk)
+        last = require("zcontainer.raid_record").New()
+        container.raidRecordTable.__data__[dk] = last
+      end
+      last:MergeData(buffer, watcherList)
+      container.Watcher:MarkMapDirty("raidRecordTable", dk, {})
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -95,6 +133,12 @@ local resetData = function(container, pbData)
   if not pbData.weekTarget then
     container.__data__.weekTarget = {}
   end
+  if not pbData.isAssist then
+    container.__data__.isAssist = false
+  end
+  if not pbData.raidRecordTable then
+    container.__data__.raidRecordTable = {}
+  end
   setForbidenMt(container)
   container.completeDungeon.__data__ = {}
   setForbidenMt(container.completeDungeon)
@@ -107,6 +151,13 @@ local resetData = function(container, pbData)
   container.__data__.dungeonEnterLimit = nil
   container.weekTarget:ResetData(pbData.weekTarget)
   container.__data__.weekTarget = nil
+  container.raidRecordTable.__data__ = {}
+  setForbidenMt(container.raidRecordTable)
+  for k, v in pairs(pbData.raidRecordTable) do
+    container.raidRecordTable.__data__[k] = require("zcontainer.raid_record").New()
+    container.raidRecordTable[k]:ResetData(v)
+  end
+  container.__data__.raidRecordTable = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -210,6 +261,40 @@ local getContainerElem = function(container)
       data = container.weekTarget:GetContainerElem()
     }
   end
+  ret.isAssist = {
+    fieldId = 6,
+    dataType = 0,
+    data = container.isAssist
+  }
+  if container.raidRecordTable ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.raidRecordTable) do
+      if repeatedItem == nil then
+        data[key] = {
+          fieldId = 7,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[key] = {
+          fieldId = 7,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
+    end
+    ret.raidRecordTable = {
+      fieldId = 7,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.raidRecordTable = {
+      fieldId = 7,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -222,11 +307,15 @@ local new = function()
       __data__ = {}
     },
     dungeonEnterLimit = require("zcontainer.dungeon_enter_limit").New(),
-    weekTarget = require("zcontainer.dungeon_week_target_list").New()
+    weekTarget = require("zcontainer.dungeon_week_target_list").New(),
+    raidRecordTable = {
+      __data__ = {}
+    }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.completeDungeon)
+  setForbidenMt(ret.raidRecordTable)
   return ret
 end
 return {New = new}

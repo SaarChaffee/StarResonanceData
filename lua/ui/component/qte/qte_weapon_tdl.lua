@@ -1,7 +1,7 @@
 local qte_weapon_tdl = class("qte_weapon_tdl")
 local QteInfo = require("ui.component.qte.qte_info")
 
-function qte_weapon_tdl:ctor(id, fighterview, panel)
+function qte_weapon_tdl:ctor(id, fighterview, uiBinder)
   self.timerMgr = Z.TimerMgr.new()
   self.Info_ = QteInfo.new(id)
   if self.Info_ == nil then
@@ -10,7 +10,7 @@ function qte_weapon_tdl:ctor(id, fighterview, panel)
   self.key_ = "qte_" .. id
   self.uuid_ = 0
   self.view_ = fighterview
-  self.panel_ = panel
+  self.uiBinder_ = uiBinder
   self.qteId_ = id
   self.uiObj_ = nil
   self.curTime_ = 0
@@ -40,7 +40,7 @@ function qte_weapon_tdl:Load()
     self.cancelSource = Z.CancelSource.Rent()
     local cancelSource = self.cancelSource:CreateToken()
     if not self.uiObj_ then
-      self.uiObj_ = self.view_:AsyncLoadUiUnit(uipath, self.key_, self.panel_.tdl_qte_pos.Trans)
+      self.uiObj_ = self.view_:AsyncLoadUiUnit(uipath, self.key_, self.uiBinder_.tdl_qte_pos.Trans)
       if Z.CancelSource.IsCanceled(cancelSource) or not self.uiObj_ then
         Z.QteMgr.OnQteClosed(self.uuid_)
         return

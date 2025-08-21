@@ -11,6 +11,40 @@ function matchVm.HandleError(errCode)
   end
 end
 
+function matchVm.OpenMatchView(matchType)
+  if matchType == E.MatchType.Team then
+    local matchTeamVm = Z.VMMgr.GetVM("match_team")
+    matchTeamVm.OpenEnterView()
+  elseif matchType == E.MatchType.Activity then
+    local matchActivityVM = Z.VMMgr.GetVM("match_activity")
+    matchActivityVM.OpenMatchView()
+  end
+end
+
+function matchVm.CloseMatchView()
+  local matchData = Z.DataMgr.Get("match_data")
+  local matchType = matchData:GetMatchType()
+  if matchType == E.MatchType.Team then
+    local matchTeamVm = Z.VMMgr.GetVM("match_team")
+    matchTeamVm.CloseEnterView()
+  elseif matchType == E.MatchType.Activity then
+    local matchActivityVM = Z.VMMgr.GetVM("match_activity")
+    matchActivityVM.CloseMatchView()
+  end
+end
+
+function matchVm.CancelMatchDialog()
+  local matchData = Z.DataMgr.Get("match_data")
+  local matchType = matchData:GetMatchType()
+  if matchType == E.MatchType.Team then
+    local matchTeamVm = Z.VMMgr.GetVM("match_team")
+    matchTeamVm.CancelMatchDialog()
+  elseif matchType == E.MatchType.Activity then
+    local matchActivityVM = Z.VMMgr.GetVM("match_activity")
+    matchActivityVM.CancelMatchDialog()
+  end
+end
+
 function matchVm.AsyncGetMatchInfo(param, cancelToken)
   local matchData = Z.DataMgr.Get("match_data")
   if cancelToken == nil then
@@ -24,82 +58,122 @@ function matchVm.AsyncGetMatchInfo(param, cancelToken)
   if ret then
     local data = ret
     if data then
-      if data.matchStatus == E.MatchSatatusType.MatchIng then
-        matchVm.SetSelfMatchData(true, "matching")
-      end
-      matchData:SetMatchInfo(data)
+      matchData:SetMatchData(data)
     end
   end
-  return ret.errCode
 end
 
-function matchVm.SetSelfMatchData(data, key)
+function matchVm.AsyncMatchReady(playerIsReady)
   local matchData = Z.DataMgr.Get("match_data")
-  matchData:SetSelfMatchData(data, key)
-end
-
-function matchVm.GetSelfMatchData(key)
-  local matchData = Z.DataMgr.Get("match_data")
-  return matchData:GetSelfMatchData(key)
-end
-
-function matchVm.AsyncBeginMatchNew(matchType, matchParam, hasTeam, cancelToken)
+  local data = matchData:GetMatchData()
   local request = {
-    matchType = matchType,
-    matchParamContext = {}
+    isReady = playerIsReady,
+    matchToken = data.matchToken
   }
-  if matchType == E.MatchType.Team then
-    if not hasTeam then
-      request.matchParamContext.matchTeamParam = matchParam
-    end
-  elseif matchType == E.MatchType.WorldBoss then
-    request.matchParamContext.matchWorldBossParam = matchParam
-  end
-  local ret = worldProxy.BeginMatch(request, cancelToken)
-  matchVm.HandleError(ret)
-  if matchType == E.MatchType.Team and not hasTeam and ret == 0 then
-    matchVm.SetSelfMatchData(true, "matching")
-    matchVm.CreateMatchingTips()
-  end
+  worldProxy.MatchReady(request)
 end
 
-function matchVm.AsyncMatchReady(playerIsReady, cancelToken)
-  local request = {isReady = playerIsReady}
-  local ret = worldProxy.MatchReady(request, cancelToken)
-  if ret == 0 then
-    local matchData = Z.DataMgr.Get("match_data")
-    matchData:SetMatchStartTime(0, E.MatchType.WorldBoss)
-  end
-end
-
-function matchVm.AsyncCancelMatchNew(matchType, isLeader, cancelToken)
+function matchVm.AsyncCancelMatch()
+  local matchData = Z.DataMgr.Get("match_data")
+  local data = matchData:GetMatchData()
   local request = {}
-  local ret = worldProxy.CancelMatch(request, cancelToken)
-  matchVm.HandleError(ret)
-  if ret == 0 and not isLeader then
-    matchVm.SetSelfMatchData(false, "matching")
-    matchVm.CancelMatchingTips()
-    Z.EventMgr:Dispatch(Z.ConstValue.Team.RepeatCharCancelMatch)
-    if matchType == E.MatchType.WorldBoss then
-      local matchData = Z.DataMgr.Get("match_data")
-      matchData:SetMatchStartTime(0, E.MatchType.WorldBoss)
-      matchData:ClearMatchData()
-    end
+  request.matchToken = data.matchToken
+  worldProxy.CancelMatch(request)
+end
+
+function matchVm.RequestBeginMatch(matchType, param, cancelToken)
+  if matchType == E.MatchType.Team then
+    local matchTeamVm = Z.VMMgr.GetVM("match_team")
+    matchTeamVm.TryBeginMatch(param)
+  elseif matchType == E.MatchType.Activity then
+    local matchActivityVM = Z.VMMgr.GetVM("match_activity")
+    matchActivityVM.TryBeginMatch(param)
   end
 end
 
-function matchVm.CreateMatchingTips()
-  local timeDelay = math.floor(Z.Global.MatchTime / 60)
-  Z.GlobalTimerMgr:StartTimer(E.GlobalTimerTag.TeamMatch, function()
-    local param = {val = timeDelay}
-    Z.TipsVM.ShowTipsLang(1000624, param)
-  end, Z.Global.TeamMatchTipsTime)
-  Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshMatchingStatus)
+function matchVm.RequestBeginActivityMatch(uuid, token, param)
+  local activityId = tonumber(param[3])
+  if not activityId then
+    return
+  end
+  local matchActivityVM = Z.VMMgr.GetVM("match_activity")
+  matchActivityVM.TryBeginMatch(activityId)
 end
 
-function matchVm.CancelMatchingTips()
-  Z.GlobalTimerMgr:StopTimer(E.GlobalTimerTag.TeamMatch)
-  Z.EventMgr:Dispatch(Z.ConstValue.Team.RefreshMatchingStatus)
+function matchVm.IsMatching()
+  local matchData = Z.DataMgr.Get("match_data")
+  return matchData:GetMatchType() ~= E.MatchType.Null
+end
+
+function matchVm.TryChangeMatch(newMatchType, param)
+  local matchData = Z.DataMgr.Get("match_data")
+  local matchTeamData = Z.DataMgr.Get("match_team_data")
+  local MatchActivityData = Z.DataMgr.Get("match_activity_data")
+  local matchType = matchData:GetMatchType()
+  local oldTargetName, newTargetName, confirmFunc, beginMatchFunc
+  if matchType == E.MatchType.Team then
+    local dungeonID = matchTeamData:GetCurMatchingDungeonId()
+    if newMatchType == matchType and param == dungeonID then
+      return
+    end
+    local cfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
+    oldTargetName = cfg.Name
+  elseif matchType == E.MatchType.Activity then
+    local actID = MatchActivityData:GetActivityId()
+    if newMatchType == matchType and param == actID then
+      return
+    end
+    local cfg = Z.TableMgr.GetTable("SeasonActTableMgr").GetRow(actID)
+    oldTargetName = cfg.Name
+  end
+  if newMatchType == E.MatchType.Team then
+    local dungeonID = param
+    local cfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
+    newTargetName = cfg.Name
+    
+    function beginMatchFunc()
+      local teamMainVm = Z.VMMgr.GetVM("team_main")
+      local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonID)
+      local requestParam = {}
+      requestParam.targetId = targetId
+      local settingInfo = Z.ContainerMgr.CharSerialize.settingData.settingMap
+      local isLeader = settingInfo[Z.PbEnum("ESettingType", "ToBeLeader")] or "0"
+      requestParam.wantLeader = isLeader == "0" and 1 or 0
+      Z.CoroUtil.create_coro_xpcall(function()
+        local matchTeamVm = Z.VMMgr.GetVM("match_team")
+        matchTeamVm.AsyncBeginMatch(requestParam)
+      end)()
+    end
+  elseif newMatchType == E.MatchType.Activity then
+    local actID = param
+    local cfg = Z.TableMgr.GetTable("SeasonActTableMgr").GetRow(actID)
+    newTargetName = cfg.Name
+    
+    function beginMatchFunc()
+      local matchActivityVM = Z.VMMgr.GetVM("match_activity")
+      Z.CoroUtil.create_coro_xpcall(function()
+        matchActivityVM.AsyncBeginMatch(param)
+      end)()
+    end
+  end
+  
+  function confirmFunc()
+    Z.CoroUtil.create_coro_xpcall(function()
+      matchVm.AsyncCancelMatch()
+      matchData:SetIsChangeMatching(true, beginMatchFunc)
+    end)()
+  end
+  
+  matchVm.ChangeMatchDialog(oldTargetName, newTargetName, confirmFunc)
+end
+
+function matchVm.ChangeMatchDialog(oldTargetName, newTargetName, confirmFunc)
+  local data = {
+    dlgType = E.DlgType.YesNo,
+    onConfirm = confirmFunc,
+    labDesc = Lang("ChangeMatchTips", {target = oldTargetName, newTarget = newTargetName})
+  }
+  Z.DialogViewDataMgr:OpenDialogView(data)
 end
 
 return matchVm

@@ -1,21 +1,21 @@
-local super = require("ui.component.loop_list_view_item")
 local loop_list_view = require("ui/component/loop_list_view")
 local rewardItem_ = require("ui/component/explore_monster/explore_monster_reward_item")
 local ColorGreen = Color.New(0.792156862745098, 0.9137254901960784, 0.5529411764705883, 0.5)
 local ColorWhite = Color.New(1, 1, 1, 0.5)
-local iconpath1_ = "ui/atlas/explore_monster/explore_monster_btn_box"
-local iconpath2_ = "ui/atlas/pivot/pivot_img_treasure_light"
-local ExploreMonsterTargetItem = class("ExploreMonsterTargetItem", super)
+local iconpath1_ = "ui/atlas/new_com/com_img_treasure02"
+local iconpath2_ = "ui/atlas/new_com/com_img_treasure_light_01"
+local ExploreMonsterTargetItem = class("ExploreMonsterTargetItem")
 
-function ExploreMonsterTargetItem:ctor()
+function ExploreMonsterTargetItem:ctor(parentView)
+  self.parentUIView_ = parentView
 end
 
-function ExploreMonsterTargetItem:OnInit()
-  self.parentUIView_ = self.parent.UIView
-  self:AddAsyncListener(self.uiBinder.btn_square_new, function()
+function ExploreMonsterTargetItem:Init(data, uiBinder)
+  self.data_ = data
+  self.uiBinder = uiBinder
+  self.parentUIView_:AddAsyncClick(self.uiBinder.btn_square_new, function()
     if self.canReceive_ == true then
-      local d_ = self:GetCurData()
-      local targetId_ = d_.index
+      local targetId_ = data.index
       self.parentUIView_.vm_.GetHuntTargetAward(self.parentUIView_.curSelectMonsterData_.ExploreData.MonsterId, targetId_, function(success)
         if success then
           self.parentUIView_:OnReceiveTargetAward()
@@ -24,11 +24,12 @@ function ExploreMonsterTargetItem:OnInit()
     end
   end)
   local dataList_ = {}
-  self.rewardScrollRect_ = loop_list_view.new(self, self.uiBinder.loop_item, rewardItem_, "com_item_square_1_8")
+  self.rewardScrollRect_ = loop_list_view.new(self, self.uiBinder.loop_item, rewardItem_, "com_item_square_1_8", true)
   self.rewardScrollRect_:Init(dataList_)
+  self:refresh(self.data_)
 end
 
-function ExploreMonsterTargetItem:OnRefresh(data)
+function ExploreMonsterTargetItem:refresh(data)
   local itemUnit = self.uiBinder
   local infoColor_, scheduleColor_ = ColorWhite, ColorWhite
   local infoStr_, scheduleStr_
@@ -71,7 +72,7 @@ function ExploreMonsterTargetItem:OnRefresh(data)
       infoStr_ = string.format(Lang("MonsterExploreTask"), data.unlockIndex)
     end
   end
-  itemUnit.lab_digit.text = tostring(self.Index)
+  itemUnit.lab_digit.text = tostring(data.index)
   local s_ = infoStr_
   if scheduleStr_ and 0 < string.len(scheduleStr_) then
     s_ = infoStr_ .. "\n" .. scheduleStr_
@@ -96,16 +97,18 @@ function ExploreMonsterTargetItem:OnRefresh(data)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_finish, hasReceiveAward_)
 end
 
-function ExploreMonsterTargetItem:OnSelected(isSelected)
+function ExploreMonsterTargetItem:UnInit()
+  if self.rewardScrollRect_ then
+    self.rewardScrollRect_:UnInit()
+    self.rewardScrollRect_ = nil
+  end
 end
 
-function ExploreMonsterTargetItem:OnUnInit()
-  self.rewardScrollRect_:UnInit()
-  self.rewardScrollRect_ = nil
-end
-
-function ExploreMonsterTargetItem:OnReset()
-  self.isSelected_ = false
+function ExploreMonsterTargetItem:Recycle()
+  if self.rewardScrollRect_ then
+    self.rewardScrollRect_:UnInit()
+    self.rewardScrollRect_ = nil
+  end
 end
 
 function ExploreMonsterTargetItem:AddAsyncClick(comp, func)

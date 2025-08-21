@@ -12,8 +12,7 @@ function TradeConsignmentRecordItem:OnRefresh(data)
   self.uiBinder.lab_digit_left.text = data.serverData.num
   self.uiBinder.lab_digit_right.text = data.serverData.money
   self.uiBinder.lab_exchange_rate_num.text = data.serverData.rate
-  local timeData = Z.TimeTools.Tp2YMDHMS(data.serverData.time)
-  self.uiBinder.lab_time.text = string.format("%s/%s/%s %02d:%02d", timeData.year, timeData.month, timeData.day, timeData.hour, timeData.min)
+  self.uiBinder.lab_time.text = Z.TimeFormatTools.TicksFormatTime(data.serverData.time * 1000, E.TimeFormatType.YMDHMS)
   local itemTableMgr = Z.TableMgr.GetTable("ItemTableMgr")
   local itemsVM = Z.VMMgr.GetVM("items")
   if data.isLeft then

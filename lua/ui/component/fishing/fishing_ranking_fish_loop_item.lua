@@ -11,7 +11,7 @@ end
 
 function FishingRankingFishLoopItem:OnRefresh(data)
   self.data = data
-  playerPortraitHgr.InsertNewPortraitBySocialData(self.uiBinder.com_head, self.data.rankData.playerData, nil)
+  playerPortraitHgr.InsertNewPortraitBySocialData(self.uiBinder.com_head, self.data.rankData.playerData, nil, self.parentUIView.cancelSource:CreateToken())
   local fishingTableRow_ = Z.TableMgr.GetTable("FishingTableMgr").GetRow(self.data.fishId)
   self.uiBinder.rimg_icon:SetImage(fishingTableRow_.FishingIcon)
   self.uiBinder.rimg_mark:SetImage(fishingTableRow_.FishingIcon)

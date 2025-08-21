@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_home_land_item_instance.proto";
+
+message GetHomelandFurnitureWarehouseInfoReply {
+    repeated zproto.GetHomelandFurnitureWarehouseInfoReply.ItemsEntry items = 1;
+    repeated zproto.GetHomelandFurnitureWarehouseInfoReply.SlotsEntry slots = 2;
+    repeated zproto.GetHomelandFurnitureWarehouseInfoReply.ItemToSlotsEntry itemToSlots = 3;
+    zproto.EErrorCode errCode = 4;
+}

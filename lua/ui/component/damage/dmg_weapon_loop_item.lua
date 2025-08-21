@@ -35,12 +35,12 @@ end
 
 function dmg_tow_data:creatSkillItem()
   for key, value in pairs(self.viewData_.data) do
-    if self.allUnit_[value.skillUuid] == nil then
+    if self.allUnit_[value.skillId] == nil then
       local data = dmg.new(self.parent_)
-      self.allUnit_[value.skillUuid] = data
-      self.allUnitData_[value.skillUuid] = value
+      self.allUnit_[value.skillId] = data
+      self.allUnitData_[value.skillId] = value
     else
-      self.allUnitData_[value.skillUuid] = value
+      self.allUnitData_[value.skillId] = value
     end
   end
   self:creatDmgSkillItem()

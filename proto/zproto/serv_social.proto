@@ -9,22 +9,15 @@ import "stru_get_social_data_request.proto";
 
 message Social {
     message GetSocialData_Ret {
-        uint32 ret_code = 1;
-        zproto.GetSocialDataReply ret = 2;
+        zproto.GetSocialDataReply ret = 1;
     }
-
     message GetSocialData {
         zproto.GetSocialDataRequest vRequest = 1;
     }
-
     message ChangeAvatar_Ret {
-        uint32 ret_code = 1;
-        zproto.ChangeAvatarReply ret = 2;
+        zproto.ChangeAvatarReply ret = 1;
     }
-
     message ChangeAvatar {
         zproto.ChangeAvatarRequest vRequest = 1;
     }
-
 }
-

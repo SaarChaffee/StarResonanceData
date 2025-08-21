@@ -95,6 +95,39 @@ local mergeDataFuncs = {
     local last = container.__data__.addLimitTime
     container.__data__.addLimitTime = br.ReadUInt32(buffer)
     container.Watcher:MarkDirty("addLimitTime", last)
+  end,
+  [9] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt32(buffer)
+      container.targetType.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("targetType", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt32(buffer)
+      local last = container.targetType.__data__[dk]
+      container.targetType.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("targetType", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt32(buffer)
+      local dv = br.ReadInt32(buffer)
+      local last = container.targetType.__data__[dk]
+      container.targetType.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("targetType", dk, last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -148,6 +181,9 @@ local resetData = function(container, pbData)
   if not pbData.addLimitTime then
     container.__data__.addLimitTime = 0
   end
+  if not pbData.targetType then
+    container.__data__.targetType = {}
+  end
   setForbidenMt(container)
   container.targetNum.__data__ = pbData.targetNum
   setForbidenMt(container.targetNum)
@@ -155,6 +191,9 @@ local resetData = function(container, pbData)
   container.targetMaxNum.__data__ = pbData.targetMaxNum
   setForbidenMt(container.targetMaxNum)
   container.__data__.targetMaxNum = nil
+  container.targetType.__data__ = pbData.targetType
+  setForbidenMt(container.targetType)
+  container.__data__.targetType = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -265,6 +304,27 @@ local getContainerElem = function(container)
     dataType = 0,
     data = container.addLimitTime
   }
+  if container.targetType ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.targetType) do
+      data[key] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.targetType = {
+      fieldId = 9,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.targetType = {
+      fieldId = 9,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -278,12 +338,16 @@ local new = function()
     },
     targetMaxNum = {
       __data__ = {}
+    },
+    targetType = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.targetNum)
   setForbidenMt(ret.targetMaxNum)
+  setForbidenMt(ret.targetType)
   return ret
 end
 return {New = new}

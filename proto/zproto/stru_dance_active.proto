@@ -6,4 +6,3 @@ message DanceActive {
     int64 unionId = 1;
     int32 actionId = 2;
 }
-

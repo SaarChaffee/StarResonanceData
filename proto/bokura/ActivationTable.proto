@@ -12,8 +12,6 @@ message ActivationTableBase {
     int32 Activation = 1705;
     mlstring TargetDes = 1279;
 }
-
 message ActivationTableMgr {
-    map<int32, .bokura.ActivationTableBase> datas = 1;
+    repeated bokura.ActivationTableMgr.DatasEntry datas = 1;
 }
-

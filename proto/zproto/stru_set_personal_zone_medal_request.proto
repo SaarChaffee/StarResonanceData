@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message SetPersonalZoneMedalRequest {
-    map<int32, int32> medals = 1;
+    repeated zproto.SetPersonalZoneMedalRequest.MedalsEntry medals = 1;
 }
-

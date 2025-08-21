@@ -12,8 +12,6 @@ message UnionIconTableBase {
     int32 Limit = 640;
     int32 IsHide = 1851;
 }
-
 message UnionIconTableMgr {
-    map<int32, .bokura.UnionIconTableBase> datas = 1;
+    repeated bokura.UnionIconTableMgr.DatasEntry datas = 1;
 }
-

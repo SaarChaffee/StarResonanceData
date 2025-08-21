@@ -10,4 +10,3 @@ message LinkingInfo {
     int32 buffUuid = 3;
     repeated zproto.ActorUuidStru targetUuids = 4;
 }
-

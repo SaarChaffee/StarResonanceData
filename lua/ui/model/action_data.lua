@@ -3,6 +3,7 @@ local ActionData = class("ActionData", super)
 
 function ActionData:ctor()
   super.ctor(self)
+  self.cameraData_ = Z.DataMgr.Get("camerasys_data")
 end
 
 function ActionData:Init()
@@ -52,7 +53,7 @@ function ActionData:GetDurationSumTime(Id, expressionType)
   if expressionType == E.ExpressionType.Emote then
     return 5
   end
-  local gender = Z.ContainerMgr.CharSerialize.charBase.gender
+  local gender = self.cameraData_:GetGender()
   local actionAnimInfo = Z.ZAnimActionPlayMgr:GetActionAnimInfoByActionId(Id)
   if actionAnimInfo then
     return actionAnimInfo:GetTotalTime(gender)

@@ -43,7 +43,7 @@ function ShopTog2LoopItem:OnSelected(isSelected, isClick)
     if isClick then
       Z.AudioMgr:Play("sys_general_side_click")
     end
-    self.parent.UIView:Tog2Click(self.data_, self.Index)
+    self.parent.UIView:Tog2Click(self.data_, self.Index, isClick)
   end
 end
 

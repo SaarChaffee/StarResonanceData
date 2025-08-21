@@ -10,4 +10,3 @@ enum SystemType {
     SystemType_Linux = 4;
     SystemType_Windows = 5;
 }
-

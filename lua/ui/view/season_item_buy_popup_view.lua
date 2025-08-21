@@ -3,25 +3,27 @@ local super = require("ui.ui_view_base")
 local Season_item_buy_popupView = class("Season_item_buy_popupView", super)
 local loopListView = require("ui/component/loop_list_view")
 local awardPopupLoopItem = require("ui/component/season/season_buy_popup_loop_item")
+local currency_item_list = require("ui.component.currency.currency_item_list")
 local iClass = require("common.item")
 local numMod = require("ui.view.cont_num_module_tpl_view")
 
 function Season_item_buy_popupView:ctor()
   self.uiBinder = nil
   super.ctor(self, "season_item_buy_popup")
-  self.vm = Z.VMMgr.GetVM("season_shop")
   self.itemsVm_ = Z.VMMgr.GetVM("items")
   self.awardPreviewVm = Z.VMMgr.GetVM("awardpreview")
-  self.currencyVm_ = Z.VMMgr.GetVM("currency")
   self.cookVm_ = Z.VMMgr.GetVM("cook")
   self.numMod_ = numMod.new(self, "black")
+  self.currencyVm_ = Z.VMMgr.GetVM("currency")
+  self.shopVm_ = Z.VMMgr.GetVM("shop")
 end
 
 function Season_item_buy_popupView:OnActive()
   self:initwidgets()
   self.sceneMask_:SetSceneMaskByKey(self.SceneMaskKey)
   if self.viewData and self.viewData.currencyArray then
-    self.currencyVm_.OpenCurrencyView(self.viewData.currencyArray, self.uiBinder.Trans, self)
+    self.currencyItemList_ = currency_item_list.new()
+    self.currencyItemList_:Init(self.uiBinder.currency_info, self.viewData.currencyArray)
   end
   self:AddClick(self.cancelBnt_, function()
     Z.UIMgr:CloseView("season_item_buy_popup")
@@ -35,6 +37,9 @@ function Season_item_buy_popupView:OnActive()
       if not isUnLock then
         return
       end
+    end
+    if self.shopVm_.CheckItemExchangeCount(self.moneyId_, self.allPrice_, self.cancelSource:CreateToken()) then
+      return
     end
     if self.curNum_ > self.realMaxNum then
       self.currencyVm_.OpenExChangeCurrencyView(self.moneyId_, false)
@@ -61,7 +66,6 @@ function Season_item_buy_popupView:OnActive()
       local costItemName = Z.RichTextHelper.ApplyStyleTag(costItemRow.Name, "ItemQuality_" .. costItemRow.Quality)
       Z.DialogViewDataMgr:OpenNormalDialog(string.format(Lang("BuyItemMaxTip"), costItemName, math.floor(self.curNum_ * self.price_single_), itemName, math.floor(self.curNum_)), function()
         self.viewData.buyFunc(self.viewData.data, self.curNum_)
-        Z.DialogViewDataMgr:CloseDialogView()
       end)
       return
     end
@@ -93,13 +97,13 @@ function Season_item_buy_popupView:OnActive()
     local has = self.itemsVm_.GetItemTotalCount(self.moneyId_)
     self.numMod_:ReSetValue(self.minNum_, self.canBuyCount_, Mathf.Floor(has / self.price_single_), function(num)
       local hasCount = self.itemsVm_.GetItemTotalCount(self.moneyId_)
-      local price = math.floor(num * self.price_single_)
+      self.allPrice_ = math.floor(num * self.price_single_)
       local str = ""
-      if hasCount < price then
-        price = Z.NumTools.FormatNumberWithCommas(price)
+      if hasCount < self.allPrice_ then
+        local price = Z.NumTools.FormatNumberWithCommas(self.allPrice_)
         str = Z.RichTextHelper.ApplyStyleTag(price, E.TextStyleTag.Lab_num_red)
       else
-        price = Z.NumTools.FormatNumberWithCommas(price)
+        local price = Z.NumTools.FormatNumberWithCommas(self.allPrice_)
         str = Z.RichTextHelper.ApplyStyleTag(price, E.TextStyleTag.Lab_num_black)
       end
       self.lab_total_price_num_.text = str
@@ -141,7 +145,7 @@ function Season_item_buy_popupView:getCanBuyCount(prop)
   local limit_Label_ = self.lab_day_
   self.cont_base_popup.Ref:SetVisible(self.node_day_, false)
   for id, count in pairs(prop.buyCount) do
-    if id == self.vm.SeasonShopRefreshType.daily then
+    if id == E.ESeasonShopRefreshType.Daily then
       self.cont_base_popup.Ref:SetVisible(self.node_day_, true)
       self.canBuyCount_ = count.canBuyCount
       if prop.limitBuyType == 1 then
@@ -150,7 +154,7 @@ function Season_item_buy_popupView:getCanBuyCount(prop)
       end
       limit_Label_.text = string.format(Lang("SeasonShopDayLimit"), count.canBuyCount, count.canBuyCount + count.purchasedCount)
       break
-    elseif id == self.vm.SeasonShopRefreshType.week then
+    elseif id == E.ESeasonShopRefreshType.Week then
       self.cont_base_popup.Ref:SetVisible(limit_Label_, true)
       self.canBuyCount_ = count.canBuyCount
       if prop.limitBuyType == 1 then
@@ -158,7 +162,7 @@ function Season_item_buy_popupView:getCanBuyCount(prop)
       else
         limit_Label_.text = string.format(Lang("SeasonShopWeekLimit"), count.canBuyCount, count.canBuyCount + count.purchasedCount)
       end
-    elseif id == self.vm.SeasonShopRefreshType.season then
+    elseif id == E.ESeasonShopRefreshType.Season then
       self.cont_base_popup.Ref:SetVisible(limit_Label_, true)
       self.canBuyCount_ = count.canBuyCount
       if prop.shopType == 0 then
@@ -166,10 +170,14 @@ function Season_item_buy_popupView:getCanBuyCount(prop)
       else
         limit_Label_.text = string.format(Lang("SeasonShopSeasonLimit"), count.canBuyCount, count.canBuyCount + count.purchasedCount)
       end
-    elseif id == self.vm.SeasonShopRefreshType.month then
+    elseif id == E.ESeasonShopRefreshType.Month then
       self.cont_base_popup.Ref:SetVisible(limit_Label_, true)
       limit_Label_.text = string.zconcat(count.canBuyCount, "/", count.canBuyCount + count.purchasedCount)
       self.canBuyCount_ = count.canBuyCount
+    elseif id == E.ESeasonShopRefreshType.Compensate or id == E.ESeasonShopRefreshType.Permanent then
+      self.cont_base_popup.Ref:SetVisible(limit_Label_, true)
+      self.canBuyCount_ = count.canBuyCount
+      limit_Label_.text = string.format(Lang("ShopSeasonLimit"), count.canBuyCount, count.maxBuyCount)
     end
   end
 end
@@ -196,7 +204,14 @@ function Season_item_buy_popupView:show()
     Z.RichTextHelper.SetTmpLabTextWithCommonLinkNew(self.labInfo_, string.zconcat(itemCfg.Description, "\n", buffDes))
   end
   self.labInfo2_.text = itemCfg.Description2
-  self.lab_current_.text = string.format(Lang("SeasonShopOwn"), self.itemsVm_.GetItemTotalCount(prop.cfg.ItemId))
+  local haveCount = 0
+  local homeData_ = Z.DataMgr.Get("home_editor_data")
+  if homeData_:GetItemIsHouseWarehouseItem(prop.cfg.ItemId) then
+    haveCount = homeData_:GetSelfFurnitureWarehouseItemCount(prop.cfg.ItemId)
+  else
+    haveCount = self.itemsVm_.GetItemTotalCount(prop.cfg.ItemId)
+  end
+  self.lab_current_.text = string.format(Lang("SeasonShopOwn"), haveCount)
   if self.itemClass_ == nil then
     self.itemClass_ = iClass.new(self)
   end
@@ -252,7 +267,7 @@ function Season_item_buy_popupView:calculateNum(prop)
     end
   end
   for id, count in pairs(prop.buyCount) do
-    if id ~= self.vm.SeasonShopRefreshType.none and self.maxNum_ > count.canBuyCount then
+    if id ~= E.ESeasonShopRefreshType.None and self.maxNum_ > count.canBuyCount then
       self.maxNum_ = count.canBuyCount
     end
   end
@@ -286,7 +301,6 @@ function Season_item_buy_popupView:OnDeActive()
     self.awardLoopScroll_:UnInit()
     self.awardLoopScroll_ = nil
   end
-  self.currencyVm_.CloseCurrencyView(self)
   if self.numMod_ then
     self.numMod_:DeActive()
   end
@@ -294,6 +308,10 @@ function Season_item_buy_popupView:OnDeActive()
   if self.tipsId_ then
     Z.TipsVM.CloseItemTipsView(self.tipsId_)
     self.tipsId_ = nil
+  end
+  if self.currencyItemList_ then
+    self.currencyItemList_:UnInit()
+    self.currencyItemList_ = nil
   end
 end
 

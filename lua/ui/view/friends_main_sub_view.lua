@@ -1,8 +1,8 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Friends_main_subView = class("Friends_main_subView", super)
+local loopListView = require("ui.component.loop_list_view")
 local friends_dropdown_tips_tpl = "ui/prefabs/friends/friends_dropdown_tips_tpl"
-local loopScrollRect = require("ui/component/loopscrollrect")
 local friend_frame_item = require("ui.component.friends.friend_frame_item")
 local friend_chat_item = require("ui.component.friends.friend_chat_item")
 local friends_message_subView = require("ui.view.friends_message_sub_view")
@@ -21,29 +21,50 @@ end
 function Friends_main_subView:OnActive()
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self.uiBinder.Trans:SetOffsetMin(0, 0)
-  self:onInitComp()
-  self:onInitData()
-  self:onInitFunc()
-  self:onInitRed()
+  self:initData()
+  self:initFunc()
+  self:initRed()
   self:BindEvents()
   self:startAnimatedShow()
   self:updateSearchNodeState(false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_function_tips, false)
-  self:asyncUpdatePrivateChat()
+  self:refreshViewType()
+  self:refreshFriendNewMessage()
+  Z.CoroUtil.create_coro_xpcall(function()
+    if not self.chatMainVm_ then
+      return
+    end
+    self.chatMainVm_.AsyncUpdatePrivateChatCharInfo(true, self.cancelSource)
+    self:RefreshChatPrivateChatList()
+  end)()
 end
 
-function Friends_main_subView:onInitComp()
-  self.selfCharId_ = Z.ContainerMgr.CharSerialize.charId
-  self.selfFuncBtnTipsCharId_ = 0
-  self.isInitFuncBtnTips_ = false
-  self.isSearching_ = false
-  self.uiBinder.tog_important.group = self.uiBinder.togs_tab
-  self.uiBinder.tog_normal.group = self.uiBinder.togs_tab
+function Friends_main_subView:clearTogData()
+  self.uiBinder.tog_important.group = nil
+  self.uiBinder.tog_normal.group = nil
+  self.uiBinder.tog_important:RemoveAllListeners()
+  self.uiBinder.tog_normal:RemoveAllListeners()
+  self.uiBinder.tog_important.isOn = false
+  self.uiBinder.tog_normal.isOn = false
 end
 
-function Friends_main_subView:onInitData()
-  self.friendScrollRect_ = loopScrollRect.new(self.uiBinder.node_friends, self, friend_frame_item)
-  self.chatScrollRect_ = loopScrollRect.new(self.uiBinder.node_chat, self, friend_chat_item)
+function Friends_main_subView:initData()
+  self.loopList_ = loopListView.new(self, self.uiBinder.loop_list)
+  self.loopList_:SetGetItemClassFunc(function(data)
+    if self.isChatList_ then
+      return friend_chat_item
+    else
+      return friend_frame_item
+    end
+  end)
+  self.loopList_:SetGetPrefabNameFunc(function(data)
+    if self.isChatList_ then
+      return "friend_head_list_tpl"
+    else
+      return "friend_play_frame_tpl"
+    end
+  end)
+  self.loopList_:Init({})
   self.friendsMessageSubView_ = friends_message_subView.new()
   self.friendsApplySubView_ = friends_apply_subView.new()
   self.friendsManageSubView_ = friends_manage_subView.new()
@@ -56,10 +77,18 @@ function Friends_main_subView:onInitData()
   self.chatMainData_ = Z.DataMgr.Get("chat_main_data")
   self.chatRightSubViewLsit_ = {}
   self.friendsRightSubViewLsit_ = {}
+  self.selfFuncBtnTipsCharId_ = 0
+  self.isInitFuncBtnTips_ = false
+  self.isSearching_ = false
   self.chatList_ = {}
+  self.uiBinder.tog_important.isOn = false
+  self.uiBinder.tog_normal.isOn = false
+  self.uiBinder.tog_important.group = self.uiBinder.togs_tab
+  self.uiBinder.tog_normal.group = self.uiBinder.togs_tab
+  self.friendMainData_:SetFriendViewOpen(true)
 end
 
-function Friends_main_subView:onInitFunc()
+function Friends_main_subView:initFunc()
   self.uiBinder.input_search:AddListener(function(searchContext)
     if searchContext == "" then
       self:refreshAsyncEmptySearch()
@@ -67,23 +96,25 @@ function Friends_main_subView:onInitFunc()
   end)
   self.uiBinder.input_search:AddSubmitListener(function(searchContext)
     if searchContext == "" then
-      return
+      self.isSearching = false
+      self:refreshAsyncEmptySearch()
+    else
+      self.isSearching_ = true
+      self:refreshAsyncStringSearch(searchContext)
     end
-    self.isSearching_ = true
-    self:refreshAsyncStringSearch(searchContext)
   end)
   self:AddClick(self.uiBinder.btn_apply, function()
     self:ShowNodeRightSubView(E.FriendFunctionViewType.ApplyFriend)
   end)
   self.uiBinder.tog_important:AddListener(function(isOn)
     if isOn then
+      self.chatMainData_:SortPrivateChatList()
       self.friendMainData_:SetFriendViewType(E.FriendViewType.Chat)
       self.isSearching_ = false
       self:clickChatAnimatedShow()
       self.uiBinder.input_search.text = ""
       self:refreshChat()
       self:onClickChatRed()
-      self.uiBinder.anim_friends:Restart(Z.DOTweenAnimType.Tween_1)
     end
   end)
   self.uiBinder.tog_normal:AddListener(function(isOn)
@@ -92,9 +123,9 @@ function Friends_main_subView:onInitFunc()
       self.isSearching_ = false
       self:clickAddressBookAnimatedShow()
       self.uiBinder.input_search.text = ""
+      self:checkFriendBaseDataCache()
       self:refreshAddressBook()
       self:onClickAddressRed()
-      self.uiBinder.anim_friends:Restart(Z.DOTweenAnimType.Tween_2)
     end
   end)
   self:AddClick(self.uiBinder.btn_return, function()
@@ -125,15 +156,15 @@ function Friends_main_subView:onInitFunc()
   end)
   self:AddClick(self.uiBinder.btn_search, function()
     if self.uiBinder.input_search.text == "" then
-      return
+      Z.TipsVM.ShowTips(100004)
+    else
+      self.isSearching_ = true
+      self:refreshAsyncStringSearch(self.uiBinder.input_search.text)
     end
-    self.isSearching_ = true
-    self:refreshAsyncStringSearch(self.uiBinder.input_search.text)
   end)
 end
 
 function Friends_main_subView:OnDeActive()
-  self:UnBindEvents()
   if self.friendsMessageSubView_ then
     self.friendsMessageSubView_:DeActive()
   end
@@ -152,9 +183,13 @@ function Friends_main_subView:OnDeActive()
   if self.friendsAddSubView_ then
     self.friendsAddSubView_:DeActive()
   end
+  self:UnBindEvents()
   self:clearRed()
-  self.friendScrollRect_:ClearCells()
-  self.chatScrollRect_:ClearCells()
+  self:clearTogData()
+  self.loopList_:UnInit()
+  self.friendMainData_:SetFriendViewOpen(false)
+  self.friendMainData_:SetIsShowFriendChat(false)
+  Z.Voice.StopPlayback()
 end
 
 function Friends_main_subView:BindEvents()
@@ -166,6 +201,9 @@ function Friends_main_subView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Friend.FriendApplicationRefresh, self.refreshApplicationInfo, self)
   Z.EventMgr:Add(Z.ConstValue.Chat.BubbleMsg, self.OnRefreshChatMsg, self)
   Z.EventMgr:Add(Z.ConstValue.Chat.OpenPrivateChat, self.refreshOpenPrivateChat, self)
+  Z.EventMgr:Add(Z.ConstValue.Friend.FriendNewMessage, self.refreshFriendNewMessage, self)
+  Z.EventMgr:Add(Z.ConstValue.Chat.NewPrivateChatMsg, self.onReceiveNewPrivateChatMsg, self)
+  Z.EventMgr:Add(Z.ConstValue.Friend.RefreshFriendBaseDataCache, self.onFriendBaseDataRefresh, self)
 end
 
 function Friends_main_subView:UnBindEvents()
@@ -177,32 +215,20 @@ function Friends_main_subView:UnBindEvents()
   Z.EventMgr:Remove(Z.ConstValue.Friend.FriendApplicationRefresh, self.refreshApplicationInfo, self)
   Z.EventMgr:Remove(Z.ConstValue.Chat.BubbleMsg, self.OnRefreshChatMsg, self)
   Z.EventMgr:Remove(Z.ConstValue.Chat.OpenPrivateChat, self.refreshOpenPrivateChat, self)
-end
-
-function Friends_main_subView:OnRefresh()
+  Z.EventMgr:Remove(Z.ConstValue.Friend.FriendNewMessage, self.refreshFriendNewMessage, self)
+  Z.EventMgr:Remove(Z.ConstValue.Chat.NewPrivateChatMsg, self.onReceiveNewPrivateChatMsg, self)
+  Z.EventMgr:Remove(Z.ConstValue.Friend.RefreshFriendBaseDataCache, self.onFriendBaseDataRefresh, self)
 end
 
 function Friends_main_subView:refreshViewType()
   if self.friendMainData_:GetFriendViewType() == E.FriendViewType.Chat then
-    if self.uiBinder.tog_important.isOn == false then
-      self.uiBinder.tog_important:SetIsOnWithoutCallBack(true)
-      self.uiBinder.tog_normal:SetIsOnWithoutCallBack(false)
-    end
-    self:clickChatAnimatedShow()
-    self:refreshChat(true)
-    self:onClickChatRed()
+    self.uiBinder.tog_important.isOn = true
   else
-    if self.uiBinder.tog_normal.isOn == false then
-      self.uiBinder.tog_important:SetIsOnWithoutCallBack(false)
-      self.uiBinder.tog_normal:SetIsOnWithoutCallBack(true)
-    end
-    self:clickAddressBookAnimatedShow()
-    self:refreshAddressBook(true)
-    self:onClickAddressRed()
+    self.uiBinder.tog_normal.isOn = true
   end
 end
 
-function Friends_main_subView:onInitRed()
+function Friends_main_subView:initRed()
   Z.RedPointMgr.LoadRedDotItem(E.RedType.FriendChatTab, self, self.uiBinder.node_red_import)
   Z.RedPointMgr.LoadRedDotItem(E.RedType.FriendAddressTab, self, self.uiBinder.node_red_normal)
 end
@@ -239,51 +265,38 @@ function Friends_main_subView:updateSearchNodeState(isShowSearchInput)
   end
 end
 
-function Friends_main_subView:refreshChat(isInit)
-  self:refreshChatFriendNode(true, false)
+function Friends_main_subView:refreshChat()
   self.uiBinder.Ref:SetVisible(self.uiBinder.group_apply_frame, false)
-  self:RefreshChatPrivateChatList(isInit)
+  self.uiBinder.loop_list_ref:SetOffsetMax(0, -190)
+  self:RefreshChatPrivateChatList()
 end
 
-function Friends_main_subView:refreshChatList(chatList, isSearch, isInit)
+function Friends_main_subView:refreshChatList(chatList, isSearch)
   if self.friendMainData_:GetFriendViewType() ~= E.FriendViewType.Chat then
     return
   end
-  self.chatScrollRect_:ClearSelected()
+  self.loopList_:ClearAllSelect()
   self.chatMainData_:GetPrivateSelectId()
   local chatSelectCharId = self.friendMainData_:GetChatSelectCharId()
   self.chatList_ = chatList
+  self.isChatList_ = true
+  self.loopList_:RefreshListView(chatList, false)
   local selectIndex = self:getPrivateChatCharIdIndex(chatSelectCharId, chatList)
   if 0 < selectIndex then
-    if isInit then
-      self.chatScrollRect_:SetData(chatList, false, false, selectIndex - 1)
-    else
-      self.chatScrollRect_:RefreshData(chatList)
-    end
-    self.chatScrollRect_:SetSelected(selectIndex - 1)
-  else
-    self.chatScrollRect_:RefreshData(chatList)
-    if isSearch == false then
-      self:ShowRightNodeByCacheList()
-    end
+    self.loopList_:SetSelected(selectIndex)
+    self.loopList_:MovePanelToItemIndex(selectIndex)
+  elseif isSearch == false then
+    self:ShowRightNodeByCacheList()
   end
 end
 
-function Friends_main_subView:RefreshChatPrivateChatList(isInit)
+function Friends_main_subView:RefreshChatPrivateChatList()
   if self.isSearching_ then
     self:refreshAsyncStringSearch(self.uiBinder.input_search.text)
   else
     local chatList = self.chatMainData_:GetPrivateChatList()
-    self:refreshChatList(chatList, false, isInit)
+    self:refreshChatList(chatList, false)
   end
-end
-
-function Friends_main_subView:asyncUpdatePrivateChat()
-  Z.CoroUtil.create_coro_xpcall(function()
-    self.chatMainVm_.AsyncUpdatePrivateChatCharInfo(true)
-    self.chatMainVm_.PrivateChatListSort(self.chatMainData_:GetPrivateChatList())
-    self:refreshViewType()
-  end)()
 end
 
 function Friends_main_subView:OnRefreshChatMsg(chatMsgData)
@@ -298,7 +311,7 @@ function Friends_main_subView:OnRefreshChatMsg(chatMsgData)
   end
   local targetCharId = chatMsgData:GetCharId()
   local selectIndex = self:getPrivateChatCharIdIndex(targetCharId, self.chatList_)
-  self.chatScrollRect_:UpDateByIndex(selectIndex - 1, self.chatList_[selectIndex])
+  self.loopList_:UpDateByIndex(selectIndex, self.chatList_[selectIndex])
 end
 
 function Friends_main_subView:getSelectCharIndexInChatList(charId, chatList)
@@ -315,46 +328,92 @@ function Friends_main_subView:getSelectCharIndexInChatList(charId, chatList)
 end
 
 function Friends_main_subView:refreshOpenPrivateChat(charId)
+  self.uiBinder.tog_important.isOn = true
   self:ShowNodeRightSubView(E.FriendFunctionViewType.SendMessage, {CharId = charId}, true)
 end
 
-function Friends_main_subView:refreshChatFriendNode(isChat, isFriend)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_chat, isChat)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_friends, isFriend)
+function Friends_main_subView:refreshFriendNewMessage()
+  local mainUIData = Z.DataMgr.Get("mainui_data")
+  mainUIData.MainUIPCShowFriendMessage = false
 end
 
-function Friends_main_subView:refreshAddressBook(isInit)
-  self:refreshChatFriendNode(false, true)
+function Friends_main_subView:onReceiveNewPrivateChatMsg()
+  if self.friendMainData_:GetFriendViewType() == E.FriendViewType.Chat then
+    self:RefreshChatPrivateChatList()
+  else
+    self:checkNewMessageRed()
+  end
+end
+
+function Friends_main_subView:checkNewMessageRed()
+  if self.friendMainData_:GetFriendViewType() == E.FriendViewType.Chat then
+    return
+  end
+  if self.curRightViewType_ ~= E.FriendFunctionViewType.SendMessage then
+    return
+  end
+  local charId = self.friendMainData_:GetAddressSelectCharId()
+  if charId == 0 then
+    return
+  end
+  local privateChat = self.chatMainData_:GetPrivateChatItemByCharId(charId)
+  if not privateChat then
+    return
+  end
+  local maxRead = privateChat.maxReadMsgId or 0
+  if not privateChat.latestMsg or maxRead >= privateChat.latestMsg.msgId then
+    return
+  end
+  Z.CoroUtil.create_coro_xpcall(function()
+    local isSuccess = self.chatMainVm_.AsyncSetPrivateChatHasRead(privateChat.charId, privateChat.latestMsg.msgId, self.cancelSource:CreateToken())
+    if isSuccess then
+      Z.RedPointMgr.UpdateNodeCount(E.RedType.FriendChatTab, self.chatMainData_:GetPrivateChatUnReadCount(), true)
+    end
+  end)()
+end
+
+function Friends_main_subView:refreshAddressBook()
   self:refreshApplicationInfo()
   self.friendsMainVm_.UpdateGroupShowList()
+  self.isChatList_ = false
+  self.loopList_:RefreshListView(self.friendMainData_.AllList, false)
   local leftSelect = self.friendMainData_:GetAddressSelectCharId()
-  if leftSelect == self.selfCharId_ then
+  if leftSelect == Z.ContainerMgr.CharSerialize.charId then
     local viewData = {}
     viewData.IsNeedReturn = false
     viewData.CharId = leftSelect
     self:ShowNodeRightSubView(E.FriendFunctionViewType.SendMessage, viewData, true)
-    self.friendScrollRect_:RefreshData(self.friendMainData_.AllList)
-    self.friendScrollRect_:ClearSelected()
+    self.loopList_:ClearAllSelect()
   elseif leftSelect ~= 0 then
     local index = self:getFriendIndexInList(self.friendMainData_.AllList, leftSelect)
     if index ~= 0 then
-      if isInit then
-        self.friendScrollRect_:SetData(self.friendMainData_.AllList, false, false, index - 1)
-        self.friendScrollRect_:SetSelected(index - 1)
-      else
-        self.friendScrollRect_:RefreshData(self.friendMainData_.AllList)
-      end
+      self.loopList_:SetSelected(index)
+      self.loopList_:MovePanelToItemIndex(index)
     else
       self.friendMainData_:SetAddressSelectCharId(0)
       self:refreshNodeRightSubView(E.FriendFunctionViewType.None)
-      self.friendScrollRect_:RefreshData(self.friendMainData_.AllList)
-      self.friendScrollRect_:ClearSelected()
+      self.loopList_:ClearAllSelect()
     end
   else
     self:ShowRightNodeByCacheList()
-    self.friendScrollRect_:RefreshData(self.friendMainData_.AllList)
-    self.friendScrollRect_:ClearSelected()
+    self.loopList_:ClearAllSelect()
   end
+end
+
+function Friends_main_subView:checkFriendBaseDataCache()
+  if self.friendMainData_.IsCache then
+    return
+  end
+  Z.CoroUtil.create_coro_xpcall(function()
+    self.friendsMainVm_.AsyncGetFriendBaseData()
+  end)()
+end
+
+function Friends_main_subView:onFriendBaseDataRefresh()
+  if self.friendMainData_:GetFriendViewType() == E.FriendViewType.Chat then
+    return
+  end
+  self:refreshAddressBook()
 end
 
 function Friends_main_subView:getFriendIndexInList(list, charId)
@@ -377,11 +436,11 @@ function Friends_main_subView:refreshApplicationInfo()
   local count = table.zcount(applicationList)
   if count == 0 then
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_apply_frame, false)
-    self.uiBinder.node_friends_ref:SetOffsetMax(0, -190)
+    self.uiBinder.loop_list_ref:SetOffsetMax(0, -190)
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.group_apply_frame, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_red, true)
-    self.uiBinder.node_friends_ref:SetOffsetMax(0, -256)
+    self.uiBinder.loop_list_ref:SetOffsetMax(0, -256)
     self.uiBinder.lab_num.text = tostring(count)
   end
 end
@@ -406,7 +465,7 @@ function Friends_main_subView:refreshAsyncStringSearch(searchContext)
 end
 
 function Friends_main_subView:refreshAyncFriendList(list)
-  self.friendScrollRect_:RefreshData(list)
+  self.loopList_:RefreshListView(list, false)
   local index = 0
   for k, friendData in pairs(list) do
     if friendData:GetIsGroup() == false and friendData:GetCharId() == self.friendMainData_:GetAddressSelectCharId() then
@@ -415,9 +474,10 @@ function Friends_main_subView:refreshAyncFriendList(list)
     end
   end
   if index == 0 then
-    self.friendScrollRect_:ClearSelected()
+    self.loopList_:ClearAllSelect()
   else
-    self.friendScrollRect_:SetSelected(index - 1)
+    self.loopList_:SetSelected(index)
+    self.loopList_:MovePanelToItemIndex(index)
   end
 end
 
@@ -441,7 +501,7 @@ function Friends_main_subView:RefreshBlackGroup()
   end
   for i = 1, #self.friendMainData_.AllList do
     if self.friendMainData_.AllList[i]:GetIsGroup() == true and self.friendMainData_.AllList[i]:GetGroupId() == E.FriendGroupType.Shield then
-      self.friendScrollRect_:RefreshDataByIndex(i - 1, self.friendMainData_.AllList[i])
+      self.loopList_:RefreshDataByIndex(i, self.friendMainData_.AllList[i])
       break
     end
   end
@@ -513,6 +573,8 @@ function Friends_main_subView:removeCacheRightSubView(type)
 end
 
 function Friends_main_subView:refreshNodeRightSubView(type, viewData)
+  self.curRightViewType_ = type
+  self.friendMainData_:SetIsShowFriendChat(type == E.FriendFunctionViewType.SendMessage)
   self:hideNodeRightSubView(type)
   if type == E.FriendFunctionViewType.None then
     self.uiBinder.Ref:SetVisible(self.uiBinder.cont_empty, true)
@@ -549,6 +611,7 @@ function Friends_main_subView:refreshNodeRightSubView(type, viewData)
   if type ~= E.FriendFunctionViewType.SendMessage then
     self.friendsMessageSubView_:DeActive()
   end
+  self:checkNewMessageRed()
 end
 
 function Friends_main_subView:hideNodeRightSubView(type)
@@ -635,7 +698,6 @@ function Friends_main_subView:initFunctionBtnTips()
       if ret then
         Z.TipsVM.ShowTipsLang(130104)
       end
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
     self:closeBtnTips()
   end
@@ -646,7 +708,6 @@ function Friends_main_subView:initFunctionBtnTips()
       if ret then
         Z.TipsVM.ShowTipsLang(130105)
       end
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
     self:closeBtnTips()
   end
@@ -673,26 +734,24 @@ function Friends_main_subView:asyncAddFriendFunctionBtnByType(type, addNode, fun
   end
 end
 
-function Friends_main_subView:ShowBtnFunctionTips(charId, position, isFriendChat, isFriend)
+function Friends_main_subView:AsyncShowBtnFunctionTips(charId, position, isFriendChat, isFriend)
   if not charId then
     return
   end
   self.selfFuncBtnTipsCharId_ = charId
-  Z.CoroUtil.create_coro_xpcall(function()
-    self:initFunctionBtnTips()
-    self:checkTopBtnShow(isFriendChat)
-    self:checkRemindBtnShow()
-    self:checkDelBtnShow(isFriendChat, isFriend)
-    self:checkBlackBtnShow()
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_function_tips, true)
-    self.uiBinder.anim_friends:Restart(Z.DOTweenAnimType.Tween_4)
-    self.uiBinder.node_function_tips.position = position
-    if self.uiBinder.node_function_tips.anchoredPosition.y < functionBtnTipsMinHeight then
-      self.uiBinder.node_function_tips:SetAnchorPosition(self.uiBinder.node_function_tips.anchoredPosition.x, functionBtnTipsMinHeight)
-    end
-    self.uiBinder.Ref:SetVisible(self.uiBinder.presscheck_pointpress_ref, true)
-    self.uiBinder.presscheck_pointpress:StartCheck()
-  end)()
+  self:initFunctionBtnTips()
+  self:checkTopBtnShow(isFriendChat)
+  self:checkRemindBtnShow()
+  self:checkDelBtnShow(isFriendChat, isFriend)
+  self:checkBlackBtnShow()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_function_tips, true)
+  self.uiBinder.anim_friends:Restart(Z.DOTweenAnimType.Tween_4)
+  self.uiBinder.node_function_tips.position = position
+  if self.uiBinder.node_function_tips.anchoredPosition.y < functionBtnTipsMinHeight then
+    self.uiBinder.node_function_tips:SetAnchorPosition(self.uiBinder.node_function_tips.anchoredPosition.x, functionBtnTipsMinHeight)
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.presscheck_pointpress_ref, true)
+  self.uiBinder.presscheck_pointpress:StartCheck()
 end
 
 function Friends_main_subView:checkTopBtnShow(isFriendChat)

@@ -8,24 +8,16 @@ end
 function ResonancePowerDecomposeMainLoopItem:OnInit()
   self.parentUIView = self.parent.UIView
   self.itemClass_ = item.new(self.parent.uiView)
-  
-  function self.itemWatcherFun_(container, dirtyKeys)
-    local backpackData = Z.DataMgr.Get("backpack_data")
-    if backpackData.SortState then
+  self.itemsVM_ = Z.VMMgr.GetVM("items")
+  self.uiBinder.btn_minus:AddListener(function()
+    local curData = self:GetCurData()
+    if curData == nil then
       return
     end
-    if not self.parent then
-      logError("Default equip loop " .. self.Index)
-    end
-    self.parent:RefreshDataByIndex(self.Index, {
-      itemUuid = container.uuid,
-      configId = container.configId
-    })
-  end
-  
-  function self.packageWatcherFun(container, dirtyKeys)
-    self.package_ = container
-  end
+    self.parentUIView:OnSelectResonancePowerItemDecompose(false, curData)
+    self:RefreshConsumeCount()
+    self:closeTips()
+  end)
 end
 
 function ResonancePowerDecomposeMainLoopItem:OnRefresh(data)
@@ -39,17 +31,14 @@ function ResonancePowerDecomposeMainLoopItem:OnRefresh(data)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_info, true)
   self.uuid_ = data.itemUuid
   self.configId = data.configId
-  local itemsVm = Z.VMMgr.GetVM("items")
-  self.package_ = itemsVm.GetPackageInfobyItemId(self.configId)
-  self.itemData_ = self.package_.items[self.uuid_]
+  local itemsVM = Z.VMMgr.GetVM("items")
+  self.itemData_ = itemsVM.GetItemInfobyItemId(self.uuid_, self.configId)
   if not self.itemData_ then
     self:refreshNoItemUi()
     return
   end
-  self.package_.Watcher:RegWatcher(self.packageWatcherFun)
-  self.itemData_.Watcher:RegWatcher(self.itemWatcherFun_)
-  self:setui()
-  self:SelectState()
+  self:refreshItemUI()
+  self:refreshSelectUI()
 end
 
 function ResonancePowerDecomposeMainLoopItem:refreshNoItemUi()
@@ -57,58 +46,73 @@ function ResonancePowerDecomposeMainLoopItem:refreshNoItemUi()
   self.uiBinder.Ref:SetVisible(self.uiBinder.trans_info, false)
 end
 
-function ResonancePowerDecomposeMainLoopItem:setui()
+function ResonancePowerDecomposeMainLoopItem:refreshItemUI()
   local itemTableRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.configId)
-  self.itemClass_:Init({
+  local data = {
     uiBinder = self.uiBinder,
-    configId = self.configId,
     uuid = self.uuid_,
+    configId = self.configId,
     isClickOpenTips = false,
-    isShowOne = false
-  })
+    isBind = true
+  }
+  self.itemClass_:Init(data)
   if itemTableRow and self.uuid_ then
     self.itemClass_:RefreshItemFlags(self.itemData_, itemTableRow)
   end
+  self:RefreshConsumeCount()
 end
 
-function ResonancePowerDecomposeMainLoopItem:Selected(isSelected)
-  self.itemClass_:SetSelected(isSelected)
-  self.parentUIView:OnSelectResonancePowerItemDecompose(self:GetCurData())
-  self:SelectState()
-end
-
-function ResonancePowerDecomposeMainLoopItem:SelectState()
+function ResonancePowerDecomposeMainLoopItem:refreshSelectUI()
   local isSelected = self.IsSelected
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, isSelected)
 end
 
-function ResonancePowerDecomposeMainLoopItem:OnPointerClick(go, eventData)
+function ResonancePowerDecomposeMainLoopItem:openTips()
+  self:closeTips()
   self.tipsId_ = Z.TipsVM.ShowItemTipsView(self.uiBinder.Trans, self.configId, self.uuid_)
 end
 
-function ResonancePowerDecomposeMainLoopItem:OnSelected(isSelected)
+function ResonancePowerDecomposeMainLoopItem:closeTips()
+  if self.tipsId_ ~= nil then
+    Z.TipsVM.CloseItemTipsView(self.tipsId_)
+    self.tipsId_ = nil
+  end
+end
+
+function ResonancePowerDecomposeMainLoopItem:OnPointerClick(go, eventData)
   local curData = self:GetCurData()
   if curData == nil then
     return
   end
-  self.data = curData
-  self:Selected(isSelected)
+  self.parentUIView:OnSelectResonancePowerItemDecompose(true, curData)
+  self:RefreshConsumeCount()
+  self:openTips()
+  Z.AudioMgr:Play("sys_general_frame")
 end
 
 function ResonancePowerDecomposeMainLoopItem:OnUnInit()
   self.itemClass_:UnInit()
-  if self.itemData_ and self.itemWatcherFun_ then
-    self.itemData_.Watcher:UnregWatcher(self.itemWatcherFun_)
+  self:closeTips()
+end
+
+function ResonancePowerDecomposeMainLoopItem:RefreshConsumeCount()
+  local curData = self:GetCurData()
+  if curData == nil then
+    return
   end
-  if self.package_ and self.packageWatcherFun then
-    self.package_.Watcher:UnregWatcher(self.packageWatcherFun)
+  local itemInfo = self.itemsVM_.GetItemInfobyItemId(curData.itemUuid, curData.configId)
+  local haveCount = itemInfo and itemInfo.count or 0
+  local selectCount = self.parent.UIView:GetDecomposeSelectCount(curData.itemUuid)
+  if selectCount <= 0 then
+    self.itemClass_:SetLab(haveCount)
+    self.itemClass_:SetSelected(false)
+  else
+    local selectCountStr = Z.RichTextHelper.ApplyStyleTag(selectCount, E.TextStyleTag.Orange)
+    local countStr = string.zconcat(selectCountStr, "/", haveCount)
+    self.itemClass_:SetLab(countStr)
+    self.itemClass_:SetSelected(true)
   end
-  self.updateTimer_ = nil
-  self.timerMgr_ = nil
-  self.itemWatcherFun_ = nil
-  if self.tipsId_ then
-    Z.TipsVM.CloseItemTipsView(self.tipsId_)
-  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_minus, 0 < selectCount)
 end
 
 return ResonancePowerDecomposeMainLoopItem

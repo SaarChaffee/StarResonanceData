@@ -11,8 +11,6 @@ message FantasySolutionTableBase {
     int32 RecommendedType = 1244;
     int_array RecommendFantasyList = 1541;
 }
-
 message FantasySolutionTableMgr {
-    map<int32, .bokura.FantasySolutionTableBase> datas = 1;
+    repeated bokura.FantasySolutionTableMgr.DatasEntry datas = 1;
 }
-

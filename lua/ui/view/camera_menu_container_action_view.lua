@@ -39,7 +39,6 @@ function Camera_menu_container_actionView:btnReset(isNotResetEmote)
   local logicExpressionType = self.expressionData_:GetLogicExpressionType()
   if logicExpressionType == E.ExpressionType.Action then
     Z.EventMgr:Dispatch(Z.ConstValue.Camera.ActionReset, self.viewData)
-    self.parent_.uiBinder.Ref:SetVisible(self.parent_.uiBinder.node_action_slider_container, false)
   elseif not isNotResetEmote then
     if self.viewData.ZModel then
       Z.ZAnimActionPlayMgr:ResetEmote(self.viewData.ZModel)
@@ -81,7 +80,6 @@ end
 
 function Camera_menu_container_actionView:cancelSelect(isShow)
   if not isShow and self.selectedTog_ then
-    self.selectedTog_.Ref:SetVisible(self.selectedTog_.img_select, false)
     self.selectedTog_ = nil
   end
 end
@@ -127,19 +125,16 @@ function Camera_menu_container_actionView:setItemData(item, data, name)
   else
     self:changeItemAlpha(item, 1)
   end
-  local emojiPath = self.uiBinder.prefabCache:GetString("emojiPath")
-  item.img_emoji:SetImage(string.format("%s%s", emojiPath, data.tableData.Icon))
+  item.img_emoji:SetImage(data.tableData.Icon)
   if data.tableData.Type == E.ExpressionType.Action then
-    local isLoop_ = data.tableData.IsLoop
-    if isLoop_ then
-      item.Ref:SetVisible(item.img_emoji_circulate, true)
-      local circulatePath = self.uiBinder.prefabCache:GetString("circulatePath")
-      item.img_emoji_circulate:SetImage(circulatePath)
-    else
-      item.Ref:SetVisible(item.img_emoji_circulate, false)
+    local cornerMark = data.tableData.CornerMark
+    for i = 1, 3 do
+      item.Ref:SetVisible(item["img_emoji_corner_" .. i], i == cornerMark)
     end
   else
-    item.Ref:SetVisible(item.img_emoji_circulate, false)
+    for i = 1, 3 do
+      item.Ref:SetVisible(item["img_emoji_corner_" .. i], false)
+    end
   end
   item.img_btn_emoji_bg:SetImage(string.format("%s%s", itemBgPath, isActive))
 end
@@ -153,21 +148,21 @@ end
 
 function Camera_menu_container_actionView:setTogPress(item, data, actionId)
   self:AddClick(item.btn_select, function()
-    local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
-    if stateId ~= Z.PbEnum("EActorState", "ActorStateDefault") and stateId ~= Z.PbEnum("EActorState", "ActorStateAction") and stateId ~= Z.PbEnum("EActorState", "ActorStateSelfPhoto") then
-      item.Ref:SetVisible(item.img_select, false)
-      Z.TipsVM.ShowTips(1000028)
-      return
-    end
-    if self.selectedTog_ then
-      self.selectedTog_.Ref:SetVisible(self.selectedTog_.img_select, false)
+    if Z.EntityMgr.PlayerEnt then
+      local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
+      local canPlayAction = self.expressionVm_.CanPlayActionCheck(stateId)
+      local canUse = Z.StatusSwitchMgr:CheckSwitchEnable(Z.EStatusSwitch.ActorStateAction)
+      if not canPlayAction or not canUse then
+        Z.TipsVM.ShowTips(1000028)
+        return
+      end
     end
     self.selectedTog_ = item
     if data.activeType == E.ExpressionState.Active then
       self:play(data.tableData)
-      item.Ref:SetVisible(item.img_select, true)
+      self.expressionVm_.OpenTipsActionNamePopup(item.Trans, data.tableData.Name)
     else
-      self.expressionVm_.InitExpressionItemData(data, item, actionId)
+      self.expressionVm_.InitExpressionItemData(data, item.Trans, actionId)
     end
   end)
   item.btn_select.OnLongPressEvent:RemoveAllListeners()
@@ -214,22 +209,8 @@ function Camera_menu_container_actionView:play(emoteCfg)
       self.expressionVm_.PlayEmote(cfgId, emoteId, true, true)
       Z.EventMgr:Dispatch(Z.ConstValue.Expression.ClickEmotion, cfgId)
     else
-      self:playMultAction(emoteCfg)
+      self.multActionVm_.PlayMultAction(emoteCfg.Emote[2], self.cancelSource)
     end
-  end
-end
-
-function Camera_menu_container_actionView:playMultAction(emoteCfg)
-  if Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EMultiActionState).Value == 0 then
-    Z.CoroUtil.create_coro_xpcall(function()
-      if self.multActionData_.SelectInviteId ~= 0 then
-        self.multActionVm_.AsyncCheckandSendInvite(self.multActionData_.SelectInviteId, emoteCfg.Emote[2], self.cancelSource:CreateToken())
-      else
-        Z.TipsVM.ShowTipsLang(1000022)
-      end
-    end)()
-  else
-    Z.TipsVM.ShowTipsLang(1000023)
   end
 end
 
@@ -239,10 +220,12 @@ function Camera_menu_container_actionView:OnDeActive()
     self.playerPosWatcher:Dispose()
     self.playerPosWatcher = nil
   end
-  self:UnBindEntityLuaAttrWatcher(self.playerStateWatcher)
+  if self.playerStateWatcher ~= nil then
+    self.playerStateWatcher:Dispose()
+    self.playerStateWatcher = nil
+  end
   Z.ContainerMgr.CharSerialize.showPieceData.Watcher:UnregWatcher(self.unlockTypeListChange)
   self.unlockTypeListChange = nil
-  self.playerStateWatcher = nil
   self.playerPosWatcher = nil
   self:btnReset(true)
   self.expressionVm_.CloseTitleContentItemsBtn()
@@ -271,9 +254,9 @@ function Camera_menu_container_actionView:BindLuaAttrWatchers()
     self.playerPosWatcher = Z.DIServiceMgr.PlayerAttrComponentWatcherService:OnAttrVirtualPosChanged(function()
       self:updatePosEvent()
     end)
-    self.playerStateWatcher = self:BindEntityLuaAttrWatcher({
-      Z.AttrCreator.ToIndex(Z.LocalAttr.EAttrState)
-    }, Z.EntityMgr.PlayerEnt, self.onPlayerStateChange)
+    self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
+      self:onPlayerStateChange()
+    end)
   end
   
   function self.unlockTypeListChange(container, dirty)
@@ -287,7 +270,6 @@ end
 
 function Camera_menu_container_actionView:updatePosEvent()
   if self.selectedTog_ then
-    self.selectedTog_.Ref:SetVisible(self.selectedTog_.img_select, false)
     self.selectedTog_ = nil
   end
   self.expressionClickTag_ = false
@@ -297,10 +279,13 @@ function Camera_menu_container_actionView:updatePosEvent()
 end
 
 function Camera_menu_container_actionView:onPlayerStateChange()
-  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrState")).Value
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
+  local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttrState()
   if stateId ~= Z.PbEnum("EActorState", "ActorStateDefault") and stateId ~= Z.PbEnum("EActorState", "ActorStateAction") then
     if not self.expressionClickTag_ and self.selectedTog_ then
-      self.selectedTog_.Ref:SetVisible(self.selectedTog_.img_select, false)
       self.selectedTog_ = nil
     end
     self.expressionClickTag_ = false

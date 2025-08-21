@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_int_vec3.proto";
+
+message HomelandSetLamplightRequest {
+    int32 lamplightLevel = 1;
+    zproto.IntVec3 lamplightColor = 2;
+    int32 dayNightId = 3;
+    int32 mode = 4;
+    bool isOuter = 5;
+}

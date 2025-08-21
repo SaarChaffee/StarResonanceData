@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_source_privilege_effect_data.proto";
+
+message NotifyAllSourcePrivilegeEffectData {
+    repeated zproto.NotifyAllSourcePrivilegeEffectData.AllSourcePrivilegeEffectsMapEntry allSourcePrivilegeEffectsMap = 1;
+}

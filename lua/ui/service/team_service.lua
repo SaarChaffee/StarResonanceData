@@ -7,7 +7,27 @@ end
 function TeamService:OnUnInit()
 end
 
+function TeamService:switchFunctionState(functionId, isOpen)
+  if functionId == E.FunctionID.TeamVoice then
+    local teamVM = Z.VMMgr.GetVM("team")
+    if teamVM.CheckIsInTeam() and not isOpen then
+      teamVM.CloseTeamVoice()
+    end
+  elseif functionId == E.FunctionID.TeamVoiceMic then
+    local teamVM = Z.VMMgr.GetVM("team")
+    if teamVM.CheckIsInTeam() then
+      local funcVm = Z.VMMgr.GetVM("gotofunc")
+      if not funcVm.CheckFuncCanUse(E.FunctionID.TeamVoice, true) then
+        teamVM.CloseTeamVoice()
+      else
+        teamVM.OpenTeamSpeaker()
+      end
+    end
+  end
+end
+
 function TeamService:OnLogin()
+  Z.EventMgr:Add(Z.ConstValue.RefreshFunctionIcon, self.switchFunctionState, self)
 end
 
 function TeamService:OnLeaveScene()
@@ -18,6 +38,7 @@ end
 function TeamService:OnLogout()
   local teamVM = Z.VMMgr.GetVM("team")
   teamVM.QuiteTeamVoice()
+  Z.EventMgr:Remove(Z.ConstValue.RefreshFunctionIcon, self.switchFunctionState, self)
 end
 
 function TeamService:OnEnterScene(sceneId)

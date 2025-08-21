@@ -8,8 +8,6 @@ message QuickJumpTypeTableBase {
     string Example = 522;
     string RefreshNum = 1376;
 }
-
 message QuickJumpTypeTableMgr {
-    map<int32, .bokura.QuickJumpTypeTableBase> datas = 1;
+    repeated bokura.QuickJumpTypeTableMgr.DatasEntry datas = 1;
 }
-

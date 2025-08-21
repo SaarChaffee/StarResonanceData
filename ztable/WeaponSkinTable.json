@@ -1,0 +1,1101 @@
+{
+  "7310001": {
+    "Id": 7310001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1100001
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 1,
+    "Original": 0,
+    "SortID": 1,
+    "Score": 30,
+    "LongIcon": "ch_wp_olvera_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7310002": {
+    "Id": 7310002,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1310020
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 1,
+    "Original": 1,
+    "SortID": 2,
+    "Score": 30,
+    "LongIcon": "ch_wp_olvera_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7310003": {
+    "Id": 7310003,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1310030
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 1,
+    "Original": 0,
+    "SortID": 3,
+    "Score": 0,
+    "LongIcon": "ch_wp_olvera_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7310004": {
+    "Id": 7310004,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1310040
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 1,
+    "Original": 0,
+    "SortID": 4,
+    "Score": 160,
+    "LongIcon": "ch_wp_olvera_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7310005": {
+    "Id": 7310005,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1310050
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 1,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 30,
+    "LongIcon": "ch_wp_olvera_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7310006": {
+    "Id": 7310006,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1310060
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 1,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 320,
+    "LongIcon": "ch_wp_olvera_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7320001": {
+    "Id": 7320001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1100004
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 2,
+    "Original": 0,
+    "SortID": 1,
+    "Score": 30,
+    "LongIcon": "ch_wp_boyce_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7320002": {
+    "Id": 7320002,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1320020
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 2,
+    "Original": 1,
+    "SortID": 2,
+    "Score": 30,
+    "LongIcon": "ch_wp_boyce_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7320003": {
+    "Id": 7320003,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1320030
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 2,
+    "Original": 0,
+    "SortID": 3,
+    "Score": 0,
+    "LongIcon": "ch_wp_boyce_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7320004": {
+    "Id": 7320004,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1320040
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 2,
+    "Original": 0,
+    "SortID": 4,
+    "Score": 160,
+    "LongIcon": "ch_wp_boyce_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7320005": {
+    "Id": 7320005,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1320050
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 2,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 30,
+    "LongIcon": "ch_wp_boyce_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7320006": {
+    "Id": 7320006,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1320060
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 2,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 320,
+    "LongIcon": "ch_wp_boyce_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7330001": {
+    "Id": 7330001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1100002,
+      1100003
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 3,
+    "Original": 1,
+    "SortID": 1,
+    "Score": 0,
+    "LongIcon": "ch_wp_tata_01_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7340001": {
+    "Id": 7340001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1100005
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 4,
+    "Original": 0,
+    "SortID": 1,
+    "Score": 30,
+    "LongIcon": "ch_wp_tina_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 7340001
+  },
+  "7340002": {
+    "Id": 7340002,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1340020
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 4,
+    "Original": 1,
+    "SortID": 2,
+    "Score": 30,
+    "LongIcon": "ch_wp_tina_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7340003": {
+    "Id": 7340003,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1340030
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 4,
+    "Original": 0,
+    "SortID": 3,
+    "Score": 0,
+    "LongIcon": "ch_wp_tina_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7340004": {
+    "Id": 7340004,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1340040
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 4,
+    "Original": 0,
+    "SortID": 4,
+    "Score": 160,
+    "LongIcon": "ch_wp_tina_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7340005": {
+    "Id": 7340005,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1340050
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 4,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 30,
+    "LongIcon": "ch_wp_tina_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7340006": {
+    "Id": 7340006,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1340060
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 4,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 320,
+    "LongIcon": "ch_wp_tina_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7350001": {
+    "Id": 7350001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1100006,
+      1100006
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 5,
+    "Original": 0,
+    "SortID": 1,
+    "Score": 30,
+    "LongIcon": "ch_wp_iruna_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7350002": {
+    "Id": 7350002,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1350020,
+      1350020
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 5,
+    "Original": 1,
+    "SortID": 2,
+    "Score": 30,
+    "LongIcon": "ch_wp_iruna_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7350003": {
+    "Id": 7350003,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1350030,
+      1350030
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 5,
+    "Original": 0,
+    "SortID": 3,
+    "Score": 0,
+    "LongIcon": "ch_wp_iruna_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7350004": {
+    "Id": 7350004,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1350040,
+      1350040
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 5,
+    "Original": 0,
+    "SortID": 4,
+    "Score": 160,
+    "LongIcon": "ch_wp_iruna_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7350005": {
+    "Id": 7350005,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1350050,
+      1350050
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 5,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 30,
+    "LongIcon": "ch_wp_iruna_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7350006": {
+    "Id": 7350006,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1350060,
+      1350060
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 5,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 320,
+    "LongIcon": "ch_wp_iruna_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7360001": {
+    "Id": 7360001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1100008
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [
+      [
+        "0",
+        "ep_weapon_effect01_point",
+        "effect/skill/taurus/p_fx_taurus_01_skill02_xuli",
+        "0.68",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 8,
+    "Original": 1,
+    "SortID": 1,
+    "Score": 0,
+    "LongIcon": "ch_wp_iruna_01_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7370001": {
+    "Id": 7370001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1100007
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 9,
+    "Original": 0,
+    "SortID": 1,
+    "Score": 30,
+    "LongIcon": "ch_wp_comeau_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7370002": {
+    "Id": 7370002,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1370020
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 9,
+    "Original": 1,
+    "SortID": 2,
+    "Score": 30,
+    "LongIcon": "ch_wp_comeau_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7370003": {
+    "Id": 7370003,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1370030
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 9,
+    "Original": 0,
+    "SortID": 3,
+    "Score": 0,
+    "LongIcon": "ch_wp_comeau_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7370004": {
+    "Id": 7370004,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1370040
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 9,
+    "Original": 0,
+    "SortID": 4,
+    "Score": 160,
+    "LongIcon": "ch_wp_comeau_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7370005": {
+    "Id": 7370005,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1370050
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 9,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 30,
+    "LongIcon": "ch_wp_comeau_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7370006": {
+    "Id": 7370006,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1370060
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 9,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 320,
+    "LongIcon": "ch_wp_comeau_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7380001": {
+    "Id": 7380001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1100007
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 10,
+    "Original": 1,
+    "SortID": 1,
+    "Score": 0,
+    "LongIcon": "ch_wp_rorola_01_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7390001": {
+    "Id": 7390001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1100013
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [
+      [
+        "1",
+        "ep_weapon_effect02_point",
+        "effect/skill/rodri/p_fx_skill_rodri-01_bowstring",
+        "-0.012",
+        "0",
+        "0.008",
+        "90",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 11,
+    "Original": 0,
+    "SortID": 1,
+    "Score": 30,
+    "LongIcon": "ch_wp_rodri_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [
+      [
+        "ep_weapon_effect02_point",
+        "0.99",
+        "0.99",
+        "0.99"
+      ]
+    ],
+    "EquipToPlay": 0
+  },
+  "7390002": {
+    "Id": 7390002,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1390020
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [
+      [
+        "1",
+        "ep_weapon_effect02_point",
+        "effect/skill/rodri/p_fx_skill_rodri-01_bowstring",
+        "0.045",
+        "0.015",
+        "0.022",
+        "90",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 11,
+    "Original": 1,
+    "SortID": 3,
+    "Score": 30,
+    "LongIcon": "ch_wp_rodri_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7390003": {
+    "Id": 7390003,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1390030
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [
+      [
+        "1",
+        "ep_weapon_effect02_point",
+        "effect/skill/rodri/p_fx_skill_rodri-01_bowstring",
+        "0.045",
+        "0.015",
+        "0.022",
+        "90",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 11,
+    "Original": 0,
+    "SortID": 3,
+    "Score": 0,
+    "LongIcon": "ch_wp_rodri_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7390004": {
+    "Id": 7390004,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1390040
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [
+      [
+        "1",
+        "ep_weapon_effect02_point",
+        "effect/skill/rodri/p_fx_skill_rodri-01_bowstring",
+        "0.071",
+        "0.015",
+        "0.018",
+        "90",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 11,
+    "Original": 0,
+    "SortID": 4,
+    "Score": 160,
+    "LongIcon": "ch_wp_rodri_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [
+      [
+        "ep_weapon_effect02_point",
+        "1",
+        "1.1",
+        "1"
+      ]
+    ],
+    "EquipToPlay": 0
+  },
+  "7390005": {
+    "Id": 7390005,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1390050
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [
+      [
+        "1",
+        "ep_weapon_effect02_point",
+        "effect/skill/rodri/p_fx_skill_rodri-01_bowstring",
+        "0.065",
+        "0.015",
+        "0",
+        "90",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 11,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 30,
+    "LongIcon": "ch_wp_rodri_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7390006": {
+    "Id": 7390006,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1390060
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [
+      [
+        "1",
+        "ep_weapon_effect02_point",
+        "effect/skill/rodri/p_fx_skill_rodri-01_bowstring",
+        "0.073",
+        "0.02",
+        "0.01",
+        "90",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 11,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 320,
+    "LongIcon": "ch_wp_rodri_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [
+      [
+        "ep_weapon_effect02_point",
+        "1",
+        "1.1",
+        "1"
+      ]
+    ],
+    "EquipToPlay": 0
+  },
+  "7400001": {
+    "Id": 7400001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1100011,
+      1100111
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 12,
+    "Original": 0,
+    "SortID": 1,
+    "Score": 30,
+    "LongIcon": "ch_wp_farfara_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7400002": {
+    "Id": 7400002,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1400020,
+      1400021
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 12,
+    "Original": 1,
+    "SortID": 2,
+    "Score": 30,
+    "LongIcon": "ch_wp_farfara_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7400003": {
+    "Id": 7400003,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1400030,
+      1400031
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 12,
+    "Original": 0,
+    "SortID": 3,
+    "Score": 0,
+    "LongIcon": "ch_wp_farfara_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7400004": {
+    "Id": 7400004,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1400040,
+      1400041
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 12,
+    "Original": 0,
+    "SortID": 4,
+    "Score": 160,
+    "LongIcon": "ch_wp_farfara_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7400005": {
+    "Id": 7400005,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1400050,
+      1400051
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 12,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 30,
+    "LongIcon": "ch_wp_farfara_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7400006": {
+    "Id": 7400006,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      1400060,
+      1400061
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 12,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 320,
+    "LongIcon": "ch_wp_farfara_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7410001": {
+    "Id": 7410001,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1100012
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 13,
+    "Original": 0,
+    "SortID": 1,
+    "Score": 30,
+    "LongIcon": "ch_wp_guitar_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7410002": {
+    "Id": 7410002,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1410020
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 13,
+    "Original": 1,
+    "SortID": 2,
+    "Score": 30,
+    "LongIcon": "ch_wp_guitar_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7410003": {
+    "Id": 7410003,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1410030
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 13,
+    "Original": 0,
+    "SortID": 3,
+    "Score": 0,
+    "LongIcon": "ch_wp_guitar_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7410004": {
+    "Id": 7410004,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1410040
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 13,
+    "Original": 0,
+    "SortID": 4,
+    "Score": 160,
+    "LongIcon": "ch_wp_guitar_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7410005": {
+    "Id": 7410005,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1410050
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 13,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 30,
+    "LongIcon": "ch_wp_guitar_02_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7410006": {
+    "Id": 7410006,
+    "Name": "",
+    "Intro": "",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1410060
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [],
+    "ProfessionId": 13,
+    "Original": 0,
+    "SortID": 5,
+    "Score": 320,
+    "LongIcon": "ch_wp_guitar_02_01_t",
+    "IsOpen": false,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  }
+}

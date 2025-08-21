@@ -3,16 +3,22 @@ local super = require("ui.ui_subview_base")
 local Fishing_shop_subView = class("Fishing_shop_subView", super)
 local loopScrollRect_ = require("ui/component/loop_grid_view")
 local shop_loop_item_ = require("ui/component/fishing/fishing_shop_loop_item")
+local currency_item_list = require("ui.component.currency.currency_item_list")
 
 function Fishing_shop_subView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "fishing_shop_sub", "fishing/fishing_shop_sub", UI.ECacheLv.None)
-  self.vm = Z.VMMgr.GetVM("season_shop")
+  if Z.IsPCUI then
+    super.ctor(self, "fishing_shop_sub", "fishing/fishing_shop_sub_pc", UI.ECacheLv.None)
+  else
+    super.ctor(self, "fishing_shop_sub", "fishing/fishing_shop_sub", UI.ECacheLv.None)
+  end
   self.fishingData_ = Z.DataMgr.Get("fishing_data")
   self.fishingVM_ = Z.VMMgr.GetVM("fishing")
+  self.shopVM_ = Z.VMMgr.GetVM("shop")
 end
 
 function Fishing_shop_subView:OnActive()
+  self:onStartAnimShow()
   self.togItemDict_ = {}
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self.uiBinder.Trans:SetOffsetMin(0, 0)
@@ -22,6 +28,9 @@ function Fishing_shop_subView:OnActive()
     self:initProps()
     self:initPages()
   end)()
+  self.currencyItemList_ = currency_item_list.new()
+  self.currencyItemList_:Init(self.uiBinder.currency_info, {})
+  Z.EventMgr:Add(Z.ConstValue.Shop.NotifyBuyShopResult, self.buyCallFunc, self)
 end
 
 function Fishing_shop_subView:OnDeActive()
@@ -30,7 +39,8 @@ function Fishing_shop_subView:OnDeActive()
   self:clearAllLoadItem()
   self.curChoosePage = -1
   self.timerCallTable_ = nil
-  Z.VMMgr.GetVM("currency").CloseCurrencyView(self)
+  self.currencyItemList_:UnInit()
+  self.currencyItemList_ = nil
 end
 
 function Fishing_shop_subView:OnRefresh()
@@ -39,11 +49,14 @@ end
 function Fishing_shop_subView:initwidgets()
   self.pageItemParent_ = self.uiBinder.cont_info.layout
   self.pageToggleGroup_ = self.uiBinder.cont_info.togs_layout
-  self.propLoopScrollRect_ = loopScrollRect_.new(self, self.uiBinder.cont_info.loopscroll, shop_loop_item_, "season_shop_item_tpl")
+  if Z.IsPCUI then
+    self.propLoopScrollRect_ = loopScrollRect_.new(self, self.uiBinder.cont_info.loopscroll, shop_loop_item_, "fishing_shop_item_tpl_pc")
+  else
+    self.propLoopScrollRect_ = loopScrollRect_.new(self, self.uiBinder.cont_info.loopscroll, shop_loop_item_, "fishing_shop_item_tpl")
+  end
   local dataList_ = {}
   self.propLoopScrollRect_:Init(dataList_)
   self.emptyGo_ = self.uiBinder.cont_info.cont_empty.anim_empty
-  self.currency_root_ = self.uiBinder.Trans
   self.season_time_label_ = self.uiBinder.cont_info.lab_table_name
 end
 
@@ -58,7 +71,7 @@ function Fishing_shop_subView:initPages()
       break
     end
   end
-  local clickItem_
+  local clickItem
   for i = 1, #self.shopData_ do
     local itemName = "fishing_shop_page_" .. i
     local itemUnit = self:AsyncLoadUiUnit(path, itemName, self.pageItemParent_)
@@ -76,18 +89,20 @@ function Fishing_shop_subView:initPages()
     itemUnit.tog_item:AddListener(clickFunc_)
     itemUnit.lab_name_1.text = cfg.Name
     itemUnit.lab_name_2.text = cfg.Name
-    if clickItem_ == nil then
-      clickItem_ = itemUnit
+    if clickItem == nil then
+      clickItem = itemUnit
     end
     local isFirst = index == showIndex
     if isFirst then
-      clickItem_ = itemUnit
+      clickItem = itemUnit
     end
   end
-  if clickItem_.tog_item.isOn then
-    clickItem_.tog_item.isOn = false
+  if clickItem then
+    if clickItem.tog_item.isOn then
+      clickItem.tog_item.isOn = false
+    end
+    clickItem.tog_item.isOn = true
   end
-  clickItem_.tog_item.isOn = true
 end
 
 function Fishing_shop_subView:clearAllLoadItem()
@@ -102,7 +117,7 @@ end
 
 function Fishing_shop_subView:initProps()
   self.timerMgr:Clear()
-  self.shopData_ = self.vm.AsyncGetShopData(self.cancelSource, E.EShopType.Shop, E.EShopShowType.FishingShop)
+  self.shopData_ = self.shopVM_.AsyncGetShopDataByShopType(E.EShopType.FishingShop, self.cancelSource:CreateToken())
   self.timerMgr:StartTimer(function()
     self:UpdateProp()
   end, Z.TimeTools.GetCurDayEndTime(), 1)
@@ -141,7 +156,7 @@ function Fishing_shop_subView:onPageToggleIsOn(index)
   end
   self.curChoosePage = index
   self.currencyIds_ = self.shopData_[index].cfg.CurrencyDisplay
-  Z.VMMgr.GetVM("currency").OpenCurrencyView(self.currencyIds_, self.currency_root_, self)
+  self.currencyItemList_:Init(self.uiBinder.currency_info, self.currencyIds_)
   self:showProp(index)
   self:showSeasonTime()
 end
@@ -155,10 +170,7 @@ end
 function Fishing_shop_subView:showSeasonTime()
   local cfg = self.shopData_[self.curChoosePage].cfg
   if cfg.TimerId > 0 then
-    local timerCfg = Z.TableMgr.GetTable("TimerTableMgr").GetRow(cfg.TimerId)
-    if timerCfg then
-      self.season_time_label_.text = timerCfg.starttime .. "-" .. timerCfg.endtime
-    end
+    self.season_time_label_.text = Z.TimeTools.GetTimeDescByTimerId(cfg.TimerId)
   end
 end
 
@@ -175,30 +187,59 @@ function Fishing_shop_subView:GetPropData(index)
 end
 
 function Fishing_shop_subView:OpenBuyPopup(data)
-  self.vm.OpenBuyPopup(data, function(data_, num)
-    self.vm.AsyncBuyShopItem(0, data_, num, function(req)
-      if req.errorCode == 0 then
-        self.vm.CloseBuyPopup()
-        self:UpdateProp()
-        local mallCfg = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(req.itemId)
-        if mallCfg then
-          Z.CoroUtil.create_coro_xpcall(function()
-            for id, num in pairs(mallCfg.Cost) do
-              if num == 0 then
-                Z.VMMgr.GetVM("shop").AsyncSetShopItemRed(req.itemId, E.EShopType.Shop)
-                break
-              end
-            end
-          end)()
-        end
-        if mallCfg.DeliverWay and mallCfg.DeliverWay[1] and mallCfg.DeliverWay[1][1] == 1 then
-          Z.TipsVM.ShowTipsLang(1000732)
-        elseif mallCfg.DeliverWay and mallCfg.DeliverWay[1] and mallCfg.DeliverWay[1][1] == 0 then
-          Z.TipsVM.ShowTipsLang(1000733)
-        end
+  if not self.tabId_ then
+    for tabId, row in pairs(Z.TableMgr.GetTable("MallTableMgr").GetDatas()) do
+      if row.FunctionId == E.FunctionID.FishingShop then
+        self.tabId_ = tabId
+        break
       end
-    end, self.cancelSource, self.shopData_[self.curChoosePage].Id)
+    end
+  end
+  self.shopVM_.OpenBuyPopup(data, function(data_, num)
+    self.shopVM_.AsyncShopBuyItemList({
+      [data.itemId] = {buyNum = num}
+    }, self.cancelSource:CreateToken())
   end, self.currencyIds_)
+end
+
+function Fishing_shop_subView:buyCallFunc(buyShopItemInfo)
+  if buyShopItemInfo then
+    local isSuccess = false
+    local updataShopId, updataShopItemId
+    for _, data in pairs(buyShopItemInfo) do
+      if data.errCode == 0 then
+        isSuccess = true
+        updataShopId = data.shopId
+        updataShopItemId = data.itemId
+        local mallCfg = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(data.itemId)
+        if mallCfg then
+          for id, num in pairs(mallCfg.Cost) do
+            if num == 0 then
+              self.shopVM_.SetShopItemRed(data.itemId, E.EShopType.Shop)
+              break
+            end
+          end
+        end
+        self.shopVM_.ShowBuyResultTips(mallCfg.DeliverWay)
+      else
+        Z.TipsVM.ShowTips(data.errCode)
+      end
+    end
+    if isSuccess and updataShopId and updataShopItemId then
+      self.shopVM_.CloseBuyPopup()
+      Z.CoroUtil.create_coro_xpcall(function()
+        local shopData = self.shopVM_.AsyncGetShopData({updataShopId}, self.cancelSource:CreateToken())
+        for i = 1, #self.shopData_ do
+          if updataShopId == self.shopData_[i].Id then
+            self.shopVM_.UpdataShopItemData(self.shopData_[i].items, shopData, updataShopId, updataShopItemId)
+            break
+          end
+        end
+        local props = self.shopData_[self.curChoosePage]
+        self.propLoopScrollRect_:RefreshListView(props.items)
+      end)()
+    end
+  end
 end
 
 function Fishing_shop_subView:RigestTimerCall(key, func)
@@ -220,6 +261,10 @@ function Fishing_shop_subView:GetPrefabCacheData(key)
     return nil
   end
   return prefabCache:GetString(key)
+end
+
+function Fishing_shop_subView:onStartAnimShow()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Fishing_shop_subView

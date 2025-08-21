@@ -6,4 +6,3 @@ enum EBuffProfessionEffect {
     EBuffProfessionEffectEmain = 0;
     EBuffProfessionEffectEsub = 1;
 }
-

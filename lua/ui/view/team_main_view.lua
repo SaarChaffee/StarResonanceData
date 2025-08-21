@@ -20,10 +20,6 @@ function Team_mainView:ctor()
   self.isInTeam = false
   self.commonVM_ = Z.VMMgr.GetVM("common")
   self.matchVm_ = Z.VMMgr.GetVM("match")
-  
-  function self.onInputAction_(inputActionEventData)
-    self:OnInputBack()
-  end
 end
 
 function Team_mainView:initBinder()
@@ -42,31 +38,22 @@ end
 function Team_mainView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   Z.UnrealSceneMgr:InitSceneCamera()
-  Z.CoroUtil.create_coro_xpcall(function()
-    self.teamVM_.AsyncGetTeamInfo(self.cancelSource:CreateToken())
-  end)()
   self:initBinder()
-  self:startAnimatedShow()
-  Z.RedPointMgr.LoadRedDotItem(E.RedType.TeamApplySystem, self, self.cont_tog_team_.transform)
-  local matching = self.matchVm_.GetSelfMatchData("matching")
-  if not matching then
-    if self.viewData then
-      self.matchVm_.SetSelfMatchData(self.viewData, "targetId")
-    else
-      self.matchVm_.SetSelfMatchData(E.TeamTargetId.All, "targetId")
-    end
-  end
-  self.compList_ = {
-    [E.TeamFuncId.Hall] = self.cont_tog_hall_,
-    [E.TeamFuncId.Vicinity] = self.cont_tog_nearby_,
-    [E.TeamFuncId.Mine] = self.cont_tog_team_
-  }
   self:AddClick(self.cont_btn_return_, function()
     self.teamMainVM_.CloseTeamMainView()
   end)
-  self:setTog()
-  self:BindEvents()
-  self:RegisterInputActions()
+  Z.CoroUtil.create_coro_xpcall(function()
+    self.teamVM_.AsyncGetTeamInfo(self.cancelSource:CreateToken())
+    self:startAnimatedShow()
+    Z.RedPointMgr.LoadRedDotItem(E.RedType.TeamApplySystem, self, self.cont_tog_team_.transform)
+    self.compList_ = {
+      [E.TeamFuncId.Hall] = self.cont_tog_hall_,
+      [E.TeamFuncId.Vicinity] = self.cont_tog_nearby_,
+      [E.TeamFuncId.Mine] = self.cont_tog_team_
+    }
+    self:setTog()
+    self:BindEvents()
+  end)()
 end
 
 function Team_mainView:setTog()
@@ -100,7 +87,6 @@ end
 
 function Team_mainView:OnDeActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
-  self:UnRegisterInputActions()
   for _, v in pairs(self.viewList_) do
     v:DeActive()
   end
@@ -140,24 +126,12 @@ function Team_mainView:selfTeamChange()
 end
 
 function Team_mainView:matchWaitTimeOut()
-  local targetId = self.matchVm_.GetSelfMatchData("targetId")
-  local settingInfo = Z.ContainerMgr.CharSerialize.settingData.settingMap
-  local isLeader = settingInfo[Z.PbEnum("ESettingType", "ToBeLeader")] or "0"
   Z.DialogViewDataMgr:OpenNormalDialog(Lang("StartMatchingAgain"), function()
-    if self.teamVM_.CheckIsInTeam() then
-      self.matchVm_.AsyncBeginMatchNew(E.MatchType.Team, {}, self.teamVM_.CheckIsInTeam(), self.cancelSource:CreateToken())
-    else
-      local requestParam = {}
-      requestParam.targetId = targetId
-      requestParam.checkTags = {}
-      if isLeader then
-        requestParam.wantLeader = 1
-      else
-        requestParam.wantLeader = 0
-      end
-      self.matchVm_.AsyncBeginMatchNew(E.MatchType.Team, requestParam, false, self.cancelSource:CreateToken())
+    local teamTargetRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(self.targetId_)
+    if not teamTargetRow then
+      return
     end
-    Z.DialogViewDataMgr:CloseDialogView()
+    self.matchVm_.RequestBeginMatch(E.MatchType.Team, teamTargetRow.RelativeDungeonId, self.cancelSource:CreateToken())
   end)
 end
 
@@ -189,14 +163,6 @@ end
 
 function Team_mainView:startAnimatedHide()
   self.anim_:Play(Z.DOTweenAnimType.Close)
-end
-
-function Team_mainView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Team)
-end
-
-function Team_mainView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Team)
 end
 
 return Team_mainView

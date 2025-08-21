@@ -8,8 +8,6 @@ message AttrDescriptionBase {
     int32 Id = 1463;
     mlstring Description = 75;
 }
-
 message AttrDescriptionMgr {
-    map<int32, .bokura.AttrDescriptionBase> datas = 1;
+    repeated bokura.AttrDescriptionMgr.DatasEntry datas = 1;
 }
-

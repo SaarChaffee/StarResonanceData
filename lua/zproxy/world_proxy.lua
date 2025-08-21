@@ -44,15 +44,12 @@ function WorldProxy.ChangeCharFunctionState(stateType, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ChangeCharFunctionState_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 1, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ClientBreakState(vOperator)
@@ -101,29 +98,12 @@ function WorldProxy.GMCommand(cmd, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GMCommand_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 3, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
-end
-
-function WorldProxy.PlayAction(actionId, isUpper)
-  local pbMsg = {}
-  pbMsg.actionId = actionId
-  pbMsg.isUpper = isUpper
-  local pbData = pb.encode("zproto.World.PlayAction", pbMsg)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 7, cJson.encode(pbMsg), pbData, true)
-  end
-  local err = zrpcCtrl.LuaProxyNotify(pxy, 7, pbData, true)
-  if err ~= zrpcError.None then
-    error(tostring(err))
-  end
 end
 
 function WorldProxy.PlayEmote(emoteId)
@@ -172,15 +152,12 @@ function WorldProxy.LearnExpressionAction(expressionId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.LearnExpressionAction_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 9, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ChangeName(vName)
@@ -241,15 +218,12 @@ function WorldProxy.ReqInsight(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqInsight_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 13, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalState(vPersonalState, vIsRemove)
@@ -300,15 +274,12 @@ function WorldProxy.InstallResonanceSkillReq(vPosition, vResonanceId, cancelToke
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.InstallResonanceSkillReq_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 15, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetNoticeList(vList, cancelToken)
@@ -344,15 +315,12 @@ function WorldProxy.GetNoticeList(vList, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetNoticeList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UnStuck(cancelToken)
@@ -385,15 +353,12 @@ function WorldProxy.UnStuck(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UnStuck_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 17, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ChangeShowId(vShowId)
@@ -404,6 +369,19 @@ function WorldProxy.ChangeShowId(vShowId)
     MessageInspectBridge.HandleSendMessage(103198054, 19, cJson.encode(pbMsg), pbData, true)
   end
   local err = zrpcCtrl.LuaProxyNotify(pxy, 19, pbData, true)
+  if err ~= zrpcError.None then
+    error(tostring(err))
+  end
+end
+
+function WorldProxy.PlayAction(playActionParam)
+  local pbMsg = {}
+  pbMsg.playActionParam = playActionParam
+  local pbData = pb.encode("zproto.World.PlayAction", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 21, cJson.encode(pbMsg), pbData, true)
+  end
+  local err = zrpcCtrl.LuaProxyNotify(pxy, 21, pbData, true)
   if err ~= zrpcError.None then
     error(tostring(err))
   end
@@ -442,15 +420,12 @@ function WorldProxy.UserResurrection(vReviveId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UserResurrection_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 12293, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.QteEnd(qteId, index, res)
@@ -466,51 +441,6 @@ function WorldProxy.QteEnd(qteId, index, res)
   if err ~= zrpcError.None then
     error(tostring(err))
   end
-end
-
-function WorldProxy.ResurrectionOtherUser(vTargetUuid, vReviveId, cancelToken)
-  local pbMsg = {}
-  pbMsg.vTargetUuid = vTargetUuid
-  pbMsg.vReviveId = vReviveId
-  local pbData = pb.encode("zproto.World.ResurrectionOtherUser", pbMsg)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 12303, cJson.encode(pbMsg), pbData, true)
-  end
-  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
-  local pxyRet = pxyCallFunc(pxy, 12303, pbData, true, true, cancelToken)
-  local errorId = pxyRet:GetErrorId()
-  if 0 < errorId then
-    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
-      error(ZUtil.ZCancelSource.CancelException)
-    elseif errorId == zrpcError.MethodNotFound:ToInt() then
-      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 12303, errorId)
-      error(errorId)
-    elseif errorId == zrpcError.Timeout:ToInt() then
-      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 12303, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("NoEnterScene") then
-      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 12303, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
-      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 12303, errorId)
-      error(errorId)
-    else
-      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 12303, errorId)
-      if errorId < 1000 then
-        zrpcCtrl.Disconnect(channelType)
-      end
-      error(errorId)
-    end
-  end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.ResurrectionOtherUser_Ret", retData)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleReceiveMessage(103198054, 12303, cJson.encode(pbRet), retData, true)
-  end
-  return pbRet.ret_code
 end
 
 function WorldProxy.UseItem(vParam, cancelToken)
@@ -546,15 +476,12 @@ function WorldProxy.UseItem(vParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UseItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16385, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SortPackage(vParam, cancelToken)
@@ -590,15 +517,12 @@ function WorldProxy.SortPackage(vParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SortPackage_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16386, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.DecomposeItem(vItems, vFunctionId, cancelToken)
@@ -635,15 +559,12 @@ function WorldProxy.DecomposeItem(vItems, vFunctionId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DecomposeItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16387, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.RefineItem(vQueueIndex, vColumnIndex, cancelToken)
@@ -680,15 +601,12 @@ function WorldProxy.RefineItem(vQueueIndex, vColumnIndex, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RefineItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16388, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GainItem(vQueueIndex, vColumnIndex, cancelToken)
@@ -725,15 +643,12 @@ function WorldProxy.GainItem(vQueueIndex, vColumnIndex, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GainItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16389, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UnlockItem(vQueueIndex, vColumnIndex, cancelToken)
@@ -770,15 +685,12 @@ function WorldProxy.UnlockItem(vQueueIndex, vColumnIndex, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UnlockItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16390, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.AddEnergyLimit(cancelToken)
@@ -811,15 +723,12 @@ function WorldProxy.AddEnergyLimit(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AddEnergyLimit_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16391, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.InstantRefine(cancelToken)
@@ -852,15 +761,12 @@ function WorldProxy.InstantRefine(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.InstantRefine_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16392, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.InstantReceive(cancelToken)
@@ -893,15 +799,12 @@ function WorldProxy.InstantReceive(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.InstantReceive_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16393, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetQuickBar(itemConfigId, cancelToken)
@@ -937,15 +840,12 @@ function WorldProxy.SetQuickBar(itemConfigId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetQuickBar_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16394, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ReforgeKey(vParam, cancelToken)
@@ -981,15 +881,12 @@ function WorldProxy.ReforgeKey(vParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReforgeKey_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16396, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.RecycleItems(itemList, cancelToken)
@@ -1025,15 +922,12 @@ function WorldProxy.RecycleItems(itemList, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RecycleItems_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16397, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.DeleteItem(vParam, cancelToken)
@@ -1069,15 +963,12 @@ function WorldProxy.DeleteItem(vParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DeleteItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 16398, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.LeaveScene(cancelToken)
@@ -1110,15 +1001,12 @@ function WorldProxy.LeaveScene(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.LeaveScene_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 24580, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SwitchSceneLayer(layer, cancelToken)
@@ -1154,15 +1042,12 @@ function WorldProxy.SwitchSceneLayer(layer, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SwitchSceneLayer_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 24581, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.PickupDropItem(vDropObjUuid, cancelToken)
@@ -1198,15 +1083,12 @@ function WorldProxy.PickupDropItem(vDropObjUuid, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.PickupDropItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 24582, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UserDoAction(vSelectedStr)
@@ -1255,10 +1137,7 @@ function WorldProxy.GetLuaSceneAttr(vAttributeName, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetLuaSceneAttr_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 24586, cJson.encode(pbRet), retData, true)
@@ -1349,10 +1228,7 @@ function WorldProxy.GetPioneerInfo(levelId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetPioneerInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 28673, cJson.encode(pbRet), retData, true)
@@ -1421,15 +1297,12 @@ function WorldProxy.GetWorldQuestAward(vTimeStamp, vIndex, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetWorldQuestAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 32771, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.AcceptQuest(vAcceptQuestInfo, cancelToken)
@@ -1465,15 +1338,12 @@ function WorldProxy.AcceptQuest(vAcceptQuestInfo, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AcceptQuest_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 32772, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetFollowWorldQuest(vQuestId, cancelToken)
@@ -1509,15 +1379,12 @@ function WorldProxy.SetFollowWorldQuest(vQuestId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetFollowWorldQuest_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 32773, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.RemoveFollowWorldQuest(vQuestId, cancelToken)
@@ -1553,15 +1420,12 @@ function WorldProxy.RemoveFollowWorldQuest(vQuestId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RemoveFollowWorldQuest_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 32774, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetTrackOptionalQuest(vIndex, vQuestId)
@@ -1611,15 +1475,12 @@ function WorldProxy.GiveupQuest(vInfo, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GiveupQuest_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 32776, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.WorldEventTransfer(vTransferInfo, cancelToken)
@@ -1655,15 +1516,12 @@ function WorldProxy.WorldEventTransfer(vTransferInfo, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.WorldEventTransfer_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 32777, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SaveSetting(map)
@@ -1709,10 +1567,7 @@ function WorldProxy.GetSwitchInfo(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetSwitchInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 40961, cJson.encode(pbRet), retData, true)
@@ -1755,15 +1610,12 @@ function WorldProxy.ComposeReq(vConsumeItemConfigId, vComposeCount, vNotBindFlg,
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ComposeReq_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 45057, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ExchangeItem(vShopId, vItemConfigId, vTimes, cancelToken)
@@ -1801,15 +1653,12 @@ function WorldProxy.ExchangeItem(vShopId, vItemConfigId, vTimes, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 45058, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.PutOnEquip(vSlot, itemUuid, cancelToken)
@@ -1846,15 +1695,12 @@ function WorldProxy.PutOnEquip(vSlot, itemUuid, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.PutOnEquip_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 49153, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.TakeOffEquip(vSlot, cancelToken)
@@ -1890,59 +1736,12 @@ function WorldProxy.TakeOffEquip(vSlot, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TakeOffEquip_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 49154, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
-end
-
-function WorldProxy.EquipBreach(vItemUuid, cancelToken)
-  local pbMsg = {}
-  pbMsg.vItemUuid = vItemUuid
-  local pbData = pb.encode("zproto.World.EquipBreach", pbMsg)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 49159, cJson.encode(pbMsg), pbData, true)
-  end
-  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
-  local pxyRet = pxyCallFunc(pxy, 49159, pbData, true, true, cancelToken)
-  local errorId = pxyRet:GetErrorId()
-  if 0 < errorId then
-    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
-      error(ZUtil.ZCancelSource.CancelException)
-    elseif errorId == zrpcError.MethodNotFound:ToInt() then
-      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49159, errorId)
-      error(errorId)
-    elseif errorId == zrpcError.Timeout:ToInt() then
-      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49159, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("NoEnterScene") then
-      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49159, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
-      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49159, errorId)
-      error(errorId)
-    else
-      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49159, errorId)
-      if errorId < 1000 then
-        zrpcCtrl.Disconnect(channelType)
-      end
-      error(errorId)
-    end
-  end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.EquipBreach_Ret", retData)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleReceiveMessage(103198054, 49159, cJson.encode(pbRet), retData, true)
-  end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.EquipDecompose(vItemUuids, cancelToken)
@@ -1978,15 +1777,12 @@ function WorldProxy.EquipDecompose(vItemUuids, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.EquipDecompose_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 49160, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.RecastEquip(vRequest, cancelToken)
@@ -2022,15 +1818,12 @@ function WorldProxy.RecastEquip(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RecastEquip_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 49161, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ConfirmRecastEquip(vRequest, cancelToken)
@@ -2066,15 +1859,12 @@ function WorldProxy.ConfirmRecastEquip(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ConfirmRecastEquip_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 49162, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.EquipSlotRefine(vRequest, cancelToken)
@@ -2110,13 +1900,133 @@ function WorldProxy.EquipSlotRefine(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.EquipSlotRefine_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 49163, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.EquipEnchant(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.EquipEnchant", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 49164, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 49164, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49164, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49164, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49164, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49164, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49164, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.EquipEnchant_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 49164, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.EquipCreate(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.EquipCreate", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 49165, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 49165, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49165, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49165, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49165, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49165, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49165, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.EquipCreate_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 49165, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.EquipBreach(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.EquipBreach", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 49166, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 49166, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49166, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49166, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49166, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49166, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 49166, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.EquipBreach_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 49166, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -2154,15 +2064,12 @@ function WorldProxy.SetFaceData(vFaceData, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetFaceData_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 53249, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UnLockFaceItem(vConfigId, cancelToken)
@@ -2198,15 +2105,12 @@ function WorldProxy.UnLockFaceItem(vConfigId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UnLockFaceItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 53250, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ShareObjectInChat(vRequest, cancelToken)
@@ -2242,10 +2146,7 @@ function WorldProxy.ShareObjectInChat(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ShareObjectInChat_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 61441, cJson.encode(pbRet), retData, true)
@@ -2286,15 +2187,12 @@ function WorldProxy.TransferPointUnlock(vTransferPointId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TransferPointUnlock_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 65537, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetMapMark(sceneId, vMark, cancelToken)
@@ -2331,15 +2229,12 @@ function WorldProxy.SetMapMark(sceneId, vMark, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetMapMark_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 65538, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.RemoveMapMark(sceneId, vMarkId, cancelToken)
@@ -2376,15 +2271,12 @@ function WorldProxy.RemoveMapMark(sceneId, vMarkId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RemoveMapMark_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 65539, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetDungeonContainerData(cancelToken)
@@ -2417,10 +2309,7 @@ function WorldProxy.GetDungeonContainerData(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetDungeonContainerData_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69633, cJson.encode(pbRet), retData, true)
@@ -2458,10 +2347,7 @@ function WorldProxy.GetSeasonDungeonList(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetSeasonDungeonList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69634, cJson.encode(pbRet), retData, true)
@@ -2502,15 +2388,12 @@ function WorldProxy.StartEnterDungeon(vParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.StartEnterDungeon_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69635, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.DungeonVote(vUuid, cancelToken)
@@ -2546,15 +2429,12 @@ function WorldProxy.DungeonVote(vUuid, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DungeonVote_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69636, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.CheckBeforeEnterDungeon(vDungeonInfo, cancelToken)
@@ -2590,15 +2470,12 @@ function WorldProxy.CheckBeforeEnterDungeon(vDungeonInfo, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CheckBeforeEnterDungeon_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69640, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetPioneerAward(vDungeonInfo, vAwardId, cancelToken)
@@ -2635,15 +2512,12 @@ function WorldProxy.GetPioneerAward(vDungeonInfo, vAwardId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetPioneerAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69641, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UserAction(vActionId, cancelToken)
@@ -2679,15 +2553,12 @@ function WorldProxy.UserAction(vActionId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UserAction_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69642, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.EnterPlanetMemoryRoom(vRoomId, cancelToken)
@@ -2723,15 +2594,12 @@ function WorldProxy.EnterPlanetMemoryRoom(vRoomId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.EnterPlanetMemoryRoom_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69643, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.Bartending(vBartendingId, cancelToken)
@@ -2767,15 +2635,12 @@ function WorldProxy.Bartending(vBartendingId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.Bartending_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69645, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetChallengeDungeonScoreAward(vChallengeDungeonScoreAwardParam, cancelToken)
@@ -2811,15 +2676,12 @@ function WorldProxy.GetChallengeDungeonScoreAward(vChallengeDungeonScoreAwardPar
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetChallengeDungeonScoreAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69646, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.StartPlayingDungeon(vParam, cancelToken)
@@ -2855,15 +2717,12 @@ function WorldProxy.StartPlayingDungeon(vParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.StartPlayingDungeon_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69647, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ReportSettlementPosition(vUserPos)
@@ -2912,15 +2771,12 @@ function WorldProxy.DungeonRoll(vParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DungeonRoll_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69649, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetDungeonWeekTargetAward(vParam, cancelToken)
@@ -2956,15 +2812,12 @@ function WorldProxy.GetDungeonWeekTargetAward(vParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetDungeonWeekTargetAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69650, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetTeamTowerLayerInfo(cancelToken)
@@ -2997,10 +2850,7 @@ function WorldProxy.GetTeamTowerLayerInfo(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetTeamTowerLayerInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69651, cJson.encode(pbRet), retData, true)
@@ -3041,15 +2891,12 @@ function WorldProxy.GetWeeklyTowerProcessAward(process, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetWeeklyTowerProcessAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69652, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetChallengeDungeonAffix(param, cancelToken)
@@ -3085,13 +2932,171 @@ function WorldProxy.GetChallengeDungeonAffix(param, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetChallengeDungeonAffix_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 69653, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.TeamLeaderReadyCheck(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 69654, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 69654, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69654, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69654, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69654, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69654, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69654, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.TeamLeaderReadyCheck_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 69654, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.TeamMemberReadyCheckReport(vReadyInfo, cancelToken)
+  local pbMsg = {}
+  pbMsg.vReadyInfo = vReadyInfo
+  local pbData = pb.encode("zproto.World.TeamMemberReadyCheckReport", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 69655, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 69655, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69655, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69655, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69655, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69655, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69655, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.TeamMemberReadyCheckReport_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 69655, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetMasterModeAward(vReadyInfo, cancelToken)
+  local pbMsg = {}
+  pbMsg.vReadyInfo = vReadyInfo
+  local pbData = pb.encode("zproto.World.GetMasterModeAward", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 69656, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 69656, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69656, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69656, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69656, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69656, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69656, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetMasterModeAward_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 69656, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.SetShowMasterModeScore(vReadyInfo, cancelToken)
+  local pbMsg = {}
+  pbMsg.vReadyInfo = vReadyInfo
+  local pbData = pb.encode("zproto.World.SetShowMasterModeScore", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 69657, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 69657, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69657, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69657, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69657, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69657, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 69657, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.SetShowMasterModeScore_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 69657, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -3130,15 +3135,12 @@ function WorldProxy.FashionWear(wear, unwear, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FashionWear_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 73729, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.FashionSetColor(fashionID, data, cancelToken)
@@ -3175,15 +3177,12 @@ function WorldProxy.FashionSetColor(fashionID, data, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FashionSetColor_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 73730, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UnlockColor(fashionId, colorId, cancelToken)
@@ -3220,15 +3219,219 @@ function WorldProxy.UnlockColor(fashionId, colorId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UnlockColor_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 73731, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
+end
+
+function WorldProxy.GetCollectionReward(index, cancelToken)
+  local pbMsg = {}
+  pbMsg.index = index
+  local pbData = pb.encode("zproto.World.GetCollectionReward", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 73732, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 73732, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73732, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73732, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73732, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73732, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73732, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetCollectionReward_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 73732, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetFashionBenefitReward(index, cancelToken)
+  local pbMsg = {}
+  pbMsg.index = index
+  local pbData = pb.encode("zproto.World.GetFashionBenefitReward", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 73733, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 73733, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73733, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73733, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73733, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73733, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73733, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetFashionBenefitReward_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 73733, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.UnlockSvColor(fashionId, colorIndex, cancelToken)
+  local pbMsg = {}
+  pbMsg.fashionId = fashionId
+  pbMsg.colorIndex = colorIndex
+  local pbData = pb.encode("zproto.World.UnlockSvColor", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 73734, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 73734, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73734, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73734, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73734, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73734, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73734, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.UnlockSvColor_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 73734, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.UnlockAdvanceFashion(fashionId, cancelToken)
+  local pbMsg = {}
+  pbMsg.fashionId = fashionId
+  local pbData = pb.encode("zproto.World.UnlockAdvanceFashion", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 73735, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 73735, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73735, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73735, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73735, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73735, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73735, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.UnlockAdvanceFashion_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 73735, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.SaveFashionTryOn(fashionId, advanceFashionId, cancelToken)
+  local pbMsg = {}
+  pbMsg.fashionId = fashionId
+  pbMsg.advanceFashionId = advanceFashionId
+  local pbData = pb.encode("zproto.World.SaveFashionTryOn", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 73736, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 73736, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73736, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73736, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73736, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73736, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 73736, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.SaveFashionTryOn_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 73736, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
 end
 
 function WorldProxy.SaveDisplayedPlayHelp(vPlayHelpId, cancelToken)
@@ -3264,15 +3467,12 @@ function WorldProxy.SaveDisplayedPlayHelp(vPlayHelpId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SaveDisplayedPlayHelp_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 86017, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SaveCompletedGuide(vGuideId, cancelToken)
@@ -3308,28 +3508,12 @@ function WorldProxy.SaveCompletedGuide(vGuideId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SaveCompletedGuide_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 86018, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
-end
-
-function WorldProxy.GetMailAppendix(request)
-  local pbMsg = {}
-  pbMsg.request = request
-  local pbData = pb.encode("zproto.World.GetMailAppendix", pbMsg)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 106497, cJson.encode(pbMsg), pbData, true)
-  end
-  local err = zrpcCtrl.LuaProxyNotify(pxy, 106497, pbData, true)
-  if err ~= zrpcError.None then
-    error(tostring(err))
-  end
+  return pbRet.ret
 end
 
 function WorldProxy.GetMailList(vRequest, cancelToken)
@@ -3365,10 +3549,7 @@ function WorldProxy.GetMailList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetMailList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 106498, cJson.encode(pbRet), retData, true)
@@ -3409,10 +3590,7 @@ function WorldProxy.GetMailInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetMailInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 106499, cJson.encode(pbRet), retData, true)
@@ -3453,10 +3631,7 @@ function WorldProxy.ReadMail(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReadMail_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 106500, cJson.encode(pbRet), retData, true)
@@ -3497,10 +3672,7 @@ function WorldProxy.DeleteMail(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DeleteMail_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 106502, cJson.encode(pbRet), retData, true)
@@ -3541,13 +3713,174 @@ function WorldProxy.GetMailUuidList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetMailUuidList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 106504, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.AddCollectMail(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.AddCollectMail", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 106505, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 106505, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106505, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106505, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106505, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106505, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106505, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.AddCollectMail_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 106505, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CancelCollectMail(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CancelCollectMail", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 106506, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 106506, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106506, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106506, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106506, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106506, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106506, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CancelCollectMail_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 106506, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetMailManager(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetMailManager", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 106507, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 106507, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106507, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106507, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106507, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106507, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106507, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetMailManager_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 106507, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetMailAppendix(request, cancelToken)
+  local pbMsg = {}
+  pbMsg.request = request
+  local pbData = pb.encode("zproto.World.GetMailAppendix", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 106509, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 106509, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106509, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106509, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106509, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106509, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 106509, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetMailAppendix_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 106509, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -3586,15 +3919,12 @@ function WorldProxy.ApplicationInteraction(vInviteeId, vActionId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ApplicationInteraction_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 118785, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ReplyApplicationResult(vOrigId, vActionId, vIsAgree, cancelToken)
@@ -3632,15 +3962,12 @@ function WorldProxy.ReplyApplicationResult(vOrigId, vActionId, vIsAgree, cancelT
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReplyApplicationResult_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 118786, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.CancelAction(cancelToken)
@@ -3673,15 +4000,12 @@ function WorldProxy.CancelAction(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CancelAction_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 118788, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UpgradeUnionBuilding(vRequest, cancelToken)
@@ -3717,10 +4041,7 @@ function WorldProxy.UpgradeUnionBuilding(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UpgradeUnionBuilding_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122884, cJson.encode(pbRet), retData, true)
@@ -3761,10 +4082,7 @@ function WorldProxy.SpeedUpUpgradeUnionBuilding(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SpeedUpUpgradeUnionBuilding_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122885, cJson.encode(pbRet), retData, true)
@@ -3805,15 +4123,12 @@ function WorldProxy.EnterUnionScene(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.EnterUnionScene_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122886, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ReceiveUnionActivityAward(vRequest, cancelToken)
@@ -3849,10 +4164,7 @@ function WorldProxy.ReceiveUnionActivityAward(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReceiveUnionActivityAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122887, cJson.encode(pbRet), retData, true)
@@ -3893,15 +4205,12 @@ function WorldProxy.BeginDance(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.BeginDance_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122888, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.BeginDanceActive(request, cancelToken)
@@ -3937,15 +4246,12 @@ function WorldProxy.BeginDanceActive(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.BeginDanceActive_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122889, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ReqLeaveUnion(vRequest, cancelToken)
@@ -3981,10 +4287,7 @@ function WorldProxy.ReqLeaveUnion(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqLeaveUnion_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122898, cJson.encode(pbRet), retData, true)
@@ -4025,10 +4328,7 @@ function WorldProxy.ReqKickOut(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqKickOut_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122899, cJson.encode(pbRet), retData, true)
@@ -4069,10 +4369,7 @@ function WorldProxy.UnionRemoveItem(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UnionRemoveItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122900, cJson.encode(pbRet), retData, true)
@@ -4113,10 +4410,7 @@ function WorldProxy.InviteJoinUnion(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.InviteJoinUnion_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122903, cJson.encode(pbRet), retData, true)
@@ -4157,10 +4451,7 @@ function WorldProxy.BatchSearchUnionList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.BatchSearchUnionList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122904, cJson.encode(pbRet), retData, true)
@@ -4201,10 +4492,7 @@ function WorldProxy.SetRecruitInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetRecruitInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122905, cJson.encode(pbRet), retData, true)
@@ -4245,10 +4533,7 @@ function WorldProxy.AddCollectUnionId(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AddCollectUnionId_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122906, cJson.encode(pbRet), retData, true)
@@ -4289,10 +4574,7 @@ function WorldProxy.CancelCollectedUnionId(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CancelCollectedUnionId_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122907, cJson.encode(pbRet), retData, true)
@@ -4333,10 +4615,7 @@ function WorldProxy.GetCollectedUnionList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetCollectedUnionList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122908, cJson.encode(pbRet), retData, true)
@@ -4377,10 +4656,7 @@ function WorldProxy.ReqUnionActivityProgressInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqUnionActivityProgressInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122909, cJson.encode(pbRet), retData, true)
@@ -4421,10 +4697,7 @@ function WorldProxy.ReqUnionActivityRank(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqUnionActivityRank_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122912, cJson.encode(pbRet), retData, true)
@@ -4465,10 +4738,7 @@ function WorldProxy.ReqGetUnionActivityAward(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqGetUnionActivityAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122915, cJson.encode(pbRet), retData, true)
@@ -4509,10 +4779,7 @@ function WorldProxy.GetUnionActivityInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetUnionActivityInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122919, cJson.encode(pbRet), retData, true)
@@ -4553,10 +4820,7 @@ function WorldProxy.GetUnionResourceLib(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetUnionResourceLib_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122921, cJson.encode(pbRet), retData, true)
@@ -4597,10 +4861,7 @@ function WorldProxy.GetDanceBallAward(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetDanceBallAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122922, cJson.encode(pbRet), retData, true)
@@ -4641,10 +4902,7 @@ function WorldProxy.SetEffectBuff(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetEffectBuff_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122929, cJson.encode(pbRet), retData, true)
@@ -4685,10 +4943,7 @@ function WorldProxy.CancelEffectBuff(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CancelEffectBuff_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122930, cJson.encode(pbRet), retData, true)
@@ -4729,10 +4984,7 @@ function WorldProxy.GetTmpAlbumPhotos(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetTmpAlbumPhotos_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122932, cJson.encode(pbRet), retData, true)
@@ -4773,10 +5025,7 @@ function WorldProxy.GetUnionAllAlbum(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetUnionAllAlbum_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122933, cJson.encode(pbRet), retData, true)
@@ -4817,10 +5066,7 @@ function WorldProxy.GetUnionAlbumPhotos(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetUnionAlbumPhotos_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122934, cJson.encode(pbRet), retData, true)
@@ -4861,10 +5107,7 @@ function WorldProxy.CopySelfPhotoToUnionTmpAlbum(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CopySelfPhotoToUnionTmpAlbum_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122935, cJson.encode(pbRet), retData, true)
@@ -4905,10 +5148,7 @@ function WorldProxy.SetUnionCoverPhoto(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetUnionCoverPhoto_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122937, cJson.encode(pbRet), retData, true)
@@ -4949,10 +5189,7 @@ function WorldProxy.SetUnionAlbumCover(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetUnionAlbumCover_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122938, cJson.encode(pbRet), retData, true)
@@ -4993,10 +5230,7 @@ function WorldProxy.CreateUnionAlbum(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CreateUnionAlbum_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122939, cJson.encode(pbRet), retData, true)
@@ -5037,10 +5271,7 @@ function WorldProxy.MovePhotoToUnionAlbum(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.MovePhotoToUnionAlbum_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122940, cJson.encode(pbRet), retData, true)
@@ -5081,10 +5312,7 @@ function WorldProxy.DeleteUnionPhoto(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DeleteUnionPhoto_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122941, cJson.encode(pbRet), retData, true)
@@ -5125,10 +5353,7 @@ function WorldProxy.DeleteUnionAlbum(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DeleteUnionAlbum_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122942, cJson.encode(pbRet), retData, true)
@@ -5169,10 +5394,7 @@ function WorldProxy.MoveTmpPhotoToAlbum(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.MoveTmpPhotoToAlbum_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122943, cJson.encode(pbRet), retData, true)
@@ -5213,10 +5435,7 @@ function WorldProxy.DeleteUnionTmpPhoto(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DeleteUnionTmpPhoto_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122944, cJson.encode(pbRet), retData, true)
@@ -5257,10 +5476,7 @@ function WorldProxy.EditUnionAlbumName(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.EditUnionAlbumName_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122945, cJson.encode(pbRet), retData, true)
@@ -5301,10 +5517,7 @@ function WorldProxy.GetUnionGrowFundInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetUnionGrowFundInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122946, cJson.encode(pbRet), retData, true)
@@ -5345,10 +5558,7 @@ function WorldProxy.JoinUnionGrowFunc(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.JoinUnionGrowFunc_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122947, cJson.encode(pbRet), retData, true)
@@ -5389,10 +5599,7 @@ function WorldProxy.GetUnionEScreenList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetUnionEScreenList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122948, cJson.encode(pbRet), retData, true)
@@ -5433,10 +5640,7 @@ function WorldProxy.SetUnionEScreenPhoto(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetUnionEScreenPhoto_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122949, cJson.encode(pbRet), retData, true)
@@ -5477,13 +5681,215 @@ function WorldProxy.ReJectUnionInvite(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReJectUnionInvite_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122959, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.BindGroupWithTencent(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.BindGroupWithTencent", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 122960, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 122960, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122960, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122960, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122960, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122960, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122960, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.BindGroupWithTencent_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 122960, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.UnBindGroupWithTencent(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.UnBindGroupWithTencent", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 122961, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 122961, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122961, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122961, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122961, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122961, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122961, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.UnBindGroupWithTencent_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 122961, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.InviteJoinGroupWithTencent(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.InviteJoinGroupWithTencent", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 122962, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 122962, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122962, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122962, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122962, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122962, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122962, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.InviteJoinGroupWithTencent_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 122962, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.UnionGetKillBossData(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.UnionGetKillBossData", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 122963, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 122963, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122963, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122963, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122963, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122963, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122963, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.UnionGetKillBossData_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 122963, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.UnionGetAllBossData(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.UnionGetAllBossData", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 122964, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 122964, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122964, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122964, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122964, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122964, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 122964, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.UnionGetAllBossData_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 122964, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -5521,10 +5927,7 @@ function WorldProxy.UnionList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UnionList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122981, cJson.encode(pbRet), retData, true)
@@ -5565,10 +5968,7 @@ function WorldProxy.SearchUnionList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SearchUnionList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122982, cJson.encode(pbRet), retData, true)
@@ -5609,10 +6009,7 @@ function WorldProxy.CreateUnion(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CreateUnion_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122983, cJson.encode(pbRet), retData, true)
@@ -5653,10 +6050,7 @@ function WorldProxy.ReqJoinUnions(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqJoinUnions_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122984, cJson.encode(pbRet), retData, true)
@@ -5697,10 +6091,7 @@ function WorldProxy.ReqUnionInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqUnionInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122986, cJson.encode(pbRet), retData, true)
@@ -5741,10 +6132,7 @@ function WorldProxy.ReqUnionMemsList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqUnionMemsList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122987, cJson.encode(pbRet), retData, true)
@@ -5785,10 +6173,7 @@ function WorldProxy.ReqChangeOfficialMembers(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqChangeOfficialMembers_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122988, cJson.encode(pbRet), retData, true)
@@ -5829,10 +6214,7 @@ function WorldProxy.ReqChangeOfficials(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqChangeOfficials_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122989, cJson.encode(pbRet), retData, true)
@@ -5873,10 +6255,7 @@ function WorldProxy.ReqTransferPresident(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqTransferPresident_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122990, cJson.encode(pbRet), retData, true)
@@ -5917,10 +6296,7 @@ function WorldProxy.GetRequestList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetRequestList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122991, cJson.encode(pbRet), retData, true)
@@ -5961,10 +6337,7 @@ function WorldProxy.ApprovalRequest(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ApprovalRequest_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122992, cJson.encode(pbRet), retData, true)
@@ -6005,10 +6378,7 @@ function WorldProxy.SetUnionIcon(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetUnionIcon_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122993, cJson.encode(pbRet), retData, true)
@@ -6049,10 +6419,7 @@ function WorldProxy.SetUnionTags(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetUnionTags_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122994, cJson.encode(pbRet), retData, true)
@@ -6093,10 +6460,7 @@ function WorldProxy.SetUnionDeclaration(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetUnionDeclaration_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122995, cJson.encode(pbRet), retData, true)
@@ -6137,10 +6501,7 @@ function WorldProxy.SetUnionName(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetUnionName_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122996, cJson.encode(pbRet), retData, true)
@@ -6181,10 +6542,7 @@ function WorldProxy.SetUnionAutoPass(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetUnionAutoPass_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 122997, cJson.encode(pbRet), retData, true)
@@ -6225,15 +6583,12 @@ function WorldProxy.PersonalObjectAction(vObjUuid, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.PersonalObjectAction_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 135169, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetLevelAward(vLevel, vAwardId, cancelToken)
@@ -6270,15 +6625,12 @@ function WorldProxy.GetLevelAward(vLevel, vAwardId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetLevelAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 139265, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetProficiency(vProficiency, cancelToken)
@@ -6314,15 +6666,12 @@ function WorldProxy.SetProficiency(vProficiency, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetProficiency_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 139266, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UnlockProficiency(level, buffId, cancelToken)
@@ -6359,15 +6708,12 @@ function WorldProxy.UnlockProficiency(level, buffId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UnlockProficiency_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 139267, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetAllLevelAward(cancelToken)
@@ -6400,15 +6746,12 @@ function WorldProxy.GetAllLevelAward(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetAllLevelAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 139268, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetSeasonTargetAward(vTargetId, cancelToken)
@@ -6444,15 +6787,12 @@ function WorldProxy.GetSeasonTargetAward(vTargetId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetSeasonTargetAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 143361, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetCurSeason(cancelToken)
@@ -6485,10 +6825,7 @@ function WorldProxy.GetCurSeason(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetCurSeason_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 143362, cJson.encode(pbRet), retData, true)
@@ -6529,15 +6866,12 @@ function WorldProxy.ActivatePivot(vPivotID, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ActivatePivot_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 147457, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.PivotStateGetReward(vPivotID, vStage, cancelToken)
@@ -6574,15 +6908,12 @@ function WorldProxy.PivotStateGetReward(vPivotID, vStage, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.PivotStateGetReward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 147459, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ScenePivotStageGetReward(vSceneId, vStage, cancelToken)
@@ -6619,15 +6950,12 @@ function WorldProxy.ScenePivotStageGetReward(vSceneId, vStage, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ScenePivotStageGetReward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 147460, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.PermanentCloseRedDot(vRedDotId)
@@ -6689,10 +7017,7 @@ function WorldProxy.GetPersonalInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetPersonalInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155649, cJson.encode(pbRet), retData, true)
@@ -6733,10 +7058,7 @@ function WorldProxy.GetFriendBaseInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetFriendBaseInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155650, cJson.encode(pbRet), retData, true)
@@ -6777,10 +7099,7 @@ function WorldProxy.RequestAddFriend(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RequestAddFriend_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155651, cJson.encode(pbRet), retData, true)
@@ -6821,10 +7140,7 @@ function WorldProxy.ProcessAddRequest(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ProcessAddRequest_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155652, cJson.encode(pbRet), retData, true)
@@ -6865,10 +7181,7 @@ function WorldProxy.SetFriendRemarks(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetFriendRemarks_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155653, cJson.encode(pbRet), retData, true)
@@ -6909,10 +7222,7 @@ function WorldProxy.DeleteFriend(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DeleteFriend_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155654, cJson.encode(pbRet), retData, true)
@@ -6953,10 +7263,7 @@ function WorldProxy.SetShowPicture(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetShowPicture_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155655, cJson.encode(pbRet), retData, true)
@@ -6997,10 +7304,7 @@ function WorldProxy.SetSignature(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetSignature_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155656, cJson.encode(pbRet), retData, true)
@@ -7041,10 +7345,7 @@ function WorldProxy.SetHobbyMark(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetHobbyMark_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155657, cJson.encode(pbRet), retData, true)
@@ -7085,10 +7386,7 @@ function WorldProxy.SetTimeMark(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetTimeMark_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155658, cJson.encode(pbRet), retData, true)
@@ -7129,10 +7427,7 @@ function WorldProxy.SearchFriend(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SearchFriend_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155659, cJson.encode(pbRet), retData, true)
@@ -7173,10 +7468,7 @@ function WorldProxy.SetRemind(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetRemind_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155660, cJson.encode(pbRet), retData, true)
@@ -7217,10 +7509,7 @@ function WorldProxy.SetTop(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetTop_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155661, cJson.encode(pbRet), retData, true)
@@ -7261,10 +7550,7 @@ function WorldProxy.GetSuggestionList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetSuggestionList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155662, cJson.encode(pbRet), retData, true)
@@ -7305,10 +7591,7 @@ function WorldProxy.SetGroupSort(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetGroupSort_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155663, cJson.encode(pbRet), retData, true)
@@ -7349,10 +7632,7 @@ function WorldProxy.ChangeGroup(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ChangeGroup_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155664, cJson.encode(pbRet), retData, true)
@@ -7393,10 +7673,7 @@ function WorldProxy.CreateGroup(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CreateGroup_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155665, cJson.encode(pbRet), retData, true)
@@ -7437,10 +7714,7 @@ function WorldProxy.DeleteGroup(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DeleteGroup_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155666, cJson.encode(pbRet), retData, true)
@@ -7481,10 +7755,7 @@ function WorldProxy.ChangeGroupName(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ChangeGroupName_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155667, cJson.encode(pbRet), retData, true)
@@ -7525,10 +7796,7 @@ function WorldProxy.RewardPersonalFriendlinessLv(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RewardPersonalFriendlinessLv_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155673, cJson.encode(pbRet), retData, true)
@@ -7569,10 +7837,7 @@ function WorldProxy.RewardTotalFriendlinessLv(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RewardTotalFriendlinessLv_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155674, cJson.encode(pbRet), retData, true)
@@ -7613,10 +7878,7 @@ function WorldProxy.GetFriendliness(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetFriendliness_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 155675, cJson.encode(pbRet), retData, true)
@@ -7660,15 +7922,12 @@ function WorldProxy.SelectReasoning(vInvestigationId, vStepId, vReasoningId, vAn
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SelectReasoning_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 159745, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetSeasonQuestAward(vTargetId, cancelToken)
@@ -7704,15 +7963,12 @@ function WorldProxy.GetSeasonQuestAward(vTargetId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetSeasonQuestAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 163841, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.BuyShopItem(vRequest)
@@ -7723,33 +7979,6 @@ function WorldProxy.BuyShopItem(vRequest)
     MessageInspectBridge.HandleSendMessage(103198054, 167937, cJson.encode(pbMsg), pbData, true)
   end
   local err = zrpcCtrl.LuaProxyNotify(pxy, 167937, pbData, true)
-  if err ~= zrpcError.None then
-    error(tostring(err))
-  end
-end
-
-function WorldProxy.Payment(vRequest)
-  local pbMsg = {}
-  pbMsg.vRequest = vRequest
-  local pbData = pb.encode("zproto.World.Payment", pbMsg)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 167938, cJson.encode(pbMsg), pbData, true)
-  end
-  local err = zrpcCtrl.LuaProxyNotify(pxy, 167938, pbData, true)
-  if err ~= zrpcError.None then
-    error(tostring(err))
-  end
-end
-
-function WorldProxy.ExchangeCurrency(functionId, useCount)
-  local pbMsg = {}
-  pbMsg.functionId = functionId
-  pbMsg.useCount = useCount
-  local pbData = pb.encode("zproto.World.ExchangeCurrency", pbMsg)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 167939, cJson.encode(pbMsg), pbData, true)
-  end
-  local err = zrpcCtrl.LuaProxyNotify(pxy, 167939, pbData, true)
   if err ~= zrpcError.None then
     error(tostring(err))
   end
@@ -7788,15 +8017,12 @@ function WorldProxy.RefreshShop(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RefreshShop_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 167940, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetShopItemList(vRequest, cancelToken)
@@ -7832,57 +8058,10 @@ function WorldProxy.GetShopItemList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetShopItemList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 168037, cJson.encode(pbRet), retData, true)
-  end
-  return pbRet.ret
-end
-
-function WorldProxy.GetShopItemCanBuy(vRequest, cancelToken)
-  local pbMsg = {}
-  pbMsg.vRequest = vRequest
-  local pbData = pb.encode("zproto.World.GetShopItemCanBuy", pbMsg)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 168038, cJson.encode(pbMsg), pbData, true)
-  end
-  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
-  local pxyRet = pxyCallFunc(pxy, 168038, pbData, true, true, cancelToken)
-  local errorId = pxyRet:GetErrorId()
-  if 0 < errorId then
-    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
-      error(ZUtil.ZCancelSource.CancelException)
-    elseif errorId == zrpcError.MethodNotFound:ToInt() then
-      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 168038, errorId)
-      error(errorId)
-    elseif errorId == zrpcError.Timeout:ToInt() then
-      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 168038, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("NoEnterScene") then
-      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 168038, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
-      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 168038, errorId)
-      error(errorId)
-    else
-      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 168038, errorId)
-      if errorId < 1000 then
-        zrpcCtrl.Disconnect(channelType)
-      end
-      error(errorId)
-    end
-  end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.GetShopItemCanBuy_Ret", retData)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleReceiveMessage(103198054, 168038, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -7921,15 +8100,12 @@ function WorldProxy.UnlockShowPiece(vPieceType, vPieceId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UnlockShowPiece_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 172033, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetOftenUseShowPieceList(vPieceType, vPieceId, vIsAdd, cancelToken)
@@ -7967,15 +8143,12 @@ function WorldProxy.SetOftenUseShowPieceList(vPieceType, vPieceId, vIsAdd, cance
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetOftenUseShowPieceList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 172034, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetShowPieceRoulette(vPosition, vPieceType, vPieceId, cancelToken)
@@ -8013,15 +8186,12 @@ function WorldProxy.SetShowPieceRoulette(vPosition, vPieceType, vPieceId, cancel
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetShowPieceRoulette_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 172035, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.TakeOnShowPiece(vPieceType, vPieceId, cancelToken)
@@ -8058,15 +8228,12 @@ function WorldProxy.TakeOnShowPiece(vPieceType, vPieceId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TakeOnShowPiece_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 172036, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.TakeOffShowPiece(vPieceType, vPieceId, cancelToken)
@@ -8103,15 +8270,12 @@ function WorldProxy.TakeOffShowPiece(vPieceType, vPieceId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TakeOffShowPiece_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 172037, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetStickerAward(bookId, stickerId, cancelToken)
@@ -8148,15 +8312,12 @@ function WorldProxy.GetStickerAward(bookId, stickerId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetStickerAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 188417, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetBookAward(bookId, cancelToken)
@@ -8192,15 +8353,12 @@ function WorldProxy.GetBookAward(bookId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetBookAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 188418, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.Interaction(vInfo, cancelToken)
@@ -8236,15 +8394,12 @@ function WorldProxy.Interaction(vInfo, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.Interaction_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 192513, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.InteractionActionEnd(curStage, actionType, isSuccess, cancelToken)
@@ -8282,15 +8437,12 @@ function WorldProxy.InteractionActionEnd(curStage, actionType, isSuccess, cancel
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.InteractionActionEnd_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 192514, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.MonsterExploreUnlock(info, cancelToken)
@@ -8326,15 +8478,12 @@ function WorldProxy.MonsterExploreUnlock(info, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.MonsterExploreUnlock_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 196609, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetAward(info, cancelToken)
@@ -8370,15 +8519,12 @@ function WorldProxy.GetAward(info, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 196610, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetFlag(info, cancelToken)
@@ -8414,15 +8560,12 @@ function WorldProxy.SetFlag(info, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetFlag_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 196611, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.EquipProfession(vInfo, cancelToken)
@@ -8458,15 +8601,12 @@ function WorldProxy.EquipProfession(vInfo, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.EquipProfession_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200705, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SwitchProfession(vInfo, cancelToken)
@@ -8502,15 +8642,12 @@ function WorldProxy.SwitchProfession(vInfo, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SwitchProfession_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200706, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ProfessionUpgrade(vProfessionId, vMaterials, cancelToken)
@@ -8547,15 +8684,12 @@ function WorldProxy.ProfessionUpgrade(vProfessionId, vMaterials, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ProfessionUpgrade_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200707, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ProfessionBreakthrough(vProfessionId, cancelToken)
@@ -8591,15 +8725,12 @@ function WorldProxy.ProfessionBreakthrough(vProfessionId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ProfessionBreakthrough_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200708, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SkillUpgrade(vProfessionId, vSkillId, vSkillFinalLevel, cancelToken)
@@ -8637,15 +8768,12 @@ function WorldProxy.SkillUpgrade(vProfessionId, vSkillId, vSkillFinalLevel, canc
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SkillUpgrade_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200709, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ProfessionSkillRemodel(vProfessionNodeId, cancelToken)
@@ -8681,15 +8809,12 @@ function WorldProxy.ProfessionSkillRemodel(vProfessionNodeId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ProfessionSkillRemodel_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200710, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ProfessionSkillChange(vProfessionId, vSkillGroupId, vChangeSkillId, cancelToken)
@@ -8727,15 +8852,12 @@ function WorldProxy.ProfessionSkillChange(vProfessionId, vSkillGroupId, vChangeS
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ProfessionSkillChange_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200711, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ProfessionForge(vProfessionId, cancelToken)
@@ -8771,15 +8893,12 @@ function WorldProxy.ProfessionForge(vProfessionId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ProfessionForge_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200712, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UseProfessionSkin(vInfo, cancelToken)
@@ -8815,15 +8934,12 @@ function WorldProxy.UseProfessionSkin(vInfo, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UseProfessionSkin_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200713, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ProfessionSkillActive(vRequest, cancelToken)
@@ -8859,15 +8975,12 @@ function WorldProxy.ProfessionSkillActive(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ProfessionSkillActive_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200714, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ProfessionSkillUpgrade(vRequest, cancelToken)
@@ -8903,15 +9016,12 @@ function WorldProxy.ProfessionSkillUpgrade(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ProfessionSkillUpgrade_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200715, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.AoYiSkillActive(vRequest, cancelToken)
@@ -8947,15 +9057,12 @@ function WorldProxy.AoYiSkillActive(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AoYiSkillActive_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200716, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.AoYiSkillUpgrade(vRequest, cancelToken)
@@ -8991,15 +9098,12 @@ function WorldProxy.AoYiSkillUpgrade(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AoYiSkillUpgrade_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200717, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ActiveProfessionTalent(vRequest, cancelToken)
@@ -9035,15 +9139,12 @@ function WorldProxy.ActiveProfessionTalent(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ActiveProfessionTalent_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200718, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ResetProfessionTalent(vRequest, cancelToken)
@@ -9079,15 +9180,12 @@ function WorldProxy.ResetProfessionTalent(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ResetProfessionTalent_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200719, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.AoYiSkillRemodel(vRequest, cancelToken)
@@ -9123,15 +9221,12 @@ function WorldProxy.AoYiSkillRemodel(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AoYiSkillRemodel_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200720, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.AoYiItemFusion(vRequest, cancelToken)
@@ -9167,15 +9262,12 @@ function WorldProxy.AoYiItemFusion(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AoYiItemFusion_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200721, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.AoYiItemDecompose(vRequest, cancelToken)
@@ -9211,15 +9303,12 @@ function WorldProxy.AoYiItemDecompose(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AoYiItemDecompose_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200722, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.AcceptProfessionQuest(vRequest, cancelToken)
@@ -9255,15 +9344,94 @@ function WorldProxy.AcceptProfessionQuest(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AcceptProfessionQuest_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 200723, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
+end
+
+function WorldProxy.ActivateProfessionSkillSkin(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.ActivateProfessionSkillSkin", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 200724, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 200724, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200724, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200724, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200724, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200724, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200724, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ActivateProfessionSkillSkin_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 200724, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.UseProfessionSkillSkin(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.UseProfessionSkillSkin", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 200725, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 200725, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200725, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200725, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200725, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200725, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200725, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.UseProfessionSkillSkin_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 200725, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
 end
 
 function WorldProxy.FastCook(vInfo, cancelToken)
@@ -9299,15 +9467,12 @@ function WorldProxy.FastCook(vInfo, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FastCook_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 208897, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.RdCook(vRequest, cancelToken)
@@ -9343,10 +9508,7 @@ function WorldProxy.RdCook(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RdCook_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 208899, cJson.encode(pbRet), retData, true)
@@ -9387,15 +9549,12 @@ function WorldProxy.ReceiveSeasonAchievementAward(achievementId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReceiveSeasonAchievementAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 212993, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.AdvanceSeasonMaxRankStart(cancelToken)
@@ -9428,15 +9587,12 @@ function WorldProxy.AdvanceSeasonMaxRankStart(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AdvanceSeasonMaxRankStart_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 217089, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ReceiveSeasonRankAward(rankStart, cancelToken)
@@ -9472,15 +9628,12 @@ function WorldProxy.ReceiveSeasonRankAward(rankStart, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReceiveSeasonRankAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 217090, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetSeasonRankShowArmband(rankStart, cancelToken)
@@ -9516,15 +9669,12 @@ function WorldProxy.SetSeasonRankShowArmband(rankStart, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetSeasonRankShowArmband_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 217091, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UploadTLogBody(tLogName, tLogBody)
@@ -9574,15 +9724,12 @@ function WorldProxy.BuyBattlePassLevel(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.BuyBattlePassLevel_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 225281, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetBattlePassAward(request, cancelToken)
@@ -9618,15 +9765,12 @@ function WorldProxy.GetBattlePassAward(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetBattlePassAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 225282, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetSeasonBpQuestAward(request, cancelToken)
@@ -9662,15 +9806,12 @@ function WorldProxy.GetSeasonBpQuestAward(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetSeasonBpQuestAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 225283, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetSeasonHistoryData(request, cancelToken)
@@ -9706,10 +9847,7 @@ function WorldProxy.GetSeasonHistoryData(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetSeasonHistoryData_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 225284, cJson.encode(pbRet), retData, true)
@@ -9750,15 +9888,12 @@ function WorldProxy.ChooseCoreSeasonHoleNode(chosenNodeIds, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ChooseCoreSeasonHoleNode_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 229377, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ResetNormalSeasonHoles(holeId, cancelToken)
@@ -9794,15 +9929,12 @@ function WorldProxy.ResetNormalSeasonHoles(holeId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ResetNormalSeasonHoles_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 229378, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UpgradeSeasonCoreMedalHole(holeId, cancelToken)
@@ -9838,15 +9970,12 @@ function WorldProxy.UpgradeSeasonCoreMedalHole(holeId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UpgradeSeasonCoreMedalHole_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 229379, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UpgradeSeasonNormalHole(holeId, itemIdNum, cancelToken)
@@ -9883,15 +10012,12 @@ function WorldProxy.UpgradeSeasonNormalHole(holeId, itemIdNum, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UpgradeSeasonNormalHole_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 229380, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalZoneTags(vRequest, cancelToken)
@@ -9927,15 +10053,12 @@ function WorldProxy.SetPersonalZoneTags(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetPersonalZoneTags_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237569, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalZonePhoto(vRequest, cancelToken)
@@ -9971,15 +10094,12 @@ function WorldProxy.SetPersonalZonePhoto(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetPersonalZonePhoto_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237570, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalZoneMedal(vRequest, cancelToken)
@@ -10015,15 +10135,12 @@ function WorldProxy.SetPersonalZoneMedal(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetPersonalZoneMedal_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237571, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalZoneTheme(vRequest, cancelToken)
@@ -10059,15 +10176,12 @@ function WorldProxy.SetPersonalZoneTheme(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetPersonalZoneTheme_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237572, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalZoneBusinessCardStyle(vRequest, cancelToken)
@@ -10103,15 +10217,12 @@ function WorldProxy.SetPersonalZoneBusinessCardStyle(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetPersonalZoneBusinessCardStyle_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237573, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalZoneAvatar(vRequest, cancelToken)
@@ -10147,15 +10258,12 @@ function WorldProxy.SetPersonalZoneAvatar(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetPersonalZoneAvatar_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237574, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalZoneAvatarFrame(vRequest, cancelToken)
@@ -10191,15 +10299,12 @@ function WorldProxy.SetPersonalZoneAvatarFrame(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetPersonalZoneAvatarFrame_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237575, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalZoneActionInfo(vRequest, cancelToken)
@@ -10235,15 +10340,12 @@ function WorldProxy.SetPersonalZoneActionInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetPersonalZoneActionInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237576, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalZoneUIPosition(vRequest, cancelToken)
@@ -10279,15 +10381,12 @@ function WorldProxy.SetPersonalZoneUIPosition(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetPersonalZoneUIPosition_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237577, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetPersonalZoneTitle(vRequest, cancelToken)
@@ -10323,15 +10422,12 @@ function WorldProxy.SetPersonalZoneTitle(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetPersonalZoneTitle_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237578, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.RefreshPersonalZoneFashionScore()
@@ -10377,21 +10473,18 @@ function WorldProxy.GetPersonalZoneTargetAward(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetPersonalZoneTargetAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 237580, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
-function WorldProxy.SaveRoomBrightness(brightness, cancelToken)
+function WorldProxy.BuyHouse(vRequest, cancelToken)
   local pbMsg = {}
-  pbMsg.brightness = brightness
-  local pbData = pb.encode("zproto.World.SaveRoomBrightness", pbMsg)
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.BuyHouse", pbMsg)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleSendMessage(103198054, 241665, cJson.encode(pbMsg), pbData, true)
   end
@@ -10421,21 +10514,18 @@ function WorldProxy.SaveRoomBrightness(brightness, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.SaveRoomBrightness_Ret", retData)
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.BuyHouse_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 241665, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
-function WorldProxy.ToggleEditState(vRequest, cancelToken)
+function WorldProxy.CommunitySetCheckInContent(vRequest, cancelToken)
   local pbMsg = {}
   pbMsg.vRequest = vRequest
-  local pbData = pb.encode("zproto.World.ToggleEditState", pbMsg)
+  local pbData = pb.encode("zproto.World.CommunitySetCheckInContent", pbMsg)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleSendMessage(103198054, 241666, cJson.encode(pbMsg), pbData, true)
   end
@@ -10465,21 +10555,18 @@ function WorldProxy.ToggleEditState(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.ToggleEditState_Ret", retData)
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunitySetCheckInContent_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 241666, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
-function WorldProxy.UpdateStructure(vRequest, cancelToken)
+function WorldProxy.CommunityGetHomeLandBaseInfo(vRequest, cancelToken)
   local pbMsg = {}
   pbMsg.vRequest = vRequest
-  local pbData = pb.encode("zproto.World.UpdateStructure", pbMsg)
+  local pbData = pb.encode("zproto.World.CommunityGetHomeLandBaseInfo", pbMsg)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleSendMessage(103198054, 241667, cJson.encode(pbMsg), pbData, true)
   end
@@ -10509,15 +10596,2268 @@ function WorldProxy.UpdateStructure(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.UpdateStructure_Ret", retData)
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityGetHomeLandBaseInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 241667, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityEnter(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityEnter", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241668, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241668, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241668, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241668, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241668, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241668, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241668, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityEnter_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241668, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityEnterHomeland(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityEnterHomeland", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241669, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241669, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241669, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241669, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241669, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241669, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241669, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityEnterHomeland_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241669, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunitySetName(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunitySetName", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241670, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241670, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241670, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241670, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241670, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241670, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241670, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunitySetName_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241670, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.EnterEditState(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.EnterEditState", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241672, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241672, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241672, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241672, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241672, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241672, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241672, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.EnterEditState_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241672, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ExitEditState(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.ExitEditState", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241673, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241673, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241673, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241673, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241673, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241673, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241673, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ExitEditState_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241673, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.UpdateStructure(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.UpdateStructure", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241674, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241674, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241674, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241674, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241674, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241674, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241674, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.UpdateStructure_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241674, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityAcceptRejectInvitation(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityAcceptRejectInvitation", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241675, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241675, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241675, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241675, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241675, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241675, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241675, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityAcceptRejectInvitation_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241675, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityPersonData(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityPersonData", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241676, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241676, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241676, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241676, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241676, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241676, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241676, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityPersonData_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241676, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityInvitationCohabitant(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityInvitationCohabitant", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241677, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241677, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241677, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241677, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241677, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241677, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241677, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityInvitationCohabitant_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241677, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityInvitation(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityInvitation", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241678, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241678, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241678, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241678, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241678, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241678, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241678, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityInvitation_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241678, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityQuitCohabitant(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityQuitCohabitant", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241679, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241679, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241679, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241679, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241679, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241679, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241679, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityQuitCohabitant_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241679, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityQuitCohabitantCancel(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityQuitCohabitantCancel", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241680, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241680, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241680, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241680, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241680, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241680, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241680, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityQuitCohabitantCancel_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241680, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityQuitCohabitantAgree(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityQuitCohabitantAgree", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241681, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241681, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241681, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241681, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241681, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241681, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241681, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityQuitCohabitantAgree_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241681, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetHomelandCohabitant(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetHomelandCohabitant", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241682, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241682, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241682, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241682, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241682, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241682, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241682, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetHomelandCohabitant_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241682, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityTransferOwnership(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityTransferOwnership", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241684, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241684, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241684, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241684, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241684, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241684, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241684, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityTransferOwnership_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241684, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityTransferOwnershipCancel(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityTransferOwnershipCancel", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241685, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241685, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241685, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241685, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241685, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241685, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241685, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityTransferOwnershipCancel_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241685, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityTransferOwnershipAgree(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityTransferOwnershipAgree", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241686, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241686, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241686, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241686, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241686, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241686, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241686, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityTransferOwnershipAgree_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241686, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityBuildFurniture(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityBuildFurniture", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241687, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241687, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241687, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241687, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241687, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241687, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241687, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityBuildFurniture_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241687, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityBuildFurnitureCancel(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityBuildFurnitureCancel", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241688, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241688, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241688, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241688, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241688, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241688, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241688, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityBuildFurnitureCancel_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241688, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityBuildFurnitureAccelerate(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityBuildFurnitureAccelerate", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241689, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241689, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241689, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241689, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241689, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241689, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241689, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityBuildFurnitureAccelerate_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241689, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityBuildFurnitureReceive(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityBuildFurnitureReceive", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241690, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241690, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241690, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241690, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241690, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241690, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241690, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityBuildFurnitureReceive_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241690, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunityUnlockFurnitureRecipe(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunityUnlockFurnitureRecipe", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241691, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241691, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241691, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241691, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241691, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241691, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241691, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunityUnlockFurnitureRecipe_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241691, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetHomelandBulletinBoards(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetHomelandBulletinBoards", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241693, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241693, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241693, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241693, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241693, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241693, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241693, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetHomelandBulletinBoards_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241693, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunitySetIntroduction(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunitySetIntroduction", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241694, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241694, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241694, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241694, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241694, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241694, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241694, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunitySetIntroduction_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241694, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetHomelandBuildFurnitureInfo(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetHomelandBuildFurnitureInfo", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241695, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241695, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241695, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241695, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241695, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241695, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241695, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetHomelandBuildFurnitureInfo_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241695, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunitySetAuthority(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunitySetAuthority", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241696, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241696, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241696, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241696, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241696, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241696, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241696, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunitySetAuthority_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241696, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CommunitySetPlayerAuthority(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CommunitySetPlayerAuthority", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241697, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241697, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241697, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241697, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241697, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241697, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241697, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CommunitySetPlayerAuthority_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241697, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.HomelandWarehouseStore(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.HomelandWarehouseStore", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241698, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241698, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241698, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241698, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241698, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241698, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241698, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.HomelandWarehouseStore_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241698, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.HomelandWarehouseTakeOut(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.HomelandWarehouseTakeOut", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241699, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241699, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241699, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241699, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241699, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241699, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241699, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.HomelandWarehouseTakeOut_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241699, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetHomelandWarehouseInfo(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetHomelandWarehouseInfo", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241700, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241700, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241700, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241700, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241700, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241700, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241700, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetHomelandWarehouseInfo_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241700, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CreateStructureGroup(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CreateStructureGroup", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241701, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241701, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241701, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241701, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241701, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241701, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241701, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CreateStructureGroup_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241701, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.DissolveStructureGroup(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.DissolveStructureGroup", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241702, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241702, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241702, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241702, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241702, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241702, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241702, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.DissolveStructureGroup_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241702, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.RemoveStructureGroup(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.RemoveStructureGroup", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241703, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241703, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241703, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241703, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241703, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241703, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241703, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.RemoveStructureGroup_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241703, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.AddToStructureGroup(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.AddToStructureGroup", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241704, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241704, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241704, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241704, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241704, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241704, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241704, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.AddToStructureGroup_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241704, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.RenameStructureGroup(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.RenameStructureGroup", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241705, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241705, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241705, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241705, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241705, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241705, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241705, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.RenameStructureGroup_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241705, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetStructureGroupInfo(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetStructureGroupInfo", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241706, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241706, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241706, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241706, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241706, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241706, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241706, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetStructureGroupInfo_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241706, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetHomelandFurnitureWarehouseInfo(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetHomelandFurnitureWarehouseInfo", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241707, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241707, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241707, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241707, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241707, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241707, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241707, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetHomelandFurnitureWarehouseInfo_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241707, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetHomelandCheckInContent(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetHomelandCheckInContent", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241708, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241708, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241708, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241708, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241708, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241708, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241708, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetHomelandCheckInContent_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241708, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.HomelandSetLamplight(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.HomelandSetLamplight", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241725, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241725, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241725, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241725, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241725, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241725, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241725, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.HomelandSetLamplight_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241725, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.HomelandSwitchLamplight(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.HomelandSwitchLamplight", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241726, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241726, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241726, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241726, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241726, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241726, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241726, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.HomelandSwitchLamplight_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241726, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.HomelandSwitchAllLamplight(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.HomelandSwitchAllLamplight", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241727, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241727, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241727, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241727, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241727, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241727, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241727, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.HomelandSwitchAllLamplight_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241727, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.HomelandSetFurnitureName(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.HomelandSetFurnitureName", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241728, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241728, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241728, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241728, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241728, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241728, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241728, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.HomelandSetFurnitureName_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241728, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.HomelandSetFurnitureMaterial(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.HomelandSetFurnitureMaterial", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241729, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241729, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241729, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241729, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241729, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241729, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241729, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.HomelandSetFurnitureMaterial_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241729, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.HomelandSetMaterialInfo(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.HomelandSetMaterialInfo", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241730, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241730, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241730, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241730, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241730, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241730, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241730, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.HomelandSetMaterialInfo_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241730, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.LevelUp(curLevel, cancelToken)
+  local pbMsg = {}
+  pbMsg.curLevel = curLevel
+  local pbData = pb.encode("zproto.World.LevelUp", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241734, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241734, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241734, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241734, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241734, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241734, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241734, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.LevelUp_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241734, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.DestroyClutter(uuid, cancelToken)
+  local pbMsg = {}
+  pbMsg.uuid = uuid
+  local pbData = pb.encode("zproto.World.DestroyClutter", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241735, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241735, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241735, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241735, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241735, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241735, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241735, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.DestroyClutter_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241735, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.SubmitTask(taskId, cancelToken)
+  local pbMsg = {}
+  pbMsg.taskId = taskId
+  local pbData = pb.encode("zproto.World.SubmitTask", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241736, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241736, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241736, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241736, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241736, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241736, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241736, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.SubmitTask_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241736, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.SellHomeLandItems(itemId, itemNum, cancelToken)
+  local pbMsg = {}
+  pbMsg.itemId = itemId
+  pbMsg.itemNum = itemNum
+  local pbData = pb.encode("zproto.World.SellHomeLandItems", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241737, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241737, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241737, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241737, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241737, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241737, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241737, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.SellHomeLandItems_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241737, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.SeedingUpdateStructure(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.SeedingUpdateStructure", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241738, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241738, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241738, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241738, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241738, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241738, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241738, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.SeedingUpdateStructure_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241738, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.WaterUpdateStructure(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.WaterUpdateStructure", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241739, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241739, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241739, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241739, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241739, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241739, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241739, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.WaterUpdateStructure_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241739, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.FertilizerUpdateStructure(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.FertilizerUpdateStructure", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241740, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241740, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241740, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241740, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241740, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241740, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241740, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.FertilizerUpdateStructure_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241740, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.PollenUpdateStructure(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.PollenUpdateStructure", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241741, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241741, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241741, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241741, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241741, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241741, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241741, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.PollenUpdateStructure_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241741, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.PickUpUpdateStructure(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.PickUpUpdateStructure", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241742, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241742, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241742, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241742, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241742, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241742, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241742, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.PickUpUpdateStructure_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241742, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GainUpdateStructure(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GainUpdateStructure", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241743, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241743, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241743, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241743, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241743, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241743, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241743, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GainUpdateStructure_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241743, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.QueryPlayerFurniture(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.QueryPlayerFurniture", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 241744, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 241744, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241744, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241744, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241744, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241744, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 241744, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.QueryPlayerFurniture_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 241744, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
 end
 
 function WorldProxy.GetSeasonActivationTarget(cancelToken)
@@ -10550,15 +12890,12 @@ function WorldProxy.GetSeasonActivationTarget(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetSeasonActivationTarget_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 245761, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.RefreshSeasonActivation(cancelToken)
@@ -10591,15 +12928,12 @@ function WorldProxy.RefreshSeasonActivation(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RefreshSeasonActivation_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 245762, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ReceiveSeasonActivationAward(stage, cancelToken)
@@ -10635,15 +12969,12 @@ function WorldProxy.ReceiveSeasonActivationAward(stage, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReceiveSeasonActivationAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 245763, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.InstallSkill(vSlotId, vSkillId, cancelToken)
@@ -10680,15 +13011,12 @@ function WorldProxy.InstallSkill(vSlotId, vSkillId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.InstallSkill_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 249857, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UseSlot(vRequest, cancelToken)
@@ -10724,15 +13052,53 @@ function WorldProxy.UseSlot(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UseSlot_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 249858, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
+end
+
+function WorldProxy.SetSlotAutoBattle(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.SetSlotAutoBattle", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 249859, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 249859, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 249859, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 249859, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 249859, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 249859, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 249859, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.SetSlotAutoBattle_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 249859, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
 end
 
 function WorldProxy.MonsterHuntUnlockMonster(info, cancelToken)
@@ -10768,15 +13134,12 @@ function WorldProxy.MonsterHuntUnlockMonster(info, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.MonsterHuntUnlockMonster_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 253953, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetMonsterAward(monsterAwardParam, cancelToken)
@@ -10812,15 +13175,12 @@ function WorldProxy.GetMonsterAward(monsterAwardParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetMonsterAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 253954, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetMonsterHuntLevelAward(monsterHuntLevelAwardParam, cancelToken)
@@ -10856,15 +13216,12 @@ function WorldProxy.GetMonsterHuntLevelAward(monsterHuntLevelAwardParam, cancelT
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetMonsterHuntLevelAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 253955, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.InstallMod(vRequest, cancelToken)
@@ -10900,15 +13257,12 @@ function WorldProxy.InstallMod(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.InstallMod_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 258049, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UninstallMod(vRequest, cancelToken)
@@ -10944,15 +13298,12 @@ function WorldProxy.UninstallMod(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UninstallMod_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 258050, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.UpgradeMod(vRequest, cancelToken)
@@ -10988,15 +13339,12 @@ function WorldProxy.UpgradeMod(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.UpgradeMod_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 258051, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.DecomposeMod(vRequest, cancelToken)
@@ -11032,15 +13380,12 @@ function WorldProxy.DecomposeMod(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DecomposeMod_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 258052, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.CreateWarehouse(vRequest, cancelToken)
@@ -11076,10 +13421,7 @@ function WorldProxy.CreateWarehouse(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CreateWarehouse_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 262145, cJson.encode(pbRet), retData, true)
@@ -11120,10 +13462,7 @@ function WorldProxy.DepositWarehouse(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DepositWarehouse_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 262146, cJson.encode(pbRet), retData, true)
@@ -11164,10 +13503,7 @@ function WorldProxy.TakeOutWarehouse(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TakeOutWarehouse_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 262147, cJson.encode(pbRet), retData, true)
@@ -11208,10 +13544,7 @@ function WorldProxy.ExitWarehouse(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExitWarehouse_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 262148, cJson.encode(pbRet), retData, true)
@@ -11252,10 +13585,7 @@ function WorldProxy.GetWarehouse(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetWarehouse_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 262246, cJson.encode(pbRet), retData, true)
@@ -11296,10 +13626,7 @@ function WorldProxy.InviteToWarehouse(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.InviteToWarehouse_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 262247, cJson.encode(pbRet), retData, true)
@@ -11340,10 +13667,7 @@ function WorldProxy.ReBeInitiateWarehouse(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReBeInitiateWarehouse_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 262248, cJson.encode(pbRet), retData, true)
@@ -11384,10 +13708,7 @@ function WorldProxy.KickOutWarehouse(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.KickOutWarehouse_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 262252, cJson.encode(pbRet), retData, true)
@@ -11428,10 +13749,7 @@ function WorldProxy.DisbandWarehouse(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DisbandWarehouse_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 262253, cJson.encode(pbRet), retData, true)
@@ -11472,10 +13790,7 @@ function WorldProxy.ExchangeBuyItem(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeBuyItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266241, cJson.encode(pbRet), retData, true)
@@ -11516,10 +13831,7 @@ function WorldProxy.ExchangePutItem(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangePutItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266243, cJson.encode(pbRet), retData, true)
@@ -11560,10 +13872,7 @@ function WorldProxy.ExchangeTakeItem(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeTakeItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266244, cJson.encode(pbRet), retData, true)
@@ -11604,57 +13913,10 @@ function WorldProxy.ExchangeWithdraw(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeWithdraw_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266245, cJson.encode(pbRet), retData, true)
-  end
-  return pbRet.ret
-end
-
-function WorldProxy.ExchangeNoticeTakeItem(request, cancelToken)
-  local pbMsg = {}
-  pbMsg.request = request
-  local pbData = pb.encode("zproto.World.ExchangeNoticeTakeItem", pbMsg)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 266247, cJson.encode(pbMsg), pbData, true)
-  end
-  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
-  local pxyRet = pxyCallFunc(pxy, 266247, pbData, true, true, cancelToken)
-  local errorId = pxyRet:GetErrorId()
-  if 0 < errorId then
-    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
-      error(ZUtil.ZCancelSource.CancelException)
-    elseif errorId == zrpcError.MethodNotFound:ToInt() then
-      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 266247, errorId)
-      error(errorId)
-    elseif errorId == zrpcError.Timeout:ToInt() then
-      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 266247, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("NoEnterScene") then
-      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 266247, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
-      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 266247, errorId)
-      error(errorId)
-    else
-      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 266247, errorId)
-      if errorId < 1000 then
-        zrpcCtrl.Disconnect(channelType)
-      end
-      error(errorId)
-    end
-  end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.ExchangeNoticeTakeItem_Ret", retData)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleReceiveMessage(103198054, 266247, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -11692,10 +13954,7 @@ function WorldProxy.ExchangeNoticeBuyItem(request, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeNoticeBuyItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266248, cJson.encode(pbRet), retData, true)
@@ -11736,10 +13995,7 @@ function WorldProxy.ExchangeSale(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeSale_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266249, cJson.encode(pbRet), retData, true)
@@ -11780,10 +14036,7 @@ function WorldProxy.ExchangeSaleTake(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeSaleTake_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266250, cJson.encode(pbRet), retData, true)
@@ -11824,10 +14077,7 @@ function WorldProxy.ExchangeSaleBuy(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeSaleBuy_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266251, cJson.encode(pbRet), retData, true)
@@ -11868,10 +14118,7 @@ function WorldProxy.ExchangeList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266341, cJson.encode(pbRet), retData, true)
@@ -11912,10 +14159,7 @@ function WorldProxy.GetExchangeItem(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetExchangeItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266342, cJson.encode(pbRet), retData, true)
@@ -11956,10 +14200,7 @@ function WorldProxy.ExchangeSellItem(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeSellItem_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266343, cJson.encode(pbRet), retData, true)
@@ -12000,10 +14241,7 @@ function WorldProxy.ExchangeRecord(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeRecord_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266344, cJson.encode(pbRet), retData, true)
@@ -12044,10 +14282,7 @@ function WorldProxy.ExchangeNotice(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeNotice_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266351, cJson.encode(pbRet), retData, true)
@@ -12088,10 +14323,7 @@ function WorldProxy.ExchangeNoticeDetail(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeNoticeDetail_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266352, cJson.encode(pbRet), retData, true)
@@ -12132,10 +14364,7 @@ function WorldProxy.ExchangeNoticePreBuy(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeNoticePreBuy_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266353, cJson.encode(pbRet), retData, true)
@@ -12176,10 +14405,7 @@ function WorldProxy.ExchangeSaleData(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeSaleData_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266354, cJson.encode(pbRet), retData, true)
@@ -12220,10 +14446,7 @@ function WorldProxy.ExchangeSaleRecord(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeSaleRecord_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266355, cJson.encode(pbRet), retData, true)
@@ -12264,10 +14487,7 @@ function WorldProxy.ExchangeSaleRank(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeSaleRank_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266356, cJson.encode(pbRet), retData, true)
@@ -12308,10 +14528,7 @@ function WorldProxy.ExchangeCare(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeCare_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266368, cJson.encode(pbRet), retData, true)
@@ -12352,10 +14569,7 @@ function WorldProxy.ExchangeCareCancel(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeCareCancel_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266369, cJson.encode(pbRet), retData, true)
@@ -12396,13 +14610,51 @@ function WorldProxy.ExchangeCareList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ExchangeCareList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 266370, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ExchangeLowestPrice(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.ExchangeLowestPrice", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 266371, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 266371, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 266371, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 266371, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 266371, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 266371, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 266371, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ExchangeLowestPrice_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 266371, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -12437,15 +14689,12 @@ function WorldProxy.FishingExit(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FishingExit_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270337, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.FishingSetRod(vRequest, cancelToken)
@@ -12481,15 +14730,12 @@ function WorldProxy.FishingSetRod(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FishingSetRod_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270338, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.FishingSetBait(vRequest, cancelToken)
@@ -12525,15 +14771,12 @@ function WorldProxy.FishingSetBait(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FishingSetBait_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270339, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.FishingSetStage(vRequest, cancelToken)
@@ -12569,15 +14812,12 @@ function WorldProxy.FishingSetStage(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FishingSetStage_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270340, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.FishingRod(cancelToken)
@@ -12610,10 +14850,7 @@ function WorldProxy.FishingRod(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FishingRod_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270341, cJson.encode(pbRet), retData, true)
@@ -12654,15 +14891,12 @@ function WorldProxy.FishingSetResearchFish(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FishingSetResearchFish_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270343, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.FishingFirstShowRecord(vRequest, cancelToken)
@@ -12698,15 +14932,12 @@ function WorldProxy.FishingFirstShowRecord(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FishingFirstShowRecord_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270344, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.FishingResearch(vRequest, cancelToken)
@@ -12742,15 +14973,12 @@ function WorldProxy.FishingResearch(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FishingResearch_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270345, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.FishingResultReport(vRequest, cancelToken)
@@ -12786,10 +15014,7 @@ function WorldProxy.FishingResultReport(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FishingResultReport_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270346, cJson.encode(pbRet), retData, true)
@@ -12830,15 +15055,12 @@ function WorldProxy.FishingGetLevelReward(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.FishingGetLevelReward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270348, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetRankInfo(vRequest, cancelToken)
@@ -12874,13 +15096,51 @@ function WorldProxy.GetRankInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetRankInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 270437, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetFishRankTop(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetFishRankTop", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 270438, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 270438, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 270438, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 270438, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 270438, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 270438, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 270438, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetFishRankTop_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 270438, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -12918,15 +15178,12 @@ function WorldProxy.SubmitGoods(goodsInfo, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SubmitGoods_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 274433, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.SetOff(cancelToken)
@@ -12959,15 +15216,12 @@ function WorldProxy.SetOff(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetOff_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 274434, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.RewardFreightAward(cancelToken)
@@ -13000,15 +15254,12 @@ function WorldProxy.RewardFreightAward(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RewardFreightAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 274435, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.CheckRefreshGoods(cancelToken)
@@ -13041,15 +15292,12 @@ function WorldProxy.CheckRefreshGoods(cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CheckRefreshGoods_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 274436, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetRoomAward(param, cancelToken)
@@ -13085,15 +15333,12 @@ function WorldProxy.GetRoomAward(param, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetRoomAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 282625, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GetTrialRoadAward(param, cancelToken)
@@ -13129,15 +15374,12 @@ function WorldProxy.GetTrialRoadAward(param, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetTrialRoadAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 282626, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.GashaDraw(vRequest, cancelToken)
@@ -13173,13 +15415,51 @@ function WorldProxy.GashaDraw(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GashaDraw_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 286721, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GashaWishSelection(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GashaWishSelection", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 286722, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 286722, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 286722, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 286722, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 286722, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 286722, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 286722, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GashaWishSelection_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 286722, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -13217,101 +15497,10 @@ function WorldProxy.GashaRecord(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GashaRecord_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 286821, cJson.encode(pbRet), retData, true)
-  end
-  return pbRet.ret
-end
-
-function WorldProxy.GetSummaryInfo(vRequest, cancelToken)
-  local pbMsg = {}
-  pbMsg.vRequest = vRequest
-  local pbData = pb.encode("zproto.World.GetSummaryInfo", pbMsg)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 290817, cJson.encode(pbMsg), pbData, true)
-  end
-  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
-  local pxyRet = pxyCallFunc(pxy, 290817, pbData, true, true, cancelToken)
-  local errorId = pxyRet:GetErrorId()
-  if 0 < errorId then
-    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
-      error(ZUtil.ZCancelSource.CancelException)
-    elseif errorId == zrpcError.MethodNotFound:ToInt() then
-      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 290817, errorId)
-      error(errorId)
-    elseif errorId == zrpcError.Timeout:ToInt() then
-      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 290817, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("NoEnterScene") then
-      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 290817, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
-      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 290817, errorId)
-      error(errorId)
-    else
-      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 290817, errorId)
-      if errorId < 1000 then
-        zrpcCtrl.Disconnect(channelType)
-      end
-      error(errorId)
-    end
-  end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.GetSummaryInfo_Ret", retData)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleReceiveMessage(103198054, 290817, cJson.encode(pbRet), retData, true)
-  end
-  return pbRet.ret
-end
-
-function WorldProxy.GetDetailedDataInfo(vRequest, cancelToken)
-  local pbMsg = {}
-  pbMsg.vRequest = vRequest
-  local pbData = pb.encode("zproto.World.GetDetailedDataInfo", pbMsg)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 290818, cJson.encode(pbMsg), pbData, true)
-  end
-  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
-  local pxyRet = pxyCallFunc(pxy, 290818, pbData, true, true, cancelToken)
-  local errorId = pxyRet:GetErrorId()
-  if 0 < errorId then
-    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
-      error(ZUtil.ZCancelSource.CancelException)
-    elseif errorId == zrpcError.MethodNotFound:ToInt() then
-      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 290818, errorId)
-      error(errorId)
-    elseif errorId == zrpcError.Timeout:ToInt() then
-      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 290818, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("NoEnterScene") then
-      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 290818, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
-      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 290818, errorId)
-      error(errorId)
-    else
-      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 290818, errorId)
-      if errorId < 1000 then
-        zrpcCtrl.Disconnect(channelType)
-      end
-      error(errorId)
-    end
-  end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.GetDetailedDataInfo_Ret", retData)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleReceiveMessage(103198054, 290818, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -13349,10 +15538,7 @@ function WorldProxy.GetSocialData(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetSocialData_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 290917, cJson.encode(pbRet), retData, true)
@@ -13393,10 +15579,7 @@ function WorldProxy.ChangeAvatar(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ChangeAvatar_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 290918, cJson.encode(pbRet), retData, true)
@@ -13437,10 +15620,7 @@ function WorldProxy.GetMatchInfo(getMatchInfoParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetMatchInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 294913, cJson.encode(pbRet), retData, true)
@@ -13448,136 +15628,43 @@ function WorldProxy.GetMatchInfo(getMatchInfoParam, cancelToken)
   return pbRet.ret
 end
 
-function WorldProxy.BeginMatch(beginMatchParam, cancelToken)
+function WorldProxy.BeginMatch(beginMatchParam)
   local pbMsg = {}
   pbMsg.beginMatchParam = beginMatchParam
   local pbData = pb.encode("zproto.World.BeginMatch", pbMsg)
   if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 294914, cJson.encode(pbMsg), pbData, true)
+    MessageInspectBridge.HandleSendMessage(103198054, 294917, cJson.encode(pbMsg), pbData, true)
   end
-  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
-  local pxyRet = pxyCallFunc(pxy, 294914, pbData, true, true, cancelToken)
-  local errorId = pxyRet:GetErrorId()
-  if 0 < errorId then
-    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
-      error(ZUtil.ZCancelSource.CancelException)
-    elseif errorId == zrpcError.MethodNotFound:ToInt() then
-      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294914, errorId)
-      error(errorId)
-    elseif errorId == zrpcError.Timeout:ToInt() then
-      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294914, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("NoEnterScene") then
-      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294914, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
-      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294914, errorId)
-      error(errorId)
-    else
-      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294914, errorId)
-      if errorId < 1000 then
-        zrpcCtrl.Disconnect(channelType)
-      end
-      error(errorId)
-    end
+  local err = zrpcCtrl.LuaProxyNotify(pxy, 294917, pbData, true)
+  if err ~= zrpcError.None then
+    error(tostring(err))
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.BeginMatch_Ret", retData)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleReceiveMessage(103198054, 294914, cJson.encode(pbRet), retData, true)
-  end
-  return pbRet.ret_code
 end
 
-function WorldProxy.CancelMatch(cancelMatchParam, cancelToken)
+function WorldProxy.CancelMatch(cancelMatchParam)
   local pbMsg = {}
   pbMsg.cancelMatchParam = cancelMatchParam
   local pbData = pb.encode("zproto.World.CancelMatch", pbMsg)
   if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 294915, cJson.encode(pbMsg), pbData, true)
+    MessageInspectBridge.HandleSendMessage(103198054, 294918, cJson.encode(pbMsg), pbData, true)
   end
-  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
-  local pxyRet = pxyCallFunc(pxy, 294915, pbData, true, true, cancelToken)
-  local errorId = pxyRet:GetErrorId()
-  if 0 < errorId then
-    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
-      error(ZUtil.ZCancelSource.CancelException)
-    elseif errorId == zrpcError.MethodNotFound:ToInt() then
-      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294915, errorId)
-      error(errorId)
-    elseif errorId == zrpcError.Timeout:ToInt() then
-      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294915, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("NoEnterScene") then
-      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294915, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
-      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294915, errorId)
-      error(errorId)
-    else
-      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294915, errorId)
-      if errorId < 1000 then
-        zrpcCtrl.Disconnect(channelType)
-      end
-      error(errorId)
-    end
+  local err = zrpcCtrl.LuaProxyNotify(pxy, 294918, pbData, true)
+  if err ~= zrpcError.None then
+    error(tostring(err))
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.CancelMatch_Ret", retData)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleReceiveMessage(103198054, 294915, cJson.encode(pbRet), retData, true)
-  end
-  return pbRet.ret_code
 end
 
-function WorldProxy.MatchReady(matchReadyParam, cancelToken)
+function WorldProxy.MatchReady(matchReadyParam)
   local pbMsg = {}
   pbMsg.matchReadyParam = matchReadyParam
   local pbData = pb.encode("zproto.World.MatchReady", pbMsg)
   if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 294916, cJson.encode(pbMsg), pbData, true)
+    MessageInspectBridge.HandleSendMessage(103198054, 294919, cJson.encode(pbMsg), pbData, true)
   end
-  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
-  local pxyRet = pxyCallFunc(pxy, 294916, pbData, true, true, cancelToken)
-  local errorId = pxyRet:GetErrorId()
-  if 0 < errorId then
-    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
-      error(ZUtil.ZCancelSource.CancelException)
-    elseif errorId == zrpcError.MethodNotFound:ToInt() then
-      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294916, errorId)
-      error(errorId)
-    elseif errorId == zrpcError.Timeout:ToInt() then
-      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294916, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("NoEnterScene") then
-      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294916, errorId)
-      error(errorId)
-    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
-      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294916, errorId)
-      error(errorId)
-    else
-      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 294916, errorId)
-      if errorId < 1000 then
-        zrpcCtrl.Disconnect(channelType)
-      end
-      error(errorId)
-    end
+  local err = zrpcCtrl.LuaProxyNotify(pxy, 294919, pbData, true)
+  if err ~= zrpcError.None then
+    error(tostring(err))
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.MatchReady_Ret", retData)
-  if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleReceiveMessage(103198054, 294916, cJson.encode(pbRet), retData, true)
-  end
-  return pbRet.ret_code
 end
 
 function WorldProxy.GetWorldBossInfo(getWorldBossInfoParam, cancelToken)
@@ -13613,10 +15700,7 @@ function WorldProxy.GetWorldBossInfo(getWorldBossInfoParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetWorldBossInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 299009, cJson.encode(pbRet), retData, true)
@@ -13657,15 +15741,12 @@ function WorldProxy.ReceiveScoreReward(receiveScoreRewardParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReceiveScoreReward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 299010, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ReceiveBossReward(receiveBossRewardParam, cancelToken)
@@ -13701,57 +15782,51 @@ function WorldProxy.ReceiveBossReward(receiveBossRewardParam, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReceiveBossReward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 299011, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
-function WorldProxy.CraftEnergyRefresh(vRequest, cancelToken)
+function WorldProxy.BeginWorldBossMatch(worldBossMatchParam, cancelToken)
   local pbMsg = {}
-  pbMsg.vRequest = vRequest
-  local pbData = pb.encode("zproto.World.CraftEnergyRefresh", pbMsg)
+  pbMsg.worldBossMatchParam = worldBossMatchParam
+  local pbData = pb.encode("zproto.World.BeginWorldBossMatch", pbMsg)
   if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleSendMessage(103198054, 303105, cJson.encode(pbMsg), pbData, true)
+    MessageInspectBridge.HandleSendMessage(103198054, 299012, cJson.encode(pbMsg), pbData, true)
   end
   local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
-  local pxyRet = pxyCallFunc(pxy, 303105, pbData, true, true, cancelToken)
+  local pxyRet = pxyCallFunc(pxy, 299012, pbData, true, true, cancelToken)
   local errorId = pxyRet:GetErrorId()
   if 0 < errorId then
     if errorId == zrpcError.ProxyCallCanceled:ToInt() then
       error(ZUtil.ZCancelSource.CancelException)
     elseif errorId == zrpcError.MethodNotFound:ToInt() then
-      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 303105, errorId)
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 299012, errorId)
       error(errorId)
     elseif errorId == zrpcError.Timeout:ToInt() then
-      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 303105, errorId)
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 299012, errorId)
       error(errorId)
     elseif errorId == Z.PbErrCode("NoEnterScene") then
-      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 303105, errorId)
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 299012, errorId)
       error(errorId)
     elseif errorId == Z.PbErrCode("ModIDNotOpen") then
-      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 303105, errorId)
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 299012, errorId)
       error(errorId)
     else
-      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 303105, errorId)
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 299012, errorId)
       if errorId < 1000 then
         zrpcCtrl.Disconnect(channelType)
       end
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
-  local pbRet = pb.decode("zproto.World.CraftEnergyRefresh_Ret", retData)
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.BeginWorldBossMatch_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
-    MessageInspectBridge.HandleReceiveMessage(103198054, 303105, cJson.encode(pbRet), retData, true)
+    MessageInspectBridge.HandleReceiveMessage(103198054, 299012, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -13802,10 +15877,7 @@ function WorldProxy.GetTeamList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetTeamList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311297, cJson.encode(pbRet), retData, true)
@@ -13846,10 +15918,7 @@ function WorldProxy.GetNearTeamList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetNearTeamList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311298, cJson.encode(pbRet), retData, true)
@@ -13890,10 +15959,7 @@ function WorldProxy.CreateTeam(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.CreateTeam_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311299, cJson.encode(pbRet), retData, true)
@@ -13934,10 +16000,7 @@ function WorldProxy.ApplyJoinTeam(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ApplyJoinTeam_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311300, cJson.encode(pbRet), retData, true)
@@ -13978,10 +16041,7 @@ function WorldProxy.LeaderGetApplyList(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.LeaderGetApplyList_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311301, cJson.encode(pbRet), retData, true)
@@ -14022,10 +16082,7 @@ function WorldProxy.DealApplyJoin(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DealApplyJoin_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311302, cJson.encode(pbRet), retData, true)
@@ -14066,10 +16123,7 @@ function WorldProxy.DenyAllApplyJoin(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DenyAllApplyJoin_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311303, cJson.encode(pbRet), retData, true)
@@ -14110,10 +16164,7 @@ function WorldProxy.InviteToTeam(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.InviteToTeam_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311304, cJson.encode(pbRet), retData, true)
@@ -14154,10 +16205,7 @@ function WorldProxy.ReplyBeInvitation(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReplyBeInvitation_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311305, cJson.encode(pbRet), retData, true)
@@ -14198,10 +16246,7 @@ function WorldProxy.ApplyBeLeader(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ApplyBeLeader_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311306, cJson.encode(pbRet), retData, true)
@@ -14242,10 +16287,7 @@ function WorldProxy.RefuseLeaderApply(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RefuseLeaderApply_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311307, cJson.encode(pbRet), retData, true)
@@ -14286,10 +16328,7 @@ function WorldProxy.TransferLeader(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TransferLeader_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311308, cJson.encode(pbRet), retData, true)
@@ -14330,10 +16369,7 @@ function WorldProxy.AcceptTransferBeLeader(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.AcceptTransferBeLeader_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311309, cJson.encode(pbRet), retData, true)
@@ -14374,10 +16410,7 @@ function WorldProxy.KickOut(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.KickOut_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311310, cJson.encode(pbRet), retData, true)
@@ -14418,10 +16451,7 @@ function WorldProxy.QuitTeam(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.QuitTeam_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311311, cJson.encode(pbRet), retData, true)
@@ -14462,10 +16492,7 @@ function WorldProxy.TeamCancelActivity(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TeamCancelActivity_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311314, cJson.encode(pbRet), retData, true)
@@ -14506,10 +16533,7 @@ function WorldProxy.ReplyJoinActivity(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReplyJoinActivity_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311315, cJson.encode(pbRet), retData, true)
@@ -14550,10 +16574,7 @@ function WorldProxy.SetTeamTargetInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetTeamTargetInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311316, cJson.encode(pbRet), retData, true)
@@ -14594,10 +16615,7 @@ function WorldProxy.SetShowHall(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetShowHall_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311317, cJson.encode(pbRet), retData, true)
@@ -14638,10 +16656,7 @@ function WorldProxy.GoToTeamMemWorld(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GoToTeamMemWorld_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311323, cJson.encode(pbRet), retData, true)
@@ -14682,10 +16697,7 @@ function WorldProxy.TeamLeaderCall(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TeamLeaderCall_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311324, cJson.encode(pbRet), retData, true)
@@ -14726,10 +16738,7 @@ function WorldProxy.TeamMemCall(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TeamMemCall_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311325, cJson.encode(pbRet), retData, true)
@@ -14770,10 +16779,7 @@ function WorldProxy.TeamMemChangeScene(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TeamMemChangeScene_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311326, cJson.encode(pbRet), retData, true)
@@ -14814,10 +16820,7 @@ function WorldProxy.GetTeamInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetTeamInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311327, cJson.encode(pbRet), retData, true)
@@ -14858,10 +16861,7 @@ function WorldProxy.TeamInviteUser(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TeamInviteUser_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311328, cJson.encode(pbRet), retData, true)
@@ -14928,13 +16928,159 @@ function WorldProxy.SetVoiceId(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.SetVoiceId_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 311331, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ChangeTeamMemberType(vRequest)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.ChangeTeamMemberType", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 311332, cJson.encode(pbMsg), pbData, true)
+  end
+  local err = zrpcCtrl.LuaProxyNotify(pxy, 311332, pbData, true)
+  if err ~= zrpcError.None then
+    error(tostring(err))
+  end
+end
+
+function WorldProxy.UpdateTeamGroup(vRequest)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.UpdateTeamGroup", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 311333, cJson.encode(pbMsg), pbData, true)
+  end
+  local err = zrpcCtrl.LuaProxyNotify(pxy, 311333, pbData, true)
+  if err ~= zrpcError.None then
+    error(tostring(err))
+  end
+end
+
+function WorldProxy.SetTeamTargetQuickSay(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.SetTeamTargetQuickSay", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 311334, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 311334, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311334, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311334, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311334, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311334, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311334, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.SetTeamTargetQuickSay_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 311334, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.JoinDungeons(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.JoinDungeons", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 311335, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 311335, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311335, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311335, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311335, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311335, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311335, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.JoinDungeons_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 311335, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.InviteJoinDungeons(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.InviteJoinDungeons", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 311336, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 311336, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311336, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311336, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311336, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311336, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 311336, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.InviteJoinDungeons_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 311336, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end
@@ -14972,15 +17118,148 @@ function WorldProxy.GetRecommendPlayData(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.GetRecommendPlayData_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 315393, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
+end
+
+function WorldProxy.EnterAct(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.EnterAct", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 315394, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 315394, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315394, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315394, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315394, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315394, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315394, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.EnterAct_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 315394, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.CancelAct(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.CancelAct", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 315395, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 315395, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315395, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315395, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315395, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315395, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315395, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.CancelAct_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 315395, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ExitAct(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.ExitAct", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 315396, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 315396, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315396, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315396, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315396, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315396, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 315396, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ExitAct_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 315396, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.BeginRecommendPlayMatch(vRequest)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.BeginRecommendPlayMatch", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 315397, cJson.encode(pbMsg), pbData, true)
+  end
+  local err = zrpcCtrl.LuaProxyNotify(pxy, 315397, pbData, true)
+  if err ~= zrpcError.None then
+    error(tostring(err))
+  end
 end
 
 function WorldProxy.TakeOnRide(param, cancelToken)
@@ -15016,15 +17295,12 @@ function WorldProxy.TakeOnRide(param, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TakeOnRide_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 319489, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.TakeOffRide(param, cancelToken)
@@ -15060,15 +17336,12 @@ function WorldProxy.TakeOffRide(param, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.TakeOffRide_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 319490, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.StartRide(param, cancelToken)
@@ -15104,15 +17377,12 @@ function WorldProxy.StartRide(param, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.StartRide_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 319491, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.StopRide(isForce, cancelToken)
@@ -15148,15 +17418,12 @@ function WorldProxy.StopRide(isForce, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.StopRide_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 319492, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ApplyToRide(param, cancelToken)
@@ -15192,15 +17459,12 @@ function WorldProxy.ApplyToRide(param, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ApplyToRide_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 319493, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.InviteToRide(param, cancelToken)
@@ -15236,15 +17500,12 @@ function WorldProxy.InviteToRide(param, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.InviteToRide_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 319494, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ApplyToRideResult(param, cancelToken)
@@ -15280,15 +17541,12 @@ function WorldProxy.ApplyToRideResult(param, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ApplyToRideResult_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 319495, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.RideReconfirm(charId, cancelToken)
@@ -15324,15 +17582,293 @@ function WorldProxy.RideReconfirm(charId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.RideReconfirm_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 319496, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
+end
+
+function WorldProxy.SwitchRideAttach(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 319497, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 319497, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319497, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319497, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319497, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319497, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319497, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.SwitchRideAttach_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 319497, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.SwitchRideMagnetic(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 319498, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 319498, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319498, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319498, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319498, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319498, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319498, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.SwitchRideMagnetic_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 319498, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.DetachRideMagnetic(detachType, cancelToken)
+  local pbMsg = {}
+  pbMsg.detachType = detachType
+  local pbData = pb.encode("zproto.World.DetachRideMagnetic", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 319499, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 319499, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319499, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319499, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319499, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319499, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319499, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.DetachRideMagnetic_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 319499, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.RideMagneticAttachTo(targetUuid, cancelToken)
+  local pbMsg = {}
+  pbMsg.targetUuid = targetUuid
+  local pbData = pb.encode("zproto.World.RideMagneticAttachTo", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 319500, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 319500, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319500, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319500, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319500, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319500, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319500, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.RideMagneticAttachTo_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 319500, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.TakeOnActivateRideSkin(param, cancelToken)
+  local pbMsg = {}
+  pbMsg.param = param
+  local pbData = pb.encode("zproto.World.TakeOnActivateRideSkin", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 319501, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 319501, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319501, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319501, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319501, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319501, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319501, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.TakeOnActivateRideSkin_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 319501, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.TakeOnSetRideSkin(param, cancelToken)
+  local pbMsg = {}
+  pbMsg.param = param
+  local pbData = pb.encode("zproto.World.TakeOnSetRideSkin", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 319502, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 319502, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319502, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319502, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319502, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319502, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319502, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.TakeOnSetRideSkin_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 319502, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.SyncCirclePathLength(pathLength, cancelToken)
+  local pbMsg = {}
+  pbMsg.pathLength = pathLength
+  local pbData = pb.encode("zproto.World.SyncCirclePathLength", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 319503, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 319503, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319503, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319503, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319503, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319503, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 319503, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.SyncCirclePathLength_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 319503, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
 end
 
 function WorldProxy.DrawnFunctionOpenAward(functionId, cancelToken)
@@ -15368,15 +17904,12 @@ function WorldProxy.DrawnFunctionOpenAward(functionId, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.DrawnFunctionOpenAward_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 323585, cJson.encode(pbRet), retData, true)
   end
-  return pbRet.ret_code
+  return pbRet.ret
 end
 
 function WorldProxy.ReqSceneLineInfo(vRequest, cancelToken)
@@ -15412,10 +17945,7 @@ function WorldProxy.ReqSceneLineInfo(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqSceneLineInfo_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 327681, cJson.encode(pbRet), retData, true)
@@ -15456,13 +17986,1215 @@ function WorldProxy.ReqSwitchSceneLine(vRequest, cancelToken)
       error(errorId)
     end
   end
-  local retData = ""
-  if 0 < pxyRet:GetRetDataSize() then
-    retData = string.sub(pxyRet:GetRetData(), 0, pxyRet:GetRetDataSize())
-  end
+  local retData = pxyRet:GetRetData()
   local pbRet = pb.decode("zproto.World.ReqSwitchSceneLine_Ret", retData)
   if MessageInspectBridge.InInspectState == true then
     MessageInspectBridge.HandleReceiveMessage(103198054, 327682, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.Pay(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.Pay", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 331777, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 331777, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331777, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331777, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331777, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331777, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331777, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.Pay_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 331777, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.QueryProduct(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.QueryProduct", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 331778, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 331778, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331778, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331778, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331778, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331778, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331778, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.QueryProduct_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 331778, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetFirstPay(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 331779, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 331779, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331779, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331779, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331779, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331779, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331779, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetFirstPay_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 331779, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.PaySuccess(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.PaySuccess", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 331780, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 331780, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331780, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331780, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331780, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331780, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331780, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.PaySuccess_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 331780, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.QueryBalance(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.QueryBalance", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 331781, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 331781, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331781, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331781, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331781, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331781, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 331781, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.QueryBalance_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 331781, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.UnLockLifeProfession(lifeProfessionId, cancelToken)
+  local pbMsg = {}
+  pbMsg.lifeProfessionId = lifeProfessionId
+  local pbData = pb.encode("zproto.World.UnLockLifeProfession", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335873, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335873, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335873, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335873, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335873, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335873, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335873, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.UnLockLifeProfession_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335873, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetUpgradeReward(targetId, cancelToken)
+  local pbMsg = {}
+  pbMsg.targetId = targetId
+  local pbData = pb.encode("zproto.World.GetUpgradeReward", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335874, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335874, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335874, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335874, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335874, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335874, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335874, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetUpgradeReward_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335874, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ActivateSpecialization(lifeProfessionId, specializationId, cancelToken)
+  local pbMsg = {}
+  pbMsg.lifeProfessionId = lifeProfessionId
+  pbMsg.specializationId = specializationId
+  local pbData = pb.encode("zproto.World.ActivateSpecialization", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335875, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335875, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335875, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335875, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335875, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335875, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335875, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ActivateSpecialization_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335875, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.LifeProfessionBuild(req, cancelToken)
+  local pbMsg = {}
+  pbMsg.req = req
+  local pbData = pb.encode("zproto.World.LifeProfessionBuild", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335876, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335876, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335876, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335876, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335876, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335876, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335876, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.LifeProfessionBuild_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335876, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.LifeProfessionCooking(cookingReq, cancelToken)
+  local pbMsg = {}
+  pbMsg.cookingReq = cookingReq
+  local pbData = pb.encode("zproto.World.LifeProfessionCooking", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335877, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335877, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335877, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335877, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335877, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335877, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335877, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.LifeProfessionCooking_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335877, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.LifeProfessionRDCooking(rdReq, cancelToken)
+  local pbMsg = {}
+  pbMsg.rdReq = rdReq
+  local pbData = pb.encode("zproto.World.LifeProfessionRDCooking", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335878, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335878, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335878, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335878, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335878, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335878, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335878, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.LifeProfessionRDCooking_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335878, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.LifeProfessionAlchemy(req, cancelToken)
+  local pbMsg = {}
+  pbMsg.req = req
+  local pbData = pb.encode("zproto.World.LifeProfessionAlchemy", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335879, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335879, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335879, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335879, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335879, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335879, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335879, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.LifeProfessionAlchemy_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335879, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.LifeProfessionRDAlchemy(req, cancelToken)
+  local pbMsg = {}
+  pbMsg.req = req
+  local pbData = pb.encode("zproto.World.LifeProfessionRDAlchemy", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335880, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335880, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335880, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335880, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335880, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335880, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335880, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.LifeProfessionRDAlchemy_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335880, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.LifeProfessionStartWork(lifeProfessionId, count, cancelToken)
+  local pbMsg = {}
+  pbMsg.lifeProfessionId = lifeProfessionId
+  pbMsg.count = count
+  local pbData = pb.encode("zproto.World.LifeProfessionStartWork", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335881, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335881, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335881, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335881, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335881, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335881, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335881, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.LifeProfessionStartWork_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335881, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.LifeProfessionStopWork(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335882, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335882, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335882, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335882, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335882, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335882, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335882, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.LifeProfessionStopWork_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335882, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.LifeProfessionWorkReward(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335883, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335883, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335883, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335883, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335883, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335883, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335883, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.LifeProfessionWorkReward_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335883, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.LifeProfessionWorkEarlyEnd(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335884, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335884, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335884, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335884, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335884, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335884, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335884, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.LifeProfessionWorkEarlyEnd_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335884, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetLifeProfessionWorkHistoryInfo(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335885, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335885, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335885, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335885, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335885, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335885, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335885, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetLifeProfessionWorkHistoryInfo_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335885, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ResetSpecialization(lifeProfessionId, cancelToken)
+  local pbMsg = {}
+  pbMsg.lifeProfessionId = lifeProfessionId
+  local pbData = pb.encode("zproto.World.ResetSpecialization", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 335886, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 335886, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335886, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335886, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335886, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335886, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 335886, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ResetSpecialization_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 335886, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetMonthlyGuideReward(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 339969, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 339969, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 339969, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 339969, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 339969, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 339969, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 339969, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetMonthlyGuideReward_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 339969, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ClickMonthlyCardTips(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 339970, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 339970, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 339970, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 339970, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 339970, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 339970, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 339970, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ClickMonthlyCardTips_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 339970, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.UnlockEmoji(vEmojiId, cancelToken)
+  local pbMsg = {}
+  pbMsg.vEmojiId = vEmojiId
+  local pbData = pb.encode("zproto.World.UnlockEmoji", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 344065, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 344065, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 344065, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 344065, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 344065, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 344065, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 344065, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.UnlockEmoji_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 344065, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetActivityList(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 368641, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 368641, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368641, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368641, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368641, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368641, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368641, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetActivityList_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 368641, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetActivityReward(param, cancelToken)
+  local pbMsg = {}
+  pbMsg.param = param
+  local pbData = pb.encode("zproto.World.GetActivityReward", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 368642, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 368642, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368642, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368642, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368642, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368642, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368642, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetActivityReward_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 368642, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ActivityAction(param, cancelToken)
+  local pbMsg = {}
+  pbMsg.param = param
+  local pbData = pb.encode("zproto.World.ActivityAction", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 368643, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 368643, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368643, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368643, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368643, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368643, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 368643, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ActivityAction_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 368643, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetTreasureInfo(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetTreasureInfo", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 372737, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 372737, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 372737, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 372737, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 372737, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 372737, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 372737, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetTreasureInfo_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 372737, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ForceSettlement(cancelToken)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 372738, "No param", null, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 372738, nil, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 372738, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 372738, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 372738, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 372738, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 372738, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ForceSettlement_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 372738, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.EndBubbleAct(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.EndBubbleAct", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 376833, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 376833, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 376833, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 376833, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 376833, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 376833, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 376833, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.EndBubbleAct_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 376833, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetSignReward(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetSignReward", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 380929, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 380929, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 380929, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 380929, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 380929, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 380929, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 380929, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetSignReward_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 380929, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.GetQuestionnaireList(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.GetQuestionnaireList", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 385025, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 385025, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 385025, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 385025, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 385025, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 385025, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 385025, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.GetQuestionnaireList_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 385025, cJson.encode(pbRet), retData, true)
   end
   return pbRet.ret
 end

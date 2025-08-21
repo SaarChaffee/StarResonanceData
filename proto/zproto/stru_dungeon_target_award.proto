@@ -6,7 +6,5 @@ import "stru_dungeon_target_progress.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonTargetAward {
-    map<int32, .zproto.DungeonTargetProgress> dungeonTargetProgress = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.DungeonTargetAward.DungeonTargetProgressEntry dungeonTargetProgress = 1;
 }
-

@@ -35,13 +35,12 @@ function Team_requestView:OnActive()
   self:AddAsyncClick(self.btn_ignore_, function()
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("TeamRefuseAll"), function()
       for i = 1, #self.applyList_ do
-        local unitName = E.InvitationTipsType.Request .. "_" .. self.applyList_[i].charId
+        local unitName = string.zconcat(E.InvitationTipsType.TeamRequest, "_", self.applyList_[i].charId, "_", Lang("RequestJoinTeam"))
         Z.EventMgr:Dispatch(Z.ConstValue.InvitationClearTipsUnit, unitName)
       end
       self.teamVM_.AsyncDenyAllApllyJoin(self.cancelSource:CreateToken())
       self.applyList_ = {}
       self:refreshViewState(true)
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   end)
   self.btn_refresh_.interactable = true

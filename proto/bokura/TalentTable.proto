@@ -20,8 +20,6 @@ message TalentTableBase {
     int_table UnlockConsume = 1645;
     int32 BdTagId = 1743;
 }
-
 message TalentTableMgr {
-    map<int32, .bokura.TalentTableBase> datas = 1;
+    repeated bokura.TalentTableMgr.DatasEntry datas = 1;
 }
-

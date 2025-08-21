@@ -25,7 +25,7 @@ function ModCardNumEffectTplItem.RefreshTpl(uibinder, isLock, effects)
     if effect then
       uibinder.Ref:SetVisible(img, true)
       uibinder["lab_num_" .. i].text = effect.level
-      ModGlossaryItemTplItem.RefreshTpl(uibinder["glossary_item_" .. i], effect.effectId, effect.level)
+      ModGlossaryItemTplItem.RefreshTpl(uibinder["glossary_item_" .. i], effect.effectId)
     else
       uibinder.Ref:SetVisible(img, false)
     end

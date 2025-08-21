@@ -13,8 +13,6 @@ message ModTableBase {
     int_array EffectParameter = 761;
     int_array TagId = 1054;
 }
-
 message ModTableMgr {
-    map<int32, .bokura.ModTableBase> datas = 1;
+    repeated bokura.ModTableMgr.DatasEntry datas = 1;
 }
-

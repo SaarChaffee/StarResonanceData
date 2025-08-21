@@ -1,0 +1,227 @@
+{
+  "50001": {
+    "Id": 50001,
+    "Name": "",
+    "MapID": 7,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_01",
+    "PivotArea": 1,
+    "CameraId": 0
+  },
+  "50002": {
+    "Id": 50002,
+    "Name": "",
+    "MapID": 7,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_02",
+    "PivotArea": 0,
+    "CameraId": 0
+  },
+  "50003": {
+    "Id": 50003,
+    "Name": "",
+    "MapID": 7,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_04",
+    "PivotArea": 3,
+    "CameraId": 0
+  },
+  "50004": {
+    "Id": 50004,
+    "Name": "",
+    "MapID": 7,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_03",
+    "PivotArea": 2,
+    "CameraId": 0
+  },
+  "50005": {
+    "Id": 50005,
+    "Name": "",
+    "MapID": 7,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 4,
+    "CameraId": 0
+  },
+  "50006": {
+    "Id": 50006,
+    "Name": "",
+    "MapID": 71,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 0,
+    "CameraId": 0
+  },
+  "50007": {
+    "Id": 50007,
+    "Name": "",
+    "MapID": 72,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 0,
+    "CameraId": 0
+  },
+  "50008": {
+    "Id": 50008,
+    "Name": "",
+    "MapID": 73,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 1,
+    "CameraId": 0
+  },
+  "50009": {
+    "Id": 50009,
+    "Name": "",
+    "MapID": 74,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 1,
+    "CameraId": 0
+  },
+  "50010": {
+    "Id": 50010,
+    "Name": "",
+    "MapID": 75,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 1,
+    "CameraId": 0
+  },
+  "50011": {
+    "Id": 50011,
+    "Name": "",
+    "MapID": 9,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 1,
+    "CameraId": 0
+  },
+  "50012": {
+    "Id": 50012,
+    "Name": "",
+    "MapID": 9,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 1,
+    "CameraId": 0
+  },
+  "50013": {
+    "Id": 50013,
+    "Name": "",
+    "MapID": 9,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 1,
+    "CameraId": 0
+  },
+  "50014": {
+    "Id": 50014,
+    "Name": "",
+    "MapID": 9,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 1,
+    "CameraId": 0
+  },
+  "50015": {
+    "Id": 50015,
+    "Name": "",
+    "MapID": 9,
+    "AreaName": "",
+    "SettingOffNum": [],
+    "CirculateAward": [
+      10002010,
+      10002020,
+      10002030
+    ],
+    "PivotPic": "ui/textures/pivot/pivot_img_05",
+    "PivotArea": 1,
+    "CameraId": 0
+  }
+}

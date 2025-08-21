@@ -20,8 +20,6 @@ message BasicAttrEffectTableBase {
     int32 AttrObserveMax = 1690;
     mlstring AttrIntroduction = 1417;
 }
-
 message BasicAttrEffectTableMgr {
-    map<int32, .bokura.BasicAttrEffectTableBase> datas = 1;
+    repeated bokura.BasicAttrEffectTableMgr.DatasEntry datas = 1;
 }
-

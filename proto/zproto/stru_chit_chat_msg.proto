@@ -11,4 +11,3 @@ message ChitChatMsg {
     int64 timestamp = 3;
     zproto.ChatMsgInfo msgInfo = 4;
 }
-

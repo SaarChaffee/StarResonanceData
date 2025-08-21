@@ -7,4 +7,3 @@ message ShopItemBuyLimit {
     int32 canBuyCount = 2;
     int32 maxBuyCount = 3;
 }
-

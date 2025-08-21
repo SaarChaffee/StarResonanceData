@@ -1,0 +1,106 @@
+{
+  "101": {
+    "Id": 101,
+    "Type": 1,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_06",
+    "Description": "",
+    "ShowSort": 1,
+    "IsHide": 0
+  },
+  "102": {
+    "Id": 102,
+    "Type": 1,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_05",
+    "Description": "",
+    "ShowSort": 2,
+    "IsHide": 0
+  },
+  "103": {
+    "Id": 103,
+    "Type": 1,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_04",
+    "Description": "",
+    "ShowSort": 3,
+    "IsHide": 0
+  },
+  "104": {
+    "Id": 104,
+    "Type": 1,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_03",
+    "Description": "",
+    "ShowSort": 4,
+    "IsHide": 0
+  },
+  "105": {
+    "Id": 105,
+    "Type": 1,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_01",
+    "Description": "",
+    "ShowSort": 5,
+    "IsHide": 0
+  },
+  "106": {
+    "Id": 106,
+    "Type": 1,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_02",
+    "Description": "",
+    "ShowSort": 6,
+    "IsHide": 0
+  },
+  "201": {
+    "Id": 201,
+    "Type": 2,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_2",
+    "Description": "",
+    "ShowSort": 1,
+    "IsHide": 0
+  },
+  "202": {
+    "Id": 202,
+    "Type": 2,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_3",
+    "Description": "",
+    "ShowSort": 2,
+    "IsHide": 0
+  },
+  "203": {
+    "Id": 203,
+    "Type": 2,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_7",
+    "Description": "",
+    "ShowSort": 3,
+    "IsHide": 0
+  },
+  "204": {
+    "Id": 204,
+    "Type": 2,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_1",
+    "Description": "",
+    "ShowSort": 4,
+    "IsHide": 0
+  },
+  "205": {
+    "Id": 205,
+    "Type": 2,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_4",
+    "Description": "",
+    "ShowSort": 5,
+    "IsHide": 0
+  },
+  "206": {
+    "Id": 206,
+    "Type": 2,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_6",
+    "Description": "",
+    "ShowSort": 6,
+    "IsHide": 0
+  },
+  "208": {
+    "Id": 208,
+    "Type": 2,
+    "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_8",
+    "Description": "",
+    "ShowSort": 1,
+    "IsHide": 0
+  }
+}

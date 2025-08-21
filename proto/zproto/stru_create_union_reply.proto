@@ -2,8 +2,13 @@ syntax = "proto3";
 
 package zproto;
 
-message CreateUnionReply {
-    int32 errCode = 2;
-    int64 nextJoinTime = 3;
-}
+import "enum_e_error_code.proto";
+import "stru_union_info.proto";
+import "stru_user_summary_data.proto";
 
+message CreateUnionReply {
+    int64 nextJoinTime = 1;
+    zproto.UnionInfo info = 2;
+    zproto.UserSummaryData presidentInfo = 3;
+    zproto.EErrorCode errCode = 4;
+}

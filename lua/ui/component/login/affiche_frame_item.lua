@@ -25,7 +25,7 @@ function AfficheFrameItem:OnRefresh(data)
     if isOn then
       if self.data_ and self.data_.index_ ~= -1 then
         self.afficheData_:SetShowAfficheIndex(self.data_.index_)
-        self.parent.UIView:refreshInfo()
+        self.parent.UIView:refreshInfo(true)
       else
         self.uiBinder.tog_item.isOn = false
       end

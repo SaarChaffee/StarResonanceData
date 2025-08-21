@@ -22,8 +22,6 @@ message QteTableBase {
     int_array impactFunctionId = 1586;
     int32 impactType = 357;
 }
-
 message QteTableMgr {
-    map<int32, .bokura.QteTableBase> datas = 1;
+    repeated bokura.QteTableMgr.DatasEntry datas = 1;
 }
-

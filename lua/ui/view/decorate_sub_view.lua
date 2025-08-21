@@ -1,7 +1,7 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Decorate_subView = class("Decorate_subView", super)
-local IconPath = "ui/atlas/photograph_decoration/stickers/"
+local IconPath = "ui/textures/photograph_decoration/stickers/"
 local LeftBottomIcon = {
   [5] = "ui/atlas/photograph/camera_sticker_btn_transform",
   [6] = "ui/atlas/photograph/camera_sticker_btn_revert"
@@ -98,7 +98,7 @@ end
 function Decorate_subView:refreshDecorateItem(unit, decorateInfo)
   if E.CamerasysFuncType.Sticker == decorateInfo.decorateType then
     unit.Ref:SetVisible(unit.img_decorate_icon, true)
-    unit.img_decorate_icon:SetImage(string.format("%s%s_2", IconPath, decorateInfo.res))
+    unit.img_decorate_icon:SetImage(string.format("%s%s", IconPath, decorateInfo.res))
     unit.img_decorate_icon:SetColor(Color.New(1, 1, 1, decorateInfo.transparency))
     unit.rect_decorate_icon:SetScale(decorateInfo.iconScale.x, decorateInfo.iconScale.y)
     if decorateInfo.isFlip then
@@ -160,7 +160,7 @@ function Decorate_subView:bindDecorateItem(unit, decorateData)
       unit.dragtool_left:UnOriDir(pointerData.position.x, pointerData.position.y, position.x, position.y)
     end)
     unit.evt_left.onDrag:AddListener(function(go, pointerData)
-      local sizeRange = self.camerasysData_:GetCameraDecorateScaleRange()
+      local sizeRange = self.camerasysData_:GetCameraDecorateScaleRangeByType(decorateData.stickType)
       local controllerItemSize = unit.rect_controller_item.rect.size
       local size = unit.dragtool_left:ComputeScale(pointerData.delta.x, pointerData.delta.y, controllerItemSize.x, controllerItemSize.y, sizeRange.define, sizeRange.max)
       local rotation = unit.dragtool_left:ComputeRotate()

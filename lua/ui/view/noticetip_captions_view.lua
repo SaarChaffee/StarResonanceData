@@ -11,6 +11,7 @@ end
 
 function Tips_noticetip_captions_windowView:OnActive()
   self.uiBinder.Trans:SetAsFirstSibling()
+  self.uiBinder.Trans:SetSizeDelta(0, 0)
 end
 
 function Tips_noticetip_captions_windowView:OnDeActive()
@@ -18,11 +19,12 @@ function Tips_noticetip_captions_windowView:OnDeActive()
   if self.eventId_ then
     Z.AudioMgr:StopPlayingEvent(self.eventId_, 0.5)
   end
+  self.isPlayingVoice_ = false
   self.eventId_ = nil
 end
 
 function Tips_noticetip_captions_windowView:OnRefresh()
-  if not self.data_.NpcShowingState then
+  if not self.data_.NpcShowingState and not self.isPlayingVoice_ then
     self.data_.NpcShowingState = true
     self.uiBinder.anim:Pause()
     self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
@@ -48,17 +50,11 @@ function Tips_noticetip_captions_windowView:showNpcTip()
     self.timerMgr:StartTimer(function()
       if repeatCount <= 0 then
         if 0 < #self.data_.npc_msg_data then
-          self:showNpcTip()
+          if not self.isPlayingVoice_ then
+            self:showNpcTip()
+          end
         else
-          self.data_.NpcShowingState = false
-          self.uiBinder.anim:CoroPlay(Z.DOTweenAnimType.Close, function()
-            Z.EventMgr:Dispatch("ShowNoticeCaption")
-          end, function(err)
-            if err == ZUtil.ZCancelSource.CancelException then
-              return
-            end
-            logError("CoroPlay err={0}", err)
-          end)
+          self:checkCloseView()
         end
       end
     end, config.DurationTime)
@@ -90,9 +86,35 @@ function Tips_noticetip_captions_windowView:setTextContent(content, isTypewriter
   end
 end
 
+function Tips_noticetip_captions_windowView:checkCloseView()
+  if #self.data_.npc_msg_data == 0 and not self.isPlayingVoice_ then
+    self.data_.NpcShowingState = false
+    self.uiBinder.anim:CoroPlay(Z.DOTweenAnimType.Close, function()
+      Z.EventMgr:Dispatch("ShowNoticeCaption")
+    end, function(err)
+      if err == ZUtil.ZCancelSource.CancelException then
+        return
+      end
+      logError("CoroPlay err={0}", err)
+    end)
+  end
+end
+
 function Tips_noticetip_captions_windowView:playVoice(config)
-  if config and config.VoiceEventName and config.VoiceControlEvent then
-    self.eventId_ = Z.AudioMgr:PlayExternalVoiceWithEndCallback(config.VoiceEventName, config.VoiceControlEvent)
+  if config and not string.zisEmpty(config.VoiceEventName) and not string.zisEmpty(config.VoiceControlEvent) then
+    if config.WaitVoiceFinish then
+      self.isPlayingVoice_ = true
+      self.eventId_ = Z.AudioMgr:PlayExternalVoiceWithEndCallback(config.VoiceEventName, config.VoiceControlEvent, function()
+        self.isPlayingVoice_ = false
+        if #self.data_.npc_msg_data > 0 then
+          self:showNpcTip()
+        else
+          self:checkCloseView()
+        end
+      end)
+    else
+      self.eventId_ = Z.AudioMgr:PlayExternalVoiceWithEndCallback(config.VoiceEventName, config.VoiceControlEvent)
+    end
   end
 end
 

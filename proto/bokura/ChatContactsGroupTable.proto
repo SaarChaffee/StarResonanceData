@@ -9,8 +9,6 @@ message ChatContactsGroupTableBase {
     mlstring GroupName = 581;
     int32 Sequence = 831;
 }
-
 message ChatContactsGroupTableMgr {
-    map<int32, .bokura.ChatContactsGroupTableBase> datas = 1;
+    repeated bokura.ChatContactsGroupTableMgr.DatasEntry datas = 1;
 }
-

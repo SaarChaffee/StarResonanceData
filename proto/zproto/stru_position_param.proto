@@ -3,14 +3,11 @@ syntax = "proto3";
 package zproto;
 
 import "stru_cut_scene_point_info.proto";
-import "enum_e_user_transfer_type.proto";
 import "stru_scene_point_info.proto";
 import "stru_scene_pos_id_info.proto";
 
 message PositionParam {
-    zproto.EUserTransferType transferType = 1;
     zproto.ScenePointInfo scenePointInfo = 2;
     zproto.ScenePosIdInfo scenePosInfo = 3;
     zproto.CutScenePointInfo cutScenePointInfo = 4;
 }
-

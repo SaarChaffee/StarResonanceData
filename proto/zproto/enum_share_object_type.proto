@@ -10,5 +10,5 @@ enum ShareObjectType {
     ShareObjectTypeFishRank = 4;
     ShareObjectTypePersonalZone = 5;
     ShareObjectTypeUnionGrowFund = 6;
+    ShareObjectTypeMasterMode = 7;
 }
-

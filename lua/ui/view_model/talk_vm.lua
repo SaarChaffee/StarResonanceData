@@ -1,12 +1,12 @@
 local talkData = Z.DataMgr.Get("talk_data")
 local questData = Z.DataMgr.Get("quest_data")
 local openCommonTalkDialog = function(viewData)
-  if Z.StatusSwitchMgr:CheckSwitchEnable(Z.EStatusSwitch.StatusNormalDialogue) then
+  if Z.StatusSwitchMgr:TrySwitchToState(Z.EStatusSwitch.StatusNormalDialogue) then
     Z.UIMgr:OpenView("talk_dialog_window", viewData)
   end
 end
 local closeCommonTalkDialog = function()
-  Z.UIMgr:CloseView("talk_dialog_window")
+  Z.EventMgr:Dispatch(Z.ConstValue.Talk.CloseTalkDialog)
 end
 local openCommonTalk = function(viewData)
   Z.UIMgr:OpenView("talk_main", viewData)
@@ -93,15 +93,13 @@ end
 local onBeforeBeginTalk = function()
   Z.LuaBridge.BeginTalk()
   Z.GlobalTimerMgr:StopTimer(E.GlobalTimerTag.TalkEnd)
-  local questTrackVM = Z.VMMgr.GetVM("quest_track")
-  questTrackVM.SetQuestGuideEffectVisible(false)
+  local questGoalGuideVm = Z.VMMgr.GetVM("quest_goal_guide")
+  questGoalGuideVm.SetQuestGuideEffectVisible(false)
 end
 local beginNpcTalkState = function(data, token)
   local flowId = getTalkFlowByNpcId(data)
   if flowId <= 0 then
-    return
-  end
-  if not Z.NpcBehaviourMgr:CanTalk(data.uuid) then
+    logError("[Quest] beginNpcTalkState invalid flowId:" .. flowId)
     return
   end
   local info = talkData:GetPlayFlowIdInfo(flowId)
@@ -117,6 +115,7 @@ end
 local beginNpcTalkFlow = function(data, token)
   local flowId = talkData:GetFlowIdByOwner(data.uuid)
   if flowId == nil or flowId <= 0 then
+    logGreen("[Quest] BeginFlow flowId is nil or <= 0")
     return
   end
   talkData:SetTalkingNpcData(data)
@@ -142,8 +141,8 @@ local onEPFlowStart = function(flowId)
 end
 local onEndTalk = function()
   logGreen("[Quest] onEndTalk")
-  local questTrackVM = Z.VMMgr.GetVM("quest_track")
-  questTrackVM.SetQuestGuideEffectVisible(true)
+  local questGoalGuideVm = Z.VMMgr.GetVM("quest_goal_guide")
+  questGoalGuideVm.SetQuestGuideEffectVisible(true)
   Z.EventMgr:Dispatch(Z.ConstValue.NpcTalk.TalkStateEnd)
   Z.LuaBridge.EndTalk()
 end
@@ -205,8 +204,14 @@ local stopWaitNpcTalkState = function(uuid)
     return
   end
   if flowInfo.state == E.FlowPlayStateEnum.WaitNpc then
-    logGreen("[Quest] stopWaitNpcTalkState flowId:" .. flowId)
+    logError("[Quest] stopWaitNpcTalkState flowId:" .. flowId)
+    local curFlow = talkData:GetTalkCurFlow()
+    if 0 < curFlow and curFlow == flowId then
+      talkData:SetTalkCurFlow(0)
+    end
+    talkData:RefreshPlayFlowIdState(flowId, E.FlowPlayStateEnum.Finish)
     endTalkState()
+    Z.NpcBehaviourMgr:EndTalk()
   end
 end
 local handlePlaceholderStr = function(content)
@@ -236,6 +241,14 @@ local isCurFlowDefaultFlow = function()
   end
   return curFlow == defaultFlow
 end
+local isTalking = function()
+  local talkData = Z.DataMgr.Get("talk_data")
+  local curFlow = talkData:GetTalkCurFlow()
+  if 0 < curFlow then
+    return true
+  end
+  return false
+end
 local ret = {
   IsAddTalkGoal = isAddTalkGoal,
   BeginNpcTalkState = beginNpcTalkState,
@@ -252,6 +265,8 @@ local ret = {
   HandlePlaceholderStr = handlePlaceholderStr,
   EndTalkState = endTalkState,
   IsCurFlowDefaultFlow = isCurFlowDefaultFlow,
-  NotifyNpcQuestTalkFlowChange = notifyNpcQuestTalkFlowChange
+  NotifyNpcQuestTalkFlowChange = notifyNpcQuestTalkFlowChange,
+  IsTalking = isTalking,
+  StopWaitNpcTalkState = stopWaitNpcTalkState
 }
 return ret

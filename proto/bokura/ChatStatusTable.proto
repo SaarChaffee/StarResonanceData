@@ -12,8 +12,6 @@ message ChatStatusTableBase {
     int32 Sequence = 831;
     int32 Priority = 1712;
 }
-
 message ChatStatusTableMgr {
-    map<int32, .bokura.ChatStatusTableBase> datas = 1;
+    repeated bokura.ChatStatusTableMgr.DatasEntry datas = 1;
 }
-

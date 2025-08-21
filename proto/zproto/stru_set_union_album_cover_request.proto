@@ -7,4 +7,3 @@ message SetUnionAlbumCoverRequest {
     uint32 photoId = 2;
     uint32 albumId = 3;
 }
-

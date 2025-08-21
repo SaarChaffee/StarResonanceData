@@ -1,0 +1,863 @@
+{
+  "100111": {
+    "Id": 100111,
+    "Sort": 1,
+    "UnlockCondition": [
+      [
+        1,
+        20043
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1887227771,
+      1887227772
+    ],
+    "Tips": "",
+    "TapBubble": [
+      414321980,
+      414321981
+    ],
+    "TapBubbleAction": [
+      9026
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100112": {
+    "Id": 100112,
+    "Sort": 2,
+    "UnlockCondition": [
+      [
+        1,
+        20043
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1887228860,
+      1887228861
+    ],
+    "Tips": "",
+    "TapBubble": [
+      414323069,
+      414323070
+    ],
+    "TapBubbleAction": [
+      9033
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100113": {
+    "Id": 100113,
+    "Sort": 3,
+    "UnlockCondition": [
+      [
+        1,
+        20043
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1887229949,
+      1887229950,
+      1887229951,
+      1887229952
+    ],
+    "Tips": "",
+    "TapBubble": [
+      414324158,
+      414324159,
+      414324160,
+      414324161
+    ],
+    "TapBubbleAction": [
+      9026,
+      9047
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100121": {
+    "Id": 100121,
+    "Sort": 4,
+    "UnlockCondition": [
+      [
+        2,
+        20040,
+        20040016
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1887263708,
+      1887263709,
+      1887263710,
+      1887263711
+    ],
+    "Tips": "",
+    "TapBubble": [
+      414357917,
+      414357918,
+      414357919,
+      414357920
+    ],
+    "TapBubbleAction": [
+      9033,
+      9047
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100122": {
+    "Id": 100122,
+    "Sort": 5,
+    "UnlockCondition": [
+      [
+        2,
+        20040,
+        20040017
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1887264797,
+      1887264798,
+      1887264799,
+      1887264800
+    ],
+    "Tips": "",
+    "TapBubble": [
+      414359006,
+      414359007,
+      414359008,
+      414359009
+    ],
+    "TapBubbleAction": [
+      9019,
+      9026
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100123": {
+    "Id": 100123,
+    "Sort": 6,
+    "UnlockCondition": [
+      [
+        2,
+        20040,
+        20040018
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1887265886,
+      1887265887,
+      1887265888,
+      1887265889
+    ],
+    "Tips": "",
+    "TapBubble": [
+      414360095,
+      414360096,
+      414360097,
+      414360098
+    ],
+    "TapBubbleAction": [
+      9026,
+      9047
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100311": {
+    "Id": 100311,
+    "Sort": 1,
+    "UnlockCondition": [
+      [
+        2,
+        185210,
+        185210043
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1889599613,
+      1889599614
+    ],
+    "Tips": "",
+    "TapBubble": [
+      416693822,
+      416693823
+    ],
+    "TapBubbleAction": [
+      9033
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100312": {
+    "Id": 100312,
+    "Sort": 2,
+    "UnlockCondition": [
+      [
+        2,
+        185210,
+        185210043
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1889600702,
+      1889600703
+    ],
+    "Tips": "",
+    "TapBubble": [
+      416694911,
+      416694912
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100313": {
+    "Id": 100313,
+    "Sort": 3,
+    "UnlockCondition": [
+      [
+        2,
+        185210,
+        185210043
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1889601791,
+      1889601792
+    ],
+    "Tips": "",
+    "TapBubble": [
+      416696000,
+      416696001
+    ],
+    "TapBubbleAction": [
+      9026
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100411": {
+    "Id": 100411,
+    "Sort": 1,
+    "UnlockCondition": [
+      [
+        2,
+        10211,
+        10211051
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1890785534,
+      1890785535
+    ],
+    "Tips": "",
+    "TapBubble": [
+      417879743,
+      417879744
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100412": {
+    "Id": 100412,
+    "Sort": 2,
+    "UnlockCondition": [
+      [
+        2,
+        10211,
+        10211051
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1890786623,
+      1890786624,
+      1890786625,
+      1890786626
+    ],
+    "Tips": "",
+    "TapBubble": [
+      417880832,
+      417880833,
+      417880834,
+      417880835
+    ],
+    "TapBubbleAction": [
+      9026
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100413": {
+    "Id": 100413,
+    "Sort": 3,
+    "UnlockCondition": [
+      [
+        2,
+        10211,
+        10211051
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1890787712,
+      1890787713
+    ],
+    "Tips": "",
+    "TapBubble": [
+      417881921,
+      417881922
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100511": {
+    "Id": 100511,
+    "Sort": 1,
+    "UnlockCondition": [
+      [
+        2,
+        30122,
+        30122012
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1891971455,
+      1891971456
+    ],
+    "Tips": "",
+    "TapBubble": [
+      419065664,
+      419065665
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100512": {
+    "Id": 100512,
+    "Sort": 2,
+    "UnlockCondition": [
+      [
+        2,
+        30122,
+        30122012
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1891972544,
+      1891972545
+    ],
+    "Tips": "",
+    "TapBubble": [
+      419066753,
+      419066754
+    ],
+    "TapBubbleAction": [
+      9026
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100513": {
+    "Id": 100513,
+    "Sort": 3,
+    "UnlockCondition": [
+      [
+        2,
+        30122,
+        30122012
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1891973633,
+      1891973634
+    ],
+    "Tips": "",
+    "TapBubble": [
+      419067842,
+      419067843
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100611": {
+    "Id": 100611,
+    "Sort": 1,
+    "UnlockCondition": [
+      [
+        2,
+        185220,
+        185220016
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1893157376,
+      1893157377
+    ],
+    "Tips": "",
+    "TapBubble": [
+      420251585,
+      420251586
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100612": {
+    "Id": 100612,
+    "Sort": 2,
+    "UnlockCondition": [
+      [
+        2,
+        185220,
+        185220016
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1893158465,
+      1893158466,
+      1893158467,
+      1893158468
+    ],
+    "Tips": "",
+    "TapBubble": [
+      420252674,
+      420252675,
+      420252676,
+      420252677
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "100613": {
+    "Id": 100613,
+    "Sort": 3,
+    "UnlockCondition": [
+      [
+        2,
+        185220,
+        185220016
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1893159554,
+      1893159555,
+      1893159556,
+      1893159557,
+      1893159558,
+      1893159559
+    ],
+    "Tips": "",
+    "TapBubble": [
+      420253763,
+      420253764,
+      420253765,
+      420253766,
+      420253767,
+      420253768
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "300111": {
+    "Id": 300111,
+    "Sort": 1,
+    "UnlockCondition": [
+      [
+        2,
+        30205,
+        30205005
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1224767805,
+      1224767806
+    ],
+    "Tips": "",
+    "TapBubble": [
+      1899345662,
+      1899345663
+    ],
+    "TapBubbleAction": [
+      9033,
+      9047,
+      9047
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "300112": {
+    "Id": 300112,
+    "Sort": 2,
+    "UnlockCondition": [
+      [
+        2,
+        30205,
+        30205005
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1224768894,
+      1224768895,
+      1224768896,
+      1224768897
+    ],
+    "Tips": "",
+    "TapBubble": [
+      1899346751,
+      1899346752,
+      1899346753,
+      1899346754
+    ],
+    "TapBubbleAction": [
+      9019,
+      9026
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "300113": {
+    "Id": 300113,
+    "Sort": 3,
+    "UnlockCondition": [
+      [
+        2,
+        30205,
+        30205005
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1224769983,
+      1224769984,
+      1224769985,
+      1224769986,
+      1224769987,
+      1224769988,
+      1224769989,
+      1224769990
+    ],
+    "Tips": "",
+    "TapBubble": [
+      1899347840,
+      1899347841,
+      1899347842,
+      1899347843,
+      1899347844,
+      1899347845,
+      1899347846,
+      1899347847
+    ],
+    "TapBubbleAction": [
+      9019,
+      9026
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "200201": {
+    "Id": 200201,
+    "Sort": 1,
+    "UnlockCondition": [
+      [
+        2,
+        20020,
+        20020005
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1557147772,
+      1557147773
+    ],
+    "Tips": "",
+    "TapBubble": [
+      84241981,
+      84241982
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "200202": {
+    "Id": 200202,
+    "Sort": 2,
+    "UnlockCondition": [
+      [
+        2,
+        20020,
+        20020005
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1557148861,
+      1557148862,
+      1557148863,
+      1557148864
+    ],
+    "Tips": "",
+    "TapBubble": [
+      84243070,
+      84243071,
+      84243072,
+      84243073
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "200203": {
+    "Id": 200203,
+    "Sort": 3,
+    "UnlockCondition": [
+      [
+        2,
+        20020,
+        20020005
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1557149950,
+      1557149951
+    ],
+    "Tips": "",
+    "TapBubble": [
+      84244159,
+      84244160
+    ],
+    "TapBubbleAction": [
+      9026
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "300211": {
+    "Id": 300211,
+    "Sort": 1,
+    "UnlockCondition": [
+      [
+        2,
+        30301,
+        30301017
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1225953726,
+      1225953727,
+      1225953728,
+      1225953729,
+      1225953730,
+      1225953731
+    ],
+    "Tips": "",
+    "TapBubble": [
+      1900531583,
+      1900531584,
+      1900531585,
+      1900531586,
+      1900531587,
+      1900531588
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "300212": {
+    "Id": 300212,
+    "Sort": 2,
+    "UnlockCondition": [
+      [
+        2,
+        30301,
+        30301017
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1225954815,
+      1225954816,
+      1225954817,
+      1225954818,
+      1225954819,
+      1225954820
+    ],
+    "Tips": "",
+    "TapBubble": [
+      1900532672,
+      1900532673,
+      1900532674,
+      1900532675,
+      1900532676,
+      1900532677
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "300213": {
+    "Id": 300213,
+    "Sort": 3,
+    "UnlockCondition": [
+      [
+        2,
+        30301,
+        30301017
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      1225955904,
+      1225955905,
+      1225955906,
+      1225955907,
+      1225955908,
+      1225955909
+    ],
+    "Tips": "",
+    "TapBubble": [
+      1900533761,
+      1900533762,
+      1900533763,
+      1900533764,
+      1900533765,
+      1900533766
+    ],
+    "TapBubbleAction": [
+      9026
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "400111": {
+    "Id": 400111,
+    "Sort": 1,
+    "UnlockCondition": [
+      [
+        2,
+        185402,
+        185402002
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      893537822,
+      893537823
+    ],
+    "Tips": "",
+    "TapBubble": [
+      1568115679,
+      1568115680
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "400112": {
+    "Id": 400112,
+    "Sort": 2,
+    "UnlockCondition": [
+      [
+        2,
+        185402,
+        185402002
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      893538911,
+      893538912
+    ],
+    "Tips": "",
+    "TapBubble": [
+      1568116768,
+      1568116769
+    ],
+    "TapBubbleAction": [
+      9019
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  },
+  "400113": {
+    "Id": 400113,
+    "Sort": 3,
+    "UnlockCondition": [
+      [
+        2,
+        185402,
+        185402002
+      ]
+    ],
+    "Clue": "",
+    "Answer": [
+      893540000,
+      893540001
+    ],
+    "Tips": "",
+    "TapBubble": [
+      1568117857,
+      1568117858
+    ],
+    "TapBubbleAction": [
+      9026
+    ],
+    "UnlockedBubble": "",
+    "UnlockedBubbleAction": 9019
+  }
+}

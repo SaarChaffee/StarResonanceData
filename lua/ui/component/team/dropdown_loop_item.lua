@@ -1,5 +1,7 @@
 local DropDownItem = class("DropDownItem")
 local funcVM = Z.VMMgr.GetVM("gotofunc")
+local heroDungeonVm = Z.VMMgr.GetVM("hero_dungeon_main")
+local dungeonVm = Z.VMMgr.GetVM("dungeon")
 
 function DropDownItem:ctor(uiView, parent, dropDowunAddress, targetItemAddress)
   self.uiView_ = uiView
@@ -13,6 +15,7 @@ function DropDownItem:OnInit()
 end
 
 function DropDownItem:createTargetItem(isHideAll)
+  self.selectedUnit = nil
   local teamData = Z.DataMgr.Get("team_data")
   self.unitDict = {}
   local targetList = {}
@@ -42,7 +45,7 @@ function DropDownItem:createTargetItem(isHideAll)
       unit.lab_name2.text = name
       unit.lab_name1.text = name
       if self.uiView_.targetId_ == targetId then
-        self.uiView_.nowSelectUnit = unit
+        self.selectedUnit = unit
         unit.Ref:SetVisible(unit.img_on, true)
         unit.Ref:SetVisible(unit.img_off, false)
       else
@@ -51,13 +54,28 @@ function DropDownItem:createTargetItem(isHideAll)
       end
       unit.Ref:SetVisible(unit.layout_list, false)
       local childTargetList = {}
+      local isHaveChildrenNode = false
       for k, v in pairs(teamData.TeamTargetTableDatas) do
         if v.BelongType == targetId then
-          local dungeonRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(v.RelativeDungeonId, true)
-          if dungeonRow and Z.ConditionHelper.CheckCondition(dungeonRow.Condition) then
-            childTargetList[#childTargetList + 1] = v
+          isHaveChildrenNode = true
+          local isUnlock = true
+          if targetList[i].FunctionID == E.FunctionID.HeroNormalDungeon then
+            isUnlock = dungeonVm.GetDungeonIsUnlock(v.RelativeDungeonId)
+          elseif targetList[i].FunctionID == E.FunctionID.HeroChallengeDungeon then
+            isUnlock = heroDungeonVm.IsUnlockDungeonId(v.RelativeDungeonId)
+          end
+          if isUnlock then
+            local dungeonRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(v.RelativeDungeonId, true)
+            if dungeonRow and Z.ConditionHelper.CheckCondition(dungeonRow.Condition) then
+              childTargetList[#childTargetList + 1] = v
+            end
           end
         end
+      end
+      if isHaveChildrenNode and #childTargetList == 0 then
+        unit.Ref.UIComp:SetVisible(false)
+      else
+        unit.Ref.UIComp:SetVisible(true)
       end
       table.sort(childTargetList, function(a, b)
         return a.Sort < b.Sort
@@ -70,15 +88,28 @@ function DropDownItem:createTargetItem(isHideAll)
           break
         end
       end
+      local isHaveChild = 0 < #childTargetList
       if unit.isOpen then
-        unit.Ref:SetVisible(unit.layout_list, 0 < #childTargetList)
+        unit.Ref:SetVisible(unit.layout_list, isHaveChild)
         self:targetItemActive(unit, childTargetList)
+      end
+      if unit.lab_team1 then
+        unit.Ref:SetVisible(unit.lab_team1, not isHaveChild)
+        unit.Ref:SetVisible(unit.lab_team2, not isHaveChild)
+        if not isHaveChild then
+          local teamTargetRow = Z.TableMgr.GetRow("TeamTargetTableMgr", targetId)
+          if teamTargetRow then
+            local teamMemberStr = teamTargetRow.TeamType == 0 and 5 or 20
+            unit.lab_team1.text = Lang("TeamMemberNum", {val = teamMemberStr})
+            unit.lab_team2.text = Lang("TeamMemberNum", {val = teamMemberStr})
+          end
+        end
       end
       local rotateAngle = unit.isOpen and 0 or 180
       unit.img_arrow.transform:SetRot(rotateAngle, 0, 0)
-      unit.Ref:SetVisible(unit.img_arrow, 0 < #childTargetList)
+      unit.Ref:SetVisible(unit.img_arrow, isHaveChild)
       self.uiView_:AddAsyncClick(unit.btn_more, function()
-        if 0 < #childTargetList then
+        if isHaveChild then
           unit.isOpen = not unit.isOpen
           unit.Ref:SetVisible(unit.layout_list, unit.isOpen)
           local rotateAngle = unit.isOpen and 0 or 180
@@ -86,17 +117,17 @@ function DropDownItem:createTargetItem(isHideAll)
           self:targetItemActive(unit, childTargetList)
         else
           unit.Ref:SetVisible(unit.layout_list, false)
-          if self.uiView_.setTargetId_ == targetId then
+          if self.uiView_.targetId_ == targetId then
             return
           end
           self.uiView_:SetTargetid(targetId)
           unit.Ref:SetVisible(unit.img_on, true)
           unit.Ref:SetVisible(unit.img_off, false)
-          if self.uiView_.nowSelectUnit then
-            self.uiView_.nowSelectUnit.Ref:SetVisible(self.uiView_.nowSelectUnit.img_on, false)
-            self.uiView_.nowSelectUnit.Ref:SetVisible(self.uiView_.nowSelectUnit.img_off, true)
+          if self.selectedUnit then
+            self.selectedUnit.Ref:SetVisible(self.selectedUnit.img_on, false)
+            self.selectedUnit.Ref:SetVisible(self.selectedUnit.img_off, true)
           end
-          self.uiView_.nowSelectUnit = unit
+          self.selectedUnit = unit
         end
       end)
     end
@@ -120,22 +151,30 @@ function DropDownItem:targetItemActive(parentUnit, childTargetList)
           local isSelect = self.uiView_.targetId_ == childTargetId
           childUnit.Ref:SetVisible(childUnit.img_on, isSelect)
           childUnit.Ref:SetVisible(childUnit.img_off, not isSelect)
+          if childUnit.lab_team1 then
+            local teamTargetRow = Z.TableMgr.GetRow("TeamTargetTableMgr", childTargetId)
+            if teamTargetRow then
+              local teamMemberStr = teamTargetRow.TeamType == 0 and 5 or 20
+              childUnit.lab_team1.text = Lang("TeamMemberNum", {val = teamMemberStr})
+              childUnit.lab_team2.text = Lang("TeamMemberNum", {val = teamMemberStr})
+            end
+          end
           if isSelect then
             self.uiView_.lastSelectUnit = childUnit
-            self.uiView_.nowSelectUnit = childUnit
+            self.selectedUnit = childUnit
           end
           self.unitDict[childUnitName] = childUnit
           self.uiView_:AddAsyncClick(childUnit.btn_more, function()
-            if self.uiView_.setTargetId_ == childTargetId then
+            if self.uiView_.targetId_ == childTargetId then
               return
             end
             childUnit.Ref:SetVisible(childUnit.img_on, true)
             childUnit.Ref:SetVisible(childUnit.img_off, false)
-            if self.uiView_.nowSelectUnit then
-              self.uiView_.nowSelectUnit.Ref:SetVisible(self.uiView_.nowSelectUnit.img_on, false)
-              self.uiView_.nowSelectUnit.Ref:SetVisible(self.uiView_.nowSelectUnit.img_off, true)
+            if self.selectedUnit then
+              self.selectedUnit.Ref:SetVisible(self.selectedUnit.img_on, false)
+              self.selectedUnit.Ref:SetVisible(self.selectedUnit.img_off, true)
             end
-            self.uiView_.nowSelectUnit = childUnit
+            self.selectedUnit = childUnit
             self.uiView_:SetTargetid(childTargetId)
           end)
         end
@@ -155,7 +194,7 @@ function DropDownItem:targetItemActive(parentUnit, childTargetList)
 end
 
 function DropDownItem:ClearUnit()
-  self.uiView_.nowSelectUnit = nil
+  self.selectedUnit = nil
   for k, v in pairs(self.unitDict) do
     self.uiView_:RemoveUiUnit(k)
   end

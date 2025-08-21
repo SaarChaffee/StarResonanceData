@@ -5,4 +5,3 @@ package zproto;
 message WorldEventTransferInfo {
     int32 eventId = 1;
 }
-

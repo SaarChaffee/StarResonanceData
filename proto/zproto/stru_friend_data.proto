@@ -9,4 +9,3 @@ message FriendData {
     zproto.PersonalInfo info = 1;
     zproto.FriendBaseInfo baseInfo = 2;
 }
-

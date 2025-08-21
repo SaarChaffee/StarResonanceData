@@ -7,4 +7,3 @@ enum EBuffVisible {
     Self = 1;
     All = 2;
 }
-

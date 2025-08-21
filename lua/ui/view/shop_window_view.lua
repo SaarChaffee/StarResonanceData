@@ -3,64 +3,86 @@ local super = require("ui.ui_view_base")
 local Shop_windowView = class("Shop_windowView", super)
 local loopListView = require("ui.component.loop_list_view")
 local tog1_Item = require("ui.component.shop.shop_tog1_loop_item")
-E.MallType = {
-  EMysterious = 6,
-  EFashion = 7,
-  ERecharge = 13
-}
+local currency_item_list = require("ui.component.currency.currency_item_list")
 
 function Shop_windowView:ctor()
   self.uiBinder = nil
   super.ctor(self, "shop_window")
   self.shopVm_ = Z.VMMgr.GetVM("shop")
-  self.currencyVm_ = Z.VMMgr.GetVM("currency")
-  self.seasonVm_ = Z.VMMgr.GetVM("season_shop")
-  self.itemShowVm_ = Z.VMMgr.GetVM("item_show")
   self.functionCfg_ = Z.TableMgr.GetTable("FunctionTableMgr")
   self.fashionVM_ = Z.VMMgr.GetVM("fashion")
   self.helpsysVM_ = Z.VMMgr.GetVM("helpsys")
+  self.userSupportVM_ = Z.VMMgr.GetVM("user_support")
   self.shopAllView_ = require("ui.view.shop_all_sub_view").new(self)
-  self.shopEnghView_ = require("ui.view.shop_charge_sub_view").new(self)
+  self.shopPayView_ = require("ui.view.shop_pay_sub_view").new(self)
   self.shopFashionView_ = require("ui.view.shop_fashion_sub_view").new(self)
   self.shopMysteriousView_ = require("ui.view.shop_mysterious_sub_view").new(self)
-  
-  function self.onInputAction_(inputActionEventData)
-    self:OnInputBack()
-  end
+  self.monthlyCardView_ = require("ui.view.monthly_reward_card_sub_view").new(self)
+  self.shopGiftView_ = require("ui.view.shop_gift_sub_view").new(self)
+  self.shopViewList_ = {
+    [E.EShopViewType.ECommon] = self.shopAllView_,
+    [E.EShopViewType.EGift] = self.shopGiftView_,
+    [E.EShopViewType.ERewardCard] = self.monthlyCardView_,
+    [E.EShopViewType.EFashion] = self.shopFashionView_,
+    [E.EShopViewType.EMysterious] = self.shopMysteriousView_,
+    [E.EShopViewType.EPay] = self.shopPayView_
+  }
 end
 
 function Shop_windowView:OnActive()
+  Z.AudioMgr:Play("UI_Event_ShopWindowEnter")
   Z.UnrealSceneMgr:InitSceneCamera()
   self:onStartAnimShow()
-  local nameCfg = self.functionCfg_.GetRow(800800)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_desc, true)
+  local nameCfg = self.functionCfg_.GetRow(E.FunctionID.Shop)
   self.uiBinder.lab_title.text = nameCfg and nameCfg.Name or ""
   self.timerCallTable_ = nil
   self:AddClick(self.uiBinder.btn_return, function()
+    local shopData = Z.DataMgr.Get("shop_data")
+    shopData:InitShopBuyItemInfoList()
     self.shopVm_.CloseShopView()
   end)
-  self:AddClick(self.uiBinder.btn_ask, function()
-    self.helpsysVM_.OpenFullScreenTipsView(800800)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_service, self.userSupportVM_.CheckValid(E.UserSupportType.Recharge))
+  self:AddClick(self.uiBinder.btn_service, function()
+    self.userSupportVM_.OpenUserSupportWebView(E.UserSupportType.Recharge)
   end)
-  self.firstLoopListView_ = loopListView.new(self, self.uiBinder.loop_first_togs, tog1_Item, "shop_tog_tpl")
+  self:AddClick(self.uiBinder.btn_ask, function()
+    self.helpsysVM_.OpenFullScreenTipsView(E.FunctionID.Shop)
+  end)
+  self.firstLoopListView_ = loopListView.new(self, self.uiBinder.loop_first_togs, tog1_Item, "shop_tog_tpl", true)
   self.firstLoopListView_:Init({})
-  self:RegisterInputActions()
+  self:HideBanner()
+  self:refreshNodeShop()
+  Z.EventMgr:Add(Z.ConstValue.Shop.NotifyBuyShopResult, self.buyCallFunc, self)
 end
 
 function Shop_windowView:OnRefresh()
   Z.CoroUtil.create_coro_xpcall(function()
+    Z.VMMgr.GetVM("payment"):AsyncQueryBalance()
+    if Z.DataMgr.Get("payment_data"):GetProductName() == nil then
+      Z.VMMgr.GetVM("payment"):AysncQueryProduct()
+    end
     self:asyncInitProps()
     self:initFirstLevelTab()
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_token_shop, true)
   end)()
 end
 
 function Shop_windowView:OnDeActive()
+  self:HideBanner()
   self.firstLoopListView_:UnInit()
-  self:UnRegisterInputActions()
   self.showData_ = nil
-  self.currencyVm_.CloseCurrencyView(self)
+  if self.currencyItemList_ then
+    self.currencyItemList_:UnInit()
+    self.currencyItemList_ = nil
+  end
   if self.curShopView_ then
     self.curShopView_:DeActive()
   end
+  self.secondIndex_ = nil
+  self.threeIndex_ = nil
+  self.shopItemIndex_ = nil
+  Z.EventMgr:Remove(Z.ConstValue.Shop.NotifyBuyShopResult, self.buyCallFunc, self)
 end
 
 function Shop_windowView:OnDestory()
@@ -68,7 +90,7 @@ function Shop_windowView:OnDestory()
 end
 
 function Shop_windowView:asyncInitProps()
-  self.shopData_ = self.seasonVm_.AsyncGetShopData(self.cancelSource, 0)
+  self.shopData_ = self.shopVm_.AsyncGetShopDataByShopType(E.EShopType.Shop, self.cancelSource:CreateToken())
   self:startTimerForCallbacks()
   local nextUpdateTime = self:calculateNextUpdateTime()
   if 0 < nextUpdateTime then
@@ -103,7 +125,7 @@ function Shop_windowView:calculateNextUpdateTime()
     end
   end
   t = math.floor(t / 1000)
-  return 0 < t and t or 1
+  return t
 end
 
 function Shop_windowView:startUpdateTimer(nextUpdateTime)
@@ -116,99 +138,152 @@ function Shop_windowView:UpdateProp()
   self.timerCallTable_ = {}
   Z.CoroUtil.create_coro_xpcall(function()
     self:asyncInitProps()
-    if self.curShopView_ then
+    if self.curShopView_ and self.curShopView_.viewData and self.curShopView_.viewData.shopData then
       self.curShopView_.viewData.shopData = self.shopData_
-      self.curShopView_:refreshData(true)
+      self.curShopView_:RefreshData(true)
     end
   end)()
 end
 
 function Shop_windowView:initFirstLevelTab()
-  self.shopTabDataList_ = self.shopVm_.GetShopTabTable(self.shopData_)
-  self.firstLevelIndex_ = 1
-  if self.viewData and self.viewData.funcId1 then
-    self.firstLevelIndex_ = self.shopVm_.GetShopTabIndexByFunctionId(tonumber(self.viewData.funcId1), self.shopTabDataList_) or 1
+  self.firstShopTabDataList_ = self.shopVm_.GetShopTabTable(self.shopData_, E.EShopType.Shop)
+  self:initShopItemIndex()
+  if self.viewData and not self.firstIndex_ and self.viewData.firstIndex then
+    self.firstIndex_ = self.viewData.firstIndex
+  end
+  if self.viewData and not self.secondIndex_ and self.viewData.secondIndex then
+    self.secondIndex_ = self.viewData.secondIndex
+  end
+  self.firstIndex_ = self.firstIndex_ or 1
+  self.secondIndex_ = self.secondIndex_ or 1
+  if self.viewData then
+    self.threeIndex_ = self.viewData.threeIndex
+    self.shopItemIndex_ = self.viewData.shopItemIndex
+    self.configId_ = self.viewData.configId
   end
   self.firstLoopListView_:ClearAllSelect()
-  self.firstLoopListView_:RefreshListView(self.shopTabDataList_, false)
-  if not self.firstLevelIndex_ then
-    self.firstLevelIndex_ = 1
-  end
-  self.firstLoopListView_:SetSelected(self.firstLevelIndex_)
+  self.firstLoopListView_:RefreshListView(self.firstShopTabDataList_, false)
+  self.firstLoopListView_:SetSelected(self.firstIndex_)
 end
 
-function Shop_windowView:Tog1Click(shopTabData)
+function Shop_windowView:initShopItemIndex()
+  self.firstIndex_ = nil
+  self.secondIndex_ = nil
+  if not self.viewData or not self.viewData.funcId then
+    return
+  end
+  local firstIndex, secondIndex = self.shopVm_.GetShopTabIndexByFunctionId(self.viewData.funcId, self.firstShopTabDataList_)
+  if firstIndex then
+    self.firstIndex_ = firstIndex
+  end
+  if secondIndex then
+    self.secondIndex_ = secondIndex
+  end
+end
+
+function Shop_windowView:GetCacheData()
+  return {
+    firstIndex = self.firstIndex_,
+    secondIndex = self.secondIndex_,
+    threeIndex = self.threeIndex_,
+    shopItemIndex = self.shopItemIndex_,
+    configId = self.configId_
+  }
+end
+
+function Shop_windowView:SetSecondIndex(index)
+  self.secondIndex_ = index
+end
+
+function Shop_windowView:SetThreeIndex(index)
+  self.threeIndex_ = index
+end
+
+function Shop_windowView:SetShopItemIndex(index)
+  self.shopItemIndex_ = index
+end
+
+function Shop_windowView:OnClickFirstShop(shopTabData, index, isClick)
+  self:HideBanner()
   if self.curShopView_ then
     self.curShopView_:DeActive()
   end
   self:OpenCurrencyView(shopTabData.fristLevelTabData.CurrencyDisplay)
-  local viewData = {}
-  viewData.shopData = self.shopData_
-  viewData.parentView = self
-  for _, shopData in ipairs(self.shopTabDataList_) do
-    if shopData.fristLevelTabData.FunctionId == shopTabData.fristLevelTabData.FunctionId then
-      viewData.shopTabData = shopData
-    end
+  if isClick then
+    self.firstIndex_ = index
+    self.secondIndex_ = nil
+    self.threeIndex_ = nil
+    self.shopItemIndex_ = nil
+    self.configId_ = nil
   end
-  self.curShopId_ = shopTabData.fristLevelTabData.Id
-  if shopTabData.fristLevelTabData.Id == E.MallType.ERecharge then
-    self.shopEnghView_:Active(viewData, self.uiBinder.node_parent)
-    self.curShopView_ = self.shopEnghView_
-  elseif shopTabData.fristLevelTabData.Id == E.MallType.EFashion then
-    self.shopFashionView_:Active(viewData, self.uiBinder.node_parent)
-    self.curShopView_ = self.shopFashionView_
-  elseif shopTabData.fristLevelTabData.ShowCountDown == 1 then
-    self.shopMysteriousView_:Active(viewData, self.uiBinder.node_parent)
-    self.curShopView_ = self.shopMysteriousView_
-  else
-    self.shopAllView_:Active(viewData, self.uiBinder.node_parent)
-    self.curShopView_ = self.shopAllView_
+  local viewData = {
+    shopData = self.shopData_,
+    parentView = self,
+    shopTabData = shopTabData,
+    secondIndex = self.secondIndex_,
+    threeIndex = self.threeIndex_,
+    shopItemIndex = self.shopItemIndex_,
+    configId = self.configId_,
+    isClick = isClick
+  }
+  self.configId_ = nil
+  self.curShopId_ = shopTabData.fristLevelTabData.FunctionId
+  local viewType = shopTabData.fristLevelTabData.ViewType or E.EShopViewType.ECommon
+  local curView = self.shopViewList_[viewType]
+  if curView then
+    curView:Active(viewData, self.uiBinder.node_parent)
+    self.curShopView_ = curView
   end
 end
 
 function Shop_windowView:OpenBuyPopup(data, index, tabId)
-  self.seasonVm_.OpenBuyPopup(data, function(data_, num)
-    self.seasonVm_.AsyncBuyShopItem(0, data_, num, function(req)
-      if req.errorCode == 0 then
-        self:buyCallFunc(req)
-      end
-    end, self.cancelSource, tabId)
+  self.shopVm_.OpenBuyPopup(data, function(data_, num)
+    self.shopVm_.CloseBuyPopup()
+    self.shopVm_.AsyncShopBuyItemList({
+      [data_.itemId] = {buyNum = num}
+    }, self.cancelSource:CreateToken())
   end, self.currencyArray_)
 end
 
-function Shop_windowView:buyCallFunc(req)
-  self.seasonVm_.CloseBuyPopup()
-  self:UpdateProp()
-  local mallCfg = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(req.itemId)
-  if mallCfg then
-    self:handleMallItemCost(mallCfg, req.itemId)
-    self:handleMallItemDelivery(mallCfg, req.buyCount)
-  end
-  if self.curShopId_ == E.MallType.EFashion and self.curShopView_ then
-    self.curShopView_:refreshData()
-  end
-end
-
-function Shop_windowView:handleMallItemCost(mallCfg, itemId)
-  Z.CoroUtil.create_coro_xpcall(function()
-    for id, num in pairs(mallCfg.Cost) do
-      if num == 0 then
-        self.shopVm_.AsyncSetShopItemRed(itemId, E.EShopType.Shop)
-        break
+function Shop_windowView:buyCallFunc(buyShopItemInfo)
+  local isSuccess = false
+  local updataShopIdList = {}
+  if buyShopItemInfo then
+    for _, data in pairs(buyShopItemInfo) do
+      if data.errCode == 0 then
+        local mallCfg = Z.TableMgr.GetTable("MallItemTableMgr").GetRow(data.itemId)
+        if mallCfg then
+          self:handleMallItemCost(mallCfg, data.itemId)
+          self.shopVm_.ShowBuyResultItemTips(mallCfg, data.buyNum * mallCfg.Quantity)
+        end
+        isSuccess = true
+        if not table.zcontains(updataShopIdList, data.shopId) then
+          updataShopIdList[#updataShopIdList + 1] = data.shopId
+        end
+      else
+        Z.TipsVM.ShowTips(data.errCode)
       end
+    end
+  end
+  if not isSuccess or not self.curShopView_ then
+    return
+  end
+  Z.CoroUtil.create_coro_xpcall(function()
+    local shopData = self.shopVm_.AsyncGetShopData(updataShopIdList, self.cancelSource:CreateToken())
+    self.shopVm_.UpdataAllShopItemData(shopData, self.shopData_)
+    if self.curShopView_.viewData and self.curShopView_.viewData.shopData then
+      self.curShopView_.viewData.shopData = self.shopData_
+      self.curShopView_:RefreshData(true)
     end
   end)()
 end
 
-function Shop_windowView:handleMallItemDelivery(mallCfg, buyCount)
-  if mallCfg.DeliverWay and mallCfg.DeliverWay[1] and mallCfg.DeliverWay[1][1] == 0 then
-    local itemTableRow = Z.TableMgr.GetRow("ItemTableMgr", mallCfg.ItemId)
-    if itemTableRow and itemTableRow.SpecialDisplayType == 0 then
-      local awardTab = self:generateAwardTab(mallCfg, buyCount)
-      self.itemShowVm_.OpenItemShowView(awardTab)
+function Shop_windowView:handleMallItemCost(mallCfg, itemId)
+  for id, num in pairs(mallCfg.Cost) do
+    if num == 0 then
+      self.shopVm_.SetShopItemRed(itemId, E.EShopType.Shop)
+      break
     end
-  else
-    Z.TipsVM.ShowTipsLang(1000722)
   end
 end
 
@@ -244,24 +319,56 @@ function Shop_windowView:UnrigestTimerCall(key)
   end
 end
 
-function Shop_windowView:RegisterInputActions()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Shop)
-end
-
-function Shop_windowView:UnRegisterInputActions()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Shop)
-end
-
 function Shop_windowView:OpenCurrencyView(array)
   if not array and #array == 0 then
     array = Z.SystemItem.DefaultCurrencyDisplay
   end
   self.currencyArray_ = array
-  self.currencyVm_.OpenCurrencyView(array, self.uiBinder.Trans, self)
+  if not self.currencyItemList_ then
+    self.currencyItemList_ = currency_item_list.new()
+  end
+  self.currencyItemList_:Init(self.uiBinder.currency_info, self.currencyArray_)
+end
+
+function Shop_windowView:refreshNodeShop()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_token_shop, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_shop, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_reflux, false)
+  self.uiBinder.lab_token_content.text = Lang("VipShopShortName")
+  self.uiBinder.btn_token_shop:AddListener(function()
+    local shopData = Z.DataMgr.Get("shop_data")
+    shopData:InitShopBuyItemInfoList()
+    self.shopVm_.OpenTokenShopView()
+  end)
+end
+
+function Shop_windowView:SetEscInputFuction(func)
+  self.ESCInputFunction_ = func
+end
+
+function Shop_windowView:OnInputBack()
+  if self.IsResponseInput then
+    if self.ESCInputFunction_ then
+      self.ESCInputFunction_()
+    else
+      Z.UIMgr:CloseView(self.ViewConfigKey)
+    end
+  end
 end
 
 function Shop_windowView:onStartAnimShow()
   self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+end
+
+function Shop_windowView:ShowBanner(imgPath, iconPath)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_banner, true)
+  self.uiBinder.rimg_banner:SetImage(imgPath)
+  self.uiBinder.rimg_bannericon:SetImage(iconPath)
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+end
+
+function Shop_windowView:HideBanner()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_banner, false)
 end
 
 return Shop_windowView

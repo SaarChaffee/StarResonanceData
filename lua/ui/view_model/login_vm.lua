@@ -7,7 +7,6 @@ E.LoginState = {
   LoginAccount = "LoginAccount",
   GetServerList = "GetServerList",
   EnterGame = "EnterGame",
-  CheckVersion = "CheckVersion",
   WaitingConnect = "WaitingConnect"
 }
 E.ServerStatus = {
@@ -16,21 +15,32 @@ E.ServerStatus = {
   Maintain = 3
 }
 E.KickOffClientErrCode = {
-  Unknown = 0,
-  NormalReturn = 1,
-  SocketConnectError = 2,
-  NotFoundServer = 3,
-  NetWaitHelper = 4,
-  LoginError = 5,
-  RepeatCreateChar = 6,
-  UnderageLimit = 7,
-  NoCharDisConnect = 8,
-  Reconnect = 9,
-  Teleport = 10,
-  BeginSwitch = 11,
-  Switch = 12,
-  EndSwitch = 13,
-  AntiCheating = 14
+  NormalReturn = 0,
+  Common = 50000,
+  SocketConnectError = 50001,
+  NotFoundServer = 50002,
+  NetWaitHelper = 50003,
+  LoginError = 50004,
+  RepeatCreateChar = 50005,
+  UnderageLimit = 50006,
+  NoCharDisConnect = 50007,
+  Reconnect = 50008,
+  Teleport = 50009,
+  BeginSwitch = 50010,
+  Switch = 50011,
+  EndSwitch = 50012,
+  AntiCheating = 50013,
+  SwitchTimeout = 50014,
+  ConnectWorldFailed = 50015,
+  WebViewCallBack = 50016,
+  SelectCharFailed = 50017
+}
+E.SDKZoneId = {
+  TencentProduct = "1001",
+  TencentProductTest = "1002",
+  TencentPreview = "1003",
+  TencentExperience = "1004",
+  TencentTest = "1005"
 }
 local LoginVM = {}
 
@@ -50,12 +60,14 @@ function LoginVM:OnSDKAutoLogin(data)
     accountData.Expire = data.Expire
     accountData.OS = data.OS
     accountData.PlatformType = data.Platform
+    local loginData = Z.DataMgr.Get("login_data")
+    loginData.LastAccountData = table.zclone(accountData)
     Z.SDKReport.SetInfo("GameUserID", data.OpenID)
   end
   Z.EventMgr:Dispatch(Z.ConstValue.LoginEvt.OnSDKAutoLogin, data)
 end
 
-function LoginVM:SDKLogin(loginType, accountName)
+function LoginVM:SDKLogin(loginType, isQRCode, accountName)
   if loginType == E.LoginType.None then
     local data = {}
     data.ErrorCode = 0
@@ -63,17 +75,17 @@ function LoginVM:SDKLogin(loginType, accountName)
     data.LoginTypeID = 0
     data.OpenID = accountName
     data.Platform = E.LoginPlatformType.InnerPlatform
-    data.Expire = data.Expire
+    data.OS = Z.SDKDevices.RuntimeOS
     self:OnSDKLogin(data)
   else
-    Z.SDKLogin.Login(loginType)
+    Z.SDKLogin.Login(loginType, isQRCode)
   end
 end
 
 function LoginVM:OnSDKLogin(data)
   if data == nil then
     Z.TipsVM.ShowTips(Lang("SDKLoginError"))
-    self:Logout()
+    self:Logout(true)
     return
   end
   if data ~= nil and data.ErrorCode == 0 then
@@ -85,6 +97,8 @@ function LoginVM:OnSDKLogin(data)
     accountData.OS = data.OS
     accountData.PlatformType = data.Platform
     accountData.Expire = data.Expire
+    local loginData = Z.DataMgr.Get("login_data")
+    loginData.LastAccountData = table.zclone(accountData)
     Z.SDKReport.SetInfo("GameUserID", data.OpenID)
   end
   Z.EventMgr:Dispatch(Z.ConstValue.LoginEvt.OnSDKLogin, data)
@@ -92,7 +106,7 @@ end
 
 function LoginVM:GetDeviceInfo()
   local deviceInfo = {}
-  deviceInfo.clientVersion = Z.GameContext.ResVersion
+  deviceInfo.clientVersion = Z.GameContext.Version
   deviceInfo.systemSoftware = UnityEngine.SystemInfo.operatingSystem
   deviceInfo.systemHardware = UnityEngine.SystemInfo.deviceModel
   deviceInfo.network = tostring(UnityEngine.Application.internetReachability)
@@ -103,8 +117,12 @@ function LoginVM:GetDeviceInfo()
   deviceInfo.memory = UnityEngine.SystemInfo.systemMemorySize
   deviceInfo.glRender = UnityEngine.SystemInfo.graphicsDeviceName
   deviceInfo.gLVersion = UnityEngine.SystemInfo.graphicsDeviceVersion
-  deviceInfo.deviceId = Z.SDKReport.DeviceID
-  deviceInfo.channel = Z.SDKLogin.InstallChannel
+  deviceInfo.channel = Z.SDKTencent.InstallChannel
+  deviceInfo.deviceId = Z.SDKReport.GetReportInfo("DeviceID")
+  deviceInfo.ANDROID_OAID = Z.SDKReport.GetReportInfo("OAID")
+  deviceInfo.IOS_CAID = Z.SDKReport.GetReportInfo("CAID")
+  deviceInfo.OLD_CAID = Z.SDKReport.GetReportInfo("OLDCAID")
+  deviceInfo.userAgent = Z.SDKReport.GetReportInfo("UserAgent")
   return deviceInfo
 end
 
@@ -129,7 +147,7 @@ function LoginVM:AsyncGetServerList()
   local request = Z.HttpRequest.Rent()
   request.Url = Panda.Core.GameContext.Domain
   request:AddHeader("version", Z.GameContext.Version)
-  request:AddHeader("res_version", Z.GameContext.Version)
+  request:AddHeader("res_version", Z.GameContext.ResVersion)
   request:AddHeader("openid", accountData.OpenID)
   local asyncCall = Z.CoroUtil.async_to_sync(Z.HttpMgr.Get)
   local response = asyncCall(Z.HttpMgr, request, cancelSource:CreateToken())
@@ -151,6 +169,7 @@ function LoginVM:AsyncGetServerList()
   request:Recycle()
   cancelSource:Recycle()
   if parameter == nil then
+    logError("[LoginVM]serverList is null")
     return false
   end
   serverData.LastGetTime = os.time()
@@ -161,6 +180,7 @@ end
 
 function LoginVM:AsyncLogin()
   local accountData = Z.DataMgr.Get("account_data")
+  local sdkVM = Z.VMMgr.GetVM("sdk")
   local request = {}
   request.openId = accountData.OpenID
   request.token = accountData.Token
@@ -168,20 +188,19 @@ function LoginVM:AsyncLogin()
   request.sdkType = accountData.SDKType
   request.channelId = accountData.LoginType
   request.os = accountData.OS
-  request.clientVersion = Z.GameContext.ResVersion
   request.deviceInfo = self:GetDeviceInfo()
-  request.configVersion = Z.Version.ConfigVersion
+  request.clientVersion = Z.GameContext.Version
+  request.clientResourceVersion = Z.GameContext.ResVersion
   request.protocolVersion = Z.Version.ProtocolVersion
-  request.areaId = Z.SDKLogin.InstallChannel
+  request.configVersion = Z.Version.ConfigVersion
+  request.areaId = Z.SDKTencent.InstallChannel
+  request.iOSAdServiceToken = Z.SDKReport.GetReportInfo("AdServiceToken")
+  request.payExtData = Z.VMMgr.GetVM("payment"):GetExtData()
+  request.launchParam = sdkVM.DeserializeWakeUpData(Z.SDKTencent.GetLastWakeUpData())
+  request.areaIdToken = Z.SDKTencent.InstallChannelEncryption
+  request.distinctID = Z.SDKReport.GetReportInfo("DistinctID")
   if not Z.IsOfficalVersion then
     logError("Login Request={0}", table.ztostring(request))
-  end
-  if request.deviceInfo.deviceId == nil or request.deviceInfo.deviceId == UnityEngine.SystemInfo.unsupportedIdentifier then
-    Z.DialogViewDataMgr:OpenOKDialog(Lang("DeviceIdError"), function()
-      Z.DialogViewDataMgr:CloseDialogView()
-      Z.GameContext.QuitGame()
-    end, E.EDialogViewDataType.System, true)
-    return
   end
   local reply
   for i = 1, 4 do
@@ -193,28 +212,52 @@ function LoginVM:AsyncLogin()
       break
     end
   end
+  if reply ~= nil and reply.errCode ~= nil then
+    Z.SDKReport.ReportEvent(Z.SDKReportEvent.ServerConnected, reply.errCode)
+  end
   local playerData = Z.DataMgr.Get("player_data")
   if reply ~= nil and reply.errCode == 0 then
     playerData.AccountInfo = reply.accountInfo
+    if reply.accountInfo.deleteCharIdsLeftTime == nil then
+      playerData.DeleteCharIdsLeftTime = {}
+      playerData.GetDeleteCharTimestamp = {}
+    else
+      playerData.DeleteCharIdsLeftTime = reply.accountInfo.deleteCharIdsLeftTime
+      playerData.GetDeleteCharTimestamp = {}
+      for charId, leftTime in pairs(playerData.DeleteCharIdsLeftTime) do
+        playerData.GetDeleteCharTimestamp[charId] = os.time()
+      end
+    end
     if reply.timeZone ~= nil then
       Z.ServerTime.ServiceTimeZone = reply.timeZone
     else
       Z.ServerTime.ServiceTimeZone = "Asia/Shanghai"
     end
-    Z.SDKReport.ReportEvent(Z.SDKReportEvent.ServerConnected)
+    Z.Voice.Init(accountData.OpenID)
+    local platformConfig = reply.platformConfig
+    Z.DataMgr.Get("sdk_data"):DeserialConfig(platformConfig)
+    if Z.SDKTencent.InstallChannelEncryption and Z.SDKTencent.InstallChannelEncryption ~= "" then
+      Z.SDKTencent.InstallChannel = reply.installChannelDis
+    end
   else
     playerData:Clear()
+  end
+  if reply.isChangeAccount then
+    Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameNormal, E.ESysDialogGameNormalOrder.TencentChangeAccount, nil, Lang("QQGameStartOtherAccountTipsDes"), function()
+      Z.SDKTencent.GetLastWakeUpData().ShouldSwitchAccount = true
+      Z.VMMgr.GetVM("login"):Logout(true)
+    end, function()
+      Z.SDKTencent.CleanLastWakeUpData()
+    end, true)
+  else
+    Z.SDKTencent.CleanLastWakeUpData()
   end
   return reply
 end
 
 function LoginVM:AsyncCreateChar(name, gender, bodySize, faceData, weaponId)
-  local accountData = Z.DataMgr.Get("account_data")
   local playerData = Z.DataMgr.Get("player_data")
   local request = {}
-  request.platformType = accountData.PlatformType
-  request.openId = accountData.OpenID
-  request.accountId = playerData.AccountInfo.accountId
   request.token = playerData.AccountInfo.token
   request.name = name
   request.gender = gender
@@ -222,7 +265,7 @@ function LoginVM:AsyncCreateChar(name, gender, bodySize, faceData, weaponId)
   request.faceData = faceData
   request.initProfessionId = weaponId
   request.deviceInfo = self:GetDeviceInfo()
-  request.areaId = Z.SDKLogin.InstallChannel
+  request.areaId = Z.SDKTencent.InstallChannel
   local reply = charactorProxy.CreateChar(request, ZUtil.ZCancelSource.NeverCancelToken)
   return reply
 end
@@ -231,17 +274,16 @@ function LoginVM:AsyncSelectChar(charId)
   local data = Z.DataMgr.Get("player_data")
   local request = {}
   request.charId = charId
-  request.accountId = data.AccountInfo.accountId
   request.token = data.AccountInfo.token
-  request.areaId = Z.SDKLogin.InstallChannel
+  request.areaId = Z.SDKTencent.InstallChannel
   local reply
-  for i = 1, 4 do
-    if Z.GameContext.IsInRuntimeEditor then
-      reply = charactorProxy.SelectRunEditorChar(request, ZUtil.ZCancelSource.NeverCancelToken)
-    else
+  for i = 1, 3 do
+    xpcall(function()
       reply = charactorProxy.SelectChar(request, ZUtil.ZCancelSource.NeverCancelToken)
-    end
-    if reply.errCode == Z.PbErrCode("ErrChangeMapErr") then
+    end, function(err)
+      logError("[LoginVM:SelectChar]error msg = " .. err)
+    end)
+    if reply == nil or reply.errCode == Z.PbErrCode("ErrChangeMapErr") or reply.errCode == Z.PbErrCode("ErrSelectCharDoing") then
       logError("recv ErrChangeMapErr on SelectChar, retryCount=" .. tostring(i))
       Z.Delay(i, ZUtil.ZCancelSource.NeverCancelToken)
     else
@@ -251,12 +293,46 @@ function LoginVM:AsyncSelectChar(charId)
   return reply
 end
 
+function LoginVM:AsyncDeleteChar(charId)
+  local request = {}
+  request.charId = charId
+  local reply = charactorProxy.DeleteChar(request, ZUtil.ZCancelSource.NeverCancelToken)
+  if reply.errCode == 0 then
+    local charId = reply.charId
+    local playerData = Z.DataMgr.Get("player_data")
+    playerData.DeleteCharIdsLeftTime[charId] = reply.deleteLeftTime
+    playerData.GetDeleteCharTimestamp[charId] = os.time()
+  else
+    Z.TipsVM.ShowTips(reply.errCode)
+  end
+  return reply
+end
+
+function LoginVM:AsyncCancelDeleteChar(charId)
+  local request = {}
+  request.charId = charId
+  local reply = charactorProxy.CancelDeleteChar(request, ZUtil.ZCancelSource.NeverCancelToken)
+  if reply.errCode == 0 then
+    local playerData = Z.DataMgr.Get("player_data")
+    playerData.DeleteCharIdsLeftTime[charId] = nil
+    playerData.GetDeleteCharTimestamp[charId] = nil
+  else
+    Z.TipsVM.ShowTips(reply.errCode)
+  end
+  return reply
+end
+
 function LoginVM:AsyncReconnect()
   local data = Z.DataMgr.Get("player_data")
+  local accountData = Z.DataMgr.Get("account_data")
+  local sdkVM = Z.VMMgr.GetVM("sdk")
   local request = {}
-  request.charId = data.CharInfo.baseInfo.charId
   request.accountId = data.AccountInfo.accountId
   request.token = data.AccountInfo.token
+  request.clientVersion = Z.GameContext.Version
+  request.clientResourceVersion = Z.GameContext.ResVersion
+  request.os = accountData.OS
+  request.launchParam = sdkVM.DeserializeWakeUpData(Z.SDKTencent.GetLastWakeUpData())
   local reply = {}
   local status, err = pcall(function()
     for i = 1, 4 do
@@ -274,43 +350,67 @@ function LoginVM:AsyncReconnect()
     self:KickOffByClient(E.KickOffClientErrCode.Reconnect)
     return false
   elseif reply.errCode ~= 0 then
-    logError("reconnect failed, errcode={0}", reply.errCode)
+    logError("reconnect failed, errCode={0}", reply.errCode)
     self:KickOffByServer(reply.errCode)
     return false
   end
+  if reply.isChangeAccount then
+    Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameNormal, E.ESysDialogGameNormalOrder.TencentChangeAccount, nil, Lang("QQGameStartOtherAccountTipsDes"), function()
+      Z.SDKTencent.GetLastWakeUpData().ShouldSwitchAccount = true
+      Z.VMMgr.GetVM("login"):Logout(true)
+    end, function()
+      Z.SDKTencent.CleanLastWakeUpData()
+    end, true)
+  else
+    Z.EventMgr:Dispatch(Z.ConstValue.SDK.TencentPrivilegeRefresh, reply.isPrivilege)
+    Z.SDKTencent.CleanLastWakeUpData()
+  end
+  local isSelectedChar = reply.charId and reply.charId ~= 0
+  if isSelectedChar then
+    data.CurrentCharId = reply.charId
+  end
   logGreen("reconnect success")
-  Z.Game.OnReconnect()
+  Z.Game.OnReconnect(isSelectedChar)
   return true
 end
 
 function LoginVM:Logout(clearSDK)
   logYellow("logout, currentStage={0}", Z.StageMgr.GetCurrentStageType())
-  Z.Game.OnLogout()
-  if clearSDK then
-    Z.SDKLogin.Logout()
-  end
   Z.SDKAntiCheating.Logout()
+  xpcall(function()
+    Z.Game.OnLogout()
+  end, function(err)
+    logError("[LoginVM:Logout] error for Z.Game.OnLogout, msg = " .. err)
+  end)
+  if clearSDK then
+    xpcall(function()
+      Z.SDKLogin.Logout()
+    end, function(err)
+      logError("[LoginVM:Logout] error for Z.SDKLogin.Logout, msg = " .. err)
+    end)
+  end
   Z.ConnectMgr:Disconnect(E.RpcChannelType.Gateway)
   Z.ConnectMgr:Disconnect(E.RpcChannelType.World)
   Z.DataMgr.Clear()
   Z.NetWaitHelper.Clear()
   Z.GlobalTimerMgr:Clear()
   Z.GuideMgr:Clear()
-  if Z.StageMgr.GetIsInLogin() then
-    if not Z.UIMgr:IsActive("login") then
-      Z.UIMgr:DeActiveAll(true)
-      Z.UIMgr:OpenView("login")
-    end
-    local needShowMark = Z.ScreenMark
-    if needShowMark then
-      local deviceInfo = self:GetDeviceInfo()
-      Z.UIMgr:OpenView("mark_main", {
-        key = deviceInfo.deviceId
-      })
-    end
+  if Z.StageMgr.GetIsInLogin() and not Z.UIMgr:IsActive("login") then
+    Z.UIMgr:DeActiveAll(true)
+    Z.UIMgr:OpenView("login")
   end
-  Z.LuaBridge.Logout()
+  xpcall(function()
+    Z.LuaBridge.CharExit()
+  end, function(err)
+    logError("[LoginVM:Logout] error for Z.LuaBridge.CharExit, msg = " .. err)
+  end)
+  xpcall(function()
+    Z.LuaBridge.Logout()
+  end, function(err)
+    logError("[LoginVM:Logout] error for Z.LuaBridge.Logout, msg = " .. err)
+  end)
   Z.DialogViewDataMgr:ClearAll()
+  Z.SysDialogViewDataManager:ClearAll(true)
   Z.ContainerMgr:Reset()
   Z.EventMgr:Dispatch(Z.ConstValue.LoginEvt.SwitchLoginState, E.LoginState.Init)
   Z.SDKReport.SetInfo("GameUserID", "")
@@ -320,15 +420,22 @@ function LoginVM:KickOffByClient(clientErrCode, hideDialog)
   if clientErrCode ~= E.KickOffClientErrCode.NormalReturn then
     logError("KickOffByClient, errCode={0}", clientErrCode)
   end
+  local clearSDK = false
+  if clientErrCode == E.KickOffClientErrCode.UnderageLimit then
+    clearSDK = true
+  end
   if hideDialog then
-    self:Logout()
+    self:Logout(clearSDK)
     return
   end
-  local tempErrCode = string.zconcat("C", clientErrCode)
-  Z.DialogViewDataMgr:OpenOKDialog(string.zconcat(Lang("DescDisconnect"), string.format(Lang("ErrcodeCommonTipsTitle"), tempErrCode)), function()
-    Z.DialogViewDataMgr:CloseDialogView()
-    self:Logout()
-  end, E.EDialogViewDataType.System, true)
+  local param = {errCode = clientErrCode}
+  local desc = Z.TipsVM.GetMessageContent(clientErrCode, param)
+  if desc == nil or desc == "" then
+    desc = Z.TipsVM.GetMessageContent(E.KickOffClientErrCode.Common, param)
+  end
+  Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameImportant, E.ESysDialogGameImportantOrder.KickOff, nil, desc, function()
+    self:Logout(clearSDK)
+  end)
   Z.ConnectMgr:Disconnect(E.RpcChannelType.Gateway)
   Z.ConnectMgr:Disconnect(E.RpcChannelType.World)
   Z.NetWaitHelper.Clear()
@@ -340,20 +447,19 @@ function LoginVM:KickOffByServer(errCode)
     return
   end
   logError("KickOffByServer, errCode={0}", errCode)
-  local desc = ""
+  local desc
   if errCode ~= 0 then
     local errConfig = Z.TableMgr.GetTable("MessageTableMgr").GetRow(errCode)
-    local tempErrCode = string.zconcat("S", errCode)
     if errConfig ~= nil then
-      desc = string.zconcat(errConfig.Content, string.format(Lang("ErrcodeCommonTipsTitle"), tempErrCode))
-    else
-      desc = string.zconcat(Lang("DescDisconnect"), string.format(Lang("ErrcodeCommonTipsTitle"), tempErrCode))
+      desc = errConfig.Content
     end
   end
-  Z.DialogViewDataMgr:OpenOKDialog(desc, function()
-    Z.DialogViewDataMgr:CloseDialogView()
-    self:Logout()
-  end, E.EDialogViewDataType.System, true)
+  if desc == nil then
+    desc = string.zconcat(Lang("DescDisconnect"), string.format(Lang("ErrcodeCommonTipsTitle"), errCode))
+  end
+  Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameImportant, E.ESysDialogGameImportantOrder.KickOff, nil, desc, function()
+    self:Logout(errCode == Z.PbEnum("EErrorCode", "ErrSdkTokenExpired"))
+  end)
   Z.ConnectMgr:Disconnect(E.RpcChannelType.Gateway)
   Z.ConnectMgr:Disconnect(E.RpcChannelType.World)
   Z.NetWaitHelper.Clear()
@@ -364,7 +470,6 @@ function LoginVM:BeginCreateChar()
   local args = {}
   
   function args.EndCallback()
-    Z.UIMgr:CloseView("login")
     local faceVM = Z.VMMgr.GetVM("face")
     faceVM.OpenFaceCreateView()
   end
@@ -373,26 +478,56 @@ function LoginVM:BeginCreateChar()
 end
 
 function LoginVM:BeginSelectChar(charId, errorFunc)
-  local accountData = Z.DataMgr.Get("account_data")
-  local success = Z.SDKAntiCheating.Login(accountData.OpenID, accountData.LoginType)
-  if not success then
-    self:KickOffByClient(E.KickOffClientErrCode.AntiCheating)
+  Z.LocalUserDataMgr.InitCharacterLocalUserData(charId)
+  local reply = self:AsyncSelectChar(charId)
+  if reply == nil then
+    logError("[Account]SelectChar failed with nil reply")
+    local config = Z.TableMgr.GetTable("MessageTableMgr").GetRow(E.KickOffClientErrCode.SelectCharFailed)
+    Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameImportant, E.ESysDialogGameImportantOrder.LoginError, nil, config.Content, function()
+      if errorFunc then
+        errorFunc()
+      end
+    end)
     return
   end
-  local reply = self:AsyncSelectChar(charId)
   if reply.errCode ~= 0 then
-    self:KickOffByServer(reply.errCode)
-    if errorFunc then
-      errorFunc()
+    logError("[Account]SelectChar failed with return:{0}", table.ztostring(reply))
+    local config = Z.TableMgr.GetTable("MessageTableMgr").GetRow(reply.errCode)
+    if config then
+      Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameImportant, E.ESysDialogGameImportantOrder.LoginError, nil, config.Content, function()
+        if errorFunc then
+          errorFunc()
+        end
+      end)
     end
     return
   end
-  local data = Z.DataMgr.Get("player_data")
-  data.CharInfo = reply.charInfo
-  Z.EventMgr:Dispatch(Z.ConstValue.LoginEvt.OnSelectChar, charId)
-  Z.Voice.Init(accountData.OpenID)
   logGreen("[Account]SelectChar success with return:{0}", table.ztostring(reply))
-  Z.LuaBridge.Login()
+  local data = Z.DataMgr.Get("player_data")
+  data.CurrentCharId = charId
+  xpcall(function()
+    Z.LuaBridge.CharEnter(charId)
+  end, function(err)
+    logError("[Account] error for Z.LuaBridge.CharEnter, msg = " .. err)
+  end)
+  Z.EventMgr:Dispatch(Z.ConstValue.LoginEvt.OnSelectChar, charId)
+  local serverData = Z.DataMgr.Get("server_data")
+  local serverId = serverData.NowSelectServerId
+  Z.SDKReport.SetInfo("RoleID", charId)
+  Z.SDKReport.SetInfo("AreaID", serverId)
+end
+
+function LoginVM:OpenSelectCharView()
+  local viewConfigKey = "face_rolechoose_window"
+  Z.UnrealSceneMgr:OpenUnrealScene(Z.ConstValue.UnrealScenePaths.Backdrop_Creation_01, viewConfigKey, function()
+    Z.UIMgr:OpenView(viewConfigKey)
+  end)
+end
+
+function LoginVM:BackToSelectCharView()
+  local loginData = Z.DataMgr.Get("login_data")
+  loginData.AutoLogin = true
+  self:Logout()
 end
 
 function LoginVM:CheckServerStatus(serverAddr)
@@ -443,22 +578,11 @@ function LoginVM:ShowServerDialogTip(labDesc, showAnnouncementBtn)
       local afficheVM = Z.VMMgr.GetVM("affiche")
       afficheVM.OpenAfficheView()
     end
-    Z.DialogViewDataMgr:CloseDialogView()
-  end
-  local onCancel = function()
-    Z.DialogViewDataMgr:CloseDialogView()
   end
   if showAnnouncementBtn then
-    local dialogViewData = {
-      dlgType = E.DlgType.YesNo,
-      labDesc = labDesc,
-      onConfirm = onConfirm,
-      onCancel = onCancel,
-      labYes = Lang("JumpToAnnouncement")
-    }
-    Z.DialogViewDataMgr:OpenDialogView(dialogViewData, E.EDialogViewDataType.System, true)
+    Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameImportant, E.ESysDialogGameImportantOrder.Normal, nil, labDesc, onConfirm, nil, true, Lang("JumpToAnnouncement"))
   else
-    Z.DialogViewDataMgr:OpenOKDialog(labDesc, onConfirm, E.EDialogViewDataType.System, true)
+    Z.SysDialogViewDataManager:ShowSysDialogView(E.ESysDialogViewType.GameImportant, E.ESysDialogGameImportantOrder.Normal, nil, labDesc, onConfirm)
   end
 end
 
@@ -478,24 +602,34 @@ function LoginVM:AsyncAuth(serverAddr, accountName)
       local reply = self:AsyncLogin(accountName)
       if reply.errCode == 0 then
         if reply.accountInfo == nil then
-          logError("[Account]Login faild with return:{0}", table.ztostring(reply))
+          logError("[Account]Login failed with return:{0}", table.ztostring(reply))
           self:KickOffByClient(E.KickOffClientErrCode.LoginError)
           Z.NetWaitHelper.SetConnectingTag(E.RpcChannelType.Gateway, false)
           return
         end
         logGreen("[Account]Login success with return:{0}", table.ztostring(reply))
+        Z.LocalUserDataMgr.InitAccountLocalUserData(reply.accountInfo.accountId)
         Z.GameContext.ServerAddr = serverAddr
         local serverData = Z.DataMgr.Get("server_data")
         local serverInfo = string.format("%s=%s", serverData:GetDescriptionByAddr(serverAddr), serverAddr)
         Z.SDKReport.SetInfo("ServerInfo", serverInfo)
         self:SaveLocalAccountInfo(accountName)
         self:SaveLastLoginAddr(serverAddr)
-        Z.Game.OnLogin()
-        Z.LocalUserDataMgr.InitCurPlayerLocalUserData(reply.accountInfo.accountId)
-        if 0 < #reply.accountInfo.chars then
-          local charId = reply.accountInfo.chars[1].baseInfo.charId
-          logGreen("[Account]Begin SelectChar with account:{0}, charId:{1}, token:{2}", reply.accountInfo.accountId, charId, reply.accountInfo.token)
-          self:BeginSelectChar(charId)
+        xpcall(function()
+          Z.LuaBridge.Login()
+        end, function(err)
+          logError("[LoginVM:Login] error for Z.LuaBridge.Login, msg = " .. err)
+        end)
+        xpcall(function()
+          Z.Game.OnLogin()
+        end, function(err)
+          logError("[LoginVM:Login] error for Z.Game.OnLogin, msg = " .. err)
+        end)
+        local chars = reply.accountInfo.chars
+        data.CharDataList = chars
+        data:SortCharDataList()
+        if 0 < #chars then
+          self:OpenSelectCharView()
         else
           logGreen("[Account]Begin CreateChar with account:{0}, accountName:{1}, token:{2}", reply.accountInfo.accountId, accountName, reply.accountInfo.token)
           self:BeginCreateChar()
@@ -554,6 +688,7 @@ function LoginVM:SelectServerData(serverAddr)
   local strs = string.split(serverAddr, ":")
   serverInfo.serverUrl = strs[1]
   serverInfo.host = tonumber(strs[2])
+  serverInfo.zoneId = 9999
   serverData:SetNowSelectData(serverInfo)
 end
 
@@ -565,9 +700,9 @@ function LoginVM:LoadLocalAccountInfo()
   if Z.GameContext.IsPC then
     local path = UnityEngine.Application.dataPath
     local hash = Z.Hash33(path)
-    accountName = Z.LocalUserDataMgr.GetString("BKL_ACCOUNT" .. hash, "", 0, true)
+    accountName = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Device, "BKL_ACCOUNT" .. hash, "")
   else
-    accountName = Z.LocalUserDataMgr.GetString("BKL_ACCOUNT", "", 0, true)
+    accountName = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Device, "BKL_ACCOUNT", "")
   end
   if accountName == nil or accountName == "" then
     math.randomseed(os.time())
@@ -583,9 +718,9 @@ function LoginVM:SaveLocalAccountInfo(value)
   if Z.GameContext.IsPC then
     local path = UnityEngine.Application.dataPath
     local hash = Z.Hash33(path)
-    Z.LocalUserDataMgr.SetString("BKL_ACCOUNT" .. hash, value, 0, true)
+    Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Device, "BKL_ACCOUNT" .. hash, value)
   else
-    Z.LocalUserDataMgr.SetString("BKL_ACCOUNT", value, 0, true)
+    Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Device, "BKL_ACCOUNT", value)
   end
 end
 
@@ -593,22 +728,22 @@ function LoginVM:DeleteLocalAccountInfo()
   if Z.GameContext.IsPC then
     local path = UnityEngine.Application.dataPath
     local hash = Z.Hash33(path)
-    Z.LocalUserDataMgr.RemoveKey("BKL_ACCOUNT" .. hash, true)
+    Z.LocalUserDataMgr.RemoveKeyByLua(E.LocalUserDataType.Device, "BKL_ACCOUNT" .. hash)
   else
-    Z.LocalUserDataMgr.RemoveKey("BKL_ACCOUNT", true)
+    Z.LocalUserDataMgr.RemoveKeyByLua(E.LocalUserDataType.Device, "BKL_ACCOUNT")
   end
 end
 
 function LoginVM:LoadLastLoginAddr()
-  if Z.IsOfficalVersion then
+  if not Z.GameContext.IsEditor then
     return ""
   end
   if Z.GameContext.IsPC then
     local path = UnityEngine.Application.dataPath
     local hash = Z.Hash33(path)
-    return Z.LocalUserDataMgr.GetString("BKR_LAST_LOGIN_ADDR" .. hash, "", 0, true)
+    return Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Device, "BKR_LAST_LOGIN_ADDR" .. hash, "")
   else
-    return Z.LocalUserDataMgr.GetString("BKR_LAST_LOGIN_ADDR", "", 0, true)
+    return Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Device, "BKR_LAST_LOGIN_ADDR", "")
   end
 end
 
@@ -619,9 +754,9 @@ function LoginVM:SaveLastLoginAddr(value)
   if Z.GameContext.IsPC then
     local path = UnityEngine.Application.dataPath
     local hash = Z.Hash33(path)
-    Z.LocalUserDataMgr.SetString("BKR_LAST_LOGIN_ADDR" .. hash, value, 0, true)
+    Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Device, "BKR_LAST_LOGIN_ADDR" .. hash, value)
   else
-    Z.LocalUserDataMgr.SetString("BKR_LAST_LOGIN_ADDR", value, 0, true)
+    Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Device, "BKR_LAST_LOGIN_ADDR", value)
   end
 end
 
@@ -629,9 +764,9 @@ function LoginVM:DeleteLastLoginAddr()
   if Z.GameContext.IsPC then
     local path = UnityEngine.Application.dataPath
     local hash = Z.Hash33(path)
-    return Z.LocalUserDataMgr.RemoveKey("BKR_LAST_LOGIN_ADDR" .. hash, true)
+    return Z.LocalUserDataMgr.RemoveKeyByLua(E.LocalUserDataType.Device, "BKR_LAST_LOGIN_ADDR" .. hash)
   else
-    return Z.LocalUserDataMgr.RemoveKey("BKR_LAST_LOGIN_ADDR", true)
+    return Z.LocalUserDataMgr.RemoveKeyByLua(E.LocalUserDataType.Device, "BKR_LAST_LOGIN_ADDR")
   end
 end
 

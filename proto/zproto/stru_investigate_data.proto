@@ -7,7 +7,5 @@ import "stru_dirty_mask.proto";
 
 message InvestigateData {
     uint32 id = 1;
-    map<int32, .zproto.InvestigateStep> stepIds = 2;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.InvestigateData.StepIdsEntry stepIds = 2;
 }
-

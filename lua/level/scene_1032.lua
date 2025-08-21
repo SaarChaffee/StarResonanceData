@@ -7,7 +7,7 @@ end
 function Scene:LoadComplete()
 end
 
-Scene.Seasons = {}
+Scene.Seasons = {1, 2}
 
 function Scene:InitEvents()
   self.EventItems = {}
@@ -16,35 +16,62 @@ function Scene:InitEvents()
     enable = true,
     group = 0,
     eventId = 548,
-    count = 1,
+    count = -1,
     entity = {actorType = 5, tableUid = 806},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      if localSelf.count == 0 then
-        return
-      else
-        localSelf.count = localSelf.count - 1
-      end
+      Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1017})
     end
   }
-  self.EventItems[100826] = {
+  self.EventItems[100827] = {
     eventType = E.LevelEventType.TriggerEvent,
     enable = true,
     group = 0,
-    eventId = 100826,
+    eventId = 100827,
     count = -1,
     action = function(localSelf)
-      logGreen("\232\167\166\229\143\145\229\137\141\231\171\175\229\188\149\229\175\188\231\186\191")
       Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("HeroDungeon_Tina/Guide_easy", 0, 0, 20, false, 0)
     end
   }
-  self.EventItems[100828] = {
+  self.EventItems[101348] = {
+    eventType = E.LevelEventType.OnSceneLeave,
+    enable = true,
+    group = 0,
+    eventId = 101348,
+    count = -1,
+    action = function(localSelf)
+      Panda.ZGame.CameraManager.Instance:CameraInvoke(0, true, {2032}, false)
+      Panda.ZGame.CameraManager.Instance:SwitchCameraTemplate({0}, {2030}, 0)
+    end
+  }
+  self.EventItems[102440] = {
     eventType = E.LevelEventType.TriggerEvent,
     enable = true,
     group = 0,
-    eventId = 100828,
+    eventId = 102440,
     count = -1,
     action = function(localSelf)
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("HeroDungeon_Tina/Guide_hard", 0, 0, 20, false, 0)
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(1, false)
+    end
+  }
+  self.EventItems[102441] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 102441,
+    count = -1,
+    action = function(localSelf)
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(2, false)
+    end
+  }
+  self.EventItems[102442] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 102442,
+    count = -1,
+    action = function(localSelf)
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(1, true)
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(2, true)
     end
   }
 end

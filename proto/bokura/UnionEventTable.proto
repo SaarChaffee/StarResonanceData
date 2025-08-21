@@ -8,8 +8,6 @@ message UnionEventTableBase {
     int32 Id = 1463;
     mlstring Content = 783;
 }
-
 message UnionEventTableMgr {
-    map<int32, .bokura.UnionEventTableBase> datas = 1;
+    repeated bokura.UnionEventTableMgr.DatasEntry datas = 1;
 }
-

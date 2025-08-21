@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
-message DeletePrivateChatSessionReply {
-    int32 errCode = 2;
-    uint32 targetId = 3;
-}
+import "enum_e_error_code.proto";
 
+message DeletePrivateChatSessionReply {
+    uint32 targetId = 1;
+    zproto.EErrorCode errCode = 2;
+}

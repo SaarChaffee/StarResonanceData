@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message LuckyValueInfo {
+    int32 luckId = 1;
+    int32 luckValue = 2;
+    int64 nextTime = 3;
+}

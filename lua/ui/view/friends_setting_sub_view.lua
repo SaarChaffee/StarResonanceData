@@ -36,7 +36,6 @@ function Friends_setting_subView:onInitData()
     self.friendsMainVm_.OpenSetView(E.FriendFunctionViewType.FriendManagement, viewData)
   end)
   self:AddClick(self.uiBinder.btn_inputname, function()
-    local limitNum = Z.Global.PlayerNameLimit
     local defaultName = self.selectData_:GetRemark()
     if defaultName == nil or defaultName == "" then
       defaultName = self.selectData_:GetPlayerName()
@@ -45,14 +44,14 @@ function Friends_setting_subView:onInitData()
       title = Lang("ModifyRemarks"),
       inputContent = defaultName,
       onConfirm = function(name)
-        local ret = self.friendsMainVm_.SetFriendRemarks(self.curCharId_, name, self.cancelSource:CreateToken())
-        if ret.errorCode == 0 then
+        local errCode = self.friendsMainVm_.SetFriendRemarks(self.curCharId_, name, self.cancelSource:CreateToken())
+        if errCode == 0 then
           self.selectData_:SetRemark(name)
           local uuid = Z.EntityMgr:GetUuid(Z.PbEnum("EEntityType", "EntChar"), self.curCharId_)
           self.friendsMainVm_.CheckFriendRemark(uuid)
           self:refreshFriendInfo()
         else
-          return ret.errorCode
+          return errCode
         end
       end,
       stringLengthLimitNum = Z.Global.PlayerNameLimit,
@@ -85,7 +84,6 @@ function Friends_setting_subView:onInitData()
         self.uiBinder.switch_black.IsOn = true
         self.friendsMainVm_.CloseSetView(E.FriendFunctionViewType.SetFriend)
       end
-      Z.DialogViewDataMgr:CloseDialogView()
     end)
   end)
 end
@@ -125,7 +123,7 @@ function Friends_setting_subView:refreshFriendInfo()
     self.uiBinder.lab_state.text = persData.StatusName
     self.uiBinder.img_con:SetImage(Z.ConstValue.Friend.FriendIconPath .. persData.Res)
   end
-  playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.cont_play_head, self.selectData_:GetSocialData())
+  playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.cont_play_head, self.selectData_:GetSocialData(), nil, self.cancelSource:CreateToken())
   if self.friendMainData_:GetFriendViewType() == E.FriendViewType.Chat then
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_friends_messagetop, true)
   else
@@ -142,7 +140,6 @@ function Friends_setting_subView:onDelFriends()
     end
     self.friendMainData_:SetAddressSelectCharId(0)
     self.friendsMainVm_.OpenSetView(E.FriendFunctionViewType.None, {}, true)
-    Z.DialogViewDataMgr:CloseDialogView()
   end)
 end
 

@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_face_upload_data.proto";
 
 message GetFaceUploadDataReply {
-    int32 errCode = 1;
-    repeated zproto.FaceUploadData faceCosDataList = 2;
+    repeated zproto.FaceUploadData faceCosDataList = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

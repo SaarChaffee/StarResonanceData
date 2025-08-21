@@ -45,7 +45,6 @@ function ModItemLongItem:OnRefresh(data)
     local itemTableRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(itemData.configId)
     self.itemClass_:RefreshItemFlags(itemInfo, itemTableRow)
     self.itemClass_:SetRedDot(data.isRed)
-    self.uiBinder.Trans:SetScale(1, 1)
   elseif self.type_ == ModItemLongItem.Type.DecomposeItem then
     local itemData = {}
     itemData.uiBinder = self.uiBinder
@@ -56,7 +55,6 @@ function ModItemLongItem:OnRefresh(data)
     itemData.PrevDropType = data.prevDropType
     itemData.itemInfo = itemInfo
     self.itemClass_:Init(itemData)
-    self.uiBinder.Trans:SetScale(1, 1)
   elseif self.type_ == ModItemLongItem.Type.ModResolve then
     local itemData = {}
     itemData.uiBinder = self.uiBinder
@@ -68,7 +66,6 @@ function ModItemLongItem:OnRefresh(data)
     self.itemClass_:Init(itemData)
     local itemTableRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(itemData.configId)
     self.itemClass_:RefreshItemFlags(itemInfo, itemTableRow)
-    self.uiBinder.Trans:SetScale(0.7, 0.7)
   end
 end
 

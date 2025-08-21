@@ -10,9 +10,12 @@ function Play_time_subView:ctor(parent)
     super.ctor(self, "play_time_sub", "recommendedplay/play_time_sub", UI.ECacheLv.None)
   end
   self.recommendedPlayData_ = Z.DataMgr.Get("recommendedplay_data")
+  self.recommendedPlayVM_ = Z.VMMgr.GetVM("recommendedplay")
 end
 
 function Play_time_subView:OnActive()
+  self.uiBinder.Trans:SetOffsetMin(0, 0)
+  self.uiBinder.Trans:SetOffsetMax(0, 0)
   local config = Z.TableMgr.GetTable("SeasonActTableMgr").GetRow(self.viewData)
   if config == nil then
     return
@@ -20,7 +23,7 @@ function Play_time_subView:OnActive()
   self.uiBinder.lab_title.text = config.Name
   self.uiBinder.lab_info.text = config.OtherDes .. "\n" .. config.ActDes
   local timeId = Z.WorldBoss.WorldBossOpenTimerId
-  local startTimeList, endTimeList = Z.TimeTools.GetCycleTimeDataByTimeId(timeId)
+  local startTimeList, endTimeList = Z.TimeTools.GetCycleTimeListByTimeId(timeId)
   local strTable = {}
   if startTimeList[1] then
     local str = string.format("%02d:%02d", startTimeList[1].hour, startTimeList[1].min)
@@ -32,14 +35,15 @@ function Play_time_subView:OnActive()
   end
   local timeStr = table.zconcat(strTable, "-")
   self.uiBinder.lab_todaytime.text = timeStr
-  local serverTimeData = self.recommendedPlayData_:GetSreverData(config.Id)
-  if serverTimeData == nil or serverTimeData.isOpen then
+  local serverTimeData = self.recommendedPlayData_:GetServerData(E.SeasonActFuncType.Recommend, config.Id)
+  if serverTimeData ~= nil then
+    local _, endTime = self.recommendedPlayVM_.GetTimeStampByServerData(serverTimeData)
     self.uiBinder.Ref:SetVisible(self.uiBinder.layout_team, true)
-    local leftTime = serverTimeData.endTimestamp - Z.TimeTools.Now() / 1000
+    local leftTime = endTime - Z.TimeTools.Now() / 1000
     if 0 < leftTime then
-      self.uiBinder.lab_lefttime.text = Z.TimeTools.FormatToDHMSStr(leftTime)
+      self.uiBinder.lab_lefttime.text = Z.TimeFormatTools.FormatToDHMS(leftTime)
     end
-    local today = Z.TimeTools.Tp2YMDHMS(math.floor(Z.TimeTools.Now() / 1000))
+    local today = Z.TimeFormatTools.Tp2YMDHMS(math.floor(Z.TimeTools.Now() / 1000))
     if startTimeList[1] then
       local startDay = startTimeList[1]
       if today.year == startDay.year and today.month == startDay.month and today.day == startDay.day then

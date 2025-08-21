@@ -1,22 +1,30 @@
 local ret = {}
 
-function ret.AsyncUseItem(configId, cancelToken)
+function ret.AsyncUseItem(configId, cancelToken, uuid)
   local itemFunctionTableMgr = Z.TableMgr.GetTable("ItemFunctionTableMgr")
   local itemFunctionTable = itemFunctionTableMgr.GetRow(configId)
   if itemFunctionTable == nil then
     return
   end
   local itemsVM = Z.VMMgr.GetVM("items")
-  local count = itemsVM.GetItemTotalCount(configId)
-  local isOk = itemsVM.OpenSelectGiftPackageView(configId, nil, count)
+  local count = 0
+  local bindFlag
+  if uuid ~= nil then
+    local itemInfo = itemsVM.GetItemInfobyItemId(uuid, configId)
+    count = itemInfo and itemInfo.count or 0
+    bindFlag = itemInfo and itemInfo.bindFlag or nil
+  else
+    count = itemsVM.GetItemTotalCount(configId)
+  end
+  local isOk = itemsVM.OpenSelectGiftPackageView(configId, uuid, count)
   if isOk then
     return
   end
-  isOk = itemsVM.OpenBatchUseView(configId, nil, count)
+  isOk = itemsVM.OpenBatchUseView(configId, uuid, count)
   if isOk then
     return
   end
-  return itemsVM.AsyncUseItemByConfigId(configId, cancelToken)
+  return itemsVM.AsyncUseItemByConfigId(configId, cancelToken, 1, bindFlag)
 end
 
 function ret.checkCanQuickUse(configId)
@@ -36,12 +44,12 @@ function ret.checkCanQuickUse(configId)
   return false
 end
 
-function ret.AddItemToQuickUseQueue(configId)
+function ret.AddItemToQuickUseQueue(configId, uuid)
   if not ret.checkCanQuickUse(configId) then
     return
   end
   local quickItemUsageData = Z.DataMgr.Get("quick_item_usage_data")
-  quickItemUsageData:EnItemQuickQueue(configId)
+  quickItemUsageData:EnItemQuickQueue(configId, uuid)
   ret.ShowQuickUseView()
 end
 
@@ -53,12 +61,12 @@ function ret.ShowQuickUseView()
   Z.UIMgr:OpenView("quick_item_usage")
 end
 
-function ret.DelQuickItemData(configId)
+function ret.DelQuickItemData(configId, uuid)
   local quickItemUsageData = Z.DataMgr.Get("quick_item_usage_data")
-  if not quickItemUsageData:CheckItemVail(configId) then
+  if not quickItemUsageData:CheckItemVail(configId, uuid) then
     return
   end
-  quickItemUsageData:DeItemQuickQueue(configId)
+  quickItemUsageData:DeItemQuickQueue(configId, uuid)
   Z.UIMgr:OpenView("quick_item_usage")
 end
 

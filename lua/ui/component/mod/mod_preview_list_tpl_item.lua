@@ -13,7 +13,7 @@ function ModPreviewListTplItem:OnRefresh(data)
     self.uiBinder.lab_off_name.text = self.config_.EffectName
     self.uiBinder.lab_on_name.text = self.config_.EffectName
   end
-  ModGlossaryItemTplItem.RefreshTpl(self.uiBinder.node_glossary_item_tpl, self.data_.id, 0)
+  ModGlossaryItemTplItem.RefreshTpl(self.uiBinder.node_glossary_item_tpl, self.data_.id)
   self.uiBinder.lab_off_lv.text = self.data_.lv .. "/" .. self.data_.maxLv
   self.uiBinder.lab_on_lv.text = self.data_.lv .. "/" .. self.data_.maxLv
   if self.data_.lv == self.data_.maxLv then

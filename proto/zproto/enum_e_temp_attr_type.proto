@@ -11,5 +11,5 @@ enum ETempAttrType {
     TempAttrFightAttr = 5;
     TempAttrJob = 6;
     TempAttrDummy = 7;
+    TempAttrLifeProfession = 8;
 }
-

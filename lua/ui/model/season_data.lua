@@ -3,6 +3,8 @@ local SeasonData = class("SeasonData", super)
 
 function SeasonData:ctor()
   super.ctor(self)
+  self.nowSeasonId_ = 0
+  self.nowSeasonDay_ = 0
 end
 
 function SeasonData:Init()
@@ -58,6 +60,14 @@ function SeasonData:SetCurShowPage(id)
   self.curShowPageId = id
 end
 
+function SeasonData:SetCurSelectItem(id)
+  self.curShowItemId = id
+end
+
+function SeasonData:GetCurSelectItem()
+  return self.curShowItemId
+end
+
 function SeasonData:GetCurShowPage()
   return self.curShowPageId or 1
 end
@@ -86,11 +96,28 @@ function SeasonData:GetPageSortByFuncId(funcId)
     return 1
   end
   local seasonCenterTableMgr = Z.TableMgr.GetTable("SeasonCenterTableMgr")
-  local cfg = seasonCenterTableMgr.GetRow(funcId)
+  local cfg = seasonCenterTableMgr.GetRow(funcId, true)
   if cfg == nil then
     return 1
   end
   return cfg.Sort
+end
+
+function SeasonData:SetSeasonData(seasonId, seasonDay)
+  self.nowSeasonId_ = seasonId
+  self.nowSeasonDay_ = seasonDay
+end
+
+function SeasonData:GetNowSeasonId()
+  local seasonVm = Z.VMMgr.GetVM("season")
+  local seasonId, _ = seasonVm.GetSeasonByTime()
+  return seasonId
+end
+
+function SeasonData:GetSeasonDay()
+  local seasonVm = Z.VMMgr.GetVM("season")
+  local _, seasonDay = seasonVm.GetSeasonByTime()
+  return seasonDay
 end
 
 return SeasonData

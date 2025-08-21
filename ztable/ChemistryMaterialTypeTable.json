@@ -1,0 +1,52 @@
+{
+  "1": {
+    "Id": 1,
+    "Name": "",
+    "TagColor": "#EC9700"
+  },
+  "2": {
+    "Id": 2,
+    "Name": "",
+    "TagColor": "#D7AF6D"
+  },
+  "108": {
+    "Id": 108,
+    "Name": "",
+    "TagColor": "#A95DA2"
+  },
+  "131": {
+    "Id": 131,
+    "Name": "",
+    "TagColor": "#CDCDCA"
+  },
+  "132": {
+    "Id": 132,
+    "Name": "",
+    "TagColor": "#CDCDCA"
+  },
+  "133": {
+    "Id": 133,
+    "Name": "",
+    "TagColor": "#CDCDCA"
+  },
+  "134": {
+    "Id": 134,
+    "Name": "",
+    "TagColor": "#CDCDCA"
+  },
+  "231": {
+    "Id": 231,
+    "Name": "",
+    "TagColor": "#C090C0"
+  },
+  "232": {
+    "Id": 232,
+    "Name": "",
+    "TagColor": "#C090C0"
+  },
+  "401": {
+    "Id": 401,
+    "Name": "",
+    "TagColor": "#D7AF6D"
+  }
+}

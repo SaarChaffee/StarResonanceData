@@ -6,4 +6,3 @@ enum CameraSchemeType {
     DefaultScheme = 0;
     CustomScheme = 1;
 }
-

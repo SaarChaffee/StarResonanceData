@@ -6,4 +6,3 @@ message NotifyWarehouseInviteRequest {
     int64 charId = 1;
     int64 warehouseId = 2;
 }
-

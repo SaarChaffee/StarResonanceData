@@ -7,4 +7,3 @@ enum EBulletType {
     BulletTypeFake = 1;
     BulletTypeClient = 2;
 }
-

@@ -13,8 +13,6 @@ message QuestionnaireTableBase {
     int32 MailID = 265;
     int_table Award = 187;
 }
-
 message QuestionnaireTableMgr {
-    map<int32, .bokura.QuestionnaireTableBase> datas = 1;
+    repeated bokura.QuestionnaireTableMgr.DatasEntry datas = 1;
 }
-

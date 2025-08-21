@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PlayerRefreshShopRecord {
+    repeated int32 items = 2;
+}

@@ -6,4 +6,3 @@ enum EPetFollowType {
     ENormalFollow = 0;
     EForceFollow = 1;
 }
-

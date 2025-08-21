@@ -1,30 +1,29 @@
-local super = require("ui.component.loop_list_view_item")
-local TrialRoadChallengeLoopItem = class("TrialRoadChallengeLoopItem", super)
+local TrialRoadChallengeLoopItem = class("TrialRoadChallengeLoopItem")
 local loopListView = require("ui.component.loop_list_view")
 local commonRewardItem = require("ui.component.explore_monster.explore_monster_reward_item")
 local trialRoadRed_ = require("rednode.trialroad_red")
 
-function TrialRoadChallengeLoopItem:ctor()
-  self.lastRoomId_ = nil
-  self.lastTargetId_ = nil
+function TrialRoadChallengeLoopItem:ctor(parentView)
+  self.parentUIView = parentView
 end
 
-function TrialRoadChallengeLoopItem:OnInit()
-  self.parentUIView = self.parent.UIView
+function TrialRoadChallengeLoopItem:Init(data, uiBinder)
+  self.data = data
+  self.uiBinder = uiBinder
   self.trialroadVM_ = Z.VMMgr.GetVM("trialroad")
   self.awardScrollRect_ = loopListView.new(self.parentUIView, self.uiBinder.loop_item, commonRewardItem, "com_item_square_8")
   self.awardScrollRect_:Init({})
+  self:refresh(self.data)
 end
 
-function TrialRoadChallengeLoopItem:OnRefresh(data)
-  self.data = data
+function TrialRoadChallengeLoopItem:refresh(data)
   local trialRoadTargetRow_ = Z.TableMgr.GetTable("TargetTableMgr").GetRow(data.TargetId)
   if trialRoadTargetRow_ == nil then
     return
   end
   self.uiBinder.lab_describe.text = trialRoadTargetRow_.TargetDes
   self.uiBinder.btn_receive:RemoveAllListeners()
-  self:AddAsyncListener(self.uiBinder.btn_receive, function()
+  self.parentUIView:AddAsyncListener(self.uiBinder.btn_receive, function()
     if data.TargetState == E.TrialRoadTargetState.UnGetReward then
       self.parentUIView:RequestGetTargetReward(self.data.TargetId)
     end
@@ -42,19 +41,29 @@ function TrialRoadChallengeLoopItem:OnRefresh(data)
   end
   self.awardScrollRect_:RefreshListView(awardList)
   self.awardScrollRect_:ClearAllSelect()
-  trialRoadRed_.RemoveTrialRoadRoomTargetItem(self.lastRoomId_, self.lastTargetId_, self.parentUIView)
-  self.lastRoomId_ = data.RoomId
-  self.lastTargetId_ = data.TargetId
-  trialRoadRed_.LoadTrialRoadRoomTargetItem(data.RoomId, data.TargetId, self.parentUIView, self.uiBinder.Trans)
+  trialRoadRed_.LoadTrialRoadRoomTargetItem(data.RoomId, data.TargetId, self.parentUIView, self.uiBinder.Trans, self.Index)
 end
 
-function TrialRoadChallengeLoopItem:OnUnInit()
+function TrialRoadChallengeLoopItem:AddAsyncClick(comp, func)
+  self.parentUIView_:AddAsyncClick(comp, func)
+end
+
+function TrialRoadChallengeLoopItem:UnInit()
   self:unInitLoopListView()
 end
 
 function TrialRoadChallengeLoopItem:unInitLoopListView()
+  Z.RedPointMgr.RemoveChildernNodeItem(self.uiBinder.Trans, self.parentUIView)
   self.awardScrollRect_:UnInit()
   self.awardScrollRect_ = nil
+end
+
+function TrialRoadChallengeLoopItem:Recycle()
+  Z.RedPointMgr.RemoveChildernNodeItem(self.uiBinder.Trans, self.parentUIView)
+  if self.awardScrollRect_ then
+    self.awardScrollRect_:UnInit()
+    self.awardScrollRect_ = nil
+  end
 end
 
 return TrialRoadChallengeLoopItem

@@ -28,8 +28,6 @@ message AwardTableBase {
     int_array SignPara = 2813;
     int32 HidePreview = 2019;
 }
-
 message AwardTableMgr {
-    map<int32, .bokura.AwardTableBase> datas = 1;
+    repeated bokura.AwardTableMgr.DatasEntry datas = 1;
 }
-

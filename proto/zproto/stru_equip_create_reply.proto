@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message EquipCreateReply {
+    zproto.EErrorCode errCode = 1;
+    repeated int64 itemUuids = 2;
+}

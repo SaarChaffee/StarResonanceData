@@ -6,4 +6,3 @@ message ExchangeSaleRankItemData {
     int32 rankIdx = 1;
     int32 rate = 2;
 }
-

@@ -14,5 +14,6 @@ enum PlaceHolderType {
     PlaceHolderTypeFishPersonalTotal = 8;
     PlaceHolderTypeFishItem = 9;
     PlaceHolderTypeFishRank = 10;
+    PlaceHolderTypeUnionGroup = 11;
+    PlaceHolderTypeMasterMode = 12;
 }
-

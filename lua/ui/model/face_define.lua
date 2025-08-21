@@ -657,15 +657,13 @@ DEF.OPTION_TABLE = {
   },
   [Z.PbEnum("EFaceDataType", "HairOneHighlightsColor")] = {
     InitParamList = {
-      EOptionInitType.HSVVector,
-      "HairColor",
+      EOptionInitType.HairHighlightsColor,
       2
     }
   },
   [Z.PbEnum("EFaceDataType", "HairTwoHighlightsColor")] = {
     InitParamList = {
-      EOptionInitType.HSVVector,
-      "HairColor",
+      EOptionInitType.HairHighlightsColor,
       3
     }
   },

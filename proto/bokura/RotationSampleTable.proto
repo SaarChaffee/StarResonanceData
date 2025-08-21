@@ -10,8 +10,6 @@ message RotationSampleTableBase {
     number_table SampleInfo = 1926;
     int32 HasChangeFlag = 1764;
 }
-
 message RotationSampleTableMgr {
-    map<int64, .bokura.RotationSampleTableBase> datas = 1;
+    repeated bokura.RotationSampleTableMgr.DatasEntry datas = 1;
 }
-

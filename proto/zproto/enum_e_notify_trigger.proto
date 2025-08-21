@@ -7,4 +7,3 @@ enum ENotifyTrigger {
     ETypeOutZone = 1;
     ETypeRange = 2;
 }
-

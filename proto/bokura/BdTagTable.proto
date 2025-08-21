@@ -11,8 +11,6 @@ message BdTagTableBase {
     int32 TagType = 847;
     int32 ParentTag = 38;
 }
-
 message BdTagTableMgr {
-    map<int32, .bokura.BdTagTableBase> datas = 1;
+    repeated bokura.BdTagTableMgr.DatasEntry datas = 1;
 }
-

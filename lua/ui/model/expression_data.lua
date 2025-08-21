@@ -20,8 +20,9 @@ function ExpressionData:ctor()
   self.tipsViewId = nil
   self.historyData_ = {}
   self.emoteTableData_ = {}
-  self.displayExpressionType_ = E.DisplayExpressionType.None
+  self.displayExpressionType_ = E.DisplayExpressionType.History
   self.logicExpressionType_ = E.ExpressionType.None
+  self.OpenSourceType = nil
   self.commonTipsData_ = {}
   self.historyKeyName = "ExpressionHistoryData"
   self:ClearCurPlayData()
@@ -34,6 +35,7 @@ function ExpressionData:Clear()
   self.commonTipsData_ = {}
   self.emoteTableData_ = {}
   self:ClearCurPlayData()
+  self.OpenSourceType = nil
 end
 
 function ExpressionData:UnInit()
@@ -132,7 +134,7 @@ function ExpressionData:AssemblyHistoryData(historyData)
   end
   local historyArr = cjson.decode(historyData)
   self.historyData_ = {}
-  local id, data
+  local data
   for k, v in pairs(historyArr) do
     data = {}
     data.Id = math.floor(v.Id)
@@ -145,8 +147,8 @@ end
 function ExpressionData:GetExpressionHistoryData()
   local historyData = ""
   local historyKeyName = self.historyKeyName
-  if Z.LocalUserDataMgr.Contains(historyKeyName) then
-    historyData = Z.LocalUserDataMgr.GetString(historyKeyName)
+  if Z.LocalUserDataMgr.ContainsByLua(E.LocalUserDataType.Character, historyKeyName) then
+    historyData = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Character, historyKeyName)
   end
   return self:AssemblyHistoryData(historyData)
 end
@@ -164,7 +166,7 @@ function ExpressionData:UpdateExpressionHistoryData(showPieceType, showPieceId)
   local deData = cjson.encode(self.historyData_)
   local historyKeyName = self.historyKeyName
   if not string.zisEmpty(deData) then
-    Z.LocalUserDataMgr.SetString(historyKeyName, deData)
+    Z.LocalUserDataMgr.SetStringByLua(E.LocalUserDataType.Character, historyKeyName, deData)
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Expression.ExpressionHistoryDataUpdate)
 end
@@ -242,6 +244,63 @@ end
 
 function ExpressionData:GetLogicExpressionType()
   return self.logicExpressionType_
+end
+
+function ExpressionData:SetQuickUseTime(time)
+  self.lastUseTime_ = time
+end
+
+function ExpressionData:GetQuickUseTime()
+  if not self.lastUseTime_ then
+    return 0
+  end
+  return self.lastUseTime_
+end
+
+function ExpressionData:GetExpressionData(type)
+  local actionData = {}
+  local displayType = E.DisplayExpressionType.CommonAction
+  if type == E.ExpressionTabType.History then
+    return self:ConvertedHistoryOrCommonData(true)
+  elseif type == E.ExpressionTabType.Collection then
+    return self:ConvertedHistoryOrCommonData()
+  elseif type == E.ExpressionTabType.NormalAction then
+    displayType = E.DisplayExpressionType.CommonAction
+  elseif type == E.ExpressionTabType.LoopAction then
+    displayType = E.DisplayExpressionType.LoopAction
+  elseif type == E.ExpressionTabType.Emote then
+    displayType = E.DisplayExpressionType.Emote
+  elseif type == E.ExpressionTabType.MulAction then
+    displayType = E.DisplayExpressionType.MultAction
+  end
+  actionData = self.expressionVm_.GetExpressionShowDataByType(displayType, true)
+  return actionData
+end
+
+function ExpressionData:ConvertedHistoryOrCommonData(isHistoryData)
+  local data
+  if isHistoryData then
+    data = self:GetExpressionHistoryData()
+  else
+    data = self:GetExpressionCommonData(E.ExpressionType.Action)
+  end
+  if not data then
+    return
+  end
+  local historyData = {}
+  for k, v in pairs(data) do
+    local temp = {}
+    local id = v
+    if isHistoryData then
+      id = v.Id
+    end
+    local tableRow = self:GetEmoteDataByActionName(id)
+    temp.tableData = tableRow
+    temp.activeType = E.ExpressionState.Active
+    temp.UnlockItem = 0
+    table.insert(historyData, temp)
+  end
+  return historyData
 end
 
 return ExpressionData

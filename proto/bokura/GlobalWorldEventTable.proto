@@ -9,8 +9,6 @@ message GlobalWorldEventTableBase {
     string Id = 1463;
     int_array Value = 616;
 }
-
 message GlobalWorldEventTableMgr {
-    map<int32, .bokura.GlobalWorldEventTableBase> datas = 1;
+    repeated bokura.GlobalWorldEventTableMgr.DatasEntry datas = 1;
 }
-

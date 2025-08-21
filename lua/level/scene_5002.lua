@@ -65,7 +65,7 @@ function Scene:InitEvents()
     action = function(localSelf)
       Z.LevelMgr.FireSceneEvent({
         eventType = 4,
-        intParams = {101010103}
+        intParams = {1003}
       })
     end
   }
@@ -107,7 +107,7 @@ function Scene:InitEvents()
     eventId = 82,
     count = -1,
     action = function(localSelf)
-      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1)
+      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1, localSelf.eventId)
     end
   }
   self.EventItems[83] = {
@@ -118,7 +118,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5003,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1)
+      Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1, localSelf.eventId)
     end
   }
   self.EventItems[59] = {
@@ -129,7 +129,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5003,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, true)
+      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, true, localSelf.eventId)
       Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
         5,
         9,
@@ -140,7 +140,7 @@ function Scene:InitEvents()
         18,
         19,
         20
-      }, true)
+      }, true, localSelf.eventId)
       require("zproxy.world_proxy").UserDoAction("cutsceneReplay")
       Z.LevelMgr.timerMgr:StartTimer(function()
         Panda.ZGame.ZEventParser.PreLoadCutscene(101010102)
@@ -206,7 +206,7 @@ function Scene:InitEvents()
     action = function(localSelf)
       require("zproxy.world_proxy").UserDoAction("changeBuff")
       Z.LevelMgr.timerMgr:StartTimer(function()
-        Panda.ZGame.ZEventParser.PreLoadCutscene(101010103)
+        Panda.ZGame.ZEventParser.PreLoadCutscene(1003)
       end, 1)
     end
   }
@@ -218,7 +218,6 @@ function Scene:InitEvents()
     eventId = 93,
     count = -1,
     action = function(localSelf)
-      Panda.ZGame.ZEventParser.PreLoadCutscene(101010104)
     end
   }
   self.EventItems[94] = {
@@ -252,7 +251,7 @@ function Scene:InitEvents()
     entity = {actorType = 5, tableUid = 78},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
       Z.LevelMgr.timerMgr:StartTimer(function()
-        Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, false)
+        Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, false, localSelf.eventId)
         Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
           5,
           9,
@@ -263,7 +262,7 @@ function Scene:InitEvents()
           18,
           19,
           20
-        }, false)
+        }, false, localSelf.eventId)
       end, 1)
     end
   }
@@ -321,7 +320,7 @@ function Scene:InitEvents()
     count = -1,
     entity = {actorType = 5, tableUid = 78},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, true)
+      Panda.ZGame.ZIgnoreMgr.Instance:ModMultiBattleUIIgnoreOneLayer({0}, true, localSelf.eventId)
       Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
         5,
         9,
@@ -332,7 +331,7 @@ function Scene:InitEvents()
         18,
         19,
         20
-      }, true)
+      }, true, localSelf.eventId)
     end
   }
 end

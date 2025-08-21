@@ -32,6 +32,7 @@ function DecorateAdd:InitDecorateData(item, baseData)
     decorateData.res = baseData.res
     decorateData.iconScale = {x = 0.5, y = 0.5}
     decorateData.isFlip = false
+    decorateData.stickType = baseData.typeData.Parameter
   elseif decorateData.decorateType == E.CamerasysFuncType.Text then
     decorateData.textValue = baseData.typeData
     decorateData.textSize = Z.DataMgr.Get("camerasys_data"):GetTextFontSize()
@@ -43,6 +44,7 @@ function DecorateAdd:InitDecorateData(item, baseData)
     }
     decorateData.colorIndex = 0
     decorateData.textScale = {x = 0, y = 0}
+    decorateData.stickType = nil
   end
   self.decorateData_[item.name] = decorateData
 end

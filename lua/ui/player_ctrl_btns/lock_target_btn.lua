@@ -75,6 +75,10 @@ function LockTargetBtn:OnBuffChange()
 end
 
 function LockTargetBtn:CheckVisible()
+  if Z.EntityMgr.PlayerEnt == nil then
+    logError("PlayerEnt is nil")
+    return
+  end
   local isOpen = self.settingVM_.Get(E.SettingID.LockOpen)
   if not isOpen then
     self.uiBinder.trans_target:SetScale(1.0E-4, 1.0E-4)

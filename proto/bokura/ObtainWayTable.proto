@@ -8,8 +8,6 @@ message ObtainWayTableBase {
     int32 Id = 1463;
     int_table GetWays = 498;
 }
-
 message ObtainWayTableMgr {
-    map<int32, .bokura.ObtainWayTableBase> datas = 1;
+    repeated bokura.ObtainWayTableMgr.DatasEntry datas = 1;
 }
-

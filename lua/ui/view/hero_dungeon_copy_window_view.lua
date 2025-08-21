@@ -2,6 +2,7 @@ local UI = Z.UI
 local super = require("ui.ui_view_base")
 local Hero_dungeon_copy_windowView = class("Hero_dungeon_copy_windowView", super)
 local itemClass = require("common.item_binder")
+local settlementPost = require("ui.component.dungeon_settlement_pos_comp")
 local itemSortFactoryVm = Z.VMMgr.GetVM("item_sort_factory")
 local ColorWhite = Color.New(1, 1, 1, 1)
 local ColorGreen = Color.New(0.4588235294117647, 0.5215686274509804, 0.2196078431372549, 1)
@@ -11,8 +12,10 @@ function Hero_dungeon_copy_windowView:ctor()
   super.ctor(self, "hero_dungeon_copy_window")
   self.vm = Z.VMMgr.GetVM("hero_dungeon_copy_window")
   self.teamVm_ = Z.VMMgr.GetVM("team")
+  self.dungeonMainData_ = Z.DataMgr.Get("hero_dungeon_main_data")
   self.dungeonVm_ = Z.VMMgr.GetVM("dungeon")
   self.heroDungeonMainVM_ = Z.VMMgr.GetVM("hero_dungeon_main")
+  self.assistFightVM_ = Z.VMMgr.GetVM("assist_fight")
 end
 
 function Hero_dungeon_copy_windowView:initwidgets()
@@ -34,24 +37,27 @@ function Hero_dungeon_copy_windowView:initwidgets()
   self.awardContent2_ = self.node_content02_.content
   self.starIcon1_ = self.node_content01_.img_rating
   self.starIcon2_ = self.node_content02_.img_rating
-  self.planetMemoryLeaveGO_ = self.uiBinder.btn_leave
-  self.planetMemoryBtnGo_ = self.uiBinder.btn_continue
   self.dungeonNameNode_ = self.uiBinder.node_title_02
   self.lab_tips_ = self.uiBinder.lab_tips
+  self.lab_assist_fight_tips_ = self.uiBinder.lab_assist_fight_tips
+  self.lab_more_ = self.uiBinder.lab_more
+  self.node_more_ = self.uiBinder.node_more
+  self.playerLayoutTran_ = self.uiBinder.layout_play_info
+  self.settlementPosComp_ = settlementPost.new(self, self.playerLayoutTran_, self:GetPrefabCacheDataNew(self.uiBinder.pcd, "praise_tpl"))
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.node_effect:SetEffectGoVisible(true)
 end
 
 function Hero_dungeon_copy_windowView:OnActive()
   Z.AudioMgr:Play("sys_parkour_destination")
   self:initwidgets()
+  self.vm.BeginDungeonSettle()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294965247, true)
   self.continueBtn_.Ref.UIComp:SetVisible(false)
-  self.uiBinder.Ref:SetVisible(self.planetMemoryBtnGo_, false)
-  self.uiBinder.Ref:SetVisible(self.planetMemoryLeaveGO_, false)
-  self.isPlanetmemory = Z.VMMgr.GetVM("planetmemory").IsPlanetmemory()
   self.isTeamExceed_ = self.teamVm_.GetTeamMembersNum()
   self.itemClassTab_ = {}
   self.dungeonId_ = Z.StageMgr.GetCurrentDungeonId()
-  self.dungeonData_ = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.dungeonId_)
+  self.dungeonTableRow_ = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.dungeonId_)
   self:AddAsyncClick(self.continueBtn_.btn, function()
     if self.isHaveVote_ then
       Z.VMMgr.GetVM("hero_dungeon_praise_window").OpenHeroView()
@@ -61,19 +67,9 @@ function Hero_dungeon_copy_windowView:OnActive()
       self.vm.QuitDungeon(self.cancelSource:CreateToken())
     end
   end)
-  self:AddAsyncClick(self.planetMemoryBtnGo_, function()
-    if not self.isTeamExceed_ then
-      Z.DataMgr.Get("planetmemory_data"):SetPlanetMemoryIsContinue(true)
-    end
-    self:closeView()
-  end)
-  self:AddAsyncClick(self.planetMemoryLeaveGO_, function()
-    self:closeView()
-  end)
   self:init()
-  self.vm.PlayModelAction()
-  self.vm.BeginDungeonSettle()
   Z.EventMgr:Add(Z.ConstValue.HeroDungeonSettleTime, self.btnShow, self)
+  self:startAnimatedShow()
 end
 
 function Hero_dungeon_copy_windowView:OnRefresh()
@@ -86,14 +82,18 @@ function Hero_dungeon_copy_windowView:OnDeActive()
     itemClass:UnInit()
   end
   self:ClearAllUnits()
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.node_effect:SetEffectGoVisible(false)
 end
 
 function Hero_dungeon_copy_windowView:init()
+  self:creatPlayerInfo()
   self.isShowTask_ = false
   self.node_content02_.Ref:SetVisible(self.starNode2_, false)
   self.node_content02_.Ref:SetVisible(self.targetNode_, false)
   self.node_content02_.Ref:SetVisible(self.standingsNode_, false)
   self.awards_ = {}
+  self.firstItems_ = {}
   self:setTitle()
   self:creatTaskItem()
   self.node_content01_.Ref.UIComp:SetVisible(not self.isShowTaskNode_)
@@ -101,11 +101,17 @@ function Hero_dungeon_copy_windowView:init()
   self:setTime(Z.ContainerMgr.DungeonSyncData.settlement.passTime)
   local isChalle = self.heroDungeonMainVM_.IsHeroChallengeDungeonScene()
   local isHero = self.heroDungeonMainVM_.IsHeroDungeonNormalScene()
-  local showScore = not isChalle and not isHero
+  local isMaster = self.heroDungeonMainVM_.IsMasterChallengeDungeonScene()
+  local showScore = not isChalle and not isHero and not isMaster
   if not showScore then
-    if isChalle then
+    if isChalle or isMaster then
       self:setDeadCount()
-      self:setFastestTime()
+      if isMaster then
+        self:setMasterFastestTime()
+        self:setMasterScore()
+      else
+        self:setFastestTime()
+      end
     end
   else
     self:setScore()
@@ -116,9 +122,16 @@ end
 
 function Hero_dungeon_copy_windowView:setTitle()
   self.matchingLab_.text = Lang("Victory")
-  if self.dungeonData_ then
-    self.lab_name_.text = self.dungeonData_.Name
-    self.lab_mode_.text = self.dungeonData_.DungeonTypeName
+  self.uiBinder.lab_matching_shadow.text = Lang("Victory")
+  if self.dungeonTableRow_ then
+    self.lab_name_.text = self.dungeonTableRow_.Name
+    local isMaster = self.heroDungeonMainVM_.IsMasterChallengeDungeonScene()
+    local dungeonTypeName = self.dungeonTableRow_.DungeonTypeName
+    if isMaster then
+      local diff = Z.ContainerMgr.DungeonSyncData.dungeonSceneInfo.difficulty
+      dungeonTypeName = self.heroDungeonMainVM_.GetHeroDungeonTypeName(self.dungeonId_, diff)
+    end
+    self.lab_mode_.text = dungeonTypeName
   end
 end
 
@@ -141,9 +154,7 @@ function Hero_dungeon_copy_windowView:btnShow(time)
       self.isHaveVote_ = true
     end
     self.continueBtn_.lab_normal.text = btnName
-    self.uiBinder.Ref:SetVisible(self.planetMemoryBtnGo_, self.isPlanetmemory)
-    self.uiBinder.Ref:SetVisible(self.planetMemoryLeaveGO_, self.isPlanetmemory and not self.isTeamExceed_)
-    self.continueBtn_.Ref.UIComp:SetVisible(not self.isPlanetmemory)
+    self.continueBtn_.Ref.UIComp:SetVisible(true)
     if time >= tonumber(times[2]) then
       self:closeView()
     end
@@ -151,6 +162,7 @@ function Hero_dungeon_copy_windowView:btnShow(time)
 end
 
 function Hero_dungeon_copy_windowView:startAnimatedShow()
+  self.uiBinder.animator:PlayOnce("anim_hero_dungeon_settled_window_open")
 end
 
 function Hero_dungeon_copy_windowView:closeView()
@@ -167,32 +179,32 @@ end
 
 function Hero_dungeon_copy_windowView:setTime(num)
   self.node_content02_.Ref:SetVisible(self.standingsNode_, true)
-  local itemPaht = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
+  local itemPath = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
   local trans = self.isShowTaskNode_ and self.standingsItemNode2_ or self.standingsItemNode1_
-  if itemPaht and itemPaht ~= "" then
+  if itemPath and itemPath ~= "" then
     Z.CoroUtil.create_coro_xpcall(function()
-      local unit = self:AsyncLoadUiUnit(itemPaht, "passTime", trans)
+      local unit = self:AsyncLoadUiUnit(itemPath, "passTime", trans)
       if unit then
-        local timeShow = Z.TimeTools.S2HMSFormat(num)
+        local timeShow = Z.TimeFormatTools.FormatToDHMS(num, true)
         unit.lab_process.text = timeShow
-        unit.lab_condition.text = Lang("Hash_3435796028")
+        unit.lab_condition.text = Lang("TrialRoadPassTime")
       end
     end)()
   end
 end
 
 function Hero_dungeon_copy_windowView:setScore()
-  if not self.dungeonData_ then
+  if not self.dungeonTableRow_ then
     return
   end
-  if self.dungeonData_.PlayType ~= E.DungeonType.HeroChallengeDungeon and self.dungeonData_.PlayType ~= E.DungeonType.HeroNormalDungeon then
+  if self.dungeonTableRow_.PlayType ~= E.DungeonType.HeroChallengeDungeon and self.dungeonTableRow_.PlayType ~= E.DungeonType.HeroNormalDungeon then
     return
   end
-  local itemPaht = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
-  if itemPaht and itemPaht ~= "" then
+  local itemPath = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
+  if itemPath and itemPath ~= "" then
     local trans = self.isShowTaskNode_ and self.standingsItemNode2_ or self.standingsItemNode1_
     Z.CoroUtil.create_coro_xpcall(function()
-      local unit = self:AsyncLoadUiUnit(itemPaht, "Score", trans)
+      local unit = self:AsyncLoadUiUnit(itemPath, "Score", trans)
       if unit then
         local totalScore = Z.ContainerMgr.DungeonSyncData.dungeonScore.totalScore
         unit.lab_process.text = totalScore
@@ -211,24 +223,69 @@ function Hero_dungeon_copy_windowView:setScore()
 end
 
 function Hero_dungeon_copy_windowView:setMaxScore(score)
-  local itemPaht = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
-  if itemPaht and itemPaht ~= "" then
-    local trans = self.isShowTaskNode_ and self.standingsItemNode2_ or self.standingsItemNode1_
-    local unit = self:AsyncLoadUiUnit(itemPaht, "MaxScore", trans)
-    if unit then
-      unit.lab_process.text = score
-      unit.lab_condition.text = Lang("DungeonBestScore")
-      unit.Ref:SetVisible(unit.img_label, false)
+  local itemPath = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
+  Z.CoroUtil.create_coro_xpcall(function()
+    if itemPath and itemPath ~= "" then
+      local trans = self.isShowTaskNode_ and self.standingsItemNode2_ or self.standingsItemNode1_
+      local unit = self:AsyncLoadUiUnit(itemPath, "MaxScore", trans)
+      if unit then
+        unit.lab_process.text = score
+        unit.lab_condition.text = Lang("DungeonBestScore")
+        unit.Ref:SetVisible(unit.img_label, false)
+      end
     end
-  end
+  end)()
+end
+
+function Hero_dungeon_copy_windowView:setMasterScore()
+  local itemPath = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
+  Z.CoroUtil.create_coro_xpcall(function()
+    if itemPath and itemPath ~= "" then
+      local trans = self.isShowTaskNode_ and self.standingsItemNode2_ or self.standingsItemNode1_
+      local unit = self:AsyncLoadUiUnit(itemPath, "masterScore", trans)
+      if unit then
+        local isNewRecordScore, addScore = self.heroDungeonMainVM_.CheckMasterDungeonScoreNewRecord(self.dungeonId_)
+        local totalScore = self.heroDungeonMainVM_.GetPlayerSeasonMasterDungeonScore()
+        local totalScoreText = self.heroDungeonMainVM_.GetPlayerSeasonMasterDungeonTotalScoreWithColor(totalScore)
+        local diff = Z.ContainerMgr.DungeonSyncData.dungeonSceneInfo.difficulty
+        local nowScore = self.heroDungeonMainVM_.GetDungeonDiffScore(self.dungeonId_, diff)
+        local nowScoreText = self.heroDungeonMainVM_.GetPlayerSeasonMasterDungeonScoreWithColor(nowScore)
+        if isNewRecordScore then
+          unit.lab_process.text = "(+" .. addScore .. ")" .. nowScoreText .. "/" .. totalScoreText
+          unit.Ref:SetVisible(unit.new_record, true)
+        else
+          unit.lab_process.text = nowScoreText .. "/" .. totalScoreText
+          unit.Ref:SetVisible(unit.new_record, false)
+        end
+        unit.lab_condition.text = Lang("MaterDungeonScore")
+      end
+    end
+  end)()
+end
+
+function Hero_dungeon_copy_windowView:setMasterFastestTime()
+  Z.CoroUtil.create_coro_xpcall(function()
+    local itemPath = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
+    if itemPath and itemPath ~= "" then
+      local trans = self.isShowTaskNode_ and self.standingsItemNode2_ or self.standingsItemNode1_
+      local unit = self:AsyncLoadUiUnit(itemPath, "FastestTime", trans)
+      if unit then
+        local time = 0
+        time = self.heroDungeonMainVM_.GetMasterDungeonFasterTime(self.dungeonId_)
+        local timeShow = Z.TimeFormatTools.FormatToDHMS(time, true)
+        unit.lab_process.text = timeShow
+        unit.lab_condition.text = Lang("FastestTime")
+      end
+    end
+  end)()
 end
 
 function Hero_dungeon_copy_windowView:setDeadCount()
   Z.CoroUtil.create_coro_xpcall(function()
-    local itemPaht = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
-    if itemPaht and itemPaht ~= "" then
+    local itemPath = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
+    if itemPath and itemPath ~= "" then
       local trans = self.isShowTaskNode_ and self.standingsItemNode2_ or self.standingsItemNode1_
-      local unit = self:AsyncLoadUiUnit(itemPaht, "DeadCount", trans)
+      local unit = self:AsyncLoadUiUnit(itemPath, "DeadCount", trans)
       if unit then
         local attrDeathCount = Z.PbAttrEnum("AttrDeathCount")
         local deadCount = Z.World:GetWorldLuaAttr(attrDeathCount)
@@ -241,16 +298,16 @@ end
 
 function Hero_dungeon_copy_windowView:setFastestTime()
   Z.CoroUtil.create_coro_xpcall(function()
-    local itemPaht = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
-    if itemPaht and itemPaht ~= "" then
+    local itemPath = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "standingsItem")
+    if itemPath and itemPath ~= "" then
       local trans = self.isShowTaskNode_ and self.standingsItemNode2_ or self.standingsItemNode1_
-      local unit = self:AsyncLoadUiUnit(itemPaht, "FastestTime", trans)
+      local unit = self:AsyncLoadUiUnit(itemPath, "FastestTime", trans)
       if unit then
         local time = 0
         if Z.ContainerMgr.CharSerialize.challengeDungeonInfo.dungeonInfo[self.dungeonId_] then
           time = Z.ContainerMgr.CharSerialize.challengeDungeonInfo.dungeonInfo[self.dungeonId_].passTime
         end
-        local timeShow = Z.TimeTools.S2HMSFormat(time)
+        local timeShow = Z.TimeFormatTools.FormatToDHMS(time, true)
         unit.lab_process.text = timeShow
         unit.lab_condition.text = Lang("FastestTime")
       end
@@ -274,10 +331,10 @@ function Hero_dungeon_copy_windowView:creatTaskItem()
   self.isShowTaskNode_ = false
   self.uiBinder.Ref:SetVisible(self.dungeonNameNode_, true)
   self.node_content02_.Ref:SetVisible(self.targetNode_, false)
-  if self.dungeonData_ == nil then
+  if self.dungeonTableRow_ == nil then
     return
   end
-  if self.dungeonData_.FunctionID == Z.PbEnum("EFunctionType", "FunctionTypeLinearDungeon") then
+  if self.dungeonTableRow_.FunctionID == Z.PbEnum("EFunctionType", "FunctionTypeLinearDungeon") then
     local enterDungeonSceneVm = Z.VMMgr.GetVM("ui_enterdungeonscene")
     local valueTab = enterDungeonSceneVm.GetNowFinishTargetsDungeon()
     self.uiBinder.Ref:SetVisible(self.dungeonNameNode_, false)
@@ -342,27 +399,33 @@ function Hero_dungeon_copy_windowView:creatTaskItem()
 end
 
 function Hero_dungeon_copy_windowView:getAward()
+  local isMultiaAward = false
   local awardData = Z.ContainerMgr.DungeonSyncData.settlement.award
   if awardData[Z.EntityMgr.PlayerUuid] then
     local items = awardData[Z.EntityMgr.PlayerUuid].items
     if table.zcount(items) > 0 then
       table.insert(self.awards_, awardData[Z.EntityMgr.PlayerUuid].items)
     end
+    self.firstItems_ = awardData[Z.EntityMgr.PlayerUuid].firstItems or {}
+    local flagAssist = awardData[Z.EntityMgr.PlayerUuid].flagAssist
+    isMultiaAward = awardData[Z.EntityMgr.PlayerUuid].awardCount ~= nil and awardData[Z.EntityMgr.PlayerUuid].awardCount > 1
+    self.uiBinder.Ref:SetVisible(self.lab_assist_fight_tips_, flagAssist == E.AssistType.AssistLimit)
   end
   local isHaveAward = 0 < #self.awards_
   self.node_content02_.Ref:SetVisible(self.awardNode_, isHaveAward)
-  local dataMgr = Z.DataMgr.Get("hero_dungeon_main_data")
   self.uiBinder.Ref:SetVisible(self.lab_tips_, not isHaveAward)
+  self.uiBinder.Ref:SetVisible(self.lab_more_, isMultiaAward)
+  self.uiBinder.Ref:SetVisible(self.node_more_, isMultiaAward)
   self:isHaveAward(isHaveAward)
 end
 
 function Hero_dungeon_copy_windowView:isHaveAward(isflag)
   if isflag then
-    self:creatAwardItem()
+    self:createAwardItem()
   else
-    local str = ""
-    if self.dungeonData_ then
-      if self.dungeonData_.PlayType == E.DungeonType.HeroKeyDungeon then
+    local str = Lang("CompleteCopyRepeatNoReward")
+    if self.dungeonTableRow_ then
+      if self.dungeonTableRow_.PlayType == E.DungeonType.HeroKeyDungeon then
         local keyCharid = Z.ContainerMgr.DungeonSyncData.heroKey.charId
         if keyCharid ~= 0 then
           local keyInfo = Z.ContainerMgr.DungeonSyncData.heroKey.keyInfo[1]
@@ -380,12 +443,13 @@ function Hero_dungeon_copy_windowView:isHaveAward(isflag)
             end
           end
         end
-      elseif self.dungeonData_.PlayType == E.DungeonType.UnionHunt then
+      elseif self.dungeonTableRow_.PlayType == E.DungeonType.UnionHunt then
         str = Lang("UnionHuntRepeatNoReward")
-      elseif self.dungeonData_.FunctionID == Z.PbEnum("EFunctionType", "FunctionTypeHeroDungeonChallenge") then
+        self.uiBinder.Ref:SetVisible(self.lab_assist_fight_tips_, false)
+      elseif self.dungeonTableRow_.FunctionID == Z.PbEnum("EFunctionType", "FunctionTypeHeroDungeonChallenge") then
         self.isChallenge = true
         str = Lang("CompleteCopyRepeatNoReward")
-      elseif self.dungeonData_.FunctionID == Z.PbEnum("EFunctionType", "FunctionTypeHeroDungeonNormal") then
+      elseif self.dungeonTableRow_.FunctionID == Z.PbEnum("EFunctionType", "FunctionTypeHeroDungeonNormal") then
         self.isChallenge = false
         str = Lang("HeroNormalTips")
       end
@@ -394,24 +458,37 @@ function Hero_dungeon_copy_windowView:isHaveAward(isflag)
   end
 end
 
-function Hero_dungeon_copy_windowView:creatAwardItem()
+function Hero_dungeon_copy_windowView:createAwardItem()
   local parent = self.isShowTaskNode_ and self.awardContent2_ or self.awardContent1_
   Z.CoroUtil.create_coro_xpcall(function()
-    local itemPaht = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "item")
-    if itemPaht and itemPaht ~= "" then
+    local itemPath = self:GetPrefabCacheDataNew(self.uiBinder.pcd, "item")
+    if itemPath and itemPath ~= "" then
       local lstAward = {}
+      local flagAssist
+      local awardData = Z.ContainerMgr.DungeonSyncData.settlement.award
+      if awardData[Z.EntityMgr.PlayerUuid] then
+        flagAssist = awardData[Z.EntityMgr.PlayerUuid].flagAssist
+      end
+      local dungeonsTable = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.dungeonId_)
+      local assistItemId = 0
+      if flagAssist == E.AssistType.AssistReward and dungeonsTable and 0 < table.zcount(dungeonsTable.AssitNumber) then
+        assistItemId = dungeonsTable.AssitNumber[1]
+      end
       for key, value in pairs(self.awards_[1]) do
         table.insert(lstAward, {
           configId = value.configId,
           uuid = value.uuid,
           itemInfo = value,
-          count = value.count
+          count = value.count,
+          isShowAssistFight = assistItemId == value.configId,
+          index = key
         })
       end
       itemSortFactoryVm.DefaultSendAwardSortByConfigId(lstAward)
       for key, value in ipairs(lstAward) do
         local itemName = "hero_award_item" .. key
-        local item = self:AsyncLoadUiUnit(itemPaht, itemName, parent)
+        local item = self:AsyncLoadUiUnit(itemPath, itemName, parent)
+        local isShowFirstNode = table.zcontains(self.firstItems_, value.index)
         self.itemClassTab_[itemName] = itemClass.new(self)
         self.itemClassTab_[itemName]:Init({
           uiBinder = item,
@@ -419,10 +496,20 @@ function Hero_dungeon_copy_windowView:creatAwardItem()
           itemInfo = value.itemInfo,
           lab = value.count,
           isSquareItem = true,
-          isHideSource = true
+          isHideSource = true,
+          isShowLuckyEff = true,
+          isShowAssistFight = value.isShowAssistFight,
+          isShowFirstNode = isShowFirstNode
         })
       end
     end
+  end)()
+end
+
+function Hero_dungeon_copy_windowView:creatPlayerInfo()
+  Z.CoroUtil.create_coro_xpcall(function()
+    self.settlementPosComp_:AsyncSetPos()
+    self.vm.PlayModelAction()
   end)()
 end
 

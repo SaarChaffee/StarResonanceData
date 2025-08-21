@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_battle_pass.proto";
+
+message NotifyAllValidBattlePassData {
+    repeated zproto.NotifyAllValidBattlePassData.AllValidBattlePasssMapEntry allValidBattlePasssMap = 1;
+}

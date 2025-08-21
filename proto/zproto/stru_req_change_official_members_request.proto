@@ -4,6 +4,5 @@ package zproto;
 
 message ReqChangeOfficialMembersRequest {
     int64 unionId = 2;
-    map<uint32, int32> changeOfficials = 3;
+    repeated zproto.ReqChangeOfficialMembersRequest.ChangeOfficialsEntry changeOfficials = 3;
 }
-

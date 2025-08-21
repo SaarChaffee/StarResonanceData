@@ -9,4 +9,3 @@ enum EMatchStatus {
     EMatchStatusAllReady = 3;
     EMatchStatusSuccess = 4;
 }
-

@@ -97,8 +97,6 @@ message ModelHumanTableBase {
     string PreviewIcon = 1521;
     string PinchConfig = 832;
 }
-
 message ModelHumanTableMgr {
-    map<int32, .bokura.ModelHumanTableBase> datas = 1;
+    repeated bokura.ModelHumanTableMgr.DatasEntry datas = 1;
 }
-

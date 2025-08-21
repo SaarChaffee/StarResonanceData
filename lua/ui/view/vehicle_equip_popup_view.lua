@@ -20,7 +20,7 @@ function Vehicle_equip_popupView:OnActive()
       return
     end
     if self.config_.PropertyId[2] == vehicleDefine.VehicleUseType.landAndWater or self.config_.PropertyId[2] == self.selectUseType_ then
-      self.vehicleVM_.TakeOnRide(self.selectUseType_, self.viewData.vehicleId, self.cancelSource:CreateToken())
+      self.vehicleVM_.AsyncTakeOnRide(self.selectUseType_, self.viewData.vehicleId, self.cancelSource:CreateToken())
       Z.UIMgr:CloseView(self.ViewConfigKey)
     else
     end

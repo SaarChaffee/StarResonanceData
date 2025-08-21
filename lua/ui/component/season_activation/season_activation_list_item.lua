@@ -2,12 +2,22 @@ local super = require("ui.component.loop_list_view_item")
 local SeasonActivationListItem = class("SeasonActivationListItem", super)
 
 function SeasonActivationListItem:OnInit()
-  self.itemList_ = {
-    self.uiBinder.node_item_1,
-    self.uiBinder.node_item_2,
-    self.uiBinder.node_item_3
-  }
+  if Z.IsPCUI then
+    self.itemList_ = {
+      self.uiBinder.node_item_1,
+      self.uiBinder.node_item_2,
+      self.uiBinder.node_item_3,
+      self.uiBinder.node_item_4
+    }
+  else
+    self.itemList_ = {
+      self.uiBinder.node_item_1,
+      self.uiBinder.node_item_2,
+      self.uiBinder.node_item_3
+    }
+  end
   self.quickJumpVm_ = Z.VMMgr.GetVM("quick_jump")
+  self.privilegesData_ = Z.DataMgr.Get("privileges_data")
 end
 
 function SeasonActivationListItem:OnRefresh(data)
@@ -41,8 +51,13 @@ function SeasonActivationListItem:setItemData(data, item)
     val2 = progress
   })
   self:resetItemState(item)
-  item.lab_num.text = tableData.Activation
-  if tableData.Cycle >= 1 then
+  local activation = tableData.Activation
+  local privilegesRate = self.privilegesData_:GetPrivilegesDataByFunction(E.PrivilegeSourceType.BattlePass, E.PrivilegeEffectType.DailyActivityBonus)
+  if privilegesRate then
+    activation = math.floor(activation * (1 + privilegesRate.value / 10000))
+  end
+  item.lab_num.text = activation
+  if 1 <= tableData.Cycle then
     item.Ref:SetVisible(item.img_update, true)
   else
     item.Ref:SetVisible(item.img_finish, data.progress == tableData.Num)

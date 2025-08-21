@@ -5,4 +5,3 @@ package zproto;
 message GetTmpAlbumPhotosRequest {
     int64 unionId = 1;
 }
-

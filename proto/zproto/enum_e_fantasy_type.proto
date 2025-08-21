@@ -9,4 +9,3 @@ enum EFantasyType {
     EFantasyType_Defense = 3;
     EFantasyType_Universal = 4;
 }
-

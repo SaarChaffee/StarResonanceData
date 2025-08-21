@@ -9,4 +9,3 @@ message ShowPieceAttr {
     int64 beginTime = 2;
     int64 endTime = 3;
 }
-

@@ -15,6 +15,7 @@ end
 function Union_hunt_subView:OnActive()
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.uiBinder.Trans:SetOffsetMax(0, 0)
+  self:startAnimatedShow()
   self:InitBinders()
   self:initBtnFunc()
   self:initLoopView()
@@ -55,7 +56,6 @@ function Union_hunt_subView:InitBinders()
   self.nodeProgress_ = self.uiBinder.node_schedule_item
   self.nodeHunt_ = self.uiBinder.node_hunt_item
   self.tipsRelativeTo_ = self.imgBG.transform
-  self.uiBinder.Ref:SetVisible(self.imgBG, false)
 end
 
 function Union_hunt_subView:initLoopView()
@@ -67,19 +67,6 @@ end
 function Union_hunt_subView:initBtnFunc()
   self:AddClick(self.btnGo_, function()
     Z.CoroUtil.create_coro_xpcall(function()
-      local unionRed_ = require("rednode.union_red")
-      if self.currentSelectData_.FunctionId == E.FunctionID.UnionWarDance and Z.RedPointMgr.GetRedState(E.RedType.UnionDanceCount) then
-        local unionWarDanceData = Z.DataMgr.Get("union_wardance_data")
-        unionWarDanceData:SetRecommendRedChecked(true)
-        unionRed_.RefreshUnionWarDanceRed()
-        Z.EventMgr:Dispatch(Z.ConstValue.Union.UnionWarDanceRedRefresh)
-      end
-      if self.currentSelectData_.FunctionId == E.FunctionID.UnionHunt and Z.RedPointMgr.GetRedState(E.RedType.UnionHuntCount) then
-        local unionData = Z.DataMgr.Get("union_data")
-        unionData:SetHuntRecommendRedChecked(true)
-        unionRed_.RefreshUnionHuntRed()
-        Z.EventMgr:Dispatch(Z.ConstValue.Union.UnionHuntRedRefresh)
-      end
       local quickJumpVm = Z.VMMgr.GetVM("quick_jump")
       quickJumpVm.DoJumpByConfigParam(self.currentSelectData_.QuickJumpType, self.currentSelectData_.QuickJumpParam)
       local unionVM = Z.VMMgr.GetVM("union")
@@ -139,10 +126,10 @@ function Union_hunt_subView:RefreshRightInfo(currentData, isUnLock)
   self.labTitle_.text = currentData.Name
   self.labCompanion_.text = currentData.RecommendNum
   self.labInfo_.text = currentData.ActDes
-  self.labTime_.text = currentData.Time
-  self.imgBG:SetImage(currentData.BackGroundPic, function()
-    self.uiBinder.Ref:SetVisible(self.imgBG, true)
-  end)
+  self.labTime_.text = Lang("HuntActivityTime", {
+    val = currentData.Time
+  })
+  self.imgBG:SetImage(currentData.BackGroundPic)
   self.uiBinder.Ref:SetVisible(self.btnRank_, currentData.Id == E.UnionActivityType.Hunt and isUnLock ~= false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_item, isUnLock ~= false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_schedule, isUnLock ~= false)
@@ -162,10 +149,23 @@ function Union_hunt_subView:RefreshRightInfo(currentData, isUnLock)
     end)()
   end
   self:unLoadUnionRedDotItem()
+  local unionRed_ = require("rednode.union_red")
   if currentData.Id == E.UnionActivityType.UnionHunt then
     self:loadUnionHuntRedDotItem()
+    if Z.RedPointMgr.GetRedState(E.RedType.UnionHuntCount) then
+      local unionData = Z.DataMgr.Get("union_data")
+      unionData:SetHuntRecommendRedChecked(true)
+      unionRed_.RefreshUnionHuntRed()
+      Z.EventMgr:Dispatch(Z.ConstValue.Union.UnionHuntRedRefresh)
+    end
   elseif currentData.Id == E.UnionActivityType.UnionDance then
     self:loadUnionDanceRedDotItem()
+    if Z.RedPointMgr.GetRedState(E.RedType.UnionDanceCount) then
+      local unionWarDanceData = Z.DataMgr.Get("union_wardance_data")
+      unionWarDanceData:SetRecommendRedChecked(true)
+      unionRed_.RefreshUnionWarDanceRed()
+      Z.EventMgr:Dispatch(Z.ConstValue.Union.UnionWarDanceRedRefresh)
+    end
   else
     self:unLoadUnionRedDotItem()
   end
@@ -230,7 +230,7 @@ function Union_hunt_subView:RefreshUnionHuntAwardList()
   end
   if count == table.zcount(awardList) then
     Z.RedPointMgr.AsyncCancelRedDot(E.RedType.UnionHuntPorgress)
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.UnionHuntPorgress, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.UnionHuntPorgress, 0)
   end
   self.labNum_.text = scoreNum .. "/" .. self.maxNum
   local fillNum_ = self.maxNum == 0 and 0 or scoreNum / self.maxNum
@@ -244,6 +244,10 @@ end
 
 function Union_hunt_subView:loadAwardUnit(awards, rootTrans)
   self.maxNum = 0
+  for _, value in ipairs(awards) do
+    local scoreNum = value[1]
+    self.maxNum = math.max(self.maxNum, scoreNum)
+  end
   local awardCount_ = #awards
   local lineWidth_, lineHeight_ = 0, 0
   lineWidth_, lineHeight_ = self.uiBinder.node_progress_item:GetSize(lineWidth_, lineHeight_)
@@ -265,10 +269,9 @@ function Union_hunt_subView:loadAwardUnit(awards, rootTrans)
       local itemData = {scoreNum = scoreNum, awardID = awardId}
       self.itemClassTab_[k]:Init(self, item, itemData)
     end
-    local posX = k * offsetNum_
+    local posX = lineWidth_ * (scoreNum / self.maxNum)
     local posY = 0
     self.itemClassTab_[k]:SetRootPos(posX, posY)
-    self.maxNum = math.max(self.maxNum, scoreNum)
   end
 end
 
@@ -281,7 +284,7 @@ end
 function Union_hunt_subView:AsyncGetUnionHuntAward(scoreNum)
   local activityId_ = self.currentSelectData_.Id
   local token_ = self.cancelSource:CreateToken()
-  local reply = self.unionVM_:AsyncGetUnionHuntProgressAward(activityId_, scoreNum, token_)
+  self.unionVM_:AsyncGetUnionHuntProgressAward(activityId_, scoreNum, token_)
   self:RefreshUnionHuntAwardList()
 end
 
@@ -303,6 +306,10 @@ end
 function Union_hunt_subView:unLoadUnionRedDotItem()
   Z.RedPointMgr.RemoveNodeItem(E.RedType.UnionHuntCount)
   Z.RedPointMgr.RemoveNodeItem(E.RedType.UnionDanceCount)
+end
+
+function Union_hunt_subView:startAnimatedShow()
+  self.uiBinder.anim_main:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Union_hunt_subView

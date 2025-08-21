@@ -11,14 +11,9 @@ end
 
 function Menu_templateView:OnActive()
   super.OnActive(self)
-  local faceData = Z.DataMgr.Get("face_data")
-  local isInCreate = faceData.FaceState == E.FaceDataState.Create
-  if isInCreate then
-    self.uiBinder.loop_item_ref:SetOffsetMin(0, 0)
-  else
-    self.uiBinder.loop_item_ref:SetOffsetMin(0, self.uiBinder.node_cost_placeholder.rect.height)
-  end
-  self.loopItem_ = loopGridView.new(self, self.uiBinder.loop_item, face_hotphoto_item, "face_hotphoto_tpl")
+  self.uiBinder.Trans:SetOffsetMin(0, 0)
+  self.uiBinder.Trans:SetOffsetMax(0, 0)
+  self.loopItem_ = loopGridView.new(self, self.uiBinder.loop_item, face_hotphoto_item, "face_hotphoto_tpl", true)
   self.loopItem_:Init({})
   self:initTemplateItem()
 end
@@ -45,6 +40,7 @@ function Menu_templateView:OnSelect(data, index)
   self.faceVM_.RecordFaceEditorCommand(nil, index)
   local faceRandomVM = Z.VMMgr.GetVM("face_random")
   faceRandomVM.ApplyRandomFaceFile(string.zconcat("preset.", data.file))
+  self.faceVM_.CacheFaceData()
 end
 
 function Menu_templateView:OnDeActive()

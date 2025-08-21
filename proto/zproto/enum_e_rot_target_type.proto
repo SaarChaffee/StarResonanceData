@@ -9,4 +9,3 @@ enum ERotTargetType {
     RotTargetInputDir = 3;
     RotTargetReverseInputDir = 4;
 }
-

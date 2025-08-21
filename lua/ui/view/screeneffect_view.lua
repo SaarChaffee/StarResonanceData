@@ -4,7 +4,6 @@ local super = require("ui.ui_view_base")
 local ScreeneffectView = class("ScreeneffectView", super)
 
 function ScreeneffectView:ctor()
-  self.panel = nil
   super.ctor(self, "screeneffect")
 end
 
@@ -16,15 +15,12 @@ function ScreeneffectView:OnRefresh()
 end
 
 function ScreeneffectView:PlayEffect()
-  local effectName, effectFunc
+  local effectType, effectFunc
   if self.viewData then
-    effectName = self.viewData.effectname
-    effectFunc = self.viewData.effectfunc
+    effectType = self.viewData.effectType
+    effectFunc = self.viewData.effectFunc
   end
-  if effectName == nil or effectName == "" then
-    return
-  end
-  self.panel.ani_root.Fade:PlayFade(tostring(effectName), effectFunc)
+  self.uiBinder.fade_effect:PlayFade(effectType, effectFunc)
 end
 
 function ScreeneffectView:OnDeActive()

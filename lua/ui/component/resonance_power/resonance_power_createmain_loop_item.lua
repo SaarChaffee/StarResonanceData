@@ -9,6 +9,7 @@ end
 function ResonancePowerCreateMainLoopItem:OnInit()
   self.parentUIView = self.parent.UIView
   self.itemClass_ = item.new(self.parent.uiView)
+  self.resonancePowerVM_ = Z.VMMgr.GetVM("resonance_power")
 end
 
 function ResonancePowerCreateMainLoopItem:OnRefresh(data)
@@ -20,13 +21,10 @@ function ResonancePowerCreateMainLoopItem:OnRefresh(data)
     isClickOpenTips = false
   })
   self:SelectState()
-  local nodeId = bagRed.GetResonanceMakeItemRedId(self.configId)
-  Z.RedPointMgr.LoadRedDotItem(nodeId, self.parent.UIView, self.uiBinder.Trans)
-end
-
-function ResonancePowerCreateMainLoopItem:refreshNoItemUi()
-  self:SetCanSelect(false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.trans_info, false)
+  local isHaveCoreMaterial = self.resonancePowerVM_.CheckHaveCoreMaterial(self.configId)
+  self.itemClass_:SetLab(isHaveCoreMaterial and Lang("HaveResonanceCoreMaterial") or "")
+  self.redDotId_ = bagRed.GetResonanceMakeItemRedId(self.configId)
+  Z.RedPointMgr.LoadRedDotItem(self.redDotId_, self.parent.UIView, self.uiBinder.Trans)
 end
 
 function ResonancePowerCreateMainLoopItem:Selected(isSelected)
@@ -52,9 +50,21 @@ function ResonancePowerCreateMainLoopItem:OnSelected(isSelected)
 end
 
 function ResonancePowerCreateMainLoopItem:OnUnInit()
+  self:clearRedDot()
   self.itemClass_:UnInit()
   self.updateTimer_ = nil
   self.timerMgr_ = nil
+end
+
+function ResonancePowerCreateMainLoopItem:OnRecycle()
+  self:clearRedDot()
+end
+
+function ResonancePowerCreateMainLoopItem:clearRedDot()
+  if self.redDotId_ then
+    Z.RedPointMgr.RemoveNodeItem(self.redDotId_)
+    self.redDotId_ = nil
+  end
 end
 
 return ResonancePowerCreateMainLoopItem

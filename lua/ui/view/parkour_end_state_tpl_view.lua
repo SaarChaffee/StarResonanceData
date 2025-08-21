@@ -35,6 +35,7 @@ end
 function Parkour_end_state_tplView:initData()
   self.lab_new_record.TMPLab.text = ""
   self.lab_time_num.TMPLab.text = ""
+  self.unit.lab_num_2.TMPLab.text = ""
   for _, v in pairs(self.lab_result) do
     if v then
       v.TMPLab.text = ""
@@ -59,8 +60,8 @@ function Parkour_end_state_tplView:SetData(result, recordData)
     self.node_succeed:SetVisible(true)
     self.node_fail:SetVisible(false)
     isShowNodeLabel = true
-    local minutes, seconde = Z.TimeTools.S2MS(recordData.time)
-    self.lab_time_num.TMPLab.text = string.format(Lang("MultiParkour_takeTimeValue"), minutes, seconde)
+    self.lab_time_num.TMPLab.text = Z.TimeFormatTools.FormatToDHMS(recordData.time, true)
+    self.unit.lab_num_2.TMPLab.text = Z.TimeFormatTools.FormatToDHMS(recordData.perfectTime, true)
     self.lab_result[2].TMPLab.text = Lang("MultiParkour_successTips")
     self.node_audio.Audio:PlayByTrigger(Panda.ZUi.UIAudioTrigger.commonAudio_1)
     self:startPlaySuccessAnim()

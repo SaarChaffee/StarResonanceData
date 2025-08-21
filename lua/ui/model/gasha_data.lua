@@ -89,19 +89,20 @@ function GashaData:ClearHistory()
   self.historyList = {}
 end
 
-function GashaData:GetAllGashPoolName()
-  if self.gashPoolNames_ ~= nil and #self.gashPoolNames_ < 1 then
-    return self.gashPoolNames_
+function GashaData:GetAllGashPoolName(openType)
+  if self.gashPoolNames_ ~= nil and self.gashPoolNames_[openType] ~= nil and #self.gashPoolNames_[openType] < 1 then
+    return self.gashPoolNames_[openType]
   end
   self:FillIdAndNameMap()
-  return self.gashPoolNames_
+  return self.gashPoolNames_[openType]
 end
 
-function GashaData:GetIndexByGashaPoolId(gashaPoolId)
+function GashaData:GetIndexByGashaPoolId(gashaPoolId, openType)
+  openType = openType or 0
   if self.gashPoolNames_ == nil and #self.gashPoolIds_ < 1 then
     self:FillIdAndNameMap()
   end
-  for i, v in ipairs(self.gashPoolIds_) do
+  for i, v in ipairs(self.gashPoolIds_[openType]) do
     if v == gashaPoolId then
       return i - 1
     end
@@ -109,11 +110,12 @@ function GashaData:GetIndexByGashaPoolId(gashaPoolId)
   return -1
 end
 
-function GashaData:GetGashaPoolIdByIndex(index)
+function GashaData:GetGashaPoolIdByIndex(index, openType)
+  openType = openType or 0
   if self.gashPoolNames_ == nil then
     self:FillIdAndNameMap()
   end
-  return self.gashPoolIds_[index + 1]
+  return self.gashPoolIds_[openType][index + 1]
 end
 
 function GashaData:FillIdAndNameMap()
@@ -124,9 +126,15 @@ function GashaData:FillIdAndNameMap()
   end
   for key, value in pairs(self.gashaPools) do
     local isInTime = Z.TimeTools.CheckIsInTimeByTimeId(value.TimerId)
-    if not table.zcontains(self.gashPoolIds_, value.ShareGuarantee) and isInTime then
-      table.insert(self.gashPoolNames_, Lang("GashaSharePoolRecordTitle_" .. value.ShareGuarantee))
-      table.insert(self.gashPoolIds_, value.ShareGuarantee)
+    if not table.zcontains(self.gashPoolIds_, value.ShareGuarantee) and isInTime and value.Work == 1 then
+      if self.gashPoolNames_[value.openType] == nil then
+        self.gashPoolNames_[value.openType] = {}
+      end
+      if self.gashPoolIds_[value.openType] == nil then
+        self.gashPoolIds_[value.openType] = {}
+      end
+      table.insert(self.gashPoolNames_[value.openType], Lang("GashaSharePoolRecordTitle_" .. value.ShareGuarantee))
+      table.insert(self.gashPoolIds_[value.openType], value.ShareGuarantee)
     end
   end
 end

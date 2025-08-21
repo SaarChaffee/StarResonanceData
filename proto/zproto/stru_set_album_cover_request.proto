@@ -6,4 +6,3 @@ message SetAlbumCoverRequest {
     uint32 albumId = 2;
     uint32 coverPhotoId = 3;
 }
-

@@ -17,8 +17,6 @@ message EnvironmentResonanceTableBase {
     int_array TriggerBuffIds = 1397;
     int32 SlotType = 517;
 }
-
 message EnvironmentResonanceTableMgr {
-    map<int32, .bokura.EnvironmentResonanceTableBase> datas = 1;
+    repeated bokura.EnvironmentResonanceTableMgr.DatasEntry datas = 1;
 }
-

@@ -9,6 +9,11 @@ local mergeDataFuncs = {
     local last = container.__data__.skillId
     container.__data__.skillId = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("skillId", last)
+  end,
+  [3] = function(container, buffer, watcherList)
+    local last = container.__data__.isAutoBattleClose
+    container.__data__.isAutoBattleClose = br.ReadBoolean(buffer)
+    container.Watcher:MarkDirty("isAutoBattleClose", last)
   end
 }
 local setForbidenMt = function(t)
@@ -43,6 +48,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.skillId then
     container.__data__.skillId = 0
+  end
+  if not pbData.isAutoBattleClose then
+    container.__data__.isAutoBattleClose = false
   end
   setForbidenMt(container)
 end
@@ -92,6 +100,11 @@ local getContainerElem = function(container)
     fieldId = 2,
     dataType = 0,
     data = container.skillId
+  }
+  ret.isAutoBattleClose = {
+    fieldId = 3,
+    dataType = 0,
+    data = container.isAutoBattleClose
   }
   return ret
 end

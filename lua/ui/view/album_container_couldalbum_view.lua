@@ -6,7 +6,7 @@ local albumLoopItem = require("ui.component.album.album_loop_item")
 
 function Album_container_couldalbumView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "album_container_couldalbum_sub", "photograph/album_container_couldalbum_sub", UI.ECacheLv.None, parent)
+  super.ctor(self, "album_container_couldalbum_sub", "photograph/album_container_couldalbum_sub", UI.ECacheLv.None)
   self.albumNum_ = 0
   self.albumMainVM_ = Z.VMMgr.GetVM("album_main")
   self.albumMainData_ = Z.DataMgr.Get("album_main_data")
@@ -35,14 +35,6 @@ function Album_container_couldalbumView:initBtnClick()
   self:AddAsyncClick(self.uiBinder.multiple_btn, function()
     self:setItemShowState(false, E.AlbumSelectType.Select)
   end)
-  self:AddAsyncClick(self.uiBinder.btn_save, function()
-    if self.personalzoneVm_.CheckPersonalzonePhotoIsChange() then
-      self.personalzoneVm_.AsynSavePersonalPhoto(self.cancelSource:CreateToken())
-      self.uiBinder.btn_save.IsDisabled = not self.personalzoneVm_.CheckPersonalzonePhotoIsChange()
-    else
-      Z.TipsVM.ShowTipsLang(1002105)
-    end
-  end)
 end
 
 function Album_container_couldalbumView:onAddBtnClick()
@@ -59,7 +51,7 @@ end
 function Album_container_couldalbumView:setItemShowState(isMultipleState, albumSelectType)
   local isMultiple = isMultipleState
   local isCancelMultiple = not isMultipleState
-  if self.albumNum_ <= 0 or self.viewData == E.AlbumOpenSource.Personal then
+  if self.albumNum_ <= 0 then
     isMultiple = false
     isCancelMultiple = false
   end
@@ -118,14 +110,8 @@ function Album_container_couldalbumView:startAnimatedHide()
 end
 
 function Album_container_couldalbumView:initUIState()
-  if self.viewData == E.AlbumOpenSource.Personal then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.add_btn, false)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_save, true)
-    self.uiBinder.btn_save.IsDisabled = not self.personalzoneVm_.CheckPersonalzonePhotoIsChange()
-  else
-    self.uiBinder.Ref:SetVisible(self.uiBinder.add_btn, true)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_save, false)
-  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.add_btn, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_save, false)
 end
 
 return Album_container_couldalbumView

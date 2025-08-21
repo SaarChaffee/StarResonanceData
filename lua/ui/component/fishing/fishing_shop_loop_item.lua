@@ -15,10 +15,6 @@ local labelEnum = {
 }
 local bgImgStr_ = "ui/atlas/season/seasonshop_item_quality_%d"
 
-function FishingShopLoopItem:ctor()
-  self.vm = Z.VMMgr.GetVM("season_shop")
-end
-
 function FishingShopLoopItem:initBinder()
   self.curTimerId_ = 0
   self.initTag_ = true
@@ -153,6 +149,7 @@ function FishingShopLoopItem:showItem(cfg)
     local itemsVM = Z.VMMgr.GetVM("items")
     self.icon_:SetImage(itemsVM.GetItemIcon(cfg.ItemId))
     self.quality_img_:SetImage(string.format(bgImgStr_, itemCfg.Quality))
+    self:onStartAnimShow(itemCfg.Quality)
   end
 end
 
@@ -229,12 +226,11 @@ function FishingShopLoopItem:showFishingLevelLimit(cfg)
       self.curPropState = propState.fishinglevel
     end
   end
-  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_unlock_conditions, false)
 end
 
 function FishingShopLoopItem:getFishingLevelLimitDes(cfg)
   local desc
-  local r = Z.ConditionHelper.GetConditionDescList(cfg.UnlockConditions, true)
+  local r = Z.ConditionHelper.GetConditionDescList(cfg.UnlockConditions)
   for _, value in ipairs(r) do
     if value.IsUnlock == false then
       desc = value.showPurview
@@ -257,7 +253,7 @@ function FishingShopLoopItem:showCountLimit(data)
     local num, index = 0, 1
     local countTab = {}
     for id, _ in pairs(data.buyCount) do
-      if id ~= self.vm.SeasonShopRefreshType.none then
+      if id ~= E.ESeasonShopRefreshType.None then
         countTab[#countTab + 1] = id
       end
     end
@@ -285,9 +281,9 @@ function FishingShopLoopItem:showCountLimit(data)
       limit_title_ = self.limit_tab_title[index]
       limit_Tab_Bg_ = self.limit_tab_bg_[index]
       local str_ = ""
-      if id == self.vm.SeasonShopRefreshType.daily then
+      if id == E.ESeasonShopRefreshType.Daily then
         str_ = Lang("SeasonShopDayTitle")
-      elseif id == self.vm.SeasonShopRefreshType.week then
+      elseif id == E.ESeasonShopRefreshType.week then
         str_ = Lang("SeasonShopWeekTitle")
       end
       self.uiBinder.Ref:SetVisible(limit_Tab_Bg_, true)
@@ -304,23 +300,28 @@ function FishingShopLoopItem:showCountLimit(data)
         local limit_Tab_ = self.limit_tab_[index]
         local limit_Tab_Bg_ = self.limit_tab_bg_[index]
         local limit_title_ = self.limit_tab_title[index]
-        if countTab[i] == self.vm.SeasonShopRefreshType.daily then
+        if countTab[i] == E.ESeasonShopRefreshType.Daily then
           str_ = Lang("SeasonShopDayTitle")
           if num == count.maxBuyCount and self.curPropState == propState.none then
             self.curPropState = propState.count
           end
-        elseif countTab[i] == self.vm.SeasonShopRefreshType.week then
+        elseif countTab[i] == E.ESeasonShopRefreshType.Week then
           str_ = Lang("SeasonShopWeekTitle")
           if num == count.maxBuyCount and self.curPropState == propState.none then
             self.curPropState = propState.count
           end
-        elseif countTab[i] == self.vm.SeasonShopRefreshType.season then
+        elseif countTab[i] == E.ESeasonShopRefreshType.Season then
           num = count.purchasedCount
           if data.shopType == 0 then
             str_ = Lang("ShopSeasonLimitTitle")
           else
             str_ = Lang("SeasonShopSeasonLimitTitle")
           end
+          if num == count.maxBuyCount and self.curPropState == propState.none then
+            self.curPropState = propState.count
+          end
+        elseif countTab[i] == E.ESeasonShopRefreshType.Compensate or countTab[i] == E.ESeasonShopRefreshType.Permanent then
+          str_ = Lang("ShopSeasonLimitTitle")
           if num == count.maxBuyCount and self.curPropState == propState.none then
             self.curPropState = propState.count
           end
@@ -358,7 +359,7 @@ end
 
 function FishingShopLoopItem:showLevelLimit(data)
   local levelLimit = data.cfg.ShowLimitType
-  if not levelLimit[1] and not levelLimit[1][2] then
+  if not levelLimit[1] or not levelLimit[1][2] then
     return
   end
   local bool = Z.ConditionHelper.CheckCondition(levelLimit)
@@ -392,7 +393,7 @@ function FishingShopLoopItem:updateTime()
   if self.curTime_ <= 0 then
     self.parent.UIView:UpdateProp()
   else
-    self.time_lock_label_.text = Z.TimeTools.FormatToDHMS(self.curTime_)
+    self.time_lock_label_.text = Z.TimeFormatTools.FormatToDHMS(self.curTime_)
     if self.curPropState == propState.time then
       self.buy_state_label_.text = self.time_lock_label_.text
     end
@@ -419,6 +420,14 @@ function FishingShopLoopItem:showPropState(data)
     else
       self.buy_state_label_.text = Lang("SeasonShopSellDone")
     end
+  end
+end
+
+function FishingShopLoopItem:onStartAnimShow(quality)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.anim_eff, quality == E.ItemQuality.Yellow)
+  self.uiBinder.anim_eff:Stop()
+  if quality == E.ItemQuality.Yellow then
+    self.uiBinder.anim_eff:PlayLoop("anim_item_shop_light_tpl")
   end
 end
 

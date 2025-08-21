@@ -1,0 +1,146 @@
+{
+  "1": {
+    "Id": 1,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "3061001": {
+    "Id": 3061001,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "3061101": {
+    "Id": 3061101,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "10010401": {
+    "Id": 10010401,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 0,
+    "DurationTime": 4.0,
+    "Interrupt": 0
+  },
+  "10080301": {
+    "Id": 10080301,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "10080402": {
+    "Id": 10080402,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 0,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "30015301": {
+    "Id": 30015301,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "30070801": {
+    "Id": 30070801,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "30070802": {
+    "Id": 30070802,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 0,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "30070803": {
+    "Id": 30070803,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 0,
+    "DurationTime": 4.0,
+    "Interrupt": 0
+  },
+  "17100106": {
+    "Id": 17100106,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 4.0,
+    "Interrupt": 0
+  },
+  "17100112": {
+    "Id": 17100112,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 4.0,
+    "Interrupt": 0
+  },
+  "17100114": {
+    "Id": 17100114,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 4.0,
+    "Interrupt": 0
+  },
+  "17100301": {
+    "Id": 17100301,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 4.0,
+    "Interrupt": 0
+  },
+  "17100401": {
+    "Id": 17100401,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "17100501": {
+    "Id": 17100501,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "17100601": {
+    "Id": 17100601,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 3.0,
+    "Interrupt": 0
+  },
+  "17100701": {
+    "Id": 17100701,
+    "Content": "",
+    "Type": 140,
+    "FadeInTime": 1,
+    "DurationTime": 4.0,
+    "Interrupt": 0
+  }
+}

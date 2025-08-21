@@ -6,7 +6,8 @@ import "stru_item.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonAward {
-    map<int64, .zproto.Item> items = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.DungeonAward.ItemsEntry items = 1;
+    int32 flagAssist = 2;
+    int32 awardCount = 3;
+    repeated int64 firstItems = 4;
 }
-

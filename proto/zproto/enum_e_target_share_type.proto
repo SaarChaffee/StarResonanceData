@@ -7,4 +7,3 @@ enum ETargetShareType {
     TeamShare = 1;
     DungeonShare = 2;
 }
-

@@ -7,7 +7,7 @@ end
 function Scene:LoadComplete()
 end
 
-Scene.Seasons = {}
+Scene.Seasons = {1, 2}
 
 function Scene:InitEvents()
   self.EventItems = {}

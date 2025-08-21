@@ -3,9 +3,9 @@ syntax = "proto3";
 package zproto;
 
 import "stru_apply_info.proto";
+import "enum_e_error_code.proto";
 
 message LeaderGetApplyListReply {
-    int32 errCode = 1;
-    repeated zproto.ApplyInfo apply = 2;
+    repeated zproto.ApplyInfo apply = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

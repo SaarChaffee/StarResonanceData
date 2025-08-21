@@ -4,5 +4,5 @@ package zproto;
 
 message GetMailInfoRequest {
     int64 mailUuid = 2;
+    repeated int64 mailUuidList = 3;
 }
-

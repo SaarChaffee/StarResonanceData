@@ -47,10 +47,10 @@ local itemTypeFilter = function(filterFunc, data)
   end
   if data.filterMask & E.ItemFilterType.ItemRare ~= 0 then
     function checkTypeFunc(itemUuid, configId)
-      if data.filterTgas[E.ItemFilterType.ItemRare] == nil then
+      if data.filterTags[E.ItemFilterType.ItemRare] == nil then
         return true
       end
-      return itemRareFilter(configId, data.filterTgas[E.ItemFilterType.ItemRare])
+      return itemRareFilter(configId, data.filterTags[E.ItemFilterType.ItemRare])
     end
     
     table.insert(filterFunc, checkTypeFunc)

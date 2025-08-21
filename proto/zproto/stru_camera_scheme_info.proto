@@ -26,9 +26,8 @@ message cameraSchemeInfo {
     float worldTime = 18;
     bool isHeadFollow = 19;
     bool isEyeFollow = 20;
-    map<uint64, bool> showEntityDicts = 21;
-    map<uint64, bool> showUIDicts = 22;
+    repeated zproto.cameraSchemeInfo.ShowEntityDictsEntry showEntityDicts = 21;
+    repeated zproto.cameraSchemeInfo.ShowUIDictsEntry showUIDicts = 22;
     string filterPath = 23;
     uint64 id = 24;
 }
-

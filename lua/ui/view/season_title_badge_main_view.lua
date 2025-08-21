@@ -5,7 +5,7 @@ local Season_title_badge_mainView = class("Season_title_badge_mainView", super)
 function Season_title_badge_mainView:ctor(parent)
   self.uiRootPanel_ = parent
   self.uiBinder = nil
-  super.ctor(self, "season_title_badge_main", "season_title/season_title_badge_main", UI.ECacheLv.None)
+  super.ctor(self, "season_title_badge_main", "season_title/season_title_badge_main", UI.ECacheLv.None, true)
   self.subView_ = {
     [1] = {
       funcId = E.FunctionID.SeasonTitle,
@@ -22,7 +22,6 @@ function Season_title_badge_mainView:ctor(parent)
 end
 
 function Season_title_badge_mainView:OnActive()
-  self.uiRootPanel_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.Ref.UIComp.UIDepth)
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self:initComp()
@@ -96,6 +95,13 @@ function Season_title_badge_mainView:OnRefresh()
   else
     self.togs_[index].tog_tab.isOn = true
   end
+end
+
+function Season_title_badge_mainView:GetParentUIDepth()
+  if self.uiRootPanel_ == nil then
+    return nil
+  end
+  return self.uiRootPanel_.uiBinder.Ref.UIComp.UIDepth
 end
 
 return Season_title_badge_mainView

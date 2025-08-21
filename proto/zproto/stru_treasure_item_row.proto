@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_treasure_item_target.proto";
+import "stru_dirty_mask.proto";
+
+message TreasureItemRow {
+    int32 configId = 1;
+    repeated zproto.TreasureItemRow.MainTargetsEntry mainTargets = 2;
+    repeated zproto.TreasureItemRow.SubTargetsEntry subTargets = 3;
+}

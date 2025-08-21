@@ -6,4 +6,3 @@ message ExchangeListRequest {
     int32 type = 2;
     int32 subType = 3;
 }
-

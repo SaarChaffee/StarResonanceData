@@ -24,14 +24,14 @@ function Pivot_progress_subView:OnActive()
   self.sceneId_ = self.parent_:GetCurSceneId()
   self.pivotRedDotNodeList_ = {}
   self.pointRedDotNodeList_ = {}
-  self:AddAsyncClick(self.uiBinder.cont_panel.group_bg.cont_map_title_top.cont_btn_return.btn, function()
-    self.parent_:CloseRightSubview()
+  self:AddAsyncClick(self.uiBinder.cont_panel.btn_close, function()
+    self.parent_:CloseRightSubView()
   end)
   local sceneRow = Z.TableMgr.GetTable("SceneTableMgr").GetRow(self.sceneId_)
   if sceneRow == nil then
     return
   end
-  self.uiBinder.cont_panel.group_bg.cont_map_title_top.lab_title.text = Lang("pivot") .. "-" .. sceneRow.Name
+  self.uiBinder.cont_panel.lab_title.text = Lang("pivot") .. "-" .. sceneRow.Name
   self:initPivotAreaData()
 end
 
@@ -67,7 +67,7 @@ function Pivot_progress_subView:refreshArea()
     local pivotCount = #self.pivotVm_.GetPivotAllPort(value.Id)
     local unlockPivotCount = self.pivotVm_.GetPivotPortUnlockCount(value.Id)
     unit.lab_name.text = value.AreaName
-    unit.img_areabg:SetImage(value.PivotPic)
+    unit.rimg_area_bg:SetImage(value.PivotPic)
     unit.btn_bg:AddListener(function()
       self:onClickArea(value.Id)
     end)
@@ -78,11 +78,10 @@ function Pivot_progress_subView:refreshArea()
       end
       unit.lab_progress.text = Z.RichTextHelper.ApplyStyleTag(unlockPivotCount .. "/" .. pivotCount, colorTag)
       unit.Ref:SetVisible(unit.img_finish, pivotCount <= unlockPivotCount)
-      unit.img_areabg:ClearGray()
+      unit.rimg_area_bg:ClearGray()
     else
       unit.Ref:SetVisible(unit.img_finish, false)
-      unit.img_areabg:SetGray()
-      local colorTag = E.TextStyleTag.EmphRb
+      unit.rimg_area_bg:SetGray()
       unit.lab_progress.text = ""
     end
     local nodeId = self.pivotVm_.GetPivotRedId(self.sceneId_, value.Id)
@@ -94,7 +93,7 @@ end
 function Pivot_progress_subView:refreshAreaProgress()
   self:removeAllPointRedDot()
   local totalCount, unlockCount = self.pivotVm_.GetScenePivotPortCountInfo(self.sceneId_)
-  local curProgress = unlockCount / totalCount
+  local curProgress = unlockCount == 0 and totalCount == 0 and 0 or unlockCount / totalCount
   self.uiBinder.cont_panel.lab_progress.text = math.floor(curProgress * 100)
   self.uiBinder.cont_panel.img_slider:SetFillAmount(curProgress)
   local pivotAwardTableMgr = Z.TableMgr.GetTable("PivotAwardTableMgr")
@@ -162,7 +161,7 @@ function Pivot_progress_subView:onClickArea(pivotId)
   if uid then
     local entSceneObjType = Z.PbEnum("EEntityType", "EntSceneObject")
     local subType = E.SceneObjType.Pivot
-    local flagData = self.parent_.mapFlagsComp_:GetFalgData(uid, entSceneObjType, subType)
+    local flagData = self.parent_.mapFlagsComp_:GetFlagData(uid, entSceneObjType, subType)
     if flagData == nil then
       return
     end

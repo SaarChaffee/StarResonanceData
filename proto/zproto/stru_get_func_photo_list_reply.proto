@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_id_ip_photo.proto";
 
 message GetFuncPhotoListReply {
-    int32 errCode = 1;
     repeated zproto.IdIpPhoto PhotoList = 2;
+    zproto.EErrorCode errCode = 3;
 }
-

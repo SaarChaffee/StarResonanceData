@@ -30,7 +30,7 @@ function TradeRingSellBuyItem:OnRefresh(data)
       self.uiBinder.rimg_gold:SetImage(itemInfo.Icon)
     end
   end
-  local timeData = Z.TimeTools.Tp2YMDHMS(data.serverData.time)
+  local timeData = Z.TimeFormatTools.Tp2YMDHMS(data.serverData.time)
   self.uiBinder.lab_time.text = string.format("%s/%s/%s %02d:%02d", timeData.year, timeData.month, timeData.day, timeData.hour, timeData.min)
   if data.isLeft then
     self.uiBinder.img_left_line:SetColorByHex("#FFB0B0")

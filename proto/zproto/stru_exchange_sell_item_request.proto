@@ -3,5 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message ExchangeSellItemRequest {
+    bool monthCardValid = 1;
 }
-

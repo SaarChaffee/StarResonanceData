@@ -7,6 +7,7 @@ E.ConditionType = {
   Item = 5,
   DungeonId = 6,
   DungeonScroe = 7,
+  TimerRunning = 8,
   TimeInterval = 9,
   Function = 14,
   SkillLevel = 17,
@@ -21,8 +22,25 @@ E.ConditionType = {
   UnionMoney = 36,
   AllTalentPoints = 38,
   Sex = 42,
+  ProfessionId = 43,
   OpenServerDay = 45,
-  FishingLevel = 54
+  InRecommendData = 53,
+  FishingLevel = 54,
+  LifeProfessionLevel = 58,
+  LifeProfessionSpecializationLevel = 59,
+  RecipeIsUnlock = 60,
+  LifeProVitality = 63,
+  CollectionScoreLevel = 64,
+  HasHome = 67,
+  HomeLevel = 72,
+  HomeCleanliness = 73,
+  NotInShapeShift = 75,
+  SDKPlatform = 76,
+  UnlockLifeProduction = 89
+}
+local SexLimitName = {
+  [1] = "GenderMale",
+  [2] = "GenderFemale"
 }
 local condFuncDic
 
@@ -93,7 +111,7 @@ function ConditionHelper.GetConditionDescList(condTbl, extraParams)
     if extraParams then
       table.insert(params, extraParams)
     end
-    local bResult, unlockDesc, progress, tipsId, tipsParam, showPurview = ConditionHelper.GetSingleConditionDesc(condType, table.unpack(params))
+    local bResult, unlockDesc, progress, tipsId, tipsParam, showPurview, showLock = ConditionHelper.GetSingleConditionDesc(condType, table.unpack(params))
     if unlockDesc ~= "" then
       table.insert(descList, {
         Desc = unlockDesc,
@@ -101,7 +119,8 @@ function ConditionHelper.GetConditionDescList(condTbl, extraParams)
         IsUnlock = bResult,
         tipsId = tipsId,
         tipsParam = tipsParam,
-        showPurview = showPurview
+        showPurview = showPurview,
+        showLock = showLock
       })
     end
   end
@@ -111,8 +130,8 @@ end
 function ConditionHelper.GetSingleConditionDesc(condType, ...)
   local condFunc = ConditionHelper.getCondFunc(condType)
   if condFunc then
-    local bResult, tipsId, tipsParam, progress, showPurview = condFunc(...)
-    return bResult, Z.TipsVM.GetMessageContent(tipsId, tipsParam), progress, tipsId, tipsParam, showPurview
+    local bResult, tipsId, tipsParam, progress, showPurview, showLock = condFunc(...)
+    return bResult, tipsId == 0 and "" or Z.TipsVM.GetMessageContent(tipsId, tipsParam), progress, tipsId, tipsParam, showPurview, showLock
   end
   return false, "", "", 0, "", ""
 end
@@ -176,7 +195,51 @@ function ConditionHelper.checkConditionType_5(itemId, itemCount)
     str = totalGs .. "/" .. itemCount
   }
   local progress = totalGs .. "/" .. itemCount
-  return bResult, tipsId, tipsParam, progress
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.Item)
+  local showPurview = ""
+  if conditionRow then
+    showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {
+      val = itemRow.Name
+    })
+  end
+  return bResult, tipsId, tipsParam, progress, showPurview, true
+end
+
+function ConditionHelper.checkConditionType_9(timeId)
+  local tipsId = 1004101
+  local tipsParam = {val = 0}
+  local result = false
+  local progress = 0
+  if timeId == nil then
+    logError("[ConditionHelper.checkConditionType_9] timeId is nil")
+    return false, tipsId, tipsParam, 0
+  end
+  local startTime, endTime, _ = Z.TimeTools.GetWholeStartEndTimeByTimerId(timeId)
+  if startTime and 0 < startTime then
+    local now = Z.TimeTools.Now() / 1000
+    if startTime <= now and (endTime == nil or endTime == 0 or endTime >= now) then
+      result = true
+      progress = endTime and endTime - now or 1
+      if 0 < progress then
+        tipsParam = {
+          val = Z.TimeFormatTools.FormatToDHMS(progress)
+        }
+      else
+        tipsId = 1500013
+      end
+    elseif startTime > now then
+      result = false
+      progress = Z.TimeTools.DiffTime(startTime, now)
+      if 0 < progress then
+        tipsParam = {
+          val = Z.TimeFormatTools.FormatToDHMS(progress)
+        }
+      else
+        tipsId = 1500013
+      end
+    end
+  end
+  return result, tipsId, tipsParam, progress
 end
 
 function ConditionHelper.checkConditionType_14(functionId)
@@ -194,7 +257,8 @@ end
 
 function ConditionHelper.checkConditionType_17(skillId, skillLevel)
   local weaponData = Z.DataMgr.Get("weapon_data")
-  local curSkillLv = weaponData:GetWeaponSkillData(skillId)
+  local weaponSkillVm = Z.VMMgr.GetVM("weapon_skill")
+  local curSkillLv = weaponData:GetWeaponSkillData(weaponSkillVm:GetOriginSkillId(skillId))
   local bResult = skillLevel <= curSkillLv
   local tipsId = 1500005
   local skillConfig = Z.TableMgr.GetTable("SkillTableMgr").GetRow(skillId)
@@ -207,7 +271,9 @@ function ConditionHelper.checkConditionType_17(skillId, skillLevel)
 end
 
 function ConditionHelper.checkConditionType_24(bpLevel)
-  local curBpLevel = Z.ContainerMgr.CharSerialize.seasonCenter.battlePass.level
+  local battlePassVM = Z.VMMgr.GetVM("battlepass")
+  local curBattleCardData = battlePassVM.GetCurrentBattlePassContainer()
+  local curBpLevel = curBattleCardData == nil and 0 or curBattleCardData.level
   local bResult = bpLevel <= curBpLevel
   local tipsId = 124007
   local progress = curBpLevel .. "/" .. bpLevel
@@ -264,11 +330,11 @@ function ConditionHelper.checkConditionType_27(seasonId, offsetTime)
     if startTime <= now and seasonEndTime >= now then
       result = true
       progress = seasonEndTime - now
-      tipsVal = Z.TimeTools.FormatToDHM(progress)
+      tipsVal = Z.TimeFormatTools.FormatToDHMS(progress)
     elseif startTime > now then
       result = false
       progress = Z.TimeTools.DiffTime(startTime, now)
-      tipsVal = Z.TimeTools.FormatToDHM(progress)
+      tipsVal = Z.TimeFormatTools.FormatToDHMS(progress)
     end
   end
   return result, tipsId, {val = tipsVal}, progress
@@ -308,7 +374,7 @@ function ConditionHelper.checkConditionType_29(timeString)
   if not timeString or timeString == "" then
     return true, tipsId, tipsParam, "1/1"
   end
-  local startTime = Z.TimeTools.Format2Tp(timeString)
+  local startTime = Z.TimeTools.TimeString2Stamp(timeString)
   local serverTime = Z.ServerTime:GetServerTime()
   if startTime <= serverTime then
     return true, tipsId, tipsParam, "1/1"
@@ -317,7 +383,7 @@ function ConditionHelper.checkConditionType_29(timeString)
   end
 end
 
-function ConditionHelper.checkConditionType_30(buildId, condLv, isShowPurview)
+function ConditionHelper.checkConditionType_30(buildId, condLv)
   local unionVM = Z.VMMgr.GetVM("union")
   local curBuildLv = unionVM:GetUnionBuildLv(buildId)
   local bResult = condLv <= curBuildLv
@@ -329,14 +395,12 @@ function ConditionHelper.checkConditionType_30(buildId, condLv, isShowPurview)
   }
   local progress = curBuildLv .. "/" .. condLv
   local showPurview = ""
-  if isShowPurview then
-    local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.UnionBuildLv)
-    if conditionRow then
-      showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {
-        val1 = config.BuildingName,
-        val2 = condLv
-      })
-    end
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.UnionBuildLv)
+  if conditionRow then
+    showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {
+      val1 = config.BuildingName,
+      val2 = condLv
+    })
   end
   return bResult, tipsId, tipsParam, progress, showPurview
 end
@@ -378,35 +442,93 @@ function ConditionHelper.checkConditionType_42(condValue)
   end
   local sex = condValue
   local bResult = charInfo.gender == sex
-  return bResult
+  local tipsId = 1500007
+  local showPurview = ""
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.ProfessionId)
+  if conditionRow then
+    showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {
+      name = Lang(SexLimitName[sex])
+    })
+  end
+  return bResult, tipsId, nil, nil, showPurview, true
 end
 
-function ConditionHelper.checkConditionType_45(condValue, isShowPurview)
+function ConditionHelper.checkConditionType_43(profession)
+  local professionVm = Z.VMMgr.GetVM("profession")
+  local professionId = professionVm:GetContainerProfession()
+  local bResult = professionId == profession
+  local tipsId = 1600002
+  local showPurview = ""
+  local professionRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(profession)
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.ProfessionId)
+  if conditionRow then
+    showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {
+      name = professionRow.Name
+    })
+  end
+  return bResult, tipsId, {
+    val = professionRow.Name
+  }, nil, showPurview, true
+end
+
+function ConditionHelper.checkConditionType_45(condValue)
   local daySec = 86400
   local bResult = false
   local timeTableId = Z.Global.ServiceOpenTime
   local isExceed, subTime = Z.TimeTools.GetCurTimeIsExceed(timeTableId)
   local day = 0
+  local timeStr = ""
+  local formatTime = function(second)
+    if 86400 <= second then
+      local day = math.floor(second / 86400)
+      local hour = math.floor((second - day * 86400) / 3600)
+      timeStr = Lang("DayAndHour", {
+        item = {day = day, hour = hour}
+      })
+    else
+      local hour = math.ceil(second / 3600)
+      timeStr = Lang("Hour", {val = hour})
+    end
+    return timeStr
+  end
   if isExceed then
     bResult = 0 > subTime + condValue * 24 * 60 * 60
     if not bResult then
       day = math.ceil((subTime + condValue * daySec) / daySec)
+      timeStr = formatTime(subTime + condValue * daySec)
     end
   else
     bResult = false
     day = math.ceil((subTime + condValue * daySec) / daySec)
+    timeStr = formatTime(subTime + condValue * daySec)
   end
   local tipsId = 124024
-  local tipsParam = {val = condValue}
+  local tipsParam = {val = timeStr}
   local progress = day
   local showPurview = ""
-  if isShowPurview then
-    local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.OpenServerDay)
-    if conditionRow then
-      showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {val = condValue})
-    end
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.OpenServerDay)
+  if conditionRow then
+    showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {
+      val = condValue + 1
+    })
   end
   return bResult, tipsId, tipsParam, progress, showPurview
+end
+
+function ConditionHelper.checkConditionType_53(recommendId)
+  local tipsId = 16010000
+  local config = Z.TableMgr.GetTable("SeasonActTableMgr").GetRow(recommendId)
+  if config == nil then
+    return false, tipsId
+  end
+  if config.FunctionId ~= nil and config.FunctionId ~= 0 and not Z.VMMgr.GetVM("gotofunc").CheckFuncCanUse(config.FunctionId) then
+    return false, tipsId
+  end
+  local serverTimeData = Z.DataMgr.Get("recommendedplay_data"):GetServerData(recommendId)
+  if serverTimeData ~= nil and (Z.TimeTools.Now() / 1000 < serverTimeData.startTimestamp or Z.TimeTools.Now() / 1000 > serverTimeData.endTimestamp) then
+    return false, tipsId
+  end
+  return true, tipsId
 end
 
 function ConditionHelper.checkConditionType_54(condValue)
@@ -424,39 +546,166 @@ function ConditionHelper.checkConditionType_54(condValue)
   return bResult, tipsId, tipsParam, progress, showPurview
 end
 
-function ConditionHelper.checkConditionType_9(timeId)
-  local tipsId = 1004101
-  local tipsVal = ""
-  local result = false
-  local progress = 0
-  local startTime, endTime, offsetTime
-  local timeCfg = Z.TableMgr.GetTable("TimerTableMgr").GetRow(timeId)
-  if timeCfg and timeCfg.basetimmerid then
-    local baseTimeCfg = Z.TableMgr.GetTable("TimerTableMgr").GetRow(timeCfg.basetimmerid)
-    if baseTimeCfg then
-      startTime = Z.TimeTools.TimerTabaleTimeParse(baseTimeCfg.starttime)
-      endTime = Z.TimeTools.TimerTabaleTimeParse(baseTimeCfg.endtime)
-    end
-  else
-    startTime = Z.TimeTools.TimerTabaleTimeParse(timeCfg.starttime)
-    endTime = Z.TimeTools.TimerTabaleTimeParse(timeCfg.endtime)
+function ConditionHelper.checkConditionType_58(proID, level)
+  local lifeProfessionVM = Z.VMMgr.GetVM("life_profession")
+  local curLevel = lifeProfessionVM.GetLifeProfessionLv(proID)
+  local bResult = level <= curLevel
+  local progress = curLevel .. "/" .. level
+  local showPurview = ""
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.LifeProfessionLevel)
+  local lifeProfessionTableRow = Z.TableMgr.GetTable("LifeProfessionTableMgr").GetRow(proID)
+  if not lifeProfessionTableRow then
+    return false
   end
-  offsetTime = timeCfg.startTimeOffset
-  if startTime then
-    local _, totalSec = Z.TimeTools.TimerTabaleOffsetParse(offsetTime)
-    local startTime = totalSec + startTime
-    local now = Z.TimeTools.Now() / 1000
-    if startTime <= now and (endTime == nil or endTime >= now) then
-      result = true
-      progress = endTime and endTime - now or 1
-      tipsVal = Z.TimeTools.FormatToDHM(progress)
-    elseif startTime > now then
-      result = false
-      progress = Z.TimeTools.DiffTime(startTime, now)
-      tipsVal = Z.TimeTools.FormatToDHM(progress)
-    end
+  local tipsParam = {
+    name = lifeProfessionTableRow.Name,
+    level = level
+  }
+  if conditionRow then
+    showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {
+      val1 = lifeProfessionTableRow.Name,
+      val2 = level
+    })
   end
-  return result, tipsId, {val = tipsVal}, progress
+  return bResult, 1500010, tipsParam, progress, showPurview
+end
+
+function ConditionHelper.checkConditionType_59(specialGroupID, level)
+  local lifeProfessionVM = Z.VMMgr.GetVM("life_profession")
+  local lifeProfessionData_ = Z.DataMgr.Get("life_profession_data")
+  local lifeFormulaTableRow = lifeProfessionData_:GetSpecializationRow(specialGroupID, level)
+  if not lifeFormulaTableRow then
+    return false, 0
+  end
+  local curLevel = lifeProfessionVM.GetSpecializationLv(lifeFormulaTableRow.ProId, lifeFormulaTableRow.Id)
+  local bResult = level <= curLevel
+  local tipsParam = {
+    name = lifeFormulaTableRow.Name
+  }
+  local progress = (bResult and curLevel or Z.RichTextHelper.ApplyColorTag(curLevel, "#ff6300")) .. "/" .. level
+  local showPurview = ""
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.LifeProfessionSpecializationLevel)
+  local tipsID = 1500012
+  if conditionRow then
+    showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {
+      val = lifeFormulaTableRow.Name
+    })
+  end
+  return bResult, tipsID, tipsParam, progress, showPurview
+end
+
+function ConditionHelper.checkConditionType_60(proID)
+  local bResult = Z.ContainerMgr.CharSerialize.lifeProfession.lifeProfessionRecipe[proID] ~= nil
+  local tipsParam = {}
+  local progress = ""
+  local showPurview = ""
+  local tipsID = 1002009
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.RecipeIsUnlock)
+  if conditionRow then
+    showPurview = conditionRow.ShowPurview
+    progress = conditionRow.ShowPurview
+  end
+  return bResult, tipsID, tipsParam, progress, showPurview
+end
+
+function ConditionHelper.checkConditionType_63(needCount)
+  local itemsVm = Z.VMMgr.GetVM("items")
+  local curHave = itemsVm.GetItemTotalCount(Z.SystemItem.VigourItemId)
+  local bResult = needCount <= curHave
+  local tipsParam = {val = needCount}
+  local progress = (bResult and curHave or Z.RichTextHelper.ApplyColorTag(curHave, "#ff6300")) .. "/" .. needCount
+  local showPurview = ""
+  local tipsID = 1001907
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.LifeProVitality)
+  if conditionRow then
+    showPurview = conditionRow.ShowPurview
+  end
+  return bResult, tipsID, tipsParam, progress, showPurview
+end
+
+function ConditionHelper.checkConditionType_64(level)
+  local bResult = level <= Z.ContainerMgr.CharSerialize.fashionBenefit.level
+  local tipsParam = {}
+  local progress = ""
+  local showPurview = ""
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.CollectionScoreLevel)
+  local tipsID = 120022
+  local fashionLevelRow = Z.TableMgr.GetTable("FashionLevelTableMgr").GetRow(level, true)
+  if conditionRow and fashionLevelRow then
+    showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {
+      val = fashionLevelRow.Name
+    })
+    progress = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {
+      val = fashionLevelRow.Name
+    })
+  end
+  return bResult, tipsID, tipsParam, progress, showPurview, true
+end
+
+function ConditionHelper.checkConditionType_67()
+  local bResult = Z.ContainerMgr.CharSerialize.communityHomeInfo.homelandId == 0
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.HasHome)
+  local tipsID = conditionRow.FailureMessage
+  local showPurview = conditionRow.ShowPurview
+  return bResult, tipsID, {}, "", showPurview
+end
+
+function ConditionHelper.checkConditionType_72(homeLevel)
+  local houseData = Z.DataMgr.Get("house_data")
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.HomeLevel)
+  local tipsID = conditionRow.FailureMessage
+  local showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {val = homeLevel})
+  local tipsParam = {val = homeLevel}
+  local bResult = homeLevel <= houseData:GetHouseLevel()
+  return bResult, tipsID, tipsParam, "", showPurview, true
+end
+
+function ConditionHelper.checkConditionType_73(cleanliness)
+  local houseData = Z.DataMgr.Get("house_data")
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.HomeCleanliness)
+  local tipsID = conditionRow.FailureMessage
+  local showPurview = Z.Placeholder.Placeholder(conditionRow.ShowPurview, {val = cleanliness})
+  local tipsParam = {val = cleanliness}
+  local bResult = cleanliness <= houseData:GetHouseCleanValue()
+  return bResult, tipsID, tipsParam, "", showPurview, true
+end
+
+function ConditionHelper.checkConditionType_75()
+  local player = Z.EntityMgr.PlayerEnt
+  if not player then
+    return false
+  end
+  local tipsId = 0
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.NotInShapeShift)
+  if conditionRow then
+    tipsId = conditionRow.FailureMessage
+  end
+  local bResult = not player.LuaGetIsInShapeShift()
+  return bResult, tipsId, nil, nil
+end
+
+function ConditionHelper.checkConditionType_76(launchPlatform)
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.SDKPlatform)
+  local tipsID = conditionRow.FailureMessage
+  local showPurview = conditionRow.ShowPurview
+  local bResult = Z.VMMgr.GetVM("sdk").CheckLaunchPlatformCanShow(launchPlatform)
+  return bResult, tipsID, "", "", showPurview
+end
+
+function ConditionHelper.checkConditionType_89(lifeProductionId)
+  local lifeProductionListTableRow = Z.TableMgr.GetTable("LifeProductionListTableMgr").GetRow(lifeProductionId)
+  local bResult = false
+  local tipsParam = {
+    val = lifeProductionListTableRow.Name
+  }
+  local progress = ""
+  if lifeProductionListTableRow then
+    bResult = ConditionHelper.CheckCondition(lifeProductionListTableRow.UnlockCondition)
+  end
+  local conditionRow = Z.TableMgr.GetTable("ConditionTableMgr").GetRow(E.ConditionType.UnlockLifeProduction)
+  local showPurview = conditionRow.ShowPurview
+  local tipsID = conditionRow.FailureMessage
+  return bResult, tipsID, tipsParam, progress, showPurview
 end
 
 return ConditionHelper

@@ -6,8 +6,6 @@ import "enum_e_error_code.proto";
 import "stru_union_official.proto";
 
 message ReqChangeOfficialsReply {
-    zproto.EErrorCode errorCode = 1;
-    int32 errCode = 2;
-    repeated zproto.UnionOfficial changeOfficials = 3;
+    repeated zproto.UnionOfficial changeOfficials = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "stru_photo_graph_show.proto";
 
 message GetAlbumPhotosReply {
-    int32 errCode = 2;
     int64 charId = 3;
     uint32 albumId = 4;
     repeated zproto.PhotoGraphShow photoGraphs = 5;
+    zproto.EErrorCode errCode = 6;
 }
-

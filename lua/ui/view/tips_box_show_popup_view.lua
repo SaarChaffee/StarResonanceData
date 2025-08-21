@@ -1,7 +1,7 @@
 local UI = Z.UI
 local super = require("ui.ui_view_base")
 local Tips_box_show_popupView = class("Tips_box_show_popupView", super)
-local itemClass = require("common.item")
+local itemClass = require("common.item_binder")
 
 function Tips_box_show_popupView:ctor()
   self.uiBinder = nil
@@ -44,9 +44,8 @@ function Tips_box_show_popupView:RefreshItems()
       if item ~= nil then
         self.itemClassTab_[itemName] = itemClass.new(self)
         local itemPreviewData = {}
-        itemPreviewData.unit = item
         itemPreviewData.configId = itemData.awardId
-        itemPreviewData.uiBinder = self.uiBinder
+        itemPreviewData.uiBinder = item
         itemPreviewData.labType, itemPreviewData.lab = self.awardPreviewVM_.GetPreviewShowNum(itemData)
         itemPreviewData.isShowZero = false
         itemPreviewData.isShowOne = true

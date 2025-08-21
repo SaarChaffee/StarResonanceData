@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_platform_func_type.proto";
 import "stru_upload_photo_successful_data.proto";
 
 message UploadPhotoSuccessfulRequest {
     int64 charId = 2;
     uint32 pictureId = 3;
-    uint32 funcType = 4;
+    zproto.EPlatformFuncType funcType = 4;
     repeated zproto.UploadPhotoSuccessfulData data = 5;
     int64 ownerId = 6;
 }
-

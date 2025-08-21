@@ -7,4 +7,3 @@ message IntVec3Db {
     int32 y = 2;
     int32 z = 3;
 }
-

@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message DeleteGroupRequest {
-    int32 groupId = 3;
+    int32 groupId = 1;
 }
-

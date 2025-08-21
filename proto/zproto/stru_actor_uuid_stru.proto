@@ -7,4 +7,3 @@ message ActorUuidStru {
     bool isSummon = 2;
     int32 instanceId = 3;
 }
-

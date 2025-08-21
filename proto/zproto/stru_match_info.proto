@@ -2,18 +2,18 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_error_code.proto";
 import "enum_e_match_status.proto";
-import "enum_e_match_type.proto";
-import "stru_match_param_context.proto";
+import "stru_match_key_info.proto";
 import "stru_match_player_info.proto";
 
 message MatchInfo {
-    zproto.EMatchType matchType = 1;
     zproto.EMatchStatus matchStatus = 2;
     int64 matchTime = 3;
-    zproto.MatchParamContext matchParamContext = 4;
-    map<int64, .zproto.MatchPlayerInfo> matchPlayerInfo = 5;
+    repeated zproto.MatchInfo.MatchPlayerInfoEntry matchPlayerInfo = 5;
     string matchToken = 6;
     int64 matchReadyTime = 7;
+    zproto.MatchKeyInfo matchKeyInfo = 8;
+    string matchGrainKey = 9;
+    zproto.EErrorCode errCode = 10;
 }
-

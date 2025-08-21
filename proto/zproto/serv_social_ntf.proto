@@ -8,6 +8,4 @@ message SocialNtf {
     message NotifySocialData {
         zproto.NotifySocialDataRequest vRequest = 1;
     }
-
 }
-

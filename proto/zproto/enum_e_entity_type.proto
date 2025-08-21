@@ -19,6 +19,8 @@ enum EEntityType {
     EntCollection = 16;
     EntStaticObject = 18;
     EntVehicle = 19;
-    EntCount = 20;
+    EntToy = 20;
+    EntCommunityHouse = 21;
+    EntHouseItem = 22;
+    EntCount = 23;
 }
-

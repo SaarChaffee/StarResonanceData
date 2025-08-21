@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package zproto;
 
+import "stru_equip_slot_refine_item_cost.proto";
+
 message EquipSlotRefineRequest {
     uint32 slotId = 1;
-    int32 itemConfigId = 2;
-    uint32 itemCount = 3;
+    repeated zproto.EquipSlotRefineItemCost itemCostList = 2;
 }
-

@@ -13,8 +13,6 @@ message HousingItemsBase {
     int32 Quality = 1961;
     string Res = 1275;
 }
-
 message HousingItemsMgr {
-    map<int32, .bokura.HousingItemsBase> datas = 1;
+    repeated bokura.HousingItemsMgr.DatasEntry datas = 1;
 }
-

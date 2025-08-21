@@ -2,6 +2,7 @@ local UnionListDetailItem = class("UnionListDetailItem")
 local unionLogoItem = require("ui.component.union.union_logo_item")
 local unionTagItem = require("ui.component.union.union_tag_item")
 local playerProtraitMgr = require("ui.component.role_info.common_player_portrait_item_mgr")
+local reportDefine = require("ui.model.report_define")
 
 function UnionListDetailItem:ctor()
 end
@@ -13,6 +14,7 @@ function UnionListDetailItem:Init(uiBinder, parentView, index)
   self.photoId = 0
   self.unionVM_ = Z.VMMgr.GetVM("union")
   self.unionData_ = Z.DataMgr.Get("union_data")
+  self.reportVm_ = Z.VMMgr.GetVM("report")
   self.parentView:AddAsyncClick(self.uiBinder.btn_apply, function()
     self:onApplyBtnClick()
   end)
@@ -24,6 +26,16 @@ function UnionListDetailItem:Init(uiBinder, parentView, index)
   end)
   self.parentView:AddAsyncClick(self.uiBinder.btn_collection, function()
     self:onCollectionBtnClick()
+  end)
+  self.parentView:AddAsyncClick(self.uiBinder.btn_panel.OnLongPressEvent, function()
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_report, self.reportVm_.IsReportOpen(true))
+  end, nil, nil)
+  self.parentView:AddAsyncClick(self.uiBinder.btn_report, function()
+    if self.unionListData then
+      self.reportVm_.OpenReportPop(reportDefine.ReportScene.UnionInfo, self.unionListData.baseInfo.Name, self.unionListData.baseInfo.Id)
+      self.uiBinder.Ref:SetVisible(self.uiBinder.btn_report, false)
+    end
+    self.uiBinder.Ref:SetVisible(self.uiBinder.btn_report, false)
   end)
   self.unionTagItem_ = unionTagItem.new()
   self.unionTagItem_:Init(E.UnionTagItemType.Normal, parentView, self.uiBinder.trans_time_tag, self.uiBinder.trans_activity_tag)
@@ -88,6 +100,7 @@ function UnionListDetailItem:Refresh(unionListData)
   self:refreshTagUI()
   self:refreshHeadUI()
   self:refreshPhotoUI()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_report, false)
 end
 
 function UnionListDetailItem:refreshTagUI()
@@ -104,13 +117,14 @@ function UnionListDetailItem:refreshHeadUI()
   end
   local isSelf = self.unionListData.presidentInfo.basicData.charID == Z.ContainerMgr.CharSerialize.charBase.charId
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_call, not isSelf)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(self.unionListData.presidentInfo.basicData.isNewbie))
   self.uiBinder.lab_president.text = self.unionListData.presidentInfo.basicData.name
   self.headItem_ = playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.binder_head, self.unionListData.presidentInfo, function()
     Z.CoroUtil.create_coro_xpcall(function()
       local idCardVM = Z.VMMgr.GetVM("idcard")
       idCardVM.AsyncGetCardData(self.unionListData.presidentInfo.basicData.charID, self.parentView.cancelSource:CreateToken())
     end)()
-  end)
+  end, self.parentView.cancelSource:CreateToken())
 end
 
 function UnionListDetailItem:refreshPhotoUI()
@@ -181,7 +195,7 @@ function UnionListDetailItem:getUnionPhoto()
     self.uiBinder.rimg_photo:SetImage(Z.ConstValue.UnionRes.DefaultPhotoCover)
     return
   end
-  album_main_vm.AsyncGetHttpAlbumPhoto(photoData.cosUrl, E.PictureType.ECameraRender, E.NativeTextureCallToken.album_loop_item, self.onPhotoCallBack, self)
+  album_main_vm.AsyncGetHttpAlbumPhoto(photoData.cosUrl, E.PictureType.ECameraRender, E.NativeTextureCallToken.album_loop_item, self.parentView.cancelSource, self.onPhotoCallBack, self)
 end
 
 return UnionListDetailItem

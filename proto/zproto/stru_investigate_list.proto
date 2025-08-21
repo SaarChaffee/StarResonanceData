@@ -6,9 +6,7 @@ import "stru_investigate_data.proto";
 import "stru_dirty_mask.proto";
 
 message InvestigateList {
-    map<uint32, .zproto.InvestigateData> investigateMap = 1;
-    map<uint32, bool> compInvestigateMap = 2;
+    repeated zproto.InvestigateList.InvestigateMapEntry investigateMap = 1;
+    repeated zproto.InvestigateList.CompInvestigateMapEntry compInvestigateMap = 2;
     repeated uint32 compReasoningMap = 3;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

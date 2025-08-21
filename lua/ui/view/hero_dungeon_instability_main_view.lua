@@ -23,9 +23,12 @@ function Hero_dungeon_instability_mainView:ctor()
   self.teamMainVm_ = Z.VMMgr.GetVM("team_main")
   self.teamVm_ = Z.VMMgr.GetVM("team")
   self.matchVm_ = Z.VMMgr.GetVM("match")
+  self.matchTeamVm_ = Z.VMMgr.GetVM("match_team")
   self.teamData_ = Z.DataMgr.Get("team_data")
   self.itemsVM_ = Z.VMMgr.GetVM("items")
   self.itemsData_ = Z.DataMgr.Get("items_data")
+  self.matchTeamData = Z.DataMgr.Get("match_team_data")
+  self.helpSysVm_ = Z.VMMgr.GetVM("helpsys")
 end
 
 function Hero_dungeon_instability_mainView:initBinders()
@@ -53,32 +56,56 @@ function Hero_dungeon_instability_mainView:initBinders()
   self.awardScrollView_ = self.uiBinder.scrollview_item
   self.affixNode_ = self.uiBinder.node_affix
   self.prefabCache_ = self.uiBinder.prefab_cache
-  self.isBase_ = true
+  self.awardTitleNode_ = self.uiBinder.node_title
+  self.firstNode_ = self.uiBinder.node_first
+  self.firstTog_ = self.firstNode_.tog_first
+  self.dropTog_ = self.firstNode_.tog_drop
   self.isLoadFinish_ = false
   local dataList = {}
-  self.loopAffixList = loopListView.new(self, self.uiBinder.loop_affix, affixLoopItem, "hero_dungeon_affix_icon_tpl")
+  self.loopAffixList = loopListView.new(self, self.uiBinder.loop_affix, affixLoopItem, "hero_dungeon_affix_icon_tpl", true)
   self.loopAffixList:Init(dataList)
+  self.matchBtn = self.uiBinder.btn_match
+  self.unMatchBtn = self.uiBinder.btn_cancel_match
 end
 
 function Hero_dungeon_instability_mainView:initBtns()
-  self.personNum_ = Z.Global.HeroNormalDungeonNumber
-  self:AddClick(self.askBtn_, function()
-    Z.VMMgr.GetVM("helpsys").OpenFullScreenTipsView(30011)
-  end)
   self:AddClick(self.closeBtn_, function()
     self.vm_.CloseHeroInstabilityView()
   end)
-  self:AddAsyncClick(self.enterBtn_, function()
-    if self.canUseKey_ and self.hasUseKey_ == false then
-      self:openKeyPopupView(self.dungeonData_.LimitedNum)
+  self:AddClick(self.matchBtn, function()
+    if not self.toggleisTeam_ then
+      Z.TipsVM.ShowTips(1000644)
       return
     end
+    self.matchVm_.RequestBeginMatch(E.MatchType.Team, self.dungeonId_, self.cancelSource:CreateToken())
+  end)
+  self:AddAsyncClick(self.unMatchBtn, function()
+    self.matchVm_.AsyncCancelMatch()
+  end)
+  self.personNum_ = Z.Global.HeroNormalDungeonNumber
+  self:AddClick(self.askBtn_, function()
+    self.helpSysVm_.OpenFullScreenTipsView(30011)
+  end)
+  self:AddClick(self.firstTog_, function(isOn)
+    if isOn and self.showFirstAward_ == false then
+      self.showFirstAward_ = true
+      if self.dungeonData_ and self.dungeonData_.SingleModeDungeonId ~= 0 then
+        self:createAwardItem(self.baseIsHaveAwardCount_)
+      end
+    end
+  end)
+  self:AddClick(self.dropTog_, function(isOn)
+    if isOn and self.showFirstAward_ == true then
+      self.showFirstAward_ = false
+      if self.dungeonData_ and self.dungeonData_.SingleModeDungeonId ~= 0 then
+        self:createAwardItem(self.baseIsHaveAwardCount_)
+      end
+    end
+  end)
+  self:AddAsyncClick(self.enterBtn_, function()
     local count = table.zcount(self.teamData_.TeamInfo.members)
     local selectType = 2
     local keyUuid = 0
-    if self.canUseKey_ then
-      keyUuid = self.data_:GetUseKeyData()
-    end
     local func = function()
       self.vm_.AsyncStartEnterDungeon(self.dungeonId_, self.vm_.GetAffix(self.dungeonId_), self.cancelSource, selectType, keyUuid)
     end
@@ -94,36 +121,20 @@ function Hero_dungeon_instability_mainView:initBtns()
     else
       local minCount = self.minLimit_
       if count < minCount then
-        local str = self.canUseKey_ == true and Lang("HeroKeyTeamMemberLimit") or Lang("UnionHuntMultiNumLimit")
+        local str = Lang("UnionHuntMultiNumLimit")
         Z.DialogViewDataMgr:OpenNormalDialog(str, function()
-          Z.CoroUtil.create_coro_xpcall(function()
-            if self.teamVm_.CheckIsInTeam() then
-              if self.teamVm_.GetYouIsLeader() then
-                self.teamVm_.AsyncSetTeamTargetInfo(self.teamTargetId_, self.teamData_.TeamInfo.baseInfo.desc, true, self.teamData_.TeamInfo.baseInfo.hallShow, self.cancelSource:CreateToken())
-              end
-            else
-              local requestParam = {}
-              requestParam.targetId = self.teamTargetId_
-              requestParam.checkTags = {}
-              requestParam.wantLeader = 1
-              self.matchVm_.AsyncBeginMatchNew(E.MatchType.Team, requestParam, false, self.cancelSource:CreateToken())
-              self.matchVm_.SetSelfMatchData(self.teamTargetId_, "targetId")
+          if self.teamVm_.CheckIsInTeam() then
+            if self.teamVm_.GetYouIsLeader() then
+              self.teamVm_.AsyncSetTeamTargetInfo(self.teamTargetId_, self.teamData_.TeamInfo.baseInfo.desc, true, self.teamData_.TeamInfo.baseInfo.hallShow, self.cancelSource:CreateToken())
             end
-            self.teamMainVm_.OpenTeamMainView(self.teamTargetId_)
-          end)()
-          Z.DialogViewDataMgr:CloseDialogView()
-        end)
-        return
-      end
-    end
-    if self.canUseKey_ then
-      local limitID = Z.Global.KeyRewardLimitId
-      local limtCount = Z.CounterHelper.GetCounterLimitCount(limitID)
-      local normalAwardCount = Z.CounterHelper.GetCounterResidueLimitCount(limitID, limtCount)
-      if normalAwardCount <= 0 then
-        Z.DialogViewDataMgr:OpenNormalDialog(Lang("HeroRollKeyAwardLimit"), function()
-          func()
-          Z.DialogViewDataMgr:CloseDialogView()
+          else
+            local teamTargetRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(self.teamTargetId_)
+            if not teamTargetRow then
+              return
+            end
+            self.matchVm_.RequestBeginMatch(E.MatchType.Team, teamTargetRow.RelativeDungeonId, self.cancelSource:CreateToken())
+          end
+          self.teamMainVm_.OpenTeamMainView(self.teamTargetId_)
         end)
         return
       end
@@ -134,35 +145,43 @@ function Hero_dungeon_instability_mainView:initBtns()
     self.teamMainVm_.OpenTeamMainView(self.teamTargetId_)
   end)
   self:AddClick(self.digitTog_, function(isOn)
-    if isOn then
+    if isOn and self.toggleisTeam_ == true then
       self.toggleisTeam_ = false
       self.data_.InstabilityIsTeam = false
+      self:getShowDungeonData()
       if self.dungeonData_ and self.dungeonData_.SingleModeDungeonId ~= 0 then
-        self:setLab(self.dungeonData_.SingleModeDungeonId)
-        self:creatAwardItem(self.baseIsHaveAwardCount_)
+        self:createAwardItem(self.baseIsHaveAwardCount_)
       end
       self:setPersonLab()
+      local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_)
+      self.uiBinder.Ref:SetVisible(self.teamBtn_, not isCanMatch)
+      self.uiBinder.Ref:SetVisible(self.matchBtn, isCanMatch)
+      self.uiBinder.Ref:SetVisible(self.unMatchBtn, false)
+      self.matchBtn.IsDisabled = true
     end
   end)
   self:AddClick(self.teamTog_, function(isOn)
-    if isOn then
-      self.toggleisTeam_ = true
-      self.data_.InstabilityIsTeam = true
-      self:setLab(self.dungeonId_)
-      self:setPersonLab()
-      if self.dungeonData_ and self.dungeonData_.SingleModeDungeonId ~= 0 then
-        self:creatAwardItem(self.baseIsHaveAwardCount_)
-      end
+    if not Z.ConditionHelper.CheckCondition(self.dungeonData_.SingleAiCondition, true) then
+      self.digitTog_.isOn = true
+      return
     end
-  end)
-  self.uiBinder.btn_tab_01.group = self.uiBinder.group_tab
-  self.uiBinder.btn_tab_02.group = self.uiBinder.group_tab
-  self:AddClick(self.uiBinder.btn_tab_01, function(isOn)
     if isOn then
-      self.isBase_ = true
-      self:OnSelectLeftItem(self.dungeonDataList_[1])
-    else
-      self.isBase_ = false
+      if self.toggleisTeam_ == false then
+        self.toggleisTeam_ = true
+        self.data_.InstabilityIsTeam = true
+        self:getShowDungeonData()
+        self:setPersonLab()
+        if self.dungeonData_ and self.dungeonData_.SingleModeDungeonId ~= 0 then
+          self:createAwardItem(self.baseIsHaveAwardCount_)
+        end
+      end
+      local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_)
+      local isMatching = self.matchVm_.IsMatching()
+      local curMatchingDungeonId = self.matchTeamData:GetCurMatchingDungeonId()
+      self.uiBinder.Ref:SetVisible(self.teamBtn_, not isCanMatch)
+      self.uiBinder.Ref:SetVisible(self.matchBtn, isCanMatch and (not isMatching or curMatchingDungeonId ~= self.dungeonId_))
+      self.uiBinder.Ref:SetVisible(self.unMatchBtn, isCanMatch and isMatching and curMatchingDungeonId == self.dungeonId_)
+      self.matchBtn.IsDisabled = false
     end
   end)
   self:AddClick(self.uiBinder.btn_tab_02, function(isOn)
@@ -178,9 +197,9 @@ function Hero_dungeon_instability_mainView:initBtns()
     local row = Z.TableMgr.GetTable("SceneEventDuneonConfigTableMgr").GetRow(self.dungeonId_)
     if row then
       if row.LimitTime > 0 then
-        Z.VMMgr.GetVM("helpsys").OpenMinTips(30031, self.timeBtn_.transform)
+        self.helpSysVm_.OpenMinTips(30031, self.timeBtn_.transform)
       else
-        Z.VMMgr.GetVM("helpsys").OpenMinTips(30034, self.timeBtn_.transform)
+        self.helpSysVm_.OpenMinTips(30034, self.timeBtn_.transform)
       end
     end
   end)
@@ -193,7 +212,7 @@ function Hero_dungeon_instability_mainView:openKeyPopupView(limitedNum)
     count = table.zcount(itemUuids)
   end
   if 0 < count then
-    self.vm_.OpenKeyPopupView(self.dungeonData_.LimitedNum)
+    self.vm_.OpenKeyPopupView(self.showDungeonRow_.LimitedNum)
   else
     local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(keyItemID_)
     if itemConfig then
@@ -208,43 +227,21 @@ function Hero_dungeon_instability_mainView:openKeyPopupView(limitedNum)
   end
 end
 
-function Hero_dungeon_instability_mainView:setLab(dungeeonid)
-  local dungeonData = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeeonid)
-  self.teamTargetId_ = self.teamMainVm_.GetTargetIdByDungeonId(dungeeonid)
-  if not dungeonData then
+function Hero_dungeon_instability_mainView:refreshUi()
+  if not self.showDungeonRow_ then
     return
   end
-  self.labTitle_.text = dungeonData.Name
-  if dungeonData.RecommendFightValue == 0 then
-    self.labMark_.text = Lang("GSSuggestNoLimit")
-  else
-    local param = {
-      val = dungeonData.RecommendFightValue
-    }
-    self.labMark_.text = Lang("GSSuggest", param)
-  end
-  self.titleNmaeLab_.text = dungeonData.Name
-  self.labDes_.text = dungeonData.Content
-end
-
-function Hero_dungeon_instability_mainView:initUi()
-  if not self.dungeonData_ then
-    return
-  end
-  self:setLab(self.dungeonId_)
   if self.normalHeroDungeonData_ then
     self.bgRimg_:SetImage(self.normalHeroDungeonData_.Background)
   end
-  local conditionIds = self.dungeonData_.Condition
+  local conditionIds = self.showDungeonRow_.Condition
   local check = Z.ConditionHelper.CheckCondition(conditionIds)
-  local progress = 0
   if check == false then
     local str = ""
     local r = Z.ConditionHelper.GetConditionDescList(conditionIds)
     for _, value in ipairs(r) do
       if value.IsUnlock == false then
         str = value.Desc
-        progress = value.Progress
         break
       end
     end
@@ -256,7 +253,7 @@ function Hero_dungeon_instability_mainView:initUi()
 end
 
 function Hero_dungeon_instability_mainView:setLimit()
-  if not self.dungeonData_ then
+  if not self.showDungeonRow_ then
     return
   end
   local limtCount = Z.CounterHelper.GetCounterLimitCount(self.dungeonNormalCounterId_)
@@ -264,30 +261,14 @@ function Hero_dungeon_instability_mainView:setLimit()
   self.labAwardNum_.text = Lang("HeroDungeonAwardTimes", {
     arrval = {normalAwardCount, limtCount}
   })
-  self:creatAwardItem(0 < normalAwardCount)
-  local limitID = Z.Global.KeyRewardLimitId
-  limtCount = Z.CounterHelper.GetCounterLimitCount(limitID)
-  normalAwardCount = Z.CounterHelper.GetCounterResidueLimitCount(limitID, limtCount)
-  limitID = Z.Global.RollRewardLimitId
-  limtCount = Z.CounterHelper.GetCounterLimitCount(limitID)
-  normalAwardCount = Z.CounterHelper.GetCounterResidueLimitCount(limitID, limtCount)
+  self.isShowAward_ = 0 < normalAwardCount
 end
 
 function Hero_dungeon_instability_mainView:setPersonLab()
   local min = 0
   local max = 0
-  if self.canUseKey_ == false then
-    if self.personNum_ then
-      if self.data_.InstabilityIsTeam then
-        min = self.personNum_[2][1]
-        max = self.personNum_[2][2]
-      else
-        min = self.personNum_[1][1]
-        max = self.personNum_[1][2]
-      end
-    end
-  elseif self.dungeonData_ then
-    local limit = self.dungeonData_.LimitedNum
+  if self.showDungeonRow_ then
+    local limit = self.showDungeonRow_.LimitedNum
     min = limit[1]
     max = limit[2]
   end
@@ -300,73 +281,6 @@ function Hero_dungeon_instability_mainView:setPersonLab()
     str = string.format(Lang("DungeonNumber"), min, max)
   end
   self.personLab_.text = str
-end
-
-function Hero_dungeon_instability_mainView:creatAwardItem(isHaveAward)
-  self.baseIsHaveAwardCount_ = isHaveAward
-  local awardId
-  if not self.isBase_ then
-    local destinyDungeonAwardRow = Z.TableMgr.GetRow("NormalHeroDestinyDungeonAwardMgr", self.dungeonId_)
-    if destinyDungeonAwardRow then
-      awardId = destinyDungeonAwardRow.KeyReward[1] or {}
-    end
-  elseif isHaveAward then
-    if not self.data_.InstabilityIsTeam and self.dungeonData_.SingleModeDungeonId ~= 0 then
-      local dungeonRow = Z.TableMgr.GetRow("DungeonsTableMgr", self.dungeonData_.SingleModeDungeonId)
-      if dungeonRow then
-        awardId = dungeonRow.PassAward[1]
-      end
-    else
-      awardId = self.dungeonData_.PassAward[1]
-    end
-  end
-  local awardList = {}
-  if awardId then
-    awardList = awardPreviewVm.GetAllAwardPreListByIds(awardId) or {}
-  end
-  if self.isBase_ and #awardList == 0 and self.dungeonData_.ExtraAward and self.dungeonData_.ExtraAward ~= 0 then
-    awardList = awardPreviewVm.GetAllAwardPreListByIds(self.dungeonData_.ExtraAward) or {}
-  end
-  if not isHaveAward and self.isBase_ and self.dungeonData_.ExtraAward == 0 then
-    self.data_.IsHaveAward = false
-  else
-    self.data_.IsHaveAward = true
-  end
-  self.uiBinder.Ref:SetVisible(self.awardHintLab_, #awardList == 0)
-  for unitName, unit in pairs(self.awardUnit_) do
-    self:RemoveUiUnit(unitName)
-    self.itemClassTab_[unitName]:UnInit()
-  end
-  for unitName, unitToken in pairs(self.unitTokenDict_) do
-    Z.CancelSource.ReleaseToken(unitToken)
-  end
-  self.awardUnit_ = {}
-  self.unitTokenDict_ = {}
-  self.itemClassTab_ = {}
-  if 0 < #awardList then
-    local prefabPath = self.prefabCache_:GetString("item")
-    if prefabPath and prefabPath ~= "" then
-      Z.CoroUtil.create_coro_xpcall(function()
-        for key, value in ipairs(awardList) do
-          local itemName = "hero_award_item" .. key
-          local unitToken = self.cancelSource:CreateToken()
-          self.unitTokenDict_[itemName] = unitToken
-          local item = self:AsyncLoadUiUnit(prefabPath, itemName, self.awardScrollView_.content.transform, unitToken)
-          self.itemClassTab_[itemName] = itemClass.new(self)
-          self.awardUnit_[itemName] = item
-          local itemData = {
-            uiBinder = item,
-            configId = value.awardId,
-            isSquareItem = true,
-            PrevDropType = value.PrevDropType,
-            dungeonId = self.dungonId_
-          }
-          itemData.labType, itemData.lab = awardPreviewVm.GetPreviewShowNum(value)
-          self.itemClassTab_[itemName]:Init(itemData)
-        end
-      end)()
-    end
-  end
 end
 
 function Hero_dungeon_instability_mainView:selectedItem()
@@ -422,48 +336,8 @@ function Hero_dungeon_instability_mainView:creatSelectItem()
   end
 end
 
-function Hero_dungeon_instability_mainView:creatAffix()
-  local dungeon_data = Z.DataMgr.Get("dungeon_data")
-  local dungeonAffix = dungeon_data:GetDungeonAffixDic(self.dungeonId_)
-  local affixList
-  local dataList = {}
-  if dungeonAffix then
-    affixList = dungeonAffix.affixes
-  end
-  if affixList then
-    for _, value in ipairs(affixList) do
-      local d = {}
-      d.isKey = false
-      d.affixId = value
-      dataList[#dataList + 1] = d
-    end
-  end
-  local keyUuid = 0
-  if self.canUseKey_ then
-    keyUuid = self.data_:GetUseKeyData()
-  end
-  if keyUuid and 0 < keyUuid then
-    local itemInfo = self.itemsVM_.GetItemInfo(keyUuid, E.BackPackItemPackageType.Item)
-    if itemInfo then
-      local affix = itemInfo.affixData.affixIds
-      for _, value in ipairs(affix) do
-        local d = {}
-        d.isKey = true
-        d.affixId = value
-        dataList[#dataList + 1] = d
-      end
-    end
-  end
-  table.sort(dataList, function(a, b)
-    return a.affixId < b.affixId
-  end)
-  self.loopAffixList:RefreshListView(dataList, false)
-end
-
 function Hero_dungeon_instability_mainView:getCfgData()
   self.dungeonData_ = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.dungeonId_)
-  self.teamTargetId_ = self.teamMainVm_.GetTargetIdByDungeonId(self.dungeonId_)
-  self:setLab(self.dungeonId_)
 end
 
 function Hero_dungeon_instability_mainView:initBaseData()
@@ -485,13 +359,11 @@ function Hero_dungeon_instability_mainView:initBaseData()
     list[#list + 1] = d
   end
   self.dungeonDataList_ = list
-  if self.uiBinder.btn_tab_01.isOn == true then
-  else
-    self.uiBinder.btn_tab_01.isOn = true
-  end
   self.toggleisTeam_ = true
   self:OnSelectLeftItem(self.dungeonDataList_[1])
-  self.uiBinder.tog_team.isOn = true
+  self.teamTog_.isOn = true
+  self.showFirstAward_ = false
+  self.firstTog_.isOn = false
 end
 
 function Hero_dungeon_instability_mainView:OnActive()
@@ -515,36 +387,29 @@ function Hero_dungeon_instability_mainView:OnDeActive()
   self.affixItemList_ = {}
   self.loopAffixList:UnInit()
   self.loopAffixList = nil
-  Z.VMMgr.GetVM("helpsys").CloseTitleContentBtn()
+  self.helpSysVm_.CloseTitleContentBtn()
+  self.toggleisTeam_ = true
+  self.data_.InstabilityIsTeam = true
 end
 
 function Hero_dungeon_instability_mainView:OnRefresh()
 end
 
 function Hero_dungeon_instability_mainView:BindEvents()
-  Z.EventMgr:Add(Z.ConstValue.HeroDungeonKeyChange, self.refreshKeyItem, self)
+  Z.EventMgr:Add(Z.ConstValue.Match.MatchStateChange, self.refreshMatchStatus, self)
 end
 
 function Hero_dungeon_instability_mainView:UnBindAllEvents()
-  Z.EventMgr:Remove(Z.ConstValue.HeroDungeonKeyChange, self.refreshKeyItem, self)
+  Z.EventMgr:Remove(Z.ConstValue.Match.MatchStateChange, self.refreshMatchStatus, self)
 end
 
-function Hero_dungeon_instability_mainView:refreshKeyItem()
-  local s = goStr
-  local itemUuid = self.data_:GetUseKeyData()
-  local hasUseItem = 0 < itemUuid
-  if self.canUseKey_ and hasUseItem then
-    local itemData = self.itemsVM_.GetItemTabDataByUuid(itemUuid)
-    if itemData then
-    end
-  end
-  if self.canUseKey_ then
-    s = hasUseItem == true and goStr or keyStr
-  end
-  self.hasUseKey_ = hasUseItem
-  local btn = self.uiBinder.btn_go_uibinder
-  btn.lab_normal.text = s
-  self:creatAffix()
+function Hero_dungeon_instability_mainView:refreshMatchStatus()
+  local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_)
+  local isMatching = self.matchVm_.IsMatching()
+  local curMatchingDungeonId = self.matchTeamData:GetCurMatchingDungeonId()
+  self.uiBinder.Ref:SetVisible(self.teamBtn_, not isCanMatch)
+  self.uiBinder.Ref:SetVisible(self.matchBtn, isCanMatch and (not isMatching or curMatchingDungeonId ~= self.dungeonId_))
+  self.uiBinder.Ref:SetVisible(self.unMatchBtn, isCanMatch and isMatching and curMatchingDungeonId == self.dungeonId_)
 end
 
 function Hero_dungeon_instability_mainView:refreshTimeLab()
@@ -552,27 +417,175 @@ function Hero_dungeon_instability_mainView:refreshTimeLab()
   if challengeCfg.LimitTime <= 0 then
     self.labTime_.text = Lang("NoTimeLimit")
   else
-    self.labTime_.text = Z.TimeTools.FormatToDHM(challengeCfg.LimitTime)
+    self.labTime_.text = Z.TimeFormatTools.FormatToDHMS(challengeCfg.LimitTime)
   end
 end
 
 function Hero_dungeon_instability_mainView:OnSelectLeftItem(data)
-  local canUseKey = data.type == 2
   self.dungeonId_ = data.dungeonID
-  self.canUseKey_ = canUseKey
-  self:refreshTimeLab()
-  self:SetUIVisible(self.uiBinder.node_tog, canUseKey == false)
-  self:SetUIVisible(self.uiBinder.layout_select, not self.isBase_ and canUseKey)
   self:getCfgData()
-  self:initUi()
-  if self.canUseKey_ == false then
-    self.data_.InstabilityIsTeam = self.toggleisTeam_
-  else
-    self.data_.InstabilityIsTeam = true
+  if self.dungeonData_ == nil then
+    return logError("DungeonsTable is nil dungeonId = {0}", data.dungeonID)
   end
+  self:getShowDungeonData()
+  self:refreshTimeLab()
+  self:refreshUi()
   self:setPersonLab()
   self:setLimit()
-  self:refreshKeyItem()
+  self:createAwardItem(self.isShowAward_)
+  self:createAffix()
+  local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_)
+  local isMatching = self.matchVm_.IsMatching()
+  local curMatchingDungeonID = self.matchTeamData:GetCurMatchingDungeonId()
+  local curIsMatching = isMatching and curMatchingDungeonID == self.dungeonId_
+  self.uiBinder.Ref:SetVisible(self.teamBtn_, not isCanMatch)
+  self.uiBinder.Ref:SetVisible(self.matchBtn, isCanMatch and not curIsMatching)
+  self.uiBinder.Ref:SetVisible(self.unMatchBtn, isCanMatch and curIsMatching)
+end
+
+function Hero_dungeon_instability_mainView:getShowDungeonData()
+  self.showDungeonRow_ = nil
+  self.showDungeonId_ = self.dungeonId_
+  if not self.data_.InstabilityIsTeam and self.dungeonData_.SingleModeDungeonId ~= 0 then
+    self.showDungeonId_ = self.dungeonData_.SingleModeDungeonId
+  end
+  self.showDungeonRow_ = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.showDungeonId_)
+  self.teamTargetId_ = self.teamMainVm_.GetTargetIdByDungeonId(self.showDungeonId_)
+  self:setLab()
+  self.isComplete_ = self.vm_.CheckDungeonIsComplete(self.showDungeonId_)
+  if self.isComplete_ or #self.showDungeonRow_.FirstPassAward == 0 then
+    self.dropTog_.isOn = true
+  end
+  self.firstNode_.Ref.UIComp:SetVisible(not self.isComplete_ and 0 < #self.showDungeonRow_.FirstPassAward)
+  self.uiBinder.Ref:SetVisible(self.awardTitleNode_, self.isComplete_ or #self.showDungeonRow_.FirstPassAward == 0)
+end
+
+function Hero_dungeon_instability_mainView:setLab()
+  if not self.showDungeonRow_ then
+    return
+  end
+  self.labTitle_.text = self.showDungeonRow_.Name
+  if self.showDungeonRow_.RecommendFightValue == 0 then
+    self.labMark_.text = Lang("GSSuggestNoLimit")
+  else
+    local param = {
+      val = self.showDungeonRow_.RecommendFightValue
+    }
+    self.labMark_.text = Lang("GSSuggest", param)
+  end
+  self.titleNmaeLab_.text = self.showDungeonRow_.Name
+  self.labDes_.text = self.showDungeonRow_.Content
+end
+
+function Hero_dungeon_instability_mainView:createAwardItem(isHaveAward)
+  self.baseIsHaveAwardCount_ = isHaveAward
+  local awardId
+  if isHaveAward and self.showDungeonRow_ then
+    awardId = self.showDungeonRow_.PassAward
+    if not self.isComplete_ and self.showFirstAward_ and #self.showDungeonRow_.FirstPassAward ~= 0 then
+      awardId = self.showDungeonRow_.FirstPassAward
+    end
+  end
+  local awardList = {}
+  if awardId then
+    awardList = awardPreviewVm.GetAllAwardPreListByIds(awardId) or {}
+  end
+  if #awardList == 0 and self.showDungeonRow_.ExtraAward and self.showDungeonRow_.ExtraAward ~= 0 then
+    awardList = awardPreviewVm.GetAllAwardPreListByIds(self.showDungeonRow_.ExtraAward) or {}
+  end
+  if not isHaveAward and self.showDungeonRow_.ExtraAward == 0 then
+    self.data_.IsHaveAward = false
+  else
+    self.data_.IsHaveAward = true
+  end
+  self.uiBinder.Ref:SetVisible(self.awardHintLab_, #awardList == 0)
+  for unitName, unit in pairs(self.awardUnit_) do
+    self:RemoveUiUnit(unitName)
+    self.itemClassTab_[unitName]:UnInit()
+  end
+  for unitName, unitToken in pairs(self.unitTokenDict_) do
+    Z.CancelSource.ReleaseToken(unitToken)
+  end
+  self.awardUnit_ = {}
+  self.unitTokenDict_ = {}
+  self.itemClassTab_ = {}
+  if 0 < #awardList then
+    local prefabPath = self.prefabCache_:GetString("item")
+    if prefabPath and prefabPath ~= "" then
+      Z.CoroUtil.create_coro_xpcall(function()
+        for key, value in ipairs(awardList) do
+          local itemName = "hero_award_item" .. key
+          local unitToken = self.cancelSource:CreateToken()
+          self.unitTokenDict_[itemName] = unitToken
+          local item = self:AsyncLoadUiUnit(prefabPath, itemName, self.awardScrollView_.content.transform, unitToken)
+          self.itemClassTab_[itemName] = itemClass.new(self)
+          self.awardUnit_[itemName] = item
+          local itemData = {
+            uiBinder = item,
+            configId = value.awardId,
+            isSquareItem = true,
+            PrevDropType = value.PrevDropType,
+            dungeonId = self.dungonId_,
+            isShowFirstNode = self.showFirstAward_
+          }
+          itemData.labType, itemData.lab = awardPreviewVm.GetPreviewShowNum(value)
+          self.itemClassTab_[itemName]:Init(itemData)
+        end
+      end)()
+    end
+  end
+end
+
+function Hero_dungeon_instability_mainView:createAffix()
+  local dungeon_data = Z.DataMgr.Get("dungeon_data")
+  local affixMgr = Z.TableMgr.GetTable("AffixTableMgr")
+  local dungeonAffix = dungeon_data:GetDungeonAffixDic(self.dungeonId_)
+  local affixList
+  local dataList = {}
+  local dataListIndex = 0
+  if dungeonAffix then
+    affixList = dungeonAffix.affixes
+  end
+  if affixList then
+    for _, value in ipairs(affixList) do
+      local config = affixMgr.GetRow(value)
+      if config and config.IsShowUI then
+        local d = {isKey = false, affixId = value}
+        dataListIndex = dataListIndex + 1
+        dataList[dataListIndex] = d
+      end
+    end
+  end
+  local dungeonConfig = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.dungeonId_)
+  if dungeonConfig then
+    for _, value in ipairs(dungeonConfig.Affix) do
+      local config = affixMgr.GetRow(value)
+      if config and config.IsShowUI then
+        local d = {isKey = false, affixId = value}
+        dataListIndex = dataListIndex + 1
+        dataList[dataListIndex] = d
+      end
+    end
+  end
+  local keyUuid = 0
+  if keyUuid and 0 < keyUuid then
+    local itemInfo = self.itemsVM_.GetItemInfo(keyUuid, E.BackPackItemPackageType.Item)
+    if itemInfo then
+      local affix = itemInfo.affixData.affixIds
+      for _, value in ipairs(affix) do
+        local config = affixMgr.GetRow(value)
+        if config and config.IsShowUI then
+          local d = {isKey = true, affixId = value}
+          dataListIndex = dataListIndex + 1
+          dataList[dataListIndex] = d
+        end
+      end
+    end
+  end
+  table.sort(dataList, function(a, b)
+    return a.affixId < b.affixId
+  end)
+  self.loopAffixList:RefreshListView(dataList, false)
 end
 
 return Hero_dungeon_instability_mainView

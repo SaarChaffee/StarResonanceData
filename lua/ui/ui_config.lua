@@ -1,5 +1,6 @@
 local config_mt = {
   __index = {
+    PCLuaFileName = "",
     Layer = Z.UI.ELayer.UILayerFunc,
     ViewType = Z.UI.EType.Standalone,
     CacheLv = Z.UI.ECacheLv.None,
@@ -11,7 +12,8 @@ local config_mt = {
     ShowMouse = true,
     IsUnrealScene = false,
     IgnoreBack = false,
-    IsRefreshSteer = true
+    IsRefreshSteer = true,
+    IsHavePCUI = false
   }
 }
 local UIConfig = {
@@ -22,7 +24,18 @@ local UIConfig = {
     ViewType = Z.UI.EType.Permanent,
     IgnoreFocus = true,
     ShowMouse = false,
-    IsRefreshSteer = false
+    IsRefreshSteer = false,
+    IsHavePCUI = true
+  },
+  tv_acquiretip_special = {
+    LuaFileName = "tv_acquiretip_special_view",
+    PrefabPath = "tv/tv_acquiretip_special",
+    Layer = Z.UI.ELayer.UILayerTip,
+    ViewType = Z.UI.EType.Permanent,
+    IgnoreFocus = true,
+    ShowMouse = false,
+    IsRefreshSteer = false,
+    IsHavePCUI = true
   },
   album_create_popup = {
     LuaFileName = "album_create_popup_view",
@@ -69,7 +82,7 @@ local UIConfig = {
   tips_title_content = {
     LuaFileName = "tips_title_content_view",
     PrefabPath = "common_tips_new/tips_title_content",
-    Layer = Z.UI.ELayer.UILayerTip,
+    Layer = Z.UI.ELayer.UILayerTipTop,
     IgnoreFocus = true,
     ShowMouse = false
   },
@@ -83,13 +96,19 @@ local UIConfig = {
   tips_richtext = {
     LuaFileName = "tips_richtext_view",
     PrefabPath = "common_tips_new/tips_richtext",
-    Layer = Z.UI.ELayer.UILayerTip,
+    Layer = Z.UI.ELayer.UILayerTipTop,
     IgnoreFocus = true,
     ShowMouse = false
   },
   tips_underline = {
     LuaFileName = "tips_underline_view",
     PrefabPath = "common_tips_new/tips_underline",
+    Layer = Z.UI.ELayer.UILayerTipTop,
+    ShowMouse = false
+  },
+  common_skill_tips = {
+    LuaFileName = "common_skill_tips_view",
+    PrefabPath = "common_tips_new/common_skill_tips",
     Layer = Z.UI.ELayer.UILayerTip,
     IgnoreFocus = true,
     ShowMouse = false
@@ -108,9 +127,16 @@ local UIConfig = {
     IgnoreFocus = true,
     ShowMouse = false
   },
+  tips_exp = {
+    LuaFileName = "tips_exp_view",
+    PrefabPath = "common_tips_new/tips_exp",
+    Layer = Z.UI.ELayer.UILayerTip,
+    IgnoreFocus = true,
+    ShowMouse = false
+  },
   tips_monsters = {
     LuaFileName = "tips_monsters_view",
-    PrefabPath = "planetmemory/tips_monsters",
+    PrefabPath = "trialroad/tips_monsters",
     Layer = Z.UI.ELayer.UILayerTip,
     IgnoreFocus = true,
     ShowMouse = false
@@ -149,7 +175,8 @@ local UIConfig = {
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Normal,
-    IsFullScreen = true
+    IsFullScreen = true,
+    IsHavePCUI = true
   },
   bag_selectpack_popup = {
     LuaFileName = "bag_selectpack_popup_view",
@@ -170,11 +197,13 @@ local UIConfig = {
   bossbattle = {
     LuaFileName = "bossbattle_view",
     PrefabPath = "battle/battle_boss_blood_sub",
+    Layer = Z.UI.ELayer.UILayerMain,
     CacheLv = Z.UI.ECacheLv.High,
     AudioGameState = E.AudioGameState.Ingame,
     IgnoreFocus = true,
     ShowMouse = false,
-    IsRefreshSteer = false
+    IsRefreshSteer = false,
+    IsHavePCUI = true
   },
   camerasys = {
     LuaFileName = "camerasys_view",
@@ -201,7 +230,6 @@ local UIConfig = {
     LuaFileName = "camera_photo_album_window_view",
     PrefabPath = "photograph/camera_photo_album_window",
     AudioGameState = E.AudioGameState.Menu,
-    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
   },
   camera_photo_details = {
@@ -233,7 +261,8 @@ local UIConfig = {
   },
   chat_emoji_container_popup = {
     LuaFileName = "chat_emoji_container_popup_view",
-    PrefabPath = "chat/chat_emoji_container_popup"
+    PrefabPath = "chat/chat_emoji_container_popup",
+    IsHavePCUI = true
   },
   chat_setting_popup = {
     LuaFileName = "chat_setting_popup_view",
@@ -271,12 +300,6 @@ local UIConfig = {
     PrefabPath = "common_tips/tips_item_reward_popup",
     Layer = Z.UI.ELayer.UILayerTip,
     ShowMouse = false
-  },
-  connecting = {
-    LuaFileName = "connecting_view",
-    PrefabPath = "main/main_lab_offline_tips",
-    Layer = Z.UI.ELayer.UILayerTip,
-    IsRefreshSteer = false
   },
   cutscene_main = {
     LuaFileName = "cutscene_main_view",
@@ -318,7 +341,8 @@ local UIConfig = {
     Layer = Z.UI.ELayer.UILayerMain,
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Ingame,
-    IgnoreBack = true
+    IgnoreBack = true,
+    IsHavePCUI = true
   },
   dead_property_popup = {
     LuaFileName = "dead_property_popup_view",
@@ -332,6 +356,23 @@ local UIConfig = {
     LuaFileName = "dialog_view",
     PrefabPath = "tips/tips_common_popup",
     Layer = Z.UI.ELayer.UILayerTop,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  sys_dialog = {
+    LuaFileName = "sys_dialog_view",
+    PrefabPath = "tips/tips_sys_dialog",
+    Layer = Z.UI.ELayer.UILayerSystemTip,
+    ViewType = Z.UI.EType.Permanent,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  common_recharge_pop = {
+    LuaFileName = "common_recharge_pop_view",
+    PrefabPath = "recharge/common_recharge_pop",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
@@ -367,7 +408,8 @@ local UIConfig = {
     PrefabPath = "dungeon/dungeon_monster_affix_tips",
     Layer = Z.UI.ELayer.UILayerTip,
     AudioGameState = E.AudioGameState.Menu,
-    ShowMouse = false
+    ShowMouse = false,
+    IsHavePCUI = true
   },
   world_boss_main = {
     LuaFileName = "world_boss_main_view",
@@ -384,7 +426,18 @@ local UIConfig = {
     ViewType = Z.UI.EType.Permanent,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Normal,
-    IsFullScreen = true
+    IsFullScreen = true,
+    IgnoreBack = true
+  },
+  common_matching = {
+    LuaFileName = "common_matching_view",
+    PrefabPath = "match/common_matching",
+    Layer = Z.UI.ELayer.UILayerTop,
+    ViewType = Z.UI.EType.Permanent,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Normal,
+    IsFullScreen = true,
+    IgnoreBack = true
   },
   world_boss_settlement = {
     LuaFileName = "world_boss_settlement_view",
@@ -396,6 +449,7 @@ local UIConfig = {
   world_boss_bonus_points_popup = {
     LuaFileName = "world_boss_bonus_points_popup_view",
     PrefabPath = "worldboss/world_boss_bonus_points_popup",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
@@ -407,33 +461,20 @@ local UIConfig = {
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
   },
-  env_window = {
-    LuaFileName = "env_window_view",
-    PrefabPath = "environment/env_window",
-    ViewType = Z.UI.EType.Exclusive,
-    AudioGameState = E.AudioGameState.Menu,
-    IsFullScreen = true
-  },
   equip_change_window = {
     LuaFileName = "equip_change_window_view",
     PrefabPath = "equip/equip_change_window",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
-    CameraState = E.CameraState.MiscSystem
+    CameraState = E.CameraState.MiscSystem,
+    IsHavePCUI = true
   },
   equip_function = {
     LuaFileName = "equip_function_view",
     PrefabPath = "equip/equip_function_main",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
-    IsUnrealScene = true
-  },
-  equip_system = {
-    LuaFileName = "equip_system_view",
-    PrefabPath = "equip/equip_system_window",
-    ViewType = Z.UI.EType.Exclusive,
-    AudioGameState = E.AudioGameState.Menu,
-    IsUnrealScene = true
+    IsFullScreen = true
   },
   resonacne_power_decompose_acquire = {
     LuaFileName = "resonacne_power_decompose_acquire_view",
@@ -463,33 +504,44 @@ local UIConfig = {
     PrefabPath = "expression/expression_window",
     AudioGameState = E.AudioGameState.Ingame
   },
+  face_rolechoose_window = {
+    LuaFileName = "face_rolechoose_window_view",
+    PrefabPath = "face/face_rolechoose_window",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsUnrealScene = true
+  },
   face_create = {
     LuaFileName = "face_create_view",
     PrefabPath = "face/face_create",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   face_edit = {
     LuaFileName = "face_edit_view",
     PrefabPath = "face/face_edit_window",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   face_gender_window = {
     LuaFileName = "face_gender_window_view",
     PrefabPath = "face/face_gender_window",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   face_system = {
     LuaFileName = "face_system_view",
     PrefabPath = "face/face_system_window",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   face_unlock_popup = {
     LuaFileName = "face_unlock_popup_view",
@@ -509,10 +561,11 @@ local UIConfig = {
   },
   fashion_face_window = {
     LuaFileName = "fashion_face_window_view",
-    PrefabPath = "fashion/fashion_face_window",
+    PrefabPath = "fashion/fashion_system_window",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   fashion_save_confirm_popup = {
     LuaFileName = "fashion_save_confirm_popup_view",
@@ -526,25 +579,19 @@ local UIConfig = {
     PrefabPath = "fashion/fashion_system_window",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
-    IsUnrealScene = true
-  },
-  flux_revolt_tooltip_window = {
-    LuaFileName = "flux_revolt_tooltip_window_view",
-    PrefabPath = "flux_revolt/flux_revolt_tooltip_window",
-    IgnoreFocus = true,
-    ShowMouse = false,
-    IgnoreBack = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   gm_item_popup = {
     LuaFileName = "gm/gm_item_popup_view",
     PrefabPath = "gm/gm_item_popup",
-    Layer = Z.UI.ELayer.UILayerSystem,
+    Layer = Z.UI.ELayer.UILayerDebug,
     ShowMouse = false
   },
   gm_main = {
     LuaFileName = "gm/gm_main_view",
     PrefabPath = "gm/gm_main",
-    Layer = Z.UI.ELayer.UILayerSystem,
+    Layer = Z.UI.ELayer.UILayerDebug,
     ViewType = Z.UI.EType.Permanent,
     IgnoreFocus = true,
     ShowMouse = false,
@@ -553,12 +600,12 @@ local UIConfig = {
   gm = {
     LuaFileName = "gm/gm_view",
     PrefabPath = "gm/gm_window",
-    Layer = Z.UI.ELayer.UILayerSystem
+    Layer = Z.UI.ELayer.UILayerDebug
   },
   gm_fashion_popup = {
     LuaFileName = "gm/gm_fashion_popup_view",
     PrefabPath = "gm/gm_fashion_popup",
-    Layer = Z.UI.ELayer.UILayerSystem,
+    Layer = Z.UI.ELayer.UILayerDebug,
     ShowMouse = false
   },
   helpsys_popup01 = {
@@ -579,7 +626,9 @@ local UIConfig = {
   helpsys_popup_entrance_tpl = {
     LuaFileName = "helpsys_popup_entrance_tpl_view",
     PrefabPath = "helpsys/helpsys_popup_entrance_tpl",
-    ShowMouse = false
+    IgnoreFocus = true,
+    ShowMouse = false,
+    IsHavePCUI = true
   },
   helpsys_window = {
     LuaFileName = "helpsys_window_view",
@@ -598,9 +647,11 @@ local UIConfig = {
   hero_dungeon_main = {
     LuaFileName = "hero_dungeon_main_view",
     PrefabPath = "hero_dungeon/hero_dungeon_main",
+    ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Normal,
-    IsFullScreen = true
+    IsFullScreen = true,
+    IsHavePCUI = true
   },
   hero_dungeon_praise_window = {
     LuaFileName = "hero_dungeon_praise_window_view",
@@ -612,7 +663,8 @@ local UIConfig = {
   idcard = {
     LuaFileName = "idcard_view",
     PrefabPath = "idcard/idcard_popup",
-    SceneMaskType = Z.UI.ESceneMaskType.Normal
+    SceneMaskType = Z.UI.ESceneMaskType.Normal,
+    IsHavePCUI = true
   },
   investigation_clue_window = {
     LuaFileName = "investigation_clue_window_view",
@@ -630,12 +682,13 @@ local UIConfig = {
   loading_window = {
     LuaFileName = "loading_window_view",
     PrefabPath = "loading/loading_window",
-    Layer = Z.UI.ELayer.UILayerSystem,
+    Layer = Z.UI.ELayer.UILayerSystemTip,
     ViewType = Z.UI.EType.Permanent,
     CacheLv = Z.UI.ECacheLv.High,
     AudioGameState = E.AudioGameState.Menu,
     ShowMouse = false,
-    IgnoreBack = true
+    IgnoreBack = true,
+    IsHavePCUI = true
   },
   login_affiche_popup = {
     LuaFileName = "login_affiche_popup_view",
@@ -647,8 +700,9 @@ local UIConfig = {
   login_agreement_popup = {
     LuaFileName = "login_agreement_popup_view",
     PrefabPath = "login/login_agreement_popup",
-    Layer = Z.UI.ELayer.UILayerSystem,
-    AudioGameState = E.AudioGameState.Menu
+    Layer = Z.UI.ELayer.UILayerTipTop,
+    AudioGameState = E.AudioGameState.Menu,
+    IgnoreBack = true
   },
   login = {
     LuaFileName = "login_view",
@@ -663,7 +717,8 @@ local UIConfig = {
     LuaFileName = "mainui_funcs_list_view",
     PrefabPath = "main/main_funcs_list_window",
     Layer = Z.UI.ELayer.UILayerMain,
-    AudioGameState = E.AudioGameState.Ingame
+    AudioGameState = E.AudioGameState.Ingame,
+    IsHavePCUI = true
   },
   main_line_window = {
     LuaFileName = "main_line_window_view",
@@ -674,24 +729,25 @@ local UIConfig = {
   fishing_main_window = {
     LuaFileName = "fishing_main_window_view",
     PrefabPath = "fishing/fishing_main_window",
-    Layer = Z.UI.ELayer.UILayerMain,
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Ingame,
-    ShowMouse = false
+    ShowMouse = false,
+    IsHavePCUI = true
   },
   fishing_func_main_window = {
     LuaFileName = "fishing_func_main_window_view",
     PrefabPath = "fishing/fishing_func_main_window",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Ingame,
-    IsFullScreen = true
+    IsFullScreen = true,
+    IsHavePCUI = true
   },
   fishing_obtain_window = {
     LuaFileName = "fishing_obtain_window_view",
     PrefabPath = "fishing/fishing_obtain_window",
     ViewType = Z.UI.EType.Exclusive,
-    AudioGameState = E.AudioGameState.Ingame,
-    CacheLv = Z.UI.ECacheLv.Low
+    CacheLv = Z.UI.ECacheLv.Low,
+    AudioGameState = E.AudioGameState.Ingame
   },
   fishing_study_popup = {
     LuaFileName = "fishing_study_popup_view",
@@ -747,6 +803,15 @@ local UIConfig = {
     Layer = Z.UI.ELayer.UILayerMain,
     IgnoreFocus = true,
     ShowMouse = false,
+    IgnoreBack = true,
+    IsHavePCUI = true
+  },
+  main_chat_pc = {
+    LuaFileName = "main_chat_pc_view",
+    PrefabPath = "main/chat/main_chat_pc",
+    Layer = Z.UI.ELayer.UILayerMain,
+    IgnoreFocus = true,
+    ShowMouse = false,
     IgnoreBack = true
   },
   main_waiting_tips = {
@@ -764,6 +829,12 @@ local UIConfig = {
     IsFullScreen = true,
     IsUnrealScene = true
   },
+  map_lock_main = {
+    LuaFileName = "map_lock_main_view",
+    PrefabPath = "map/map_lock_main",
+    Layer = Z.UI.ELayer.UILayerMain,
+    AudioGameState = E.AudioGameState.Ingame
+  },
   map_main = {
     LuaFileName = "map_main_view",
     PrefabPath = "map/map_main",
@@ -774,7 +845,8 @@ local UIConfig = {
   worldquest_interactive_window = {
     LuaFileName = "worldquest_interactive_window_view",
     PrefabPath = "worldquest/worldquest_interactive_window",
-    ViewType = Z.UI.EType.Exclusive
+    ViewType = Z.UI.EType.Exclusive,
+    IsFullScreen = true
   },
   worldquest_main_window = {
     LuaFileName = "worldquest_main_window_view",
@@ -786,15 +858,16 @@ local UIConfig = {
     PrefabPath = "mark/mark_main",
     Layer = Z.UI.ELayer.UILayerMark,
     ViewType = Z.UI.EType.Permanent,
+    CacheLv = Z.UI.ECacheLv.High,
     IgnoreFocus = true,
     ShowMouse = false,
-    IgnoreBack = true
+    IgnoreBack = true,
+    IsHavePCUI = true
   },
   name_window = {
     LuaFileName = "name_window_view",
     PrefabPath = "name/name_window",
     Layer = Z.UI.ELayer.UILayerDramaBottom,
-    ViewType = Z.UI.EType.Exclusive,
     IgnoreBack = true
   },
   rename_window = {
@@ -838,20 +911,6 @@ local UIConfig = {
     PrefabPath = "pivot/pivot_reward_empty",
     ViewType = Z.UI.EType.Exclusive
   },
-  planetmemory_battle_failure = {
-    LuaFileName = "planetmemory_battle_failure_view",
-    PrefabPath = "planetmemory/planetmemory_battle_failure",
-    Layer = Z.UI.ELayer.UILayerMain,
-    ViewType = Z.UI.EType.Exclusive,
-    AudioGameState = E.AudioGameState.Ingame
-  },
-  proficiency_main = {
-    LuaFileName = "proficiency_main_view",
-    PrefabPath = "proficiency/proficiency_main",
-    ViewType = Z.UI.EType.Exclusive,
-    AudioGameState = E.AudioGameState.Menu,
-    IsUnrealScene = true
-  },
   pub_talk_option_window = {
     LuaFileName = "pub_talk_option_window_view",
     PrefabPath = "pub/pub_talk_option_window",
@@ -863,7 +922,8 @@ local UIConfig = {
     PrefabPath = "quest/quest_detail_window",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
-    IsFullScreen = true
+    IsFullScreen = true,
+    IsHavePCUI = true
   },
   quest_season_window = {
     LuaFileName = "quest_season_window_view",
@@ -910,6 +970,14 @@ local UIConfig = {
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  competency_rating_main = {
+    LuaFileName = "competency_rating_main_view",
+    PrefabPath = "competency_rating/competency_rating_main",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true,
     IsUnrealScene = true
   },
@@ -919,6 +987,14 @@ local UIConfig = {
     Layer = Z.UI.ELayer.UILayerTip,
     ShowMouse = false,
     IsRefreshSteer = false
+  },
+  main_upgrade_window = {
+    LuaFileName = "main_upgrade_window_view",
+    PrefabPath = "main/main_upgrade_window",
+    Layer = Z.UI.ELayer.UILayerTip,
+    ShowMouse = false,
+    IsRefreshSteer = false,
+    IsHavePCUI = true
   },
   rolelevel_way_window = {
     LuaFileName = "rolelevel_way_window_view",
@@ -952,7 +1028,8 @@ local UIConfig = {
     Layer = Z.UI.ELayer.UILayerMain,
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Ingame,
-    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IgnoreBack = true
   },
   role_info_attr_detail = {
     LuaFileName = "role_info_attr_detail_view",
@@ -960,11 +1037,6 @@ local UIConfig = {
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
-  },
-  runtime_editor_ui = {
-    LuaFileName = "runtime_editor_ui_view",
-    PrefabPath = "runtime_editor_ui",
-    Layer = Z.UI.ELayer.UILayerMain
   },
   screeneffect = {
     LuaFileName = "screeneffect_view",
@@ -982,9 +1054,17 @@ local UIConfig = {
     AudioGameState = E.AudioGameState.Menu,
     IsFullScreen = true
   },
-  socialcontact_main = {
-    LuaFileName = "socialcontact_main_view",
+  socialize_main = {
+    LuaFileName = "socialize_main_view",
+    PCLuaFileName = "socialize_main_pc_view",
     PrefabPath = "socialize/socialize_main",
+    AudioGameState = E.AudioGameState.Ingame,
+    IsHavePCUI = true
+  },
+  socialize_main_pc = {
+    LuaFileName = "socialize_main_pc_view",
+    PrefabPath = "socialize/socialize_main_pc",
+    ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Ingame
   },
   steer_tips_window = {
@@ -1018,7 +1098,8 @@ local UIConfig = {
     Layer = Z.UI.ELayer.UILayerDramaBottom,
     AudioGameState = E.AudioGameState.Dialogue,
     SceneMaskType = Z.UI.ESceneMaskType.Normal,
-    IsFullScreen = true
+    IsFullScreen = true,
+    IgnoreBack = true
   },
   quest_chapter_window = {
     LuaFileName = "quest_task/quest_chapter_window_view",
@@ -1054,8 +1135,9 @@ local UIConfig = {
     LuaFileName = "team_enter_view",
     PrefabPath = "team/team_copy_popup",
     Layer = Z.UI.ELayer.UILayerFuncPopup,
+    ViewType = Z.UI.EType.Permanent,
     AudioGameState = E.AudioGameState.Menu,
-    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    SceneMaskType = Z.UI.ESceneMaskType.Normal,
     IsFullScreen = true,
     IgnoreBack = true
   },
@@ -1088,13 +1170,6 @@ local UIConfig = {
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
   },
-  team_custom_text_popup = {
-    LuaFileName = "team_custom_text_popup_view",
-    PrefabPath = "n_prefab/com_input_popup",
-    AudioGameState = E.AudioGameState.Menu,
-    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
-    IsFullScreen = true
-  },
   team_tips = {
     LuaFileName = "team_tips_view",
     PrefabPath = "main/team/main_team_tips",
@@ -1105,26 +1180,20 @@ local UIConfig = {
     IgnoreBack = true,
     IsRefreshSteer = false
   },
-  thunder_elemental_tooltip_window = {
-    LuaFileName = "thunder_elemental_tooltip_window_view",
-    PrefabPath = "attack_thunder_elemental/thunder_elemental_tooltip_window",
-    IgnoreFocus = true,
-    ShowMouse = false,
-    IgnoreBack = true
-  },
   tips_broadcast = {
     LuaFileName = "tips_broadcast_view",
     PrefabPath = "tips/tips_broadcast",
-    Layer = Z.UI.ELayer.UILayerSystem,
+    Layer = Z.UI.ELayer.UILayerSystemTip,
     ViewType = Z.UI.EType.Permanent,
     IgnoreFocus = true,
     ShowMouse = false,
-    IgnoreBack = true
+    IgnoreBack = true,
+    IsHavePCUI = true
   },
   tips_game_broadcast = {
     LuaFileName = "tips_game_broadcast_view",
     PrefabPath = "tips/tips_game_broadcast",
-    Layer = Z.UI.ELayer.UILayerSystem,
+    Layer = Z.UI.ELayer.UILayerTipTop,
     IgnoreFocus = true,
     ShowMouse = false,
     IgnoreBack = true
@@ -1275,6 +1344,13 @@ local UIConfig = {
     ShowMouse = false,
     IgnoreBack = true
   },
+  union_group_popup = {
+    LuaFileName = "union_group_popup_view",
+    PrefabPath = "union/union_group_popup",
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
   weaponhero_choose_window = {
     LuaFileName = "weaponhero_choose_window_view",
     PrefabPath = "weaponhero/weaponhero_choose_window",
@@ -1329,12 +1405,6 @@ local UIConfig = {
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
   },
-  weapon_effect_detail_window = {
-    LuaFileName = "weapon_effect_detail_window_view",
-    PrefabPath = "weaponhero/weapon_effect_detail_window",
-    AudioGameState = E.AudioGameState.Menu,
-    IsFullScreen = true
-  },
   weap_change_window = {
     LuaFileName = "weap_change_window_view",
     PrefabPath = "weaponhero/weap_change_window",
@@ -1369,15 +1439,7 @@ local UIConfig = {
   zrp_setting = {
     LuaFileName = "zrp_setting_view",
     PrefabPath = "gm/gm_setting_window",
-    Layer = Z.UI.ELayer.UILayerSystem
-  },
-  planetmemory_main = {
-    LuaFileName = "planetmemory/planetmemory_main_view",
-    PrefabPath = "planetmemory/planetmemory_main",
-    ViewType = Z.UI.EType.Exclusive,
-    AudioGameState = E.AudioGameState.Menu,
-    IsFullScreen = true,
-    IsUnrealScene = true
+    Layer = Z.UI.ELayer.UILayerDebug
   },
   pub_mixology_main = {
     LuaFileName = "pub/pub_mixology_main_view",
@@ -1458,11 +1520,25 @@ local UIConfig = {
     LuaFileName = "shop_window_view",
     PrefabPath = "shop/shop_window",
     ViewType = Z.UI.EType.Exclusive,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
+  },
+  shop_token = {
+    LuaFileName = "shop_token_view",
+    PrefabPath = "shop/shop_window",
+    ViewType = Z.UI.EType.Exclusive,
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   shop_money_changing_popup = {
     LuaFileName = "shop_money_changing_popup_view",
     PrefabPath = "shop/shop_money_changing_popup",
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  shop_exchange_popup = {
+    LuaFileName = "shop_exchange_popup_view",
+    PrefabPath = "shop/shop_exchange_popup",
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
   },
@@ -1472,7 +1548,8 @@ local UIConfig = {
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     IsFullScreen = true,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   explore_monster_grade_popup = {
     LuaFileName = "explore_monster_grade_popup_view",
@@ -1492,15 +1569,6 @@ local UIConfig = {
     SceneMaskType = Z.UI.ESceneMaskType.Normal,
     IsFullScreen = true
   },
-  expression_wheel_popup = {
-    LuaFileName = "expression_wheel_popup_view",
-    PrefabPath = "expression/expression_wheel_popup",
-    Layer = Z.UI.ELayer.UILayerTip,
-    AudioGameState = E.AudioGameState.Menu,
-    SceneMaskType = Z.UI.ESceneMaskType.Normal,
-    IsFullScreen = true,
-    IgnoreBack = true
-  },
   sevendaystarget_main = {
     LuaFileName = "sevendaystarget_main_view",
     PrefabPath = "sevendaystarget/sevendaystarget_main",
@@ -1511,6 +1579,12 @@ local UIConfig = {
   weapon_role_main = {
     LuaFileName = "weapon_role_main_view",
     PrefabPath = "weapon/weapon_role_main",
+    ViewType = Z.UI.EType.Exclusive,
+    CameraState = E.CameraState.MiscSystem
+  },
+  weapon_role_main_pc = {
+    LuaFileName = "weapon_role_main_pc_view",
+    PrefabPath = "weapon/weapon_role_main_pc",
     ViewType = Z.UI.EType.Exclusive,
     CameraState = E.CameraState.MiscSystem
   },
@@ -1542,7 +1616,8 @@ local UIConfig = {
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     IsFullScreen = true,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   talent_award_window = {
     LuaFileName = "talent_award_window_view",
@@ -1574,7 +1649,8 @@ local UIConfig = {
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     IsFullScreen = true,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   mod_intensify_popup = {
     LuaFileName = "mod_intensify_popup_view",
@@ -1589,12 +1665,13 @@ local UIConfig = {
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     IsFullScreen = true,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   mod_item_popup = {
     LuaFileName = "mod_item_popup_view",
     PrefabPath = "common_tips/mod_item_popup",
-    Layer = Z.UI.ELayer.UILayerTip,
+    Layer = Z.UI.ELayer.UILayerTipTop,
     AudioGameState = E.AudioGameState.Menu
   },
   mod_term_recommend_popup = {
@@ -1607,21 +1684,27 @@ local UIConfig = {
     LuaFileName = "cook_main_view",
     PrefabPath = "cook/cook_main",
     ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsHavePCUI = true
+  },
+  chemistry_main = {
+    LuaFileName = "chemistry_main_view",
+    PrefabPath = "chemistry/chemistry_main",
+    ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu
+  },
+  chemistry_recipe_popup = {
+    LuaFileName = "chemistry_recipe_popup_view",
+    PrefabPath = "chemistry/chemistry_recipe_popup",
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
   },
   gm_quest_popup = {
     LuaFileName = "gm/gm_quest_popup_view",
     PrefabPath = "gm/gm_quest_popup",
-    Layer = Z.UI.ELayer.UILayerSystem,
+    Layer = Z.UI.ELayer.UILayerDebug,
     ViewType = Z.UI.EType.Permanent,
     ShowMouse = false
-  },
-  weapon_develop_main = {
-    LuaFileName = "weapon_develop_main_view",
-    PrefabPath = "weapon_develop/weapon_develop_main",
-    ViewType = Z.UI.EType.Exclusive,
-    IsFullScreen = true,
-    IsUnrealScene = true
   },
   weapon_build_obtain_window = {
     LuaFileName = "weapon_build_obtain_window_view",
@@ -1659,6 +1742,21 @@ local UIConfig = {
     PrefabPath = "friends/friend_degree_window",
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true,
+    IsHavePCUI = true
+  },
+  friends_group_popup = {
+    LuaFileName = "friends_group_popup_view",
+    PrefabPath = "friends_pc/friends_group_popup",
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  friends_add_popup = {
+    LuaFileName = "friends_add_popup_view",
+    PrefabPath = "friends_pc/friends_add_popup",
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
   },
   profession_select_window = {
@@ -1666,7 +1764,8 @@ local UIConfig = {
     PrefabPath = "professsion/profession_select_window",
     ViewType = Z.UI.EType.Exclusive,
     IsFullScreen = true,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   friend_degree_popup = {
     LuaFileName = "friend_degree_popup_view",
@@ -1710,7 +1809,7 @@ local UIConfig = {
   steer_helpsy_window = {
     LuaFileName = "steer_helpsy_window_view",
     PrefabPath = "steer/steer_helpsy_window",
-    Layer = Z.UI.ELayer.UILayerGuide,
+    Layer = Z.UI.ELayer.UILayerTop,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Normal,
     IsFullScreen = true
@@ -1718,6 +1817,7 @@ local UIConfig = {
   dungeon_timer_window = {
     LuaFileName = "dungeon_timer_window_view",
     PrefabPath = "dungeon/dungeon_timer_window",
+    Layer = Z.UI.ELayer.UILayerMain,
     AudioGameState = E.AudioGameState.Ingame,
     IgnoreFocus = true,
     ShowMouse = false,
@@ -1732,22 +1832,41 @@ local UIConfig = {
     IgnoreBack = true,
     IsRefreshSteer = false
   },
-  season_achievement_detail = {
-    LuaFileName = "season_achievement/season_achievement_detail_view",
+  season_achievement_detail_window = {
+    LuaFileName = "season_achievement_detail_window_view",
     PrefabPath = "season_achievement/season_achievement_detail_window",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Normal,
     IsFullScreen = true,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
+  },
+  achievement_window = {
+    LuaFileName = "achievement_window_view",
+    PrefabPath = "season_achievement/achievement_window",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Normal,
+    IsFullScreen = true
+  },
+  achievement_detail_window = {
+    LuaFileName = "achievement_detail_window_view",
+    PrefabPath = "season_achievement/achievement_detail_window",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Normal,
+    IsFullScreen = true,
+    IsHavePCUI = true
   },
   season_achievement_finish_popup = {
-    LuaFileName = "season_achievement/season_achievement_finish_popup_view",
+    LuaFileName = "season_achievement_finish_popup_view",
     PrefabPath = "season_achievement/season_achievement_finish_popup",
     AudioGameState = E.AudioGameState.Menu,
     IgnoreFocus = true,
     ShowMouse = false,
-    IgnoreBack = true
+    IgnoreBack = true,
+    IsHavePCUI = true
   },
   quick_item_usage = {
     LuaFileName = "quick_item_usage_view",
@@ -1755,7 +1874,8 @@ local UIConfig = {
     Layer = Z.UI.ELayer.UILayerTip,
     CacheLv = Z.UI.ECacheLv.Low,
     IgnoreFocus = true,
-    ShowMouse = false
+    ShowMouse = false,
+    IsHavePCUI = true
   },
   battle_pass_buy = {
     LuaFileName = "battle_pass_buy_permit_view",
@@ -1763,7 +1883,8 @@ local UIConfig = {
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     IsFullScreen = true,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   battle_pass_level_up = {
     LuaFileName = "battle_pass_level_up_view",
@@ -1778,8 +1899,7 @@ local UIConfig = {
     Layer = Z.UI.ELayer.UILayerFuncPopup,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
-    IsFullScreen = true,
-    IsRefreshSteer = false
+    IsFullScreen = true
   },
   hero_dungeon_key = {
     LuaFileName = "hero_dungeon_key_view",
@@ -1833,31 +1953,14 @@ local UIConfig = {
     IsFullScreen = true,
     IsUnrealScene = true
   },
-  personal_zone_medal_main = {
-    LuaFileName = "personal_zone/medal_main_view",
-    PrefabPath = "personalzone/personalzone_medal_main",
-    AudioGameState = E.AudioGameState.Menu,
-    IsFullScreen = true
-  },
-  personal_zone_medal_edit_main = {
-    LuaFileName = "personal_zone/medal_edit_main_view",
-    PrefabPath = "personalzone/personalzone_medal_edit_main",
+  personalzone_edit_window = {
+    LuaFileName = "personalzone_edit_window_view",
+    PrefabPath = "personalzone/personalzone_edit_window",
+    ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Normal,
-    IsFullScreen = true
-  },
-  personalzone_label_popup = {
-    LuaFileName = "personalzone_label_popup_view",
-    PrefabPath = "personalzone/personalzone_label_popup",
-    AudioGameState = E.AudioGameState.Menu,
-    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
-    IsFullScreen = true
-  },
-  personalzone_photo_show = {
-    LuaFileName = "personalzone_photo_show_view",
-    PrefabPath = "personalzone/personalzone_photo_show_window",
-    AudioGameState = E.AudioGameState.Menu,
-    IsFullScreen = true
+    IsFullScreen = true,
+    IsUnrealScene = true
   },
   personalzone_obtained_popup = {
     LuaFileName = "personalzone_obtained_popup_view",
@@ -1867,11 +1970,18 @@ local UIConfig = {
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
   },
+  personalzone_photo_show_window = {
+    LuaFileName = "personalzone_photo_show_window_view",
+    PrefabPath = "personalzone/personalzone_photo_show_window",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
   home_editor_main = {
     LuaFileName = "home_editor_main_view",
     PrefabPath = "home_editor/home_editor_main",
     ViewType = Z.UI.EType.Exclusive,
-    IgnoreFocus = true,
     IgnoreBack = true
   },
   home_edit_option_window = {
@@ -1893,7 +2003,8 @@ local UIConfig = {
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Normal,
-    IsFullScreen = true
+    IsFullScreen = true,
+    IsHavePCUI = true
   },
   hero_dungeon_target_popup = {
     LuaFileName = "hero_dungeon_target_popup_view",
@@ -1997,13 +2108,6 @@ local UIConfig = {
     Layer = Z.UI.ELayer.UILayerTip,
     AudioGameState = E.AudioGameState.Menu
   },
-  equip_choice_popup = {
-    LuaFileName = "equip_choice_popup_view",
-    PrefabPath = "equip/equip_choice_popup",
-    AudioGameState = E.AudioGameState.Menu,
-    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
-    IsFullScreen = true
-  },
   gasha_window = {
     LuaFileName = "gasha/gasha_window_view",
     PrefabPath = "gasha/gasha_window",
@@ -2028,13 +2132,23 @@ local UIConfig = {
   gasha_result_window = {
     LuaFileName = "gasha/gasha_result_window_view",
     PrefabPath = "gasha/gasha_result_window",
+    CacheLv = Z.UI.ECacheLv.Low,
     AudioGameState = E.AudioGameState.Menu,
-    CacheLv = Z.UI.ECacheLv.Low
+    IsUnrealScene = true
   },
   gasha_highqualitydetail_window = {
     LuaFileName = "gasha/gasha_highqualitydetail_window_view",
     PrefabPath = "gasha/gasha_highqualitydetail_window",
-    AudioGameState = E.AudioGameState.Menu
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    AudioGameState = E.AudioGameState.Menu,
+    IsUnrealScene = true
+  },
+  gasha_video_window = {
+    LuaFileName = "gasha/gasha_video_window_view",
+    PrefabPath = "gasha/gasha_video_window",
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
   },
   cook_rejuvenation_popup = {
     LuaFileName = "cook_rejuvenation_popup_view",
@@ -2048,7 +2162,8 @@ local UIConfig = {
     PrefabPath = "photograph/photo_personalzone_idcard_popup",
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Normal,
-    IsFullScreen = true
+    IsFullScreen = true,
+    IsHavePCUI = true
   },
   face_share_popup = {
     LuaFileName = "face_share_popup_view",
@@ -2096,11 +2211,20 @@ local UIConfig = {
     LuaFileName = "recycle_window_view",
     PrefabPath = "recycle/recycle_window",
     ViewType = Z.UI.EType.Exclusive,
-    AudioGameState = E.AudioGameState.Menu
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true,
+    IsHavePCUI = true
   },
   recommendedplay_main = {
     LuaFileName = "recommendedplay_main_view",
     PrefabPath = "recommendedplay/recommendedplay_main",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true
+  },
+  themeact_main = {
+    LuaFileName = "themeact_main_view",
+    PrefabPath = "themeact/themeact_main",
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     IsFullScreen = true
@@ -2111,7 +2235,8 @@ local UIConfig = {
     ViewType = Z.UI.EType.Exclusive,
     AudioGameState = E.AudioGameState.Menu,
     IsFullScreen = true,
-    IsUnrealScene = true
+    IsUnrealScene = true,
+    IsHavePCUI = true
   },
   vehicle_equip_popup = {
     LuaFileName = "vehicle_equip_popup_view",
@@ -2127,12 +2252,536 @@ local UIConfig = {
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
   },
+  vehicle_tips = {
+    LuaFileName = "vehicle_tips_view",
+    PrefabPath = "vehicle/vehicle_tips",
+    Layer = Z.UI.ELayer.UILayerTip,
+    IgnoreFocus = true,
+    ShowMouse = false,
+    IsHavePCUI = true
+  },
   tips_box_show_popup = {
     LuaFileName = "tips_box_show_popup_view",
     PrefabPath = "common_tips/tips_box_show_popup",
     Layer = Z.UI.ELayer.UILayerTipTop,
     IgnoreFocus = true,
     ShowMouse = false
+  },
+  monthly_reward_card_list = {
+    LuaFileName = "monthly_reward_card_list_view",
+    PrefabPath = "monthly_reward_card/monthly_reward_card_list",
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true
+  },
+  monthly_reward_card_look_window = {
+    LuaFileName = "monthly_reward_card_look_window_view",
+    PrefabPath = "monthly_reward_card/monthly_reward_card_look_window",
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  monthly_reward_card_window = {
+    LuaFileName = "monthly_reward_card_window_view",
+    PrefabPath = "monthly_reward_card/monthly_reward_card_window",
+    Layer = Z.UI.ELayer.UILayerTipTop,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true,
+    IgnoreBack = true
+  },
+  monthly_reward_card_privilege_window = {
+    LuaFileName = "monthly_reward_card_privilege_view",
+    PrefabPath = "monthly_reward_card/monthly_reward_card_privilege_window",
+    Layer = Z.UI.ELayer.UILayerTipTop,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  interaction_skip_window = {
+    LuaFileName = "interaction_skip_window_view",
+    PrefabPath = "interaction/interaction_skip_window",
+    Layer = Z.UI.ELayer.UILayerDramaBottom,
+    AudioGameState = E.AudioGameState.Menu,
+    ShowMouse = false,
+    IgnoreBack = true
+  },
+  life_profession_main = {
+    LuaFileName = "life_profession_main_view",
+    PrefabPath = "life_profession/life_profession_main",
+    ViewType = Z.UI.EType.Exclusive,
+    IsHavePCUI = true,
+    IsFullScreen = true
+  },
+  life_profession_acquisition_main = {
+    LuaFileName = "life_profession_acquisition_main_view",
+    PrefabPath = "life_profession/life_profession_acquisition_main",
+    ViewType = Z.UI.EType.Exclusive,
+    IsHavePCUI = true,
+    IsFullScreen = true
+  },
+  life_profession_unlock_window = {
+    LuaFileName = "life_profession_unlock_window_view",
+    PrefabPath = "life_profession/life_profession_unlock_window",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  shop_buy_popup = {
+    LuaFileName = "shop_buy_popup_view",
+    PrefabPath = "shop/shop_buy_popup",
+    Layer = Z.UI.ELayer.UILayerTipTop,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  shop_coupon_popup = {
+    LuaFileName = "shop_coupon_popup_view",
+    PrefabPath = "shop/shop_coupon_popup",
+    Layer = Z.UI.ELayer.UILayerTipTop,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  life_profession_levelup_window = {
+    LuaFileName = "life_profession_levelup_window_view",
+    PrefabPath = "life_profession/life_profession_levelup_window",
+    Layer = Z.UI.ELayer.UILayerTip,
+    ShowMouse = false,
+    IsRefreshSteer = false
+  },
+  life_profession_cast_main = {
+    LuaFileName = "life_profession_cast_main_view",
+    PrefabPath = "life_profession/life_profession_cast_main",
+    ViewType = Z.UI.EType.Exclusive,
+    IsRefreshSteer = false,
+    IsHavePCUI = true
+  },
+  fashion_weapon_skill_window = {
+    LuaFileName = "fashion_weapon_skill_window_view",
+    PrefabPath = "fashion/fashion_weapon_skill_window",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true,
+    IsUnrealScene = true
+  },
+  handbook_main_window = {
+    LuaFileName = "handbook_main_window_view",
+    PrefabPath = "handbook/handbook_main_window",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true
+  },
+  handbook_dictionaries_window = {
+    LuaFileName = "handbook_dictionaries_window_view",
+    PrefabPath = "handbook/handbook_dictionaries_window",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true
+  },
+  handbook_postcard_window = {
+    LuaFileName = "handbook_postcard_window_view",
+    PrefabPath = "handbook/handbook_postcard_window",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true
+  },
+  handbook_character_window = {
+    LuaFileName = "handbook_character_window_view",
+    PrefabPath = "handbook/handbook_character_window",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true,
+    IsUnrealScene = true
+  },
+  handbook_read_window = {
+    LuaFileName = "handbook_read_window_view",
+    PrefabPath = "handbook/handbook_read_window",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true
+  },
+  handbook_read_detail_window = {
+    LuaFileName = "handbook_read_detail_window_view",
+    PrefabPath = "handbook/handbook_read_detail_window",
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  equip_enchant_popup = {
+    LuaFileName = "equip_enchant_popup_view",
+    PrefabPath = "equip/equip_enchant_popup",
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  expression_fast_window = {
+    LuaFileName = "expression_fast_window_view",
+    PrefabPath = "expression/expression_fast_window",
+    Layer = Z.UI.ELayer.UILayerTip
+  },
+  expression_fast_window_pc = {
+    LuaFileName = "expression_fast_window_pc_view",
+    PrefabPath = "expression/expression_fast_window_pc",
+    Layer = Z.UI.ELayer.UILayerTip
+  },
+  expression_wheel_setting_window = {
+    LuaFileName = "expression_wheel_setting_window_view",
+    PrefabPath = "expression/expression_wheel_setting_window",
+    ViewType = Z.UI.EType.Exclusive
+  },
+  expression_wheel_setting_window_pc = {
+    LuaFileName = "expression_wheel_setting_window_pc_view",
+    PrefabPath = "expression/expression_wheel_setting_window_pc",
+    ViewType = Z.UI.EType.Exclusive
+  },
+  lifework_main = {
+    LuaFileName = "lifework_main_view",
+    PrefabPath = "lifework/lifework_main",
+    ViewType = Z.UI.EType.Exclusive,
+    IsRefreshSteer = false,
+    IsHavePCUI = true,
+    IsFullScreen = true
+  },
+  lifework_record_popup = {
+    LuaFileName = "lifework_record_popup_view",
+    PrefabPath = "lifework/lifework_record_popup",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    ViewType = Z.UI.EType.Exclusive,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsRefreshSteer = false
+  },
+  lifework_settle_window = {
+    LuaFileName = "lifework_settle_window_view",
+    PrefabPath = "lifework/lifework_settle_window",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    ViewType = Z.UI.EType.Exclusive,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsRefreshSteer = false
+  },
+  collection_window = {
+    LuaFileName = "collection_window_view",
+    PrefabPath = "collection/collection_window",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  collection_reward_popup = {
+    LuaFileName = "collection_reward_popup_view",
+    PrefabPath = "collection/collection_reward_popup",
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  collection_membership_popup = {
+    LuaFileName = "collection_membership_popup_view",
+    PrefabPath = "collection/collection_membership_popup",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  face_rolechoose_popup = {
+    LuaFileName = "face_rolechoose_popup_view",
+    PrefabPath = "face/face_rolechoose_popup",
+    Layer = Z.UI.ELayer.UILayerTipTop,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true,
+    IsRefreshSteer = false
+  },
+  hero_dungeon_prewar_popup = {
+    LuaFileName = "hero_dungeon_prewar_popup_view",
+    PrefabPath = "hero_dungeon/hero_dungeon_prewar_popup"
+  },
+  house_main = {
+    LuaFileName = "house_main_view",
+    PrefabPath = "house/house_main",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true
+  },
+  house_check_signature_popup = {
+    LuaFileName = "house_check_signature_popup_view",
+    PrefabPath = "house/house_check_signature_popup",
+    ViewType = Z.UI.EType.Exclusive,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  house_invitation_letter_popup = {
+    LuaFileName = "house_invitation_letter_popup_view",
+    PrefabPath = "house/house_invitation_letter_popup",
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  house_buy_title_deed_sub = {
+    LuaFileName = "house_buy_title_deed_sub_view",
+    PrefabPath = "house/house_buy_title_deed_sub",
+    ViewType = Z.UI.EType.Exclusive,
+    SceneMaskType = Z.UI.ESceneMaskType.Normal,
+    IsFullScreen = true
+  },
+  house_get_popup = {
+    LuaFileName = "house_get_popup_view",
+    PrefabPath = "house/house_get_popup",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    ViewType = Z.UI.EType.Exclusive,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  house_application_list_popup = {
+    LuaFileName = "house_application_list_popup_view",
+    PrefabPath = "house/house_application_list_popup",
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  house_bulletin_board_popup = {
+    LuaFileName = "house_bulletin_board_popup_view",
+    PrefabPath = "house/house_bulletin_board_popup",
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  house_furniture_guide_window = {
+    LuaFileName = "house_furniture_guide_window_view",
+    PrefabPath = "house/house_furniture_guide_window"
+  },
+  house_set_popup = {
+    LuaFileName = "house_set_popup_view",
+    PrefabPath = "house/house_set_popup",
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  house_production_main = {
+    LuaFileName = "house_production_main_view",
+    PrefabPath = "house/house_production_main",
+    ViewType = Z.UI.EType.Exclusive
+  },
+  house_get_item_popup = {
+    LuaFileName = "house_get_item_popup_view",
+    PrefabPath = "house/house_get_item_popup",
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  camera_invited_photo_popup = {
+    LuaFileName = "camera_invited_photo_popup_view",
+    PrefabPath = "photograph/camera_invited_photo_pupup",
+    Layer = Z.UI.ELayer.UILayerTipTop,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  report_popup = {
+    LuaFileName = "report_popup_view",
+    PrefabPath = "report/report_popup",
+    Layer = Z.UI.ELayer.UILayerTipTop,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  treasure_window = {
+    LuaFileName = "treasure_window_view",
+    PrefabPath = "treasure/treasure_window",
+    ViewType = Z.UI.EType.Exclusive,
+    IsFullScreen = true,
+    IsUnrealScene = true
+  },
+  bug_window = {
+    LuaFileName = "bug_window_view",
+    PrefabPath = "bug/bug_window",
+    Layer = Z.UI.ELayer.UILayerDebug,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  camerasys_main_pc = {
+    LuaFileName = "camerasys_main_pc_view",
+    PrefabPath = "photograph_pc/camerasys_main_pc",
+    Layer = Z.UI.ELayer.UILayerMain,
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Ingame
+  },
+  house_level_window = {
+    LuaFileName = "house_level_sub_view",
+    PrefabPath = "house/house_level_sub",
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true
+  },
+  house_upgrade_popup = {
+    LuaFileName = "house_upgrade_popup_view",
+    PrefabPath = "house/house_upgrade_popup",
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  house_quest_window = {
+    LuaFileName = "house_quest_window_view",
+    PrefabPath = "house/house_quest_window",
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true
+  },
+  house_shop_main = {
+    LuaFileName = "house_shop_main_view",
+    PrefabPath = "house/house_shop_main",
+    AudioGameState = E.AudioGameState.Menu,
+    IsFullScreen = true
+  },
+  house_play_farm_tips = {
+    LuaFileName = "house_play_farm_tips_view",
+    PrefabPath = "house/house_play_farm_tips",
+    AudioGameState = E.AudioGameState.Menu,
+    ShowMouse = false,
+    IgnoreBack = true,
+    IgnoreFocus = true
+  },
+  house_play_farm_main = {
+    LuaFileName = "house_play_farm_main_view",
+    PrefabPath = "house/house_play_farm_main",
+    AudioGameState = E.AudioGameState.Menu,
+    ShowMouse = false,
+    IgnoreBack = true,
+    IgnoreFocus = true
+  },
+  hero_dungeon_begin_ready_tpl = {
+    LuaFileName = "hero_dungeon_begin_ready_tpl_view",
+    PrefabPath = "hero_dungeon/hero_dungeon_begin_ready_tpl",
+    Layer = Z.UI.ELayer.UILayerTip,
+    AudioGameState = E.AudioGameState.Menu,
+    IgnoreFocus = true,
+    ShowMouse = false,
+    IgnoreBack = true,
+    IsRefreshSteer = false
+  },
+  pandora_announce_popup = {
+    LuaFileName = "pandora_announce_popup_view",
+    PrefabPath = "pandora/pandora_announce_popup",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  setting_popup = {
+    LuaFileName = "set_item_popup_view",
+    PrefabPath = "set/set_image_window",
+    Layer = Z.UI.ELayer.UILayerMain,
+    AudioGameState = E.AudioGameState.Menu
+  },
+  fishing_ranking_reward_popup = {
+    LuaFileName = "fishing_ranking_reward_popup_view",
+    PrefabPath = "fishing/fishing_ranking_reward_popup",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  story_fade_message_window = {
+    LuaFileName = "story_fade_message_window_view",
+    PrefabPath = "story/story_fade_message_window",
+    Layer = Z.UI.ELayer.UILayerDramaVideo,
+    AudioGameState = E.AudioGameState.Menu,
+    ShowMouse = false,
+    IgnoreBack = true
+  },
+  common_privilege_popup = {
+    LuaFileName = "common_privilege_popup_view",
+    PrefabPath = "commonui/common_privilege_popup",
+    Layer = Z.UI.ELayer.UILayerTop,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  friends_play_friends_popup = {
+    LuaFileName = "friends_play_friends_popup_view",
+    PrefabPath = "friends/friends_play_friends_popup",
+    Layer = Z.UI.ELayer.UILayerTop,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  friends_play_friends_more_popup = {
+    LuaFileName = "friends_play_friends_more_popup_view",
+    PrefabPath = "friends/friends_play_friends_more_popup",
+    Layer = Z.UI.ELayer.UILayerTop,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  hero_dungeon_master_popup = {
+    LuaFileName = "hero_dungeon_master_popup_view",
+    PrefabPath = "hero_dungeon/hero_dungeon_master_popup",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  hero_dungeon_master_share_window = {
+    LuaFileName = "hero_dungeon_master_share_window_view",
+    PrefabPath = "hero_dungeon/hero_dungeon_master_share_window",
+    Layer = Z.UI.ELayer.UILayerTipTop
+  },
+  power_saving_window = {
+    LuaFileName = "power_saving_window_view",
+    PrefabPath = "power_saving/power_saving_window",
+    Layer = Z.UI.ELayer.UILayerGuide,
+    ViewType = Z.UI.EType.Permanent,
+    AudioGameState = E.AudioGameState.Menu
+  },
+  battle_auto_battle_set = {
+    LuaFileName = "battle_auto_battle_set_view",
+    PrefabPath = "battle/battle_auto_battle_set",
+    AudioGameState = E.AudioGameState.Menu
+  },
+  equip_forge_main = {
+    LuaFileName = "equip_forge_main_view",
+    PrefabPath = "equip/equip_forge_main",
+    ViewType = Z.UI.EType.Exclusive,
+    IsFullScreen = true,
+    IsUnrealScene = true
+  },
+  equip_obtaining_popup = {
+    LuaFileName = "equip_obtaining_popup_view",
+    PrefabPath = "equip/equip_obtaining_popup",
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
+  },
+  life_profession_formula_tips = {
+    LuaFileName = "life_profession_formula_tips_view",
+    PrefabPath = "life_profession/life_profession_formula_tips",
+    Layer = Z.UI.ELayer.UILayerTip,
+    AudioGameState = E.AudioGameState.Menu,
+    IsHavePCUI = true
+  },
+  gasha_illusion_popup = {
+    LuaFileName = "gasha_illusion_popup_view",
+    PrefabPath = "gasha/gasha_illusion_popup"
+  },
+  tips_action_name_popup = {
+    LuaFileName = "tips_action_name_popup_view",
+    PrefabPath = "expression/tips_action_name",
+    Layer = Z.UI.ELayer.UILayerTip,
+    CacheLv = Z.UI.ECacheLv.Middle,
+    IgnoreFocus = true
+  },
+  master_dungeon_failure_window = {
+    LuaFileName = "master_dungeon_failure_window_view",
+    PrefabPath = "trialroad/trialroad_battle_failure_window",
+    Layer = Z.UI.ELayer.UILayerMain,
+    ViewType = Z.UI.EType.Exclusive,
+    AudioGameState = E.AudioGameState.Ingame,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IgnoreBack = true
+  },
+  camera_cloud_game_share = {
+    LuaFileName = "camera_cloud_game_share_view",
+    PrefabPath = "photograph/camera_cloud_game_share",
+    AudioGameState = E.AudioGameState.Ingame,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  camera_cloud_game_share_code_window = {
+    LuaFileName = "camera_cloud_game_share_code_window_view",
+    PrefabPath = "photograph/camera_cloud_game_share_code_window",
+    AudioGameState = E.AudioGameState.Ingame,
+    IsFullScreen = true
+  },
+  face_scan_window = {
+    LuaFileName = "face_scan_window_view",
+    PrefabPath = "face/face_scan_window",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  raid_main = {
+    LuaFileName = "raid_main_view",
+    PrefabPath = "raid/raid_main",
+    Layer = Z.UI.ELayer.UILayerFunc,
+    ViewType = Z.UI.EType.Exclusive,
+    IsFullScreen = true
+  },
+  raid_monster_window = {
+    LuaFileName = "raid_monster_window_view",
+    PrefabPath = "raid/raid_monster_window",
+    Layer = Z.UI.ELayer.UILayerFunc,
+    ViewType = Z.UI.EType.Exclusive,
+    IsFullScreen = true
   }
 }
 for viewConfigKey, config in pairs(UIConfig) do

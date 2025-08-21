@@ -152,6 +152,14 @@ function PivotService:OnLogin()
   end
   
   Z.ContainerMgr.CharSerialize.pivot.Watcher:RegWatcher(self.onContainerDataChange_)
+  
+  function self.onTransferPointChange_(container, dirty)
+    if dirty and dirty.points then
+      self.pivotVM_.CheckTracingTransfer()
+    end
+  end
+  
+  Z.ContainerMgr.CharSerialize.transferPoint.Watcher:RegWatcher(self.onTransferPointChange_)
   Z.EventMgr:Add(Z.ConstValue.Interaction.OnInteractionBack, self.OnInteractionBack, self)
   self:InitRed()
 end
@@ -163,8 +171,14 @@ function PivotService:OnLogout()
     self.isIgnoreInput_ = false
   end
   Z.EventMgr:Remove(Z.ConstValue.Interaction.OnInteractionBack, self.OnInteractionBack, self)
-  Z.ContainerMgr.CharSerialize.pivot.Watcher:UnregWatcher(self.onContainerDataChange_)
-  self.onContainerDataChange_ = nil
+  if self.onContainerDataChange_ then
+    Z.ContainerMgr.CharSerialize.pivot.Watcher:UnregWatcher(self.onContainerDataChange_)
+    self.onContainerDataChange_ = nil
+  end
+  if self.onTransferPointChange_ then
+    Z.ContainerMgr.CharSerialize.transferPoint.Watcher:UnregWatcher(self.onTransferPointChange_)
+    self.onTransferPointChange_ = nil
+  end
 end
 
 function PivotService:OnSyncAllContainerData()

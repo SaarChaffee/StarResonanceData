@@ -12,12 +12,17 @@ function Personalzone_detailed_subView:ctor(parent)
   super.ctor(self, "personalzone_detailed_sub", "personalzone/personalzone_detailed_sub", UI.ECacheLv.None)
   self.personalZoneVM_ = Z.VMMgr.GetVM("personal_zone")
   self.personalZoneData_ = Z.DataMgr.Get("personal_zone_data")
+  self.collectionVM_ = Z.VMMgr.GetVM("collection")
 end
 
 function Personalzone_detailed_subView:OnActive()
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self.charId_ = Z.ContainerMgr.CharSerialize.charId
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
   self.modelId_ = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
   self:AddAsyncClick(self.uiBinder.btn_use.btn, function()
     if self.currentCardId_ == self.selectId_ then
@@ -70,12 +75,14 @@ function Personalzone_detailed_subView:OnActive()
   end
   self.cardLoopScroll_:Init(self.datas_)
   self:refreshInfo()
-  self.uiBinder.lab_num.text = Z.ContainerMgr.CharSerialize.personalZone.fashionCollectPoint
+  self.uiBinder.lab_num.text = self.collectionVM_.GetFashionCollectionPoints()
 end
 
 function Personalzone_detailed_subView:OnDeActive()
   self.cardLoopScroll_:UnInit()
   self.cardLoopScroll_ = nil
+  self.personalZoneData_:ClearAddReddotByType(DEFINE.ProfileImageType.Card)
+  self.personalZoneVM_.CheckRed()
 end
 
 function Personalzone_detailed_subView:OnRefresh()
@@ -98,7 +105,7 @@ function Personalzone_detailed_subView:refreshInfo()
   if config == nil then
     return
   end
-  self.uiBinder.rimg_bg:SetImage(config.Image)
+  self.uiBinder.rimg_bg:SetImage(Z.ConstValue.PersonalZone.PersonalCardBgLong .. config.Image)
   self.uiBinder.lab_uid.text = Lang("UID") .. Z.ContainerMgr.CharSerialize.charBase.showId
   self.uiBinder.lab_strength.text = Lang("RoleLevelText") .. Z.ContainerMgr.CharSerialize.roleLevel.level
   local viewData = {}
@@ -108,6 +115,7 @@ function Personalzone_detailed_subView:refreshInfo()
   viewData.isShowCombinationIcon = false
   viewData.isShowTalentIcon = false
   viewData.headFrameId = self.personalZoneVM_.GetCurProfileImageId(DEFINE.ProfileImageType.HeadFrame)
+  viewData.token = self.cancelSource:CreateToken()
   PlayerPortraitHgr.InsertNewPortrait(self.uiBinder.node_player_head_item, viewData)
   self.uiBinder.node_player_head_item.Ref:SetVisible(self.uiBinder.node_player_head_item.group_unlocked, false)
   self.uiBinder.node_player_head_item.Ref:SetVisible(self.uiBinder.node_player_head_item.img_select, false)
@@ -116,11 +124,12 @@ function Personalzone_detailed_subView:refreshInfo()
   if playerVM:IsNamed() then
     self.uiBinder.lab_name.text = Z.ContainerMgr.CharSerialize.charBase.name
   else
-    self.uiBinder.lab_name.text = ""
+    self.uiBinder.lab_name.text = Lang("EmptyRoleName")
   end
-  self.idCardHelper:SetIDCardBg(config.Image2, config.ImagePlayer, config.Color)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrIsNewbie")).Value))
+  self.idCardHelper:SetIDCardBg(Z.ConstValue.PersonalZone.PersonalCardBg .. config.Image, Z.ConstValue.PersonalZone.PersonalCardBg .. config.Image, config.Color)
   self.uiBinder.img_line_left:SetColorByHex(config.Color)
-  self.uiBinder.img_bg:SetColorByHex(config.Color)
+  self.uiBinder.img_bg:SetColorByHex(config.Color2)
   local isUnlock = self.personalZoneVM_.CheckProfileImageIsUnlock(self.selectId_)
   self.uiBinder.lab_head_name.text = config.Name
   if config.Unlock ~= DEFINE.ProfileImageUnlockType.DefaultUnlock then

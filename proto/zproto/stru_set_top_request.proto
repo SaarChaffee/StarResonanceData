@@ -6,4 +6,3 @@ message SetTopRequest {
     int64 charId = 2;
     bool isTop = 3;
 }
-

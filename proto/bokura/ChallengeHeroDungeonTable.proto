@@ -21,8 +21,6 @@ message ChallengeHeroDungeonTableBase {
     int_table ScoreAward = 1042;
     int_array KeyReward = 1791;
 }
-
 message ChallengeHeroDungeonTableMgr {
-    map<int32, .bokura.ChallengeHeroDungeonTableBase> datas = 1;
+    repeated bokura.ChallengeHeroDungeonTableMgr.DatasEntry datas = 1;
 }
-

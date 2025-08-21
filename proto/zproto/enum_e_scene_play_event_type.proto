@@ -6,4 +6,3 @@ enum EScenePlayEventType {
     EPlayEventTypeCutScene = 0;
     EPlayEventTypeFlow = 1;
 }
-

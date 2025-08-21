@@ -8,4 +8,3 @@ enum ETalentJobType {
     TalentJobType_Support = 2;
     TalentJobType_Survive = 3;
 }
-

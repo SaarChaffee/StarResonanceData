@@ -9,11 +9,11 @@ local checkValid = function(itemUuid, configId, data)
   return E.ItemBtnState.UnActive
 end
 local onClick = function(itemUuid, configId, data)
-  local resonancePowerVM_ = Z.VMMgr.GetVM("resonance_power")
-  resonancePowerVM_.OpenResonancePowerDecompose(itemUuid, configId)
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  gotoFuncVM.TraceOrSwitchFunc(E.ResonanceFuncId.Decompose)
 end
 local getBtnName = function(itemUuid, configId)
-  return Lang("Decompose")
+  return Lang("GoToDecompose")
 end
 local priority = function()
   return 1

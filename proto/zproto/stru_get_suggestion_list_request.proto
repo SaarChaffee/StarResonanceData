@@ -3,6 +3,5 @@ syntax = "proto3";
 package zproto;
 
 message GetSuggestionListRequest {
-    int64 charId = 2;
+    int64 charId = 1;
 }
-

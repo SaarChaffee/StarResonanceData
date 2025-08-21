@@ -28,4 +28,3 @@ enum ETeamErrorType {
     ReqReplyJoinActivity = 22;
     ReqSetShowHall = 23;
 }
-

@@ -7,4 +7,3 @@ enum ETrialRoadAwardState {
     TrialRoadAwardStateFinish = 1;
     TrialRoadAwardStateGet = 2;
 }
-

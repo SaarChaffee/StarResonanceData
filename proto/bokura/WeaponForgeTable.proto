@@ -11,8 +11,6 @@ message WeaponForgeTableBase {
     int_array ConsumableGold = 18;
     int32 Sort = 1643;
 }
-
 message WeaponForgeTableMgr {
-    map<int32, .bokura.WeaponForgeTableBase> datas = 1;
+    repeated bokura.WeaponForgeTableMgr.DatasEntry datas = 1;
 }
-

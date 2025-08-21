@@ -7,29 +7,50 @@ end
 function Scene:LoadComplete()
 end
 
-Scene.Seasons = {}
+Scene.Seasons = {2}
 
 function Scene:InitEvents()
   self.EventItems = {}
-  self.EventItems[548] = {
-    eventType = E.LevelEventType.OnZoneEnterClient,
+  self.EventItems[101348] = {
+    eventType = E.LevelEventType.OnSceneLeave,
     enable = true,
     group = 0,
-    eventId = 548,
+    eventId = 101348,
     count = -1,
-    entity = {actorType = 5, tableUid = 806},
-    action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1017})
+    action = function(localSelf)
+      Panda.ZGame.CameraManager.Instance:CameraInvoke(0, true, {2032}, false)
+      Panda.ZGame.CameraManager.Instance:SwitchCameraTemplate({0}, {2030}, 0)
     end
   }
-  self.EventItems[100827] = {
+  self.EventItems[102436] = {
     eventType = E.LevelEventType.TriggerEvent,
     enable = true,
     group = 0,
-    eventId = 100827,
+    eventId = 102436,
     count = -1,
     action = function(localSelf)
-      Panda.ZEffect.ZPathEffectMgr.Instance:PlayEffect("HeroDungeon_Tina/Guide_easy", 0, 0, 20, false, 0)
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(1, false)
+    end
+  }
+  self.EventItems[102437] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 102437,
+    count = -1,
+    action = function(localSelf)
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(2, false)
+    end
+  }
+  self.EventItems[102438] = {
+    eventType = E.LevelEventType.TriggerEvent,
+    enable = true,
+    group = 0,
+    eventId = 102438,
+    count = -1,
+    action = function(localSelf)
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(1, true)
+      Panda.Streaming.StreamingManager.Instance:RefreshSceneObjState(2, true)
     end
   }
 end

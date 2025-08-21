@@ -15,8 +15,6 @@ message TrapTableBase {
     int_array LifeInfo = 412;
     int_array Tags = 232;
 }
-
 message TrapTableMgr {
-    map<int32, .bokura.TrapTableBase> datas = 1;
+    repeated bokura.TrapTableMgr.DatasEntry datas = 1;
 }
-

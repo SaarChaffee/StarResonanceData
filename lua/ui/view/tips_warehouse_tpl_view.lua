@@ -4,10 +4,12 @@ local Tips_warehouse_tplView = class("Tips_warehouse_tplView", super)
 
 function Tips_warehouse_tplView:ctor(parent)
   self.uiBinder = nil
-  super.ctor(self, "tips_warehouse_tpl", "common_tips/tips_warehouse_tpl", UI.ECacheLv.None)
+  super.ctor(self, "tips_warehouse_tpl", "common_tips/tips_warehouse_tpl", UI.ECacheLv.None, true)
   self.vm_ = Z.VMMgr.GetVM("warehouse")
+  self.houseVm_ = Z.VMMgr.GetVM("house_warehouse")
   self.socialVM_ = Z.VMMgr.GetVM("social")
   self.data_ = Z.DataMgr.Get("warehouse_data")
+  self.parent_ = parent
 end
 
 function Tips_warehouse_tplView:initBinders()
@@ -24,13 +26,21 @@ end
 
 function Tips_warehouse_tplView:TakeOutWarehouse()
   if self.viewData.warehouseGrid then
-    self.vm_.AsyncTakeOutWarehouse(self.viewData.warehouseGrid.pos, self.selectedNum_, self.viewData.warehouseGrid.itemInfo.configId, self.viewData.warehouseGrid.ownerCharId, self.cancelSource:CreateToken())
+    if self.viewData.warehouseType == E.WarehouseType.Normal then
+      self.vm_.AsyncTakeOutWarehouse(self.viewData.warehouseGrid.pos, self.selectedNum_, self.viewData.warehouseGrid.itemInfo.configId, self.viewData.warehouseGrid.ownerCharId, self.cancelSource:CreateToken())
+    elseif self.viewData.warehouseType == E.WarehouseType.House then
+      self.houseVm_.AsyncTakeOutWarehouse(self.viewData.warehouseGrid.pos, self.selectedNum_, self.viewData.warehouseGrid.itemInfo.configId, self.viewData.warehouseGrid.ownerCharId, self.cancelSource:CreateToken())
+    end
     Z.TipsVM.CloseItemTipsView(self.viewData.tipsId)
   end
 end
 
 function Tips_warehouse_tplView:DepositWarehouse()
-  self.vm_.AsyncDepositWarehouse(self.viewData.configId, self.viewData.itemUuid, self.selectedNum_, self.cancelSource:CreateToken())
+  if self.viewData.warehouseType == E.WarehouseType.Normal then
+    self.vm_.AsyncDepositWarehouse(self.viewData.configId, self.viewData.itemUuid, self.selectedNum_, self.cancelSource:CreateToken())
+  elseif self.viewData.warehouseType == E.WarehouseType.House then
+    self.houseVm_.AsyncDepositWarehouse(self.viewData.itemUuid, self.selectedNum_, self.cancelSource:CreateToken())
+  end
   Z.TipsVM.CloseItemTipsView(self.viewData.tipsId)
 end
 
@@ -80,8 +90,9 @@ function Tips_warehouse_tplView:depositItem()
     return
   end
   local item = self.viewData.itemInfo
-  local depositCount = Z.CounterHelper.GetCounterLimitCount(self.warehouseRow_.DepositCount)
-  local residueCount = Z.CounterHelper.GetCounterResidueLimitCount(self.warehouseRow_.DepositCount, depositCount)
+  local depositCountId = self.viewData.warehouseType == E.WarehouseType.Normal and self.warehouseRow_.DepositCount or self.warehouseRow_.HomeDepositCount
+  local depositCount = Z.CounterHelper.GetCounterLimitCount(depositCountId)
+  local residueCount = Z.CounterHelper.GetCounterResidueLimitCount(depositCountId, depositCount)
   self.sliderMaxValue_ = residueCount < item.count and residueCount or item.count
   local item = {
     name = self.warehouseRow_.Name
@@ -115,8 +126,9 @@ function Tips_warehouse_tplView:takeOutItem()
     self.materialsLab_.text = Lang("WarehouseGetSelfItemTips")
     self.sliderMaxValue_ = warehouseGrid.itemInfo.count
   else
-    local takeCount = Z.CounterHelper.GetCounterLimitCount(self.warehouseRow_.TakeCount)
-    local residueCount = Z.CounterHelper.GetCounterResidueLimitCount(self.warehouseRow_.TakeCount, takeCount)
+    local takeCountId = self.viewData.warehouseType == E.WarehouseType.Normal and self.warehouseRow_.TakeCount or self.warehouseRow_.HomeTakeCount
+    local takeCount = Z.CounterHelper.GetCounterLimitCount(takeCountId)
+    local residueCount = Z.CounterHelper.GetCounterResidueLimitCount(takeCountId, takeCount)
     local item = {
       name = self.warehouseRow_.Name
     }
@@ -151,6 +163,7 @@ function Tips_warehouse_tplView:OnRefresh()
     self:initBtns()
     self:initUI()
     self:initData()
+    self.parent_:rebuildLayout()
   end
 end
 

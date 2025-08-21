@@ -13,8 +13,6 @@ message MonsterFightAreaTableBase {
     number_table AreaAngle = 1241;
     float PlayerHateWeight = 1180;
 }
-
 message MonsterFightAreaTableMgr {
-    map<int32, .bokura.MonsterFightAreaTableBase> datas = 1;
+    repeated bokura.MonsterFightAreaTableMgr.DatasEntry datas = 1;
 }
-

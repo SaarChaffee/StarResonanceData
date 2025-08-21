@@ -9,8 +9,6 @@ message ConsumeTypeTableBase {
     int32 TimeLimit = 1722;
     int32 Exclusive = 1326;
 }
-
 message ConsumeTypeTableMgr {
-    map<int32, .bokura.ConsumeTypeTableBase> datas = 1;
+    repeated bokura.ConsumeTypeTableMgr.DatasEntry datas = 1;
 }
-

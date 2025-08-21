@@ -19,8 +19,6 @@ message MonsterExploreTargetTableBase {
     mlstring_array SpVariableName = 2006;
     int_array IsShowSpVariableProgress = 800;
 }
-
 message MonsterExploreTargetTableMgr {
-    map<int32, .bokura.MonsterExploreTargetTableBase> datas = 1;
+    repeated bokura.MonsterExploreTargetTableMgr.DatasEntry datas = 1;
 }
-

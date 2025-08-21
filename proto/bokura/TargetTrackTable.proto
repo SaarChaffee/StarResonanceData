@@ -12,8 +12,6 @@ message TargetTrackTableBase {
     int32 EndDistance = 1679;
     string Icon = 1153;
 }
-
 message TargetTrackTableMgr {
-    map<int32, .bokura.TargetTrackTableBase> datas = 1;
+    repeated bokura.TargetTrackTableMgr.DatasEntry datas = 1;
 }
-

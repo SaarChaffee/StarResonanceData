@@ -108,6 +108,11 @@ local mergeDataFuncs = {
     local last = container.__data__.id
     container.__data__.id = br.ReadUInt32(buffer)
     container.Watcher:MarkDirty("id", last)
+  end,
+  [6] = function(container, buffer, watcherList)
+    local last = container.__data__.errCode
+    container.__data__.errCode = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("errCode", last)
   end
 }
 local setForbidenMt = function(t)
@@ -151,6 +156,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.id then
     container.__data__.id = 0
+  end
+  if not pbData.errCode then
+    container.__data__.errCode = 0
   end
   setForbidenMt(container)
   container.targets.__data__ = pbData.targets
@@ -272,6 +280,11 @@ local getContainerElem = function(container)
     fieldId = 5,
     dataType = 0,
     data = container.id
+  }
+  ret.errCode = {
+    fieldId = 6,
+    dataType = 0,
+    data = container.errCode
   }
   return ret
 end

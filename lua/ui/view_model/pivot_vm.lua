@@ -274,7 +274,7 @@ function PivotVM.CheckPivotRedDot()
         break
       end
     end
-    Z.RedPointMgr.RefreshServerNodeCount(nodeId, isCanGetReward and 1 or 0)
+    Z.RedPointMgr.UpdateNodeCount(nodeId, isCanGetReward and 1 or 0)
   end
 end
 
@@ -291,9 +291,9 @@ function PivotVM.CheckPointRedDot()
       local awardId = data.AwardId[i]
       local nodeId = PivotVM.GetProgressRedId(sceneId, awardId)
       if curProgress >= progress and not rewardStateDict[i] then
-        Z.RedPointMgr.RefreshServerNodeCount(nodeId, 1)
+        Z.RedPointMgr.UpdateNodeCount(nodeId, 1)
       else
-        Z.RedPointMgr.RefreshServerNodeCount(nodeId, 0)
+        Z.RedPointMgr.UpdateNodeCount(nodeId, 0)
       end
     end
   end
@@ -362,6 +362,26 @@ function PivotVM.IsTransferAreaUnlock(transferId)
     return true
   end
   return PivotVM.CheckPivotUnlock(transferTableRow.PivotId)
+end
+
+function PivotVM.CheckTracingTransfer()
+  local mapVM = Z.VMMgr.GetVM("map")
+  local guideVM = Z.VMMgr.GetVM("goal_guide")
+  local guideData = Z.DataMgr.Get("goal_guide_data")
+  local mapGoalList = guideData:GetGuideGoalsBySource(E.GoalGuideSource.MapFlag)
+  if mapGoalList == nil then
+    return
+  end
+  for i, v in ipairs(mapGoalList) do
+    local globalConfig = mapVM.GetGlobalInfo(v.SceneId, v.PosType, v.Uid)
+    if globalConfig then
+      local transferRow = Z.TableMgr.GetRow("TransferTableMgr", globalConfig.Id, true)
+      if transferRow and mapVM.CheckTransferPointUnlock(globalConfig.Id) then
+        guideVM.SetGuideGoals(E.GoalGuideSource.MapFlag, nil)
+        return
+      end
+    end
+  end
 end
 
 return PivotVM

@@ -1,7 +1,7 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Photo_editor_container_filter_subView = class("Photo_editor_container_filter_subView", super)
-local FilterPath = "ui/atlas/photograph_decoration/filters/"
+local FilterPath = "ui/textures/photograph_decoration/filters/"
 
 function Photo_editor_container_filter_subView:ctor(parent)
   self.uiBinder = nil

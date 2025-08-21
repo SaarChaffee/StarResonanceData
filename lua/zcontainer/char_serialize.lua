@@ -244,6 +244,82 @@ local mergeDataFuncs = {
   [70] = function(container, buffer, watcherList)
     container.rideList:MergeData(buffer, watcherList)
     container.Watcher:MarkDirty("rideList", {})
+  end,
+  [72] = function(container, buffer, watcherList)
+    container.lifeProfession:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("lifeProfession", {})
+  end,
+  [73] = function(container, buffer, watcherList)
+    container.lifeProfessionWork:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("lifeProfessionWork", {})
+  end,
+  [77] = function(container, buffer, watcherList)
+    container.monthlyCard:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("monthlyCard", {})
+  end,
+  [78] = function(container, buffer, watcherList)
+    container.fashionBenefit:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("fashionBenefit", {})
+  end,
+  [79] = function(container, buffer, watcherList)
+    container.itemCurrency:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("itemCurrency", {})
+  end,
+  [80] = function(container, buffer, watcherList)
+    container.privilegeEffectData:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("privilegeEffectData", {})
+  end,
+  [81] = function(container, buffer, watcherList)
+    container.treasure:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("treasure", {})
+  end,
+  [82] = function(container, buffer, watcherList)
+    container.unlockEmojiData:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("unlockEmojiData", {})
+  end,
+  [83] = function(container, buffer, watcherList)
+    container.playerOrderComtainerInfo:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("playerOrderComtainerInfo", {})
+  end,
+  [84] = function(container, buffer, watcherList)
+    container.playerBox:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("playerBox", {})
+  end,
+  [85] = function(container, buffer, watcherList)
+    container.launchPrivilegeData:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("launchPrivilegeData", {})
+  end,
+  [87] = function(container, buffer, watcherList)
+    container.rechargeData:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("rechargeData", {})
+  end,
+  [88] = function(container, buffer, watcherList)
+    container.luckyValueMgr:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("luckyValueMgr", {})
+  end,
+  [89] = function(container, buffer, watcherList)
+    container.handbookData:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("handbookData", {})
+  end,
+  [90] = function(container, buffer, watcherList)
+    container.masterModeDungeonInfo:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("masterModeDungeonInfo", {})
+  end,
+  [92] = function(container, buffer, watcherList)
+    container.compenstionStatistics:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("compenstionStatistics", {})
+  end,
+  [93] = function(container, buffer, watcherList)
+    container.bubbleActData:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("bubbleActData", {})
+  end,
+  [96] = function(container, buffer, watcherList)
+    container.fightPoint:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("fightPoint", {})
+  end,
+  [97] = function(container, buffer, watcherList)
+    container.sign:MergeData(buffer, watcherList)
+    container.Watcher:MarkDirty("sign", {})
   end
 }
 local setForbidenMt = function(t)
@@ -477,6 +553,90 @@ local resetData = function(container, pbData)
   if not pbData.rideList then
     container.__data__.rideList = {}
   end
+  if not pbData.payOrderList then
+    container.__data__.payOrderList = {}
+  end
+  if not pbData.lifeProfession then
+    container.__data__.lifeProfession = {}
+  end
+  if not pbData.lifeProfessionWork then
+    container.__data__.lifeProfessionWork = {}
+  end
+  if not pbData.userActivityList then
+    container.__data__.userActivityList = {}
+  end
+  if not pbData.playerRecord then
+    container.__data__.playerRecord = {}
+  end
+  if not pbData.dropContainer then
+    container.__data__.dropContainer = {}
+  end
+  if not pbData.monthlyCard then
+    container.__data__.monthlyCard = {}
+  end
+  if not pbData.fashionBenefit then
+    container.__data__.fashionBenefit = {}
+  end
+  if not pbData.itemCurrency then
+    container.__data__.itemCurrency = {}
+  end
+  if not pbData.privilegeEffectData then
+    container.__data__.privilegeEffectData = {}
+  end
+  if not pbData.treasure then
+    container.__data__.treasure = {}
+  end
+  if not pbData.unlockEmojiData then
+    container.__data__.unlockEmojiData = {}
+  end
+  if not pbData.playerOrderComtainerInfo then
+    container.__data__.playerOrderComtainerInfo = {}
+  end
+  if not pbData.playerBox then
+    container.__data__.playerBox = {}
+  end
+  if not pbData.launchPrivilegeData then
+    container.__data__.launchPrivilegeData = {}
+  end
+  if not pbData.battlePassData then
+    container.__data__.battlePassData = {}
+  end
+  if not pbData.rechargeData then
+    container.__data__.rechargeData = {}
+  end
+  if not pbData.luckyValueMgr then
+    container.__data__.luckyValueMgr = {}
+  end
+  if not pbData.handbookData then
+    container.__data__.handbookData = {}
+  end
+  if not pbData.masterModeDungeonInfo then
+    container.__data__.masterModeDungeonInfo = {}
+  end
+  if not pbData.statisticsData then
+    container.__data__.statisticsData = {}
+  end
+  if not pbData.compenstionStatistics then
+    container.__data__.compenstionStatistics = {}
+  end
+  if not pbData.bubbleActData then
+    container.__data__.bubbleActData = {}
+  end
+  if not pbData.mailClaimedInfo then
+    container.__data__.mailClaimedInfo = {}
+  end
+  if not pbData.newbieData then
+    container.__data__.newbieData = {}
+  end
+  if not pbData.fightPoint then
+    container.__data__.fightPoint = {}
+  end
+  if not pbData.sign then
+    container.__data__.sign = {}
+  end
+  if not pbData.charStatisticsData then
+    container.__data__.charStatisticsData = {}
+  end
   setForbidenMt(container)
   container.charBase:ResetData(pbData.charBase)
   container.__data__.charBase = nil
@@ -612,6 +772,62 @@ local resetData = function(container, pbData)
   container.__data__.recommendPlayData = nil
   container.rideList:ResetData(pbData.rideList)
   container.__data__.rideList = nil
+  container.payOrderList:ResetData(pbData.payOrderList)
+  container.__data__.payOrderList = nil
+  container.lifeProfession:ResetData(pbData.lifeProfession)
+  container.__data__.lifeProfession = nil
+  container.lifeProfessionWork:ResetData(pbData.lifeProfessionWork)
+  container.__data__.lifeProfessionWork = nil
+  container.userActivityList:ResetData(pbData.userActivityList)
+  container.__data__.userActivityList = nil
+  container.playerRecord:ResetData(pbData.playerRecord)
+  container.__data__.playerRecord = nil
+  container.dropContainer:ResetData(pbData.dropContainer)
+  container.__data__.dropContainer = nil
+  container.monthlyCard:ResetData(pbData.monthlyCard)
+  container.__data__.monthlyCard = nil
+  container.fashionBenefit:ResetData(pbData.fashionBenefit)
+  container.__data__.fashionBenefit = nil
+  container.itemCurrency:ResetData(pbData.itemCurrency)
+  container.__data__.itemCurrency = nil
+  container.privilegeEffectData:ResetData(pbData.privilegeEffectData)
+  container.__data__.privilegeEffectData = nil
+  container.treasure:ResetData(pbData.treasure)
+  container.__data__.treasure = nil
+  container.unlockEmojiData:ResetData(pbData.unlockEmojiData)
+  container.__data__.unlockEmojiData = nil
+  container.playerOrderComtainerInfo:ResetData(pbData.playerOrderComtainerInfo)
+  container.__data__.playerOrderComtainerInfo = nil
+  container.playerBox:ResetData(pbData.playerBox)
+  container.__data__.playerBox = nil
+  container.launchPrivilegeData:ResetData(pbData.launchPrivilegeData)
+  container.__data__.launchPrivilegeData = nil
+  container.battlePassData:ResetData(pbData.battlePassData)
+  container.__data__.battlePassData = nil
+  container.rechargeData:ResetData(pbData.rechargeData)
+  container.__data__.rechargeData = nil
+  container.luckyValueMgr:ResetData(pbData.luckyValueMgr)
+  container.__data__.luckyValueMgr = nil
+  container.handbookData:ResetData(pbData.handbookData)
+  container.__data__.handbookData = nil
+  container.masterModeDungeonInfo:ResetData(pbData.masterModeDungeonInfo)
+  container.__data__.masterModeDungeonInfo = nil
+  container.statisticsData:ResetData(pbData.statisticsData)
+  container.__data__.statisticsData = nil
+  container.compenstionStatistics:ResetData(pbData.compenstionStatistics)
+  container.__data__.compenstionStatistics = nil
+  container.bubbleActData:ResetData(pbData.bubbleActData)
+  container.__data__.bubbleActData = nil
+  container.mailClaimedInfo:ResetData(pbData.mailClaimedInfo)
+  container.__data__.mailClaimedInfo = nil
+  container.newbieData:ResetData(pbData.newbieData)
+  container.__data__.newbieData = nil
+  container.fightPoint:ResetData(pbData.fightPoint)
+  container.__data__.fightPoint = nil
+  container.sign:ResetData(pbData.sign)
+  container.__data__.sign = nil
+  container.charStatisticsData:ResetData(pbData.charStatisticsData)
+  container.__data__.charStatisticsData = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -1526,6 +1742,370 @@ local getContainerElem = function(container)
       data = container.rideList:GetContainerElem()
     }
   end
+  if container.payOrderList == nil then
+    ret.payOrderList = {
+      fieldId = 71,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.payOrderList = {
+      fieldId = 71,
+      dataType = 1,
+      data = container.payOrderList:GetContainerElem()
+    }
+  end
+  if container.lifeProfession == nil then
+    ret.lifeProfession = {
+      fieldId = 72,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.lifeProfession = {
+      fieldId = 72,
+      dataType = 1,
+      data = container.lifeProfession:GetContainerElem()
+    }
+  end
+  if container.lifeProfessionWork == nil then
+    ret.lifeProfessionWork = {
+      fieldId = 73,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.lifeProfessionWork = {
+      fieldId = 73,
+      dataType = 1,
+      data = container.lifeProfessionWork:GetContainerElem()
+    }
+  end
+  if container.userActivityList == nil then
+    ret.userActivityList = {
+      fieldId = 74,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.userActivityList = {
+      fieldId = 74,
+      dataType = 1,
+      data = container.userActivityList:GetContainerElem()
+    }
+  end
+  if container.playerRecord == nil then
+    ret.playerRecord = {
+      fieldId = 75,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.playerRecord = {
+      fieldId = 75,
+      dataType = 1,
+      data = container.playerRecord:GetContainerElem()
+    }
+  end
+  if container.dropContainer == nil then
+    ret.dropContainer = {
+      fieldId = 76,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.dropContainer = {
+      fieldId = 76,
+      dataType = 1,
+      data = container.dropContainer:GetContainerElem()
+    }
+  end
+  if container.monthlyCard == nil then
+    ret.monthlyCard = {
+      fieldId = 77,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.monthlyCard = {
+      fieldId = 77,
+      dataType = 1,
+      data = container.monthlyCard:GetContainerElem()
+    }
+  end
+  if container.fashionBenefit == nil then
+    ret.fashionBenefit = {
+      fieldId = 78,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.fashionBenefit = {
+      fieldId = 78,
+      dataType = 1,
+      data = container.fashionBenefit:GetContainerElem()
+    }
+  end
+  if container.itemCurrency == nil then
+    ret.itemCurrency = {
+      fieldId = 79,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.itemCurrency = {
+      fieldId = 79,
+      dataType = 1,
+      data = container.itemCurrency:GetContainerElem()
+    }
+  end
+  if container.privilegeEffectData == nil then
+    ret.privilegeEffectData = {
+      fieldId = 80,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.privilegeEffectData = {
+      fieldId = 80,
+      dataType = 1,
+      data = container.privilegeEffectData:GetContainerElem()
+    }
+  end
+  if container.treasure == nil then
+    ret.treasure = {
+      fieldId = 81,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.treasure = {
+      fieldId = 81,
+      dataType = 1,
+      data = container.treasure:GetContainerElem()
+    }
+  end
+  if container.unlockEmojiData == nil then
+    ret.unlockEmojiData = {
+      fieldId = 82,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.unlockEmojiData = {
+      fieldId = 82,
+      dataType = 1,
+      data = container.unlockEmojiData:GetContainerElem()
+    }
+  end
+  if container.playerOrderComtainerInfo == nil then
+    ret.playerOrderComtainerInfo = {
+      fieldId = 83,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.playerOrderComtainerInfo = {
+      fieldId = 83,
+      dataType = 1,
+      data = container.playerOrderComtainerInfo:GetContainerElem()
+    }
+  end
+  if container.playerBox == nil then
+    ret.playerBox = {
+      fieldId = 84,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.playerBox = {
+      fieldId = 84,
+      dataType = 1,
+      data = container.playerBox:GetContainerElem()
+    }
+  end
+  if container.launchPrivilegeData == nil then
+    ret.launchPrivilegeData = {
+      fieldId = 85,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.launchPrivilegeData = {
+      fieldId = 85,
+      dataType = 1,
+      data = container.launchPrivilegeData:GetContainerElem()
+    }
+  end
+  if container.battlePassData == nil then
+    ret.battlePassData = {
+      fieldId = 86,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.battlePassData = {
+      fieldId = 86,
+      dataType = 1,
+      data = container.battlePassData:GetContainerElem()
+    }
+  end
+  if container.rechargeData == nil then
+    ret.rechargeData = {
+      fieldId = 87,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.rechargeData = {
+      fieldId = 87,
+      dataType = 1,
+      data = container.rechargeData:GetContainerElem()
+    }
+  end
+  if container.luckyValueMgr == nil then
+    ret.luckyValueMgr = {
+      fieldId = 88,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.luckyValueMgr = {
+      fieldId = 88,
+      dataType = 1,
+      data = container.luckyValueMgr:GetContainerElem()
+    }
+  end
+  if container.handbookData == nil then
+    ret.handbookData = {
+      fieldId = 89,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.handbookData = {
+      fieldId = 89,
+      dataType = 1,
+      data = container.handbookData:GetContainerElem()
+    }
+  end
+  if container.masterModeDungeonInfo == nil then
+    ret.masterModeDungeonInfo = {
+      fieldId = 90,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.masterModeDungeonInfo = {
+      fieldId = 90,
+      dataType = 1,
+      data = container.masterModeDungeonInfo:GetContainerElem()
+    }
+  end
+  if container.statisticsData == nil then
+    ret.statisticsData = {
+      fieldId = 91,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.statisticsData = {
+      fieldId = 91,
+      dataType = 1,
+      data = container.statisticsData:GetContainerElem()
+    }
+  end
+  if container.compenstionStatistics == nil then
+    ret.compenstionStatistics = {
+      fieldId = 92,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.compenstionStatistics = {
+      fieldId = 92,
+      dataType = 1,
+      data = container.compenstionStatistics:GetContainerElem()
+    }
+  end
+  if container.bubbleActData == nil then
+    ret.bubbleActData = {
+      fieldId = 93,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.bubbleActData = {
+      fieldId = 93,
+      dataType = 1,
+      data = container.bubbleActData:GetContainerElem()
+    }
+  end
+  if container.mailClaimedInfo == nil then
+    ret.mailClaimedInfo = {
+      fieldId = 94,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.mailClaimedInfo = {
+      fieldId = 94,
+      dataType = 1,
+      data = container.mailClaimedInfo:GetContainerElem()
+    }
+  end
+  if container.newbieData == nil then
+    ret.newbieData = {
+      fieldId = 95,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.newbieData = {
+      fieldId = 95,
+      dataType = 1,
+      data = container.newbieData:GetContainerElem()
+    }
+  end
+  if container.fightPoint == nil then
+    ret.fightPoint = {
+      fieldId = 96,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.fightPoint = {
+      fieldId = 96,
+      dataType = 1,
+      data = container.fightPoint:GetContainerElem()
+    }
+  end
+  if container.sign == nil then
+    ret.sign = {
+      fieldId = 97,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.sign = {
+      fieldId = 97,
+      dataType = 1,
+      data = container.sign:GetContainerElem()
+    }
+  end
+  if container.charStatisticsData == nil then
+    ret.charStatisticsData = {
+      fieldId = 98,
+      dataType = 1,
+      data = nil
+    }
+  else
+    ret.charStatisticsData = {
+      fieldId = 98,
+      dataType = 1,
+      data = container.charStatisticsData:GetContainerElem()
+    }
+  end
   return ret
 end
 local new = function()
@@ -1600,7 +2180,35 @@ local new = function()
     weeklyTower = require("zcontainer.weekly_tower_record").New(),
     cutSceneInfos = require("zcontainer.cut_scene_infos").New(),
     recommendPlayData = require("zcontainer.user_recommend_play_data").New(),
-    rideList = require("zcontainer.ride_list").New()
+    rideList = require("zcontainer.ride_list").New(),
+    payOrderList = require("zcontainer.pay_order_list").New(),
+    lifeProfession = require("zcontainer.life_profession").New(),
+    lifeProfessionWork = require("zcontainer.life_profession_work").New(),
+    userActivityList = require("zcontainer.user_activity_list").New(),
+    playerRecord = require("zcontainer.player_record").New(),
+    dropContainer = require("zcontainer.drop_container_info").New(),
+    monthlyCard = require("zcontainer.monthly_card").New(),
+    fashionBenefit = require("zcontainer.fashion_benefit").New(),
+    itemCurrency = require("zcontainer.item_currency").New(),
+    privilegeEffectData = require("zcontainer.privilege_effect_data").New(),
+    treasure = require("zcontainer.treasure").New(),
+    unlockEmojiData = require("zcontainer.unlock_emoji_data").New(),
+    playerOrderComtainerInfo = require("zcontainer.player_order_comtainer_info").New(),
+    playerBox = require("zcontainer.player_box").New(),
+    launchPrivilegeData = require("zcontainer.launch_privilege_data").New(),
+    battlePassData = require("zcontainer.battle_pass_data").New(),
+    rechargeData = require("zcontainer.recharge_data").New(),
+    luckyValueMgr = require("zcontainer.lucky_value_mgr").New(),
+    handbookData = require("zcontainer.handbook_data").New(),
+    masterModeDungeonInfo = require("zcontainer.master_mode_dungeon_info").New(),
+    statisticsData = require("zcontainer.statistics_data").New(),
+    compenstionStatistics = require("zcontainer.compensation_statistics").New(),
+    bubbleActData = require("zcontainer.bubble_act_data").New(),
+    mailClaimedInfo = require("zcontainer.mail_claimed_info").New(),
+    newbieData = require("zcontainer.newbie_data").New(),
+    fightPoint = require("zcontainer.fight_point").New(),
+    sign = require("zcontainer.sign_info").New(),
+    charStatisticsData = require("zcontainer.char_statistics_data").New()
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)

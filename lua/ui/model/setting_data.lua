@@ -10,9 +10,11 @@ E.SettingVFXLevel = {
 function SettingData:ctor()
   super.ctor(self)
   self.DataStorage = {
-    clientData = 1,
-    serverData = 2,
-    onlyClinetData = 3
+    ClientDeviceData = 0,
+    ClientEnvData = 1,
+    ClientAccountData = 2,
+    ClientCharacterData = 3,
+    ServerData = 99
   }
   self.VcaTags = {
     [E.SettingID.Master] = "Master_Volume",
@@ -37,6 +39,14 @@ function SettingData:ctor()
     [E.SettingVFXLevel.Normal] = 1,
     [E.SettingVFXLevel.Delicacy] = 3
   }
+  self.SettingImageQuality2Effects = {
+    E.SettingID.EffSelf,
+    E.SettingID.EffEnemy,
+    E.SettingID.EffTeammate,
+    E.SettingID.EffOther,
+    E.SettingID.EffectRest
+  }
+  self.displayGamepadActionCache_ = {}
 end
 
 function SettingData:Init()
@@ -53,6 +63,20 @@ end
 
 function SettingData:UnInit()
   super.UnInit(self)
+end
+
+function SettingData:AddDisplayActionKeyId(keyId)
+  if not self.displayGamepadActionCache_[keyId] then
+    self.displayGamepadActionCache_[keyId] = true
+  end
+end
+
+function SettingData:GetDisplayGamepadActionKeyIds()
+  local keyIds = {}
+  for keyId, _ in pairs(self.displayGamepadActionCache_) do
+    table.insert(keyIds, keyId)
+  end
+  return keyIds
 end
 
 return SettingData

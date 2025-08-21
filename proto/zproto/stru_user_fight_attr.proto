@@ -15,6 +15,4 @@ message UserFightAttr {
     int64 deadTime = 7;
     int32 reviveId = 8;
     repeated zproto.SkillCDInfo cdInfo = 9;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
 }
-

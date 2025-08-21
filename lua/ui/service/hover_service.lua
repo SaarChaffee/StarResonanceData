@@ -18,12 +18,10 @@ function HoverService:OnEnterScene()
     self.airLastTime = Z.Global.AirLastTime
     self.curTime_ = 0
     self.isHover_ = false
-    self.playerHover = Z.EntityMgr:BindEntityLuaAttrWatcher(Z.EntityMgr.PlayerUuid, {
-      Z.AttrCreator.ToIndex(Z.LocalAttr.EAttrState)
-    }, function()
+    self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
       if Z.EntityMgr.PlayerEnt then
-        local stateId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
-        if stateId == Z.PbEnum("EActorState", "ActorStateJump") or stateId == Z.PbEnum("EActorState", "ActorStateFall") or stateId == Z.PbEnum("EActorState", "ActorStateFlow") or stateId == Z.PbEnum("EActorState", "ActorStateGlide") then
+        local stateId = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
+        if stateId == Z.PbEnum("EActorState", "ActorStateJump") or stateId == Z.PbEnum("EActorState", "ActorStateFall") or stateId == Z.PbEnum("EActorState", "ActorStateFlow") or stateId == Z.PbEnum("EActorState", "ActorStateGlide") or stateId == Z.PbEnum("EActorState", "ActorStateLevitation") then
           self.isHover_ = true
           if self.curTime_ <= 0 then
             self.curTime_ = math.floor(Z.ServerTime:GetServerTime() / 1000)
@@ -45,8 +43,9 @@ function HoverService:OnEnterScene()
 end
 
 function HoverService:OnLeaveScene()
-  if self.playerHover then
-    Z.EntityMgr:UnbindEntityLuaAttrWater(Z.EntityMgr.PlayerUuid, self.playerHover)
+  if self.playerStateWatcher ~= nil then
+    self.playerStateWatcher:Dispose()
+    self.playerStateWatcher = nil
   end
 end
 

@@ -11,8 +11,6 @@ message DialogueCameraTableBase {
     int32 AimTargetCharacter = 1134;
     string AimPoint = 950;
 }
-
 message DialogueCameraTableMgr {
-    map<int64, .bokura.DialogueCameraTableBase> datas = 1;
+    repeated bokura.DialogueCameraTableMgr.DatasEntry datas = 1;
 }
-

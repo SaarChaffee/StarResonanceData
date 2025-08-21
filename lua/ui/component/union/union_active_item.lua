@@ -1,4 +1,4 @@
-local super = require("ui.component.loop_grid_view_item")
+local super = require("ui.component.loop_list_view_item")
 local UnionActiveItem = class("UnionActiveItem", super)
 local MAX_ITEM_COUNT = 3
 

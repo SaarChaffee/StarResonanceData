@@ -18,8 +18,6 @@ message InvestigationStepTableBase {
     int_array ReviewBubbleAction = 1051;
     bool QuickReasoning = 1018;
 }
-
 message InvestigationStepTableMgr {
-    map<int32, .bokura.InvestigationStepTableBase> datas = 1;
+    repeated bokura.InvestigationStepTableMgr.DatasEntry datas = 1;
 }
-

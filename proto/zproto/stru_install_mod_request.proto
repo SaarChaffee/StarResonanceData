@@ -6,4 +6,3 @@ message InstallModRequest {
     int32 slotId = 1;
     int64 modUuid = 2;
 }
-

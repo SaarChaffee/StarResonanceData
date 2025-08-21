@@ -13,4 +13,3 @@ message ShareObjectInChatRequest {
     string afterDesc = 5;
     int64 targetCharId = 6;
 }
-

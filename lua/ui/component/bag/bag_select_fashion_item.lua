@@ -14,6 +14,7 @@ function BagSelectFashionItem:OnInit()
     local item_preview = Z.VMMgr.GetVM("item_preview")
     item_preview.GotoPreview(self.data_.itemId)
   end)
+  self.itemsVm_ = Z.VMMgr.GetVM("items")
 end
 
 function BagSelectFashionItem:OnUnInit()
@@ -21,9 +22,9 @@ end
 
 function BagSelectFashionItem:OnRefresh(data)
   self.data_ = data
+  self.uiBinder.rimg_icon:SetImage(self.itemsVm_.GetItemIcon(data.itemId))
   local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(data.itemId)
   if itemRow then
-    self.uiBinder.rimg_icon:SetImage(itemRow.Icon)
     self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_quality, itemRow.Quality >= 3)
     if itemRow.Quality >= 3 then
       self.uiBinder.rimg_quality:SetImage(imagePath .. itemRow.Quality)

@@ -6,4 +6,3 @@ message Goods {
     int32 goodsId = 1;
     int32 goodsNum = 2;
 }
-

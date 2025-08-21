@@ -5,8 +5,6 @@ package zproto;
 import "enum_e_error_code.proto";
 
 message SetUnionAutoPassReply {
-    int32 errCode = 2;
-    zproto.EErrorCode errorCode = 3;
-    bool autoPass = 4;
+    bool autoPass = 1;
+    zproto.EErrorCode errCode = 2;
 }
-

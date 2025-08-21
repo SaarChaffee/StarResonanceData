@@ -11,13 +11,6 @@ E.RoleLevelAcquireStage = {
 
 function Rolelevel_acquire_windowView:ctor()
   self.uiBinder = nil
-  if Z.IsPCUI then
-    Z.UIConfig.rolelevel_acquire_window.PrefabPath = "rolelevel/rolelevel_acquire_window_pc"
-    roleLevelAttrTplPath = "ui/prefabs/rolelevel/rolelevel_acquire_lab_tiem_tpl_pc"
-  else
-    Z.UIConfig.rolelevel_acquire_window.PrefabPath = "rolelevel/rolelevel_acquire_window"
-    roleLevelAttrTplPath = "ui/prefabs/rolelevel/rolelevel_acquire_lab_tiem_tpl"
-  end
   super.ctor(self, "rolelevel_acquire_window")
   self.curStage = E.RoleLevelAcquireStage.None
   self.rolelevelCfg_ = nil
@@ -59,6 +52,7 @@ function Rolelevel_acquire_windowView:setStage(stage)
     if self.curStage == E.RoleLevelAcquireStage.LevelUp then
       self:showLvNode()
     elseif self.curStage == E.RoleLevelAcquireStage.AttrChange then
+      Z.AudioMgr:Play("UI_Event_ShengTiYuanLevelUp")
       self:showAttrNode()
     elseif self.curStage == E.RoleLevelAcquireStage.ItemGet then
       self:showItemGetNode()
@@ -134,6 +128,7 @@ function Rolelevel_acquire_windowView:showItemGetNode()
   self.uiBinder.node_effect:SetEffectGoVisible(false)
   if self.rolelevelCfg_.LevelAwardID ~= 0 then
     self:refreshNodeUI()
+    Z.AudioMgr:Play("UI_Event_Magic_A")
     self.uiBinder.node_gift.lab_tips.text = string.format(Lang("RoleLevelAcquireNodeGiftTitle"), self.roleLevelData_:GetRoleLevel())
     self.uiBinder.node_effect_1:SetEffectGoVisible(true)
     self.uiBinder.anim:CoroPlayOnce(self.roleLevelData_.AnimName[Z.IsPCUI and "pc" or "mobile"][self.curStage].start, self.cancelSource:CreateToken(), function()

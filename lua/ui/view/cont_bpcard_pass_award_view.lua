@@ -13,7 +13,7 @@ local timelineQueue = {
 function Cont_bpcard_pass_awardView:ctor(parent)
   self.parentView_ = parent
   self.uiBinder = nil
-  super.ctor(self, "cont_bpcard_pass_award", "bpcard/cont_bpcard_pass_award", UI.ECacheLv.High)
+  super.ctor(self, "cont_bpcard_pass_award", "bpcard/cont_bpcard_pass_award", UI.ECacheLv.High, true)
   self.battlePassCardData_ = nil
 end
 
@@ -29,9 +29,43 @@ function Cont_bpcard_pass_awardView:OnActive()
   self:createPlayerModel()
   self:startAnimShow()
   Z.AudioMgr:Play("UI_Event_SeasonPassport")
+  self:refreshBpCardTime()
+end
+
+function Cont_bpcard_pass_awardView:refreshBpCardTime()
+  if next(self.battlePassData_.CurBattlePassData) == nil then
+    return
+  end
+  local bpCardGlobalInfo = self.battlePassVM_.GetBattlePassGlobalTableInfo(self.battlePassData_.CurBattlePassData.id)
+  if not bpCardGlobalInfo or not bpCardGlobalInfo.Timer then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_surplus_time, false)
+    return
+  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_surplus_time, true)
+  local time = Z.TimeTools.GetLeftTimeByTimerId(bpCardGlobalInfo.Timer)
+  if time <= 0 then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_surplus_time, false)
+  end
+  self.uiBinder.lab_surplus_time.text = Lang("BpCardLimitTime") .. Z.TimeFormatTools.FormatToDHMS(time)
+  if self.timer == nil then
+    self.timer = self.timerMgr:StartTimer(function()
+      time = time - 1
+      if time <= 0 then
+        time = Z.TimeTools.GetLeftTimeByTimerId(bpCardGlobalInfo.Timer)
+      end
+      if time <= 0 then
+        self.uiBinder.Ref:SetVisible(self.uiBinder.lab_surplus_time, false)
+        self.timerMgr:StopTimer(self.timer)
+        self.timer = nil
+        return
+      end
+      self.uiBinder.lab_surplus_time.text = Lang("BpCardLimitTime") .. Z.TimeFormatTools.FormatToDHMS(time)
+    end, 1, -1)
+  end
 end
 
 function Cont_bpcard_pass_awardView:OnDeActive()
+  self:clearPosCheckTimer()
   Z.UITimelineDisplay:ClearTimeLine()
   self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_eff_diancang)
   self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_eff_diancang)
@@ -42,6 +76,7 @@ function Cont_bpcard_pass_awardView:OnDeActive()
     self.fashionZlist_ = nil
   end
   if self.playerModel_ then
+    Z.ModelHelper.SetAlpha(self.playerModel_, Z.ModelRenderMask.All, 1, Panda.ZGame.EModelAlphaSourceType.EUI, false)
     Z.UnrealSceneMgr:ClearModel(self.playerModel_)
     self.playerModel_ = nil
   end
@@ -57,6 +92,10 @@ function Cont_bpcard_pass_awardView:OnDeActive()
   self.currentItemIndex_ = -1
   self.rightAwardShowIndex_ = -1
   self.showAwardData_ = nil
+  if self.timer then
+    self.timerMgr:StopTimer(self.timer)
+    self.timer = nil
+  end
 end
 
 function Cont_bpcard_pass_awardView:OnRefresh()
@@ -94,9 +133,8 @@ function Cont_bpcard_pass_awardView:initParam()
   self.battlePassData_ = Z.DataMgr.Get("battlepass_data")
   self.itemClassTab_ = {}
   local dataList = {}
-  self.itemsScrollRect_ = loopScrollRect_.new(self, self.loopscroll_item, battle_pass_loop_item_, "bpcard_pass_award_tpl")
+  self.itemsScrollRect_ = loopScrollRect_.new(self, self.loopscroll_item, battle_pass_loop_item_, "bpcard_pass_award_tpl", true)
   self.itemsScrollRect_:Init(dataList)
-  self.battlePassContainer_ = self.battlePassVM_.GetBattlePassContainer()
   self.itemUnit_ = {}
   self.uiBinder.scroll_item.onValueChangedEvent:AddListener(function()
     self:updateLeftShowItem()
@@ -105,11 +143,15 @@ function Cont_bpcard_pass_awardView:initParam()
   self.currentShowIndex_ = -1
   self.currentItemIndex_ = -1
   self.rightAwardShowIndex_ = -1
-  self.showAwardData_ = self.battlePassVM_.GetBattlePassShowData(self.battlePassContainer_.id)
+  self.showAwardData_ = self.battlePassVM_.GetBattlePassShowData(self.battlePassData_.CurBattlePassData)
   self.modelPosition_ = self.model_node.position
   local playerGender = Z.ContainerMgr.CharSerialize.charBase.gender
   self.timelineId_ = timelineQueue[playerGender]
   self.curRotation_ = 100
+  local funcVM = Z.VMMgr.GetVM("gotofunc")
+  local funcIsOn = funcVM.CheckFuncCanUse(E.FunctionID.SeasonBpUnlockUpgrade, true)
+  self.uiBinder.Ref:SetVisible(self.btn_unlock, funcIsOn)
+  Z.UITimelineDisplay:AsyncPreLoadTimeline(self.timelineId_, self.cancelSource:CreateToken())
 end
 
 function Cont_bpcard_pass_awardView:initBtnClick()
@@ -129,31 +171,49 @@ function Cont_bpcard_pass_awardView:initBtnClick()
     if self.curChoosePage_ == E.EBattlePassViewType.Task then
       self.battlePassVM_.AsyncGetBattlePassQuestRequest(0, self.cancelSource:CreateToken())
     else
-      self.battlePassVM_.AsyncGetBattlePassAwardRequest(true, nil, nil, self.cancelSource:CreateToken())
+      if table.zcount(self.battlePassData_.CurBattlePassData) == 0 then
+        return
+      end
+      self.battlePassVM_.AsyncGetBattlePassAwardRequest(self.battlePassData_.CurBattlePassData.id, true, nil, nil, self.cancelSource:CreateToken())
     end
   end)
 end
 
 function Cont_bpcard_pass_awardView:bindWatchers()
-  function self.battlePassDataUpDateFunc_(container, dirtys)
-    if dirtys and (dirtys.level or dirtys.award or dirtys.isUnlock) then
-      self:setViewInfo(false)
-    end
-    self:setBattlePassLevelInfo()
+  Z.EventMgr:Add(Z.ConstValue.BattlePassDataUpdate, self.onBattlePassDataUpDateFunc, self)
+end
+
+function Cont_bpcard_pass_awardView:onBattlePassDataUpDateFunc(dirtyTable)
+  if not dirtyTable or next(dirtyTable) == nil then
+    return
   end
-  
-  Z.ContainerMgr.CharSerialize.seasonCenter.battlePass.Watcher:RegWatcher(self.battlePassDataUpDateFunc_)
+  self:setViewInfo(false)
+  self:setBattlePassLevelInfo()
+  if dirtyTable.id then
+    self:setReceiveAllBtnState()
+    self:refreshBpCardTime()
+  end
 end
 
 function Cont_bpcard_pass_awardView:setViewInfo(isShowDisplayOffset)
-  self.uiBinder.Ref:SetVisible(self.left_lock, not self.battlePassContainer_.isUnlock)
-  self.uiBinder.Ref:SetVisible(self.right_lock, not self.battlePassContainer_.isUnlock)
+  if not self.battlePassData_.CurBattlePassData or table.zcount(self.battlePassData_.CurBattlePassData) == 0 then
+    return
+  end
+  local curBattleData = self.battlePassData_.CurBattlePassData
+  self.uiBinder.Ref:SetVisible(self.left_lock, not curBattleData.isUnlock)
+  self.uiBinder.Ref:SetVisible(self.right_lock, not curBattleData.isUnlock)
+  local bpCardGlobalInfo = self.battlePassVM_.GetBattlePassGlobalTableInfo(curBattleData.id)
+  self.uiBinder.lab_entrance.text = bpCardGlobalInfo.PassTitleName
+  self.uiBinder.rimg_bpcard:SetImage(bpCardGlobalInfo.PassTag)
+  local passPicture = string.split(bpCardGlobalInfo.PassPicture, "=")
+  self.uiBinder.img_icon_basics:SetImage(passPicture[1])
+  self.uiBinder.img_icon_noble:SetImage(passPicture[2])
   self:initLoopScroll(isShowDisplayOffset)
   self:updateLeftShowItem()
 end
 
 function Cont_bpcard_pass_awardView:unBindWatchers()
-  Z.ContainerMgr.CharSerialize.seasonCenter.battlePass.Watcher:UnregWatcher(self.battlePassDataUpDateFunc_)
+  Z.EventMgr:Remove(Z.ConstValue.BattlePassDataUpdate, self.onBattlePassDataUpDateFunc, self)
 end
 
 function Cont_bpcard_pass_awardView:initLoopScroll(isShowDisplayOffset)
@@ -177,20 +237,20 @@ end
 function Cont_bpcard_pass_awardView:updateLeftShowItem()
   local showIndex = 1
   local lastIndex = self.currentShowIndex_
-  if not self.battlePassContainer_ then
+  if not self.battlePassData_.CurBattlePassData or next(self.battlePassData_.CurBattlePassData) == nil then
     return
   end
-  lastIndex = 0 < lastIndex and lastIndex or self.battlePassContainer_.level
+  lastIndex = 0 < lastIndex and lastIndex or self.battlePassData_.CurBattlePassData.level
   local showData = self.showAwardData_
-  if 0 >= table.zcount(showData) then
+  if not showData or next(showData) == nil then
     return
   end
-  if lastIndex >= showData[#showData].configData.Id then
-    showIndex = showData[#showData].configData.Id
+  if lastIndex >= showData[#showData].configData.SeasonLevel then
+    showIndex = showData[#showData].configData.SeasonLevel
   else
     for _, v in pairs(showData) do
       if lastIndex < v.configData.SeasonLevel then
-        showIndex = v.configData.Id
+        showIndex = v.configData.SeasonLevel
         break
       end
     end
@@ -266,7 +326,10 @@ function Cont_bpcard_pass_awardView:setReceiveAllBtnState()
 end
 
 function Cont_bpcard_pass_awardView:setBattlePassLevelInfo()
-  local level = self.battlePassContainer_.level + 1
+  if not self.battlePassData_.CurBattlePassData or table.zcount(self.battlePassData_.CurBattlePassData) == 0 then
+    return
+  end
+  local level = self.battlePassData_.CurBattlePassData.level + 1
   if level > #self.battlePassCardData_ then
     level = #self.battlePassCardData_
   end
@@ -275,16 +338,20 @@ function Cont_bpcard_pass_awardView:setBattlePassLevelInfo()
   if bpCardData then
     seasonExp = bpCardData.SeasonExp
   end
-  local bpCardGlobalInfo = self.battlePassVM_.GetBattlePassGlobalTableInfo(self.battlePassContainer_.id)
-  self.top_lab_grade.text = self.battlePassContainer_.level
-  self.top_progress_lab.text = string.format("%s/%s", self.battlePassContainer_.curexp, seasonExp)
+  local bpCardGlobalInfo = self.battlePassVM_.GetBattlePassGlobalTableInfo(self.battlePassData_.CurBattlePassData.id)
+  self.top_lab_grade.text = self.battlePassData_.CurBattlePassData.level
   self.top_slider_temp.maxValue = seasonExp
-  self.top_slider_temp.value = self.battlePassContainer_.curexp
-  self.top_week_lab_manage.text = string.format("%s/%s", self.battlePassContainer_.weekExp, bpCardGlobalInfo.WeeklyExpLimit)
+  local curSliderVal = self.battlePassData_.CurBattlePassData.curexp
+  if level > #self.battlePassCardData_ then
+    curSliderVal = seasonExp
+  end
+  self.top_slider_temp.value = curSliderVal
+  self.top_progress_lab.text = string.format("%s/%s", curSliderVal, seasonExp)
+  self.top_week_lab_manage.text = string.format("%s/%s", self.battlePassData_.CurBattlePassData.weekExp, bpCardGlobalInfo.WeeklyExpLimit)
   self.get_lab.text = Lang("PassFashionTips", {
     val = bpCardGlobalInfo.FashionLevel
   })
-  self.name_lab.text = self.battlePassVM_.GetFashionName(self.battlePassContainer_.id)
+  self.name_lab.text = self.battlePassVM_.GetFashionName(self.battlePassData_.CurBattlePassData.id)
   self.free_bpcard_name_.text = bpCardGlobalInfo.FreePassName
   self.pro_bpcard_name_.text = bpCardGlobalInfo.NormalPassName
   self:setReceiveAllBtnState()
@@ -292,13 +359,9 @@ end
 
 function Cont_bpcard_pass_awardView:createPlayerModel()
   Z.CoroUtil.create_coro_xpcall(function()
-    Z.Delay(0.1, ZUtil.ZCancelSource.NeverCancelToken)
     local rootCanvas = Z.UIRoot.RootCanvas.transform
     local rate = rootCanvas.localScale.x / 0.00925
-    local pos = Z.UnrealSceneMgr:GetTransPos("pos")
-    local screenPosition = Z.UIRoot.UICam:WorldToScreenPoint(self.modelPosition_)
-    local newScreenPos = Vector3.New(screenPosition.x, screenPosition.y, Z.NumTools.Distance(Z.CameraMgr.MainCamera.transform.position, pos))
-    local worldPosition = Z.CameraMgr.MainCamera:ScreenToWorldPoint(newScreenPos)
+    self:calcModelPos()
     local clipName = ""
     if Z.ContainerMgr.CharSerialize.charBase.gender ~= Z.PbEnum("EGender", "GenderMale") then
       clipName = "as_m_base_idle"
@@ -307,7 +370,7 @@ function Cont_bpcard_pass_awardView:createPlayerModel()
     end
     self.playerModel_ = Z.UnrealSceneMgr:GetCachePlayerModel(function(model)
       model:SetLuaAttr(Z.ModelAttr.EModelAnimOverrideByName, Z.AnimBaseData.Rent(clipName, Panda.ZAnim.EAnimBase.EIdle))
-      model:SetAttrGoPosition(worldPosition)
+      model:SetAttrGoPosition(self.worldPosition_)
       model:SetAttrGoRotation(Quaternion.Euler(Vector3.New(0, self.curRotation_, 0)))
       model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponL, "")
       model:SetLuaAttr(Z.ModelAttr.EModelCMountWeaponR, "")
@@ -318,11 +381,44 @@ function Cont_bpcard_pass_awardView:createPlayerModel()
       equipZList:Recycle()
       self:initFashion(model)
       model:SetLuaAttr(Z.LocalAttr.EWearSetting, "")
+      model:SetLuaAttrLookAtEnable(true)
+    end, function(model)
+      Z.ModelHelper.SetAlpha(model, Z.ModelRenderMask.All, 0, Panda.ZGame.EModelAlphaSourceType.EUI, false)
+      Z.UITimelineDisplay:ClearTimeLine()
+      Z.UITimelineDisplay:BindModel(0, model)
+      local cameraPosition = Z.CameraMgr.MainCamera.transform.position
+      self:createPosCheckTimer(cameraPosition)
+      local fashionVm = Z.VMMgr.GetVM("fashion")
+      fashionVm.SetModelAutoLookatCamera(model)
     end)
-    Z.UITimelineDisplay:ClearTimeLine()
-    Z.UITimelineDisplay:BindModel(0, self.playerModel_)
-    self:playTimeline(worldPosition)
   end)()
+end
+
+function Cont_bpcard_pass_awardView:calcModelPos()
+  local pos = Z.UnrealSceneMgr:GetTransPos("pos")
+  local screenPosition = Z.UIRoot.UICam:WorldToScreenPoint(self.modelPosition_)
+  local newScreenPos = Vector3.New(screenPosition.x, screenPosition.y, Z.NumTools.Distance(Z.CameraMgr.MainCamera.transform.position, pos))
+  self.worldPosition_ = Z.CameraMgr.MainCamera:ScreenToWorldPoint(newScreenPos)
+end
+
+function Cont_bpcard_pass_awardView:clearPosCheckTimer()
+  if self.posCheckTimer_ then
+    self.posCheckTimer_:Stop()
+    self.posCheckTimer_ = nil
+  end
+end
+
+function Cont_bpcard_pass_awardView:createPosCheckTimer(lastCameraPos)
+  self:clearPosCheckTimer()
+  self.posCheckTimer_ = self.timerMgr:StartTimer(function()
+    local curCameraPos = Z.CameraMgr.MainCamera.transform.position
+    if self.playerModel_ and curCameraPos ~= lastCameraPos then
+      self:calcModelPos()
+      self.playerModel_:SetAttrGoPosition(self.worldPosition_)
+    end
+    Z.ModelHelper.SetAlpha(self.playerModel_, Z.ModelRenderMask.All, 1, Panda.ZGame.EModelAlphaSourceType.EUI, false)
+    self:playTimeline(self.worldPosition_)
+  end, 0.9, 1)
 end
 
 function Cont_bpcard_pass_awardView:playTimeline(worldPosition)
@@ -349,7 +445,10 @@ function Cont_bpcard_pass_awardView:setAllModelAttr(model, funcName, ...)
 end
 
 function Cont_bpcard_pass_awardView:initFashion(model)
-  self.fashionZlist_ = self.battlePassVM_.SetPlayerFashion(self.battlePassContainer_.id)
+  if table.zcount(self.battlePassData_.CurBattlePassData) == 0 then
+    return
+  end
+  self.fashionZlist_ = self.battlePassVM_.SetPlayerFashion(self.battlePassData_.CurBattlePassData.id)
   if not self.fashionZlist_ then
     return
   end

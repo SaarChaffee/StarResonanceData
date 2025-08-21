@@ -1,3 +1,4 @@
+local slot = require("zcontainer.slot")
 local fighterBtns_vm = {}
 
 function fighterBtns_vm:RegisterEvent()
@@ -6,6 +7,10 @@ function fighterBtns_vm:RegisterEvent()
 end
 
 function fighterBtns_vm:OnBattleResChange()
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
   local keys = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrFightResourceIds")).Value
   local values = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrFightResources")).Value
   if keys == nil or values == nil then
@@ -20,6 +25,7 @@ function fighterBtns_vm:OnBattleResChange()
   for i = 0, keys.count - 1 do
     weaponData:UpdateBattleRes(keys[i], values[i])
   end
+  Z.EventMgr:Dispatch(Z.ConstValue.OnBattleResChangeRefreshUI)
 end
 
 function fighterBtns_vm:GetBattleResValue(k)
@@ -32,6 +38,75 @@ function fighterBtns_vm:SetPlayerLastHpData(lastHp, lastMaxHp)
   local weaponData = Z.DataMgr.Get("weapon_data")
   weaponData.PlayerInfo.lastHp = lastHp
   weaponData.PlayerInfo.lastMaxHp = lastMaxHp
+end
+
+function fighterBtns_vm:CacheAISlots(slotId)
+  if self.cacheAISlots_ == nil then
+    self.cacheAISlots_ = ZUtil.Pool.Collections.ZList_int.Rent()
+  end
+  self.cacheAISlots_:Add(slotId)
+end
+
+function fighterBtns_vm:RemoveAISlots(slotId)
+  if self.cacheAISlots_ == nil then
+    return
+  end
+  self.cacheAISlots_:Remove(slotId)
+end
+
+function fighterBtns_vm:CheckInAISlotCache(slotId)
+  if self.cacheAISlots_ == nil then
+    return false
+  end
+  for i = 0, self.cacheAISlots_.count - 1 do
+    if self.cacheAISlots_[i] == slotId then
+      return true
+    end
+  end
+  return false
+end
+
+function fighterBtns_vm:SetAISlotsServer(cancelToken)
+  if self.cacheAISlots_ == nil then
+    return
+  end
+  if self.lockSlot_ == nil then
+    self.lockSlot_ = {}
+  end
+  local worldProxy = require("zproxy.world_proxy")
+  local setSlotAutoBattleRequest = {
+    slots = {}
+  }
+  for i = 0, self.cacheAISlots_.count - 1 do
+    local slotId = self.cacheAISlots_[i]
+    local isAILockSlot = self:IsAISlotLocked(slotId)
+    setSlotAutoBattleRequest.slots[slotId] = not isAILockSlot
+    self.lockSlot_[slotId] = not isAILockSlot
+  end
+  worldProxy.SetSlotAutoBattle(setSlotAutoBattleRequest, cancelToken)
+end
+
+function fighterBtns_vm:SwitchAISlotSetMode(bool)
+  self.isAISlotSetMode = bool
+  if self.cacheAISlots_ ~= nil then
+    ZUtil.Pool.Collections.ZList_int.Return(self.cacheAISlots_)
+    self.cacheAISlots_ = nil
+  end
+end
+
+function fighterBtns_vm:CheckAISlotSetMode()
+  return self.isAISlotSetMode or false
+end
+
+function fighterBtns_vm:IsAISlotLocked(slotId)
+  if not Z.EntityMgr.PlayerEnt.IsRiding then
+    return Z.SkillDataMgr:IsAISlotLocked(slotId)
+  else
+    if self.lockSlot_ == nil then
+      return false
+    end
+    return self.lockSlot_[slotId] or false
+  end
 end
 
 function fighterBtns_vm:calculatePlayerBlood(curHp, maxHp, shieldTotalValue)
@@ -104,17 +179,39 @@ function fighterBtns_vm:SetSkillPanelShow(isSwitch)
   weaponData.SkillPanelToggleIsOn = isSwitch
 end
 
-function fighterBtns_vm:GetAutoBattleFlag()
-  return self.AutoBattleFlag
+function fighterBtns_vm:OpenSetAutoBattleSlotView()
+  Z.UIMgr:OpenView("battle_auto_battle_set")
 end
 
-function fighterBtns_vm:SetAutoBattleFlag(flag)
-  self.AutoBattleFlag = flag
+function fighterBtns_vm:CloseSetAutoBattleSlotView()
+  Z.UIMgr:CloseView("battle_auto_battle_set")
+end
+
+function fighterBtns_vm:CheckIsBanSkill()
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return false
+  end
+  local buffDataList = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.ENowBuffList)
+  local banSkill = false
+  if buffDataList then
+    buffDataList = buffDataList.Value
+    for i = 0, buffDataList.count - 1 do
+      if buffDataList[i].BuffBaseId == 681701 then
+        banSkill = true
+      end
+    end
+  end
+  return banSkill
 end
 
 function fighterBtns_vm:GetBtnContainerState()
+  if not Z.EntityMgr.PlayerEnt then
+    logError("PlayerEnt is nil")
+    return
+  end
   local templateData = {}
-  local stateID = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAttrState).Value
+  local stateID = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
   if not stateID or not Z.EntityMgr.PlayerEnt then
     return
   end
@@ -123,7 +220,7 @@ function fighterBtns_vm:GetBtnContainerState()
     templateData.ForcedOpenSlot = E.SlotName.CancelMulAction
     return templateData
   end
-  if Z.PbEnum("EActorState", "ActorStateSceneInteraction") == stateID then
+  if Z.PbEnum("EActorState", "ActorStateSceneInteraction") == stateID or Z.PbEnum("EActorState", "ActorStateInteraction") == stateID then
     templateData.Type = E.PlayerCtrlBtnTmpType.Interactive
     return templateData
   end

@@ -11,7 +11,6 @@ end
 
 function Friend_degree_windowView:OnActive()
   self:onStartAnimatedShow()
-  self.uiBinder.scenemask_bg:SetSceneMaskByKey(self.SceneMaskKey)
   self:initData()
   self:initFunc()
   self:bindEvent()

@@ -5,4 +5,3 @@ package zproto;
 message WeekTargetParam {
     int32 targetId = 1;
 }
-

@@ -5,7 +5,6 @@ package zproto;
 import "enum_mail_importance.proto";
 
 message SyncNewMailRequest {
-    int64 mailUuid = 2;
-    zproto.MailImportance importance = 3;
+    int64 mailUuid = 1;
+    zproto.MailImportance importance = 2;
 }
-

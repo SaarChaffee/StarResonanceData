@@ -5,4 +5,3 @@ package zproto;
 message InviteToRideParam {
     int64 inviterId = 1;
 }
-

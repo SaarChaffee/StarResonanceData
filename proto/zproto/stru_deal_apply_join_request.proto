@@ -6,4 +6,3 @@ message DealApplyJoinRequest {
     int64 applicantId = 2;
     bool agree = 3;
 }
-

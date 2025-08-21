@@ -124,7 +124,6 @@ function Dmg_data_panelView:OnActive()
   self.lastSubView_ = nil
   self:initZWidget()
   self:iniBtn()
-  dmgData:RefreshData()
   self:BindEvents()
   self:selectType(1)
 end
@@ -154,13 +153,9 @@ end
 
 function Dmg_data_panelView:OnDeActive()
   self.settView_:DeActive()
-  if not Z.UIMgr:IsActive("dmg_control") then
-    Z.DamageData:IsActiveUIPanel(false)
-  end
   for key, value in pairs(self.subViewTab) do
     value:DeActive()
   end
-  dmgData:RefreshData()
 end
 
 function Dmg_data_panelView:refrehDamagePanel(type)

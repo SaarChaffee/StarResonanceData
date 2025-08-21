@@ -29,6 +29,9 @@ end
 
 function ServerData:SetNowSelectData(data)
   self.NowSelectData = data
+  if self.NowSelectData.zoneId ~= nil then
+    self.NowSelectData.zoneId = math.floor(self.NowSelectData.zoneId)
+  end
 end
 
 function ServerData:GetServerId(addr)
@@ -50,6 +53,10 @@ end
 
 function ServerData:GetChatUrl()
   return self.NowSelectData.chatUrl
+end
+
+function ServerData:GetCurrentZoneId()
+  return self.NowSelectData.zoneId or 9999
 end
 
 function ServerData:GetDescriptionByAddr(addr)

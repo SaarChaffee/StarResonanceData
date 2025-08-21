@@ -34,6 +34,21 @@ local mergeDataFuncs = {
     local last = container.__data__.effectType
     container.__data__.effectType = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("effectType", last)
+  end,
+  [8] = function(container, buffer, watcherList)
+    local last = container.__data__.pauseTime
+    container.__data__.pauseTime = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("pauseTime", last)
+  end,
+  [9] = function(container, buffer, watcherList)
+    local last = container.__data__.pauseTotalTime
+    container.__data__.pauseTotalTime = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("pauseTotalTime", last)
+  end,
+  [10] = function(container, buffer, watcherList)
+    local last = container.__data__.outLookType
+    container.__data__.outLookType = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("outLookType", last)
   end
 }
 local setForbidenMt = function(t)
@@ -83,6 +98,15 @@ local resetData = function(container, pbData)
   end
   if not pbData.effectType then
     container.__data__.effectType = 0
+  end
+  if not pbData.pauseTime then
+    container.__data__.pauseTime = 0
+  end
+  if not pbData.pauseTotalTime then
+    container.__data__.pauseTotalTime = 0
+  end
+  if not pbData.outLookType then
+    container.__data__.outLookType = 0
   end
   setForbidenMt(container)
 end
@@ -157,6 +181,21 @@ local getContainerElem = function(container)
     fieldId = 7,
     dataType = 0,
     data = container.effectType
+  }
+  ret.pauseTime = {
+    fieldId = 8,
+    dataType = 0,
+    data = container.pauseTime
+  }
+  ret.pauseTotalTime = {
+    fieldId = 9,
+    dataType = 0,
+    data = container.pauseTotalTime
+  }
+  ret.outLookType = {
+    fieldId = 10,
+    dataType = 0,
+    data = container.outLookType
   }
   return ret
 end

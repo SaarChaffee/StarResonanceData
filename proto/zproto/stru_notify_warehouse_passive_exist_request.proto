@@ -8,4 +8,3 @@ message NotifyWarehousePassiveExistRequest {
     zproto.WarehouseExitType exitType = 1;
     int64 charId = 2;
 }
-

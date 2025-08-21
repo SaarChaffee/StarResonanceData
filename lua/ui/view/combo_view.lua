@@ -3,7 +3,7 @@ local super = require("ui.ui_view_base")
 local ComboView = class("ComboView", super)
 
 function ComboView:ctor()
-  self.panel = nil
+  self.uiBinder = nil
   super.ctor(self, "combo")
 end
 
@@ -18,12 +18,11 @@ function ComboView:OnRefresh()
     return
   end
   local comboNumber = tonumber(self.viewData.comboNumber)
-  self.panel.zuicombo.Combo:PlayEnterAim(comboNumber)
+  self.uiBinder.comp_combo:PlayEnterAim(comboNumber)
 end
 
 function ComboView:startAnimatedHide()
-  local combo = self.panel.zuicombo.Combo
-  local asyncCall = Z.CoroUtil.async_to_sync(combo.AsyncPlayEndAnim)
+  local asyncCall = Z.CoroUtil.async_to_sync(self.uiBinder.comp_combo.AsyncPlayEndAnim)
   asyncCall(combo, self.cancelSource:CreateToken())
 end
 

@@ -7,13 +7,19 @@ local fishingResearchItem = require("ui.component.fishing.fishing_research_loop_
 function Fishing_study_subView:ctor(parent)
   self.uiBinder = nil
   self.uiRootPanel_ = parent
-  super.ctor(self, "fishing_study_sub", "fishing/fishing_study_sub", UI.ECacheLv.None)
+  if Z.IsPCUI then
+    super.ctor(self, "fishing_study_sub", "fishing/fishing_study_sub_pc", UI.ECacheLv.None)
+  else
+    super.ctor(self, "fishing_study_sub", "fishing/fishing_study_sub", UI.ECacheLv.None)
+  end
   self.socialVm_ = Z.VMMgr.GetVM("social")
   self.fishingVM_ = Z.VMMgr.GetVM("fishing")
   self.fishingData_ = Z.DataMgr.Get("fishing_data")
+  self.itemsVM_ = Z.VMMgr.GetVM("items")
 end
 
 function Fishing_study_subView:OnActive()
+  self:onStartAnimShow()
   self.uiBinder.Trans:SetSizeDelta(0, 0)
   self.uiBinder.node_eff:SetEffectGoVisible(false)
   self.selectArea_ = self.viewData.areaId
@@ -37,7 +43,11 @@ function Fishing_study_subView:RefreshUI()
 end
 
 function Fishing_study_subView:initLoopGridView()
-  self.loopGridView_ = loopGridView.new(self, self.uiBinder.loop_item, fishingResearchItem, "fishing_study_item_tpl")
+  if Z.IsPCUI then
+    self.loopGridView_ = loopGridView.new(self, self.uiBinder.loop_item, fishingResearchItem, "fishing_study_item_tpl_pc")
+  else
+    self.loopGridView_ = loopGridView.new(self, self.uiBinder.loop_item, fishingResearchItem, "fishing_study_item_tpl")
+  end
   self.loopGridView_:Init({})
 end
 
@@ -86,22 +96,24 @@ function Fishing_study_subView:refreshRightUI()
     local fishCfg_ = Z.TableMgr.GetTable("FishingTableMgr").GetRow(self.selectFish_)
     self.uiBinder.lab_name.text = fishCfg_.Name
     local researchLevel_ = self.fishingData_.FishRecordDict[fishCfg_.FishId].ResearchLevel
-    local canUseResearch_ = fishCfg_.IfResearch == 1 and 0 < researchLevel_
-    local maxResearchLevel = #fishCfg_.FishingResearchExp
+    local canUseResearch_ = fishCfg_.IfResearch == 1 and 1 < researchLevel_
+    local maxResearchLevel = #fishCfg_.FishingResearchExp + 1
     local canshowNext = fishCfg_.IfResearch == 1 and researchLevel_ < maxResearchLevel
     self.uiBinder.Ref:SetVisible(self.uiBinder.lab_content_next, canshowNext)
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_title_02, canshowNext)
     self.uiBinder.lab_title_01.text = canshowNext and Lang("Currenteffect:") or Lang("CurrenteffectComplete:")
+    local haveCount = self.itemsVM_.GetItemTotalCount(self.selectFish_)
+    self.uiBinder.lab_count.text = string.format(Lang("FishingResearchOwn"), haveCount)
     if fishCfg_.IfResearch == 1 then
-      if 0 < researchLevel_ then
-        local attrRow_ = Z.TableMgr.GetTable("FishingTemplateTableMgr").GetRow(fishCfg_.FishingTemplateId[researchLevel_])
+      if 1 < researchLevel_ then
+        local attrRow_ = Z.TableMgr.GetTable("FishingTemplateTableMgr").GetRow(fishCfg_.FishingTemplateId[researchLevel_ - 1])
         self.uiBinder.lab_content.text = attrRow_.Describe
       else
         self.uiBinder.lab_content.text = Lang("FishingResearchNoEffect")
       end
     end
     if canshowNext then
-      local attrRow_ = Z.TableMgr.GetTable("FishingTemplateTableMgr").GetRow(fishCfg_.FishingTemplateId[researchLevel_ + 1])
+      local attrRow_ = Z.TableMgr.GetTable("FishingTemplateTableMgr").GetRow(fishCfg_.FishingTemplateId[researchLevel_])
       self.uiBinder.lab_content_next.text = attrRow_.Describe
     end
     self.uiBinder.btn_use.IsDisabled = canUseResearch_ == false
@@ -115,7 +127,7 @@ function Fishing_study_subView:refreshRightUI()
       self.fishingVM_.OpenResearchPopWindow(self.selectFish_, self)
     end)
     self:AddAsyncClick(self.uiBinder.btn_use, function()
-      if fishCfg_.IfResearch == 1 and 0 < researchLevel_ then
+      if fishCfg_.IfResearch == 1 and 0 < researchLevel_ and canUseResearch_ then
         self.fishingVM_.UseFishingResearch(self.selectFish_, self.cancelSource:CreateToken())
         self.fishingVM_.CloseMainFuncWindow()
       end
@@ -133,6 +145,10 @@ end
 function Fishing_study_subView:onPlayEff()
   self.uiRootPanel_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff)
   self.uiBinder.node_eff:SetEffectGoVisible(true)
+end
+
+function Fishing_study_subView:onStartAnimShow()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Fishing_study_subView

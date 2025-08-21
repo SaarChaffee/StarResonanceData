@@ -63,16 +63,16 @@ function SeasonCultivateRed.setCoreSlotRed()
   local canSelectedCount = seasonCultivateVm.GetNowCanSelectedCoreCount()
   if canSelectedCount == 0 then
     for i = 1, #coreSlotRedTable do
-      Z.RedPointMgr.RefreshServerNodeCount(coreSlotRedTable[i], 0)
+      Z.RedPointMgr.UpdateNodeCount(coreSlotRedTable[i], 0)
     end
     return
   end
   for i = 1, canSelectedCount do
     local data = seasonCultivateVm.GetCoreNodeSlotInfoBySlotId(i)
     if data then
-      Z.RedPointMgr.RefreshServerNodeCount(coreSlotRedTable[i], 0)
+      Z.RedPointMgr.UpdateNodeCount(coreSlotRedTable[i], 0)
     else
-      Z.RedPointMgr.RefreshServerNodeCount(coreSlotRedTable[i], 1)
+      Z.RedPointMgr.UpdateNodeCount(coreSlotRedTable[i], 1)
     end
   end
 end
@@ -83,7 +83,7 @@ function SeasonCultivateRed.SetNormalNodeRed()
     totalMoney = itemsVm.GetItemTotalCount(normalNodeMoneyID)
     if totalMoney < normalNodeMoneyNum then
       for i = 1, #normalNodeRedTable do
-        Z.RedPointMgr.RefreshServerNodeCount(normalNodeRedTable[i], 0)
+        Z.RedPointMgr.UpdateNodeCount(normalNodeRedTable[i], 0)
       end
       return
     end
@@ -98,7 +98,7 @@ function SeasonCultivateRed.SetNormalNodeRed()
   end
   if flag == false then
     for i = 1, #normalNodeRedTable do
-      Z.RedPointMgr.RefreshServerNodeCount(normalNodeRedTable[i], 0)
+      Z.RedPointMgr.UpdateNodeCount(normalNodeRedTable[i], 0)
     end
     return
   end
@@ -106,14 +106,14 @@ function SeasonCultivateRed.SetNormalNodeRed()
     local curLevel = seasonCultivateVm.GetNodeLevel(normalNodeIndex[i])
     local maxLevel = seasonCultivateVm.GetHoleMaxLevel(normalNodeIndex[i])
     if curLevel >= maxLevel then
-      Z.RedPointMgr.RefreshServerNodeCount(normalNodeRedTable[i], 0)
+      Z.RedPointMgr.UpdateNodeCount(normalNodeRedTable[i], 0)
     else
       local tempHole = seasonCultivateVm.GetHoleConfigByLevel(normalNodeIndex[i], curLevel + 1)
       if tempHole then
         if not SeasonCultivateRed.commonCheck(tempHole) then
-          Z.RedPointMgr.RefreshServerNodeCount(normalNodeRedTable[i], 0)
+          Z.RedPointMgr.UpdateNodeCount(normalNodeRedTable[i], 0)
         else
-          Z.RedPointMgr.RefreshServerNodeCount(normalNodeRedTable[i], 1)
+          Z.RedPointMgr.UpdateNodeCount(normalNodeRedTable[i], 1)
         end
       end
     end
@@ -122,9 +122,9 @@ end
 
 function SeasonCultivateRed.setCoreRed()
   if SeasonCultivateRed.checkCoreIsShowRed() then
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.SeasonCultivateCoreBtnRed, 1)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.SeasonCultivateCoreBtnRed, 1)
   else
-    Z.RedPointMgr.RefreshServerNodeCount(E.RedType.SeasonCultivateCoreBtnRed, 0)
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.SeasonCultivateCoreBtnRed, 0)
   end
 end
 

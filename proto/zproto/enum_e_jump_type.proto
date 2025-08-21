@@ -14,5 +14,5 @@ enum EJumpType {
     ELazyJump = 8;
     EPedalWallOver = 9;
     ERideJump = 101;
+    EBounceJump = 201;
 }
-

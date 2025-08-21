@@ -8,14 +8,33 @@ end
 
 function FashionData:Init()
   self.wearDict_ = {}
+  self.advanceSelectData_ = {}
+  self.selectProfessionId_ = 0
+  self.OptionIndex = 0
+  self.optionList_ = {}
+  self.resetDict_ = {}
+  self.AreaCount = 4
+  self.SocksAreaIndex = 5
+  self.IsShowAllFashion = false
 end
 
 function FashionData:Clear()
   self.colorDict_ = {}
+  self.advanceSelectData_ = {}
+  self.selectProfessionId_ = 0
+  self.OptionIndex = 0
+  self.optionList_ = {}
+  self.resetDict_ = {}
+  self.IsShowAllFashion = false
 end
 
 function FashionData:ClearWearDict()
   self.wearDict_ = {}
+  self.selectProfessionId_ = 0
+end
+
+function FashionData:ClearAdvanceSelectData()
+  self.advanceSelectData_ = {}
 end
 
 function FashionData:InitFashionData()
@@ -24,16 +43,23 @@ function FashionData:InitFashionData()
     return
   end
   local itemTbl = Z.TableMgr.GetTable("ItemTableMgr")
-  for region, fashionId in pairs(Z.ContainerMgr.CharSerialize.fashion.wearInfo) do
+  local fashionAdvancedTbl = Z.TableMgr.GetTable("FashionAdvancedTableMgr")
+  for region, wearFashionId in pairs(Z.ContainerMgr.CharSerialize.fashion.wearInfo) do
     if not self.wearDict_[region] then
       local styleData = {}
+      styleData.wearFashionId = wearFashionId
+      local fashionId = wearFashionId
+      local row = fashionAdvancedTbl.GetRow(wearFashionId, true)
+      if row then
+        fashionId = row.FashionId
+      end
       styleData.fashionId = fashionId
-      for uuid, item in pairs(Z.ContainerMgr.CharSerialize.itemPackage.packages[7].items) do
+      for _, item in pairs(Z.ContainerMgr.CharSerialize.itemPackage.packages[E.BackPackItemPackageType.Fashion].items) do
         local itemRow = itemTbl.GetRow(item.configId)
         if itemRow then
           local relatedFashion = itemRow.CorrelationId
           if relatedFashion == fashionId then
-            styleData.uuid = uuid
+            styleData.isUnlock = true
           end
         end
       end
@@ -44,6 +70,13 @@ function FashionData:InitFashionData()
     for area, vec3 in pairs(dyeingInfo.colors) do
       local hsv = self:convertProtoVectorToHSV(fashionId, vec3)
       self:SetColor(fashionId, area, hsv)
+    end
+    if dyeingInfo.attachmentColor then
+      for _, vec3 in pairs(dyeingInfo.attachmentColor) do
+        local hsv = self:convertProtoVectorToHSV(fashionId, vec3)
+        self:SetColor(fashionId, self.SocksAreaIndex, hsv)
+        break
+      end
     end
   end
 end
@@ -68,6 +101,14 @@ function FashionData:SetAllWear(dict)
   self.wearDict_ = dict
 end
 
+function FashionData:SetSelectProfessionId(professionId)
+  self.selectProfessionId_ = professionId
+end
+
+function FashionData:GetSelectProfessionId()
+  return self.selectProfessionId_
+end
+
 function FashionData:GetColor(fashionId)
   if not self.colorDict_[fashionId] then
     self.colorDict_[fashionId] = {}
@@ -79,11 +120,42 @@ function FashionData:SetAllColor(dict)
   self.colorDict_ = dict
 end
 
+function FashionData:GetColorDict()
+  return self.colorDict_
+end
+
 function FashionData:SetColor(fashionId, area, hsv)
   if not self.colorDict_[fashionId] then
     self.colorDict_[fashionId] = {}
   end
   self.colorDict_[fashionId][area] = hsv
+  if table.zcount(self.colorDict_[fashionId]) == 0 then
+    self.colorDict_[fashionId] = nil
+  end
+end
+
+function FashionData:GetFashionAreaColor(fashionId, are)
+  if not self.colorDict_[fashionId] then
+    return
+  end
+  return self.colorDict_[fashionId][are]
+end
+
+function FashionData:RemoveColor(fashionId)
+  if self.colorDict_[fashionId] then
+    self.colorDict_[fashionId] = nil
+  end
+  if self.resetDict_[fashionId] then
+    self.resetDict_[fashionId] = {}
+  end
+end
+
+function FashionData:SetAdvanceSelectData(originalFashionId, advanceFashionId)
+  self.advanceSelectData_[originalFashionId] = advanceFashionId
+end
+
+function FashionData:GetAdvanceSelectData(originalFashionId)
+  return self.advanceSelectData_[originalFashionId]
 end
 
 function FashionData:GetColorIsUnlocked(fashionId, colorIndex)
@@ -148,7 +220,11 @@ end
 
 function FashionData:GetServerFashionWear(region)
   if not Z.StageMgr.GetIsInLogin() then
-    return Z.ContainerMgr.CharSerialize.fashion.wearInfo[region]
+    if region == E.FashionRegion.WeapoonSkin then
+      return Z.VMMgr.GetVM("weapon_skill_skin"):GetWeaponSkinId(self:GetSelectProfessionId())
+    else
+      return Z.ContainerMgr.CharSerialize.fashion.wearInfo[region]
+    end
   end
 end
 
@@ -156,7 +232,12 @@ function FashionData:GetServerFashionColor(fashionId, area)
   if not Z.StageMgr.GetIsInLogin() then
     local areaColorDict = Z.ContainerMgr.CharSerialize.fashion.fashionDatas[fashionId]
     if areaColorDict then
-      local areaColorVec = areaColorDict.colors[area]
+      local areaColorVec
+      if area == self.SocksAreaIndex then
+        areaColorVec = areaColorDict.attachmentColor[1]
+      else
+        areaColorVec = areaColorDict.colors[area]
+      end
       if areaColorVec then
         local hsv = self:convertProtoVectorToHSV(fashionId, areaColorVec)
         return hsv
@@ -189,6 +270,63 @@ function FashionData:convertProtoVectorToHSV(fashionId, colorVec)
     s = colorVec.y,
     v = colorVec.z
   }
+end
+
+function FashionData:GetOptionList()
+  return self.optionList_
+end
+
+function FashionData:ClearOptionList()
+  self.optionList_ = {}
+  self.OptionIndex = 0
+end
+
+function FashionData:GetOptionData(index)
+  return self.optionList_[index]
+end
+
+function FashionData:AddOptionData(sourceData)
+  for i = #self.optionList_, self.OptionIndex + 1, -1 do
+    table.remove(self.optionList_, i)
+  end
+  if #self.optionList_ >= 10 then
+    table.remove(self.optionList_, 1)
+  end
+  self.optionList_[#self.optionList_ + 1] = {sourceData = sourceData}
+  self.OptionIndex = #self.optionList_
+end
+
+function FashionData:SetCurOptionTargetData(targetData)
+  if self.OptionIndex ~= #self.optionList_ then
+    self.optionList_[#self.optionList_] = nil
+    self.OptionIndex = #self.optionList_
+    return
+  end
+  if not self.optionList_[#self.optionList_] then
+    return
+  end
+  self.optionList_[#self.optionList_].targetData = targetData
+end
+
+function FashionData:GetAllFashionLevelRows()
+  if self.fashionLevelDatas then
+    return self.fashionLevelDatas
+  end
+  self.fashionLevelDatas = Z.TableMgr.GetTable("FashionLevelTableMgr").GetDatas()
+  return self.fashionLevelDatas
+end
+
+function FashionData:GetAllFashionPrivilegeRows()
+  if self.fashionPrivilegeDatas then
+    return self.fashionPrivilegeDatas
+  end
+  self.fashionPrivilegeDatas = Z.TableMgr.GetTable("FashionPrivilegeTableMgr").GetDatas()
+  return self.fashionPrivilegeDatas
+end
+
+function FashionData:OnLanguageChange()
+  self.fashionLevelDatas = Z.TableMgr.GetTable("FashionLevelTableMgr").GetDatas()
+  self.fashionPrivilegeDatas = Z.TableMgr.GetTable("FashionPrivilegeTableMgr").GetDatas()
 end
 
 return FashionData

@@ -1,0 +1,122 @@
+{
+  "1": {
+    "Id": 1,
+    "GroupName": "",
+    "Sort": 1,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "2": {
+    "Id": 2,
+    "GroupName": "",
+    "Sort": 3,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "3": {
+    "Id": 3,
+    "GroupName": "",
+    "Sort": 4,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "4": {
+    "Id": 4,
+    "GroupName": "",
+    "Sort": 14,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "5": {
+    "Id": 5,
+    "GroupName": "",
+    "Sort": 9,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 1
+  },
+  "6": {
+    "Id": 6,
+    "GroupName": "",
+    "Sort": 8,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "7": {
+    "Id": 7,
+    "GroupName": "",
+    "Sort": 7,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "8": {
+    "Id": 8,
+    "GroupName": "",
+    "Sort": 6,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "9": {
+    "Id": 9,
+    "GroupName": "",
+    "Sort": 13,
+    "GroupIcon": "",
+    "BuildGroup": 0,
+    "IfRename": 0
+  },
+  "10": {
+    "Id": 10,
+    "GroupName": "",
+    "Sort": 12,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "11": {
+    "Id": 11,
+    "GroupName": "",
+    "Sort": 10,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "12": {
+    "Id": 12,
+    "GroupName": "",
+    "Sort": 11,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "13": {
+    "Id": 13,
+    "GroupName": "",
+    "Sort": 5,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "14": {
+    "Id": 14,
+    "GroupName": "",
+    "Sort": 15,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  },
+  "15": {
+    "Id": 15,
+    "GroupName": "",
+    "Sort": 2,
+    "GroupIcon": "",
+    "BuildGroup": 1,
+    "IfRename": 0
+  }
+}

@@ -1,11 +1,15 @@
 local LoopGridView = class("LoopGridView")
 
-function LoopGridView:ctor(view, loopGridView, loopGridItem, prefabName)
+function LoopGridView:ctor(view, loopGridView, loopGridItem, prefabName, isHavePCItem)
   self.IsInit = false
   self.UIView = view
   self.LoopGridView = loopGridView
   self.loopGridItem_ = loopGridItem
-  self.prefabName_ = prefabName
+  if Z.IsPCUI and isHavePCItem then
+    self.prefabName_ = string.zconcat(prefabName, "_pc")
+  else
+    self.prefabName_ = prefabName
+  end
   
   function self.getItemClassFunc(data)
     return self.loopGridItem_
@@ -53,8 +57,8 @@ function LoopGridView:RefreshListView(dataList, resetPos)
   self.LoopGridView:RefreshAllShownItem()
 end
 
-function LoopGridView:ClearAllSelect()
-  self.LoopGridView:ClearAllSelect()
+function LoopGridView:ClearAllSelect(ignoreCallback)
+  self.LoopGridView:ClearAllSelect(ignoreCallback)
 end
 
 function LoopGridView:RefreshAllShownItem()
@@ -146,6 +150,12 @@ function LoopGridView:GetData()
   return self.DataList
 end
 
+function LoopGridView:GetDataByIndex(index)
+  if self.DataList[index] then
+    return self.DataList[index]
+  end
+end
+
 function LoopGridView:GetIndexByData(data)
   for key, value in ipairs(self.DataList) do
     if value == data then
@@ -159,6 +169,18 @@ function LoopGridView:SetIsCenter(isCenter)
   self.LoopGridView.IsCenter = isCenter
 end
 
+function LoopGridView:SetSnapFinishCallback(callback)
+  self.LoopGridView.mOnSnapItemFinished = callback
+end
+
+function LoopGridView:SetBeginDragAction(callback)
+  self.LoopGridView.mOnBeginDragAction = callback
+end
+
+function LoopGridView:SetEndDragAction(callback)
+  self.LoopGridView.mOnEndDragAction = callback
+end
+
 function LoopGridView:SetCanMultiSelected(isCanMultiSelected)
   if isCanMultiSelected == nil then
     isCanMultiSelected = false
@@ -168,6 +190,14 @@ end
 
 function LoopGridView:SetGridFixedGroupCount(type, count)
   self.LoopGridView:SetGridFixedGroupCount(type, count)
+end
+
+function LoopGridView:SetItemPadding(size)
+  self.LoopGridView:SetItemPadding(size)
+end
+
+function LoopGridView:GetFixedRowOrColumnCount()
+  return self.LoopGridView.FixedRowOrColumnCount
 end
 
 return LoopGridView

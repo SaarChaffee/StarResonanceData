@@ -15,8 +15,6 @@ message BDTAGLinkTableBase {
     int32 SkillLevelType = 1660;
     int32 TargetNodeType = 1957;
 }
-
 message BDTAGLinkTableMgr {
-    map<int32, .bokura.BDTAGLinkTableBase> datas = 1;
+    repeated bokura.BDTAGLinkTableMgr.DatasEntry datas = 1;
 }
-

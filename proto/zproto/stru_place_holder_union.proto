@@ -5,4 +5,3 @@ package zproto;
 message PlaceHolderUnion {
     uint32 build = 1;
 }
-

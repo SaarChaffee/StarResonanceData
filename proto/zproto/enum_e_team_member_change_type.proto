@@ -9,4 +9,3 @@ enum ETeamMemberChangeType {
     ChangeTypeLeader = 3;
     ChangeTypeRefuseLeader = 4;
 }
-

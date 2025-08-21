@@ -87,14 +87,14 @@ function Menu_bodyView:refreshFaceMenuView()
 end
 
 function Menu_bodyView:refreshFaceSlider()
-  self:InitSlider(self.uiBinder.node_height, self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelPinchHeight))
-  self:InitSlider(self.uiBinder.node_arm, self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelPinchArmThickness))
+  self:InitSlider(self.uiBinder.node_height, Z.ModelAttr.EModelPinchHeight)
+  self:InitSlider(self.uiBinder.node_arm, Z.ModelAttr.EModelPinchArmThickness)
   local chestAttr = self.faceData_.Gender == Z.PbEnum("EGender", "GenderMale") and Z.ModelAttr.EModelPinchChestWidth or Z.ModelAttr.EModelPinchFemaleChest
-  self:InitSlider(self.uiBinder.node_chest, self.faceVM_.GetFaceOptionByAttrType(chestAttr))
-  self:InitSlider(self.uiBinder.node_waist, self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelPinchWaistFatThin))
-  self:InitSlider(self.uiBinder.node_crotch, self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelPinchCrotchWidth))
-  self:InitSlider(self.uiBinder.node_thigh, self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelPinchThighThickness))
-  self:InitSlider(self.uiBinder.node_shank, self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelPinchCalfThickness))
+  self:InitSlider(self.uiBinder.node_chest, chestAttr)
+  self:InitSlider(self.uiBinder.node_waist, Z.ModelAttr.EModelPinchWaistFatThin)
+  self:InitSlider(self.uiBinder.node_crotch, Z.ModelAttr.EModelPinchCrotchWidth)
+  self:InitSlider(self.uiBinder.node_thigh, Z.ModelAttr.EModelPinchThighThickness)
+  self:InitSlider(self.uiBinder.node_shank, Z.ModelAttr.EModelPinchCalfThickness)
 end
 
 return Menu_bodyView

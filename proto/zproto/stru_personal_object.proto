@@ -6,7 +6,5 @@ import "stru_scene_personal_object.proto";
 import "stru_dirty_mask.proto";
 
 message PersonalObject {
-    map<int32, .zproto.ScenePersonalObject> sceneObjData = 1;
-    map<int32, .zproto.DirtyMask> dirty = 1000;
+    repeated zproto.PersonalObject.SceneObjDataEntry sceneObjData = 1;
 }
-

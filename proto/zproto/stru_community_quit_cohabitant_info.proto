@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityQuitCohabitantInfo {
+    int64 charId = 1;
+    int64 homeId = 2;
+    int64 operatorCharId = 3;
+}
