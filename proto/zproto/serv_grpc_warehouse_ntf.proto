@@ -9,19 +9,25 @@ import "stru_notify_warehouse_passive_exist_request.proto";
 import "stru_notify_warehouse_refuse_to_join_request.proto";
 
 message GrpcWarehouseNtf {
-    message NotifyWarehouseInvite {
-        zproto.NotifyWarehouseInviteRequest request = 1;
-    }
-    message NotifyWarehouseGridChange {
-        zproto.NotifyWarehouseGridChangeRequest request = 1;
-    }
-    message NotifyWarehousePassiveExist {
-        zproto.NotifyWarehousePassiveExistRequest request = 1;
-    }
-    message NotifyWarehouseNewJoiner {
-        zproto.NotifyWarehouseNewJoinerRequest request = 1;
-    }
-    message NotifyWarehouseRefuseToJoin {
-        zproto.NotifyWarehouseRefuseToJoinRequest request = 1;
-    }
+
+  message NotifyWarehouseInvite {
+    zproto.NotifyWarehouseInviteRequest request = 1;
+  }
+
+  message NotifyWarehouseGridChange {
+    zproto.NotifyWarehouseGridChangeRequest request = 1;
+  }
+
+  message NotifyWarehousePassiveExist {
+    zproto.NotifyWarehousePassiveExistRequest request = 1;
+  }
+
+  message NotifyWarehouseNewJoiner {
+    zproto.NotifyWarehouseNewJoinerRequest request = 1;
+  }
+
+  message NotifyWarehouseRefuseToJoin {
+    zproto.NotifyWarehouseRefuseToJoinRequest request = 1;
+  }
 }
+

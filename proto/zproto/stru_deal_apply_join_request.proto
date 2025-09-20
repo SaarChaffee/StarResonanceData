@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message DealApplyJoinRequest {
-    int64 applicantId = 2;
-    bool agree = 3;
+  int64 applicant_id = 2;
+  bool agree = 3;
 }
+

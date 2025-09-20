@@ -5,12 +5,14 @@ package bokura;
 import "table_basic.proto";
 
 message WeaponForgeTableBase {
-    int32 Id = 1463;
-    string Name = 439;
-    int_table ConsumableId = 1714;
-    int_array ConsumableGold = 18;
-    int32 Sort = 1643;
+  int32 id = 1463;
+  string name = 439;
+  int_table consumable_id = 1714;
+  int_array consumable_gold = 18;
+  int32 sort = 1643;
 }
+
 message WeaponForgeTableMgr {
-    repeated bokura.WeaponForgeTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.WeaponForgeTableBase> datas = 1;
 }
+

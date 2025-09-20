@@ -5,13 +5,15 @@ package bokura;
 import "table_basic.proto";
 
 message EquipAttrLibTableBase {
-    int32 Id = 1463;
-    int32 AttrLibID = 819;
-    int_array EquipLevelRange = 178;
-    int_array EquipPart = 1740;
-    int_array Attr = 889;
-    number_table ValueCal = 605;
+  int32 id = 1463;
+  int32 attr_lib_id = 819;
+  int_array equip_level_range = 178;
+  int_array equip_part = 1740;
+  int_array attr = 889;
+  number_table value_cal = 605;
 }
+
 message EquipAttrLibTableMgr {
-    repeated bokura.EquipAttrLibTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.EquipAttrLibTableBase> datas = 1;
 }
+

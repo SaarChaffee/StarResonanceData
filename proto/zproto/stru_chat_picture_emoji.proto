@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message ChatPictureEmoji {
-    uint32 configId = 1;
+  uint32 config_id = 1;
 }
+

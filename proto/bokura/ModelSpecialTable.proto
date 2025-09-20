@@ -5,16 +5,18 @@ package bokura;
 import "table_basic.proto";
 
 message ModelSpecialTableBase {
-    int32 ModelPrefabID = 5;
-    string ModelPrefabDesc = 1152;
-    string Skeleton = 1130;
-    string AnimTemplate = 1244;
-    string_array Weapon = 24;
-    bool UseHeadIK = 338;
-    int32 LookAtAngle = 910;
-    int32 LookAtSpeed = 275;
-    int32 LookAtDistance = 1940;
+  int32 model_prefab_id = 5;
+  string model_prefab_desc = 1152;
+  string skeleton = 1130;
+  string anim_template = 1244;
+  string_array weapon = 24;
+  bool use_head_ik = 338;
+  int32 look_at_angle = 910;
+  int32 look_at_speed = 275;
+  int32 look_at_distance = 1940;
 }
+
 message ModelSpecialTableMgr {
-    repeated bokura.ModelSpecialTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ModelSpecialTableBase> datas = 1;
 }
+

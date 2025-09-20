@@ -3,10 +3,11 @@ syntax = "proto3";
 package zproto;
 
 message DroughtRecord {
-    int64 triggerTime = 1;
-    int32 segmentId = 2;
-    int64 duration = 3;
-    int64 actualEndTime = 4;
-    bool isWatered = 5;
-    bool IsExpired = 6;
+  int64 trigger_time = 1;
+  int32 segment_id = 2;
+  int64 duration = 3;
+  int64 actual_end_time = 4;
+  bool is_watered = 5;
+  bool is_expired = 6;
 }
+

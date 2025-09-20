@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message FishingResearchRequest {
-    int32 fishId = 1;
-    int32 count = 2;
-}

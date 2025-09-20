@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message SetTeamTargetQuickSayRequest {
-    string desc = 1;
-    int32 quickSayId = 2;
-}

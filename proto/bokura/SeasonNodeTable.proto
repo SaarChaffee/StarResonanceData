@@ -5,17 +5,19 @@ package bokura;
 import "table_basic.proto";
 
 message SeasonNodeTableBase {
-    int32 Id = 1463;
-    int32 HoleId = 820;
-    int32 HoleLevel = 829;
-    int_array NodeId = 1205;
-    int32 NodeType = 1959;
-    int32 SeasonId = 1669;
-    int_table NodeCollection = 1126;
-    int_table Collection = 977;
-    int_table NumberConsume = 1835;
-    int_table OtherConsume = 1176;
+  int32 id = 1463;
+  int32 hole_id = 820;
+  int32 hole_level = 829;
+  int_array node_id = 1205;
+  int32 node_type = 1959;
+  int32 season_id = 1669;
+  int_table node_collection = 1126;
+  int_table collection = 977;
+  int_table number_consume = 1835;
+  int_table other_consume = 1176;
 }
+
 message SeasonNodeTableMgr {
-    repeated bokura.SeasonNodeTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.SeasonNodeTableBase> datas = 1;
 }
+

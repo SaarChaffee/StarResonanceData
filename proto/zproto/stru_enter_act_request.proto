@@ -5,6 +5,7 @@ package zproto;
 import "stru_match_param_context.proto";
 
 message EnterActRequest {
-    int32 actId = 1;
-    zproto.MatchParamContext matchParamContext = 2;
+  int32 act_id = 1;
+  zproto.MatchParamContext match_param_context = 2;
 }
+

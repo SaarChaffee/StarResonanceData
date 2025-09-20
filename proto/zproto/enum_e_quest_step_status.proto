@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EQuestStepStatus {
-    QuestStepGoing = 0;
-    QuestStepFinish = 1;
-    QuestStepFail = 2;
+  QuestStepGoing = 0;
+  QuestStepFinish = 1;
+  QuestStepFail = 2;
 }
+

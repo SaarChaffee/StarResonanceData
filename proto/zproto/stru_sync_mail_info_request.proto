@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_mail_state_info.proto";
-
-message SyncMailInfoRequest {
-    repeated zproto.SyncMailInfoRequest.MailsEntry mails = 1;
-}

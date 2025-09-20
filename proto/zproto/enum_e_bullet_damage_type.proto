@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum EBulletDamageType {
-    BulletDamageTypeAOE = 0;
-    BulletDamageTypeSingle = 1;
+  BulletDamageTypeAOE = 0;
+  BulletDamageTypeSingle = 1;
 }
+

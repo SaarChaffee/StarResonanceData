@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EMatchReadyStatus {
-    EMatchReadyStatusWait = 0;
-    EMatchReadyStatusReady = 1;
-    EMatchReadyStatusUnReady = 2;
+  EMatchReadyStatusWait = 0;
+  EMatchReadyStatusReady = 1;
+  EMatchReadyStatusUnReady = 2;
 }
+

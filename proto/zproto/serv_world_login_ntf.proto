@@ -5,7 +5,9 @@ package zproto;
 import "stru_notify_instruction_info_request.proto";
 
 message WorldLoginNtf {
-    message NotifyInstructionInfo {
-        zproto.NotifyInstructionInfoRequest vInfo = 1;
-    }
+
+  message NotifyInstructionInfo {
+    zproto.NotifyInstructionInfoRequest v_info = 1;
+  }
 }
+

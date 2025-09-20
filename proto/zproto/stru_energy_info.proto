@@ -6,7 +6,8 @@ import "stru_energy_item_info.proto";
 import "stru_dirty_mask.proto";
 
 message EnergyInfo {
-    uint32 energyValue = 1;
-    uint32 unlockNum = 2;
-    repeated zproto.EnergyInfo.EnergyItemInfoEntry energyItemInfo = 3;
+  uint32 energy_value = 1;
+  uint32 unlock_num = 2;
+  map<uint32, zproto.EnergyItemInfo> energy_item_info = 3;
 }
+

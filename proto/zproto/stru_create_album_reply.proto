@@ -6,6 +6,7 @@ import "stru_album_show.proto";
 import "enum_e_error_code.proto";
 
 message CreateAlbumReply {
-    zproto.AlbumShow albumInfo = 3;
-    zproto.EErrorCode errCode = 4;
+  zproto.AlbumShow album_info = 3;
+  zproto.EErrorCode err_code = 4;
 }
+

@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_slot_info_data.proto";
-
-message SlotData {
-    repeated zproto.SlotData.SlotsEntry slots = 1;
-}

@@ -6,5 +6,6 @@ import "stru_dungeon_player_info.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonPlayerList {
-    repeated zproto.DungeonPlayerList.PlayerInfosEntry playerInfos = 1;
+  map<uint32, zproto.DungeonPlayerInfo> player_infos = 1;
 }
+

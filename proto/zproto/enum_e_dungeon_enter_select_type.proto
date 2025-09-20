@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EDungeonEnterSelectType {
-    DungeonEnterSelectTypeNull = 0;
-    DungeonEnterSelectTypeSingle = 1;
-    DungeonEnterSelectTypeMore = 2;
+  DungeonEnterSelectTypeNull = 0;
+  DungeonEnterSelectTypeSingle = 1;
+  DungeonEnterSelectTypeMore = 2;
 }
+

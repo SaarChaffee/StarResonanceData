@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message LifeProfessionAlchemyReq {
-    int32 recipeId = 1;
-    int32 count = 2;
-}

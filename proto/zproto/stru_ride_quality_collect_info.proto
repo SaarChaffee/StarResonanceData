@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_dirty_mask.proto";
-
-message RideQualityCollectInfo {
-    repeated zproto.RideQualityCollectInfo.QualityCountEntry qualityCount = 1;
-}

@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message SetUnionTagsRequest {
-    int64 unionId = 2;
-    repeated uint32 tags = 3;
-}

@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message ReqUnionActivityProgressInfoRequest {
-    int32 unionId = 2;
-    int32 activityId = 3;
-}

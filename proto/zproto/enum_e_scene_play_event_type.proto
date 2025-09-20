@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum EScenePlayEventType {
-    EPlayEventTypeCutScene = 0;
-    EPlayEventTypeFlow = 1;
+  EPlayEventTypeCutScene = 0;
+  EPlayEventTypeFlow = 1;
 }
+

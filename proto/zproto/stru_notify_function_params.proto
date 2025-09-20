@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message NotifyFunctionParams {
-    repeated int32 closeFunction = 1;
-}

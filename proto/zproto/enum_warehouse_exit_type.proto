@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum WarehouseExitType {
-    WarehouseExitTypeSelf = 0;
-    WarehouseExitTypeBeKickOut = 1;
-    WarehouseExitTypeDisband = 2;
+  WarehouseExitTypeSelf = 0;
+  WarehouseExitTypeBeKickOut = 1;
+  WarehouseExitTypeDisband = 2;
 }
+

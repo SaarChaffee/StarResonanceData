@@ -34,94 +34,125 @@ import "stru_team_activity_vote_result_request.proto";
 import "stru_update_team_mem_be_call_request.proto";
 
 message GrpcTeamNtf {
-    message NoticeUpdateTeamInfo {
-        zproto.NoticeUpdateTeamInfoRequest vRequest = 1;
-    }
-    message NoticeUpdateTeamMemberInfo {
-        zproto.NoticeUpdateTeamMemberInfoRequest vRequest = 1;
-    }
-    message NotifyJoinTeam {
-        zproto.NotifyJoinTeamRequest vRequest = 1;
-    }
-    message NotifyLeaveTeam {
-        zproto.NotifyLeaveTeamRequest vRequest = 1;
-    }
-    message NotifyApplyJoin {
-        zproto.NotifyApplyJoinRequest vRequest = 1;
-    }
-    message NotifyInvitation {
-        zproto.NotifyInvitationRequest vRequest = 1;
-    }
-    message NotifyRefuseInvite {
-        zproto.NotifyRefuseInviteRequest vRequest = 1;
-    }
-    message NotifyLeaderApplyListSize {
-        zproto.NotifyLeaderApplyListSizeRequest vRequest = 1;
-    }
-    message NotifyApplyBeLeader {
-        zproto.NotifyApplyBeLeaderRequest vRequest = 1;
-    }
-    message NotifyRejectApplicant {
-        zproto.NotifyRejectApplicantRequest vRequest = 1;
-    }
-    message NotifyBeTransferLeader {
-        zproto.NotifyBeTransferLeaderRequest vRequest = 1;
-    }
-    message NotifyRefuseBeTransferLeader {
-        zproto.NotifyRefuseBeTransferLeaderRequest vRequest = 1;
-    }
-    message NoticeTeamDissolve {
-        zproto.NoticeTeamDissolveRequest vRequest = 1;
-    }
-    message NotifyTeamActivityState {
-        zproto.NotifyTeamActivityStateRequest vRequest = 1;
-    }
-    message TeamActivityResult {
-        zproto.TeamActivityResultRequest vRequest = 1;
-    }
-    message TeamActivityListResult {
-        zproto.TeamActivityListResultRequest vRequest = 1;
-    }
-    message TeamActivityVoteResult {
-        zproto.TeamActivityVoteResultRequest vRequest = 1;
-    }
-    message NotifyCharMatchResult {
-        zproto.NotifyCharMatchResultRequest vRequest = 1;
-    }
-    message NotifyTeamMatchResult {
-        zproto.NotifyTeamMatchResultRequest vRequest = 1;
-    }
-    message NotifyCharAbortMatch {
-        zproto.NotifyCharAbortMatchRequest vRequest = 1;
-    }
-    message UpdateTeamMemBeCall {
-        zproto.UpdateTeamMemBeCallRequest vRequest = 1;
-    }
-    message NotifyTeamMemBeCall {
-        zproto.NotifyTeamMemBeCallRequest vRequest = 1;
-    }
-    message NotifyTeamMemBeCallResult {
-        zproto.NotifyTeamMemBeCallResultRequest vRequest = 1;
-    }
-    message NotifyTeamEnterErr {
-        zproto.NotifyTeamEnterErrRequest vRequest = 1;
-    }
-    message NotifyTeamMemMicrophoneStatusChange {
-        zproto.NotifyTeamMemMicrophoneStatusChangeRequest vRequest = 1;
-    }
-    message NotifyTeamMemsSpeakStatusChange {
-        zproto.NotifyTeamMemsSpeakStatusChangeRequest vRequest = 1;
-    }
-    message NotifyTeamMemVoiceIdChange {
-        zproto.NotifyTeamMemVoiceIdChangeRequest vRequest = 1;
-    }
-    message NotifyTeamChangeMemberType {
-        zproto.NotifyTeamChangeMemberTypeRequest vRequest = 1;
-    }
-    message NotifyTeamGroupUpdate {
-        zproto.NotifyTeamGroupUpdateRequest vRequest = 1;
-    }
-    message NotifyInviteJoinDungeons {
-        zproto.NotifyInviteJoinDungeonsRequest vRequest = 1;
-    }
+
+  message NoticeUpdateTeamInfo {
+    zproto.NoticeUpdateTeamInfoRequest v_request = 1;
+  }
+
+  message NoticeUpdateTeamMemberInfo {
+    zproto.NoticeUpdateTeamMemberInfoRequest v_request = 1;
+  }
+
+  message NotifyJoinTeam {
+    zproto.NotifyJoinTeamRequest v_request = 1;
+  }
+
+  message NotifyLeaveTeam {
+    zproto.NotifyLeaveTeamRequest v_request = 1;
+  }
+
+  message NotifyApplyJoin {
+    zproto.NotifyApplyJoinRequest v_request = 1;
+  }
+
+  message NotifyInvitation {
+    zproto.NotifyInvitationRequest v_request = 1;
+  }
+
+  message NotifyRefuseInvite {
+    zproto.NotifyRefuseInviteRequest v_request = 1;
+  }
+
+  message NotifyLeaderApplyListSize {
+    zproto.NotifyLeaderApplyListSizeRequest v_request = 1;
+  }
+
+  message NotifyApplyBeLeader {
+    zproto.NotifyApplyBeLeaderRequest v_request = 1;
+  }
+
+  message NotifyRejectApplicant {
+    zproto.NotifyRejectApplicantRequest v_request = 1;
+  }
+
+  message NotifyBeTransferLeader {
+    zproto.NotifyBeTransferLeaderRequest v_request = 1;
+  }
+
+  message NotifyRefuseBeTransferLeader {
+    zproto.NotifyRefuseBeTransferLeaderRequest v_request = 1;
+  }
+
+  message NoticeTeamDissolve {
+    zproto.NoticeTeamDissolveRequest v_request = 1;
+  }
+
+  message NotifyTeamActivityState {
+    zproto.NotifyTeamActivityStateRequest v_request = 1;
+  }
+
+  message TeamActivityResult {
+    zproto.TeamActivityResultRequest v_request = 1;
+  }
+
+  message TeamActivityListResult {
+    zproto.TeamActivityListResultRequest v_request = 1;
+  }
+
+  message TeamActivityVoteResult {
+    zproto.TeamActivityVoteResultRequest v_request = 1;
+  }
+
+  message NotifyCharMatchResult {
+    zproto.NotifyCharMatchResultRequest v_request = 1;
+  }
+
+  message NotifyTeamMatchResult {
+    zproto.NotifyTeamMatchResultRequest v_request = 1;
+  }
+
+  message NotifyCharAbortMatch {
+    zproto.NotifyCharAbortMatchRequest v_request = 1;
+  }
+
+  message UpdateTeamMemBeCall {
+    zproto.UpdateTeamMemBeCallRequest v_request = 1;
+  }
+
+  message NotifyTeamMemBeCall {
+    zproto.NotifyTeamMemBeCallRequest v_request = 1;
+  }
+
+  message NotifyTeamMemBeCallResult {
+    zproto.NotifyTeamMemBeCallResultRequest v_request = 1;
+  }
+
+  message NotifyTeamEnterErr {
+    zproto.NotifyTeamEnterErrRequest v_request = 1;
+  }
+
+  message NotifyTeamMemMicrophoneStatusChange {
+    zproto.NotifyTeamMemMicrophoneStatusChangeRequest v_request = 1;
+  }
+
+  message NotifyTeamMemsSpeakStatusChange {
+    zproto.NotifyTeamMemsSpeakStatusChangeRequest v_request = 1;
+  }
+
+  message NotifyTeamMemVoiceIdChange {
+    zproto.NotifyTeamMemVoiceIdChangeRequest v_request = 1;
+  }
+
+  message NotifyTeamChangeMemberType {
+    zproto.NotifyTeamChangeMemberTypeRequest v_request = 1;
+  }
+
+  message NotifyTeamGroupUpdate {
+    zproto.NotifyTeamGroupUpdateRequest v_request = 1;
+  }
+
+  message NotifyInviteJoinDungeons {
+    zproto.NotifyInviteJoinDungeonsRequest v_request = 1;
+  }
 }
+

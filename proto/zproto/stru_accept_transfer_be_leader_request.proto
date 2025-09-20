@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message AcceptTransferBeLeaderRequest {
-    bool agree = 2;
+  bool agree = 2;
 }
+

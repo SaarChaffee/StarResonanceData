@@ -5,9 +5,10 @@ package zproto;
 import "enum_e_team_member_type.proto";
 
 message CreateTeamRequest {
-    int64 charId = 2;
-    uint32 targetId = 3;
-    bool isAutoMatch = 4;
-    bool isShowInHall = 5;
-    zproto.ETeamMemberType teamMemberType = 6;
+  int64 char_id = 2;
+  uint32 target_id = 3;
+  bool is_auto_match = 4;
+  bool is_show_in_hall = 5;
+  zproto.ETeamMemberType team_member_type = 6;
 }
+

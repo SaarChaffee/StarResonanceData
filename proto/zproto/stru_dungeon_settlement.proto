@@ -8,9 +8,10 @@ import "stru_settlement_position.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonSettlement {
-    int32 passTime = 1;
-    repeated zproto.DungeonSettlement.AwardEntry award = 2;
-    repeated zproto.DungeonSettlement.SettlementPosEntry settlementPos = 3;
-    zproto.DungeonWorldBossSettlement worldBossSettlement = 4;
-    int32 masterModeScore = 5;
+  int32 pass_time = 1;
+  map<int64, zproto.DungeonAward> award = 2;
+  map<uint32, zproto.SettlementPosition> settlement_pos = 3;
+  zproto.DungeonWorldBossSettlement world_boss_settlement = 4;
+  int32 master_mode_score = 5;
 }
+

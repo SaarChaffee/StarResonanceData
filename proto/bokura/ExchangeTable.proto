@@ -5,13 +5,15 @@ package bokura;
 import "table_basic.proto";
 
 message ExchangeTableBase {
-    int32 Id = 1463;
-    mlstring ShopName = 1379;
-    int32 SystemId = 518;
-    string Npc = 854;
-    int32 ShowType = 1131;
-    string CurrencyDisplay = 1022;
+  int32 id = 1463;
+  mlstring shop_name = 1379;
+  int32 system_id = 518;
+  string npc = 854;
+  int32 show_type = 1131;
+  string currency_display = 1022;
 }
+
 message ExchangeTableMgr {
-    repeated bokura.ExchangeTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ExchangeTableBase> datas = 1;
 }
+

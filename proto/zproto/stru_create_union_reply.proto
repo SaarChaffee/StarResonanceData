@@ -7,8 +7,9 @@ import "stru_union_info.proto";
 import "stru_user_summary_data.proto";
 
 message CreateUnionReply {
-    int64 nextJoinTime = 1;
-    zproto.UnionInfo info = 2;
-    zproto.UserSummaryData presidentInfo = 3;
-    zproto.EErrorCode errCode = 4;
+  int64 next_join_time = 1;
+  zproto.UnionInfo info = 2;
+  zproto.UserSummaryData president_info = 3;
+  zproto.EErrorCode err_code = 4;
 }
+

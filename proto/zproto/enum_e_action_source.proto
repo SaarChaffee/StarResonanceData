@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum EActionSource {
-    EActionSource_Default = 0;
-    EActionSource_Dance = 1;
+  EActionSource_Default = 0;
+  EActionSource_Dance = 1;
 }
+

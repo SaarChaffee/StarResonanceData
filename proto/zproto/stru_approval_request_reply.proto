@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_request_join_info.proto";
 
 message ApprovalRequestReply {
-    repeated zproto.RequestJoinInfo reqList = 1;
-    zproto.EErrorCode errCode = 2;
+  repeated zproto.RequestJoinInfo req_list = 1;
+  zproto.EErrorCode err_code = 2;
 }
+

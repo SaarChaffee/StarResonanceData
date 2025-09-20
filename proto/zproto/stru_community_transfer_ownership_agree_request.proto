@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message CommunityTransferOwnershipAgreeRequest {
-    int64 homelandId = 1;
-    bool isAgree = 2;
+  int64 homeland_id = 1;
+  bool is_agree = 2;
 }
+

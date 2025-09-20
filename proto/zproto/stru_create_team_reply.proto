@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_team_info.proto";
 
 message CreateTeamReply {
-    zproto.TeamInfo teamInfo = 1;
-    zproto.EErrorCode errCode = 2;
+  zproto.TeamInfo team_info = 1;
+  zproto.EErrorCode err_code = 2;
 }
+

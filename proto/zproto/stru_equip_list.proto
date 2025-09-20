@@ -9,9 +9,10 @@ import "stru_equip_suit_info.proto";
 import "stru_dirty_mask.proto";
 
 message EquipList {
-    repeated zproto.EquipList.EquipListEntry equipList = 1;
-    zproto.EquipAttr equipAttr = 2;
-    repeated zproto.EquipList.EquipRecastInfoEntry equipRecastInfo = 4;
-    repeated zproto.EquipList.EquipEnchantEntry equipEnchant = 5;
-    repeated zproto.EquipList.SuitInfoDictEntry suitInfoDict = 6;
+  map<int32, zproto.EquipInfo> equip_list = 1;
+  zproto.EquipAttr equip_attr = 2;
+  map<uint64, zproto.EquipAttr> equip_recast_info = 4;
+  map<int64, zproto.EquipEnchantInfo> equip_enchant = 5;
+  map<int32, zproto.EquipSuitInfo> suit_info_dict = 6;
 }
+

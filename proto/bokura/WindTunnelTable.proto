@@ -3,10 +3,12 @@ syntax = "proto3";
 package bokura;
 
 message WindTunnelTableBase {
-    int32 Id = 1463;
-    string Name = 439;
-    string EffectPath = 1536;
+  int32 id = 1463;
+  string name = 439;
+  string effect_path = 1536;
 }
+
 message WindTunnelTableMgr {
-    repeated bokura.WindTunnelTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.WindTunnelTableBase> datas = 1;
 }
+

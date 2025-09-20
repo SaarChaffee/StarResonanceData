@@ -5,6 +5,7 @@ package zproto;
 import "enum_e_error_code.proto";
 
 message CopySelfPhotoToUnionTmpAlbumReply {
-    int32 curUploadTimes = 1;
-    zproto.EErrorCode errCode = 2;
+  int32 cur_upload_times = 1;
+  zproto.EErrorCode err_code = 2;
 }
+

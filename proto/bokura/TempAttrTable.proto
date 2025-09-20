@@ -5,16 +5,18 @@ package bokura;
 import "table_basic.proto";
 
 message TempAttrTableBase {
-    int64 Id = 1463;
-    string Name = 439;
-    string Desc = 1953;
-    int32 AttrType = 633;
-    int32 LogicType = 198;
-    int_array AttrParams = 10;
-    int32 LowerLimit = 1339;
-    int32 UpperLimit = 1615;
-    bool IsSyncClient = 880;
+  int64 id = 1463;
+  string name = 439;
+  string desc = 1953;
+  int32 attr_type = 633;
+  int32 logic_type = 198;
+  int_array attr_params = 10;
+  int32 lower_limit = 1339;
+  int32 upper_limit = 1615;
+  bool is_sync_client = 880;
 }
+
 message TempAttrTableMgr {
-    repeated bokura.TempAttrTableMgr.DatasEntry datas = 1;
+  map<int64, bokura.TempAttrTableBase> datas = 1;
 }
+

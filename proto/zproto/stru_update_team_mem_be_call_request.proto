@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message UpdateTeamMemBeCallRequest {
-    repeated zproto.UpdateTeamMemBeCallRequest.CallStateEntry callState = 1;
-}

@@ -3,9 +3,11 @@ syntax = "proto3";
 package bokura;
 
 message WorldEventAwardTableBase {
-    int32 Score = 1699;
-    int32 Award = 187;
+  int32 score = 1699;
+  int32 award = 187;
 }
+
 message WorldEventAwardTableMgr {
-    repeated bokura.WorldEventAwardTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.WorldEventAwardTableBase> datas = 1;
 }
+

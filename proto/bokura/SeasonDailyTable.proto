@@ -3,12 +3,14 @@ syntax = "proto3";
 package bokura;
 
 message SeasonDailyTableBase {
-    int32 Id = 1463;
-    int32 Season = 620;
-    int32 Day = 1533;
-    int32 DailyEquipLevel = 1082;
-    int32 GrowRangeAdd = 1918;
+  int32 id = 1463;
+  int32 season = 620;
+  int32 day = 1533;
+  int32 daily_equip_level = 1082;
+  int32 grow_range_add = 1918;
 }
+
 message SeasonDailyTableMgr {
-    repeated bokura.SeasonDailyTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.SeasonDailyTableBase> datas = 1;
 }
+

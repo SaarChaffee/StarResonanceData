@@ -5,15 +5,17 @@ package bokura;
 import "table_basic.proto";
 
 message ItemPackageTableBase {
-    int32 Id = 1463;
-    mlstring Name = 439;
-    string Icon = 1153;
-    int32 Capacity = 197;
-    int32 Show = 183;
-    mlstring_table Classify = 746;
-    string Consume = 1838;
-    int32 CapacityExtra = 1638;
+  int32 id = 1463;
+  mlstring name = 439;
+  string icon = 1153;
+  int32 capacity = 197;
+  int32 show = 183;
+  mlstring_table classify = 746;
+  string consume = 1838;
+  int32 capacity_extra = 1638;
 }
+
 message ItemPackageTableMgr {
-    repeated bokura.ItemPackageTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ItemPackageTableBase> datas = 1;
 }
+

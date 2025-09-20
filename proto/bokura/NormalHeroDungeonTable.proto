@@ -5,17 +5,19 @@ package bokura;
 import "table_basic.proto";
 
 message NormalHeroDungeonTableBase {
-    int32 DungeonId = 1583;
-    int32 SeasonOpenTime = 962;
-    int32 AffixPool = 870;
-    string Background = 343;
-    int32 ModelId = 555;
-    int32 EffectId = 1555;
-    int32 BaseRatio = 1148;
-    int32 LimitTime = 348;
-    int_table ScoreRank = 741;
-    int_array KeyReward = 1791;
+  int32 dungeon_id = 1583;
+  int32 season_open_time = 962;
+  int32 affix_pool = 870;
+  string background = 343;
+  int32 model_id = 555;
+  int32 effect_id = 1555;
+  int32 base_ratio = 1148;
+  int32 limit_time = 348;
+  int_table score_rank = 741;
+  int_array key_reward = 1791;
 }
+
 message NormalHeroDungeonTableMgr {
-    repeated bokura.NormalHeroDungeonTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.NormalHeroDungeonTableBase> datas = 1;
 }
+

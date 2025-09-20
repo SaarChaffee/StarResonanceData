@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum EDungeonTimerDirection {
-    DungeonTimerDirectionDown = 0;
-    DungeonTimerDirectionUp = 1;
+  DungeonTimerDirectionDown = 0;
+  DungeonTimerDirectionUp = 1;
 }
+

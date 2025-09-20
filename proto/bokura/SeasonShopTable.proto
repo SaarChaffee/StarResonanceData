@@ -5,16 +5,18 @@ package bokura;
 import "table_basic.proto";
 
 message SeasonShopTableBase {
-    int32 Id = 1463;
-    int32 FunctionId = 149;
-    mlstring Name = 439;
-    string NameRemark = 1535;
-    int32 ShopType = 1461;
-    int32 TimerId = 190;
-    int32 Sort = 1643;
-    string Icon = 1153;
-    int_array CurrencyDisplay = 1022;
+  int32 id = 1463;
+  int32 function_id = 149;
+  mlstring name = 439;
+  string name_remark = 1535;
+  int32 shop_type = 1461;
+  int32 timer_id = 190;
+  int32 sort = 1643;
+  string icon = 1153;
+  int_array currency_display = 1022;
 }
+
 message SeasonShopTableMgr {
-    repeated bokura.SeasonShopTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.SeasonShopTableBase> datas = 1;
 }
+

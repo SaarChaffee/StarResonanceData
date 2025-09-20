@@ -5,6 +5,7 @@ package zproto;
 import "enum_e_buff_effect_confusion_type.proto";
 
 message BuffEffectConfusion {
-    zproto.EBuffEffectConfusionType type = 1;
-    float randRadius = 2;
+  zproto.EBuffEffectConfusionType type = 1;
+  float rand_radius = 2;
 }
+

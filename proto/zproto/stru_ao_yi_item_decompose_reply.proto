@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_item.proto";
 
 message AoYiItemDecomposeReply {
-    repeated zproto.Item items = 1;
-    zproto.EErrorCode errCode = 2;
+  repeated zproto.Item items = 1;
+  zproto.EErrorCode err_code = 2;
 }
+

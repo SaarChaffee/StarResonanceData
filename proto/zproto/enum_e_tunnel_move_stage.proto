@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum ETunnelMoveStage {
-    EEnter = 0;
-    EFly = 1;
-    EExit = 2;
+  EEnter = 0;
+  EFly = 1;
+  EExit = 2;
 }
+

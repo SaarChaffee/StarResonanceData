@@ -5,21 +5,23 @@ package bokura;
 import "table_basic.proto";
 
 message BasicAttrEffectTableBase {
-    int32 Id = 1463;
-    number_table AttrStrengthTable = 1040;
-    int32 AttrStrengthMax = 1502;
-    number_table AttrVitalityTable = 847;
-    int32 AttrVitalityMax = 406;
-    number_table AttrDexterityTable = 1100;
-    int32 AttrDexterityMax = 1989;
-    number_table AttrIntelligenceTable = 944;
-    int32 AttrIntelligenceMax = 2021;
-    number_table AttrMindTable = 637;
-    int32 AttrMindMax = 1971;
-    number_table AttrObserveTable = 385;
-    int32 AttrObserveMax = 1690;
-    mlstring AttrIntroduction = 1417;
+  int32 id = 1463;
+  number_table attr_strength_table = 1040;
+  int32 attr_strength_max = 1502;
+  number_table attr_vitality_table = 847;
+  int32 attr_vitality_max = 406;
+  number_table attr_dexterity_table = 1100;
+  int32 attr_dexterity_max = 1989;
+  number_table attr_intelligence_table = 944;
+  int32 attr_intelligence_max = 2021;
+  number_table attr_mind_table = 637;
+  int32 attr_mind_max = 1971;
+  number_table attr_observe_table = 385;
+  int32 attr_observe_max = 1690;
+  mlstring attr_introduction = 1417;
 }
+
 message BasicAttrEffectTableMgr {
-    repeated bokura.BasicAttrEffectTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.BasicAttrEffectTableBase> datas = 1;
 }
+

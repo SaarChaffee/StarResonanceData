@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum EPartDamageType {
-    ESingle = 0;
-    EMulti = 1;
+  ESingle = 0;
+  EMulti = 1;
 }
+

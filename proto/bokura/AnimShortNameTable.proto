@@ -3,10 +3,12 @@ syntax = "proto3";
 package bokura;
 
 message AnimShortNameTableBase {
-    int32 Id = 1463;
-    string NameDesign = 1649;
-    string AnimShortName = 165;
+  int32 id = 1463;
+  string name_design = 1649;
+  string anim_short_name = 165;
 }
+
 message AnimShortNameTableMgr {
-    repeated bokura.AnimShortNameTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.AnimShortNameTableBase> datas = 1;
 }
+

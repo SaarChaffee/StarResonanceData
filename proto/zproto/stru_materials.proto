@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message Materials {
-    repeated zproto.Materials.MaterialsMapEntry materialsMap = 1;
-}

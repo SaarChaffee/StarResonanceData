@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message NotifyInviteJoinDungeonsRequest {
-    string groupKey = 1;
-    int32 dungeonId = 2;
-    int64 senderId = 3;
-}

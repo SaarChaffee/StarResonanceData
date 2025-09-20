@@ -5,13 +5,15 @@ package bokura;
 import "table_basic.proto";
 
 message MapStickerTargetTableBase {
-    int32 Id = 1463;
-    int32 TargetType = 736;
-    int_array Param = 1207;
-    int32 Num = 947;
-    int32 SceneId = 1506;
-    string Des = 266;
+  int32 id = 1463;
+  int32 target_type = 736;
+  int_array param = 1207;
+  int32 num = 947;
+  int32 scene_id = 1506;
+  string des = 266;
 }
+
 message MapStickerTargetTableMgr {
-    repeated bokura.MapStickerTargetTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.MapStickerTargetTableBase> datas = 1;
 }
+

@@ -6,12 +6,13 @@ import "stru_team_mem_data.proto";
 import "stru_dirty_mask.proto";
 
 message CharTeam {
-    int64 teamId = 1;
-    int64 leaderId = 2;
-    uint32 teamTargetId = 3;
-    uint32 teamNum = 4;
-    repeated int64 charIds = 5;
-    bool isMatching = 6;
-    int32 charTeamVersion = 7;
-    repeated zproto.CharTeam.TeamMemberDataEntry teamMemberData = 8;
+  int64 team_id = 1;
+  int64 leader_id = 2;
+  uint32 team_target_id = 3;
+  uint32 team_num = 4;
+  repeated int64 char_ids = 5;
+  bool is_matching = 6;
+  int32 char_team_version = 7;
+  map<int64, zproto.TeamMemData> team_member_data = 8;
 }
+

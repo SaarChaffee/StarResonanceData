@@ -3,11 +3,13 @@ syntax = "proto3";
 package bokura;
 
 message PhotoDecorationsTableBase {
-    int32 Id = 1463;
-    int32 Type = 673;
-    int32 Sequence = 831;
-    string Res = 1275;
+  int32 id = 1463;
+  int32 type = 673;
+  int32 sequence = 831;
+  string res = 1275;
 }
+
 message PhotoDecorationsTableMgr {
-    repeated bokura.PhotoDecorationsTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.PhotoDecorationsTableBase> datas = 1;
 }
+

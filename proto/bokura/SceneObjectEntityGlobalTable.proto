@@ -5,12 +5,14 @@ package bokura;
 import "table_basic.proto";
 
 message SceneObjectEntityGlobalTableBase {
-    int32 UId = 2028;
-    int32 Id = 1463;
-    number_array Position = 686;
-    int32 SourceType = 380;
-    string OptionData = 853;
+  int32 u_id = 2028;
+  int32 id = 1463;
+  number_array position = 686;
+  int32 source_type = 380;
+  string option_data = 853;
 }
+
 message SceneObjectEntityGlobalTableMgr {
-    repeated bokura.SceneObjectEntityGlobalTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.SceneObjectEntityGlobalTableBase> datas = 1;
 }
+

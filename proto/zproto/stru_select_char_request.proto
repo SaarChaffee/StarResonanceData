@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message SelectCharRequest {
-    string token = 2;
-    int64 charId = 3;
-    int32 areaId = 5;
-}

@@ -27,76 +27,101 @@ import "stru_select_char_request.proto";
 import "stru_upload_face_success_request.proto";
 
 message GrpcCharactor {
-    message Login_Ret {
-        zproto.LoginReply ret = 1;
-    }
-    message Login {
-        zproto.LoginRequest vRequest = 1;
-    }
-    message CreateChar_Ret {
-        zproto.CreateCharReply ret = 1;
-    }
-    message CreateChar {
-        zproto.CreateCharRequest vRequest = 1;
-    }
-    message SelectChar_Ret {
-        zproto.SelectCharReply ret = 1;
-    }
-    message SelectChar {
-        zproto.SelectCharRequest vRequest = 1;
-    }
-    message DeleteChar_Ret {
-        zproto.DeleteCharReply ret = 1;
-    }
-    message DeleteChar {
-        zproto.DeleteCharRequest vRequest = 1;
-    }
-    message Reconnect_Ret {
-        zproto.ReconnectReply ret = 1;
-    }
-    message Reconnect {
-        zproto.ReconnectRequest vRequest = 1;
-    }
-    message ExitGame {
-        zproto.ExitGameRequest vRequest = 1;
-    }
-    message ReportMSdk_Ret {
-        zproto.EErrorCode ret = 1;
-    }
-    message ReportMSdk {
-        zproto.ReportMSdkRequest vRequest = 1;
-    }
-    message GetFaceUpToken {
-        zproto.GetFaceUpTokenRequest vRequest = 1;
-    }
-    message UploadFaceSuccess_Ret {
-        zproto.EErrorCode ret = 1;
-    }
-    message UploadFaceSuccess {
-        zproto.UploadFaceSuccessRequest vRequest = 1;
-    }
-    message GetFaceUploadData_Ret {
-        zproto.GetFaceUploadDataReply ret = 1;
-    }
-    message GetFaceUploadData {
-        zproto.GetFaceUploadDataRequest vRequest = 1;
-    }
-    message GetFaceDataUrl_Ret {
-        zproto.GetFaceDataUrlReply ret = 1;
-    }
-    message GetFaceDataUrl {
-        zproto.GetFaceDataUrlRequest vRequest = 1;
-    }
-    message CancelDeleteChar_Ret {
-        zproto.CancelDeleteCharReply ret = 1;
-    }
-    message CancelDeleteChar {
-        zproto.CancelDeleteCharRequest vRequest = 1;
-    }
-    message PrivilegeActivate_Ret {
-        zproto.PrivilegeActivateReply ret = 1;
-    }
-    message PrivilegeActivate {
-        zproto.PrivilegeActivateRequest vRequest = 1;
-    }
+
+  message Login_Ret {
+    zproto.LoginReply ret = 1;
+  }
+
+  message Login {
+    zproto.LoginRequest v_request = 1;
+  }
+
+  message CreateChar_Ret {
+    zproto.CreateCharReply ret = 1;
+  }
+
+  message CreateChar {
+    zproto.CreateCharRequest v_request = 1;
+  }
+
+  message SelectChar_Ret {
+    zproto.SelectCharReply ret = 1;
+  }
+
+  message SelectChar {
+    zproto.SelectCharRequest v_request = 1;
+  }
+
+  message DeleteChar_Ret {
+    zproto.DeleteCharReply ret = 1;
+  }
+
+  message DeleteChar {
+    zproto.DeleteCharRequest v_request = 1;
+  }
+
+  message Reconnect_Ret {
+    zproto.ReconnectReply ret = 1;
+  }
+
+  message Reconnect {
+    zproto.ReconnectRequest v_request = 1;
+  }
+
+  message ExitGame {
+    zproto.ExitGameRequest v_request = 1;
+  }
+
+  message ReportMSdk_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReportMSdk {
+    zproto.ReportMSdkRequest v_request = 1;
+  }
+
+  message GetFaceUpToken {
+    zproto.GetFaceUpTokenRequest v_request = 1;
+  }
+
+  message UploadFaceSuccess_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UploadFaceSuccess {
+    zproto.UploadFaceSuccessRequest v_request = 1;
+  }
+
+  message GetFaceUploadData_Ret {
+    zproto.GetFaceUploadDataReply ret = 1;
+  }
+
+  message GetFaceUploadData {
+    zproto.GetFaceUploadDataRequest v_request = 1;
+  }
+
+  message GetFaceDataUrl_Ret {
+    zproto.GetFaceDataUrlReply ret = 1;
+  }
+
+  message GetFaceDataUrl {
+    zproto.GetFaceDataUrlRequest v_request = 1;
+  }
+
+  message CancelDeleteChar_Ret {
+    zproto.CancelDeleteCharReply ret = 1;
+  }
+
+  message CancelDeleteChar {
+    zproto.CancelDeleteCharRequest v_request = 1;
+  }
+
+  message PrivilegeActivate_Ret {
+    zproto.PrivilegeActivateReply ret = 1;
+  }
+
+  message PrivilegeActivate {
+    zproto.PrivilegeActivateRequest v_request = 1;
+  }
 }
+

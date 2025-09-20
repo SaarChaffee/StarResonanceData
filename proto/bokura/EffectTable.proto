@@ -3,11 +3,13 @@ syntax = "proto3";
 package bokura;
 
 message EffectTableBase {
-    int32 Id = 1463;
-    string Comment = 11;
-    string Path = 172;
-    float PlayTime = 1323;
+  int32 id = 1463;
+  string comment = 11;
+  string path = 172;
+  float play_time = 1323;
 }
+
 message EffectTableMgr {
-    repeated bokura.EffectTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.EffectTableBase> datas = 1;
 }
+

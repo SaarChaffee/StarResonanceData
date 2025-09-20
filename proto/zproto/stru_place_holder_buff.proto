@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message PlaceHolderBuff {
-    int32 buffId = 1;
-}

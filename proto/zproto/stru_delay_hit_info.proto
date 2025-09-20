@@ -5,9 +5,10 @@ package zproto;
 import "stru_delay_hit_target_info.proto";
 
 message DelayHitInfo {
-    int32 effectId = 1;
-    int32 buffUuid = 2;
-    int32 eventId = 3;
-    float playTime = 4;
-    repeated zproto.DelayHitTargetInfo targetInfos = 5;
+  int32 effect_id = 1;
+  int32 buff_uuid = 2;
+  int32 event_id = 3;
+  float play_time = 4;
+  repeated zproto.DelayHitTargetInfo target_infos = 5;
 }
+

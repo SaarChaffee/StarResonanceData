@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message ChallengeAffixParam {
-    int32 dungeonId = 1;
-    int32 diff = 2;
+  int32 dungeon_id = 1;
+  int32 diff = 2;
 }
+

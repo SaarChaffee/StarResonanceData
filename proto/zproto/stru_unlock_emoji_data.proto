@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_dirty_mask.proto";
-
-message UnlockEmojiData {
-    repeated zproto.UnlockEmojiData.UnlockMapEntry unlockMap = 1;
-}

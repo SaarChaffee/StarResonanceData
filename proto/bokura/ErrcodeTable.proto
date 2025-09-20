@@ -5,11 +5,13 @@ package bokura;
 import "table_basic.proto";
 
 message ErrcodeTableBase {
-    int32 Id = 1463;
-    string Errcode = 1759;
-    mlstring Content = 783;
-    int32 MessageId = 1544;
+  int32 id = 1463;
+  string errcode = 1759;
+  mlstring content = 783;
+  int32 message_id = 1544;
 }
+
 message ErrcodeTableMgr {
-    repeated bokura.ErrcodeTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ErrcodeTableBase> datas = 1;
 }
+

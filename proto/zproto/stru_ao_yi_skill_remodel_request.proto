@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message AoYiSkillRemodelRequest {
-    int32 aoyiStarId = 1;
+  int32 aoyi_star_id = 1;
 }
+

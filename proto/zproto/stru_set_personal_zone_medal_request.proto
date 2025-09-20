@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message SetPersonalZoneMedalRequest {
-    repeated zproto.SetPersonalZoneMedalRequest.MedalsEntry medals = 1;
-}

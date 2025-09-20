@@ -6,6 +6,7 @@ import "stru_community_update_structure_reply_opt.proto";
 import "enum_e_error_code.proto";
 
 message CommunityGrainUpdateStructureReply {
-    zproto.EErrorCode errCode = 1;
-    repeated zproto.CommunityUpdateStructureReplyOpt structures = 2;
+  zproto.EErrorCode err_code = 1;
+  repeated zproto.CommunityUpdateStructureReplyOpt structures = 2;
 }
+

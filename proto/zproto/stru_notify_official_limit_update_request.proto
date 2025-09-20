@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_union_official.proto";
-
-message NotifyOfficialLimitUpdateRequest {
-    repeated zproto.NotifyOfficialLimitUpdateRequest.OfficialsEntry officials = 2;
-}

@@ -3,8 +3,9 @@ syntax = "proto3";
 package zproto;
 
 enum EEntityStatusTransitionType {
-    EEntityStatusTransitionType_Default = 0;
-    EEntityStatusTransitionType_GlobalCondition = 1;
-    EEntityStatusTransitionType_InteractionTimes = 2;
-    EEntityStatusTransitionType_InteractionTemplate = 3;
+  EEntityStatusTransitionType_Default = 0;
+  EEntityStatusTransitionType_GlobalCondition = 1;
+  EEntityStatusTransitionType_InteractionTimes = 2;
+  EEntityStatusTransitionType_InteractionTemplate = 3;
 }
+

@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message GetQuestionnaireListRequest {
-    int32 level = 1;
-    int32 loginDay = 2;
-    int32 languageId = 3;
-}

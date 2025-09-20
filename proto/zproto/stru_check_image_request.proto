@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message CheckImageRequest {
-    repeated string urls = 1;
+  repeated string urls = 1;
 }
+

@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message CommunityBuildFurnitureReceiveRequest {
-    int64 buildUuid = 1;
-    bool isAll = 2;
+  int64 build_uuid = 1;
+  bool is_all = 2;
 }
+

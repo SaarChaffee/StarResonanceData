@@ -5,6 +5,7 @@ package zproto;
 import "stru_buy_shop_item_info.proto";
 
 message BuyShopItemRequest {
-    repeated zproto.BuyShopItemRequest.BuyShopItemInfoEntry buyShopItemInfo = 2;
-    string extData = 6;
+  map<int32, zproto.BuyShopItemInfo> buy_shop_item_info = 2;
+  string ext_data = 6;
 }
+

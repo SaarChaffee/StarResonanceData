@@ -3,15 +3,17 @@ syntax = "proto3";
 package bokura;
 
 message LocalShowRuleBase {
-    int32 Id = 1463;
-    string LangArea = 383;
-    string YMD = 1317;
-    string YMDToYMD = 809;
-    string MD = 381;
-    string MDToMD = 1410;
-    string HMS = 602;
-    string HM = 310;
+  int32 id = 1463;
+  string lang_area = 383;
+  string ymd = 1317;
+  string ymd_to_ymd = 809;
+  string md = 381;
+  string md_to_md = 1410;
+  string hms = 602;
+  string hm = 310;
 }
+
 message LocalShowRuleMgr {
-    repeated bokura.LocalShowRuleMgr.DatasEntry datas = 1;
+  map<int32, bokura.LocalShowRuleBase> datas = 1;
 }
+

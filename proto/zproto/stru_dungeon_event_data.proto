@@ -8,9 +8,10 @@ import "stru_dungeon_target_data.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonEventData {
-    int32 eventId = 1;
-    int32 startTime = 2;
-    zproto.DungeonEventState state = 3;
-    zproto.DungeonEventResult result = 4;
-    repeated zproto.DungeonEventData.DungeonTargetEntry dungeonTarget = 5;
+  int32 event_id = 1;
+  int32 start_time = 2;
+  zproto.DungeonEventState state = 3;
+  zproto.DungeonEventResult result = 4;
+  map<int32, zproto.DungeonTargetData> dungeon_target = 5;
 }
+

@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message ApprovalRequestRequest {
-    int64 unionId = 2;
-    repeated zproto.ApprovalRequestRequest.VApprovalListEntry vApprovalList = 3;
+  int64 union_id = 2;
+  map<int64, bool> v_approval_list = 3;
 }
+

@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message UnionOfficial {
-    int32 officialId = 1;
-    repeated zproto.UnionOfficial.PowerEntry power = 2;
-    string Name = 3;
-}

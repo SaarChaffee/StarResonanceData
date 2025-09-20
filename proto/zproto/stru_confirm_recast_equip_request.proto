@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message ConfirmRecastEquipRequest {
-    uint64 uuid = 1;
+  uint64 uuid = 1;
 }
+

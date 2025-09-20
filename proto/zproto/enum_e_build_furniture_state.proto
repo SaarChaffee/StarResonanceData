@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EBuildFurnitureState {
-    BuildFurnitureStateNone = 0;
-    BuildFurnitureStateBuilding = 1;
-    BuildFurnitureStateSuccess = 2;
+  BuildFurnitureStateNone = 0;
+  BuildFurnitureStateBuilding = 1;
+  BuildFurnitureStateSuccess = 2;
 }
+

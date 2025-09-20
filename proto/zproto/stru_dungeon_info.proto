@@ -5,9 +5,10 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message DungeonInfo {
-    int32 dungeonID = 1;
-    int32 completeCount = 2;
-    int32 awardFlg = 3;
-    int32 score = 4;
-    int32 passTime = 5;
+  int32 dungeon_id = 1;
+  int32 complete_count = 2;
+  int32 award_flg = 3;
+  int32 score = 4;
+  int32 pass_time = 5;
 }
+

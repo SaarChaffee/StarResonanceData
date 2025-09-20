@@ -3,9 +3,10 @@ syntax = "proto3";
 package zproto;
 
 enum EReportCategoryType {
-    EReportCategoryTypeNone = 0;
-    EReportCategoryTypeIllegalInfo = 1;
-    EReportCategoryTypeIllegalCustom = 7;
-    EReportCategoryTypeIllegalUnionInfo = 8;
-    EReportCategoryTypeIllegalBaseInfo = 9;
+  EReportCategoryTypeNone = 0;
+  EReportCategoryTypeIllegalInfo = 1;
+  EReportCategoryTypeIllegalCustom = 7;
+  EReportCategoryTypeIllegalUnionInfo = 8;
+  EReportCategoryTypeIllegalBaseInfo = 9;
 }
+

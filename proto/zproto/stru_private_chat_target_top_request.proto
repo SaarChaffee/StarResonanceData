@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message PrivateChatTargetTopRequest {
-    uint32 targetId = 1;
-    bool setTop = 2;
-}

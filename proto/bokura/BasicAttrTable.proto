@@ -5,20 +5,22 @@ package bokura;
 import "table_basic.proto";
 
 message BasicAttrTableBase {
-    int32 Id = 1463;
-    int32 Basic0 = 1978;
-    int_table GrowMin0 = 1795;
-    int_array GrowTimes0 = 1494;
-    int32 Basic2 = 56;
-    int_table GrowMin2 = 1098;
-    int_array GrowTimes2 = 1315;
-    int32 Basic3 = 1640;
-    int_table GrowMin3 = 1474;
-    int_array GrowTimes3 = 1975;
-    int32 Basic4 = 1070;
-    int_table GrowMin4 = 356;
-    int_array GrowTimes4 = 1703;
+  int32 id = 1463;
+  int32 basic0 = 1978;
+  int_table grow_min0 = 1795;
+  int_array grow_times0 = 1494;
+  int32 basic2 = 56;
+  int_table grow_min2 = 1098;
+  int_array grow_times2 = 1315;
+  int32 basic3 = 1640;
+  int_table grow_min3 = 1474;
+  int_array grow_times3 = 1975;
+  int32 basic4 = 1070;
+  int_table grow_min4 = 356;
+  int_array grow_times4 = 1703;
 }
+
 message BasicAttrTableMgr {
-    repeated bokura.BasicAttrTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.BasicAttrTableBase> datas = 1;
 }
+

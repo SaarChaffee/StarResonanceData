@@ -7,6 +7,7 @@ import "stru_dungeon_target_award.proto";
 import "stru_dirty_mask.proto";
 
 message ChallengeDungeonInfo {
-    repeated zproto.ChallengeDungeonInfo.DungeonInfoEntry dungeonInfo = 1;
-    repeated zproto.ChallengeDungeonInfo.DungeonTargetAwardEntry dungeonTargetAward = 2;
+  map<int32, zproto.DungeonInfo> dungeon_info = 1;
+  map<int32, zproto.DungeonTargetAward> dungeon_target_award = 2;
 }
+

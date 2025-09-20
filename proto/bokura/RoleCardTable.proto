@@ -5,15 +5,17 @@ package bokura;
 import "table_basic.proto";
 
 message RoleCardTableBase {
-    int32 Id = 1463;
-    string FunctionId = 149;
-    mlstring Name = 439;
-    string System = 1444;
-    string Show = 183;
-    string Sort = 1643;
-    string Check = 1274;
-    string Icon = 1153;
+  int32 id = 1463;
+  string function_id = 149;
+  mlstring name = 439;
+  string system = 1444;
+  string show = 183;
+  string sort = 1643;
+  string check = 1274;
+  string icon = 1153;
 }
+
 message RoleCardTableMgr {
-    repeated bokura.RoleCardTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.RoleCardTableBase> datas = 1;
 }
+

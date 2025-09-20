@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message PlaceHolderFishRank {
-    int32 FishId = 1;
-    int32 Size = 2;
-    int32 Rank = 3;
-}

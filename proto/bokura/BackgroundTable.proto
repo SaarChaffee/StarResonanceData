@@ -3,10 +3,12 @@ syntax = "proto3";
 package bokura;
 
 message BackgroundTableBase {
-    int32 Id = 1463;
-    int32 Sequence = 831;
-    string Res = 1275;
+  int32 id = 1463;
+  int32 sequence = 831;
+  string res = 1275;
 }
+
 message BackgroundTableMgr {
-    repeated bokura.BackgroundTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.BackgroundTableBase> datas = 1;
 }
+

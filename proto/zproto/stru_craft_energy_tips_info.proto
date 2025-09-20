@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message CraftEnergyTipsInfo {
-    int32 consumeValue = 1;
-    int32 residue = 2;
+  int32 consume_value = 1;
+  int32 residue = 2;
 }
+

@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum EDungeonTimerTimerLookType {
-    EDungeonTimerTimerLookTypeDefault = 0;
-    EDungeonTimerTimerLookTypeRed = 1;
+  EDungeonTimerTimerLookTypeDefault = 0;
+  EDungeonTimerTimerLookTypeRed = 1;
 }
+

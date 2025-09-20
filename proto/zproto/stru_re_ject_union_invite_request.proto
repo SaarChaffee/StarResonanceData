@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message ReJectUnionInviteRequest {
-    int64 InviteId = 1;
-}

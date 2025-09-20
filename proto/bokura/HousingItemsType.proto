@@ -3,10 +3,12 @@ syntax = "proto3";
 package bokura;
 
 message HousingItemsTypeBase {
-    int32 Id = 1463;
-    int32 TypeName = 1505;
-    int32 GroupId = 196;
+  int32 id = 1463;
+  int32 type_name = 1505;
+  int32 group_id = 196;
 }
+
 message HousingItemsTypeMgr {
-    repeated bokura.HousingItemsTypeMgr.DatasEntry datas = 1;
+  map<int32, bokura.HousingItemsTypeBase> datas = 1;
 }
+

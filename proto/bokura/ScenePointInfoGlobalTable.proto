@@ -5,9 +5,11 @@ package bokura;
 import "table_basic.proto";
 
 message ScenePointInfoGlobalTableBase {
-    int32 UId = 2028;
-    number_array Position = 686;
+  int32 u_id = 2028;
+  number_array position = 686;
 }
+
 message ScenePointInfoGlobalTableMgr {
-    repeated bokura.ScenePointInfoGlobalTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ScenePointInfoGlobalTableBase> datas = 1;
 }
+

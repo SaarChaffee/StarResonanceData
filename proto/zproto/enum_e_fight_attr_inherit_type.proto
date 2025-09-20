@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EFightAttrInheritType {
-    InheritMaster = 0;
-    InheritCopyByMaster = 1;
-    NoInherit = 100;
+  InheritMaster = 0;
+  InheritCopyByMaster = 1;
+  NoInherit = 100;
 }
+

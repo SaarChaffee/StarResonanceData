@@ -5,20 +5,22 @@ package bokura;
 import "table_basic.proto";
 
 message TargetTableBase {
-    int32 Id = 1463;
-    int32 TargetType = 736;
-    int32 Num = 947;
-    int32 SceneId = 1506;
-    int_array Param = 1207;
-    string TargetPos = 1118;
-    bool IsTeamShare = 1925;
-    mlstring TargetDes = 1279;
-    bool IsShowProgress = 56;
-    mlstring_array SpVariable = 280;
-    mlstring_array SpVariableLimit = 315;
-    mlstring_array SpVariableName = 2006;
-    int_array IsShowSpVariableProgress = 800;
+  int32 id = 1463;
+  int32 target_type = 736;
+  int32 num = 947;
+  int32 scene_id = 1506;
+  int_array param = 1207;
+  string target_pos = 1118;
+  bool is_team_share = 1925;
+  mlstring target_des = 1279;
+  bool is_show_progress = 56;
+  mlstring_array sp_variable = 280;
+  mlstring_array sp_variable_limit = 315;
+  mlstring_array sp_variable_name = 2006;
+  int_array is_show_sp_variable_progress = 800;
 }
+
 message TargetTableMgr {
-    repeated bokura.TargetTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.TargetTableBase> datas = 1;
 }
+

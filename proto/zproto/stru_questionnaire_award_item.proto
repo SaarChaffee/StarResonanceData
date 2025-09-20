@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message QuestionnaireAwardItem {
-    int32 configId = 1;
-    int32 count = 2;
-}

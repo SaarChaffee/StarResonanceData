@@ -5,16 +5,18 @@ package bokura;
 import "table_basic.proto";
 
 message AchievementDateTableBase {
-    int32 Id = 1463;
-    mlstring Name = 439;
-    int_array TargetId = 1432;
-    int_table Condition = 1634;
-    int32 PreAchievement = 327;
-    int32 RewardID = 212;
-    string Des = 266;
-    string TypeIcon = 1596;
-    int32 SeasonId = 1669;
+  int32 id = 1463;
+  mlstring name = 439;
+  int_array target_id = 1432;
+  int_table condition = 1634;
+  int32 pre_achievement = 327;
+  int32 reward_id = 212;
+  string des = 266;
+  string type_icon = 1596;
+  int32 season_id = 1669;
 }
+
 message AchievementDateTableMgr {
-    repeated bokura.AchievementDateTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.AchievementDateTableBase> datas = 1;
 }
+

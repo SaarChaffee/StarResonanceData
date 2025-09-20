@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message FaceUploadData {
-    string shortGuid = 1;
-    string fileSuffix = 2;
-}

@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message DecomposeModRequest {
-    repeated int64 modUuids = 1;
+  repeated int64 mod_uuids = 1;
 }
+

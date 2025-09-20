@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_social_data.proto";
 
 message CreateCharReply {
-    zproto.SocialData socialData = 1;
-    zproto.EErrorCode errCode = 2;
+  zproto.SocialData social_data = 1;
+  zproto.EErrorCode err_code = 2;
 }
+

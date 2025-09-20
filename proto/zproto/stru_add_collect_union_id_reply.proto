@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_union_list_data.proto";
 
 message AddCollectUnionIdReply {
-    zproto.UnionListData briefUnionIfo = 1;
-    zproto.EErrorCode errCode = 2;
+  zproto.UnionListData brief_union_ifo = 1;
+  zproto.EErrorCode err_code = 2;
 }
+

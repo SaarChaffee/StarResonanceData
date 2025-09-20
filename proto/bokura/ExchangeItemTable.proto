@@ -5,18 +5,20 @@ package bokura;
 import "table_basic.proto";
 
 message ExchangeItemTableBase {
-    int32 Id = 1463;
-    int32 ExchangeID = 194;
-    int32 GetItemId = 987;
-    int32 GetNum = 281;
-    string Name = 439;
-    int_table ConsumableID = 920;
-    string UnlockConditions = 613;
-    int32 RefreshType = 213;
-    int32 RefreshNum = 1376;
-    int32 SexLimit = 794;
-    int32 Sort = 1643;
+  int32 id = 1463;
+  int32 exchange_id = 194;
+  int32 get_item_id = 987;
+  int32 get_num = 281;
+  string name = 439;
+  int_table consumable_id = 920;
+  string unlock_conditions = 613;
+  int32 refresh_type = 213;
+  int32 refresh_num = 1376;
+  int32 sex_limit = 794;
+  int32 sort = 1643;
 }
+
 message ExchangeItemTableMgr {
-    repeated bokura.ExchangeItemTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ExchangeItemTableBase> datas = 1;
 }
+

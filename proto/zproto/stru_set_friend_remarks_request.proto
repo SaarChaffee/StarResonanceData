@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message SetFriendRemarksRequest {
-    int64 charId = 2;
-    string remark = 3;
-}

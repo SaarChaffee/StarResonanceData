@@ -5,20 +5,22 @@ package bokura;
 import "table_basic.proto";
 
 message MessageTableBase {
-    int32 Id = 1463;
-    mlstring Content = 783;
-    int32 Type = 673;
-    float DurationTime = 584;
-    mlstring ChatName = 1341;
-    float Delay = 399;
-    int_array RepeatPlay = 1037;
-    int_array ShowChannel = 619;
-    bool FilterRule = 1567;
-    bool IsShowInChat = 1135;
-    bool TypewriterEffect = 1435;
-    int32 Interrupt = 1764;
-    string Audio = 1970;
+  int32 id = 1463;
+  mlstring content = 783;
+  int32 type = 673;
+  float duration_time = 584;
+  mlstring chat_name = 1341;
+  float delay = 399;
+  int_array repeat_play = 1037;
+  int_array show_channel = 619;
+  bool filter_rule = 1567;
+  bool is_show_in_chat = 1135;
+  bool typewriter_effect = 1435;
+  int32 interrupt = 1764;
+  string audio = 1970;
 }
+
 message MessageTableMgr {
-    repeated bokura.MessageTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.MessageTableBase> datas = 1;
 }
+

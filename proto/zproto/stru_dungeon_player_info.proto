@@ -6,6 +6,7 @@ import "stru_social_data.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonPlayerInfo {
-    int64 charId = 1;
-    zproto.SocialData socialData = 2;
+  int64 char_id = 1;
+  zproto.SocialData social_data = 2;
 }
+

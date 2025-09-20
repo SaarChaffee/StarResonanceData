@@ -3,9 +3,10 @@ syntax = "proto3";
 package zproto;
 
 enum EBulletMotionType {
-    BulletMotionNormal = 0;
-    BulletMotionLinear = 1;
-    BulletMotionBezier = 2;
-    BulletMotionFollow = 3;
-    BulletMotionSurround = 4;
+  BulletMotionNormal = 0;
+  BulletMotionLinear = 1;
+  BulletMotionBezier = 2;
+  BulletMotionFollow = 3;
+  BulletMotionSurround = 4;
 }
+

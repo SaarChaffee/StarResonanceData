@@ -5,5 +5,6 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message CutsState {
-    repeated zproto.CutsState.StateInfoEntry stateInfo = 1;
+  map<int32, int32> state_info = 1;
 }
+

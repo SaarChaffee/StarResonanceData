@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_tss_account_info_proto.proto";
-
-message NotifyLoginAntiDataRequest {
-    zproto.TssAccountInfoProto tssInfo = 1;
-}

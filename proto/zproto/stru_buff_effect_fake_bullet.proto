@@ -5,9 +5,10 @@ package zproto;
 import "stru_vec3.proto";
 
 message BuffEffectFakeBullet {
-    int32 buffUuid = 1;
-    int32 eventId = 2;
-    int32 bulletId = 3;
-    int32 buffId = 4;
-    zproto.Vec3 bulletOffset = 5;
+  int32 buff_uuid = 1;
+  int32 event_id = 2;
+  int32 bullet_id = 3;
+  int32 buff_id = 4;
+  zproto.Vec3 bullet_offset = 5;
 }
+

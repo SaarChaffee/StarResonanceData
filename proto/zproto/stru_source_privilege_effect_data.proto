@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_privilege_effect_list_data.proto";
-
-message SourcePrivilegeEffectData {
-    repeated zproto.SourcePrivilegeEffectData.PrivilegeEffectsMapEntry privilegeEffectsMap = 1;
-}

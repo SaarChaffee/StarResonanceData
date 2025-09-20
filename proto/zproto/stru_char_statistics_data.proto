@@ -5,6 +5,7 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message CharStatisticsData {
-    int32 LoginDays = 1;
-    uint64 LastLoginTime = 2;
+  int32 login_days = 1;
+  uint64 last_login_time = 2;
 }
+

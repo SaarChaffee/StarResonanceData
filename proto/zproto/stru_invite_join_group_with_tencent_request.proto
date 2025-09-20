@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message InviteJoinGroupWithTencentRequest {
-    int64 unionId = 1;
-    string desc = 2;
-    string url = 3;
-}

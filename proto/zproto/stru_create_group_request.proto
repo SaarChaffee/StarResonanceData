@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message CreateGroupRequest {
-    string groupName = 1;
+  string group_name = 1;
 }
+

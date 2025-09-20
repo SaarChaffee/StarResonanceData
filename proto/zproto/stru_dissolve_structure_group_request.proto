@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message DissolveStructureGroupRequest {
-    int64 groupId = 1;
-    bool isOuter = 2;
+  int64 group_id = 1;
+  bool is_outer = 2;
 }
+

@@ -8,16 +8,21 @@ import "stru_notify_clear_chat_history_request.proto";
 import "stru_notify_newest_chit_chat_msgs_request.proto";
 
 message ChitChatNtf {
-    message NotifyNewestChitChatMsgs {
-        zproto.NotifyNewestChitChatMsgsRequest vRequest = 1;
-    }
-    message NotifyBeMuted {
-        zproto.NotifyBeMutedRequest vRequest = 1;
-    }
-    message NotifyAddPrivateChatSession {
-        zproto.NotifyAddPrivateChatSessionRequest vRequest = 1;
-    }
-    message NotifyClearChatHistory {
-        zproto.NotifyClearChatHistoryRequest vRequest = 1;
-    }
+
+  message NotifyNewestChitChatMsgs {
+    zproto.NotifyNewestChitChatMsgsRequest v_request = 1;
+  }
+
+  message NotifyBeMuted {
+    zproto.NotifyBeMutedRequest v_request = 1;
+  }
+
+  message NotifyAddPrivateChatSession {
+    zproto.NotifyAddPrivateChatSessionRequest v_request = 1;
+  }
+
+  message NotifyClearChatHistory {
+    zproto.NotifyClearChatHistoryRequest v_request = 1;
+  }
 }
+

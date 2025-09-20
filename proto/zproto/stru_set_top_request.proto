@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message SetTopRequest {
-    int64 charId = 2;
-    bool isTop = 3;
-}

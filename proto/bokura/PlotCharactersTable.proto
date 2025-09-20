@@ -3,12 +3,14 @@ syntax = "proto3";
 package bokura;
 
 message PlotCharactersTableBase {
-    int32 Id = 1463;
-    string PlotCharactersName = 988;
-    string PlotCharactersGender = 342;
-    string PlotCharactersAge = 1071;
-    string PlotCharactersContent = 1541;
+  int32 id = 1463;
+  string plot_characters_name = 988;
+  string plot_characters_gender = 342;
+  string plot_characters_age = 1071;
+  string plot_characters_content = 1541;
 }
+
 message PlotCharactersTableMgr {
-    repeated bokura.PlotCharactersTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.PlotCharactersTableBase> datas = 1;
 }
+

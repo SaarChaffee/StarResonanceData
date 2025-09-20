@@ -5,12 +5,14 @@ package bokura;
 import "table_basic.proto";
 
 message ChatPersonalizedTagBase {
-    int32 Id = 1463;
-    mlstring TagName = 510;
-    string TagBG = 1998;
-    string TagIcon = 25;
-    int32 Sequence = 831;
+  int32 id = 1463;
+  mlstring tag_name = 510;
+  string tag_bg = 1998;
+  string tag_icon = 25;
+  int32 sequence = 831;
 }
+
 message ChatPersonalizedTagMgr {
-    repeated bokura.ChatPersonalizedTagMgr.DatasEntry datas = 1;
+  map<int32, bokura.ChatPersonalizedTagBase> datas = 1;
 }
+

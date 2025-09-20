@@ -8,8 +8,9 @@ import "stru_union_e_screen_info.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonUnionInfo {
-    int64 unionId = 1;
-    repeated zproto.DungeonUnionInfo.UnionBuildingsEntry unionBuildings = 2;
-    repeated zproto.DungeonUnionInfo.EScreenInfosEntry eScreenInfos = 3;
-    zproto.DanceBall danceBall = 4;
+  int64 union_id = 1;
+  map<int32, zproto.UnionBuilding> union_buildings = 2;
+  map<int32, zproto.UnionEScreenInfo> e_screen_infos = 3;
+  zproto.DanceBall dance_ball = 4;
 }
+

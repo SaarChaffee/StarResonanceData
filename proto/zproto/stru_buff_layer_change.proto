@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message BuffLayerChange {
-    int32 layer = 1;
+  int32 layer = 1;
 }
+

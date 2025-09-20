@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum EUseSlotType {
-    UseSlotType_Other = 0;
-    UseSlotType_Skill = 1;
+  UseSlotType_Other = 0;
+  UseSlotType_Skill = 1;
 }
+

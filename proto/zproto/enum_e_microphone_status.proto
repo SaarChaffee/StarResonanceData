@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EMicrophoneStatus {
-    EMicrophoneStatusOpened = 0;
-    EMicrophoneStatusClosed = 1;
-    EMicrophoneStatusOpenSpeaker = 2;
+  EMicrophoneStatusOpened = 0;
+  EMicrophoneStatusClosed = 1;
+  EMicrophoneStatusOpenSpeaker = 2;
 }
+

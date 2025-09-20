@@ -7,9 +7,10 @@ import "stru_item.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonHeroKeyInfo {
-    int64 charId = 1;
-    repeated zproto.Item heroKeyItem = 2;
-    repeated zproto.DungeonHeroKeyInfo.KeyInfoEntry keyInfo = 3;
-    zproto.Item useItem = 4;
-    repeated zproto.Item heroKeyAwardItem = 5;
+  int64 char_id = 1;
+  repeated zproto.Item hero_key_item = 2;
+  map<uint32, zproto.HeroKeyItemInfo> key_info = 3;
+  zproto.Item use_item = 4;
+  repeated zproto.Item hero_key_award_item = 5;
 }
+

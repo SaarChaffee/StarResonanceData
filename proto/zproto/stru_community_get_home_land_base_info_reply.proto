@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_homeland_base_info.proto";
 
 message CommunityGetHomeLandBaseInfoReply {
-    zproto.HomelandBaseInfo homelandBaseInfo = 1;
-    zproto.EErrorCode errCode = 2;
+  zproto.HomelandBaseInfo homeland_base_info = 1;
+  zproto.EErrorCode err_code = 2;
 }
+

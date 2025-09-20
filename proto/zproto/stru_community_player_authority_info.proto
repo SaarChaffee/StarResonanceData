@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message CommunityPlayerAuthorityInfo {
-    repeated zproto.CommunityPlayerAuthorityInfo.AuthorityEntry authority = 1;
+  map<int32, bool> authority = 1;
 }
+

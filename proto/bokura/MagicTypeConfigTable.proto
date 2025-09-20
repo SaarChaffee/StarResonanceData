@@ -5,13 +5,15 @@ package bokura;
 import "table_basic.proto";
 
 message MagicTypeConfigTableBase {
-    int32 Id = 1463;
-    string Name = 439;
-    string EnumTypeName = 414;
-    string_array EnumNames = 1131;
-    int_array Indexs = 1541;
-    string_array Descs = 1085;
+  int32 id = 1463;
+  string name = 439;
+  string enum_type_name = 414;
+  string_array enum_names = 1131;
+  int_array indexs = 1541;
+  string_array descs = 1085;
 }
+
 message MagicTypeConfigTableMgr {
-    repeated bokura.MagicTypeConfigTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.MagicTypeConfigTableBase> datas = 1;
 }
+

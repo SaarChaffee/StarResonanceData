@@ -5,7 +5,8 @@ package zproto;
 import "stru_item.proto";
 
 message CommunityWarehouseGrid {
-    int64 ownerCharId = 1;
-    zproto.Item itemInfo = 2;
-    int32 pos = 3;
+  int64 owner_char_id = 1;
+  zproto.Item item_info = 2;
+  int32 pos = 3;
 }
+

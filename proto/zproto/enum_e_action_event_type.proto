@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 enum EActionEventType {
-    ReqSwitchScene = 0;
+  ReqSwitchScene = 0;
 }
+

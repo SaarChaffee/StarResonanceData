@@ -5,24 +5,26 @@ package bokura;
 import "table_basic.proto";
 
 message FunctionTableBase {
-    int32 Id = 1463;
-    mlstring Name = 439;
-    string Note = 453;
-    string Atlas = 1702;
-    string DialogIcon = 407;
-    string Icon = 1153;
-    string_array FunctionOrder = 1467;
-    int32 ParentId = 1361;
-    int32 Level = 1120;
-    int32 RoleLevel = 567;
-    int32 QuestId = 874;
-    int_array QuestStepId = 481;
-    int32 TimerId = 190;
-    int32 OnOff = 1716;
-    int32 Preview = 719;
-    mlstring PreviewText = 826;
-    int32 OpenTips = 1023;
+  int32 id = 1463;
+  mlstring name = 439;
+  string note = 453;
+  string atlas = 1702;
+  string dialog_icon = 407;
+  string icon = 1153;
+  string_array function_order = 1467;
+  int32 parent_id = 1361;
+  int32 level = 1120;
+  int32 role_level = 567;
+  int32 quest_id = 874;
+  int_array quest_step_id = 481;
+  int32 timer_id = 190;
+  int32 on_off = 1716;
+  int32 preview = 719;
+  mlstring preview_text = 826;
+  int32 open_tips = 1023;
 }
+
 message FunctionTableMgr {
-    repeated bokura.FunctionTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.FunctionTableBase> datas = 1;
 }
+

@@ -5,10 +5,12 @@ package bokura;
 import "table_basic.proto";
 
 message ChatBubbleBase {
-    int32 Id = 1463;
-    mlstring Content = 783;
-    int32 PlotCharactersId = 1282;
+  int32 id = 1463;
+  mlstring content = 783;
+  int32 plot_characters_id = 1282;
 }
+
 message ChatBubbleMgr {
-    repeated bokura.ChatBubbleMgr.DatasEntry datas = 1;
+  map<int32, bokura.ChatBubbleBase> datas = 1;
 }
+

@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_dirty_mask.proto";
-
-message QuestHistory {
-    repeated zproto.QuestHistory.StepHistoryEntry stepHistory = 1;
-}

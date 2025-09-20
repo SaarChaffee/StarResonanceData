@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message AoYiItemDecomposeRequest {
-    repeated zproto.AoYiItemDecomposeRequest.AoYiItemsEntry aoYiItems = 2;
+  map<uint64, uint32> ao_yi_items = 2;
 }
+

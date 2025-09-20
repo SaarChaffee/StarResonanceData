@@ -5,9 +5,11 @@ package bokura;
 import "table_basic.proto";
 
 message AchievementEntryTableBase {
-    int32 Id = 1463;
-    int_array AchievementList = 1797;
+  int32 id = 1463;
+  int_array achievement_list = 1797;
 }
+
 message AchievementEntryTableMgr {
-    repeated bokura.AchievementEntryTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.AchievementEntryTableBase> datas = 1;
 }
+

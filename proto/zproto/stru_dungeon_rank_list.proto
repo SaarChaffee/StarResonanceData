@@ -6,5 +6,6 @@ import "stru_dungeon_rank_info.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonRankList {
-    repeated zproto.DungeonRankList.DungeonRankMapEntry dungeonRankMap = 1;
+  map<int32, zproto.DungeonRankInfo> dungeon_rank_map = 1;
 }
+

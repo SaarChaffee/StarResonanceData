@@ -5,7 +5,8 @@ package zproto;
 import "enum_e_error_code.proto";
 
 message ChangeAvatarReply {
-    int32 avatarId = 1;
-    bool success = 2;
-    zproto.EErrorCode errCode = 3;
+  int32 avatar_id = 1;
+  bool success = 2;
+  zproto.EErrorCode err_code = 3;
 }
+

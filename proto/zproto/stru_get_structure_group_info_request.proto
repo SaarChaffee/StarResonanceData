@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message GetStructureGroupInfoRequest {
-    bool isOuter = 1;
-}

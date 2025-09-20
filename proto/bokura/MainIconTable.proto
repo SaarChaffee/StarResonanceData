@@ -5,14 +5,16 @@ package bokura;
 import "table_basic.proto";
 
 message MainIconTableBase {
-    int32 Id = 1463;
-    mlstring Title = 695;
-    int32 SystemPlace = 387;
-    int32 SortId = 1586;
-    string Atlas = 1702;
-    string Icon = 1153;
-    string Path = 172;
+  int32 id = 1463;
+  mlstring title = 695;
+  int32 system_place = 387;
+  int32 sort_id = 1586;
+  string atlas = 1702;
+  string icon = 1153;
+  string path = 172;
 }
+
 message MainIconTableMgr {
-    repeated bokura.MainIconTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.MainIconTableBase> datas = 1;
 }
+

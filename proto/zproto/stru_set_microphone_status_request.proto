@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "enum_e_microphone_status.proto";
-
-message SetMicrophoneStatusRequest {
-    zproto.EMicrophoneStatus microphoneStatus = 2;
-}

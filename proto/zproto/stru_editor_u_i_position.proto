@@ -5,7 +5,8 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message EditorUIPosition {
-    int32 id = 1;
-    float x = 2;
-    float y = 3;
+  int32 id = 1;
+  float x = 2;
+  float y = 3;
 }
+

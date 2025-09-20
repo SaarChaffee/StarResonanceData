@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum ENotifyTrigger {
-    ETypeInZone = 0;
-    ETypeOutZone = 1;
-    ETypeRange = 2;
+  ETypeInZone = 0;
+  ETypeOutZone = 1;
+  ETypeRange = 2;
 }
+

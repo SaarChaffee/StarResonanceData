@@ -3,10 +3,12 @@ syntax = "proto3";
 package bokura;
 
 message CGTableBase {
-    int32 Id = 1463;
-    string CGName = 1264;
-    string ResPath = 548;
+  int32 id = 1463;
+  string cg_name = 1264;
+  string res_path = 548;
 }
+
 message CGTableMgr {
-    repeated bokura.CGTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.CGTableBase> datas = 1;
 }
+

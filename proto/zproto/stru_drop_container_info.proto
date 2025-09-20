@@ -7,6 +7,7 @@ import "stru_drop_container_single.proto";
 import "stru_dirty_mask.proto";
 
 message DropContainerInfo {
-    repeated zproto.DropContainerInfo.DropContainersEntry DropContainers = 1;
-    repeated zproto.DropContainerInfo.DropAwardHistoriesEntry DropAwardHistories = 2;
+  map<int32, zproto.DropContainerSingle> drop_containers = 1;
+  map<int32, zproto.DropAwardHistory> drop_award_histories = 2;
 }
+

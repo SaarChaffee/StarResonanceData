@@ -3,10 +3,12 @@ syntax = "proto3";
 package bokura;
 
 message ColorTagTableBase {
-    int32 Id = 1463;
-    string ColorTag = 1143;
-    string Color = 1995;
+  int32 id = 1463;
+  string color_tag = 1143;
+  string color = 1995;
 }
+
 message ColorTagTableMgr {
-    repeated bokura.ColorTagTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ColorTagTableBase> datas = 1;
 }
+

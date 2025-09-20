@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message SetGroupSortRequest {
-    repeated int32 groupSort = 2;
-}

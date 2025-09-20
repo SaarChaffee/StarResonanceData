@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 message Clutter {
-    int64 uuid = 1;
-    int32 configId = 2;
-    int32 positionId = 3;
+  int64 uuid = 1;
+  int32 config_id = 2;
+  int32 position_id = 3;
 }
+

@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message DanceBegin {
-    int64 unionId = 1;
+  int64 union_id = 1;
 }
+

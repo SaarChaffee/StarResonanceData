@@ -5,27 +5,29 @@ package bokura;
 import "table_basic.proto";
 
 message CameraShowDataTableBase {
-    int64 Id = 1463;
-    float Start = 678;
-    float Duration = 544;
-    float End = 1415;
-    bool IsAttacker = 920;
-    int32 StateId = 308;
-    int32 GroupId = 196;
-    int32 CameraEffectType = 566;
-    float Frequency = 892;
-    vector3 Amplitude = 244;
-    number_table FrequencyCurve = 158;
-    number_table AmplitudeCurve = 2024;
-    bool OnlyCaster = 492;
-    float MaxDistance = 474;
-    number_table DistanceCurve = 1874;
-    float Intensity = 881;
-    number_table IntensityCurve = 153;
-    float Threshold = 810;
-    bool IsRandom = 1573;
-    number_array ExtraParms = 202;
+  int64 id = 1463;
+  float start = 678;
+  float duration = 544;
+  float end = 1415;
+  bool is_attacker = 920;
+  int32 state_id = 308;
+  int32 group_id = 196;
+  int32 camera_effect_type = 566;
+  float frequency = 892;
+  vector3 amplitude = 244;
+  number_table frequency_curve = 158;
+  number_table amplitude_curve = 2024;
+  bool only_caster = 492;
+  float max_distance = 474;
+  number_table distance_curve = 1874;
+  float intensity = 881;
+  number_table intensity_curve = 153;
+  float threshold = 810;
+  bool is_random = 1573;
+  number_array extra_parms = 202;
 }
+
 message CameraShowDataTableMgr {
-    repeated bokura.CameraShowDataTableMgr.DatasEntry datas = 1;
+  map<int64, bokura.CameraShowDataTableBase> datas = 1;
 }
+

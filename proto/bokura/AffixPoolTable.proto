@@ -5,14 +5,16 @@ package bokura;
 import "table_basic.proto";
 
 message AffixPoolTableBase {
-    int32 Id = 1463;
-    string Name = 439;
-    string Description = 75;
-    int_table Affix = 1436;
-    int32 AffixQuantity = 1469;
-    int_table EffectTypeLimit = 1532;
-    int_table TargetTypeLimit = 1783;
+  int32 id = 1463;
+  string name = 439;
+  string description = 75;
+  int_table affix = 1436;
+  int32 affix_quantity = 1469;
+  int_table effect_type_limit = 1532;
+  int_table target_type_limit = 1783;
 }
+
 message AffixPoolTableMgr {
-    repeated bokura.AffixPoolTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.AffixPoolTableBase> datas = 1;
 }
+

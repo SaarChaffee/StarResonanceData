@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum EBuffProfessionEffect {
-    EBuffProfessionEffectEmain = 0;
-    EBuffProfessionEffectEsub = 1;
+  EBuffProfessionEffectEmain = 0;
+  EBuffProfessionEffectEsub = 1;
 }
+

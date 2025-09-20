@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_union_list_data.proto";
 
 message BatchSearchUnionListReply {
-    repeated zproto.UnionListData unionList = 1;
-    zproto.EErrorCode errCode = 2;
+  repeated zproto.UnionListData union_list = 1;
+  zproto.EErrorCode err_code = 2;
 }
+

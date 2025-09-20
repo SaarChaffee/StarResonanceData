@@ -5,9 +5,11 @@ package bokura;
 import "table_basic.proto";
 
 message ObtainWayTableBase {
-    int32 Id = 1463;
-    int_table GetWays = 498;
+  int32 id = 1463;
+  int_table get_ways = 498;
 }
+
 message ObtainWayTableMgr {
-    repeated bokura.ObtainWayTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ObtainWayTableBase> datas = 1;
 }
+

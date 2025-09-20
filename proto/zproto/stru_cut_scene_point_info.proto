@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message CutScenePointInfo {
-    int32 cutSceneId = 1;
+  int32 cut_scene_id = 1;
 }
+

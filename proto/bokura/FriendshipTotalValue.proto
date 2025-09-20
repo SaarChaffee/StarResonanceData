@@ -5,12 +5,14 @@ package bokura;
 import "table_basic.proto";
 
 message FriendshipTotalValueBase {
-    int32 Level = 1120;
-    int32 Exp = 970;
-    bool IsAwardLevel = 1171;
-    int_table RewardID = 212;
-    int32 AwardID = 1636;
+  int32 level = 1120;
+  int32 exp = 970;
+  bool is_award_level = 1171;
+  int_table reward_id = 212;
+  int32 award_id = 1636;
 }
+
 message FriendshipTotalValueMgr {
-    repeated bokura.FriendshipTotalValueMgr.DatasEntry datas = 1;
+  map<int32, bokura.FriendshipTotalValueBase> datas = 1;
 }
+

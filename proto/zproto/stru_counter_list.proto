@@ -6,5 +6,6 @@ import "stru_counter_info.proto";
 import "stru_dirty_mask.proto";
 
 message CounterList {
-    repeated zproto.CounterList.CounterMapEntry counterMap = 1;
+  map<int32, zproto.CounterInfo> counter_map = 1;
 }
+

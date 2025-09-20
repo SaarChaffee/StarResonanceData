@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message SetEffectBuffRequest {
-    int64 unionId = 2;
-    int32 effectBuffPos = 3;
-    int32 effectBuffId = 4;
-}

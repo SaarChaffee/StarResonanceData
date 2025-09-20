@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum ECommunityAuthorityType {
-    CommunityAuthorityType = 0;
-    CommunityAuthorityTypeWareHouse = 1;
-    CommunityAuthorityTypeSellItem = 2;
+  CommunityAuthorityType = 0;
+  CommunityAuthorityTypeWareHouse = 1;
+  CommunityAuthorityTypeSellItem = 2;
 }
+

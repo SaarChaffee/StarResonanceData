@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message ReqSceneLineInfoRequest {
-    int32 sceneId = 1;
-}

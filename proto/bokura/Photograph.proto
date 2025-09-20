@@ -5,10 +5,12 @@ package bokura;
 import "table_basic.proto";
 
 message PhotographBase {
-    int32 Id = 1463;
-    string Parameter = 893;
-    number_array Value = 616;
+  int32 id = 1463;
+  string parameter = 893;
+  number_array value = 616;
 }
+
 message PhotographMgr {
-    repeated bokura.PhotographMgr.DatasEntry datas = 1;
+  map<int32, bokura.PhotographBase> datas = 1;
 }
+

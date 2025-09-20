@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "enum_union_sub_func.proto";
-
-message NotifyUnionSubFuncUnlockRequest {
-    zproto.UnionSubFunc subFuncType = 1;
-}

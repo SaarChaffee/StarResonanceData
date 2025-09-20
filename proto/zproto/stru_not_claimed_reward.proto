@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message NotClaimedReward {
-    int64 awardTime = 1;
-    repeated int32 awardIdList = 2;
-}

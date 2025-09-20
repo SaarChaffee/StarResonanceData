@@ -5,18 +5,20 @@ package bokura;
 import "table_basic.proto";
 
 message ZoneTableBase {
-    int32 Id = 1463;
-    string Name = 439;
-    int32 ModelID = 2011;
-    string EffectPath = 1536;
-    int_table StatusInfo = 1979;
-    int_table StatusTransition = 109;
-    int32 DefaultState = 1528;
-    int_table InteractionTemplate = 1682;
-    string_array InteractionEvent = 1343;
-    int_table ShowStatusInfo = 1473;
-    int_table ShowStatusTransition = 1771;
+  int32 id = 1463;
+  string name = 439;
+  int32 model_id = 2011;
+  string effect_path = 1536;
+  int_table status_info = 1979;
+  int_table status_transition = 109;
+  int32 default_state = 1528;
+  int_table interaction_template = 1682;
+  string_array interaction_event = 1343;
+  int_table show_status_info = 1473;
+  int_table show_status_transition = 1771;
 }
+
 message ZoneTableMgr {
-    repeated bokura.ZoneTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ZoneTableBase> datas = 1;
 }
+

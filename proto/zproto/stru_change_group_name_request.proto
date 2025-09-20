@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message ChangeGroupNameRequest {
-    int32 groupId = 1;
-    string newName = 2;
+  int32 group_id = 1;
+  string new_name = 2;
 }
+

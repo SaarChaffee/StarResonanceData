@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message WeekTargetParam {
-    int32 targetId = 1;
-}

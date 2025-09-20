@@ -5,23 +5,25 @@ package bokura;
 import "table_basic.proto";
 
 message QteTableBase {
-    int32 Id = 1463;
-    string name = 176;
-    int32 QTEType = 1505;
-    int32 UIType = 914;
-    float maxTime = 1798;
-    number_table timeQuantum = 900;
-    int_array triggerCount = 2;
-    number_table triggerTime = 451;
-    int_table playSkill = 1549;
-    int_table buffIdWhenSuccess = 1259;
-    int_array buffIdWhenFailure = 959;
-    int32 QTEShowSkillId = 1403;
-    number_table EventParams = 1429;
-    int32 functionId = 818;
-    int_array impactFunctionId = 1586;
-    int32 impactType = 357;
+  int32 id = 1463;
+  string name = 176;
+  int32 qte_type = 1505;
+  int32 ui_type = 914;
+  float max_time = 1798;
+  number_table time_quantum = 900;
+  int_array trigger_count = 2;
+  number_table trigger_time = 451;
+  int_table play_skill = 1549;
+  int_table buff_id_when_success = 1259;
+  int_array buff_id_when_failure = 959;
+  int32 qte_show_skill_id = 1403;
+  number_table event_params = 1429;
+  int32 function_id = 818;
+  int_array impact_function_id = 1586;
+  int32 impact_type = 357;
 }
+
 message QteTableMgr {
-    repeated bokura.QteTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.QteTableBase> datas = 1;
 }
+

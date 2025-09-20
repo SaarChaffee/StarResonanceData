@@ -6,12 +6,13 @@ import "stru_device_info.proto";
 import "stru_face_data_db.proto";
 
 message CreateCharRequest {
-    string token = 4;
-    string name = 5;
-    int32 gender = 6;
-    int32 vBodySize = 7;
-    zproto.FaceDataDb faceData = 9;
-    zproto.DeviceInfo deviceInfo = 11;
-    int32 initProfessionId = 13;
-    int32 areaId = 14;
+  string token = 4;
+  string name = 5;
+  int32 gender = 6;
+  int32 v_body_size = 7;
+  zproto.FaceDataDb face_data = 9;
+  zproto.DeviceInfo device_info = 11;
+  int32 init_profession_id = 13;
+  int32 area_id = 14;
 }
+

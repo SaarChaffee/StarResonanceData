@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EActivityStatus {
-    ActivityStatusNone = 0;
-    ActivityStatusOnline = 1;
-    ActivityStatusOffline = 2;
+  ActivityStatusNone = 0;
+  ActivityStatusOnline = 1;
+  ActivityStatusOffline = 2;
 }
+

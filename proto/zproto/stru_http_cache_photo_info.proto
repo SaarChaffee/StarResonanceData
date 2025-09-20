@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message httpCachePhotoInfo {
-    repeated zproto.httpCachePhotoInfo.HttpCachePhotoInfoDictEntry httpCachePhotoInfoDict = 1;
-}

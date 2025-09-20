@@ -5,32 +5,34 @@ package bokura;
 import "table_basic.proto";
 
 message ModelNpcTableBase {
-    int32 ModelPrefabID = 5;
-    string ModelPrefabDesc = 1152;
-    int32 Sex = 1062;
-    int32 Model = 421;
-    vector3 Skin = 915;
-    string Skeleton = 1130;
-    string AnimTemplate = 1244;
-    vector3_array SkeletonColor = 493;
-    string EmoPrefix = 857;
-    string Head = 664;
-    string AnimHeadTemplate = 139;
-    vector3_array EyeColor = 1505;
-    string Hair = 574;
-    vector3_array HairColor = 1621;
-    string Headwear = 709;
-    vector3_array HeadwearColor = 763;
-    string Mask = 74;
-    vector3_array MaskColor = 1840;
-    string Back = 251;
-    vector3_array BackColor = 570;
-    string HandObject = 101;
-    vector3_array HandObjectColor = 646;
-    string WeaponL = 1310;
-    string WeaponR = 1690;
-    string WeaponIdleAnim = 102;
+  int32 model_prefab_id = 5;
+  string model_prefab_desc = 1152;
+  int32 sex = 1062;
+  int32 model = 421;
+  vector3 skin = 915;
+  string skeleton = 1130;
+  string anim_template = 1244;
+  vector3_array skeleton_color = 493;
+  string emo_prefix = 857;
+  string head = 664;
+  string anim_head_template = 139;
+  vector3_array eye_color = 1505;
+  string hair = 574;
+  vector3_array hair_color = 1621;
+  string headwear = 709;
+  vector3_array headwear_color = 763;
+  string mask = 74;
+  vector3_array mask_color = 1840;
+  string back = 251;
+  vector3_array back_color = 570;
+  string hand_object = 101;
+  vector3_array hand_object_color = 646;
+  string weaponl = 1310;
+  string weaponr = 1690;
+  string weapon_idle_anim = 102;
 }
+
 message ModelNpcTableMgr {
-    repeated bokura.ModelNpcTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ModelNpcTableBase> datas = 1;
 }
+

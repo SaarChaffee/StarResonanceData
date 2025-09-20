@@ -5,13 +5,15 @@ package bokura;
 import "table_basic.proto";
 
 message NameCardTableBase {
-    int32 Id = 1463;
-    mlstring Name = 439;
-    mlstring UnlockDes = 1991;
-    string Image1 = 1583;
-    string Image2 = 2016;
-    int32 Unlock = 1666;
+  int32 id = 1463;
+  mlstring name = 439;
+  mlstring unlock_des = 1991;
+  string image1 = 1583;
+  string image2 = 2016;
+  int32 unlock = 1666;
 }
+
 message NameCardTableMgr {
-    repeated bokura.NameCardTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.NameCardTableBase> datas = 1;
 }
+

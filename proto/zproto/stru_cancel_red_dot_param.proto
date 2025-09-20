@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message CancelRedDotParam {
-    int32 redDotId = 1;
+  int32 red_dot_id = 1;
 }
+

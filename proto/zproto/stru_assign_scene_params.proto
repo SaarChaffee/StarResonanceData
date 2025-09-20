@@ -9,11 +9,12 @@ import "stru_login_scene_params.proto";
 import "stru_scene_init_params.proto";
 
 message AssignSceneParams {
-    int32 sceneId = 1;
-    int64 creatorCharId = 2;
-    zproto.ESceneAssignType assignType = 3;
-    zproto.SceneInitParams initParam = 4;
-    zproto.EnterSceneParams enterParam = 5;
-    zproto.LoginSceneParams loginParam = 6;
-    zproto.EAssignSceneSourceType sourceType = 7;
+  int32 scene_id = 1;
+  int64 creator_char_id = 2;
+  zproto.ESceneAssignType assign_type = 3;
+  zproto.SceneInitParams init_param = 4;
+  zproto.EnterSceneParams enter_param = 5;
+  zproto.LoginSceneParams login_param = 6;
+  zproto.EAssignSceneSourceType source_type = 7;
 }
+

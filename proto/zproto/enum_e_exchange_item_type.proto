@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EExchangeItemType {
-    ExchangeItemTypeNone = 0;
-    ExchangeItemTypeShopItem = 1;
-    ExchangeItemTypeNoticeShopItem = 2;
+  ExchangeItemTypeNone = 0;
+  ExchangeItemTypeShopItem = 1;
+  ExchangeItemTypeNoticeShopItem = 2;
 }
+

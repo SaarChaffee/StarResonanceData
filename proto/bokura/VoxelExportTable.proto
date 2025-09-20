@@ -5,14 +5,16 @@ package bokura;
 import "table_basic.proto";
 
 message VoxelExportTableBase {
-    int32 Id = 1463;
-    string Name = 439;
-    string SceneFilePath = 1595;
-    number_array CubePosition = 837;
-    number_array ColliderSize = 987;
-    bool HasTerrain = 635;
-    string TerrainFilePath = 1538;
+  int32 id = 1463;
+  string name = 439;
+  string scene_file_path = 1595;
+  number_array cube_position = 837;
+  number_array collider_size = 987;
+  bool has_terrain = 635;
+  string terrain_file_path = 1538;
 }
+
 message VoxelExportTableMgr {
-    repeated bokura.VoxelExportTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.VoxelExportTableBase> datas = 1;
 }
+

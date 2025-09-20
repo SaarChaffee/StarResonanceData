@@ -5,12 +5,14 @@ package bokura;
 import "table_basic.proto";
 
 message FunctionSearchTableBase {
-    int32 Id = 1463;
-    int32 Sort = 1643;
-    int32 QuickJumpType = 506;
-    int_array QuickJumpParam = 1617;
-    int32 IsHide = 1851;
+  int32 id = 1463;
+  int32 sort = 1643;
+  int32 quick_jump_type = 506;
+  int_array quick_jump_param = 1617;
+  int32 is_hide = 1851;
 }
+
 message FunctionSearchTableMgr {
-    repeated bokura.FunctionSearchTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.FunctionSearchTableBase> datas = 1;
 }
+

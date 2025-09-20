@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message ReportPicture {
-    string pictureId = 1;
-    int64 targetUuid = 2;
-    bool union = 3;
-}

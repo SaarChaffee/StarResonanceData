@@ -3,12 +3,14 @@ syntax = "proto3";
 package bokura;
 
 message ChatStickersTableBase {
-    int32 Id = 1463;
-    int32 Type = 673;
-    int32 GroupId = 196;
-    string Res = 1275;
-    int32 UnlockItem = 702;
+  int32 id = 1463;
+  int32 type = 673;
+  int32 group_id = 196;
+  string res = 1275;
+  int32 unlock_item = 702;
 }
+
 message ChatStickersTableMgr {
-    repeated bokura.ChatStickersTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ChatStickersTableBase> datas = 1;
 }
+

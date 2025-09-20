@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum ETrialRoadAwardState {
-    TrialRoadAwardStateNone = 0;
-    TrialRoadAwardStateFinish = 1;
-    TrialRoadAwardStateGet = 2;
+  TrialRoadAwardStateNone = 0;
+  TrialRoadAwardStateFinish = 1;
+  TrialRoadAwardStateGet = 2;
 }
+

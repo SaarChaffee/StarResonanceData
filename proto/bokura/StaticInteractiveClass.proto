@@ -5,13 +5,15 @@ package bokura;
 import "table_basic.proto";
 
 message StaticInteractiveClassBase {
-    int32 Id = 1463;
-    int32 InterationTemplate = 1657;
-    string_array PlayerActionStart = 530;
-    string_array PlayerActionLoop = 1064;
-    string_array PlayerActionEnd = 1549;
-    int32 ExitType = 1391;
+  int32 id = 1463;
+  int32 interation_template = 1657;
+  string_array player_action_start = 530;
+  string_array player_action_loop = 1064;
+  string_array player_action_end = 1549;
+  int32 exit_type = 1391;
 }
+
 message StaticInteractiveClassMgr {
-    repeated bokura.StaticInteractiveClassMgr.DatasEntry datas = 1;
+  map<int32, bokura.StaticInteractiveClassBase> datas = 1;
 }
+

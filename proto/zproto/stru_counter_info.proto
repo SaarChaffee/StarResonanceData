@@ -5,6 +5,7 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message CounterInfo {
-    int32 id = 1;
-    int64 counter = 2;
+  int32 id = 1;
+  int64 counter = 2;
 }
+

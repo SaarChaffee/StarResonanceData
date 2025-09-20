@@ -6,8 +6,9 @@ import "stru_basic_show_info.proto";
 import "stru_chat_msg_info.proto";
 
 message ChitChatMsg {
-    int64 msgId = 1;
-    zproto.BasicShowInfo sendCharInfo = 2;
-    int64 timestamp = 3;
-    zproto.ChatMsgInfo msgInfo = 4;
+  int64 msg_id = 1;
+  zproto.BasicShowInfo send_char_info = 2;
+  int64 timestamp = 3;
+  zproto.ChatMsgInfo msg_info = 4;
 }
+

@@ -5,22 +5,24 @@ package bokura;
 import "table_basic.proto";
 
 message ItemFunctionTableBase {
-    int32 Id = 1463;
-    string Name = 439;
-    int32 Type = 673;
-    string_array Parameter = 893;
-    mlstring Button = 1927;
-    string_array UseLimit = 265;
-    int32 Reconfirm = 1107;
-    int32 Target = 1340;
-    int32 AutoApply = 1791;
-    int32 UseCD = 1282;
-    int_array PublicCD = 1233;
-    string Effect = 602;
-    string SoundEffect = 249;
-    int32 CanQuick = 2025;
-    int32 ItemBatch = 1530;
+  int32 id = 1463;
+  string name = 439;
+  int32 type = 673;
+  string_array parameter = 893;
+  mlstring button = 1927;
+  string_array use_limit = 265;
+  int32 reconfirm = 1107;
+  int32 target = 1340;
+  int32 auto_apply = 1791;
+  int32 use_cd = 1282;
+  int_array public_cd = 1233;
+  string effect = 602;
+  string sound_effect = 249;
+  int32 can_quick = 2025;
+  int32 item_batch = 1530;
 }
+
 message ItemFunctionTableMgr {
-    repeated bokura.ItemFunctionTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ItemFunctionTableBase> datas = 1;
 }
+

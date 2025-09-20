@@ -6,8 +6,9 @@ import "stru_dungeon_ready_buffer_info.proto";
 import "stru_dungeon_ready_item_info.proto";
 
 message DungeonReadyInfo {
-    bool isReady = 1;
-    repeated zproto.DungeonReadyBufferInfo buffs = 2;
-    repeated zproto.DungeonReadyItemInfo medicaments = 3;
-    repeated zproto.DungeonReadyItemInfo items = 4;
+  bool is_ready = 1;
+  repeated zproto.DungeonReadyBufferInfo buffs = 2;
+  repeated zproto.DungeonReadyItemInfo medicaments = 3;
+  repeated zproto.DungeonReadyItemInfo items = 4;
 }
+

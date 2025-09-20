@@ -5,5 +5,6 @@ package zproto;
 import "stru_buff_attr_show_info.proto";
 
 message BuffAttrEffect {
-    repeated zproto.BuffAttrShowInfo attrShowInfo = 1;
+  repeated zproto.BuffAttrShowInfo attr_show_info = 1;
 }
+

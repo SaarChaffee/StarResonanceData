@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message TakeOffRideParam {
-    int32 RideId = 1;
-}

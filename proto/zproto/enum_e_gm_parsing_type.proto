@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum EGmParsingType {
-    GmParsingJson = 0;
-    GmParsingString = 1;
+  GmParsingJson = 0;
+  GmParsingString = 1;
 }
+

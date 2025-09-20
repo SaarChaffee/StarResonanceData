@@ -6,5 +6,6 @@ import "stru_dungeon_var_data.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonVar {
-    repeated zproto.DungeonVarData dungeonVarData = 1;
+  repeated zproto.DungeonVarData dungeon_var_data = 1;
 }
+

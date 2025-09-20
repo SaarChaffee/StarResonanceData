@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_union_info.proto";
 
 message BindGroupWithTencentReply {
-    zproto.UnionInfo unionInfo = 1;
-    zproto.EErrorCode errCode = 2;
+  zproto.UnionInfo union_info = 1;
+  zproto.EErrorCode err_code = 2;
 }
+

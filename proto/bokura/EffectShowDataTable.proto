@@ -5,27 +5,29 @@ package bokura;
 import "table_basic.proto";
 
 message EffectShowDataTableBase {
-    int64 Id = 1463;
-    float Start = 678;
-    float Duration = 544;
-    float End = 1415;
-    bool IsAttacker = 920;
-    int32 StateId = 308;
-    int32 GroupId = 196;
-    string FxPath = 1140;
-    string FxName = 1384;
-    string Attach = 1167;
-    string EndAttach = 1297;
-    float FadeoutTime = 44;
-    vector3 Scale = 1925;
-    vector3 Rotate = 1421;
-    vector3 Offset = 223;
-    bool BindBone = 519;
-    bool BindPosition = 112;
-    bool BreakClear = 1126;
-    bool IsTargetPos = 291;
-    bool BindTarget = 714;
+  int64 id = 1463;
+  float start = 678;
+  float duration = 544;
+  float end = 1415;
+  bool is_attacker = 920;
+  int32 state_id = 308;
+  int32 group_id = 196;
+  string fx_path = 1140;
+  string fx_name = 1384;
+  string attach = 1167;
+  string end_attach = 1297;
+  float fadeout_time = 44;
+  vector3 scale = 1925;
+  vector3 rotate = 1421;
+  vector3 offset = 223;
+  bool bind_bone = 519;
+  bool bind_position = 112;
+  bool break_clear = 1126;
+  bool is_target_pos = 291;
+  bool bind_target = 714;
 }
+
 message EffectShowDataTableMgr {
-    repeated bokura.EffectShowDataTableMgr.DatasEntry datas = 1;
+  map<int64, bokura.EffectShowDataTableBase> datas = 1;
 }
+

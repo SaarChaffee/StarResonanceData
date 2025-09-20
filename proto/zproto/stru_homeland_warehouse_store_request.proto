@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message HomelandWarehouseStoreRequest {
-    repeated zproto.HomelandWarehouseStoreRequest.ItemsEntry items = 1;
-}

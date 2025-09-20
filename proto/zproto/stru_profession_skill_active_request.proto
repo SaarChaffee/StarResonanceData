@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message ProfessionSkillActiveRequest {
-    int32 professionId = 1;
-    int32 skillId = 2;
-}

@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message SetSlotAutoBattleRequest {
-    repeated zproto.SetSlotAutoBattleRequest.SlotsEntry slots = 1;
-}

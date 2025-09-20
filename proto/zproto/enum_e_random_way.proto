@@ -3,9 +3,10 @@ syntax = "proto3";
 package zproto;
 
 enum ERandomWay {
-    ERandomWayNone = 0;
-    ERandomWayAll = 1;
-    ERandomWayEqual = 2;
-    ERandomWayRate = 3;
-    ERandomWayWeight = 4;
+  ERandomWayNone = 0;
+  ERandomWayAll = 1;
+  ERandomWayEqual = 2;
+  ERandomWayRate = 3;
+  ERandomWayWeight = 4;
 }
+

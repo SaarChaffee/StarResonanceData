@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message DeletePhotoRequest {
-    uint32 photoId = 2;
+  uint32 photo_id = 2;
 }
+

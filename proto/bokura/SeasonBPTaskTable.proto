@@ -5,20 +5,22 @@ package bokura;
 import "table_basic.proto";
 
 message SeasonBPTaskTableBase {
-    int32 TargetId = 1432;
-    int32 MajorType = 1095;
-    int32 TargetGroup = 1238;
-    int32 Target = 1340;
-    int32 AwardId = 1197;
-    int32 ShowWeek = 1339;
-    string_array Condition = 1634;
-    int32 DailyTaskRandom = 859;
-    int32 QuickJumpType = 506;
-    int_array QuickJump = 75;
-    int32 Season = 620;
-    int32 PassAward = 1175;
-    string Desc = 1953;
+  int32 target_id = 1432;
+  int32 major_type = 1095;
+  int32 target_group = 1238;
+  int32 target = 1340;
+  int32 award_id = 1197;
+  int32 show_week = 1339;
+  string_array condition = 1634;
+  int32 daily_task_random = 859;
+  int32 quick_jump_type = 506;
+  int_array quick_jump = 75;
+  int32 season = 620;
+  int32 pass_award = 1175;
+  string desc = 1953;
 }
+
 message SeasonBPTaskTableMgr {
-    repeated bokura.SeasonBPTaskTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.SeasonBPTaskTableBase> datas = 1;
 }
+

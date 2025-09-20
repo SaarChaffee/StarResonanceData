@@ -5,11 +5,13 @@ package bokura;
 import "table_basic.proto";
 
 message TextDescriptionBase {
-    int32 Id = 1463;
-    mlstring Text = 1949;
-    mlstring Description = 75;
-    int32 ShowRule = 716;
+  int32 id = 1463;
+  mlstring text = 1949;
+  mlstring description = 75;
+  int32 show_rule = 716;
 }
+
 message TextDescriptionMgr {
-    repeated bokura.TextDescriptionMgr.DatasEntry datas = 1;
+  map<int32, bokura.TextDescriptionBase> datas = 1;
 }
+

@@ -5,21 +5,23 @@ package bokura;
 import "table_basic.proto";
 
 message JumpTableBase {
-    int32 Id = 1463;
-    float DefaultSpeed = 925;
-    float OperateSpeed = 1762;
-    float ReOperateDefaultSpeed = 1065;
-    number_array WindDragCoefficient = 710;
-    float AmendedGravity = 912;
-    number_array JumpTime = 331;
-    number_array PrepareTime = 1970;
-    number_array JumpBreakTime = 625;
-    string MovePath = 394;
-    number_array ShaderBrightness = 198;
-    number_array ShaderLength = 437;
-    int_array ShaderIsBreath = 172;
-    number_array EnergyConsume = 2017;
+  int32 id = 1463;
+  float default_speed = 925;
+  float operate_speed = 1762;
+  float re_operate_default_speed = 1065;
+  number_array wind_drag_coefficient = 710;
+  float amended_gravity = 912;
+  number_array jump_time = 331;
+  number_array prepare_time = 1970;
+  number_array jump_break_time = 625;
+  string move_path = 394;
+  number_array shader_brightness = 198;
+  number_array shader_length = 437;
+  int_array shader_is_breath = 172;
+  number_array energy_consume = 2017;
 }
+
 message JumpTableMgr {
-    repeated bokura.JumpTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.JumpTableBase> datas = 1;
 }
+

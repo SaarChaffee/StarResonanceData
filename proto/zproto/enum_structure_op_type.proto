@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum StructureOpType {
-    StructureOpTypeAdd = 0;
-    StructureOpTypeUpdate = 1;
-    StructureOpTypeDelete = 2;
+  StructureOpTypeAdd = 0;
+  StructureOpTypeUpdate = 1;
+  StructureOpTypeDelete = 2;
 }
+

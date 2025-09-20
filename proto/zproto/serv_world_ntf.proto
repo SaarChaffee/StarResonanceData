@@ -41,187 +41,244 @@ import "stru_unlock_cook_book_info.proto";
 import "stru_world_boss_rank_info_param.proto";
 
 message WorldNtf {
-    message SyncPioneerInfo {
-        uint32 targetId = 1;
-        uint32 targetNum = 2;
-    }
-    message SyncSwitchChange {
-        uint32 id = 1;
-        uint32 onOff = 2;
-    }
-    message SyncSwitchInfo {
-        zproto.SwitchInfo info = 1;
-    }
-    message SyncContainerData {
-        zproto.CharSerialize vData = 1;
-    }
-    message SyncDungeonData {
-        zproto.DungeonSyncData vData = 1;
-    }
-    message AwardNotify {
-        zproto.AwardData award = 1;
-    }
-    message CardInfoAck {
-        int64 charId = 1;
-        zproto.CardInfo info = 2;
-    }
-    message SyncSeason {
-        int32 vSeason = 1;
-    }
-    message UserAction {
-        int64 vCharId = 1;
-        int32 vActionId = 2;
-    }
-    message NotifyDisplayPlayHelp {
-        int32 vPlayHelpId = 1;
-    }
-    message NotifyApplicationInteraction {
-        int64 vOrigId = 1;
-        int32 vActionId = 2;
-    }
-    message NotifyIsAgree {
-        int64 vInviteeId = 1;
-        int32 vActionId = 2;
-        bool vIsAgree = 3;
-    }
-    message NotifyCancelAction {
-        int64 vCancelCharId = 1;
-    }
-    message NotifyUploadPictureResult {
-        bool success = 1;
-        zproto.EPictureType photoType = 2;
-        uint32 photoId = 3;
-        string photoName = 4;
-    }
-    message SyncInvite {
-        zproto.SyncInviteRequest vRequest = 1;
-    }
-    message NotifyRedDotChange {
-        int32 vRedDotId = 1;
-        int32 vValue = 2;
-    }
-    message ChangeNameResultNtf {
-        int32 vCode = 1;
-    }
-    message NotifyReviveUser {
-        int64 vActorUuid = 1;
-    }
-    message NotifyParkourRankInfo {
-        int32 vRankId = 1;
-    }
-    message NotifyParkourRecordInfo {
-        int32 result = 1;
-        zproto.ParkourRecord vRecord = 2;
-    }
-    message NotifyShowTips {
-        zproto.TipsInfo vTips = 1;
-    }
-    message NotifyNoticeInfo {
-        zproto.NoticeInfo vInfo = 1;
-    }
-    message NotifyClientKickOff {
-        zproto.EErrorCode errCode = 1;
-    }
-    message PaymentResponse {
-        zproto.PaymentResult vRequest = 1;
-    }
-    message NotifyUnlockCookBook {
-        zproto.UnlockCookBookInfo vInfo = 1;
-    }
-    message NotifyCustomEvent {
-        zproto.ClientCustomEventParams eventParams = 1;
-    }
-    message NotifyStartPlayingDungeon {
-        zproto.StartPlayingDungeonParam vParam = 1;
-    }
-    message ChangeShowIdResultNtf {
-        zproto.EErrorCode errCode = 1;
-    }
-    message NotifyShowItems {
-        zproto.ShowItemsInfo vInfo = 1;
-    }
-    message NotifySeasonActivationTargetInfo {
-        int32 vSeasonId = 1;
-        bool isRefresh = 2;
-    }
-    message NotifyTextCheckResult {
-        zproto.EErrorCode errCode = 1;
-    }
-    message NotifyDebugMessageTip {
-        zproto.DebugMessageTipInfo vInfo = 1;
-    }
-    message NotifyUserCloseFunction {
-        zproto.NotifyFunctionParams vParam = 1;
-    }
-    message NotifyServerCloseFunction {
-        zproto.NotifyFunctionParams vParam = 1;
-    }
-    message NotifyAwardAllItems {
-        zproto.NotifyAwardAllItemInfo vAllItem = 1;
-    }
-    message NotifyAllMemberReady {
-        bool vOpenOrClose = 1;
-    }
-    message NotifyCaptainReady {
-        string vMemberName = 1;
-        int64 vCharId = 2;
-        zproto.DungeonReadyInfo vReadyInfo = 3;
-    }
-    message NotifyUserAllSourcePrivilegeEffectData {
-        zproto.NotifyAllSourcePrivilegeEffectData vAllPrivilegeEffects = 1;
-    }
-    message NotifyQuestAccept {
-        zproto.NotifyQuestAcceptParam vParam = 1;
-    }
-    message NotifyQuestChangeStep {
-        zproto.NotifyQuestChangeStepParam vParam = 1;
-    }
-    message NotifyQuestGiveUp {
-        zproto.NotifyQuestGiveUpParam vParam = 1;
-    }
-    message NotifyQuestComplete {
-        zproto.NotifyQuestCompleteParam vParam = 1;
-    }
-    message NotifyUserAllValidBattlePassData {
-        zproto.NotifyAllValidBattlePassData validBattlePassData = 1;
-    }
-    message QteBegin {
-        uint32 qteId = 1;
-    }
-    message QuestAbort {
-        int32 questId = 1;
-    }
-    message NotifyBuyShopResult {
-        zproto.NotifyBuyShopResultParam param = 1;
-    }
-    message NotifyShopItemCanBuy {
-        zproto.NotifyShopItemCanBuyParam param = 1;
-    }
-    message WorldBossRankInfoNtf {
-        zproto.WorldBossRankInfoParam rankInfo = 1;
-    }
-    message EnterMatchResultNtf {
-        zproto.EnterMatchResultNtfRequest vRequest = 1;
-    }
-    message NotifyDriverApplyRide {
-        zproto.DriverApplyRideParam param = 1;
-    }
-    message NotifyInviteApplyRide {
-        zproto.InviteApplyRideParam param = 1;
-    }
-    message NotifyRideIsAgree {
-        zproto.NotifyRideIsAgreeParam param = 1;
-    }
-    message NotifyPayInfo {
-        zproto.NotifyPayParam param = 1;
-    }
-    message NotifyLifeProfessionWorkHistoryChange {
-        zproto.NotifyLifeProfessionWorkHistoryChangeInfo info = 1;
-    }
-    message NotifyLifeProfessionUnlockRecipe {
-        zproto.NotifyLifeProfessionUnlockRecipeInfo info = 1;
-    }
-    message SignRewardNotify {
-        zproto.SignRewardNotifyRequest vRequest = 1;
-    }
+
+  message SyncPioneerInfo {
+    uint32 target_id = 1;
+    uint32 target_num = 2;
+  }
+
+  message SyncSwitchChange {
+    uint32 id = 1;
+    uint32 on_off = 2;
+  }
+
+  message SyncSwitchInfo {
+    zproto.SwitchInfo info = 1;
+  }
+
+  message SyncContainerData {
+    zproto.CharSerialize v_data = 1;
+  }
+
+  message SyncDungeonData {
+    zproto.DungeonSyncData v_data = 1;
+  }
+
+  message AwardNotify {
+    zproto.AwardData award = 1;
+  }
+
+  message CardInfoAck {
+    int64 char_id = 1;
+    zproto.CardInfo info = 2;
+  }
+
+  message SyncSeason {
+    int32 v_season = 1;
+  }
+
+  message UserAction {
+    int64 v_char_id = 1;
+    int32 v_action_id = 2;
+  }
+
+  message NotifyDisplayPlayHelp {
+    int32 v_play_help_id = 1;
+  }
+
+  message NotifyApplicationInteraction {
+    int64 v_orig_id = 1;
+    int32 v_action_id = 2;
+  }
+
+  message NotifyIsAgree {
+    int64 v_invitee_id = 1;
+    int32 v_action_id = 2;
+    bool v_is_agree = 3;
+  }
+
+  message NotifyCancelAction {
+    int64 v_cancel_char_id = 1;
+  }
+
+  message NotifyUploadPictureResult {
+    bool success = 1;
+    zproto.EPictureType photo_type = 2;
+    uint32 photo_id = 3;
+    string photo_name = 4;
+  }
+
+  message SyncInvite {
+    zproto.SyncInviteRequest v_request = 1;
+  }
+
+  message NotifyRedDotChange {
+    int32 v_red_dot_id = 1;
+    int32 v_value = 2;
+  }
+
+  message ChangeNameResultNtf {
+    int32 v_code = 1;
+  }
+
+  message NotifyReviveUser {
+    int64 v_actor_uuid = 1;
+  }
+
+  message NotifyParkourRankInfo {
+    int32 v_rank_id = 1;
+  }
+
+  message NotifyParkourRecordInfo {
+    int32 result = 1;
+    zproto.ParkourRecord v_record = 2;
+  }
+
+  message NotifyShowTips {
+    zproto.TipsInfo v_tips = 1;
+  }
+
+  message NotifyNoticeInfo {
+    zproto.NoticeInfo v_info = 1;
+  }
+
+  message NotifyClientKickOff {
+    zproto.EErrorCode err_code = 1;
+  }
+
+  message PaymentResponse {
+    zproto.PaymentResult v_request = 1;
+  }
+
+  message NotifyUnlockCookBook {
+    zproto.UnlockCookBookInfo v_info = 1;
+  }
+
+  message NotifyCustomEvent {
+    zproto.ClientCustomEventParams event_params = 1;
+  }
+
+  message NotifyStartPlayingDungeon {
+    zproto.StartPlayingDungeonParam v_param = 1;
+  }
+
+  message ChangeShowIdResultNtf {
+    zproto.EErrorCode err_code = 1;
+  }
+
+  message NotifyShowItems {
+    zproto.ShowItemsInfo v_info = 1;
+  }
+
+  message NotifySeasonActivationTargetInfo {
+    int32 v_season_id = 1;
+    bool is_refresh = 2;
+  }
+
+  message NotifyTextCheckResult {
+    zproto.EErrorCode err_code = 1;
+  }
+
+  message NotifyDebugMessageTip {
+    zproto.DebugMessageTipInfo v_info = 1;
+  }
+
+  message NotifyUserCloseFunction {
+    zproto.NotifyFunctionParams v_param = 1;
+  }
+
+  message NotifyServerCloseFunction {
+    zproto.NotifyFunctionParams v_param = 1;
+  }
+
+  message NotifyAwardAllItems {
+    zproto.NotifyAwardAllItemInfo v_all_item = 1;
+  }
+
+  message NotifyAllMemberReady {
+    bool v_open_or_close = 1;
+  }
+
+  message NotifyCaptainReady {
+    string v_member_name = 1;
+    int64 v_char_id = 2;
+    zproto.DungeonReadyInfo v_ready_info = 3;
+  }
+
+  message NotifyUserAllSourcePrivilegeEffectData {
+    zproto.NotifyAllSourcePrivilegeEffectData v_all_privilege_effects = 1;
+  }
+
+  message NotifyQuestAccept {
+    zproto.NotifyQuestAcceptParam v_param = 1;
+  }
+
+  message NotifyQuestChangeStep {
+    zproto.NotifyQuestChangeStepParam v_param = 1;
+  }
+
+  message NotifyQuestGiveUp {
+    zproto.NotifyQuestGiveUpParam v_param = 1;
+  }
+
+  message NotifyQuestComplete {
+    zproto.NotifyQuestCompleteParam v_param = 1;
+  }
+
+  message NotifyUserAllValidBattlePassData {
+    zproto.NotifyAllValidBattlePassData valid_battle_pass_data = 1;
+  }
+
+  message QteBegin {
+    uint32 qte_id = 1;
+  }
+
+  message QuestAbort {
+    int32 quest_id = 1;
+  }
+
+  message NotifyBuyShopResult {
+    zproto.NotifyBuyShopResultParam param = 1;
+  }
+
+  message NotifyShopItemCanBuy {
+    zproto.NotifyShopItemCanBuyParam param = 1;
+  }
+
+  message WorldBossRankInfoNtf {
+    zproto.WorldBossRankInfoParam rank_info = 1;
+  }
+
+  message EnterMatchResultNtf {
+    zproto.EnterMatchResultNtfRequest v_request = 1;
+  }
+
+  message NotifyDriverApplyRide {
+    zproto.DriverApplyRideParam param = 1;
+  }
+
+  message NotifyInviteApplyRide {
+    zproto.InviteApplyRideParam param = 1;
+  }
+
+  message NotifyRideIsAgree {
+    zproto.NotifyRideIsAgreeParam param = 1;
+  }
+
+  message NotifyPayInfo {
+    zproto.NotifyPayParam param = 1;
+  }
+
+  message NotifyLifeProfessionWorkHistoryChange {
+    zproto.NotifyLifeProfessionWorkHistoryChangeInfo info = 1;
+  }
+
+  message NotifyLifeProfessionUnlockRecipe {
+    zproto.NotifyLifeProfessionUnlockRecipeInfo info = 1;
+  }
+
+  message SignRewardNotify {
+    zproto.SignRewardNotifyRequest v_request = 1;
+  }
 }
+

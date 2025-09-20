@@ -5,6 +5,7 @@ package zproto;
 import "stru_item.proto";
 
 message DungeonHotKeyContext {
-    int64 charId = 1;
-    zproto.Item useItem = 2;
+  int64 char_id = 1;
+  zproto.Item use_item = 2;
 }
+

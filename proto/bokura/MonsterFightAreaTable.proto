@@ -5,14 +5,16 @@ package bokura;
 import "table_basic.proto";
 
 message MonsterFightAreaTableBase {
-    int32 Id = 1463;
-    string_array AreaName = 1408;
-    int_array AreaHateWeight = 747;
-    number_table AreaRadius = 499;
-    float AreaMaximumRadius = 262;
-    number_table AreaAngle = 1241;
-    float PlayerHateWeight = 1180;
+  int32 id = 1463;
+  string_array area_name = 1408;
+  int_array area_hate_weight = 747;
+  number_table area_radius = 499;
+  float area_maximum_radius = 262;
+  number_table area_angle = 1241;
+  float player_hate_weight = 1180;
 }
+
 message MonsterFightAreaTableMgr {
-    repeated bokura.MonsterFightAreaTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.MonsterFightAreaTableBase> datas = 1;
 }
+

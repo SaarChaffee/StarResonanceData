@@ -5,14 +5,16 @@ package bokura;
 import "table_basic.proto";
 
 message ModTableBase {
-    int32 Id = 1463;
-    string ModPic = 197;
-    int32 ModLvl = 395;
-    int32 EffectType = 527;
-    int32 EffectConfig = 110;
-    int_array EffectParameter = 761;
-    int_array TagId = 1054;
+  int32 id = 1463;
+  string mod_pic = 197;
+  int32 mod_lvl = 395;
+  int32 effect_type = 527;
+  int32 effect_config = 110;
+  int_array effect_parameter = 761;
+  int_array tag_id = 1054;
 }
+
 message ModTableMgr {
-    repeated bokura.ModTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ModTableBase> datas = 1;
 }
+

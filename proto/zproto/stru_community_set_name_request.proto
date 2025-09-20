@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message CommunitySetNameRequest {
-    string name = 1;
+  string name = 1;
 }
+

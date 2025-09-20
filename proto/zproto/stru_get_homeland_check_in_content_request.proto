@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message GetHomelandCheckInContentRequest {
-    int64 communityId = 1;
-    int64 homelandId = 2;
-}

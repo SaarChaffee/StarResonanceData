@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message BuyShopItemInfo {
-    int32 buyNum = 2;
-    repeated zproto.BuyShopItemInfo.CouponInfoEntry couponInfo = 3;
+  int32 buy_num = 2;
+  map<int32, int32> coupon_info = 3;
 }
+

@@ -3,12 +3,15 @@ syntax = "proto3";
 package zproto;
 
 message LevelNtf {
-    message DisplayBossUI {
-        bool isEnter = 1;
-        int64 bossUuid = 2;
-    }
-    message DisplayBossOutOverdriveUI {
-        bool isBreak = 1;
-        bool isWeak = 2;
-    }
+
+  message DisplayBossUI {
+    bool is_enter = 1;
+    int64 boss_uuid = 2;
+  }
+
+  message DisplayBossOutOverdriveUI {
+    bool is_break = 1;
+    bool is_weak = 2;
+  }
 }
+

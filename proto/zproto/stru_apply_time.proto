@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message ApplyTime {
-    int64 charId = 1;
-    int64 applyTime = 2;
+  int64 char_id = 1;
+  int64 apply_time = 2;
 }
+

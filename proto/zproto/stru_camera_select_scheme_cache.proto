@@ -5,5 +5,6 @@ package zproto;
 import "stru_camera_scheme_info.proto";
 
 message cameraSelectSchemeCache {
-    zproto.cameraSchemeInfo cameraSchemeCache = 1;
+  zproto.cameraSchemeInfo camera_scheme_cache = 1;
 }
+

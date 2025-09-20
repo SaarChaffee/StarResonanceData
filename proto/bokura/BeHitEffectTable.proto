@@ -5,12 +5,14 @@ package bokura;
 import "table_basic.proto";
 
 message BeHitEffectTableBase {
-    int32 Id = 1463;
-    int32 WeaponHitType = 1337;
-    int32 FleshyType = 1419;
-    string_array EffectArray = 137;
-    float FrameRatio = 373;
+  int32 id = 1463;
+  int32 weapon_hit_type = 1337;
+  int32 fleshy_type = 1419;
+  string_array effect_array = 137;
+  float frame_ratio = 373;
 }
+
 message BeHitEffectTableMgr {
-    repeated bokura.BeHitEffectTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.BeHitEffectTableBase> datas = 1;
 }
+

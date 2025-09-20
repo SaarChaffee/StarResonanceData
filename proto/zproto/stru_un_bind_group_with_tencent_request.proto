@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message UnBindGroupWithTencentRequest {
-    int64 unionId = 1;
-}

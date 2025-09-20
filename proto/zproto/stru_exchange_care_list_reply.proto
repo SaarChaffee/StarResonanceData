@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_exchange_item_info.proto";
 
 message ExchangeCareListReply {
-    repeated zproto.ExchangeItemInfo items = 2;
-    zproto.EErrorCode errCode = 3;
+  repeated zproto.ExchangeItemInfo items = 2;
+  zproto.EErrorCode err_code = 3;
 }
+

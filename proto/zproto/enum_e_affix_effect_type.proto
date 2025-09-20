@@ -3,8 +3,9 @@ syntax = "proto3";
 package zproto;
 
 enum EAffixEffectType {
-    AffixEffectAll = 0;
-    AffixEffectGain = 1;
-    AffixEffectNegative = 2;
-    AffixEffectHarmonize = 3;
+  AffixEffectAll = 0;
+  AffixEffectGain = 1;
+  AffixEffectNegative = 2;
+  AffixEffectHarmonize = 3;
 }
+

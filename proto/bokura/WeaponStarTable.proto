@@ -5,20 +5,22 @@ package bokura;
 import "table_basic.proto";
 
 message WeaponStarTableBase {
-    int32 Id = 1463;
-    int32 WeaponId = 952;
-    int32 SkillId = 1087;
-    int_table UlockSkillLevel = 60;
-    int32 ChangeSkill = 513;
-    int_table UpgradeCost = 151;
-    int_table UpgradeExtraCost = 262;
-    int32 BuffID = 500;
-    int_array BuffPar = 1688;
-    int_array UpgradeSkillId = 665;
-    int_array UpgradeSkillLevel = 1794;
-    mlstring Name = 439;
-    mlstring Des = 266;
+  int32 id = 1463;
+  int32 weapon_id = 952;
+  int32 skill_id = 1087;
+  int_table ulock_skill_level = 60;
+  int32 change_skill = 513;
+  int_table upgrade_cost = 151;
+  int_table upgrade_extra_cost = 262;
+  int32 buff_id = 500;
+  int_array buff_par = 1688;
+  int_array upgrade_skill_id = 665;
+  int_array upgrade_skill_level = 1794;
+  mlstring name = 439;
+  mlstring des = 266;
 }
+
 message WeaponStarTableMgr {
-    repeated bokura.WeaponStarTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.WeaponStarTableBase> datas = 1;
 }
+

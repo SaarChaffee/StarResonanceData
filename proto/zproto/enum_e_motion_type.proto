@@ -3,8 +3,9 @@ syntax = "proto3";
 package zproto;
 
 enum EMotionType {
-    MotionNone = 0;
-    MotionCurve = 1;
-    MotionSpeed = 2;
-    MotionControl = 3;
+  MotionNone = 0;
+  MotionCurve = 1;
+  MotionSpeed = 2;
+  MotionControl = 3;
 }
+

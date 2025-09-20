@@ -5,19 +5,21 @@ package bokura;
 import "table_basic.proto";
 
 message ProfessionTableBase {
-    int32 Id = 1463;
-    mlstring Name = 439;
-    mlstring ShortDescription = 1271;
-    mlstring Description = 75;
-    int_table Job = 463;
-    string Icon = 1153;
-    string IconBg = 1829;
-    int32 ResTemplateId = 1400;
-    int_array Buffs = 3;
-    int_table Arrtrs = 558;
-    int_array ProfessionEffectId = 738;
-    mlstring TipsDescription = 516;
+  int32 id = 1463;
+  mlstring name = 439;
+  mlstring short_description = 1271;
+  mlstring description = 75;
+  int_table job = 463;
+  string icon = 1153;
+  string icon_bg = 1829;
+  int32 res_template_id = 1400;
+  int_array buffs = 3;
+  int_table arrtrs = 558;
+  int_array profession_effect_id = 738;
+  mlstring tips_description = 516;
 }
+
 message ProfessionTableMgr {
-    repeated bokura.ProfessionTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ProfessionTableBase> datas = 1;
 }
+

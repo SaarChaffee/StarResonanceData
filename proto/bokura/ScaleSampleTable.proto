@@ -5,11 +5,13 @@ package bokura;
 import "table_basic.proto";
 
 message ScaleSampleTableBase {
-    int64 Id = 1463;
-    string Name = 439;
-    number_table SampleInfo = 1926;
-    int32 HasChangeFlag = 1764;
+  int64 id = 1463;
+  string name = 439;
+  number_table sample_info = 1926;
+  int32 has_change_flag = 1764;
 }
+
 message ScaleSampleTableMgr {
-    repeated bokura.ScaleSampleTableMgr.DatasEntry datas = 1;
+  map<int64, bokura.ScaleSampleTableBase> datas = 1;
 }
+

@@ -5,21 +5,23 @@ package bokura;
 import "table_basic.proto";
 
 message ColorGroupTableBase {
-    int32 Id = 1463;
-    int32 Type = 673;
-    string Color = 1995;
-    int_table Hue = 1531;
-    int32 IfSaturation = 1483;
-    int_table Saturation = 1234;
-    int32 IfValue = 1337;
-    int_table Value = 616;
-    int_table UiColor = 26;
-    int_table ConsumeH = 233;
-    int_table Zone = 1971;
-    int_table ConsumeLow = 73;
-    int_table ConsumeHigh = 1761;
-    int_table Unlock = 1666;
+  int32 id = 1463;
+  int32 type = 673;
+  string color = 1995;
+  int_table hue = 1531;
+  int32 if_saturation = 1483;
+  int_table saturation = 1234;
+  int32 if_value = 1337;
+  int_table value = 616;
+  int_table ui_color = 26;
+  int_table consumeh = 233;
+  int_table zone = 1971;
+  int_table consume_low = 73;
+  int_table consume_high = 1761;
+  int_table unlock = 1666;
 }
+
 message ColorGroupTableMgr {
-    repeated bokura.ColorGroupTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ColorGroupTableBase> datas = 1;
 }
+

@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message KickOutWarehouseRequest {
-    int64 kickCharId = 1;
-}

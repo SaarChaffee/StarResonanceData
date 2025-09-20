@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message ReportBaseInfo {
-    int64 charId = 1;
-}

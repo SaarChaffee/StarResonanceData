@@ -3,14 +3,16 @@ syntax = "proto3";
 package bokura;
 
 message LipAnimationTableBase {
-    int32 Id = 1463;
-    string Comment = 11;
-    string VowelA = 1427;
-    string VowelO = 1999;
-    string VowelE = 950;
-    string VowelI = 1593;
-    string VowelU = 587;
+  int32 id = 1463;
+  string comment = 11;
+  string vowela = 1427;
+  string vowelo = 1999;
+  string vowele = 950;
+  string voweli = 1593;
+  string vowelu = 587;
 }
+
 message LipAnimationTableMgr {
-    repeated bokura.LipAnimationTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.LipAnimationTableBase> datas = 1;
 }
+

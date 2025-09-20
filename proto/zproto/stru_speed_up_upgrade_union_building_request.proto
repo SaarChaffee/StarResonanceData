@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message SpeedUpUpgradeUnionBuildingRequest {
-    int64 unionId = 2;
-    int32 buildingId = 3;
-    int32 buildLevel = 4;
-}

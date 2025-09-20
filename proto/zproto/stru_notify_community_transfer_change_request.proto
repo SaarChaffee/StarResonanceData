@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_community_transfer.proto";
-
-message NotifyCommunityTransferChangeRequest {
-    zproto.CommunityTransfer transferCommunity = 1;
-}

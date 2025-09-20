@@ -5,11 +5,13 @@ package bokura;
 import "table_basic.proto";
 
 message EquipEffectLibTableBase {
-    int32 Id = 1463;
-    int32 EffectLibID = 672;
-    int_array EffectType = 527;
-    int_array Element = 547;
+  int32 id = 1463;
+  int32 effect_lib_id = 672;
+  int_array effect_type = 527;
+  int_array element = 547;
 }
+
 message EquipEffectLibTableMgr {
-    repeated bokura.EquipEffectLibTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.EquipEffectLibTableBase> datas = 1;
 }
+

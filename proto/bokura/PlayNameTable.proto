@@ -3,13 +3,15 @@ syntax = "proto3";
 package bokura;
 
 message PlayNameTableBase {
-    int32 Id = 1463;
-    string NameCN = 1752;
-    string NameEN = 1418;
-    string NameJP = 1498;
-    string NameKR = 1230;
-    int32 Sex = 1062;
+  int32 id = 1463;
+  string name_cn = 1752;
+  string name_en = 1418;
+  string name_jp = 1498;
+  string name_kr = 1230;
+  int32 sex = 1062;
 }
+
 message PlayNameTableMgr {
-    repeated bokura.PlayNameTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.PlayNameTableBase> datas = 1;
 }
+

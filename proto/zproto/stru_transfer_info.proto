@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message TransferInfo {
-    uint32 targetSceneId = 1;
-    uint32 targetPosId = 2;
-}

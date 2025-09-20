@@ -5,10 +5,12 @@ package bokura;
 import "table_basic.proto";
 
 message GlobalTableBase {
-    int32 Index = 1400;
-    string Id = 1463;
-    mlstring Value = 616;
+  int32 index = 1400;
+  string id = 1463;
+  mlstring value = 616;
 }
+
 message GlobalTableMgr {
-    repeated bokura.GlobalTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.GlobalTableBase> datas = 1;
 }
+

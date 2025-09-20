@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message RecastEquipRequest {
-    uint64 uuid = 1;
-    repeated uint64 consumeUuid = 2;
-    int32 itemConfigId = 3;
-}

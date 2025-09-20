@@ -6,10 +6,13 @@ import "enum_e_error_code.proto";
 import "stru_report_upload_request.proto";
 
 message Report {
-    message ReportUpload_Ret {
-        zproto.EErrorCode ret = 1;
-    }
-    message ReportUpload {
-        zproto.ReportUploadRequest vRequest = 1;
-    }
+
+  message ReportUpload_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReportUpload {
+    zproto.ReportUploadRequest v_request = 1;
+  }
 }
+

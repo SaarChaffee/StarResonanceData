@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message ProfessionSkillUpgradeRequest {
-    int32 professionId = 1;
-    int32 skillId = 2;
-    int32 targetLevel = 3;
-}

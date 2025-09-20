@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message FishingSetRodRequest {
-    uint64 rodUuid = 2;
-}

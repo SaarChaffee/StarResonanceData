@@ -3,8 +3,9 @@ syntax = "proto3";
 package zproto;
 
 enum EAlbumRight {
-    EveryOneAccess = 0;
-    FriendAccess = 1;
-    SelfAccess = 2;
-    UnionAccess = 3;
+  EveryOneAccess = 0;
+  FriendAccess = 1;
+  SelfAccess = 2;
+  UnionAccess = 3;
 }
+

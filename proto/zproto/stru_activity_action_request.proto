@@ -5,7 +5,8 @@ package zproto;
 import "enum_e_pay_type.proto";
 
 message ActivityActionRequest {
-    int64 activityUuid = 1;
-    int32 rewardId = 2;
-    zproto.EPayType payType = 3;
+  int64 activity_uuid = 1;
+  int32 reward_id = 2;
+  zproto.EPayType pay_type = 3;
 }
+

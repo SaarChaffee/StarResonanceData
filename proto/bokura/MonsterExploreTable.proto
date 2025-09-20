@@ -5,14 +5,16 @@ package bokura;
 import "table_basic.proto";
 
 message MonsterExploreTableBase {
-    int32 MonsterId = 1262;
-    int32 Scene = 1438;
-    int32 Sort = 1643;
-    int_table Target = 1340;
-    int32 UnlockAward = 1745;
-    float ModelRetio = 941;
-    mlstring Condition = 1634;
+  int32 monster_id = 1262;
+  int32 scene = 1438;
+  int32 sort = 1643;
+  int_table target = 1340;
+  int32 unlock_award = 1745;
+  float model_retio = 941;
+  mlstring condition = 1634;
 }
+
 message MonsterExploreTableMgr {
-    repeated bokura.MonsterExploreTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.MonsterExploreTableBase> datas = 1;
 }
+

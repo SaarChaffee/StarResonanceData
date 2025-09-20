@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EInteractionActionExcuteType {
-    EInteractionActionExcuteTypeClient = 0;
-    EInteractionActionExcuteTypeServer = 1;
-    EInteractionActionExcuteTypeBoth = 2;
+  EInteractionActionExcuteTypeClient = 0;
+  EInteractionActionExcuteTypeServer = 1;
+  EInteractionActionExcuteTypeBoth = 2;
 }
+

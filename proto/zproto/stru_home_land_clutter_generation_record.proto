@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_clutter_generation_record.proto";
-
-message HomeLandClutterGenerationRecord {
-    repeated zproto.HomeLandClutterGenerationRecord.HomeLandClutterRecordEntry homeLandClutterRecord = 1;
-}

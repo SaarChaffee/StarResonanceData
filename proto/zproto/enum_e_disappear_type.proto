@@ -3,9 +3,10 @@ syntax = "proto3";
 package zproto;
 
 enum EDisappearType {
-    EDisappearNormal = 0;
-    EDisappearDead = 1;
-    EDisappearDestroy = 2;
-    EDisappearTransferLeave = 3;
-    EDisappearTransferPassLineLeave = 4;
+  EDisappearNormal = 0;
+  EDisappearDead = 1;
+  EDisappearDestroy = 2;
+  EDisappearTransferLeave = 3;
+  EDisappearTransferPassLineLeave = 4;
 }
+

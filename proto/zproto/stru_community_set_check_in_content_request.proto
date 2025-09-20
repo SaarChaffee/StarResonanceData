@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message CommunitySetCheckInContentRequest {
-    string checkInContent = 1;
+  string check_in_content = 1;
 }
+

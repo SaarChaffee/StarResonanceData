@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message ReportHome {
-    int64 homeId = 1;
-}

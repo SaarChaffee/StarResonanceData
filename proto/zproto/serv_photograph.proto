@@ -37,106 +37,141 @@ import "stru_upload_photo_successful_reply.proto";
 import "stru_upload_photo_successful_request.proto";
 
 message Photograph {
-    message GetPhotoUpToken {
-        zproto.GetPhotoUpTokenRequest vRequest = 1;
-    }
-    message DeletePhoto_Ret {
-        zproto.DeletePhotoReply ret = 1;
-    }
-    message DeletePhoto {
-        zproto.DeletePhotoRequest vRequest = 1;
-    }
-    message GetAllAlbums_Ret {
-        zproto.GetAllAlbumsReply ret = 1;
-    }
-    message GetAllAlbums {
-        zproto.GetAllAlbumsRequest vRequest = 1;
-    }
-    message GetAlbumPhotos_Ret {
-        zproto.GetAlbumPhotosReply ret = 1;
-    }
-    message GetAlbumPhotos {
-        zproto.GetAlbumPhotosRequest vRequest = 1;
-    }
-    message CreateAlbum_Ret {
-        zproto.CreateAlbumReply ret = 1;
-    }
-    message CreateAlbum {
-        zproto.CreateAlbumRequest vRequest = 1;
-    }
-    message DeleteAlbum_Ret {
-        zproto.DeleteAlbumReply ret = 1;
-    }
-    message DeleteAlbum {
-        zproto.DeleteAlbumRequest vRequest = 1;
-    }
-    message EditAlbumRight_Ret {
-        zproto.EditAlbumRightReply ret = 1;
-    }
-    message EditAlbumRight {
-        zproto.EditAlbumRightRequest vRequest = 1;
-    }
-    message EditAlbumName_Ret {
-        zproto.EditAlbumNameReply ret = 1;
-    }
-    message EditAlbumName {
-        zproto.EditAlbumNameRequest vRequest = 1;
-    }
-    message SetAlbumCover_Ret {
-        zproto.SetAlbumCoverReply ret = 1;
-    }
-    message SetAlbumCover {
-        zproto.SetAlbumCoverRequest vRequest = 1;
-    }
-    message MovePhotoToAlbum_Ret {
-        zproto.MovePhotoToAlbumReply ret = 1;
-    }
-    message MovePhotoToAlbum {
-        zproto.MovePhotoToAlbumRequest vRequest = 1;
-    }
-    message GetAvatarToken {
-        zproto.GetAvatarTokenRequest vRequest = 1;
-    }
-    message GetPhoto_Ret {
-        zproto.GetPhotoReply ret = 1;
-    }
-    message GetPhoto {
-        zproto.GetPhotoRequest vRequest = 1;
-    }
-    message UploadPhotoSuccessful_Ret {
-        zproto.UploadPhotoSuccessfulReply ret = 1;
-    }
-    message UploadPhotoSuccessful {
-        zproto.UploadPhotoSuccessfulRequest vRequest = 1;
-    }
-    message GetReviewAvatarInfo_Ret {
-        zproto.GetReviewAvatarInfoReply ret = 1;
-    }
-    message GetReviewAvatarInfo {
-        zproto.GetReviewAvatarInfoRequest vRequest = 1;
-    }
-    message GetFuncPhotoList_Ret {
-        zproto.GetFuncPhotoListReply ret = 1;
-    }
-    message GetFuncPhotoList {
-        zproto.GetFuncPhotoListRequest vRequest = 1;
-    }
-    message DelFuncPhoto_Ret {
-        zproto.EErrorCode ret = 1;
-    }
-    message DelFuncPhoto {
-        zproto.DelFuncPhotoRequest vRequest = 1;
-    }
-    message SetPhotoSchemeName_Ret {
-        zproto.SetPhotoSchemeNameReply ret = 1;
-    }
-    message SetPhotoSchemeName {
-        zproto.SetPhotoSchemeNameRequest vRequest = 1;
-    }
-    message CheckImage_Ret {
-        zproto.EErrorCode ret = 1;
-    }
-    message CheckImage {
-        zproto.CheckImageRequest vRequest = 1;
-    }
+
+  message GetPhotoUpToken {
+    zproto.GetPhotoUpTokenRequest v_request = 1;
+  }
+
+  message DeletePhoto_Ret {
+    zproto.DeletePhotoReply ret = 1;
+  }
+
+  message DeletePhoto {
+    zproto.DeletePhotoRequest v_request = 1;
+  }
+
+  message GetAllAlbums_Ret {
+    zproto.GetAllAlbumsReply ret = 1;
+  }
+
+  message GetAllAlbums {
+    zproto.GetAllAlbumsRequest v_request = 1;
+  }
+
+  message GetAlbumPhotos_Ret {
+    zproto.GetAlbumPhotosReply ret = 1;
+  }
+
+  message GetAlbumPhotos {
+    zproto.GetAlbumPhotosRequest v_request = 1;
+  }
+
+  message CreateAlbum_Ret {
+    zproto.CreateAlbumReply ret = 1;
+  }
+
+  message CreateAlbum {
+    zproto.CreateAlbumRequest v_request = 1;
+  }
+
+  message DeleteAlbum_Ret {
+    zproto.DeleteAlbumReply ret = 1;
+  }
+
+  message DeleteAlbum {
+    zproto.DeleteAlbumRequest v_request = 1;
+  }
+
+  message EditAlbumRight_Ret {
+    zproto.EditAlbumRightReply ret = 1;
+  }
+
+  message EditAlbumRight {
+    zproto.EditAlbumRightRequest v_request = 1;
+  }
+
+  message EditAlbumName_Ret {
+    zproto.EditAlbumNameReply ret = 1;
+  }
+
+  message EditAlbumName {
+    zproto.EditAlbumNameRequest v_request = 1;
+  }
+
+  message SetAlbumCover_Ret {
+    zproto.SetAlbumCoverReply ret = 1;
+  }
+
+  message SetAlbumCover {
+    zproto.SetAlbumCoverRequest v_request = 1;
+  }
+
+  message MovePhotoToAlbum_Ret {
+    zproto.MovePhotoToAlbumReply ret = 1;
+  }
+
+  message MovePhotoToAlbum {
+    zproto.MovePhotoToAlbumRequest v_request = 1;
+  }
+
+  message GetAvatarToken {
+    zproto.GetAvatarTokenRequest v_request = 1;
+  }
+
+  message GetPhoto_Ret {
+    zproto.GetPhotoReply ret = 1;
+  }
+
+  message GetPhoto {
+    zproto.GetPhotoRequest v_request = 1;
+  }
+
+  message UploadPhotoSuccessful_Ret {
+    zproto.UploadPhotoSuccessfulReply ret = 1;
+  }
+
+  message UploadPhotoSuccessful {
+    zproto.UploadPhotoSuccessfulRequest v_request = 1;
+  }
+
+  message GetReviewAvatarInfo_Ret {
+    zproto.GetReviewAvatarInfoReply ret = 1;
+  }
+
+  message GetReviewAvatarInfo {
+    zproto.GetReviewAvatarInfoRequest v_request = 1;
+  }
+
+  message GetFuncPhotoList_Ret {
+    zproto.GetFuncPhotoListReply ret = 1;
+  }
+
+  message GetFuncPhotoList {
+    zproto.GetFuncPhotoListRequest v_request = 1;
+  }
+
+  message DelFuncPhoto_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DelFuncPhoto {
+    zproto.DelFuncPhotoRequest v_request = 1;
+  }
+
+  message SetPhotoSchemeName_Ret {
+    zproto.SetPhotoSchemeNameReply ret = 1;
+  }
+
+  message SetPhotoSchemeName {
+    zproto.SetPhotoSchemeNameRequest v_request = 1;
+  }
+
+  message CheckImage_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CheckImage {
+    zproto.CheckImageRequest v_request = 1;
+  }
 }
+

@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_temp_photo_cache_info.proto";
-
-message tempPhotoCache {
-    repeated zproto.tempPhotoCache.TempPhotoCacheDictEntry tempPhotoCacheDict = 1;
-}

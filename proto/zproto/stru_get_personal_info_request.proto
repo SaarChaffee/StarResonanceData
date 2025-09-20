@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message GetPersonalInfoRequest {
-    int64 charId = 2;
-}

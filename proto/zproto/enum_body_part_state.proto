@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum BodyPartState {
-    BodyPartStateDefault = 0;
-    BodyPartStateInjury = 1;
-    BodyPartStateDead = 2;
+  BodyPartStateDefault = 0;
+  BodyPartStateInjury = 1;
+  BodyPartStateDead = 2;
 }
+

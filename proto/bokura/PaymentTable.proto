@@ -5,18 +5,20 @@ package bokura;
 import "table_basic.proto";
 
 message PaymentTableBase {
-    int32 Id = 1463;
-    string ProductName = 1541;
-    string Desc = 1953;
-    int32 ProductType = 618;
-    string Currency = 968;
-    int32 Price = 310;
-    int32 AwardId = 1197;
-    int_table Items = 669;
-    int32 MailId = 583;
-    int32 Platform = 1857;
-    int32 IsSale = 1626;
+  int32 id = 1463;
+  string product_name = 1541;
+  string desc = 1953;
+  int32 product_type = 618;
+  string currency = 968;
+  int32 price = 310;
+  int32 award_id = 1197;
+  int_table items = 669;
+  int32 mail_id = 583;
+  int32 platform = 1857;
+  int32 is_sale = 1626;
 }
+
 message PaymentTableMgr {
-    repeated bokura.PaymentTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.PaymentTableBase> datas = 1;
 }
+

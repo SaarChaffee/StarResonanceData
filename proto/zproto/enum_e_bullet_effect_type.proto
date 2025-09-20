@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum EBulletEffectType {
-    BulletNormalPlayEffect = 0;
-    BulletWaterToIce = 1;
+  BulletNormalPlayEffect = 0;
+  BulletWaterToIce = 1;
 }
+

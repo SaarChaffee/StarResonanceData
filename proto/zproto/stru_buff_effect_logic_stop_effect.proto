@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message BuffEffectLogicStopEffect {
-    int32 effectId = 1;
+  int32 effect_id = 1;
 }
+

@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 enum WorldReconnectStatus {
-    FastReconnect = 0;
-    NewSession = 1;
+  FastReconnect = 0;
+  NewSession = 1;
 }
+

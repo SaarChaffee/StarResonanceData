@@ -5,20 +5,22 @@ package bokura;
 import "table_basic.proto";
 
 message PresentationEPFlowTableBase {
-    int32 Id = 1463;
-    string ResPath = 548;
-    string FlowName = 1523;
-    string FlowType = 16;
-    bool GetOption = 63;
-    bool IsSavePlayState = 1541;
-    int32 CheckPlayKeyIndex = 565;
-    int32 CheckPlayType = 1918;
-    bool IsDefaultCameraDisabled = 200;
-    int32 ContentHiding = 1154;
-    int_array IgnoreHidingNPC = 955;
-    bool IsModelDialogue = 1706;
-    int_array BlackMask = 911;
+  int32 id = 1463;
+  string res_path = 548;
+  string flow_name = 1523;
+  string flow_type = 16;
+  bool get_option = 63;
+  bool is_save_play_state = 1541;
+  int32 check_play_key_index = 565;
+  int32 check_play_type = 1918;
+  bool is_default_camera_disabled = 200;
+  int32 content_hiding = 1154;
+  int_array ignore_hiding_npc = 955;
+  bool is_model_dialogue = 1706;
+  int_array black_mask = 911;
 }
+
 message PresentationEPFlowTableMgr {
-    repeated bokura.PresentationEPFlowTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.PresentationEPFlowTableBase> datas = 1;
 }
+

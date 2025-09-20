@@ -3,8 +3,10 @@ syntax = "proto3";
 package bokura;
 
 message EntityDynAttrPeopleNumTableBase {
-    int32 Id = 1463;
+  int32 id = 1463;
 }
+
 message EntityDynAttrPeopleNumTableMgr {
-    repeated bokura.EntityDynAttrPeopleNumTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.EntityDynAttrPeopleNumTableBase> datas = 1;
 }
+

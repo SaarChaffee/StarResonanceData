@@ -5,13 +5,15 @@ package bokura;
 import "table_basic.proto";
 
 message UnionManageTableBase {
-    int32 Id = 1463;
-    mlstring Position = 686;
-    int32 PositionNum = 1912;
-    vector3_array UnionManage = 1491;
-    int32 ShowSort = 1506;
-    int_array UnionAuthoritySit = 166;
+  int32 id = 1463;
+  mlstring position = 686;
+  int32 position_num = 1912;
+  vector3_array union_manage = 1491;
+  int32 show_sort = 1506;
+  int_array union_authority_sit = 166;
 }
+
 message UnionManageTableMgr {
-    repeated bokura.UnionManageTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.UnionManageTableBase> datas = 1;
 }
+

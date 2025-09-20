@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message NotifyRejectApplicantRequest {
-    string leaderName = 1;
-    int64 leaderId = 2;
-}

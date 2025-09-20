@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum ESwitchSkillCloseType {
-    SwitchSkillCloseSkill = 0;
-    SwitchSkillCloseRes = 1;
-    SwitchSkillCloseBuff = 2;
+  SwitchSkillCloseSkill = 0;
+  SwitchSkillCloseRes = 1;
+  SwitchSkillCloseBuff = 2;
 }
+

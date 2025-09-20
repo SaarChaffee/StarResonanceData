@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message CommunityBuildFurnitureCancelRequest {
-    int64 buildUuid = 1;
+  int64 build_uuid = 1;
 }
+

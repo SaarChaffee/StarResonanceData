@@ -9,19 +9,25 @@ import "stru_upload_photo_result_ntf_request.proto";
 import "stru_upload_picture_result_ntf_request.proto";
 
 message PhotographNtf {
-    message GetPhotoTokenNtf {
-        zproto.GetPhotoTokenNtfRequest vRequest = 1;
-    }
-    message UploadPhotoResultNtf {
-        zproto.UploadPhotoResultNtfRequest vRequest = 1;
-    }
-    message UploadPictureResultNtf {
-        zproto.UploadPictureResultNtfRequest vRequest = 1;
-    }
-    message RetAvatarToken {
-        zproto.RetAvatarTokenRequest vRequest = 1;
-    }
-    message ReviewAvatarInfoNtf {
-        zproto.ReviewAvatarInfoNtfRequest vRequest = 1;
-    }
+
+  message GetPhotoTokenNtf {
+    zproto.GetPhotoTokenNtfRequest v_request = 1;
+  }
+
+  message UploadPhotoResultNtf {
+    zproto.UploadPhotoResultNtfRequest v_request = 1;
+  }
+
+  message UploadPictureResultNtf {
+    zproto.UploadPictureResultNtfRequest v_request = 1;
+  }
+
+  message RetAvatarToken {
+    zproto.RetAvatarTokenRequest v_request = 1;
+  }
+
+  message ReviewAvatarInfoNtf {
+    zproto.ReviewAvatarInfoNtfRequest v_request = 1;
+  }
 }
+

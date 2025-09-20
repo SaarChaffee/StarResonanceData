@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message CancelMatchParam {
-    string matchToken = 1;
+  string match_token = 1;
 }
+

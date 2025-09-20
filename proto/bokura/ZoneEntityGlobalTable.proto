@@ -5,13 +5,15 @@ package bokura;
 import "table_basic.proto";
 
 message ZoneEntityGlobalTableBase {
-    int32 UId = 2028;
-    number_array Position = 686;
-    float Rotation = 783;
-    string OptionData = 853;
-    number_array ZoneParam = 444;
-    int32 SourceType = 380;
+  int32 u_id = 2028;
+  number_array position = 686;
+  float rotation = 783;
+  string option_data = 853;
+  number_array zone_param = 444;
+  int32 source_type = 380;
 }
+
 message ZoneEntityGlobalTableMgr {
-    repeated bokura.ZoneEntityGlobalTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ZoneEntityGlobalTableBase> datas = 1;
 }
+

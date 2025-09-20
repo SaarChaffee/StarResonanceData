@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EDamageMode {
-    DamageNormal = 0;
-    DamagePhysical = 1;
-    DamageMagical = 2;
+  DamageNormal = 0;
+  DamagePhysical = 1;
+  DamageMagical = 2;
 }
+

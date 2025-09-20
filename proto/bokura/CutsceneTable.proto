@@ -5,28 +5,30 @@ package bokura;
 import "table_basic.proto";
 
 message CutsceneTableBase {
-    int32 Id = 1463;
-    string NameDesign = 1649;
-    string ResPath = 548;
-    int32 ContentHiding = 1154;
-    bool IsCutsceneEditor = 247;
-    int32 CanSkip = 315;
-    bool ValidateSkip = 1204;
-    int_array BlackMask = 911;
-    int_array AllowInput = 256;
-    bool IsSavePlayState = 1541;
-    int32 CheckPlayKeyIndex = 565;
-    int_array EndSyncActorType = 1242;
-    int_array EndSyncActorId = 2023;
-    vector3_array EndSyncActorPos = 1480;
-    number_array EndSyncActorRotation = 1778;
-    int32 CheckPlayType = 1918;
-    string AudioState = 751;
-    int32 BindingScene = 1231;
-    int32 PlayerSyncType = 20;
-    number_array PlayerSyncPos = 865;
-    float PlayerSyncRotation = 572;
+  int32 id = 1463;
+  string name_design = 1649;
+  string res_path = 548;
+  int32 content_hiding = 1154;
+  bool is_cutscene_editor = 247;
+  int32 can_skip = 315;
+  bool validate_skip = 1204;
+  int_array black_mask = 911;
+  int_array allow_input = 256;
+  bool is_save_play_state = 1541;
+  int32 check_play_key_index = 565;
+  int_array end_sync_actor_type = 1242;
+  int_array end_sync_actor_id = 2023;
+  vector3_array end_sync_actor_pos = 1480;
+  number_array end_sync_actor_rotation = 1778;
+  int32 check_play_type = 1918;
+  string audio_state = 751;
+  int32 binding_scene = 1231;
+  int32 player_sync_type = 20;
+  number_array player_sync_pos = 865;
+  float player_sync_rotation = 572;
 }
+
 message CutsceneTableMgr {
-    repeated bokura.CutsceneTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.CutsceneTableBase> datas = 1;
 }
+

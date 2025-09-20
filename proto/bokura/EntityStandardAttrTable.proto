@@ -5,13 +5,15 @@ package bokura;
 import "table_basic.proto";
 
 message EntityStandardAttrTableBase {
-    int32 Id = 1463;
-    int32 Season = 620;
-    int32 EquipLevel = 367;
-    int_table MaxHp = 439;
-    int_table Attack = 1316;
-    int32 BodyPartMaxHp = 482;
+  int32 id = 1463;
+  int32 season = 620;
+  int32 equip_level = 367;
+  int_table max_hp = 439;
+  int_table attack = 1316;
+  int32 body_part_max_hp = 482;
 }
+
 message EntityStandardAttrTableMgr {
-    repeated bokura.EntityStandardAttrTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.EntityStandardAttrTableBase> datas = 1;
 }
+

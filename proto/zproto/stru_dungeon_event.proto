@@ -6,5 +6,6 @@ import "stru_dungeon_event_data.proto";
 import "stru_dirty_mask.proto";
 
 message DungeonEvent {
-    repeated zproto.DungeonEvent.DungeonEventDataEntry dungeonEventData = 1;
+  map<int32, zproto.DungeonEventData> dungeon_event_data = 1;
 }
+

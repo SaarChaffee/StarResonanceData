@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message ClutterGenerationRecord {
-    bool generated = 1;
+  bool generated = 1;
 }
+

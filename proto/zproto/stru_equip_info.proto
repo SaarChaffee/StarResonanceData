@@ -5,8 +5,9 @@ package zproto;
 import "stru_dirty_mask.proto";
 
 message EquipInfo {
-    int32 equipSlot = 1;
-    uint64 itemUuid = 2;
-    uint32 equipSlotRefineLevel = 3;
-    uint32 equipSlotRefineFailedCount = 4;
+  int32 equip_slot = 1;
+  uint64 item_uuid = 2;
+  uint32 equip_slot_refine_level = 3;
+  uint32 equip_slot_refine_failed_count = 4;
 }
+

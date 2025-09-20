@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EBuffEffectConfusionType {
-    EBECPlaySkill = 0;
-    EBECPlayMove = 1;
-    EBECPlayRandMove = 2;
+  EBECPlaySkill = 0;
+  EBECPlayMove = 1;
+  EBECPlayRandMove = 2;
 }
+

@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message MatchReadyParam {
-    bool isReady = 1;
-    string matchToken = 2;
-}

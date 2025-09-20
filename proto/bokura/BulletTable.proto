@@ -5,22 +5,24 @@ package bokura;
 import "table_basic.proto";
 
 message BulletTableBase {
-    int32 Id = 1463;
-    string Name = 439;
-    float Start = 678;
-    float Duration = 544;
-    int32 ModelID = 2011;
-    int32 BoomCount = 1236;
-    int32 BoomInterval = 1754;
-    int32 DamageInterval = 1760;
-    int64 BulletAttrId = 1786;
-    int_array Tags = 232;
-    int32 DeadShowStageId = 2044;
-    int32 BulletCount = 1315;
-    vector2 DamageWeight = 1615;
-    int32 DamageWeightType = 1350;
-    bool FakeBullet = 1566;
+  int32 id = 1463;
+  string name = 439;
+  float start = 678;
+  float duration = 544;
+  int32 model_id = 2011;
+  int32 boom_count = 1236;
+  int32 boom_interval = 1754;
+  int32 damage_interval = 1760;
+  int64 bullet_attr_id = 1786;
+  int_array tags = 232;
+  int32 dead_show_stage_id = 2044;
+  int32 bullet_count = 1315;
+  vector2 damage_weight = 1615;
+  int32 damage_weight_type = 1350;
+  bool fake_bullet = 1566;
 }
+
 message BulletTableMgr {
-    repeated bokura.BulletTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.BulletTableBase> datas = 1;
 }
+

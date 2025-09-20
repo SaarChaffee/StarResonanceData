@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message UnionRaidKillBossRecord {
-    int64 charId = 1;
-    string CharName = 2;
-    int64 killTime = 3;
-}

@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum EGender {
-    GenderNull = 0;
-    GenderMale = 1;
-    GenderFemale = 2;
+  GenderNull = 0;
+  GenderMale = 1;
+  GenderFemale = 2;
 }
+

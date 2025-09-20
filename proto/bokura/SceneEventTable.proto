@@ -5,13 +5,15 @@ package bokura;
 import "table_basic.proto";
 
 message SceneEventTableBase {
-    int32 Id = 1463;
-    mlstring Name = 439;
-    int_array TargetList = 360;
-    int32 Difficult = 1602;
-    int_table CompleteAction = 559;
-    int32 Time = 601;
+  int32 id = 1463;
+  mlstring name = 439;
+  int_array target_list = 360;
+  int32 difficult = 1602;
+  int_table complete_action = 559;
+  int32 time = 601;
 }
+
 message SceneEventTableMgr {
-    repeated bokura.SceneEventTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.SceneEventTableBase> datas = 1;
 }
+

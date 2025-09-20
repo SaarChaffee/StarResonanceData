@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 enum ETargetShareType {
-    NotShare = 0;
-    TeamShare = 1;
-    DungeonShare = 2;
+  NotShare = 0;
+  TeamShare = 1;
+  DungeonShare = 2;
 }
+

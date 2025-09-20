@@ -5,8 +5,9 @@ package zproto;
 import "stru_int_vec3.proto";
 
 message ColorData {
-    repeated zproto.ColorData.ColorDictEntry colorDict = 1;
-    repeated zproto.ColorData.ResetDictEntry resetDict = 2;
-    repeated zproto.ColorData.AttachmentColorEntry attachmentColor = 3;
-    repeated zproto.ColorData.AttachmentResetEntry attachmentReset = 4;
+  map<int32, zproto.IntVec3> color_dict = 1;
+  map<int32, bool> reset_dict = 2;
+  map<int32, zproto.IntVec3> attachment_color = 3;
+  map<int32, bool> attachment_reset = 4;
 }
+

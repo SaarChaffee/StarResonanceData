@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message ReviveInfo {
-    repeated zproto.ReviveInfo.ReviveCountEntry reviveCount = 1;
-}

@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message ApplyToRideParam {
-    int64 targetId = 1;
+  int64 target_id = 1;
 }
+

@@ -5,7 +5,9 @@ package zproto;
 import "stru_notify_social_data_request.proto";
 
 message SocialNtf {
-    message NotifySocialData {
-        zproto.NotifySocialDataRequest vRequest = 1;
-    }
+
+  message NotifySocialData {
+    zproto.NotifySocialDataRequest v_request = 1;
+  }
 }
+

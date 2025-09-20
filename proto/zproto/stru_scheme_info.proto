@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message schemeInfo {
-    repeated string schemeInfoKeys = 1;
-}

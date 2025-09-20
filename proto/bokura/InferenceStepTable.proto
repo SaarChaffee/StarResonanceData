@@ -5,14 +5,16 @@ package bokura;
 import "table_basic.proto";
 
 message InferenceStepTableBase {
-    int32 Id = 1463;
-    mlstring Question = 1705;
-    int_array Answer = 311;
-    mlstring QuestionBubble = 305;
-    int32 QuestionBubbleAction = 1495;
-    mlstring_array WrongBubble = 512;
-    int_array WrongBubbleAction = 1770;
+  int32 id = 1463;
+  mlstring question = 1705;
+  int_array answer = 311;
+  mlstring question_bubble = 305;
+  int32 question_bubble_action = 1495;
+  mlstring_array wrong_bubble = 512;
+  int_array wrong_bubble_action = 1770;
 }
+
 message InferenceStepTableMgr {
-    repeated bokura.InferenceStepTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.InferenceStepTableBase> datas = 1;
 }
+

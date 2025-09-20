@@ -5,15 +5,17 @@ package bokura;
 import "table_basic.proto";
 
 message ReviveTableBase {
-    int32 Id = 1463;
-    mlstring Name = 439;
-    int32 Type = 673;
-    int_array Consume = 1838;
-    int32 CountDown = 3886;
-    int_array BeforeBuffId = 1753;
-    int32 WaitTime = 106;
-    int32 IsBossCanRevive = 812;
+  int32 id = 1463;
+  mlstring name = 439;
+  int32 type = 673;
+  int_array consume = 1838;
+  int32 count_down = 3886;
+  int_array before_buff_id = 1753;
+  int32 wait_time = 106;
+  int32 is_boss_can_revive = 812;
 }
+
 message ReviveTableMgr {
-    repeated bokura.ReviveTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ReviveTableBase> datas = 1;
 }
+

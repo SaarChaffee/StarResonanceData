@@ -5,16 +5,18 @@ package bokura;
 import "table_basic.proto";
 
 message StaticInteractiveObjectTableBase {
-    int32 Id = 1463;
-    number_array Position = 686;
-    number_array RotY = 1477;
-    int32 ClassId = 29;
-    number_array Radius = 1839;
-    number_array TriggerPosition = 37;
-    int_table InteractionTemplate = 1682;
-    string_array InteractionEvent = 1343;
-    int32 SourceType = 380;
+  int32 id = 1463;
+  number_array position = 686;
+  number_array roty = 1477;
+  int32 class_id = 29;
+  number_array radius = 1839;
+  number_array trigger_position = 37;
+  int_table interaction_template = 1682;
+  string_array interaction_event = 1343;
+  int32 source_type = 380;
 }
+
 message StaticInteractiveObjectTableMgr {
-    repeated bokura.StaticInteractiveObjectTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.StaticInteractiveObjectTableBase> datas = 1;
 }
+

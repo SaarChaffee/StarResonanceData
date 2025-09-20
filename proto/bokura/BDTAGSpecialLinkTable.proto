@@ -3,13 +3,15 @@ syntax = "proto3";
 package bokura;
 
 message BDTAGSpecialLinkTableBase {
-    int32 Id = 1463;
-    string Note = 453;
-    int32 NoteType = 256;
-    int32 NodeId = 1205;
-    int32 TargetNodeType = 1957;
-    int32 TargetNodeID = 1587;
+  int32 id = 1463;
+  string note = 453;
+  int32 note_type = 256;
+  int32 node_id = 1205;
+  int32 target_node_type = 1957;
+  int32 target_node_id = 1587;
 }
+
 message BDTAGSpecialLinkTableMgr {
-    repeated bokura.BDTAGSpecialLinkTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.BDTAGSpecialLinkTableBase> datas = 1;
 }
+

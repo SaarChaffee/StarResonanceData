@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_structure_op.proto";
 
 message CommunityGrainSeedingUpdateStructureReply {
-    zproto.EErrorCode errCode = 1;
-    zproto.StructureOp structure = 2;
+  zproto.EErrorCode err_code = 1;
+  zproto.StructureOp structure = 2;
 }
+

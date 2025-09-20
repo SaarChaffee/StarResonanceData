@@ -24,64 +24,85 @@ import "stru_notify_homeland_build_furniture_op_request.proto";
 import "stru_notify_homeland_warehouse_grid_change_request.proto";
 
 message GrpcCommunityNtf {
-    message NotifyHomelandWarehouseGridChange {
-        zproto.NotifyHomelandWarehouseGridChangeRequest request = 1;
-    }
-    message NotifyCommunityApplyUpdate {
-        zproto.NotifyCommunityApplyUpdateRequest request = 1;
-    }
-    message NotifyCommunityInfoUpdate {
-        zproto.NotifyCommunityInfoUpdateRequest request = 1;
-    }
-    message NotifyCommunityTransferInfoUpdate {
-        zproto.NotifyCommunityTransferInfoUpdateRequest request = 1;
-    }
-    message NotifyCommunityNameChange {
-        zproto.NotifyCommunityNameChangeRequest request = 1;
-    }
-    message NotifyCommunityIntroductionChange {
-        zproto.NotifyCommunityIntroductionChangeRequest request = 1;
-    }
-    message NotifyCommunityCheckInChange {
-        zproto.NotifyCommunityCheckInChangeRequest request = 1;
-    }
-    message NotifyHomelandBuildFurnitureOp {
-        zproto.NotifyHomelandBuildFurnitureOpRequest request = 1;
-    }
-    message NotifyCommunityCohabitantInfo {
-        zproto.NotifyCommunityCohabitantInfoRequest request = 1;
-    }
-    message NotifyCommunityTransferChange {
-        zproto.NotifyCommunityTransferChangeRequest request = 1;
-    }
-    message NotifyCommunityGlobalAuthorityChange {
-        zproto.NotifyCommunityGlobalAuthorityChangeRequest request = 1;
-    }
-    message NotifyCommunityLevelUpdate {
-        zproto.NotifyCommunityLevelUpdateRequest request = 1;
-    }
-    message NotifyCommunityCleanlinessUpdate {
-        zproto.NotifyCommunityCleanlinessUpdateRequest request = 1;
-    }
-    message NotifyCommunityHomeLandClutterInfoAdd {
-        zproto.NotifyCommunityHomeLandClutterInfoAddRequest request = 1;
-    }
-    message NotifyCommunityHomeLandClutterInfoRemove {
-        zproto.NotifyCommunityHomeLandClutterInfoRemoveRequest request = 1;
-    }
-    message NotifyHomeLandPlayerTaskInfoUpdate {
-        zproto.NotifyHomeLandPlayerTaskInfoUpdateRequest request = 1;
-    }
-    message NotifyCommunityHomeLandSellShopUpdate {
-        zproto.NotifyCommunityHomeLandSellShopUpdateRequest request = 1;
-    }
-    message NotifyCommunityHomeLandDecorationInfo {
-        zproto.NotifyCommunityHomeLandDecorationInfoRequest request = 1;
-    }
-    message NotifyCommunityItemUpdate {
-        zproto.NotifyCommunityItemUpdateRequest request = 1;
-    }
-    message NotifyCommunityFurnitureItemUpdate {
-        zproto.NotifyCommunityFurnitureItemUpdateRequest request = 1;
-    }
+
+  message NotifyHomelandWarehouseGridChange {
+    zproto.NotifyHomelandWarehouseGridChangeRequest request = 1;
+  }
+
+  message NotifyCommunityApplyUpdate {
+    zproto.NotifyCommunityApplyUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityInfoUpdate {
+    zproto.NotifyCommunityInfoUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityTransferInfoUpdate {
+    zproto.NotifyCommunityTransferInfoUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityNameChange {
+    zproto.NotifyCommunityNameChangeRequest request = 1;
+  }
+
+  message NotifyCommunityIntroductionChange {
+    zproto.NotifyCommunityIntroductionChangeRequest request = 1;
+  }
+
+  message NotifyCommunityCheckInChange {
+    zproto.NotifyCommunityCheckInChangeRequest request = 1;
+  }
+
+  message NotifyHomelandBuildFurnitureOp {
+    zproto.NotifyHomelandBuildFurnitureOpRequest request = 1;
+  }
+
+  message NotifyCommunityCohabitantInfo {
+    zproto.NotifyCommunityCohabitantInfoRequest request = 1;
+  }
+
+  message NotifyCommunityTransferChange {
+    zproto.NotifyCommunityTransferChangeRequest request = 1;
+  }
+
+  message NotifyCommunityGlobalAuthorityChange {
+    zproto.NotifyCommunityGlobalAuthorityChangeRequest request = 1;
+  }
+
+  message NotifyCommunityLevelUpdate {
+    zproto.NotifyCommunityLevelUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityCleanlinessUpdate {
+    zproto.NotifyCommunityCleanlinessUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityHomeLandClutterInfoAdd {
+    zproto.NotifyCommunityHomeLandClutterInfoAddRequest request = 1;
+  }
+
+  message NotifyCommunityHomeLandClutterInfoRemove {
+    zproto.NotifyCommunityHomeLandClutterInfoRemoveRequest request = 1;
+  }
+
+  message NotifyHomeLandPlayerTaskInfoUpdate {
+    zproto.NotifyHomeLandPlayerTaskInfoUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityHomeLandSellShopUpdate {
+    zproto.NotifyCommunityHomeLandSellShopUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityHomeLandDecorationInfo {
+    zproto.NotifyCommunityHomeLandDecorationInfoRequest request = 1;
+  }
+
+  message NotifyCommunityItemUpdate {
+    zproto.NotifyCommunityItemUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityFurnitureItemUpdate {
+    zproto.NotifyCommunityFurnitureItemUpdateRequest request = 1;
+  }
 }
+

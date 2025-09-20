@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-import "stru_settlement_position.proto";
-
-message SettlementPositionParam {
-    repeated zproto.SettlementPositionParam.VUserPosEntry vUserPos = 1;
-}

@@ -6,7 +6,8 @@ import "stru_compensation_record.proto";
 import "stru_dirty_mask.proto";
 
 message CompensationSeasonStatistics {
-    repeated zproto.CompensationSeasonStatistics.WeekDataEntry weekData = 1;
-    repeated zproto.CompensationSeasonStatistics.CompensationEntry compensation = 2;
-    int32 maxClimbUpLayerId = 3;
+  map<uint32, zproto.CompensationRecord> week_data = 1;
+  map<uint32, int32> compensation = 2;
+  int32 max_climb_up_layer_id = 3;
 }
+

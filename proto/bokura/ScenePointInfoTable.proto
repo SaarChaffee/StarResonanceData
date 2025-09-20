@@ -5,16 +5,18 @@ package bokura;
 import "table_basic.proto";
 
 message ScenePointInfoTableBase {
-    int32 UId = 2028;
-    int32 GroupId = 196;
-    number_array Position = 686;
-    float Rotation = 783;
-    number_array CamPosition = 1631;
-    float CamRotation = 422;
-    float RandomRadius = 2007;
-    int32 CameraId = 472;
-    float RandomInnerRadius = 843;
+  int32 u_id = 2028;
+  int32 group_id = 196;
+  number_array position = 686;
+  float rotation = 783;
+  number_array cam_position = 1631;
+  float cam_rotation = 422;
+  float random_radius = 2007;
+  int32 camera_id = 472;
+  float random_inner_radius = 843;
 }
+
 message ScenePointInfoTableMgr {
-    repeated bokura.ScenePointInfoTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ScenePointInfoTableBase> datas = 1;
 }
+

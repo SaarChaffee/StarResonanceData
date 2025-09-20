@@ -5,14 +5,16 @@ package bokura;
 import "table_basic.proto";
 
 message HousingItemsBase {
-    int32 Id = 1463;
-    int32 SortId = 1586;
-    mlstring Name = 439;
-    string Icon = 1153;
-    int32 Type = 673;
-    int32 Quality = 1961;
-    string Res = 1275;
+  int32 id = 1463;
+  int32 sort_id = 1586;
+  mlstring name = 439;
+  string icon = 1153;
+  int32 type = 673;
+  int32 quality = 1961;
+  string res = 1275;
 }
+
 message HousingItemsMgr {
-    repeated bokura.HousingItemsMgr.DatasEntry datas = 1;
+  map<int32, bokura.HousingItemsBase> datas = 1;
 }
+

@@ -8,8 +8,9 @@ import "stru_community_quit_cohabitant.proto";
 import "stru_home_land_player_task_info.proto";
 
 message CommunityPlayerInfo {
-    zproto.CommunityCharBasicData communityChar = 1;
-    zproto.CommunityPlayerAuthorityInfo playerAuthorityInfo = 2;
-    zproto.CommunityQuitCohabitant quitCohabitant = 3;
-    zproto.HomeLandPlayerTaskInfo homeLandPlayerTaskInfo = 4;
+  zproto.CommunityCharBasicData community_char = 1;
+  zproto.CommunityPlayerAuthorityInfo player_authority_info = 2;
+  zproto.CommunityQuitCohabitant quit_cohabitant = 3;
+  zproto.HomeLandPlayerTaskInfo home_land_player_task_info = 4;
 }
+

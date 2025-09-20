@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message TeamMemberGroupInfo {
-    int32 groupId = 1;
-    repeated int64 charIds = 2;
-}

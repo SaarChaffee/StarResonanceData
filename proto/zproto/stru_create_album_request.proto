@@ -5,6 +5,7 @@ package zproto;
 import "enum_e_album_right.proto";
 
 message CreateAlbumRequest {
-    string name = 2;
-    zproto.EAlbumRight access = 3;
+  string name = 2;
+  zproto.EAlbumRight access = 3;
 }
+

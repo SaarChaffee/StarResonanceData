@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message GetShopItemListRequest {
-    repeated int32 shopId = 3;
-}

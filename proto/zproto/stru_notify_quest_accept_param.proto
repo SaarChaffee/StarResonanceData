@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message NotifyQuestAcceptParam {
-    repeated int32 questIds = 1;
-}

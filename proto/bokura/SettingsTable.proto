@@ -5,17 +5,19 @@ package bokura;
 import "table_basic.proto";
 
 message SettingsTableBase {
-    int32 Id = 1463;
-    mlstring Name = 439;
-    int32 SystemId = 518;
-    int32 TypesId = 1912;
-    int32 OperateType = 1525;
-    string DescribeKey = 1288;
-    string Des = 266;
-    string Value = 616;
-    int32 DataStorage = 1251;
-    string Link = 105;
+  int32 id = 1463;
+  mlstring name = 439;
+  int32 system_id = 518;
+  int32 types_id = 1912;
+  int32 operate_type = 1525;
+  string describe_key = 1288;
+  string des = 266;
+  string value = 616;
+  int32 data_storage = 1251;
+  string link = 105;
 }
+
 message SettingsTableMgr {
-    repeated bokura.SettingsTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.SettingsTableBase> datas = 1;
 }
+

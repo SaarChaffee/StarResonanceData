@@ -7,9 +7,10 @@ import "stru_community_bulletin_board_target_char.proto";
 import "enum_e_community_bulletin_board_type.proto";
 
 message CommunityBulletinBoard {
-    zproto.ECommunityBulletinBoardType type = 1;
-    zproto.CommunityBulletinBoardOperatorChar operatorChar = 2;
-    zproto.CommunityBulletinBoardTargetChar targetChar = 3;
-    int64 time = 4;
-    repeated string content = 5;
+  zproto.ECommunityBulletinBoardType type = 1;
+  zproto.CommunityBulletinBoardOperatorChar operator_char = 2;
+  zproto.CommunityBulletinBoardTargetChar target_char = 3;
+  int64 time = 4;
+  repeated string content = 5;
 }
+

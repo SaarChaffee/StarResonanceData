@@ -5,7 +5,8 @@ package zproto;
 import "stru_user_summary_data.proto";
 
 message ApplyInfo {
-    int64 charId = 1;
-    uint64 time = 4;
-    zproto.UserSummaryData userSummaryData = 9;
+  int64 char_id = 1;
+  uint64 time = 4;
+  zproto.UserSummaryData user_summary_data = 9;
 }
+

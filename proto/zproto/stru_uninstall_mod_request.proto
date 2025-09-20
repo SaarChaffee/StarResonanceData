@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message UninstallModRequest {
-    int32 slotId = 1;
-}

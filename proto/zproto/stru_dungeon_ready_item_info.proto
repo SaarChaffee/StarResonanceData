@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message DungeonReadyItemInfo {
-    int32 itemId = 1;
-    int32 itemNum = 2;
+  int32 item_id = 1;
+  int32 item_num = 2;
 }
+

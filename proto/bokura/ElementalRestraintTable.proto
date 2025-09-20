@@ -3,18 +3,20 @@ syntax = "proto3";
 package bokura;
 
 message ElementalRestraintTableBase {
-    int32 Id = 1463;
-    int32 PropertyID = 62;
-    int32 DefenseGeneral = 553;
-    int32 DefenseFire = 834;
-    int32 DefenseWater = 635;
-    int32 DefenseElectricity = 597;
-    int32 DefenseWood = 1317;
-    int32 DefenseWind = 1926;
-    int32 DefenseRock = 512;
-    int32 DefenseLight = 210;
-    int32 DefenseDark = 937;
+  int32 id = 1463;
+  int32 property_id = 62;
+  int32 defense_general = 553;
+  int32 defense_fire = 834;
+  int32 defense_water = 635;
+  int32 defense_electricity = 597;
+  int32 defense_wood = 1317;
+  int32 defense_wind = 1926;
+  int32 defense_rock = 512;
+  int32 defense_light = 210;
+  int32 defense_dark = 937;
 }
+
 message ElementalRestraintTableMgr {
-    repeated bokura.ElementalRestraintTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ElementalRestraintTableBase> datas = 1;
 }
+

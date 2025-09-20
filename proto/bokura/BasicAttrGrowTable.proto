@@ -5,9 +5,11 @@ package bokura;
 import "table_basic.proto";
 
 message BasicAttrGrowTableBase {
-    int32 Id = 1463;
-    int_table AttrGrowRange = 1630;
+  int32 id = 1463;
+  int_table attr_grow_range = 1630;
 }
+
 message BasicAttrGrowTableMgr {
-    repeated bokura.BasicAttrGrowTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.BasicAttrGrowTableBase> datas = 1;
 }
+

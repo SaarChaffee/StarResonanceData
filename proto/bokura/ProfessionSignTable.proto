@@ -5,15 +5,17 @@ package bokura;
 import "table_basic.proto";
 
 message ProfessionSignTableBase {
-    int32 Id = 1463;
-    mlstring Name = 439;
-    int_array SignType = 1653;
-    string Card = 483;
-    string ItemTips = 491;
-    int_array EffectType = 527;
-    int_array EffectId = 1555;
-    string_table Effectkey = 1761;
+  int32 id = 1463;
+  mlstring name = 439;
+  int_array sign_type = 1653;
+  string card = 483;
+  string item_tips = 491;
+  int_array effect_type = 527;
+  int_array effect_id = 1555;
+  string_table effectkey = 1761;
 }
+
 message ProfessionSignTableMgr {
-    repeated bokura.ProfessionSignTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ProfessionSignTableBase> datas = 1;
 }
+

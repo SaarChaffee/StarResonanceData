@@ -3,7 +3,8 @@ syntax = "proto3";
 package zproto;
 
 message CommunityAcceptRejectInvitationRequest {
-    int64 charId = 1;
-    int64 homeId = 2;
-    bool accept = 3;
+  int64 char_id = 1;
+  int64 home_id = 2;
+  bool accept = 3;
 }
+

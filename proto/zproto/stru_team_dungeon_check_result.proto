@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message TeamDungeonCheckResult {
-    int32 dungeonId = 1;
-    repeated zproto.TeamDungeonCheckResult.CheckResultEntry checkResult = 2;
-}

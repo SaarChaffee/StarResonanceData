@@ -6,9 +6,10 @@ import "stru_community_homeland_recipe.proto";
 import "stru_dirty_mask.proto";
 
 message CommunityHomeData {
-    int64 communityId = 1;
-    int64 homelandId = 2;
-    int32 buyCount = 3;
-    repeated zproto.CommunityHomeData.UnlockedRecipesEntry unlockedRecipes = 4;
-    int32 level = 5;
+  int64 community_id = 1;
+  int64 homeland_id = 2;
+  int32 buy_count = 3;
+  map<int32, zproto.CommunityHomelandRecipe> unlocked_recipes = 4;
+  int32 level = 5;
 }
+

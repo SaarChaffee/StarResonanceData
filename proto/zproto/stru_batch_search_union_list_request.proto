@@ -3,5 +3,6 @@ syntax = "proto3";
 package zproto;
 
 message BatchSearchUnionListRequest {
-    repeated int64 unionIdList = 2;
+  repeated int64 union_id_list = 2;
 }
+

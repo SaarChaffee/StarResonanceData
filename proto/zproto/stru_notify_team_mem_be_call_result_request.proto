@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message NotifyTeamMemBeCallResultRequest {
-    int64 memberId = 1;
-    int32 tipsId = 2;
-}

@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message GetFirstPayInfo {
-    repeated zproto.GetFirstPayInfo.LadderPayInfoEntry ladderPayInfo = 1;
-    int32 extraAwardID = 2;
-}

@@ -3,6 +3,7 @@ syntax = "proto3";
 package zproto;
 
 message ActiveProfessionTalentRequest {
-    int32 professionId = 1;
-    repeated int32 talentNodeIds = 3;
+  int32 profession_id = 1;
+  repeated int32 talent_node_ids = 3;
 }
+

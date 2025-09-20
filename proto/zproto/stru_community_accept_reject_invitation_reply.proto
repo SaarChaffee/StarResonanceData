@@ -5,6 +5,7 @@ package zproto;
 import "enum_e_error_code.proto";
 
 message CommunityAcceptRejectInvitationReply {
-    zproto.EErrorCode errCode = 1;
-    string checkInContent = 2;
+  zproto.EErrorCode err_code = 1;
+  string check_in_content = 2;
 }
+

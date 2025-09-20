@@ -3,8 +3,9 @@ syntax = "proto3";
 package zproto;
 
 enum EApplyRideResult {
-    ApplyRideResultNone = 0;
-    ApplyRideResultAgree = 1;
-    ApplyRideResultRefuse = 2;
-    ApplyRideResultTimeOut = 3;
+  ApplyRideResultNone = 0;
+  ApplyRideResultAgree = 1;
+  ApplyRideResultRefuse = 2;
+  ApplyRideResultTimeOut = 3;
 }
+

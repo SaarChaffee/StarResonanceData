@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package zproto;
-
-message NotifyUnionActivityRequest {
-    int32 activityId = 2;
-    int32 notifyType = 3;
-}

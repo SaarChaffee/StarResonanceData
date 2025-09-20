@@ -5,27 +5,29 @@ package bokura;
 import "table_basic.proto";
 
 message GuideTableBase {
-    int32 Id = 1463;
-    int32 Priority = 1712;
-    int32 GuideGroup = 1642;
-    int_array ShowConditionType = 1621;
-    string ShowConditionValue = 1389;
-    bool CheckCompletion = 1533;
-    string TriggerConditionType = 14;
-    string TriggerConditionValue = 303;
-    string CompletionConditionType = 1075;
-    string CompletionConditionValue = 1630;
-    int32 AutoCompleteTime = 1693;
-    bool IsShowUIFrame = 1167;
-    mlstring TextAround = 1939;
-    int_array TextShowDirection = 1908;
-    mlstring TextMiddle = 782;
-    int_array KeyboardId = 246;
-    string UIView = 1534;
-    bool IsBlack = 965;
-    int32 ShowHelplibraryId = 464;
-    string_array DynamicUI = 1636;
+  int32 id = 1463;
+  int32 priority = 1712;
+  int32 guide_group = 1642;
+  int_array show_condition_type = 1621;
+  string show_condition_value = 1389;
+  bool check_completion = 1533;
+  string trigger_condition_type = 14;
+  string trigger_condition_value = 303;
+  string completion_condition_type = 1075;
+  string completion_condition_value = 1630;
+  int32 auto_complete_time = 1693;
+  bool is_show_ui_frame = 1167;
+  mlstring text_around = 1939;
+  int_array text_show_direction = 1908;
+  mlstring text_middle = 782;
+  int_array keyboard_id = 246;
+  string ui_view = 1534;
+  bool is_black = 965;
+  int32 show_helplibrary_id = 464;
+  string_array dynamic_ui = 1636;
 }
+
 message GuideTableMgr {
-    repeated bokura.GuideTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.GuideTableBase> datas = 1;
 }
+

@@ -3,24 +3,26 @@ syntax = "proto3";
 package bokura;
 
 message ModelWpNpcTableBase {
-    int32 ModelPrefabID = 5;
-    string ModelPrefabDesc = 1152;
-    int32 Sex = 1062;
-    string Skeleton = 1130;
-    string AnimTemplate = 1244;
-    string EmoPrefix = 857;
-    string Head = 664;
-    string AnimHeadTemplate = 139;
-    string Hair = 574;
-    string AnimHairTemplate = 128;
-    string Headwear = 709;
-    string Back = 251;
-    string WeaponL = 1310;
-    string WeaponR = 1690;
-    string Tail = 1292;
-    string WeaponIdleAnim = 102;
-    string PinchConfig = 832;
+  int32 model_prefab_id = 5;
+  string model_prefab_desc = 1152;
+  int32 sex = 1062;
+  string skeleton = 1130;
+  string anim_template = 1244;
+  string emo_prefix = 857;
+  string head = 664;
+  string anim_head_template = 139;
+  string hair = 574;
+  string anim_hair_template = 128;
+  string headwear = 709;
+  string back = 251;
+  string weaponl = 1310;
+  string weaponr = 1690;
+  string tail = 1292;
+  string weapon_idle_anim = 102;
+  string pinch_config = 832;
 }
+
 message ModelWpNpcTableMgr {
-    repeated bokura.ModelWpNpcTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.ModelWpNpcTableBase> datas = 1;
 }
+

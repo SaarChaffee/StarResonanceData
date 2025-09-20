@@ -3,11 +3,13 @@ syntax = "proto3";
 package bokura;
 
 message QuickJumpTypeTableBase {
-    int32 Type = 673;
-    string Param = 1207;
-    string Example = 522;
-    string RefreshNum = 1376;
+  int32 type = 673;
+  string param = 1207;
+  string example = 522;
+  string refresh_num = 1376;
 }
+
 message QuickJumpTypeTableMgr {
-    repeated bokura.QuickJumpTypeTableMgr.DatasEntry datas = 1;
+  map<int32, bokura.QuickJumpTypeTableBase> datas = 1;
 }
+

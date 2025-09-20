@@ -6,6 +6,7 @@ import "enum_e_error_code.proto";
 import "stru_warehouse_info.proto";
 
 message CreateWarehouseReply {
-    zproto.WarehouseInfo warehouse = 1;
-    zproto.EErrorCode errCode = 2;
+  zproto.WarehouseInfo warehouse = 1;
+  zproto.EErrorCode err_code = 2;
 }
+
