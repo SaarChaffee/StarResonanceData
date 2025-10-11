@@ -37,6 +37,11 @@ function quickJumpVm.DoJumpByConfigParam(jumpType, jumpParam, extraParams)
     end
   elseif jumpType == E.QuickJumpType.GoUnionTarget then
     param.jumpUnionType = jumpParam[1]
+  elseif jumpType == E.QuickJumpType.TraceScenePosition then
+    param.sceneId = jumpParam[1]
+    param.trackType = jumpParam[2]
+    param.goalGuideSource = jumpParam[3]
+    param.position = jumpParam[4]
   end
   quickJumpVm.Jump(jumpType, param)
 end
@@ -191,6 +196,11 @@ function quickJumpVm.trackEntityById(jumpParam)
   quickJumpVm.updateTrackingData(uid, sceneId, goalType, jumpParam.goalGuideSource, jumpParam)
 end
 
+function quickJumpVm.trackPosition(jumpParam)
+  local sceneId = math.floor(jumpParam.sceneId)
+  quickJumpVm.updateTrackingPositionData(sceneId, jumpParam.goalGuideSource, jumpParam)
+end
+
 function quickJumpVm.trackNearNpcByFuncId(jumpParam)
   if jumpParam.funcId == nil then
     return
@@ -251,7 +261,6 @@ function quickJumpVm.updateTrackingData(uid, sceneId, goalType, goalGuideSource,
     end
     isShowRedInfo = jumpParam.extraParams.isShowRedInfo
   end
-  mapData:SaveDynamicTraceParam(goalGuideSource, goalType, uid, {Name = dynamicName})
   local miniMapVM = Z.VMMgr.GetVM("minimap")
   if not miniMapVM.CheckSceneID(sceneId) then
     return
@@ -270,7 +279,27 @@ function quickJumpVm.updateTrackingData(uid, sceneId, goalType, goalGuideSource,
       mapVM.SetAutoSelect(flagDataId)
     end
   end
+  mapData:SaveDynamicTraceParam(sceneId, goalGuideSource, goalType, uid, {Name = dynamicName})
   mapVM.SetIsShowRedInfo(isShowRedInfo)
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
+  gotoFuncVM.GoToFunc(E.FunctionID.Map, sceneId)
+end
+
+function quickJumpVm.updateTrackingPositionData(sceneId, goalGuideSource, jumpParam)
+  local dynamicName
+  local autoTrack = true
+  if jumpParam.extraParams then
+    dynamicName = jumpParam.extraParams.DynamicFlagName
+    if jumpParam.extraParams.AutoTrack ~= nil then
+      autoTrack = jumpParam.extraParams.AutoTrack
+    end
+  end
+  local mapData = Z.DataMgr.Get("map_data")
+  mapData:SaveDynamicTraceParam(sceneId, goalGuideSource, Z.GoalPosType.Position, 1, {Name = dynamicName}, jumpParam.position)
+  local mapVM = Z.VMMgr.GetVM("map")
+  mapVM.SetTraceEntity(goalGuideSource, sceneId, 1, Z.GoalPosType.Position, false, jumpParam.position)
+  local flagDataId = mapVM.UidToUuidOfNoneEntFlag(1, Z.GoalPosType.Position, 1, false, true)
+  mapVM.SetAutoSelect(flagDataId)
   local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
   gotoFuncVM.GoToFunc(E.FunctionID.Map, sceneId)
 end
@@ -280,7 +309,8 @@ quickJumpVm.jumpFuncs_ = {
   [E.QuickJumpType.Function] = quickJumpVm.functionJump,
   [E.QuickJumpType.TraceNearestTarget] = quickJumpVm.traceNearestTarget,
   [E.QuickJumpType.Message] = quickJumpVm.showTips,
-  [E.QuickJumpType.GoUnionTarget] = quickJumpVm.goUnionTarget
+  [E.QuickJumpType.GoUnionTarget] = quickJumpVm.goUnionTarget,
+  [E.QuickJumpType.TraceScenePosition] = quickJumpVm.traceTarget
 }
 quickJumpVm.trackFuncs_ = {
   [E.TrackType.Point] = quickJumpVm.trackEntityById,
@@ -288,7 +318,8 @@ quickJumpVm.trackFuncs_ = {
   [E.TrackType.Monster] = quickJumpVm.trackEntityById,
   [E.TrackType.Zone] = quickJumpVm.trackEntityById,
   [E.TrackType.SceneObject] = quickJumpVm.trackEntityById,
-  [E.TrackType.Collection] = quickJumpVm.trackEntityById
+  [E.TrackType.Collection] = quickJumpVm.trackEntityById,
+  [E.TrackType.Position] = quickJumpVm.trackPosition
 }
 quickJumpVm.nearTraceFuncs_ = {
   [E.NearTraceTargetType.Npc] = quickJumpVm.trackNearNpcByFuncId,

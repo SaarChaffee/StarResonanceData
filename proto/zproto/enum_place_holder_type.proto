@@ -16,5 +16,6 @@ enum PlaceHolderType {
   PlaceHolderTypeFishRank = 10;
   PlaceHolderTypeUnionGroup = 11;
   PlaceHolderTypeMasterMode = 12;
+  PlaceHolderTypeScenePosition = 13;
 }
 

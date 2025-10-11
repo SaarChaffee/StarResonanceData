@@ -24,11 +24,26 @@ function PaymentData:GetProdctsName(productId)
   if self.prodctsName_ == nil then
     return nil
   end
+  if self.prodctsName_[productId] == nil then
+    return productId
+  end
   return self.prodctsName_[productId]
 end
 
 function PaymentData:SetProdctsInfo(productInfo)
   self.productions_[productInfo.ID] = productInfo
+end
+
+function PaymentData:GetProdctsIdByProductName(productName)
+  if self.prodctsName_ == nil then
+    return productName
+  end
+  for productId, value in pairs(self.prodctsName_) do
+    if productName == value then
+      return productId
+    end
+  end
+  return productName
 end
 
 function PaymentData:GetProdctsInfo(productId)

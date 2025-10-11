@@ -14,7 +14,7 @@ function Scene:InitEvents()
   self.EventItems[19] = {
     eventType = E.LevelEventType.OnSceneInit,
     enable = true,
-    group = 3,
+    group = 0,
     eventId = 19,
     count = 1,
     action = function(localSelf)
@@ -24,6 +24,8 @@ function Scene:InitEvents()
         localSelf.count = localSelf.count - 1
       end
       Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/union_activity_sublevel_001")
+      Panda.LuaAsyncBridge.SetCurWeatherTime(8)
+      Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(false)
     end
   }
 end

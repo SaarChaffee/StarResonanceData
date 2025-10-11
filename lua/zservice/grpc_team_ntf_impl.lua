@@ -31,6 +31,7 @@ function GrpcTeamNtfStubImpl:NoticeUpdateTeamInfo(call, vRequest)
     elseif clientTeamBaseInfo.hallShow ~= serverTeamBaseInfo.hallShow then
       clientTeamBaseInfo.hallShow = serverTeamBaseInfo.hallShow
     end
+    local leaderChange = false
     if clientTeamBaseInfo.leaderId ~= serverTeamBaseInfo.leaderId then
       local dungeonPrepareVm_ = Z.VMMgr.GetVM("dungeon_prepare")
       dungeonPrepareVm_.CancelReadyCheck()
@@ -48,6 +49,7 @@ function GrpcTeamNtfStubImpl:NoticeUpdateTeamInfo(call, vRequest)
         end
       end
       teamData:SetLeaderId(serverTeamBaseInfo.leaderId)
+      leaderChange = true
     end
     if clientTeamBaseInfo.teamMemberType ~= serverTeamBaseInfo.teamMemberType then
       local tab = {}
@@ -59,6 +61,9 @@ function GrpcTeamNtfStubImpl:NoticeUpdateTeamInfo(call, vRequest)
       Z.TipsVM.ShowTips(1000648, tab)
     end
     teamData.TeamInfo.baseInfo = serverTeamBaseInfo
+    if leaderChange then
+      teamData:setAttrETeammateList()
+    end
     self:setTeamGroupInfo()
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Team.Refresh)
@@ -203,6 +208,9 @@ function GrpcTeamNtfStubImpl:NotifyCharMatchResult(call, vRequest)
   local teamVM = Z.VMMgr.GetVM("team")
   local matchVm = Z.VMMgr.GetVM("match")
   if vRequest.success then
+    if not teamVM.CheckIsInTeam() then
+      Z.SDKReport.Report(Z.SDKReportEvent.TeamUp)
+    end
     teamVM.QuiteTeamVoice()
     teamData:SetTeamInfo(vRequest.teamInfo.baseInfo, vRequest.teamInfo.members)
     teamVM.JoinTeamVoice()
@@ -288,6 +296,7 @@ function GrpcTeamNtfStubImpl:NotifyJoinTeam(call, vRequest)
   if vRequest.baseInfo then
     if not teamVm.CheckIsInTeam() then
       isNewTeam = true
+      param.player.name = Z.ContainerMgr.CharSerialize.charBase.name
       Z.TipsVM.ShowTipsLang(1000615, param)
       teamData:SetTeamInfo(vRequest.baseInfo, {})
       teamVm.JoinTeamVoice()
@@ -297,6 +306,7 @@ function GrpcTeamNtfStubImpl:NotifyJoinTeam(call, vRequest)
       if vRequest.teamJoinType and vRequest.teamJoinType == Z.PbEnum("ETeamJoinType", "ETeamJoinTypeTargetMatch") and vRequest.baseInfo.leaderId == Z.ContainerMgr.CharSerialize.charBase.charId then
         Z.TipsVM.ShowTips(1000642)
       end
+      Z.SDKReport.Report(Z.SDKReportEvent.TeamUp)
     else
       teamData.TeamInfo.baseInfo = vRequest.baseInfo
     end

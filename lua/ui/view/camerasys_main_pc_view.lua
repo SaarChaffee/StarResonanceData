@@ -6,6 +6,7 @@ local camerasys_team_edit_tpl_ = require("ui/component/camerasys/camerasys_team_
 local mainui_skill_slot_obj = require("ui.player_ctrl_btns.mainui_skill_slot_obj")
 local inputKeyDescComp = require("input.input_key_desc_comp")
 local ActionHelper = require("camera_action.action_helper")
+local Enum_EPhoto
 local bigFilterPath = "ui/textures/photograph/"
 local PHOTO_SIZE = {
   ThumbSize = {Width = 512, Height = 288},
@@ -42,7 +43,6 @@ function Camerasys_main_pcView:ctor()
   self.menuContainerText_ = require("ui/view/camera_menu_container_text_sub_pc_view").new(self)
   self.menuContainerUnionBg_ = require("ui/view/camera_menu_container_union_bg_pc_view").new(self)
   self.menuContainerFishing_ = require("ui/view/camera_menu_container_action_fishing_sub_pc_view").new(self)
-  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function Camerasys_main_pcView:OnActive()
@@ -51,6 +51,7 @@ function Camerasys_main_pcView:OnActive()
   self:bindEvents()
   self:initView()
   self:bindLuaAttrWatchers()
+  self.isShowGamepadPoint_ = false
 end
 
 function Camerasys_main_pcView:initParam()
@@ -78,6 +79,13 @@ function Camerasys_main_pcView:initParam()
   self.isFashionState_ = self.cameraVM_.CheckIsFashionState()
   self.cloudGameShareContent_ = self.viewData
   self.curActiveSubView_ = nil
+  self.inputKeyDescComps_ = {}
+  for k, v in pairs(E.CameraSysInputKey) do
+    self.inputKeyDescComps_[v] = inputKeyDescComp.new()
+    self.inputKeyDescComps_[v]:SetOnRefreshCb(function()
+      self:rebuildInputKeyDesc()
+    end)
+  end
   self.subFuncViewList_ = {
     [E.CameraSystemSubFunctionType.CommonAction] = self.menuContainerAction_,
     [E.CameraSystemSubFunctionType.LoopAction] = self.menuContainerAction_,
@@ -123,8 +131,20 @@ function Camerasys_main_pcView:setFreeLookAt(isOn, isHead)
 end
 
 function Camerasys_main_pcView:OnDeActive()
+  if self.isShowGamepadPoint_ then
+    self.isShowGamepadPoint_ = false
+    Z.MouseMgr:SetMouseVisibleSource(Panda.ZInput.EMouseLockSource.TakePhoto, self.isShowGamepadPoint_)
+    if Z.InputMgr.InputDeviceType == Panda.ZInput.EInputDeviceType.Joystick and Z.IgnoreMgr:IsIgnore(Panda.ZGame.EIgnoreType.InputMask, Panda.ZGame.EInputMask.Move:ToInt()) then
+      Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 5, false)
+    end
+  end
   Z.AudioMgr:Play("UI_Menu_QuickInstruction_Close")
-  self.inputKeyDescComp_:UnInit()
+  for k, v in pairs(self.inputKeyDescComps_) do
+    if v then
+      v:UnInit()
+    end
+  end
+  self.inputKeyDescComps_ = {}
   self.cameraData_:ClearFaceModelInfo()
   self.cameraData_:SetSettingViewSecondaryLogicIndex(-1)
   self:resetCameraPostProcessing()
@@ -303,6 +323,7 @@ function Camerasys_main_pcView:initUI()
   self:setUnionMode()
   self:refreshResonanceSkill()
   self:initLandscapePhotoMode()
+  self:setKeyboardShortcuts()
 end
 
 function Camerasys_main_pcView:initBtn()
@@ -661,6 +682,7 @@ function Camerasys_main_pcView:bindEvents()
   Z.EventMgr:Add(Z.ConstValue.Expression.ClickAction, self.onActionPlay, self)
   Z.EventMgr:Add(Z.ConstValue.Camera.ActionReset, self.resetAction, self)
   Z.EventMgr:Add(Z.ConstValue.FaceAttrChange, self.onFaceAttrChange, self)
+  Z.EventMgr:Add(Z.ConstValue.Device.DeviceTypeChange, self.onDeViceTypeChange, self)
 end
 
 function Camerasys_main_pcView:unBindEvents()
@@ -679,6 +701,7 @@ function Camerasys_main_pcView:unBindEvents()
   Z.EventMgr:Remove(Z.ConstValue.Expression.ClickAction, self.onActionPlay, self)
   Z.EventMgr:Remove(Z.ConstValue.Camera.ActionReset, self.resetAction, self)
   Z.EventMgr:Remove(Z.ConstValue.FaceAttrChange, self.onFaceAttrChange, self)
+  Z.EventMgr:Remove(Z.ConstValue.Device.DeviceTypeChange, self.onDeViceTypeChange, self)
 end
 
 function Camerasys_main_pcView:photoViewShowOrHide()
@@ -968,8 +991,29 @@ function Camerasys_main_pcView:camerasysHurtEvent()
 end
 
 function Camerasys_main_pcView:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.Mounts then
+  if inputActionEventData.ActionId == Z.InputActionIds.Mounts then
     self:OnMountsTrigger()
+  elseif inputActionEventData.ActionId == Z.InputActionIds.PhotoGamepadPointVisible then
+    self.isShowGamepadPoint_ = not self.isShowGamepadPoint_
+    Z.MouseMgr:SetMouseVisibleSource(Panda.ZInput.EMouseLockSource.TakePhoto, self.isShowGamepadPoint_)
+    self:onPhotoGamepadPointVisibleTrigger()
+  end
+end
+
+function Camerasys_main_pcView:onDeViceTypeChange(...)
+  self:onPhotoGamepadPointVisibleTrigger()
+end
+
+function Camerasys_main_pcView:onPhotoGamepadPointVisibleTrigger()
+  if Enum_EPhoto == nil then
+    Enum_EPhoto = Panda.ZGame.EIgnoreMaskSource.EPhoto:ToInt()
+  end
+  if Z.InputMgr.InputDeviceType == Panda.ZInput.EInputDeviceType.Joystick then
+    if self.isShowGamepadPoint_ ~= Z.IgnoreMgr:IsIgnore(Panda.ZGame.EIgnoreType.InputMask, Panda.ZGame.EInputMask.Move:ToInt()) then
+      Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 5, self.isShowGamepadPoint_)
+    end
+  elseif self.isShowGamepadPoint_ and Z.IgnoreMgr:IsIgnore(Panda.ZGame.EIgnoreType.InputMask, Panda.ZGame.EInputMask.Move:ToInt()) then
+    Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 5, false)
   end
 end
 
@@ -1122,13 +1166,29 @@ function Camerasys_main_pcView:setMemberLimitText()
   self.uiBinder.lab_blessing_item.text = Lang("PhotoTeamMemberCount", {val1 = cur, val2 = limit})
 end
 
-function Camerasys_main_pcView:getKeyIdAndDescByFuncId(funcId)
-  local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
-  for keyId, row in pairs(keyTbl.GetDatas()) do
-    if row.KeyboardDes == 2 and row.FunctionId == funcId then
-      return keyId, row.SetDes
-    end
+function Camerasys_main_pcView:setKeyboardShortcuts()
+  self.inputKeyDescComps_[E.CameraSysInputKey.Move]:Init(E.CameraSysInputKey.Move, self.uiBinder.uibinder_move, self.cameraVM_.GetKeyDescByKeyId(E.CameraSysInputKey.Move))
+  self.inputKeyDescComps_[E.CameraSysInputKey.Translation]:Init(E.CameraSysInputKey.Translation, self.uiBinder.uibinder_translation, self.cameraVM_.GetKeyDescByKeyId(E.CameraSysInputKey.Translation))
+  self.inputKeyDescComps_[E.CameraSysInputKey.Hide]:Init(E.CameraSysInputKey.Hide, self.uiBinder.uibinder_hide, self.cameraVM_.GetKeyDescByKeyId(E.CameraSysInputKey.Hide))
+  self.inputKeyDescComps_[E.CameraSysInputKey.Shot]:Init(E.CameraSysInputKey.Shot, self.uiBinder.uibinder_shot, self.cameraVM_.GetKeyDescByKeyId(E.CameraSysInputKey.Shot))
+  self.inputKeyDescComps_[E.CameraSysInputKey.LeftPanel]:Init(E.CameraSysInputKey.LeftPanel, self.uiBinder.uibinder_left_panel_btn)
+  self.inputKeyDescComps_[E.CameraSysInputKey.rightPanel]:Init(E.CameraSysInputKey.rightPanel, self.uiBinder.uibinder_right_panel_btn)
+  self.inputKeyDescComps_[E.CameraSysInputKey.ESC]:Init(E.CameraSysInputKey.ESC, self.uiBinder.uibinder_esc)
+end
+
+function Camerasys_main_pcView:rebuildInputKeyDesc()
+  if not self.uiBinder then
+    return
   end
+  local preferred = self.uiBinder.uibinder_move.lab_key.preferredWidth
+  self.uiBinder.uibinder_move.Trans:SetWidth(preferred)
+  preferred = self.uiBinder.uibinder_translation.lab_key.preferredWidth
+  self.uiBinder.uibinder_translation.Trans:SetWidth(preferred)
+  preferred = self.uiBinder.uibinder_hide.lab_key.preferredWidth
+  self.uiBinder.uibinder_hide.Trans:SetWidth(preferred)
+  preferred = self.uiBinder.uibinder_shot.lab_key.preferredWidth
+  self.uiBinder.uibinder_shot.Trans:SetWidth(preferred)
+  self.uiBinder.layout_bottom:ForceRebuildLayoutImmediate()
 end
 
 function Camerasys_main_pcView:refreshResonanceSkill()
@@ -1137,9 +1197,12 @@ function Camerasys_main_pcView:refreshResonanceSkill()
   end
   local isFuncOpen = self.funcVM_.FuncIsOn(E.FunctionID.VehicleRide, true)
   self.uiBinder.node_function.Ref:SetVisible(self.uiBinder.node_function.group_mount, isFuncOpen)
-  local keyId = self:getKeyIdAndDescByFuncId(E.FunctionID.VehicleRide)
+  local keyId = self.cameraVM_.GetKeyIdAndDescByFuncId(E.FunctionID.VehicleRide)
   if keyId then
-    self.inputKeyDescComp_:Init(keyId, self.uiBinder.node_function.com_icon_key)
+    if self.inputKeyDescComps_[keyId] == nil then
+      self.inputKeyDescComps_[keyId] = inputKeyDescComp.new()
+    end
+    self.inputKeyDescComps_[keyId]:Init(keyId, self.uiBinder.node_function.com_icon_key)
   end
   local resonanceBinders = {
     [1] = self.uiBinder.node_function.resonance_left,

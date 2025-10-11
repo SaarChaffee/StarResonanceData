@@ -39,7 +39,8 @@ function Themeact_subView:initData()
   self.themePlayVM_ = Z.VMMgr.GetVM("theme_play")
   self.commonSubActivityView_ = require("ui.view.themeact_common_sub_view").new(self)
   self.subActivityViewPathDict_ = {
-    [E.ThemeActivityFunctionId.Sign] = "ui.view.themeact_sign_sub_view",
+    [E.ThemeActivityFunctionId.Sign1] = "ui.view.themeact_sign_sub_view",
+    [E.ThemeActivityFunctionId.Sign2] = "ui.view.themeact_sign_summer_sub_view",
     [E.ThemeActivityFunctionId.Entrance] = "ui.view.themeact_entrance_sub_view",
     [E.ThemeActivityFunctionId.Celebration] = "ui.view.themeact_celebration_sub_view"
   }
@@ -48,6 +49,7 @@ end
 
 function Themeact_subView:initComponent()
   self:initLoopComp()
+  self.uiBinder.comp_dotween:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Themeact_subView:initLoopComp()

@@ -184,12 +184,12 @@ function Weapon_skill_upgrades_popupView:RefreshSkillInfo(level)
   nowSkillAttrDescList = self.skillVm_.ContrastSkillDecs(preSkillAttrDescList, nowSkillAttrDescList)
   local preSkillDesc = ""
   for _, value in ipairs(preSkillAttrDescList) do
-    local content = value.Dec .. Lang(":") .. value.Num .. "\n"
+    local content = value.Dec .. Lang("colon") .. value.Num .. "\n"
     preSkillDesc = preSkillDesc .. content
   end
   local nowSkillDesc = ""
   for _, value in ipairs(nowSkillAttrDescList) do
-    local content = value.Dec .. Lang(":") .. value.Num .. "\n"
+    local content = value.Dec .. Lang("colon") .. value.Num .. "\n"
     nowSkillDesc = nowSkillDesc .. content
   end
   self.uiBinder.node_skill_info_pre.lab_content.text = preSkillDesc

@@ -51,6 +51,58 @@
       1
     ]
   },
+  "1903": {
+    "Id": 1903,
+    "Name": "轰拳",
+    "IsFollow": false,
+    "BulletType": 1,
+    "DamageType": 1,
+    "Start": 0.0,
+    "Duration": 2.0,
+    "ModelID": 0,
+    "BoomCount": 1,
+    "BoomInterval": 0,
+    "DamageInterval": 0,
+    "BulletAttrId": 31903,
+    "Tags": [],
+    "DeadShowStageId": 2,
+    "DelayDestroyTime": 0.0,
+    "BulletCount": 0,
+    "DamageWeight": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "DamageWeightType": 0,
+    "HitCampType": [
+      1
+    ]
+  },
+  "1904": {
+    "Id": 1904,
+    "Name": "轰拳",
+    "IsFollow": false,
+    "BulletType": 1,
+    "DamageType": 1,
+    "Start": 0.0,
+    "Duration": 2.0,
+    "ModelID": 0,
+    "BoomCount": 1,
+    "BoomInterval": 0,
+    "DamageInterval": 0,
+    "BulletAttrId": 31904,
+    "Tags": [],
+    "DeadShowStageId": 2,
+    "DelayDestroyTime": 0.0,
+    "BulletCount": 0,
+    "DamageWeight": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "DamageWeightType": 0,
+    "HitCampType": [
+      1
+    ]
+  },
   "3100": {
     "Id": 3100,
     "Name": "小岩蛇-能量吸收",

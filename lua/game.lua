@@ -29,7 +29,11 @@ local game = {
   OnPlayerInited = function(playerUuid)
     local settingVm = Z.VMMgr.GetVM("setting")
     settingVm.SetPlayerGlideAttr()
-    settingVm.SetCameraRotateSpeed()
+    if Z.InputMgr.InputDeviceType == Panda.ZInput.EInputDeviceType.Joystick then
+      settingVm.SetHandleCameraRotateSpeed()
+    else
+      settingVm.SetCameraRotateSpeed()
+    end
   end,
   OnPrepareSwitchScene = function(sceneId)
     Z.StageMgr.OnPrepareSwitchScene(sceneId)

@@ -2,10 +2,10 @@
   "20000009": {
     "Id": 20000009,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Helmflower",
     "Sort": 1,
     "Quality": 0,
-    "Des": "",
+    "Des": "A yellow flower growing on floating isles. Its shape resembles a helm. Often called Rudder Anemone by sailors.",
     "Icon": "item_icons_sunflower",
     "NeedLevel": [],
     "UnlockCondition": [],
@@ -36,16 +36,16 @@
       20000009
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000004": {
     "Id": 20000004,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Snowflake Parsley",
     "Sort": 2,
     "Quality": 0,
-    "Des": "",
+    "Des": "A blue medicinal flower found in Minsterhorn Village. First Appeared after the Andra Landing Battle.",
     "Icon": "item_icons_snowflower",
     "NeedLevel": [
       1,
@@ -98,16 +98,16 @@
       20000004
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000007": {
     "Id": 20000007,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Grey-top Flax",
     "Sort": 3,
     "Quality": 0,
-    "Des": "",
+    "Des": "Linen nurtured by the Pale Azure Lake, breathing pristine vapors.",
     "Icon": "item_icons_flax_02",
     "NeedLevel": [],
     "UnlockCondition": [],
@@ -138,16 +138,16 @@
       20000007
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000002": {
     "Id": 20000002,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Pink Musk",
     "Sort": 4,
     "Quality": 1,
-    "Des": "",
+    "Des": "A pink decorative flower native to the Windblown Plains. Admired by the Asterians and recognized for its healing properties.",
     "Icon": "item_icons_pinkflower",
     "NeedLevel": [
       1,
@@ -200,16 +200,16 @@
       20000002
     ],
     "Scene": 73,
-    "ProduceArea": "",
+    "ProduceArea": "Windhowl Canyon",
     "Hide": false
   },
   "20000019": {
     "Id": 20000019,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Asteria Cotton",
     "Sort": 5,
     "Quality": 1,
-    "Des": "",
+    "Des": "Found in the southern meadows of Minsterhorn. Produces high-quality cotton loved by the villagers.",
     "Icon": "item_icons_cottongrass_01",
     "NeedLevel": [
       0,
@@ -243,16 +243,16 @@
       20000019
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000005": {
     "Id": 20000005,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Whispering Orchid",
     "Sort": 6,
     "Quality": 2,
-    "Des": "",
+    "Des": "A rare purple flower that grows in the ocean depths. Known for its high medicinal value.",
     "Icon": "item_icons_purpleflower_02",
     "NeedLevel": [
       1,
@@ -305,13 +305,13 @@
       20000005
     ],
     "Scene": 75,
-    "ProduceArea": "",
+    "ProduceArea": "Skimmer's Lair",
     "Hide": false
   },
   "20000020": {
     "Id": 20000020,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Rainbow Herb",
     "Sort": 7,
     "Quality": 1,
     "Des": "item_icons_sunflower",
@@ -348,16 +348,16 @@
       20000020
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": true
   },
   "20000018": {
     "Id": 20000018,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Wheat Field",
     "Sort": 17,
     "Quality": 0,
-    "Des": "",
+    "Des": "The wind composes a golden melody, whispered gently through the fields. Ripe ears of grain sway and bow in rhythmic grace across the vast wheat fields of Minsterhorn village.",
     "Icon": "item_icons_lifematerial_wheat01",
     "NeedLevel": [],
     "UnlockCondition": [],
@@ -388,16 +388,16 @@
       20000018
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000021": {
     "Id": 20000021,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Thin Twig",
     "Sort": 14,
     "Quality": 0,
-    "Des": "",
+    "Des": "Above the Cliff Ruins lies a forest, its scattered clearings nestled beneath the sheltering canopy of trees.",
     "Icon": "item_icons_lifematerial_branch01",
     "NeedLevel": [],
     "UnlockCondition": [],
@@ -428,16 +428,16 @@
       20000021
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000022": {
     "Id": 20000022,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Wood Branch",
     "Sort": 15,
     "Quality": 1,
-    "Des": "",
+    "Des": "Isles of Pale Azure Lake, adrift beneath a cathedral of trees.",
     "Icon": "item_icons_lifematerial_branch02",
     "NeedLevel": [
       0,
@@ -471,16 +471,16 @@
       20000022
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000023": {
     "Id": 20000023,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Branch Cluster",
     "Sort": 16,
     "Quality": 2,
-    "Des": "",
+    "Des": "Littoral shallows adrift in dappled sylvan shadows.",
     "Icon": "item_icons_lifematerial_stalk03",
     "NeedLevel": [
       0,
@@ -514,16 +514,16 @@
       20000023
     ],
     "Scene": 71,
-    "ProduceArea": "",
+    "ProduceArea": "Duskdye Woods",
     "Hide": false
   },
   "20000010": {
     "Id": 20000010,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Sweet Berry",
     "Sort": 8,
     "Quality": 0,
-    "Des": "",
+    "Des": "A sweet edible berry native to the Statue of the Hero. Considered a local specialty.",
     "Icon": "item_icons_berry",
     "NeedLevel": [
       1,
@@ -576,16 +576,16 @@
       20000010
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000016": {
     "Id": 20000016,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Umu Fruit",
     "Sort": 9,
     "Quality": 1,
-    "Des": "",
+    "Des": "Grown upon floating islands, only the tempest-swept lands can cultivate its distinctive flavor.",
     "Icon": "item_icons_um_fruit_01",
     "NeedLevel": [
       1,
@@ -638,16 +638,16 @@
       20000016
     ],
     "Scene": 73,
-    "ProduceArea": "",
+    "ProduceArea": "Windhowl Canyon",
     "Hide": false
   },
   "20000017": {
     "Id": 20000017,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Azure Fruit",
     "Sort": 10,
     "Quality": 2,
-    "Des": "",
+    "Des": "Emerging from the ocean floor, this rare blue fruit is the seabed's most treasured offering.",
     "Icon": "item_icons_deepblue_fruit_01",
     "NeedLevel": [
       1,
@@ -700,16 +700,16 @@
       20000017
     ],
     "Scene": 75,
-    "ProduceArea": "",
+    "ProduceArea": "Skimmer's Lair",
     "Hide": false
   },
   "20000006": {
     "Id": 20000006,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Meadow Mushroom",
     "Sort": 11,
     "Quality": 0,
-    "Des": "",
+    "Des": "Found near the massive mechanical ruins at the site of the Andra Landing Battlefield. Looks like tiny umbrellas that protect insects from the weather.",
     "Icon": "item_icons_mushroom",
     "NeedLevel": [
       1,
@@ -762,16 +762,16 @@
       20000006
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000015": {
     "Id": 20000015,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Glowshroom",
     "Sort": 12,
     "Quality": 1,
-    "Des": "",
+    "Des": "Growing in damp, shadowy environments, it emits an eerie glow at night.",
     "Icon": "item_icons_fluorescent_mushroom_01",
     "NeedLevel": [
       1,
@@ -824,16 +824,16 @@
       20000015
     ],
     "Scene": 74,
-    "ProduceArea": "",
+    "ProduceArea": "Underground District",
     "Hide": false
   },
   "20000008": {
     "Id": 20000008,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Granny Pine",
     "Sort": 13,
     "Quality": 2,
-    "Des": "",
+    "Des": "A rare underwater fungus regarded as a treasure beneath the sea.",
     "Icon": "item_icons_matsutake",
     "NeedLevel": [
       1,
@@ -886,16 +886,16 @@
       20000008
     ],
     "Scene": 75,
-    "ProduceArea": "",
+    "ProduceArea": "Skimmer's Lair",
     "Hide": false
   },
   "20000012": {
     "Id": 20000012,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Firefly",
     "Sort": 18,
     "Quality": 0,
-    "Des": "",
+    "Des": "Frequently seen along the waterside of the Statue of the Hero, this creature emits a gentle light that pierces the surrounding darkness.",
     "Icon": "item_icons_yingguangchi",
     "NeedLevel": [
       0,
@@ -929,16 +929,16 @@
       20000012
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000013": {
     "Id": 20000013,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Tris Sea Fish",
     "Sort": 19,
     "Quality": 0,
-    "Des": "",
+    "Des": "A swift swimmer of the deep indigenous to southern waters, this agile fish challenges even the most skilled anglers.",
     "Icon": "item_icons_fish01",
     "NeedLevel": [
       0,
@@ -972,16 +972,16 @@
       20000013
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000014": {
     "Id": 20000014,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Pale Blue Fish",
     "Sort": 20,
     "Quality": 0,
-    "Des": "",
+    "Des": "A swift swimmer of the deep indigenous to Pale Azure Lake, this agile fish challenges even the most skilled anglers.",
     "Icon": "item_icons_fish03",
     "NeedLevel": [
       0,
@@ -1015,16 +1015,16 @@
       20000014
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000003": {
     "Id": 20000003,
     "LifeProId": 101,
-    "Name": "",
+    "Name": "Scallop",
     "Sort": 21,
     "Quality": 0,
-    "Des": "",
+    "Des": "This scallop thrives along the Seaside shore. Beneath the its sharp shell lies tender, succulent meat.",
     "Icon": "item_icons_scallop",
     "NeedLevel": [],
     "UnlockCondition": [],
@@ -1055,16 +1055,16 @@
       20000003
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000101": {
     "Id": 20000101,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Baru Ore",
     "Sort": 2,
     "Quality": 1,
-    "Des": "",
+    "Des": "Low-grade Baru ore is commonly found within the Towering Ruin. While focused on gathering, you may harvest Baru Ore, which is used to craft Mystery Metals.",
     "Icon": "item_icons_iron_ore_01",
     "NeedLevel": [
       1,
@@ -1117,16 +1117,16 @@
       20000101
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000102": {
     "Id": 20000102,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Baru Rich Ore",
     "Sort": 3,
     "Quality": 2,
-    "Des": "",
+    "Des": "Intermediate-grade Baru ore is commonly found in the core module sector. While focused on gathering, you may harvest Baru Rich Ore, which is used to craft Mystery Metals.",
     "Icon": "item_icons_iron_ore_02",
     "NeedLevel": [
       1,
@@ -1179,16 +1179,16 @@
       20000102
     ],
     "Scene": 74,
-    "ProduceArea": "",
+    "ProduceArea": "Underground District",
     "Hide": false
   },
   "20000103": {
     "Id": 20000103,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Baru Pure Ore",
     "Sort": 4,
     "Quality": 3,
-    "Des": "",
+    "Des": "Rich Baru ore is commonly found along the Thunder Cliff Trail. While focused on gathering, you may harvest Baru pure ore, which is used to craft Mystery Metals.",
     "Icon": "item_icons_iron_ore_03",
     "NeedLevel": [
       1,
@@ -1241,16 +1241,16 @@
       20000103
     ],
     "Scene": 72,
-    "ProduceArea": "",
+    "ProduceArea": "Everfall Forest",
     "Hide": false
   },
   "20000104": {
     "Id": 20000104,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Azte Ore",
     "Sort": 5,
     "Quality": 1,
-    "Des": "",
+    "Des": "Low-grade Azte ore is commonly found near the Old Kanamia Tribe. While focused on gathering, you may harvest Azte Ore, which is used to craft Radiant Stone.",
     "Icon": "item_icons_copper_ore_01",
     "NeedLevel": [
       1,
@@ -1303,16 +1303,16 @@
       20000104
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000105": {
     "Id": 20000105,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Azte Rich Ore",
     "Sort": 6,
     "Quality": 2,
-    "Des": "",
+    "Des": "Intermediate-grade Azte ore is commonly found on the floating isle at the center of the canyon. While focused on gathering, you may harvest Azte Rich Ore, which is used to craft Radiant Stone.",
     "Icon": "item_icons_copper_ore_02",
     "NeedLevel": [
       1,
@@ -1365,16 +1365,16 @@
       20000105
     ],
     "Scene": 73,
-    "ProduceArea": "",
+    "ProduceArea": "Windhowl Canyon",
     "Hide": false
   },
   "20000106": {
     "Id": 20000106,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Azte Pure Ore",
     "Sort": 7,
     "Quality": 3,
-    "Des": "",
+    "Des": "Rich Azte ore is commonly found on the north side of Rotgate Courtyard. While focused on gathering, you may harvest Azte Pure Ore, which is used to craft Radiant Stone.",
     "Icon": "item_icons_copper_ore_03",
     "NeedLevel": [
       1,
@@ -1427,16 +1427,16 @@
       20000106
     ],
     "Scene": 72,
-    "ProduceArea": "",
+    "ProduceArea": "Everfall Forest",
     "Hide": false
   },
   "20000107": {
     "Id": 20000107,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Luna Ore",
     "Sort": 8,
     "Quality": 1,
-    "Des": "",
+    "Des": "Low-grade Luna ore is commonly found near the Scout Lookout Post. While focused on gathering, you may harvest Luna Ore, which is used to craft Fine Forgestone.",
     "Icon": "item_icons_silver_ore_01",
     "NeedLevel": [
       1,
@@ -1489,16 +1489,16 @@
       20000107
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000108": {
     "Id": 20000108,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Luna Rich Ore",
     "Sort": 9,
     "Quality": 2,
-    "Des": "",
+    "Des": "Low-grade Luna ore is also commonly found around Windwhisper Dome. While focused on gathering, you may harvest Luna Rich Ore, which is used to craft Fine Forgestone.",
     "Icon": "item_icons_silver_ore_02",
     "NeedLevel": [
       1,
@@ -1551,16 +1551,16 @@
       20000108
     ],
     "Scene": 73,
-    "ProduceArea": "",
+    "ProduceArea": "Windhowl Canyon",
     "Hide": false
   },
   "20000109": {
     "Id": 20000109,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Luna Pure Ore",
     "Sort": 10,
     "Quality": 3,
-    "Des": "",
+    "Des": "Rich Luna ore is commonly found on the northern edge of the forest. While focused on gathering, you may harvest Luna Pure Ore, which is used to craft Fine Forgestone.",
     "Icon": "item_icons_silver_ore_03",
     "NeedLevel": [
       1,
@@ -1613,16 +1613,16 @@
       20000109
     ],
     "Scene": 72,
-    "ProduceArea": "",
+    "ProduceArea": "Everfall Forest",
     "Hide": false
   },
   "20000111": {
     "Id": 20000111,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Stokes Rich Ore",
     "Sort": 12,
     "Quality": 2,
-    "Des": "",
+    "Des": "Intermediate-grade Stokes ore is commonly found along the Seachime Cliff Trail. While focused on gathering, you may harvest Stokes Rich Ore, which is used to craft Buri Mech Shard.",
     "Icon": "item_icons_gold_ore_02",
     "NeedLevel": [
       1,
@@ -1675,16 +1675,16 @@
       20000111
     ],
     "Scene": 73,
-    "ProduceArea": "",
+    "ProduceArea": "Windhowl Canyon",
     "Hide": false
   },
   "20000112": {
     "Id": 20000112,
     "LifeProId": 102,
-    "Name": "",
+    "Name": "Stokes Pure Ore",
     "Sort": 13,
     "Quality": 3,
-    "Des": "",
+    "Des": "Rich Stokes ore is commonly found in the forest caves to the south. While focused on gathering, you may harvest Stokes pure ore, which is used to craft Buri Mech Shard.",
     "Icon": "item_icons_gold_ore_03",
     "NeedLevel": [
       1,
@@ -1737,16 +1737,16 @@
       20000112
     ],
     "Scene": 72,
-    "ProduceArea": "",
+    "ProduceArea": "Everfall Forest",
     "Hide": false
   },
   "20000201": {
     "Id": 20000201,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Raw Ore of Sapphire",
     "Sort": 1,
     "Quality": 1,
-    "Des": "",
+    "Des": "Commonly found along the northern shore of Pale Azure Lake, raw ore of Starlight Sapphire Lv.1 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enhancing Haste.",
     "Icon": "item_icons_lifematerial_original_stone03",
     "NeedLevel": [
       1,
@@ -1799,16 +1799,16 @@
       20000201
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000202": {
     "Id": 20000202,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Rich Ore of Sapphire",
     "Sort": 2,
     "Quality": 2,
-    "Des": "",
+    "Des": "Commonly found along the plank road in Mistveil Gorge, raw ore of Starlight Sapphire Lv.2 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enhancing Haste.",
     "Icon": "item_icons_lifecollection_bluestone02",
     "NeedLevel": [
       1,
@@ -1861,16 +1861,16 @@
       20000202
     ],
     "Scene": 73,
-    "ProduceArea": "",
+    "ProduceArea": "Windhowl Canyon",
     "Hide": false
   },
   "20000203": {
     "Id": 20000203,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Sapphire Cluster",
     "Sort": 3,
     "Quality": 3,
-    "Des": "",
+    "Des": "Commonly found along the western edge of the Glade Crevice, raw ore of Starlight Sapphire Lv.3 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enhancing Haste.",
     "Icon": "item_icons_lifecollection_bluestone03",
     "NeedLevel": [
       1,
@@ -1923,16 +1923,16 @@
       20000203
     ],
     "Scene": 71,
-    "ProduceArea": "",
+    "ProduceArea": "Duskdye Woods",
     "Hide": false
   },
   "20000204": {
     "Id": 20000204,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Raw Ore of Ruby",
     "Sort": 4,
     "Quality": 1,
-    "Des": "",
+    "Des": "Commonly found inside the bomb crater at Andra Landing Battlefield, raw ore of Starlight Ruby Lv.1 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enchancing Crit.",
     "Icon": "item_icons_lifematerial_original_stone04",
     "NeedLevel": [
       1,
@@ -1985,16 +1985,16 @@
       20000204
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000205": {
     "Id": 20000205,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Rich Ore of Ruby",
     "Sort": 5,
     "Quality": 2,
-    "Des": "",
+    "Des": "Commonly found in supply module zones, raw ore of Starlight Ruby Lv.2 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enhancing Crit.",
     "Icon": "item_icons_lifecollection_redstone02",
     "NeedLevel": [
       1,
@@ -2047,16 +2047,16 @@
       20000205
     ],
     "Scene": 74,
-    "ProduceArea": "",
+    "ProduceArea": "Underground District",
     "Hide": false
   },
   "20000206": {
     "Id": 20000206,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Ruby Cluster",
     "Sort": 6,
     "Quality": 3,
-    "Des": "",
+    "Des": "Commonly found on the western Crystal Slope, raw ore of Starlight Ruby Lv.3 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enhancing Crit.",
     "Icon": "item_icons_lifecollection_redstone03",
     "NeedLevel": [
       1,
@@ -2109,16 +2109,16 @@
       20000206
     ],
     "Scene": 71,
-    "ProduceArea": "",
+    "ProduceArea": "Duskdye Woods",
     "Hide": false
   },
   "20000207": {
     "Id": 20000207,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Raw Ore of Topaz",
     "Sort": 7,
     "Quality": 1,
-    "Des": "",
+    "Des": "Commonly found around the giant vines near the Kanamia Tribe, raw ore of Starlight Diamond Lv.1 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enhancing Luck.",
     "Icon": "item_icons_lifematerial_original_stone05",
     "NeedLevel": [
       1,
@@ -2171,16 +2171,16 @@
       20000207
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000208": {
     "Id": 20000208,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Rich Ore of Topaz",
     "Sort": 8,
     "Quality": 2,
-    "Des": "",
+    "Des": "Commonly found in stability control module zones, raw ore of Starlight Diamond Lv.2 can be gathered when focused. Once refined, these crystals serve as gem inlays forgear, enhancing Luck.",
     "Icon": "item_icons_lifecollection_yellowstone02",
     "NeedLevel": [
       1,
@@ -2233,16 +2233,16 @@
       20000208
     ],
     "Scene": 74,
-    "ProduceArea": "",
+    "ProduceArea": "Underground District",
     "Hide": false
   },
   "20000209": {
     "Id": 20000209,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Topaz Cluster",
     "Sort": 9,
     "Quality": 3,
-    "Des": "",
+    "Des": "Commonly found on the eastern Crystal Slope, raw ore of Starlight Diamond Lv.3 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enhancing Luck .",
     "Icon": "item_icons_lifecollection_yellowstone03",
     "NeedLevel": [
       1,
@@ -2295,16 +2295,16 @@
       20000209
     ],
     "Scene": 71,
-    "ProduceArea": "",
+    "ProduceArea": "Duskdye Woods",
     "Hide": false
   },
   "20000210": {
     "Id": 20000210,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Raw Ore of Emerald",
     "Sort": 10,
     "Quality": 1,
-    "Des": "",
+    "Des": "Commonly found near the Statue of the Hero, raw ore of Starlight Emerald Lv.1 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enhancing Expertise.",
     "Icon": "item_icons_lifematerial_original_stone06",
     "NeedLevel": [
       1,
@@ -2357,16 +2357,16 @@
       20000210
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000211": {
     "Id": 20000211,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Rich Ore of Emerald",
     "Sort": 11,
     "Quality": 2,
-    "Des": "",
+    "Des": "Commonly found on floating isles, raw ore of Starlight Emerald Lv.2 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enhancing Expertise.",
     "Icon": "item_icons_lifecollection_greenstone02",
     "NeedLevel": [
       1,
@@ -2419,16 +2419,16 @@
       20000211
     ],
     "Scene": 73,
-    "ProduceArea": "",
+    "ProduceArea": "Windhowl Canyon",
     "Hide": false
   },
   "20000212": {
     "Id": 20000212,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Emerald Cluster",
     "Sort": 12,
     "Quality": 3,
-    "Des": "",
+    "Des": "Commonly found in western mine shafts, raw ore of Starlight Emerald Lv.3 can be gathered when focused. Once refined, these crystals serve as gem inlays for gear, enhancing Expertise.",
     "Icon": "item_icons_lifecollection_greenstone03",
     "NeedLevel": [
       1,
@@ -2481,16 +2481,16 @@
       20000212
     ],
     "Scene": 71,
-    "ProduceArea": "",
+    "ProduceArea": "Duskdye Woods",
     "Hide": false
   },
   "20000100": {
     "Id": 20000100,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Andra Enigmite",
     "Sort": 16,
     "Quality": 1,
-    "Des": "",
+    "Des": "Mysterious black stones, often scattered across polluted corridors, hint at hidden functionality.",
     "Icon": "item_icons_blackstone",
     "NeedLevel": [],
     "UnlockCondition": [],
@@ -2521,13 +2521,13 @@
       20000100
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000216": {
     "Id": 20000216,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Windvale Enigmite",
     "Sort": 17,
     "Quality": 2,
     "Des": "item_icons_sunflower",
@@ -2564,13 +2564,13 @@
       20000116
     ],
     "Scene": 73,
-    "ProduceArea": "",
+    "ProduceArea": "Windhowl Canyon",
     "Hide": true
   },
   "20000217": {
     "Id": 20000217,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Cobalt Enigmite",
     "Sort": 18,
     "Quality": 3,
     "Des": "item_icons_sunflower",
@@ -2607,16 +2607,16 @@
       20000117
     ],
     "Scene": 75,
-    "ProduceArea": "",
+    "ProduceArea": "Skimmer's Lair",
     "Hide": true
   },
   "20000213": {
     "Id": 20000213,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Limestone",
     "Sort": 13,
     "Quality": 0,
-    "Des": "",
+    "Des": "Commonly found near the Forbidden Zone of Kanamia, these weathered white stones rest in quiet stillness, with time etching mottled textures into the sedimentary rock layers.",
     "Icon": "item_icons_lifematerial_original_stone21",
     "NeedLevel": [],
     "UnlockCondition": [],
@@ -2647,16 +2647,16 @@
       20000213
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": false
   },
   "20000214": {
     "Id": 20000214,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Slate",
     "Sort": 14,
     "Quality": 1,
-    "Des": "",
+    "Des": "Commonly seen around Canyon Camp, these weathered slab-like stones rest in quiet stillness, with time etching mottled textures into the sedimentary rock layers.",
     "Icon": "item_icons_lifematerial_original_stone22",
     "NeedLevel": [
       0,
@@ -2690,16 +2690,16 @@
       20000214
     ],
     "Scene": 73,
-    "ProduceArea": "",
+    "ProduceArea": "Windhowl Canyon",
     "Hide": false
   },
   "20000215": {
     "Id": 20000215,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Granite",
     "Sort": 15,
     "Quality": 2,
-    "Des": "",
+    "Des": "Born of molten lava near the southern cliff trail, these rocks now lie in solemn stillness-their sharp edges catching the sunlight, pulsing with the ancient heartbeat of the mountains.",
     "Icon": "item_icons_lifematerial_original_stone23",
     "NeedLevel": [
       0,
@@ -2733,13 +2733,13 @@
       20000215
     ],
     "Scene": 72,
-    "ProduceArea": "",
+    "ProduceArea": "Everfall Forest",
     "Hide": false
   },
   "20000218": {
     "Id": 20000218,
     "LifeProId": 103,
-    "Name": "",
+    "Name": "Rainbow Stone",
     "Sort": 19,
     "Quality": 1,
     "Des": "item_icons_sunflower",
@@ -2776,7 +2776,7 @@
       20000218
     ],
     "Scene": 7,
-    "ProduceArea": "",
+    "ProduceArea": "Asteria Plains",
     "Hide": true
   }
 }

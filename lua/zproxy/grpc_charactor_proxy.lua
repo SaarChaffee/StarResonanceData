@@ -488,4 +488,45 @@ function GrpcCharactorProxy.PrivilegeActivate(vRequest, cancelToken)
   return pbRet.ret
 end
 
+function GrpcCharactorProxy.TakeAwardByCdKey(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.GrpcCharactor.TakeAwardByCdKey", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(1232729813, 25, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 25, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 1232729813, 25, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 1232729813, 25, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 1232729813, 25, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 1232729813, 25, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 1232729813, 25, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.GrpcCharactor.TakeAwardByCdKey_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(1232729813, 25, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
 return GrpcCharactorProxy

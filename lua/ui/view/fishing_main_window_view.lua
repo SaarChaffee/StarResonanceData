@@ -87,6 +87,10 @@ function Fishing_main_windowView:OnActive()
   self.curSelectType_ = nil
 end
 
+function Fishing_main_windowView:onDeviceTypeChange()
+  self:InitPCUIInput()
+end
+
 function Fishing_main_windowView:onFishingStageChanged()
   if self.fishingData_.FishingStage == E.FishingStage.FishBiteHook and self.fishingData_.TargetFish.FishInfo.FishingHint then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_bite, true)
@@ -221,23 +225,24 @@ function Fishing_main_windowView:resizeHotKeySize(binder)
   binder.Trans:SetWidth(size.x)
 end
 
+function Fishing_main_windowView:SetKeyCode(lab_keycode, rowId)
+  local keyVM = Z.VMMgr.GetVM("setting_key")
+  local val = keyVM.GetKeyCodeDescListByKeyId(rowId)[1]
+  if val == nil or val == "" then
+    self.uiBinder.Ref:SetVisible(lab_keycode, false)
+    return
+  end
+  self.uiBinder.Ref:SetVisible(lab_keycode, true)
+  lab_keycode.text = Lang("KeyCode", {val = val})
+end
+
 function Fishing_main_windowView:InitPCUIInput()
   local keyVM = Z.VMMgr.GetVM("setting_key")
-  self.uiBinder.lab_keycode_lv.text = Lang("KeyCode", {
-    val = keyVM.GetKeyCodeDescListByKeyId(145)[1]
-  })
-  self.uiBinder.lab_keycode_study.text = Lang("KeyCode", {
-    val = keyVM.GetKeyCodeDescListByKeyId(146)[1]
-  })
-  self.uiBinder.lab_keycode_bait.text = Lang("KeyCode", {
-    val = keyVM.GetKeyCodeDescListByKeyId(147)[1]
-  })
-  self.uiBinder.lab_keycode_rod.text = Lang("KeyCode", {
-    val = keyVM.GetKeyCodeDescListByKeyId(148)[1]
-  })
-  self.uiBinder.lab_keycode_playerInfo.text = Lang("KeyCode", {
-    val = keyVM.GetKeyCodeDescListByKeyId(152)[1]
-  })
+  self:SetKeyCode(self.uiBinder.lab_keycode_lv, 145)
+  self:SetKeyCode(self.uiBinder.lab_keycode_study, 146)
+  self:SetKeyCode(self.uiBinder.lab_keycode_bait, 147)
+  self:SetKeyCode(self.uiBinder.lab_keycode_rod, 148)
+  self:SetKeyCode(self.uiBinder.lab_keycode_playerInfo, 152)
   self.uiBinder.main_key_bottom_tpl_click.lab_key.text = Lang("KeyCodeFish", {
     val = keyVM.GetKeyCodeDescListByKeyId(149)[1]
   })
@@ -306,25 +311,25 @@ function Fishing_main_windowView:OnTriggerInputAction(inputActionEventData)
   if not Z.IsPCUI then
     return
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.FishingLevel then
+  if inputActionEventData.ActionId == Z.InputActionIds.FishingLevel then
     self.FishingLevelClick(inputActionEventData)
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.FishingStudy then
+  if inputActionEventData.ActionId == Z.InputActionIds.FishingStudy then
     self.FishingStudyClick(inputActionEventData)
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.FishingBait then
+  if inputActionEventData.ActionId == Z.InputActionIds.FishingBait then
     self.FishingBaitClick(inputActionEventData)
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.FishingRod then
+  if inputActionEventData.ActionId == Z.InputActionIds.FishingRod then
     self.FishingRodClick(inputActionEventData)
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.FishingGuide then
+  if inputActionEventData.ActionId == Z.InputActionIds.FishingGuide then
     self.FishingGuideClick(inputActionEventData)
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.FishingSetting then
+  if inputActionEventData.ActionId == Z.InputActionIds.FishingSetting then
     self.FishingSettingClick(inputActionEventData)
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.FishingPlayerDetail then
+  if inputActionEventData.ActionId == Z.InputActionIds.FishingPlayerDetail then
     self.FishingPlayerDetailClick(inputActionEventData)
   end
 end
@@ -463,6 +468,7 @@ function Fishing_main_windowView:bindEvent()
   Z.EventMgr:Add(Z.ConstValue.TalentPointChange, self.refreshTalentPointBtn, self)
   Z.EventMgr:Add(Z.ConstValue.TalentSkill.TalentListChange, self.refreshTalentPointBtn, self)
   Z.EventMgr:Add(Z.ConstValue.Fishing.FishingStateChange, self.onFishingStageChanged, self)
+  Z.EventMgr:Add(Z.ConstValue.Device.DeviceTypeChange, self.onDeviceTypeChange, self)
 end
 
 function Fishing_main_windowView:unbindEvent()

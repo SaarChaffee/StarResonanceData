@@ -26,6 +26,7 @@ function World_boss_matchingView:OnActive()
   Z.CoroUtil.create_coro_xpcall(function()
     self.worldBossVM_:AsyncGetWorldBossInfo(self.cancelSource:CreateToken(), function(ret)
       self:refreshWorldBossSwitch(ret)
+      self:refreshPropress()
     end)
   end)()
 end
@@ -40,6 +41,14 @@ function World_boss_matchingView:refreshWorldBossSwitch(ret)
     self.uiBinder.node_effect:SetEffectGoVisible(true)
     self.uiBinder.node_title_effect:CreatEFFGO(worldBossSwitchTableRow.MatchBossTextEffect, Vector3.zero)
     self.uiBinder.node_title_effect:SetEffectGoVisible(true)
+    local matchTableRow = Z.TableMgr.GetTable("MatchTableMgr").GetRow(worldBossSwitchTableRow.MatchId)
+    self.maxMemberCount_ = matchTableRow.MatchMaxNum
+    self.maxCheckTime_ = matchTableRow.ConfirmTime - (Z.TimeTools.Now() / 1000 - self.matchData_:GetMatchSuccessTime())
+    self.checkTime_ = self.maxCheckTime_
+    self.uiBinder.lab_tips.text = Lang("Start12PeopleRefusalStopMatchCurrentTeam", {
+      val = matchTableRow.MatchMinNum
+    })
+    self.hasSelect = false
   end
 end
 
@@ -51,10 +60,6 @@ function World_boss_matchingView:OnDeActive()
 end
 
 function World_boss_matchingView:OnRefresh()
-  self.uiBinder.lab_tips.text = Lang("Start12PeopleRefusalStopMatchCurrentTeam", {
-    val = Z.WorldBoss.WorldBossMatchMinNum
-  })
-  self:refreshPropress()
 end
 
 function World_boss_matchingView:BindEvents()
@@ -96,10 +101,6 @@ function World_boss_matchingView:refreshPropress()
 end
 
 function World_boss_matchingView:initBaseData()
-  self.maxMemberCount_ = Z.WorldBoss.WorldBossMatchMaxNum
-  self.maxCheckTime_ = Z.WorldBoss.WorldBossConfirmTime - (Z.TimeTools.Now() / 1000 - self.matchData_:GetMatchSuccessTime())
-  self.checkTime_ = self.maxCheckTime_
-  self.hasSelect = false
 end
 
 function World_boss_matchingView:refreshMatchStage()

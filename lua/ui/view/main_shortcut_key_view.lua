@@ -63,20 +63,13 @@ end
 
 function Main_shortcut_keyView:createShortcutItem()
   local resultList = {}
-  local deviceType = Z.InputMgr.InputDeviceType
   local dataList = Z.TableMgr.GetTable("SetKeyboardTableMgr").GetDatas()
   for id, row in pairs(dataList) do
     if row.Quickdescription > 0 then
       if resultList[row.Quickdescription] == nil then
         resultList[row.Quickdescription] = {}
       end
-      if deviceType == Panda.ZInput.EInputDeviceType.Joystick then
-        if 0 < #row.XBOX then
-          table.insert(resultList[row.Quickdescription], row)
-        end
-      else
-        table.insert(resultList[row.Quickdescription], row)
-      end
+      table.insert(resultList[row.Quickdescription], row)
     end
   end
   for type, list in pairs(resultList) do
@@ -100,6 +93,10 @@ function Main_shortcut_keyView:createShortcutItem()
         self.shortcutUnitDict_[unitName] = unitItem
         local keyDescComp = inputKeyDescComp.new()
         keyDescComp:Init(row.Id, unitItem, row.SetDes, true)
+        keyDescComp:SetVisible(true)
+        keyDescComp:SetOnRefreshCb(function()
+          self.uiBinder.rebuilder_layout:ForceRebuildLayoutImmediate()
+        end)
         self.keyDescCompMap_[unitName] = keyDescComp
         local size = unitItem.lab_key:GetPreferredValues(unitItem.lab_key.text, 0, 20)
         unitItem.Trans:SetWidth(size.x)
@@ -130,10 +127,10 @@ function Main_shortcut_keyView:refreshShortcutItemState()
   if self.shortcutUnitDict_ == nil then
     return
   end
-  for unitName, unitItem in pairs(self.shortcutUnitDict_) do
+  for unitName, unitItem in pairs(self.keyDescCompMap_) do
     local row = Z.TableMgr.GetRow("SetKeyboardTableMgr", unitName)
     local isCanShow = self:checkItemCanShow(row)
-    unitItem.Ref.UIComp:SetVisible(isCanShow)
+    unitItem:SetVisible(isCanShow)
   end
   self:keyHintUIFresh()
   self.uiBinder.rebuilder_layout:ForceRebuildLayoutImmediate()

@@ -720,6 +720,13 @@ local UIConfig = {
     AudioGameState = E.AudioGameState.Ingame,
     IsHavePCUI = true
   },
+  main_copy_punctuate = {
+    LuaFileName = "main_copy_punctuate_view",
+    PrefabPath = "main/punctuate/main_copy_punctuate",
+    Layer = Z.UI.ELayer.UILayerMain,
+    AudioGameState = E.AudioGameState.Ingame,
+    IsHavePCUI = true
+  },
   main_line_window = {
     LuaFileName = "main_line_window_view",
     PrefabPath = "line/main_line_window",
@@ -874,6 +881,12 @@ local UIConfig = {
     LuaFileName = "rename_window_view",
     PrefabPath = "name/rename_window",
     SceneMaskType = Z.UI.ESceneMaskType.Overlay
+  },
+  set_exchange_popup = {
+    LuaFileName = "set_exchange_popup_view",
+    PrefabPath = "set/set_exchange_popup",
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
+    IsFullScreen = true
   },
   noticetip_copy = {
     LuaFileName = "noticetip_copy_view",
@@ -1521,14 +1534,16 @@ local UIConfig = {
     PrefabPath = "shop/shop_window",
     ViewType = Z.UI.EType.Exclusive,
     IsUnrealScene = true,
-    IsHavePCUI = true
+    IsHavePCUI = true,
+    IsFullScreen = true
   },
   shop_token = {
     LuaFileName = "shop_token_view",
     PrefabPath = "shop/shop_window",
     ViewType = Z.UI.EType.Exclusive,
     IsUnrealScene = true,
-    IsHavePCUI = true
+    IsHavePCUI = true,
+    IsFullScreen = true
   },
   shop_money_changing_popup = {
     LuaFileName = "shop_money_changing_popup_view",
@@ -2613,6 +2628,7 @@ local UIConfig = {
     LuaFileName = "house_play_farm_tips_view",
     PrefabPath = "house/house_play_farm_tips",
     AudioGameState = E.AudioGameState.Menu,
+    Layer = Z.UI.ELayer.UILayerMain,
     ShowMouse = false,
     IgnoreBack = true,
     IgnoreFocus = true
@@ -2621,6 +2637,7 @@ local UIConfig = {
     LuaFileName = "house_play_farm_main_view",
     PrefabPath = "house/house_play_farm_main",
     AudioGameState = E.AudioGameState.Menu,
+    Layer = Z.UI.ELayer.UILayerMain,
     ShowMouse = false,
     IgnoreBack = true,
     IgnoreFocus = true
@@ -2635,10 +2652,10 @@ local UIConfig = {
     IgnoreBack = true,
     IsRefreshSteer = false
   },
-  pandora_announce_popup = {
-    LuaFileName = "pandora_announce_popup_view",
-    PrefabPath = "pandora/pandora_announce_popup",
-    Layer = Z.UI.ELayer.UILayerFuncPopup,
+  pandora_common_popup = {
+    LuaFileName = "pandora_common_popup_view",
+    PrefabPath = "pandora/pandora_common_popup",
+    Layer = Z.UI.ELayer.UILayerSDK,
     AudioGameState = E.AudioGameState.Menu,
     SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
@@ -2781,6 +2798,14 @@ local UIConfig = {
     PrefabPath = "raid/raid_monster_window",
     Layer = Z.UI.ELayer.UILayerFunc,
     ViewType = Z.UI.EType.Exclusive,
+    IsFullScreen = true
+  },
+  weapon_skill_reset_popup = {
+    LuaFileName = "weapon_skill_reset_popup_view",
+    PrefabPath = "weapon_develop/weapon_skill_reset_popup",
+    Layer = Z.UI.ELayer.UILayerFuncPopup,
+    AudioGameState = E.AudioGameState.Menu,
+    SceneMaskType = Z.UI.ESceneMaskType.Overlay,
     IsFullScreen = true
   }
 }

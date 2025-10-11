@@ -19,9 +19,10 @@ function quest_letter_window:OnActive()
   local decodedName = Z.TableMgr.DecodeLineBreak(Z.Placeholder.Placeholder(messageRow.ChatName, msgItem.param))
   self.uiBinder.lab_title.text = decodedName
   self.uiBinder.scenemask:SetSceneMaskByKey(self.SceneMaskKey)
-  self.contents = Z.RichTextHelper.ParseTextWithImages(messageRow.Content)
+  local content = Z.TableMgr.DecodeLineBreak(Z.Placeholder.Placeholder(messageRow.Content, msgItem.param))
+  self.contents = Z.RichTextHelper.ParseTextWithImages(content)
   if tipsType == E.TipsType.QuestLetterWithBackground then
-    self.uiBinder.lab_content.text = messageRow.Content
+    self.uiBinder.lab_content.text = content
   else
     Z.CoroUtil.create_coro_xpcall(function()
       for index, value in ipairs(self.contents) do
@@ -70,7 +71,7 @@ function quest_letter_window:playVoice(config)
 end
 
 function quest_letter_window:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.ExitUI then
+  if inputActionEventData.ActionId == Z.InputActionIds.ExitUI then
     if not Z.IgnoreMgr:IsInputIgnore(Panda.ZGame.EInputMask.UIInteract) then
       return
     end

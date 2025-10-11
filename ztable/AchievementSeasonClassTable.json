@@ -2,7 +2,7 @@
   "10101": {
     "Id": 10101,
     "Type": 1,
-    "ClassName": "",
+    "ClassName": "Void Glory",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_xushirongguang",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_new_xushi",
@@ -13,7 +13,7 @@
   "10102": {
     "Id": 10102,
     "Type": 1,
-    "ClassName": "",
+    "ClassName": "Path of Growth",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_chengzhangzhilu",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_05",
@@ -27,7 +27,7 @@
   "10103": {
     "Id": 10103,
     "Type": 1,
-    "ClassName": "",
+    "ClassName": "Surging Battle Will",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_guoguanzhanjiang",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_01",
@@ -49,7 +49,7 @@
   "10104": {
     "Id": 10104,
     "Type": 1,
-    "ClassName": "",
+    "ClassName": "Star Footprints",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_maoxianjieyi",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_06",
@@ -67,7 +67,7 @@
   "10105": {
     "Id": 10105,
     "Type": 1,
-    "ClassName": "",
+    "ClassName": "Social & Casual",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_shejiao",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_new_shenfenbaitai",
@@ -77,6 +77,7 @@
       1010502,
       1010503,
       1010504,
+      1010505,
       1010506
     ],
     "SortID": 105
@@ -84,7 +85,7 @@
   "1": {
     "Id": 1,
     "Type": 0,
-    "ClassName": "",
+    "ClassName": "Path of Growth",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_chengzhangzhilu",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_perpetual_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_05",
@@ -103,7 +104,7 @@
   "2": {
     "Id": 2,
     "Type": 0,
-    "ClassName": "",
+    "ClassName": "Wilderness Conquest",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_xiongyongzhanyi",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_perpetual_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_02",
@@ -120,7 +121,7 @@
   "3": {
     "Id": 3,
     "Type": 0,
-    "ClassName": "",
+    "ClassName": "Overcome Obstacles",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_guoguanzhanjiang",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_perpetual_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_01",
@@ -137,7 +138,7 @@
   "4": {
     "Id": 4,
     "Type": 0,
-    "ClassName": "",
+    "ClassName": "Leisure Exploration",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_xianqutanxun",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_perpetual_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_06",
@@ -154,7 +155,7 @@
   "5": {
     "Id": 5,
     "Type": 0,
-    "ClassName": "",
+    "ClassName": "Star Footprints",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_maoxianjieyi",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_perpetual_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_04",
@@ -172,7 +173,7 @@
   "6": {
     "Id": 6,
     "Type": 0,
-    "ClassName": "",
+    "ClassName": "Social & Casual",
     "ClassIcon": "ui/atlas/season_achievement/simclass/achievement_simclass_new_shejiao",
     "ClassPeopleBg": "ui/textures/large_ui/season_achievement/season_perpetual_achievement_picture",
     "ClassBackground": "ui/atlas/season_achievement/seasoncenter_achievement_class_new_shejiao",

@@ -3,6 +3,7 @@ local QuestDetailCatalogueQuestItem = class("QuestDetailCatalogueQuestItem", sup
 
 function QuestDetailCatalogueQuestItem:OnInit()
   self.questGoalVM_ = Z.VMMgr.GetVM("quest_goal")
+  self.questVM_ = Z.VMMgr.GetVM("quest")
   self:initComp()
   self.limitComp_ = require("ui/component/quest/quest_limit_comp").new(self.parent.UIView, {
     date = function(state)
@@ -53,8 +54,9 @@ function QuestDetailCatalogueQuestItem:refreshQuestTpl(questId)
   end
   local questDetailView = self.parent.UIView
   local questData = Z.DataMgr.Get("quest_data")
-  self.lab_name_off_.text = questRow.QuestName
-  self.lab_name_on_.text = questRow.QuestName
+  local name = self.questVM_.GetQuestName(questId)
+  self.lab_name_off_.text = name
+  self.lab_name_on_.text = name
   self.uiBinder.Ref:SetVisible(self.img_time_flag_off_, false)
   self.uiBinder.Ref:SetVisible(self.img_time_flag_on_, false)
   self:refreshQuestStateIcon(questId)

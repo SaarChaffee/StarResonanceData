@@ -4,7 +4,9 @@ local getNpcName = function(configId)
   if npcTableRow == nil then
     return nil
   end
-  return npcTableRow.Name
+  local param = Z.Placeholder.SetPlayerSelfPronoun()
+  local npcName = Z.Placeholder.Placeholder(npcTableRow.Name, param)
+  return npcName
 end
 local getCollectName = function(configId)
   local collectTableMgr = Z.TableMgr.GetTable("CollectionTableMgr")

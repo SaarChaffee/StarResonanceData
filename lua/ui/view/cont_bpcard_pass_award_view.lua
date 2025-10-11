@@ -9,6 +9,9 @@ local timelineQueue = {
   [Z.PbEnum("EGender", "GenderFemale")] = 50000032,
   [Z.PbEnum("EGender", "GenderMale")] = 50000033
 }
+local effect_diancang = "ui/uieffect/prefab/ui_sfx_bpcard_001/ui_sfx_group_bpcard_saoguang_loop_02"
+local eff_zhizheng = "ui/uieffect/prefab/ui_sfx_bpcard_001/ui_sfx_group_bpcard_saoguang_loop_01"
+local eff_buy = "ui/uieffect/prefab/ui_sfx_bpcard_001/ui_sfx_purple_001_bpcard_buy"
 
 function Cont_bpcard_pass_awardView:ctor(parent)
   self.parentView_ = parent
@@ -18,18 +21,30 @@ function Cont_bpcard_pass_awardView:ctor(parent)
 end
 
 function Cont_bpcard_pass_awardView:OnActive()
-  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff_diancang)
-  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff_zhizheng)
-  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
-  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_pass_eff)
   self:initBinders()
   self:initParam()
+  self:initEffects()
   self:initBtnClick()
   self:bindWatchers()
   self:createPlayerModel()
   self:startAnimShow()
   Z.AudioMgr:Play("UI_Event_SeasonPassport")
   self:refreshBpCardTime()
+end
+
+function Cont_bpcard_pass_awardView:initEffects()
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff_diancang)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff_zhizheng)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_pass_eff)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.eff_bpcard)
+  local bpCardGlobalInfo = self.battlePassVM_.GetBattlePassGlobalTableInfo(self.battlePassData_.CurBattlePassData.id)
+  self.uiBinder.node_eff_diancang:CreatEFFGO(bpCardGlobalInfo.EffectPath[2], Vector3.zero)
+  self.uiBinder.node_eff_diancang:SetEffectGoVisible(true)
+  self.uiBinder.node_eff_zhizheng:CreatEFFGO(bpCardGlobalInfo.EffectPath[3], Vector3.zero)
+  self.uiBinder.node_eff_zhizheng:SetEffectGoVisible(true)
+  self.uiBinder.eff_bpcard:CreatEFFGO(bpCardGlobalInfo.EffectPath[1], Vector3.zero)
+  self.uiBinder.eff_bpcard:SetEffectGoVisible(true)
 end
 
 function Cont_bpcard_pass_awardView:refreshBpCardTime()
@@ -67,9 +82,13 @@ end
 function Cont_bpcard_pass_awardView:OnDeActive()
   self:clearPosCheckTimer()
   Z.UITimelineDisplay:ClearTimeLine()
+  self.uiBinder.node_eff_diancang:ReleseEffGo()
+  self.uiBinder.node_eff_zhizheng:ReleseEffGo()
+  self.uiBinder.eff_bpcard:ReleseEffGo()
   self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_eff_diancang)
-  self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_eff_diancang)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_eff_zhizheng)
   self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_loop_eff)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.eff_bpcard)
   self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_pass_eff)
   if self.fashionZlist_ then
     self.fashionZlist_:Recycle()
@@ -205,9 +224,8 @@ function Cont_bpcard_pass_awardView:setViewInfo(isShowDisplayOffset)
   local bpCardGlobalInfo = self.battlePassVM_.GetBattlePassGlobalTableInfo(curBattleData.id)
   self.uiBinder.lab_entrance.text = bpCardGlobalInfo.PassTitleName
   self.uiBinder.rimg_bpcard:SetImage(bpCardGlobalInfo.PassTag)
-  local passPicture = string.split(bpCardGlobalInfo.PassPicture, "=")
-  self.uiBinder.img_icon_basics:SetImage(passPicture[1])
-  self.uiBinder.img_icon_noble:SetImage(passPicture[2])
+  self.uiBinder.img_icon_basics:SetImage(bpCardGlobalInfo.PassPicture[1])
+  self.uiBinder.img_icon_noble:SetImage(bpCardGlobalInfo.PassPicture[2])
   self:initLoopScroll(isShowDisplayOffset)
   self:updateLeftShowItem()
 end

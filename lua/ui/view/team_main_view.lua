@@ -131,7 +131,10 @@ function Team_mainView:matchWaitTimeOut()
     if not teamTargetRow then
       return
     end
-    self.matchVm_.RequestBeginMatch(E.MatchType.Team, teamTargetRow.RelativeDungeonId, self.cancelSource:CreateToken())
+    self.matchVm_.RequestBeginMatch(E.MatchType.Team, {
+      dungeonId = teamTargetRow.RelativeDungeonId,
+      difficulty = teamTargetRow.Difficulty
+    }, self.cancelSource:CreateToken())
   end)
 end
 

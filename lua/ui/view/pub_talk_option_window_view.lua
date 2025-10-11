@@ -94,10 +94,12 @@ end
 
 function Pub_talk_option_windowView:initOption(unit, optionData)
   local holderParam = {}
-  Z.Placeholder.SetMePlaceholder(holderParam)
+  holderParam = Z.Placeholder.SetMePlaceholder(holderParam)
+  holderParam = Z.Placeholder.SetPlayerSelfPronoun(holderParam)
   local content = Z.Placeholder.Placeholder(optionData.Content, holderParam)
   itemHelper.InitInteractionItem(unit, content)
   itemHelper.AddCommonListener(unit)
+  unit.cont_key_icon.Ref.UIComp:SetVisible(false)
   if self.viewData.Type == E.TalkOptionsType.Confrontation and optionData.Type == Z.EPFlowConfrontationType.Neutral and self.talkData_:GetNeutral(optionData.Id, optionData.Index) then
     unit.img_bg_off:SetImage(npcAtlasPath .. "talk_btn_bg_gray")
     unit.btn_canvas.blocksRaycasts = false

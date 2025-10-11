@@ -292,8 +292,8 @@ function Weapon_role_mainView:showAttrDetails(Id)
         local transFactor = fightAttrTranRow[attrTransHeadName[Id]]
         local value = Z.EntityMgr.PlayerEnt:GetLuaAttr(attrTransDict[Id]).Value
         local addAttr = value / (value + transFactor[1] + roleLv * transFactor[2]) * 100
-        content = string.zconcat(Lang("BaseAttr"), fightAttrData.OfficialName, Lang(":"), fightAttrData.BaseAttr / 100, "%")
-        content = string.zconcat(content, "\n", fightAttrData.OfficialName, Lang(":"), value, "[", addAttr - addAttr % 0.01, "%", "]")
+        content = string.zconcat(Lang("BaseAttr"), fightAttrData.OfficialName, Lang("colon"), fightAttrData.BaseAttr / 100, "%")
+        content = string.zconcat(content, "\n", fightAttrData.OfficialName, Lang("colon"), value, "[", addAttr - addAttr % 0.01, "%", "]")
       end
       desc = string.zconcat(desc, "\n", content)
     end
@@ -316,11 +316,11 @@ function Weapon_role_mainView:showRoleInfo()
   self:onChangeTitle()
   self:refreshCardBg()
   Z.CoroUtil.create_coro_xpcall(function()
-    local socialData = self.socialVm_.AsyncGetSocialData(0, Z.EntityMgr.PlayerEnt.EntId, self.cancelSource:CreateToken())
+    local socialData = self.socialVm_.AsyncGetSocialData(0, Z.EntityMgr.PlayerEnt.CharId, self.cancelSource:CreateToken())
     local viewData = {}
     viewData.id = socialData.avatarInfo.avatarId
     viewData.modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
-    viewData.charId = Z.EntityMgr.PlayerEnt.EntId
+    viewData.charId = Z.EntityMgr.PlayerEnt.CharId
     viewData.headFrameId = nil
     viewData.token = self.cancelSource:CreateToken()
     if socialData.avatarInfo and socialData.avatarInfo.avatarFrameId then
@@ -390,7 +390,7 @@ function Weapon_role_mainView:onChangePortrait(avatarId, frameId)
   local viewData = {
     id = avatarId,
     modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value,
-    charId = Z.EntityMgr.PlayerEnt.EntId,
+    charId = Z.EntityMgr.PlayerEnt.CharId,
     headFrameId = frameId,
     token = self.cancelSource:CreateToken()
   }

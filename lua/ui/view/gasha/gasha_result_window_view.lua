@@ -26,6 +26,11 @@ function Gasha_result_windowView:OnActive()
   self:showHighQuility(false)
   Z.UnrealSceneMgr:SetNodeRenderColorByName("e_sky", false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.lab_tips, false)
+  if Z.IsPCUI then
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
+  else
+    self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePhone")
+  end
 end
 
 function Gasha_result_windowView:initComp()

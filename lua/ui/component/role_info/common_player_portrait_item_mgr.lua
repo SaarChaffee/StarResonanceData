@@ -3,6 +3,7 @@ local commonPlayerPortraitNewItem = require("ui.component.role_info.common_playe
 local getHeadPortraitTab = {}
 local loadHeadPortraitTab = {}
 local headSnapshotData = Z.DataMgr.Get("head_snapshot_data")
+local switchVm = Z.VMMgr.GetVM("switch")
 local setHeadPortrait = function(charId, headId)
   if headId and headId ~= 0 and getHeadPortraitTab[charId] then
     for index, item in ipairs(getHeadPortraitTab[charId]) do

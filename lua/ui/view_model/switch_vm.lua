@@ -33,7 +33,7 @@ local checkTime = function(config)
     local serverTime = Z.ServerTime:GetServerTime() / 1000
     if startTime > serverTime then
       local date = {
-        longstring = Z.TimeFormatTools.TicksFormatTime(startTime * 1000, E.TimeFormatType.YMD)
+        longstring = Z.TimeFormatTools.TicksFormatTime(startTime * 1000, E.TimeFormatType.YMD, false, true)
       }
       tipsId = 124001
       tipsParam = {
@@ -54,13 +54,14 @@ local checkQuest = function(config)
       local questTypeTable = Z.TableMgr.GetTable("QuestTypeTableMgr").GetRow(questTable.QuestType)
       if questTypeTable then
         local questTypeGroupTable = Z.TableMgr.GetTable("QuestTypeGroupTableMgr").GetRow(questTypeTable.QuestTypeGroupID)
+        local questVm = Z.VMMgr.GetVM("quest")
         if questTypeGroupTable then
           local param = {}
           param.str = {}
           param.str[1] = config.Name
           param.str[2] = questTypeGroupTable.GroupName
           param.quest = {}
-          param.quest.name = questTable.QuestName
+          param.quest.name = questVm.GetQuestName(questTable.QuestId)
           return param
         end
       end

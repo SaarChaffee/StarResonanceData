@@ -10,5 +10,9 @@ enum LoginSdkType {
   LoginSdkTypeGLauncher = 4;
   LoginSdkTypeHaoPlay = 5;
   LoginSdkTypeApj = 6;
+  LoginSdkTypeAPJSteam = 7;
+  LoginSdkTypeAPJEpic = 8;
+  LoginSdkTypeXDG = 9;
+  LoginSdkTypeHaoplaySEA = 10;
 }
 

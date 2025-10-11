@@ -23,6 +23,8 @@ function PaymentService:OnUnInit()
 end
 
 function PaymentService:OnLogin()
+  local paymentVm = Z.VMMgr.GetVM("payment")
+  paymentVm:ProcessPendingPaymentTransaction()
 end
 
 function PaymentService:initCacheData(checkFinish)

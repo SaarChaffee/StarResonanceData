@@ -12,6 +12,7 @@ function MonthlyRewardLoopListObtainedItem:OnRefresh(data)
   end
   self.uiBinder.rimg_icon:SetImage(config.ListResources)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_light, self.IsSelected)
+  self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
 end
 
 function MonthlyRewardLoopListObtainedItem:OnUnInit()
@@ -19,7 +20,12 @@ end
 
 function MonthlyRewardLoopListObtainedItem:OnSelected(isSelected, isClick)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_light, isSelected)
-  self.parent.UIView:SetCardInfo(self.data_)
+  if isSelected then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+    self.parent.UIView:SetCardInfo(self.data_, isClick)
+  else
+    self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
+  end
 end
 
 return MonthlyRewardLoopListObtainedItem

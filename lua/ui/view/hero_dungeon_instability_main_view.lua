@@ -50,6 +50,9 @@ function Hero_dungeon_instability_mainView:initBinders()
   self.togGrop_ = self.uiBinder.toggle_group
   self.togBinder_ = self.uiBinder.tog_uibinder
   self.digitTog_ = self.uiBinder.tog_digit
+  self.digitLab_ = self.uiBinder.lab_digit_title
+  self.digitImg_ = self.uiBinder.img_digit_off
+  self.digitEmptyBtn_ = self.uiBinder.btn_digit_empty
   self.teamTog_ = self.uiBinder.tog_team
   self.bgRimg_ = self.uiBinder.rimg_bg
   self.awardHintLab_ = self.uiBinder.lab_task_completion
@@ -77,7 +80,9 @@ function Hero_dungeon_instability_mainView:initBtns()
       Z.TipsVM.ShowTips(1000644)
       return
     end
-    self.matchVm_.RequestBeginMatch(E.MatchType.Team, self.dungeonId_, self.cancelSource:CreateToken())
+    self.matchVm_.RequestBeginMatch(E.MatchType.Team, {
+      dungeonId = self.dungeonId_
+    }, self.cancelSource:CreateToken())
   end)
   self:AddAsyncClick(self.unMatchBtn, function()
     self.matchVm_.AsyncCancelMatch()
@@ -132,7 +137,9 @@ function Hero_dungeon_instability_mainView:initBtns()
             if not teamTargetRow then
               return
             end
-            self.matchVm_.RequestBeginMatch(E.MatchType.Team, teamTargetRow.RelativeDungeonId, self.cancelSource:CreateToken())
+            self.matchVm_.RequestBeginMatch(E.MatchType.Team, {
+              dungeonId = teamTargetRow.RelativeDungeonId
+            }, self.cancelSource:CreateToken())
           end
           self.teamMainVm_.OpenTeamMainView(self.teamTargetId_)
         end)
@@ -160,11 +167,13 @@ function Hero_dungeon_instability_mainView:initBtns()
       self.matchBtn.IsDisabled = true
     end
   end)
-  self:AddClick(self.teamTog_, function(isOn)
-    if not Z.ConditionHelper.CheckCondition(self.dungeonData_.SingleAiCondition, true) then
-      self.digitTog_.isOn = true
+  self:AddClick(self.digitEmptyBtn_, function()
+    if not self.dungeonData_ then
       return
     end
+    Z.ConditionHelper.CheckCondition(self.dungeonData_.SingleAiCondition, true)
+  end)
+  self:AddClick(self.teamTog_, function(isOn)
     if isOn then
       if self.toggleisTeam_ == false then
         self.toggleisTeam_ = true
@@ -231,6 +240,11 @@ function Hero_dungeon_instability_mainView:refreshUi()
   if not self.showDungeonRow_ then
     return
   end
+  local isShowDigitEmptyNode = not Z.ConditionHelper.CheckCondition(self.showDungeonRow_.SingleAiCondition)
+  self.uiBinder.Ref:SetVisible(self.digitEmptyBtn_, isShowDigitEmptyNode)
+  local alpha = isShowDigitEmptyNode and 0.5 or 1
+  self.digitLab_.alpha = alpha
+  self.digitImg_.alpha = alpha
   if self.normalHeroDungeonData_ then
     self.bgRimg_:SetImage(self.normalHeroDungeonData_.Background)
   end
@@ -456,7 +470,8 @@ function Hero_dungeon_instability_mainView:getShowDungeonData()
   if self.isComplete_ or #self.showDungeonRow_.FirstPassAward == 0 then
     self.dropTog_.isOn = true
   end
-  self.firstNode_.Ref.UIComp:SetVisible(not self.isComplete_ and 0 < #self.showDungeonRow_.FirstPassAward)
+  local isShowFirstNode = not self.isComplete_ and 0 < #self.showDungeonRow_.FirstPassAward
+  self.firstNode_.Ref.UIComp:SetVisible(isShowFirstNode)
   self.uiBinder.Ref:SetVisible(self.awardTitleNode_, self.isComplete_ or #self.showDungeonRow_.FirstPassAward == 0)
 end
 

@@ -17,7 +17,7 @@
       ]
     ],
     "ConfirmTime": 30,
-    "MatchMaxTime": 180,
+    "MatchMaxTime": 300,
     "MatchPic": "ui/background/seasonact/activity_huntboss"
   },
   "50001": {
@@ -29,8 +29,8 @@
     "MatchMaxNum": 50,
     "MatchProfessionLimitNum": [],
     "ConfirmTime": 30,
-    "MatchMaxTime": 180,
-    "MatchPic": "ui/background/seasonact/activity_weituo"
+    "MatchMaxTime": 300,
+    "MatchPic": "ui/background/seasonact/activity_seasonact_201"
   },
   "50002": {
     "Id": 50002,
@@ -41,8 +41,32 @@
     "MatchMaxNum": 15,
     "MatchProfessionLimitNum": [],
     "ConfirmTime": 30,
+    "MatchMaxTime": 300,
+    "MatchPic": "ui/background/seasonact/activity_seasonact_202"
+  },
+  "50003": {
+    "Id": 50003,
+    "Mark": "气球捕获大作战",
+    "MatchType": 2,
+    "MatchStrategy": 2,
+    "MatchMinNum": 5,
+    "MatchMaxNum": 10,
+    "MatchProfessionLimitNum": [],
+    "ConfirmTime": 30,
     "MatchMaxTime": 180,
-    "MatchPic": "ui/background/seasonact/activity_weituo"
+    "MatchPic": "ui/background/seasonact/activity_seasonact_203"
+  },
+  "50004": {
+    "Id": 50004,
+    "Mark": "小伊别盯我！",
+    "MatchType": 2,
+    "MatchStrategy": 2,
+    "MatchMinNum": 5,
+    "MatchMaxNum": 20,
+    "MatchProfessionLimitNum": [],
+    "ConfirmTime": 30,
+    "MatchMaxTime": 180,
+    "MatchPic": "ui/background/seasonact/activity_seasonact_209"
   },
   "2001": {
     "Id": 2001,
@@ -66,7 +90,7 @@
       ]
     ],
     "ConfirmTime": 20,
-    "MatchMaxTime": 300,
+    "MatchMaxTime": 600,
     "MatchPic": "ui/background/seasonact/activity_dina_4"
   },
   "3001": {
@@ -91,7 +115,7 @@
       ]
     ],
     "ConfirmTime": 20,
-    "MatchMaxTime": 300,
+    "MatchMaxTime": 600,
     "MatchPic": "ui/background/seasonact/activity_dina_5"
   },
   "5001": {
@@ -116,53 +140,66 @@
       ]
     ],
     "ConfirmTime": 20,
-    "MatchMaxTime": 300,
+    "MatchMaxTime": 600,
     "MatchPic": "ui/background/seasonact/activity_dina_7"
   },
   "1001": {
     "Id": 1001,
-    "Mark": "组队大厅匹配测试参数1",
+    "Mark": "raid普通匹配",
     "MatchType": 1,
     "MatchStrategy": 1,
-    "MatchMinNum": 2,
-    "MatchMaxNum": 2,
-    "MatchProfessionLimitNum": [],
-    "ConfirmTime": 20,
-    "MatchMaxTime": 300,
-    "MatchPic": "ui/background/seasonact/activity_huntboss"
+    "MatchMinNum": 10,
+    "MatchMaxNum": 10,
+    "MatchProfessionLimitNum": [
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        1,
+        6
+      ]
+    ],
+    "ConfirmTime": 30,
+    "MatchMaxTime": 600,
+    "MatchPic": "ui/background/seasonact/activity_raid_1"
   },
   "1002": {
     "Id": 1002,
-    "Mark": "组队大厅匹配测试参数2",
+    "Mark": "raid困难匹配",
     "MatchType": 1,
     "MatchStrategy": 1,
-    "MatchMinNum": 3,
-    "MatchMaxNum": 3,
+    "MatchMinNum": 10,
+    "MatchMaxNum": 10,
     "MatchProfessionLimitNum": [
       [
         2,
-        1
+        2
       ],
       [
         3,
-        1
+        2
       ],
       [
         1,
-        1
+        6
       ]
     ],
-    "ConfirmTime": 20,
-    "MatchMaxTime": 300,
-    "MatchPic": "ui/background/seasonact/activity_weituo"
+    "ConfirmTime": 30,
+    "MatchMaxTime": 600,
+    "MatchPic": "ui/background/seasonact/activity_raid_1"
   },
   "1003": {
     "Id": 1003,
-    "Mark": "组队大厅匹配测试参数3",
+    "Mark": "raid噩梦匹配",
     "MatchType": 1,
     "MatchStrategy": 1,
-    "MatchMinNum": 4,
-    "MatchMaxNum": 4,
+    "MatchMinNum": 6,
+    "MatchMaxNum": 6,
     "MatchProfessionLimitNum": [
       [
         2,
@@ -174,12 +211,12 @@
       ],
       [
         1,
-        2
+        4
       ]
     ],
-    "ConfirmTime": 20,
-    "MatchMaxTime": 300,
-    "MatchPic": "ui/background/seasonact/activity_weituo"
+    "ConfirmTime": 30,
+    "MatchMaxTime": 600,
+    "MatchPic": "ui/background/seasonact/activity_raid_1"
   },
   "2": {
     "Id": 2,
@@ -191,6 +228,31 @@
     "MatchProfessionLimitNum": [],
     "ConfirmTime": 20,
     "MatchMaxTime": 120,
+    "MatchPic": ""
+  },
+  "1004": {
+    "Id": 1004,
+    "Mark": "大师模式匹配",
+    "MatchType": 1,
+    "MatchStrategy": 1,
+    "MatchMinNum": 5,
+    "MatchMaxNum": 5,
+    "MatchProfessionLimitNum": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "ConfirmTime": 20,
+    "MatchMaxTime": 600,
     "MatchPic": ""
   }
 }

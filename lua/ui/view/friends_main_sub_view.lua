@@ -85,7 +85,6 @@ function Friends_main_subView:initData()
   self.uiBinder.tog_normal.isOn = false
   self.uiBinder.tog_important.group = self.uiBinder.togs_tab
   self.uiBinder.tog_normal.group = self.uiBinder.togs_tab
-  self.friendMainData_:SetFriendViewOpen(true)
 end
 
 function Friends_main_subView:initFunc()
@@ -187,8 +186,6 @@ function Friends_main_subView:OnDeActive()
   self:clearRed()
   self:clearTogData()
   self.loopList_:UnInit()
-  self.friendMainData_:SetFriendViewOpen(false)
-  self.friendMainData_:SetIsShowFriendChat(false)
   Z.Voice.StopPlayback()
 end
 
@@ -202,7 +199,8 @@ function Friends_main_subView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Chat.BubbleMsg, self.OnRefreshChatMsg, self)
   Z.EventMgr:Add(Z.ConstValue.Chat.OpenPrivateChat, self.refreshOpenPrivateChat, self)
   Z.EventMgr:Add(Z.ConstValue.Friend.FriendNewMessage, self.refreshFriendNewMessage, self)
-  Z.EventMgr:Add(Z.ConstValue.Chat.NewPrivateChatMsg, self.onReceiveNewPrivateChatMsg, self)
+  Z.EventMgr:Add(Z.ConstValue.Friend.ChatSelfSendNewMessage, self.refreshSelfSendNewMsg, self)
+  Z.EventMgr:Add(Z.ConstValue.Friend.ChatPrivateNewMessage, self.refreshPrivateSendNewMsg, self)
   Z.EventMgr:Add(Z.ConstValue.Friend.RefreshFriendBaseDataCache, self.onFriendBaseDataRefresh, self)
 end
 
@@ -216,7 +214,8 @@ function Friends_main_subView:UnBindEvents()
   Z.EventMgr:Remove(Z.ConstValue.Chat.BubbleMsg, self.OnRefreshChatMsg, self)
   Z.EventMgr:Remove(Z.ConstValue.Chat.OpenPrivateChat, self.refreshOpenPrivateChat, self)
   Z.EventMgr:Remove(Z.ConstValue.Friend.FriendNewMessage, self.refreshFriendNewMessage, self)
-  Z.EventMgr:Remove(Z.ConstValue.Chat.NewPrivateChatMsg, self.onReceiveNewPrivateChatMsg, self)
+  Z.EventMgr:Remove(Z.ConstValue.Friend.ChatSelfSendNewMessage, self.refreshSelfSendNewMsg, self)
+  Z.EventMgr:Remove(Z.ConstValue.Friend.ChatPrivateNewMessage, self.refreshPrivateSendNewMsg, self)
   Z.EventMgr:Remove(Z.ConstValue.Friend.RefreshFriendBaseDataCache, self.onFriendBaseDataRefresh, self)
 end
 
@@ -337,11 +336,49 @@ function Friends_main_subView:refreshFriendNewMessage()
   mainUIData.MainUIPCShowFriendMessage = false
 end
 
-function Friends_main_subView:onReceiveNewPrivateChatMsg()
+function Friends_main_subView:refreshSelfSendNewMsg(targetCharId)
+  local privateChat = self.chatMainData_:GetPrivateChatItemByCharId(targetCharId)
+  if not privateChat then
+    return
+  end
+  privateChat.maxReadMsgId = privateChat.latestMsg.msgId
+  Z.CoroUtil.create_coro_xpcall(function()
+    self.chatMainVm_.AsyncSetPrivateChatHasRead(targetCharId, privateChat.latestMsg.msgId, self.cancelSource:CreateToken())
+  end)()
+  self:refreshFriendList()
+end
+
+function Friends_main_subView:refreshPrivateSendNewMsg(targetCharId)
+  local selectCharId
   if self.friendMainData_:GetFriendViewType() == E.FriendViewType.Chat then
-    self:RefreshChatPrivateChatList()
+    selectCharId = self.friendMainData_:GetChatSelectCharId()
   else
-    self:checkNewMessageRed()
+    selectCharId = self.chatMainData_:GetPrivateSelectId()
+  end
+  if targetCharId == selectCharId then
+    local privateChat = self.chatMainData_:GetPrivateChatItemByCharId(targetCharId)
+    if privateChat then
+      privateChat.maxReadMsgId = privateChat.latestMsg.msgId
+      Z.CoroUtil.create_coro_xpcall(function()
+        self.chatMainVm_.AsyncSetPrivateChatHasRead(targetCharId, privateChat.latestMsg.msgId, self.cancelSource:CreateToken())
+      end)()
+    end
+  end
+  self:refreshFriendList()
+end
+
+function Friends_main_subView:refreshFriendList()
+  local list
+  if self.isSearching_ then
+    list = self.chatMainVm_.GetSearchDataList(self.uiBinder.input_search.text)
+    self.loopList_:RefreshListView(list, false)
+  elseif self.friendMainData_:GetFriendViewType() == E.FriendViewType.Chat then
+    list = self.chatMainData_:GetPrivateChatList()
+  else
+    list = self.friendMainData_.AllList
+  end
+  if list then
+    self.loopList_:RefreshListView(list, false)
   end
 end
 
@@ -574,7 +611,6 @@ end
 
 function Friends_main_subView:refreshNodeRightSubView(type, viewData)
   self.curRightViewType_ = type
-  self.friendMainData_:SetIsShowFriendChat(type == E.FriendFunctionViewType.SendMessage)
   self:hideNodeRightSubView(type)
   if type == E.FriendFunctionViewType.None then
     self.uiBinder.Ref:SetVisible(self.uiBinder.cont_empty, true)

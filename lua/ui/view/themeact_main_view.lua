@@ -65,6 +65,7 @@ function Themeact_mainView:initComponent()
   self:initToggle()
   self:ShowOrHideAskBtn(false)
   self.uiBinder.lab_title.text = self.commonVM_.GetTitleByConfig(E.FunctionID.ThemePlay)
+  self.uiBinder.comp_dotween:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Themeact_mainView:initToggle()

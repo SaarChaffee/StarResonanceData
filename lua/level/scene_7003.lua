@@ -260,7 +260,6 @@ function Scene:InitEvents()
     entity = {actorType = 5, tableUid = 510},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
       if Z.VMMgr.GetVM("level_editor").IsQuestStepGoing(130008, 130008010) then
-        logGreen(string.format("-----\232\167\166\229\143\145\229\137\141\231\171\175\228\186\139\228\187\182----- : nil = %s, nil = %s, nil = %s", tostring(nil), tostring(nil), tostring(nil)))
         do
           local entityData = {actorType = 5, tableUid = 511}
           if entityData.groupId then

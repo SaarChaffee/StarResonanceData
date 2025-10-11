@@ -1,4 +1,5 @@
 local socialVm = Z.VMMgr.GetVM("social")
+local downloadVm = Z.VMMgr.GetVM("download")
 local asyncGetCardData = function(charId, cancelToken, photoData, isShowInviteAction, rideId)
   local socialData = socialVm.AsyncGetSocialData(0, charId, cancelToken)
   if socialData then
@@ -23,20 +24,24 @@ local getFuncList = function()
   end)
   return funcList
 end
-local getGetReviewAvatarInfo = function(charId, token)
-  if not charId then
+local getGetReviewAvatarInfo = function(charId, cancelSource, callbackFunc)
+  if not charId or not cancelSource then
     return
   end
   local photoProxy = require("zproxy.photograph_proxy")
-  local ret = photoProxy.GetReviewAvatarInfo({charId = charId}, token)
+  local ret = photoProxy.GetReviewAvatarInfo({charId = charId}, cancelSource:CreateToken())
   if ret.errCode == 0 and ret.avatarInfo and ret.avatarInfo.halfBody then
-    local tab = {}
-    local snapshotVm = Z.VMMgr.GetVM("snapshot")
-    tab.textureId = snapshotVm.AsyncDownLoadPictureByUrl(ret.avatarInfo.halfBody.url)
-    tab.auditing = ret.avatarInfo.halfBody.verify.ReviewStartTime
-    return tab
+    local tempFunc = function(nativeTextureId)
+      local tab = {}
+      tab.textureId = nativeTextureId
+      tab.auditing = ret.avatarInfo.halfBody.verify.ReviewStartTime
+      callbackFunc(tab)
+    end
+    local name = downloadVm:GetFileName(charId, ret.avatarInfo.halfBody.verify.version, E.HttpPictureDownFoldType.HalfBody)
+    downloadVm:GetPicture(name, ret.avatarInfo.halfBody.url, cancelSource:CreateToken(), tempFunc, E.HttpPictureDownFoldType.HalfBody)
+    return
   end
-  return nil
+  callbackFunc(nil)
 end
 local ret = {
   CloseIdCardView = closeIdCardView,

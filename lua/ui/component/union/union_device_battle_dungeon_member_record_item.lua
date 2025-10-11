@@ -9,8 +9,8 @@ end
 
 function unionDeviceBattleDungeonMemberRecordItem:OnRefresh(data)
   self.uiBinder.lab_name.text = data.CharName
-  self.uiBinder.lab_date.text = Z.TimeFormatTools.TicksFormatTime(data.killTime * 1000, E.TimeFormatType.YMD)
-  self.uiBinder.lab_time.text = Z.TimeFormatTools.TicksFormatTime(data.killTime * 1000, E.TimeFormatType.HMS)
+  self.uiBinder.lab_date.text = Z.TimeFormatTools.TicksFormatTime(data.killTime * 1000, E.TimeFormatType.YMD, false, true)
+  self.uiBinder.lab_time.text = Z.TimeFormatTools.TicksFormatTime(data.killTime * 1000, E.TimeFormatType.HMS, false, true)
 end
 
 function unionDeviceBattleDungeonMemberRecordItem:OnUnInit()

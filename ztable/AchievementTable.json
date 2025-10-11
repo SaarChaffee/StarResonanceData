@@ -1,10 +1,10 @@
 {
   "10001": {
     "Id": 10001,
-    "Name": "",
+    "Name": "Peak A12",
     "MainType": 2,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Reach Lv.10",
     "Show": 0,
     "TimeLimit": 0,
     "Award": [
@@ -17,10 +17,10 @@
   },
   "10002": {
     "Id": 10002,
-    "Name": "",
+    "Name": "Peak 2",
     "MainType": 2,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Reach Lv.20",
     "Show": 0,
     "TimeLimit": 0,
     "Award": [
@@ -37,10 +37,10 @@
   },
   "10003": {
     "Id": 10003,
-    "Name": "",
+    "Name": "Peak 3",
     "MainType": 2,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Reach Lv.30",
     "Show": 0,
     "TimeLimit": 0,
     "Award": [
@@ -53,10 +53,10 @@
   },
   "10004": {
     "Id": 10004,
-    "Name": "",
+    "Name": "Peak 4",
     "MainType": 2,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Reach Lv.40",
     "Show": 0,
     "TimeLimit": 0,
     "Award": [
@@ -69,10 +69,10 @@
   },
   "10005": {
     "Id": 10005,
-    "Name": "",
+    "Name": "Peak 5",
     "MainType": 2,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Reach Lv.50",
     "Show": 0,
     "TimeLimit": 0,
     "Award": [
@@ -85,10 +85,10 @@
   },
   "10006": {
     "Id": 10006,
-    "Name": "",
+    "Name": "Peak 6",
     "MainType": 2,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Reach Lv.60",
     "Show": 0,
     "TimeLimit": 0,
     "Award": [
@@ -101,10 +101,10 @@
   },
   "10007": {
     "Id": 10007,
-    "Name": "",
+    "Name": "Peak 7",
     "MainType": 2,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Reach Lv.70",
     "Show": 0,
     "TimeLimit": 0,
     "Award": [
@@ -117,10 +117,10 @@
   },
   "10008": {
     "Id": 10008,
-    "Name": "",
+    "Name": "Peak 8",
     "MainType": 2,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Reach Lv.80",
     "Show": 0,
     "TimeLimit": 0,
     "Award": [
@@ -133,10 +133,10 @@
   },
   "10102": {
     "Id": 10102,
-    "Name": "",
+    "Name": "Tycoon",
     "MainType": 4,
     "SubType": 2,
-    "Desc": "",
+    "Desc": "Earn over 10,000 bound gold coins",
     "Show": 0,
     "TimeLimit": 0,
     "Award": [
@@ -149,10 +149,10 @@
   },
   "11001": {
     "Id": 11001,
-    "Name": "",
+    "Name": "Dabbler",
     "MainType": 2,
     "SubType": 2,
-    "Desc": "",
+    "Desc": "Kill a monster",
     "Show": 1,
     "TimeLimit": 0,
     "Award": [
@@ -165,10 +165,10 @@
   },
   "11002": {
     "Id": 11002,
-    "Name": "",
+    "Name": "Divine Forest",
     "MainType": 2,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Clear the dungeon of Divine Forest",
     "Show": 1,
     "TimeLimit": 0,
     "Award": [
@@ -181,10 +181,10 @@
   },
   "11003": {
     "Id": 11003,
-    "Name": "",
+    "Name": "Good Samaritan",
     "MainType": 2,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Complete a main quest",
     "Show": 1,
     "TimeLimit": 0,
     "Award": [
@@ -197,10 +197,10 @@
   },
   "12001": {
     "Id": 12001,
-    "Name": "",
+    "Name": "Competitive",
     "MainType": 3,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Defeat a player in any form of PvP",
     "Show": 1,
     "TimeLimit": 0,
     "Award": [
@@ -213,10 +213,10 @@
   },
   "13001": {
     "Id": 13001,
-    "Name": "",
+    "Name": "Earn a Living",
     "MainType": 4,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Learn any life skill",
     "Show": 1,
     "TimeLimit": 0,
     "Award": [
@@ -229,10 +229,10 @@
   },
   "14001": {
     "Id": 14001,
-    "Name": "",
+    "Name": "Recovering",
     "MainType": 5,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Revive for the first time",
     "Show": 1,
     "TimeLimit": 0,
     "Award": [
@@ -245,10 +245,10 @@
   },
   "14002": {
     "Id": 14002,
-    "Name": "",
+    "Name": "Severely Wounded",
     "MainType": 5,
     "SubType": 1,
-    "Desc": "",
+    "Desc": "Disappear for the first time",
     "Show": 1,
     "TimeLimit": 0,
     "Award": [

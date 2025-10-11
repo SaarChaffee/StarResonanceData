@@ -60,6 +60,7 @@ function LoginVM:OnSDKAutoLogin(data)
     accountData.Expire = data.Expire
     accountData.OS = data.OS
     accountData.PlatformType = data.Platform
+    accountData.BoundProviders = data.BoundProviders
     local loginData = Z.DataMgr.Get("login_data")
     loginData.LastAccountData = table.zclone(accountData)
     Z.SDKReport.SetInfo("GameUserID", data.OpenID)
@@ -94,9 +95,10 @@ function LoginVM:OnSDKLogin(data)
     accountData.LoginType = data.LoginTypeID
     accountData.OpenID = data.OpenID
     accountData.Token = data.Token
+    accountData.Expire = data.Expire
     accountData.OS = data.OS
     accountData.PlatformType = data.Platform
-    accountData.Expire = data.Expire
+    accountData.BoundProviders = data.BoundProviders
     local loginData = Z.DataMgr.Get("login_data")
     loginData.LastAccountData = table.zclone(accountData)
     Z.SDKReport.SetInfo("GameUserID", data.OpenID)
@@ -138,6 +140,7 @@ end
 function LoginVM:AsyncGetServerList()
   local accountData = Z.DataMgr.Get("account_data")
   local serverData = Z.DataMgr.Get("server_data")
+  local sdkData = Z.DataMgr.Get("sdk_data")
   local curTime = os.time()
   local interval = curTime - serverData.LastGetTime
   if interval < 3 then
@@ -145,7 +148,7 @@ function LoginVM:AsyncGetServerList()
   end
   local cancelSource = Z.CancelSource.Rent()
   local request = Z.HttpRequest.Rent()
-  request.Url = Panda.Core.GameContext.Domain
+  request.Url = Z.GameContext.Domain
   request:AddHeader("version", Z.GameContext.Version)
   request:AddHeader("res_version", Z.GameContext.ResVersion)
   request:AddHeader("openid", accountData.OpenID)
@@ -161,7 +164,9 @@ function LoginVM:AsyncGetServerList()
   end
   local parameter
   xpcall(function()
-    parameter = cjson.decode(response.Value).serverList
+    local content = cjson.decode(response.Value)
+    parameter = content.serverList
+    sdkData:SetHttpNoticeUrl(content.noticeUrl, content.noticePreviewUrl)
   end, function(msg)
     logError("[LoginVM] AsyncGetServerList Error : " .. msg)
   end)
@@ -174,7 +179,6 @@ function LoginVM:AsyncGetServerList()
   end
   serverData.LastGetTime = os.time()
   serverData:SetServerData(parameter)
-  Z.SDKReport.ReportEvent(Z.SDKReportEvent.GetServerList)
   return true
 end
 
@@ -188,16 +192,17 @@ function LoginVM:AsyncLogin()
   request.sdkType = accountData.SDKType
   request.channelId = accountData.LoginType
   request.os = accountData.OS
+  request.boundProviders = accountData.BoundProviders
   request.deviceInfo = self:GetDeviceInfo()
   request.clientVersion = Z.GameContext.Version
   request.clientResourceVersion = Z.GameContext.ResVersion
   request.protocolVersion = Z.Version.ProtocolVersion
   request.configVersion = Z.Version.ConfigVersion
-  request.areaId = Z.SDKTencent.InstallChannel
+  request.areaId = Z.GameContext.InstallChannel
+  request.areaIdToken = Z.GameContext.InstallChannelEncryption
   request.iOSAdServiceToken = Z.SDKReport.GetReportInfo("AdServiceToken")
   request.payExtData = Z.VMMgr.GetVM("payment"):GetExtData()
   request.launchParam = sdkVM.DeserializeWakeUpData(Z.SDKTencent.GetLastWakeUpData())
-  request.areaIdToken = Z.SDKTencent.InstallChannelEncryption
   request.distinctID = Z.SDKReport.GetReportInfo("DistinctID")
   if not Z.IsOfficalVersion then
     logError("Login Request={0}", table.ztostring(request))
@@ -211,9 +216,6 @@ function LoginVM:AsyncLogin()
     else
       break
     end
-  end
-  if reply ~= nil and reply.errCode ~= nil then
-    Z.SDKReport.ReportEvent(Z.SDKReportEvent.ServerConnected, reply.errCode)
   end
   local playerData = Z.DataMgr.Get("player_data")
   if reply ~= nil and reply.errCode == 0 then
@@ -239,6 +241,9 @@ function LoginVM:AsyncLogin()
     if Z.SDKTencent.InstallChannelEncryption and Z.SDKTencent.InstallChannelEncryption ~= "" then
       Z.SDKTencent.InstallChannel = reply.installChannelDis
     end
+    local serverData = Z.DataMgr.Get("server_data")
+    Z.SDKReport.SetInfo("ServerID", serverData:GetCurrentZoneId())
+    Z.SDKReport.Report(Z.SDKReportEvent.ServerConnected)
   else
     playerData:Clear()
   end
@@ -413,7 +418,6 @@ function LoginVM:Logout(clearSDK)
   Z.SysDialogViewDataManager:ClearAll(true)
   Z.ContainerMgr:Reset()
   Z.EventMgr:Dispatch(Z.ConstValue.LoginEvt.SwitchLoginState, E.LoginState.Init)
-  Z.SDKReport.SetInfo("GameUserID", "")
 end
 
 function LoginVM:KickOffByClient(clientErrCode, hideDialog)
@@ -515,6 +519,7 @@ function LoginVM:BeginSelectChar(charId, errorFunc)
   local serverId = serverData.NowSelectServerId
   Z.SDKReport.SetInfo("RoleID", charId)
   Z.SDKReport.SetInfo("AreaID", serverId)
+  Z.SDKReport.Report(Z.SDKReportEvent.CharacterSelected)
 end
 
 function LoginVM:OpenSelectCharView()
@@ -524,44 +529,44 @@ function LoginVM:OpenSelectCharView()
   end)
 end
 
-function LoginVM:BackToSelectCharView()
-  local loginData = Z.DataMgr.Get("login_data")
-  loginData.AutoLogin = true
-  self:Logout()
-end
-
-function LoginVM:CheckServerStatus(serverAddr)
+function LoginVM:AsyncCheckServerStatus(serverAddr)
   local serverData = Z.DataMgr.Get("server_data")
   local serverId = serverData:GetServerId(serverAddr)
   if serverId == 0 then
     return true
   end
+  self:AsyncGetServerList()
   local openTime = serverData.ServerMap[serverId].open_time
   local startTime = serverData.ServerMap[serverId].maintain_start_time
   local stopTime = serverData.ServerMap[serverId].maintain_stop_time
+  local serverStatus = serverData.ServerMap[serverId].status
   if openTime == nil and startTime == nil and stopTime == nil then
     return true
-  elseif openTime ~= nil and (startTime == nil or stopTime == nil) then
+  elseif openTime ~= nil and (startTime == nil and stopTime ~= nil or startTime ~= nil and stopTime == nil) then
     return false
   end
-  local serverStatus = E.ServerStatus.Normal
-  local timeDiff = 3
-  local localTime = os.time()
-  if localTime < openTime + timeDiff then
-    serverStatus = E.ServerStatus.NotOpen
-  elseif localTime > startTime - timeDiff and localTime < stopTime + timeDiff then
-    serverStatus = E.ServerStatus.Maintain
+  if serverStatus == nil then
+    return true
   end
+  local sdkVM = Z.VMMgr.GetVM("sdk")
   local showAnnouncementBtn = self:ShowAnnouncementBtn()
   if serverStatus == E.ServerStatus.Normal then
     return true
   elseif serverStatus == E.ServerStatus.NotOpen then
     local param = {open_time = openTime}
     local labDesc = Lang("ErrServerNotOpen", param)
+    local switchLabel = sdkVM.GetCommunityLabel()
+    if switchLabel ~= "" then
+      labDesc = labDesc .. switchLabel
+    end
     self:ShowServerDialogTip(labDesc, showAnnouncementBtn)
   elseif serverStatus == E.ServerStatus.Maintain then
     local param = {start_time = startTime, stop_time = stopTime}
     local labDesc = Lang("ErrServerDownWithTime", param)
+    local switchLabel = sdkVM.GetCommunityLabel()
+    if switchLabel ~= "" then
+      labDesc = labDesc .. switchLabel
+    end
     self:ShowServerDialogTip(labDesc, showAnnouncementBtn)
   end
   return false
@@ -681,6 +686,7 @@ function LoginVM:SelectServerData(serverAddr)
     local ipAddr = info.serverUrl .. ":" .. math.floor(info.host)
     if serverAddr == ipAddr then
       serverData:SetNowSelectData(info)
+      serverData:SetNowSelectServerId(serverData:GetServerId(serverAddr))
       return
     end
   end
@@ -690,6 +696,7 @@ function LoginVM:SelectServerData(serverAddr)
   serverInfo.host = tonumber(strs[2])
   serverInfo.zoneId = 9999
   serverData:SetNowSelectData(serverInfo)
+  serverData:SetNowSelectServerId(serverData:GetServerId(serverAddr))
 end
 
 function LoginVM:LoadLocalAccountInfo()

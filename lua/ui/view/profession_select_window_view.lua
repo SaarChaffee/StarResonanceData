@@ -247,9 +247,6 @@ function Profession_select_windowView:onConfirmCreateRoleClick()
   local faceVM = Z.VMMgr.GetVM("face")
   faceVM.CheckLocalFaceData()
   local reply = loginVM:AsyncCreateChar(data.AccountName, self.faceData_.Gender, self.faceData_.BodySize, faceVM.ConvertOptionDictToProtoData(), self.curProfessionSysTable_.Id)
-  if reply ~= nil and reply.errCode ~= nil then
-    Z.SDKReport.ReportEvent(Z.SDKReportEvent.CharacterCreated, reply.errCode)
-  end
   if reply.errCode ~= 0 then
     Z.TipsVM.ShowTips(reply.errCode)
     loginVM:KickOffByServer(reply.errCode)
@@ -257,6 +254,7 @@ function Profession_select_windowView:onConfirmCreateRoleClick()
     self.IsResponseInput = true
     return
   end
+  Z.SDKReport.Report(Z.SDKReportEvent.CharacterCreated)
   logGreen("[Account]CreateChar success with return:{0}", table.ztostring(reply))
   if data.CharDataList == nil then
     data.CharDataList = {}
@@ -389,10 +387,14 @@ function Profession_select_windowView:refreshTalentStageInfo()
   self.uiBinder.lab_type_info.text = self.talentStageRow_.MainDesShow
   self.uiBinder.lab_skill.text = string.format(Lang("profession_talent_desc"), self.talentStageRow_.Name[2])
   local content = ""
-  for _, value in ipairs(self.talentStageRow_.MainAttrShow) do
+  for index, value in ipairs(self.talentStageRow_.MainAttrShow) do
     local fightAttrRow = Z.TableMgr.GetTable("FightAttrTableMgr").GetRow(value)
     if fightAttrRow then
-      content = content .. fightAttrRow.OfficialName .. " "
+      if index == #self.talentStageRow_.MainAttrShow then
+        content = content .. fightAttrRow.OfficialName
+      else
+        content = content .. fightAttrRow.OfficialName .. Lang("SplitSign")
+      end
     end
   end
   self.uiBinder.lab_attr.text = content

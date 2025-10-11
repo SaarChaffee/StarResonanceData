@@ -65,8 +65,12 @@ function Album_container_union_temporaryView:onUploadBtnClick()
 end
 
 function Album_container_union_temporaryView:onDeleteBtnClick()
+  local delData = self.albumMainData_:GetSelectedAlbumPhoto()
+  if not delData or table.zcount(delData) == 0 then
+    Z.TipsVM.ShowTipsLang(1000027)
+    return
+  end
   Z.DialogViewDataMgr:OpenNormalDialog(Lang("ConfirmationDelTemp"), function()
-    local delData = self.albumMainData_:GetSelectedAlbumPhoto()
     for _, value in pairs(delData) do
       self.albumMainVM_.AsyncDeleteUnionTmpPhoto(value.id, self.cancelSource:CreateToken())
     end

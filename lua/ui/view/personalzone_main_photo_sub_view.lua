@@ -61,7 +61,7 @@ function Personalzone_main_photo_subView:OnActive()
   self.dragItem_ = PersonalzonePhotoItem.new(self)
   self.dragItem_:Init(self.uiBinder.dragitem)
   self:refreshPageIndex()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_setting, self.editorType_ == PersonalZoneDefine.IdCardEditorType.None and self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_setting, self.editorType_ == PersonalZoneDefine.IdCardEditorType.None and self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId)
   Z.CoroUtil.create_coro_xpcall(function()
     self:initPhotoCell()
     self:refreshPagePhoto(false)
@@ -203,7 +203,7 @@ function Personalzone_main_photo_subView:refreshPagePhoto(isResetPosition)
       end
       local photoId = self.photos_[(self.curPage_ - 1) * Z.Global.PersonalzonePhotoRow[1] * Z.Global.PersonalzonePhotoRow[2] + k]
       v.item:AsyncRefreshPhotoId(self.viewData.charId, photoId)
-      v.unit.Ref:SetVisible(v.unit.btn_close, photoId and photoId ~= 0 and self.editorType_ == PersonalZoneDefine.IdCardEditorType.Album and self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId)
+      v.unit.Ref:SetVisible(v.unit.btn_close, photoId and photoId ~= 0 and self.editorType_ == PersonalZoneDefine.IdCardEditorType.Album and self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId)
     end
   end
 end

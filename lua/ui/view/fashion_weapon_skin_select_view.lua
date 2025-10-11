@@ -80,8 +80,17 @@ function Fashion_weapon_skin_selectView:OnRefresh()
   end
   self.fashionData_:SetSelectProfessionId(self.curProfessionId_)
   local weaponSkinData = Z.TableMgr.GetTable("WeaponSkinTableMgr").GetDatas()
+  local originSkinId = self.weaponSkillSkinVm_:GetWeaponOriginSkinId(self.curProfessionId_)
   for _, value in pairs(weaponSkinData) do
-    if value.ProfessionId == self.curProfessionId_ and value.IsOpen then
+    local isAddWeaponSkinList = false
+    if value.Original == 1 then
+      if value.Id == originSkinId then
+        isAddWeaponSkinList = true
+      end
+    elseif value.ProfessionId == self.curProfessionId_ and value.IsOpen then
+      isAddWeaponSkinList = true
+    end
+    if isAddWeaponSkinList then
       local uuid_
       local package = Z.ContainerMgr.CharSerialize.itemPackage.packages[E.BackPackItemPackageType.Weapon]
       for uuid__, item in pairs(package.items) do

@@ -221,8 +221,8 @@ function Union_hunt_enter_into_mainView:refreshRightInfo()
   end
   normalAwardCount = maxLimitNum - nowAwardCount
   self.hasHuntAward = 0 < normalAwardCount
-  local langString = Lang("UnionHuntAwardTotalCount")
-  self.lab_dungon_award_.text = langString .. normalAwardCount .. "/" .. maxLimitNum
+  local langString = Lang("UnionHuntAwardTotalCount", {cur = normalAwardCount, max = maxLimitNum})
+  self.lab_dungon_award_.text = langString
   self.lab_title_.text = dungeonData.Name
   self.lab_content_.text = dungeonData.Content
   self.dungeonVM_.DungeonPeopleCount(self.dungonId_)

@@ -259,7 +259,7 @@ local checkPutOnEquip = function(vSlot, itemUuid, cancelToken)
         for attrId, value in pairs(attrIds) do
           local fightAttrTableRow = Z.TableMgr.GetRow("FightAttrTableMgr", attrId)
           if fightAttrTableRow then
-            strs[#strs + 1] = fightAttrTableRow.Name
+            strs[#strs + 1] = fightAttrTableRow.OfficialName
           end
         end
         local str = table.concat(strs, Lang("Comma"))

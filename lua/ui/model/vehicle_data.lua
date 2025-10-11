@@ -68,14 +68,16 @@ function VehicleData:GetVehicleConfigs(type)
     local resCount = 0
     local itemsVM = Z.VMMgr.GetVM("items")
     for _, config in ipairs(self.allVehicleConfigs_) do
-      if config.HideWhenNotHave then
-        if 0 < itemsVM.GetItemTotalCount(config.Id) then
+      if Z.ConditionHelper.CheckCondition(config.ShowLimitType, false) then
+        if config.HideWhenNotHave then
+          if 0 < itemsVM.GetItemTotalCount(config.Id) then
+            resCount = resCount + 1
+            res[resCount] = config
+          end
+        else
           resCount = resCount + 1
           res[resCount] = config
         end
-      else
-        resCount = resCount + 1
-        res[resCount] = config
       end
     end
     return res
@@ -100,17 +102,19 @@ function VehicleData:GetVehicleSkins(configId)
     local resCount = 0
     local itemsVM = Z.VMMgr.GetVM("items")
     for _, config in ipairs(self.vehicleSkinConfigs_[configId]) do
-      if config.HideWhenNotHave then
-        if 0 < itemsVM.GetItemTotalCount(config.Id) then
-          resCount = resCount + 1
-          res[resCount] = config
-        elseif config.UnlockCostItem ~= nil and #config.UnlockCostItem == 2 and 0 < itemsVM.GetItemTotalCount(config.UnlockCostItem[1]) then
+      if Z.ConditionHelper.CheckCondition(config.ShowLimitType, false) then
+        if config.HideWhenNotHave then
+          if 0 < itemsVM.GetItemTotalCount(config.Id) then
+            resCount = resCount + 1
+            res[resCount] = config
+          elseif config.UnlockCostItem ~= nil and #config.UnlockCostItem == 2 and 0 < itemsVM.GetItemTotalCount(config.UnlockCostItem[1]) then
+            resCount = resCount + 1
+            res[resCount] = config
+          end
+        else
           resCount = resCount + 1
           res[resCount] = config
         end
-      else
-        resCount = resCount + 1
-        res[resCount] = config
       end
     end
     return res

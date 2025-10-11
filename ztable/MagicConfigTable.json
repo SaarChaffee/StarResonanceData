@@ -2728,5 +2728,25 @@
     "ModelType": 0,
     "BeHitAct": "",
     "VehicleID": 0
+  },
+  "271": {
+    "Id": 271,
+    "Name": "4600摩托",
+    "Type": 0,
+    "RoleID": 1,
+    "WeaponID": 0,
+    "ModelType": 0,
+    "BeHitAct": "",
+    "VehicleID": 75054
+  },
+  "272": {
+    "Id": 272,
+    "Name": "62100悬浮炸弹",
+    "Type": 1,
+    "RoleID": 4,
+    "WeaponID": 0,
+    "ModelType": 0,
+    "BeHitAct": "",
+    "VehicleID": 0
   }
 }

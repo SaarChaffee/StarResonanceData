@@ -21,6 +21,9 @@ function Recycle_windowView:OnActive()
     IsInstant = true,
     TimeOut = Z.UICameraHelperFadeTime
   })
+  self.timer_ = self.timerMgr:StartTimer(function()
+    self:onStartAnimShow()
+  end, Z.UICameraHelperFadeTime)
   self:initData()
   self:initComp()
   self:initLoopComp()
@@ -34,6 +37,8 @@ end
 
 function Recycle_windowView:OnDeActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
+  self.timerMgr:Clear()
+  self.timer_ = nil
   self:unInitLoopComp()
   self:CloseItemTips()
   self.recycleData_:ClearTempRecycleData()
@@ -223,6 +228,7 @@ function Recycle_windowView:OnTotalItemClick(index, trans, data)
     itemUuid = data.itemUuid
     tipsUid = itemUuid
   end
+  self:onClickStartAnimShow()
   self:OpenItemTips(trans, config, itemUuid, tipsUid)
 end
 
@@ -380,6 +386,14 @@ end
 
 function Recycle_windowView:GetCurFunctionId()
   return self.curRecycleRow_.SystemId
+end
+
+function Recycle_windowView:onStartAnimShow()
+  self.uiBinder.anim_do:Restart(Z.DOTweenAnimType.Open)
+end
+
+function Recycle_windowView:onClickStartAnimShow()
+  self.uiBinder.anim_do:Restart(Z.DOTweenAnimType.Tween_0)
 end
 
 return Recycle_windowView

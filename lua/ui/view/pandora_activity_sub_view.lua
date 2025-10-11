@@ -10,8 +10,9 @@ function Pandora_activity_subView:ctor(parent)
 end
 
 function Pandora_activity_subView:OnActive()
-  self.uiBinder.Trans:SetOffsetMin(0, 0)
-  self.uiBinder.Trans:SetOffsetMax(0, 0)
+  local transLayer = Z.UIRoot:GetLayerTrans(self.parent_.uiLayer)
+  self.uiBinder.Trans:SetOffsetMin(-transLayer.offsetMin.x, 0)
+  self.uiBinder.Trans:SetOffsetMax(-transLayer.offsetMax.x, 0)
   self:bindEvents()
   self:initData()
   self.pandoraVM_:OpenPandoraAppByAppId(PANDORA_DEFINE.APP_ID.Activity)
@@ -38,15 +39,28 @@ function Pandora_activity_subView:unBindEvents()
   Z.EventMgr:Remove(PANDORA_DEFINE.EventName.ViewCreate, self.onPandoraViewCreate, self)
 end
 
-function Pandora_activity_subView:onPandoraViewCreate(appId)
-  if appId and appId == PANDORA_DEFINE.APP_ID.Activity then
+function Pandora_activity_subView:onPandoraViewCreate(appId, extraInfo)
+  if appId and (appId == PANDORA_DEFINE.APP_ID.Activity or self.pandoraVM_:CheckIsBelongToActivity(extraInfo)) then
     local go = self.pandoraData_:GetAppResource(appId)
     if go == nil then
       return
     end
+    local targetNode = self.uiBinder.node_content
+    if extraInfo ~= nil and extraInfo.windowConfig ~= nil and extraInfo.windowConfig.parameter ~= nil and extraInfo.windowConfig.parameter.containerType ~= nil then
+      local containerType = math.floor(extraInfo.windowConfig.parameter.containerType)
+      if containerType == 0 then
+        targetNode = self.uiBinder.node_content
+      elseif containerType == 1 then
+        targetNode = self.uiBinder.node_tab
+      elseif containerType == 2 then
+        targetNode = self.uiBinder.node_popup
+      end
+    end
     Z.UIRoot:SetLayerTrans(go, self.parent_.uiLayer)
     Panda.Utility.ZLayerUtils.SetLayerRecursive(go.transform, Panda.Utility.ZLayerUtils.LAYER_UI)
-    Z.UIRoot:ResetSubViewTrans(go, self.uiBinder.node_content)
+    Z.UIRoot:ResetSubViewTrans(go, targetNode)
+    go.transform:SetOffsetMin(0, 0)
+    go.transform:SetOffsetMax(0, 0)
   end
 end
 

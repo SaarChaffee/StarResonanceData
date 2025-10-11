@@ -64,6 +64,7 @@ function Personalzone_badge_subView:OnActive()
     end)
   end
   self:refreshSecondReddot()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Personalzone_badge_subView:OnDeActive()
@@ -91,13 +92,15 @@ function Personalzone_badge_subView:refreshMedalClassify()
   if configs then
     self.configs_ = {}
     for _, v in ipairs(configs) do
-      if v.NotUnlock and v.NotUnlock == 1 then
-        local itemsCount = self.itemsVM_.GetItemTotalCount(v.Id)
-        if itemsCount and 0 < itemsCount then
+      if Z.ConditionHelper.CheckCondition(v.Condition, false) then
+        if v.NotUnlock and v.NotUnlock == 1 then
+          local itemsCount = self.itemsVM_.GetItemTotalCount(v.Id)
+          if itemsCount and 0 < itemsCount then
+            table.insert(self.configs_, v)
+          end
+        else
           table.insert(self.configs_, v)
         end
-      else
-        table.insert(self.configs_, v)
       end
     end
     table.sort(self.configs_, function(a, b)
@@ -139,6 +142,7 @@ function Personalzone_badge_subView:onSelectItem(id)
   elseif self.selectMedalClassify_ == DEFINE.ModelAnimTags.Emote then
     self.medalHistoryLoopRect_:RefreshListView(self.configs_)
   end
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
 end
 
 function Personalzone_badge_subView:refreshInfo()
@@ -179,7 +183,7 @@ function Personalzone_badge_subView:refreshInfo()
   end
   local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(self.selectMedalId_)
   if itemConfig then
-    self.uiBinder.lab_info.text = itemConfig.Description
+    self.uiBinder.lab_info.text = itemConfig.Description2
   end
   local text = config.UnlockDes
   if targetConfig and targetConfig.profileImageTargetConfig then

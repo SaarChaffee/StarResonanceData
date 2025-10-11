@@ -1,4 +1,9 @@
 local rewiredElementIdentifiers = require("utility/rewired_element_identifiers")
+local inputKeyboardLayoutIds = require("input.keyboard_layout_ids")
+local getKeyboardName = function()
+  local keyboardLayoutId = Z.InputMgr.InputDeviceService.KeyboardLayoutId
+  return inputKeyboardLayoutIds.GetKeyboardLayoutById(keyboardLayoutId)
+end
 local getShowKeyList = function()
   local rowList = {}
   local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
@@ -6,7 +11,7 @@ local getShowKeyList = function()
     return rowList
   end
   for _, row in pairs(keyTbl.GetDatas()) do
-    if row.ShowSwitch ~= 2 then
+    if row.HideInSettingView == 0 then
       table.insert(rowList, row)
     end
   end
@@ -18,25 +23,80 @@ local getShowKeyList = function()
   end)
   return rowList
 end
-local getActionsByKeyId = function(keyId)
-  local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
-  if keyTbl == nil then
-    return nil
-  end
-  local row = keyTbl.GetRow(keyId)
-  if row then
-    if row.ActionIds == nil then
-      return nil
+local getDirectionByAxis = function(axisType, direction)
+  if axisType == Panda.ZInput.Vector2Axis.YAxis then
+    if direction == Panda.ZInput.InputDirection.Positive then
+      return E.InputDirectionType.Front
+    else
+      return E.InputDirectionType.Back
     end
-    local ret = {}
-    for i = 1, #row.ActionIds do
-      local actionId = row.ActionIds[i][1]
-      local inputAction = Z.InputMgr:GetInputActionById(actionId)
-      table.insert(ret, inputAction)
+  elseif axisType == Panda.ZInput.Vector2Axis.XAxis then
+    if direction == Panda.ZInput.InputDirection.Positive then
+      return E.InputDirectionType.Right
+    else
+      return E.InputDirectionType.Left
     end
-    return ret
   end
-  return nil
+  return E.InputDirectionType.None
+end
+local getShowKeyCtxByKeyRow = function(setKeyboardTableRow)
+  local schemeId = setKeyboardTableRow.SchemeId
+  local result = {}
+  for k, actionId in pairs(setKeyboardTableRow.ActionIds) do
+    local inputBindingList = Z.InputMgr:GetInputBindingList(schemeId, actionId[1])
+    for i = 0, inputBindingList.Count - 1 do
+      local v = inputBindingList[i]
+      local inputDirection = getDirectionByAxis(v.AxisType, v.Direction)
+      local settingKeyCtx
+      for _, ctx in pairs(result) do
+        if ctx.inputDirection == inputDirection then
+          settingKeyCtx = ctx
+        end
+      end
+      if settingKeyCtx == nil then
+        settingKeyCtx = {}
+        settingKeyCtx.setKeyboardTableRow = setKeyboardTableRow
+        settingKeyCtx.inputDirection = getDirectionByAxis(v.AxisType, v.Direction)
+        settingKeyCtx.keyBoardBindings = {}
+        settingKeyCtx.gamePadBindings = {}
+        table.insert(result, settingKeyCtx)
+      end
+      for j = 0, v.KeyBoardElements.Count - 1 do
+        local element = v.KeyBoardElements[j]
+        local elementCtx = {}
+        elementCtx.elementId = element.ElementId
+        elementCtx.modify = element.Modifier
+        elementCtx.deviceType = element.DeviceType
+        elementCtx.actionId = actionId[1]
+        elementCtx.groupIndex = v.GroupIndex
+        elementCtx.bindingIndex = element.BindingIndex
+        table.insert(settingKeyCtx.keyBoardBindings, elementCtx)
+      end
+      for j = 0, v.GamePadElements.Count - 1 do
+        local element = v.GamePadElements[j]
+        local elementCtx = {}
+        elementCtx.elementId = element.ElementId
+        elementCtx.modify = element.Modifier
+        elementCtx.deviceType = element.DeviceType
+        elementCtx.actionId = actionId[1]
+        elementCtx.groupIndex = v.GroupIndex
+        elementCtx.bindingIndex = element.BindingIndex
+        table.insert(settingKeyCtx.gamePadBindings, elementCtx)
+      end
+    end
+  end
+  return result
+end
+local getShowKeyCtxList = function()
+  local settingKeyCtxTbl = {}
+  local rowList = getShowKeyList()
+  for k, v in pairs(rowList) do
+    local settingKeyCtxs = getShowKeyCtxByKeyRow(v)
+    for _, setting in pairs(settingKeyCtxs) do
+      table.insert(settingKeyCtxTbl, setting)
+    end
+  end
+  return settingKeyCtxTbl
 end
 local getKeyIdByActionId = function(actionId)
   local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
@@ -55,88 +115,69 @@ local getKeyIdByActionId = function(actionId)
   end
   return nil
 end
-local getFirstElementMapWithActionId = function(actionId, mapId)
-  local ret = Z.InputMgr:FirstElementMapWithActionId(actionId, mapId)
-  return ret
+local getMainKeyDescription = function(settingElementBindingCtx)
+  if not settingElementBindingCtx then
+    return ""
+  end
+  local keyboardName = getKeyboardName()
+  local rowId = 0
+  if settingElementBindingCtx.deviceType == Panda.ZInput.EInputDeviceType.Keyboard then
+    rowId = settingElementBindingCtx.elementId
+  elseif settingElementBindingCtx.deviceType == Panda.ZInput.EInputDeviceType.Mouse then
+    rowId = rewiredElementIdentifiers.GetMouseKeyIdByElementId(settingElementBindingCtx.elementId)
+  elseif settingElementBindingCtx.deviceType == Panda.ZInput.EInputDeviceType.Joystick then
+    rowId = rewiredElementIdentifiers.GetGamePadKeyIdByElementId(settingElementBindingCtx.elementId, Z.InputMgr.GamepadType)
+  else
+    return ""
+  end
+  local contrastRow = Z.TableMgr.GetTable("SetKeyboardContrastTableMgr").GetRow(rowId)
+  if contrastRow then
+    if contrastRow.ShowType == 1 then
+      return string.zconcat("<sprite name=\"", contrastRow[keyboardName], "\">")
+    else
+      return contrastRow[keyboardName]
+    end
+  end
 end
-local getKeyCodeByElementInfo = function(controllerType, keyCode, elementIdentifierId)
-  if controllerType == Rewired.ControllerType.Keyboard then
-    return keyCode:ToInt()
-  elseif controllerType == Rewired.ControllerType.Mouse then
-    return rewiredElementIdentifiers.GetMouseKeyIdByElementId(elementIdentifierId)
+local getModifierKeyDescription = function(settingElementBindingCtx)
+  if not settingElementBindingCtx then
+    return nil
+  end
+  local keyboardName = getKeyboardName()
+  local keyId = 0
+  if settingElementBindingCtx.deviceType == Panda.ZInput.EInputDeviceType.Keyboard or settingElementBindingCtx.deviceType == Panda.ZInput.EInputDeviceType.Mouse then
+    keyId = rewiredElementIdentifiers.GetMouseModifierKeyId(settingElementBindingCtx.modify)
+  elseif settingElementBindingCtx.deviceType == Panda.ZInput.EInputDeviceType.Joystick then
+    local modifierId = rewiredElementIdentifiers.GetGamePadModifierKeyId(settingElementBindingCtx.modify)
+    keyId = rewiredElementIdentifiers.GetGamePadKeyIdByElementId(modifierId, Z.InputMgr.GamepadType)
+  else
+    return nil
+  end
+  if keyId == nil or keyId == 0 then
+    return nil
+  end
+  local contrastRow = Z.TableMgr.GetTable("SetKeyboardContrastTableMgr").GetRow(keyId)
+  if contrastRow then
+    if contrastRow.ShowType == 1 then
+      return string.zconcat("<sprite name=\"", contrastRow[keyboardName], "\">")
+    else
+      return contrastRow[keyboardName]
+    end
   end
   return nil
 end
-local getModifierKeysDescription = function(actionElementMap)
-  local modifierKeys = {
-    rewiredElementIdentifiers.GetModifierKeyDes(actionElementMap.modifierKey1),
-    rewiredElementIdentifiers.GetModifierKeyDes(actionElementMap.modifierKey2),
-    rewiredElementIdentifiers.GetModifierKeyDes(actionElementMap.modifierKey3)
-  }
-  local description = ""
-  for _, modifierKey in ipairs(modifierKeys) do
-    if modifierKey ~= "" then
-      if description ~= "" then
-        description = description .. " + "
-      end
-      description = description .. modifierKey
-    end
-  end
-  return description
-end
-local getKeyDes = function(actionElementMap)
+local getKeyDes = function(settingElementBindingCtx)
   local ret = ""
-  if actionElementMap == nil then
+  if settingElementBindingCtx == nil then
     return ret
   end
-  local keyCode = getKeyCodeByElementInfo(actionElementMap.controllerMap.controllerType, actionElementMap.keyCode, actionElementMap.elementIdentifierId)
-  if keyCode == nil then
-    return ret
-  end
-  local contrastTbl = Z.TableMgr.GetTable("SetKeyboardContrastTableMgr")
-  local contrastRow = contrastTbl.GetRow(keyCode)
-  if contrastRow ~= nil then
-    if contrastRow.ShowType == 1 then
-      ret = string.zconcat("<sprite name=\"", contrastRow.Id, "\">")
-    else
-      ret = contrastRow.Keyboard
-    end
+  local mainDesc = getMainKeyDescription(settingElementBindingCtx)
+  local modifierDesc = getModifierKeyDescription(settingElementBindingCtx)
+  if modifierDesc == nil then
+    return mainDesc
   else
-    logError("[Setting] contrastRow is nil  controllerType: " .. actionElementMap.controllerMap.controllerType .. "  actionElementMap.keyCode:" .. actionElementMap.keyCode)
+    return Lang("KeyElementDesc", {modifier = modifierDesc, mainDesc = mainDesc})
   end
-  local modifierKeysDescription = getModifierKeysDescription(actionElementMap)
-  if modifierKeysDescription ~= "" then
-    ret = modifierKeysDescription .. " + " .. ret
-  end
-  return ret
-end
-local getGamepadDesc = function(row, gamepadType)
-  local ret = ""
-  local keyBoardIds
-  if gamepadType == Panda.ZInput.EGamepadType.PS5 then
-    keyBoardIds = row.PS5
-  elseif gamepadType == Panda.ZInput.EGamepadType.XBOX then
-    keyBoardIds = row.XBOX
-  end
-  if keyBoardIds == nil or #keyBoardIds == 0 then
-    return ""
-  end
-  local keyDes = {}
-  local contrastTbl = Z.TableMgr.GetTable("SetKeyboardContrastTableMgr")
-  for _, keyBoardId in ipairs(keyBoardIds) do
-    if contrastTbl then
-      local contrastRow = contrastTbl.GetRow(keyBoardId)
-      if contrastRow then
-        if contrastRow.ShowType == 1 then
-          keyDes[#keyDes + 1] = string.zconcat("<sprite name=\"", contrastRow.Id, "\">")
-        else
-          keyDes[#keyDes + 1] = string.zconcat("[", contrastRow.Keyboard, "]")
-        end
-      end
-    end
-  end
-  ret = table.concat(keyDes, " + ")
-  return ret
 end
 local getKeyCodeDescListByKeyId = function(keyId)
   local ret = {}
@@ -148,18 +189,15 @@ local getKeyCodeDescListByKeyId = function(keyId)
     return ret
   end
   local row = keyTbl.GetRow(keyId)
-  if Z.InputMgr.InputDeviceType == Panda.ZInput.EInputDeviceType.Joystick then
-    ret[1] = getGamepadDesc(row, Z.InputMgr.GamepadType)
-    return ret
-  end
   if row == nil or row.ActionIds == nil then
     return ret
   end
-  for i = 1, #row.ActionIds do
-    local inputActionId = row.ActionIds[i][1]
-    local element = getFirstElementMapWithActionId(inputActionId, row.MapCategoryId)
-    if element ~= nil then
-      local desc = getKeyDes(element, keyId)
+  local curDeviceType = Z.InputMgr.InputDeviceType
+  local settingKeyCtxs = getShowKeyCtxByKeyRow(row)
+  for _, setting in pairs(settingKeyCtxs) do
+    local bindings = curDeviceType == Panda.ZInput.EInputDeviceType.Joystick and setting.gamePadBindings or setting.keyBoardBindings
+    for _, element in pairs(bindings) do
+      local desc = getKeyDes(element)
       table.insert(ret, desc)
     end
   end
@@ -168,120 +206,59 @@ end
 local resetKeySetting = function()
   Z.InputMgr:ResetMapsAndSave()
 end
-local isPresetKey = function(data)
-  local contrastTbl = Z.TableMgr.GetTable("SetKeyboardContrastTableMgr")
-  local keyCodeId = getKeyCodeByElementInfo(data.controllerType, data.keyboardKey, data.elementIdentifierId)
-  local row = contrastTbl.GetRow(keyCodeId)
-  if row then
-    return true
-  end
-  Z.TipsVM.ShowTipsLang(1000202)
-  return false
-end
-local handleKeyConflict = function(conflictActionIds)
-  if not conflictActionIds or conflictActionIds.Count == 0 then
+local handleKeyConflict = function(conflictInfo)
+  if not conflictInfo or conflictInfo.ConflictingInfos.Count == 0 then
     return
   end
   local excludedActionIds = {}
   local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
-  local conflictCount = conflictActionIds.Count
+  local conflictCount = conflictInfo.ConflictingInfos.Count
   for i = 0, conflictCount - 1 do
-    local actionId = conflictActionIds[i]
+    local actionId = conflictInfo.ConflictingInfos[i].ActionId
     local keyId = getKeyIdByActionId(actionId)
     if not keyTbl or not keyId then
       logGreen(string.format("[Setting] Missing mapping in SetKeyboard table for actionId: %d", actionId))
       table.insert(excludedActionIds, actionId)
     else
       local row = keyTbl.GetRow(keyId)
-      if not row or row.ShowSwitch ~= 0 then
+      if not row then
         table.insert(excludedActionIds, actionId)
-        logGreen(string.format("[Setting] keyId: %d is not allowed to switch. ShowSwitch: %d", keyId, row and row.ShowSwitch or -1))
+      end
+      local isKeyboardAllowChange = row.CanChange[1] == nil or row.CanChange[1] == 1
+      local isPadAllowChange = row.CanChange[2] == nil or row.CanChange[2] == 1
+      local canChange
+      if conflictInfo.DeviceType == Panda.ZInput.EInputDeviceType.Joystick then
+        canChange = isPadAllowChange
+      else
+        canChange = isKeyboardAllowChange
+      end
+      if not canChange then
+        table.insert(excludedActionIds, actionId)
       end
     end
   end
   if #excludedActionIds == conflictCount then
     Z.TipsVM.ShowTips(1000204)
-    Z.InputMgr:HandelConflict(false)
+    Z.InputMgr:HandelConflict(conflictInfo, false)
     return
   end
-  Z.DialogViewDataMgr:OpenNormalDialog(Lang("SettingKeyConfirmConflictSwitch"), function()
-    Z.InputMgr:HandelConflict(true, excludedActionIds)
-  end, function()
-    Z.InputMgr:HandelConflict(false)
+  Z.DialogViewDataMgr:OpenNormalDialog(Lang("SettingKeyConfirmConflictSwitch"), function(CancelToken)
+    Z.InputMgr:HandelConflict(conflictInfo, true)
+  end, function(CancelToken)
+    Z.InputMgr:HandelConflict(conflictInfo, false)
   end)
 end
-local reBindActionByActionId = function(actionId)
-  local keyId = getKeyIdByActionId(actionId)
-  if keyId == nil then
-    return
-  end
-  local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
-  if keyTbl == nil then
-    return
-  end
-  local row = keyTbl.GetRow(keyId)
-  if row == nil then
-    return
-  end
-  local element = getFirstElementMapWithActionId(actionId, row.MapCategoryId)
-  if element == nil then
-    return
-  end
-  Z.InputMgr:ReBindActionByActionElementMap(element)
-end
-local getDisplayGamepadActionKeyIds = function()
-  local settingData = Z.DataMgr.Get("setting_data")
-  settingData.displayGamepadActionCache_ = {}
-  local keyIds = settingData:GetDisplayGamepadActionKeyIds()
-  if keyIds ~= nil and next(keyIds) then
-    return keyIds
-  end
-  local SetKeyboardTableMgr = Z.TableMgr.GetTable("SetKeyboardTableMgr")
-  if SetKeyboardTableMgr == nil then
-    return {}
-  end
-  local rowList = SetKeyboardTableMgr.GetDatas()
-  local ret = {}
-  for _, row in pairs(rowList) do
-    if row.ShowList == 1 then
-      settingData:AddDisplayActionKeyId(row.Id)
-      table.insert(ret, row.Id)
-    end
-  end
-  return ret
-end
-local checkCanShowKeyDesc = function(keyId)
-  local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
-  if keyTbl == nil then
-    return false
-  end
-  local row = keyTbl.GetRow(keyId)
-  if row == nil then
-    return false
-  end
-  local deviceType = Z.InputMgr.InputDeviceType
-  if deviceType == Panda.ZInput.EInputDeviceType.Joystick then
-    if row.XBOX ~= nil and #row.XBOX > 0 then
-      return true
-    else
-      return false
-    end
-  end
-  return true
+local isPresetKey = function(data)
+  return false
 end
 local ret = {
   GetShowKeyList = getShowKeyList,
-  GetActionsByKeyId = getActionsByKeyId,
-  GetFirstElementMapWithActionId = getFirstElementMapWithActionId,
+  GetShowKeyCtxList = getShowKeyCtxList,
   GetKeyDes = getKeyDes,
   ResetKeySetting = resetKeySetting,
-  IsPresetKey = isPresetKey,
   HandleKeyConflict = handleKeyConflict,
   GetKeyIdByActionId = getKeyIdByActionId,
-  GetGamepadDesc = getGamepadDesc,
   GetKeyCodeDescListByKeyId = getKeyCodeDescListByKeyId,
-  ReBindActionByActionId = reBindActionByActionId,
-  GetDisplayGamepadActionKeyIds = getDisplayGamepadActionKeyIds,
-  CheckCanShowKeyDesc = checkCanShowKeyDesc
+  IsPresetKey = isPresetKey
 }
 return ret

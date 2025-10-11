@@ -2,7 +2,7 @@
   "1001": {
     "Id": 1001,
     "AssessId": [],
-    "TalentStageId": ""
+    "TalentStageId": "<color=#e2e5cd>Overwhelming Odds - Near Death</color>"
   },
   "1002": {
     "Id": 1002,
@@ -10,7 +10,7 @@
       91,
       130
     ],
-    "TalentStageId": ""
+    "TalentStageId": "<color=#ffba75>Evenly Matched - Proceed with Caution</color>"
   },
   "1003": {
     "Id": 1003,
@@ -18,6 +18,6 @@
       131,
       999999999
     ],
-    "TalentStageId": ""
+    "TalentStageId": "<color=#8ae2ff>Proceed with Some Caution</color>"
   }
 }

@@ -92,6 +92,7 @@ function skill_slot_obj:UnInitComponent()
   self.uiBinder.event_trigger.onUp:RemoveAllListeners()
   self.uiBinder.event_trigger.onExit:RemoveAllListeners()
   self.inputKeyDescComp_:UnInit()
+  self:cancelLongPressAttack()
 end
 
 function skill_slot_obj:Init()
@@ -125,6 +126,10 @@ function skill_slot_obj:refreshAISlot()
   local autoBattleOpen = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EAutoBattleSwitch).Value
   local setAIMode = self.fighterBtns_vm_:CheckAISlotSetMode()
   if not autoBattleOpen and not setAIMode then
+    self.uiBinder.skill_slot_data:SetAutoBattleHide(false)
+    return
+  end
+  if not Z.IsPCUI and self.fighterBtns_vm_:GetPlayerCtrlTmpType() == E.PlayerCtrlBtnTmpType.Vehicles then
     self.uiBinder.skill_slot_data:SetAutoBattleHide(false)
     return
   end
@@ -166,6 +171,10 @@ end
 function skill_slot_obj:onRiding()
   local keyNum = tonumber(self.key_)
   self.uiBinder.skill_slot_data:SetSlotKey(keyNum)
+  if not Z.IsPCUI and self.fighterBtns_vm_:GetPlayerCtrlTmpType() == E.PlayerCtrlBtnTmpType.Vehicles then
+    self.uiBinder.skill_slot_data:SetAutoBattleHide(false)
+    return
+  end
 end
 
 function skill_slot_obj:keyFuncCall(keyState)
@@ -190,19 +199,24 @@ function skill_slot_obj:AddListener()
     if self.uiBinder == nil or not self.enableTouch_ then
       return
     end
-    Z.PlayerInputController:Attack(slotId, true)
+    if self:tryChangSkillPanel() then
+      Z.PlayerInputController:Attack(slotId, true)
+    end
+    self:longPressAttack()
   end)
   self.uiBinder.event_trigger.onUp:AddListener(function()
     if self.uiBinder == nil or not self.enableTouch_ then
       return
     end
     Z.PlayerInputController:Attack(slotId, false)
+    self:cancelLongPressAttack()
   end)
   self.uiBinder.event_trigger.onExit:AddListener(function()
     if self.uiBinder == nil or not self.enableTouch_ then
       return
     end
     Z.PlayerInputController:Attack(slotId, false)
+    self:cancelLongPressAttack()
   end)
   if Z.IsPCUI then
     return
@@ -213,14 +227,42 @@ function skill_slot_obj:AddListener()
     if self.uiBinder == nil or not self.enableTouch_ then
       return
     end
-    Z.PlayerInputController:Attack(slotId, true)
+    if self:tryChangSkillPanel() then
+      Z.PlayerInputController:Attack(slotId, true)
+    end
+    self:longPressAttack()
   end)
   self.uiBinder.joystick.onUp:AddListener(function()
     if self.uiBinder == nil or not self.enableTouch_ then
       return
     end
     Z.PlayerInputController:Attack(slotId, false)
+    self:cancelLongPressAttack()
   end)
+end
+
+function skill_slot_obj:longPressAttack()
+  self:cancelLongPressAttack()
+  local slotId = tonumber(self.key_)
+  local pressTime = 0
+  local _ = 0
+  local isLongPress, pressTime = Panda.ZGame.ZBattleUtils.CheckSkillCanLongPressAttack(slotId, _)
+  if not isLongPress then
+    return
+  end
+  self.attackTimer_ = self.timerMgr:StartTimer(function()
+    if self.uiBinder == nil or not self.enableTouch_ then
+      return
+    end
+    Z.PlayerInputController:Attack(slotId, true)
+  end, pressTime, -1)
+end
+
+function skill_slot_obj:cancelLongPressAttack()
+  if self.attackTimer_ then
+    self.timerMgr:StopTimer(self.attackTimer_)
+    self.attackTimer_ = nil
+  end
 end
 
 function skill_slot_obj:OpenSkillRoulette(slotId, open)
@@ -232,6 +274,41 @@ function skill_slot_obj:OpenSkillRoulette(slotId, open)
     return
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.joystick_bg, open)
+end
+
+function skill_slot_obj:tryChangSkillPanel()
+  if Z.IsPCUI then
+    return true
+  end
+  if self.key_ == E.SlotName.ResonanceSkillSlot_left or self.key_ == E.SlotName.ResonanceSkillSlot_right then
+    return true
+  end
+  self.fighterBtns_vm_:SetSkillPanelLocked(false)
+  if not Z.LuaBridge.IsCanHoldWeapon() then
+    return true
+  end
+  local usingToy = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrToy")).Value
+  if usingToy == 1 then
+    return true
+  end
+  if tonumber(self.key_) ~= 1 then
+    return true
+  end
+  if not self.fighterBtns_vm_:GetSkillPanelShow() then
+    local moveType = Z.EntityMgr.PlayerEnt:GetLuaAttrVirtualMoveType()
+    local dontShowBattleList = {
+      Z.PbEnum("EMoveType", "MoveDash")
+    }
+    if not Z.EntityMgr.PlayerEnt:GetLuaLocalAttrInBattleShow() and not table.zcontains(dontShowBattleList, moveType) then
+      Z.EntityMgr.PlayerEnt:SetLuaLocalAttrHoldWeapon(true)
+      Z.EntityMgr.PlayerEnt:SetLuaLocalAttrInBattleShow(true)
+    end
+    Z.EventMgr:Dispatch(Z.ConstValue.PlayerSkillPanelChange, true)
+    return false
+  else
+    Z.EventMgr:Dispatch(Z.ConstValue.CancelSwitchNormalSkillPanel)
+  end
+  return true
 end
 
 function skill_slot_obj:UIEffectEventFired(skillId, slotId, effectName, isRun)
@@ -247,7 +324,7 @@ function skill_slot_obj:UIEffectEventFired(skillId, slotId, effectName, isRun)
 end
 
 function skill_slot_obj:refreshDynamicEffect()
-  local skillId = self.weaponSkillVm_:GetSkillBySlot(tonumber(self.key_))
+  local skillId = Z.SkillDataMgr:TryGetSkillIdBySlotId(tonumber(self.key_))
   local effectInfoList = self.vm:GetSlotEffects(skillId, tonumber(self.key_))
   local showDynamicEffect = false
   if effectInfoList ~= nil then

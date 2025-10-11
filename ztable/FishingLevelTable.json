@@ -5,7 +5,7 @@
     "ItemAward": 0,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "He crouched down and started digging with his hands. <br>Soon, he unearthed a box with a letter inside."
   },
   "2": {
     "FishingLevel": 2,
@@ -13,7 +13,7 @@
     "ItemAward": 21000020,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.2"
   },
   "3": {
     "FishingLevel": 3,
@@ -21,7 +21,7 @@
     "ItemAward": 21000030,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.3"
   },
   "4": {
     "FishingLevel": 4,
@@ -29,7 +29,7 @@
     "ItemAward": 21000040,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.4"
   },
   "5": {
     "FishingLevel": 5,
@@ -37,9 +37,9 @@
     "ItemAward": 21000050,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [
-      1157509792
+      "Unlock special emote:{*val*}"
     ],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.5"
   },
   "6": {
     "FishingLevel": 6,
@@ -47,7 +47,7 @@
     "ItemAward": 21000060,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.6"
   },
   "7": {
     "FishingLevel": 7,
@@ -55,7 +55,7 @@
     "ItemAward": 21000070,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.7"
   },
   "8": {
     "FishingLevel": 8,
@@ -63,7 +63,7 @@
     "ItemAward": 21000080,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.8"
   },
   "9": {
     "FishingLevel": 9,
@@ -71,7 +71,7 @@
     "ItemAward": 21000090,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.9"
   },
   "10": {
     "FishingLevel": 10,
@@ -79,7 +79,7 @@
     "ItemAward": 21000100,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.10"
   },
   "11": {
     "FishingLevel": 11,
@@ -87,7 +87,7 @@
     "ItemAward": 21000110,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.11"
   },
   "12": {
     "FishingLevel": 12,
@@ -95,7 +95,7 @@
     "ItemAward": 21000120,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.12"
   },
   "13": {
     "FishingLevel": 13,
@@ -103,7 +103,7 @@
     "ItemAward": 21000130,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.13"
   },
   "14": {
     "FishingLevel": 14,
@@ -111,7 +111,7 @@
     "ItemAward": 21000140,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.14"
   },
   "15": {
     "FishingLevel": 15,
@@ -119,7 +119,7 @@
     "ItemAward": 21000150,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.15"
   },
   "16": {
     "FishingLevel": 16,
@@ -127,7 +127,7 @@
     "ItemAward": 21000160,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.16"
   },
   "17": {
     "FishingLevel": 17,
@@ -135,7 +135,7 @@
     "ItemAward": 21000170,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.17"
   },
   "18": {
     "FishingLevel": 18,
@@ -143,7 +143,7 @@
     "ItemAward": 21000180,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.18"
   },
   "19": {
     "FishingLevel": 19,
@@ -151,7 +151,7 @@
     "ItemAward": 21000190,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.19"
   },
   "20": {
     "FishingLevel": 20,
@@ -159,6 +159,6 @@
     "ItemAward": 21000200,
     "UnlockFunction": [],
     "UnlockFunctionDesc": [],
-    "ExtraText": ""
+    "ExtraText": "Rewards for Fishing Lv.20"
   }
 }

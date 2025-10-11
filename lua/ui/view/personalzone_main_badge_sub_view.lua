@@ -56,7 +56,7 @@ function Personalzone_main_badge_subView:OnActive()
   self.uiBinder.node_change_over.Ref.UIComp:SetVisible(not isShowEmpty)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_empty, isShowEmpty)
   self:refreshPageIndex()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_setting, self.editorType_ == PersonalZoneDefine.IdCardEditorType.None and self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_setting, self.editorType_ == PersonalZoneDefine.IdCardEditorType.None and self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId)
   Z.CoroUtil.create_coro_xpcall(function()
     self:initMedalCell()
     self:refreshPageMedal(false)
@@ -186,7 +186,7 @@ function Personalzone_main_badge_subView:refreshPageMedal(isResetPosition)
       if medalId and medalId ~= 0 then
         local medalconfig = Z.TableMgr.GetTable("MedalTableMgr").GetRow(medalId)
         if medalconfig then
-          v.unit.Ref:SetVisible(v.unit.btn_close, self.editorType_ == PersonalZoneDefine.IdCardEditorType.Badge and self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId)
+          v.unit.Ref:SetVisible(v.unit.btn_close, self.editorType_ == PersonalZoneDefine.IdCardEditorType.Badge and self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId)
           v.unit.img_icon:SetImage(medalconfig.Image)
         end
       end

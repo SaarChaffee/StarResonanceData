@@ -1,19 +1,19 @@
 {
   "101": {
     "Id": 101,
-    "SchoolName": "",
+    "SchoolName": "Iaido Slash Spec",
     "TalentStage": []
   },
   "102": {
     "Id": 102,
-    "SchoolName": "",
+    "SchoolName": "Moonstrike Spec",
     "TalentStage": [
       102
     ]
   },
   "104": {
     "Id": 104,
-    "SchoolName": "",
+    "SchoolName": "Icicle Spec",
     "TalentStage": [
       103,
       104
@@ -21,14 +21,14 @@
   },
   "105": {
     "Id": 105,
-    "SchoolName": "",
+    "SchoolName": "Frostbeam Spec",
     "TalentStage": [
       105
     ]
   },
   "107": {
     "Id": 107,
-    "SchoolName": "",
+    "SchoolName": "Vanguard Spec",
     "TalentStage": [
       106,
       107
@@ -36,14 +36,14 @@
   },
   "108": {
     "Id": 108,
-    "SchoolName": "",
+    "SchoolName": "Skyward Spec",
     "TalentStage": [
       108
     ]
   },
   "110": {
     "Id": 110,
-    "SchoolName": "",
+    "SchoolName": "Smite Spec",
     "TalentStage": [
       109,
       110
@@ -51,14 +51,14 @@
   },
   "111": {
     "Id": 111,
-    "SchoolName": "",
+    "SchoolName": "Lifebind Spec",
     "TalentStage": [
       111
     ]
   },
   "113": {
     "Id": 113,
-    "SchoolName": "",
+    "SchoolName": "Earthfort Spec",
     "TalentStage": [
       112,
       113
@@ -66,14 +66,14 @@
   },
   "114": {
     "Id": 114,
-    "SchoolName": "",
+    "SchoolName": "Block Spec",
     "TalentStage": [
       114
     ]
   },
   "116": {
     "Id": 116,
-    "SchoolName": "",
+    "SchoolName": "Wildpack Spec",
     "TalentStage": [
       115,
       116
@@ -81,14 +81,14 @@
   },
   "117": {
     "Id": 117,
-    "SchoolName": "",
+    "SchoolName": "Falconry Spec",
     "TalentStage": [
       117
     ]
   },
   "119": {
     "Id": 119,
-    "SchoolName": "",
+    "SchoolName": "Dissonance Spec",
     "TalentStage": [
       118,
       119
@@ -96,14 +96,14 @@
   },
   "120": {
     "Id": 120,
-    "SchoolName": "",
+    "SchoolName": "Concerto Spec",
     "TalentStage": [
       120
     ]
   },
   "122": {
     "Id": 122,
-    "SchoolName": "",
+    "SchoolName": "Recovery Spec",
     "TalentStage": [
       121,
       122
@@ -111,7 +111,7 @@
   },
   "123": {
     "Id": 123,
-    "SchoolName": "",
+    "SchoolName": "Shield Spec",
     "TalentStage": [
       123
     ]

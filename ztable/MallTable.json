@@ -2,7 +2,7 @@
   "1": {
     "Id": 1,
     "FunctionId": 800811,
-    "Name": "",
+    "Name": "Orb Store",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [],
@@ -27,7 +27,7 @@
   "2": {
     "Id": 2,
     "FunctionId": 800816,
-    "Name": "",
+    "Name": "Colorful Store",
     "ShowType": 0,
     "ViewType": 1,
     "SubViewType": [],
@@ -52,7 +52,7 @@
   "3": {
     "Id": 3,
     "FunctionId": 800817,
-    "Name": "",
+    "Name": "Friendship",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [],
@@ -74,7 +74,7 @@
   "6": {
     "Id": 6,
     "FunctionId": 800803,
-    "Name": "",
+    "Name": "Mystery Store",
     "ShowType": 0,
     "ViewType": 5,
     "SubViewType": [],
@@ -99,7 +99,7 @@
   "7": {
     "Id": 7,
     "FunctionId": 800804,
-    "Name": "",
+    "Name": "Style shop",
     "ShowType": 0,
     "ViewType": 4,
     "SubViewType": [],
@@ -124,7 +124,7 @@
   "8": {
     "Id": 8,
     "FunctionId": 800818,
-    "Name": "",
+    "Name": "Honor Coin",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [],
@@ -146,7 +146,7 @@
   "9": {
     "Id": 9,
     "FunctionId": 800819,
-    "Name": "",
+    "Name": "Reputation",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [],
@@ -168,7 +168,7 @@
   "11": {
     "Id": 11,
     "FunctionId": 300003,
-    "Name": "",
+    "Name": "Fishing Store",
     "ShowType": 2,
     "ViewType": 0,
     "SubViewType": [],
@@ -190,7 +190,7 @@
   "12": {
     "Id": 12,
     "FunctionId": 102504,
-    "Name": "",
+    "Name": "Homestead Store",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -212,7 +212,7 @@
   "14": {
     "Id": 14,
     "FunctionId": 801200,
-    "Name": "",
+    "Name": "Monthly Card",
     "ShowType": 0,
     "ViewType": 3,
     "SubViewType": [],
@@ -237,7 +237,7 @@
   "15": {
     "Id": 15,
     "FunctionId": 800801,
-    "Name": "",
+    "Name": "Rose Orb",
     "ShowType": 0,
     "ViewType": 6,
     "SubViewType": [],
@@ -262,7 +262,7 @@
   "34": {
     "Id": 34,
     "FunctionId": 801301,
-    "Name": "",
+    "Name": "Themed Bundle",
     "ShowType": 0,
     "ViewType": 2,
     "SubViewType": [],
@@ -287,7 +287,7 @@
   "35": {
     "Id": 35,
     "FunctionId": 801302,
-    "Name": "",
+    "Name": "Themed Bundle",
     "ShowType": 0,
     "ViewType": 2,
     "SubViewType": [],
@@ -312,7 +312,7 @@
   "100": {
     "Id": 100,
     "FunctionId": 800830,
-    "Name": "",
+    "Name": "Style shop",
     "ShowType": 0,
     "ViewType": 4,
     "SubViewType": [],
@@ -337,7 +337,7 @@
   "101": {
     "Id": 101,
     "FunctionId": 800831,
-    "Name": "",
+    "Name": "Gift Box",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -365,7 +365,7 @@
   "102": {
     "Id": 102,
     "FunctionId": 800832,
-    "Name": "",
+    "Name": "Outfit",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -393,7 +393,7 @@
   "103": {
     "Id": 103,
     "FunctionId": 800833,
-    "Name": "",
+    "Name": "Accessory",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -421,7 +421,7 @@
   "104": {
     "Id": 104,
     "FunctionId": 800834,
-    "Name": "",
+    "Name": "Weapon",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -449,7 +449,7 @@
   "105": {
     "Id": 105,
     "FunctionId": 800835,
-    "Name": "",
+    "Name": "Mount",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -477,7 +477,7 @@
   "106": {
     "Id": 106,
     "FunctionId": 800836,
-    "Name": "",
+    "Name": "Other",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -505,7 +505,7 @@
   "1000": {
     "Id": 1000,
     "FunctionId": 800812,
-    "Name": "",
+    "Name": "Meow Store",
     "ShowType": 3,
     "ViewType": 1,
     "SubViewType": [],
@@ -528,7 +528,7 @@
   "1100": {
     "Id": 1100,
     "FunctionId": 800850,
-    "Name": "",
+    "Name": "Premium Store",
     "ShowType": 3,
     "ViewType": 4,
     "SubViewType": [],
@@ -550,7 +550,7 @@
   "1101": {
     "Id": 1101,
     "FunctionId": 800851,
-    "Name": "",
+    "Name": "Gift Box",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -575,7 +575,7 @@
   "1102": {
     "Id": 1102,
     "FunctionId": 800852,
-    "Name": "",
+    "Name": "Outfit",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -600,7 +600,7 @@
   "1103": {
     "Id": 1103,
     "FunctionId": 800853,
-    "Name": "",
+    "Name": "Accessory",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -625,7 +625,7 @@
   "1104": {
     "Id": 1104,
     "FunctionId": 800854,
-    "Name": "",
+    "Name": "Weapon",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -650,7 +650,7 @@
   "1105": {
     "Id": 1105,
     "FunctionId": 800855,
-    "Name": "",
+    "Name": "Mount",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -675,7 +675,7 @@
   "1106": {
     "Id": 1106,
     "FunctionId": 800856,
-    "Name": "",
+    "Name": "Other",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -700,7 +700,7 @@
   "1200": {
     "Id": 1200,
     "FunctionId": 800860,
-    "Name": "",
+    "Name": "Membership Store (formerly the Trade Coin Store)",
     "ShowType": 3,
     "ViewType": 4,
     "SubViewType": [],
@@ -722,7 +722,7 @@
   "1201": {
     "Id": 1201,
     "FunctionId": 800861,
-    "Name": "",
+    "Name": "Gift Box",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -747,7 +747,7 @@
   "1202": {
     "Id": 1202,
     "FunctionId": 800862,
-    "Name": "",
+    "Name": "Outfit",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -772,7 +772,7 @@
   "1203": {
     "Id": 1203,
     "FunctionId": 800863,
-    "Name": "",
+    "Name": "Accessory",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -797,7 +797,7 @@
   "1204": {
     "Id": 1204,
     "FunctionId": 800864,
-    "Name": "",
+    "Name": "Weapon",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -822,7 +822,7 @@
   "1205": {
     "Id": 1205,
     "FunctionId": 800865,
-    "Name": "",
+    "Name": "Mount",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -847,7 +847,7 @@
   "1206": {
     "Id": 1206,
     "FunctionId": 800866,
-    "Name": "",
+    "Name": "Other",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -872,7 +872,7 @@
   "1207": {
     "Id": 1207,
     "FunctionId": 800940,
-    "Name": "",
+    "Name": "Floral Arrangements",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -894,7 +894,7 @@
   "1208": {
     "Id": 1208,
     "FunctionId": 800941,
-    "Name": "",
+    "Name": "Plant",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -916,7 +916,7 @@
   "1209": {
     "Id": 1209,
     "FunctionId": 800950,
-    "Name": "",
+    "Name": "Furniture",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -938,7 +938,7 @@
   "1210": {
     "Id": 1210,
     "FunctionId": 800951,
-    "Name": "",
+    "Name": "Building Materials",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -960,7 +960,7 @@
   "1211": {
     "Id": 1211,
     "FunctionId": 800952,
-    "Name": "",
+    "Name": "Basic Furniture",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -982,7 +982,7 @@
   "1212": {
     "Id": 1212,
     "FunctionId": 800953,
-    "Name": "",
+    "Name": "Gardening",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1004,7 +1004,7 @@
   "1213": {
     "Id": 1213,
     "FunctionId": 800954,
-    "Name": "",
+    "Name": "Floor Furniture",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1026,7 +1026,7 @@
   "1214": {
     "Id": 1214,
     "FunctionId": 800955,
-    "Name": "",
+    "Name": "Wall Decor",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1048,7 +1048,7 @@
   "1215": {
     "Id": 1215,
     "FunctionId": 800956,
-    "Name": "",
+    "Name": "Ornament",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1070,7 +1070,7 @@
   "1216": {
     "Id": 1216,
     "FunctionId": 800957,
-    "Name": "",
+    "Name": "Partition Wallpaper",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1092,7 +1092,7 @@
   "1217": {
     "Id": 1217,
     "FunctionId": 800958,
-    "Name": "",
+    "Name": "Partition",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1114,7 +1114,7 @@
   "1218": {
     "Id": 1218,
     "FunctionId": 800959,
-    "Name": "",
+    "Name": "Floor And Wall Design",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1136,7 +1136,7 @@
   "1230": {
     "Id": 1230,
     "FunctionId": 800960,
-    "Name": "",
+    "Name": "Lighting",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1158,7 +1158,7 @@
   "1219": {
     "Id": 1219,
     "FunctionId": 800970,
-    "Name": "",
+    "Name": "Materials",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1180,7 +1180,7 @@
   "1220": {
     "Id": 1220,
     "FunctionId": 800971,
-    "Name": "",
+    "Name": "Botany",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1202,7 +1202,7 @@
   "1221": {
     "Id": 1221,
     "FunctionId": 800972,
-    "Name": "",
+    "Name": "Mineralogy",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1224,7 +1224,7 @@
   "1222": {
     "Id": 1222,
     "FunctionId": 800973,
-    "Name": "",
+    "Name": "Gemology",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1246,7 +1246,7 @@
   "1223": {
     "Id": 1223,
     "FunctionId": 800974,
-    "Name": "",
+    "Name": "Culinary",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1268,7 +1268,7 @@
   "1224": {
     "Id": 1224,
     "FunctionId": 800975,
-    "Name": "",
+    "Name": "Alchemy",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1290,7 +1290,7 @@
   "1225": {
     "Id": 1225,
     "FunctionId": 800976,
-    "Name": "",
+    "Name": "Smelting",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1312,7 +1312,7 @@
   "1226": {
     "Id": 1226,
     "FunctionId": 800977,
-    "Name": "",
+    "Name": "Gemcrafting",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1334,7 +1334,7 @@
   "1227": {
     "Id": 1227,
     "FunctionId": 800978,
-    "Name": "",
+    "Name": "Artisanry",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1356,7 +1356,7 @@
   "1228": {
     "Id": 1228,
     "FunctionId": 800979,
-    "Name": "",
+    "Name": "Weaving",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1378,7 +1378,7 @@
   "1229": {
     "Id": 1229,
     "FunctionId": 800980,
-    "Name": "",
+    "Name": "Other",
     "ShowType": 4,
     "ViewType": 0,
     "SubViewType": [],
@@ -1400,7 +1400,7 @@
   "1300": {
     "Id": 1300,
     "FunctionId": 800840,
-    "Name": "",
+    "Name": "Vault Store",
     "ShowType": 3,
     "ViewType": 4,
     "SubViewType": [],
@@ -1422,7 +1422,7 @@
   "1301": {
     "Id": 1301,
     "FunctionId": 800841,
-    "Name": "",
+    "Name": "Gift Box",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -1447,7 +1447,7 @@
   "1302": {
     "Id": 1302,
     "FunctionId": 800842,
-    "Name": "",
+    "Name": "Outfit",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -1472,7 +1472,7 @@
   "1303": {
     "Id": 1303,
     "FunctionId": 800843,
-    "Name": "",
+    "Name": "Accessory",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -1497,7 +1497,7 @@
   "1304": {
     "Id": 1304,
     "FunctionId": 800844,
-    "Name": "",
+    "Name": "Weapon",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -1522,7 +1522,7 @@
   "1305": {
     "Id": 1305,
     "FunctionId": 800845,
-    "Name": "",
+    "Name": "Mount",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -1547,7 +1547,7 @@
   "1306": {
     "Id": 1306,
     "FunctionId": 800846,
-    "Name": "",
+    "Name": "Other",
     "ShowType": 3,
     "ViewType": 0,
     "SubViewType": [
@@ -1572,7 +1572,7 @@
   "1400": {
     "Id": 1400,
     "FunctionId": 802100,
-    "Name": "",
+    "Name": "Style Vault: 90% Off",
     "ShowType": 0,
     "ViewType": 4,
     "SubViewType": [],
@@ -1597,7 +1597,7 @@
   "1401": {
     "Id": 1401,
     "FunctionId": 802101,
-    "Name": "",
+    "Name": "Gift Box",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -1625,7 +1625,7 @@
   "1402": {
     "Id": 1402,
     "FunctionId": 802102,
-    "Name": "",
+    "Name": "Outfit",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -1653,7 +1653,7 @@
   "1403": {
     "Id": 1403,
     "FunctionId": 802103,
-    "Name": "",
+    "Name": "Accessory",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -1681,7 +1681,7 @@
   "1404": {
     "Id": 1404,
     "FunctionId": 802104,
-    "Name": "",
+    "Name": "Weapon",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -1709,7 +1709,7 @@
   "1405": {
     "Id": 1405,
     "FunctionId": 802105,
-    "Name": "",
+    "Name": "Mount",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -1737,7 +1737,7 @@
   "1406": {
     "Id": 1406,
     "FunctionId": 802106,
-    "Name": "",
+    "Name": "Other",
     "ShowType": 0,
     "ViewType": 0,
     "SubViewType": [
@@ -1765,7 +1765,7 @@
   "2001": {
     "Id": 2001,
     "FunctionId": 800871,
-    "Name": "",
+    "Name": "Gameplay",
     "ShowType": 5,
     "ViewType": 1,
     "SubViewType": [],
@@ -1787,7 +1787,7 @@
   "2002": {
     "Id": 2002,
     "FunctionId": 800872,
-    "Name": "",
+    "Name": "Activity",
     "ShowType": 5,
     "ViewType": 1,
     "SubViewType": [],
@@ -1809,7 +1809,7 @@
   "3001": {
     "Id": 3001,
     "FunctionId": 800601,
-    "Name": "",
+    "Name": "Season Store",
     "ShowType": 1,
     "ViewType": 0,
     "SubViewType": [],
@@ -1831,7 +1831,7 @@
   "3002": {
     "Id": 3002,
     "FunctionId": 800602,
-    "Name": "",
+    "Name": "Exchange",
     "ShowType": 1,
     "ViewType": 0,
     "SubViewType": [],
@@ -1919,7 +1919,7 @@
   "3006": {
     "Id": 3006,
     "FunctionId": 800606,
-    "Name": "",
+    "Name": "Commemorative",
     "ShowType": 1,
     "ViewType": 0,
     "SubViewType": [],
@@ -2095,7 +2095,7 @@
   "10000": {
     "Id": 10000,
     "FunctionId": 819301,
-    "Name": "",
+    "Name": "Seabreeze Store",
     "ShowType": 6,
     "ViewType": 1,
     "SubViewType": [],

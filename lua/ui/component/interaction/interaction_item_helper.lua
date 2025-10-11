@@ -1,7 +1,4 @@
 local normalPath = "ui/atlas/npc/talk_btn_bg_off"
-local isShowContKyeIcon = function(unit, isShow)
-  unit.Ref:SetVisible(unit.cont_key_icon.Ref, isShow)
-end
 local setSelectState = function(unit, isOn)
   unit.Ref:SetVisible(unit.cont_off, not isOn)
   unit.Ref:SetVisible(unit.cont_on, isOn)
@@ -9,7 +6,6 @@ end
 local initInteractionItem = function(unit, contentStr, iconPath)
   contentStr = contentStr or ""
   iconPath = iconPath or "ui/atlas/npc/talk_icon_chat"
-  isShowContKyeIcon(unit, false)
   unit.Ref.UIComp:SetVisible(true)
   setSelectState(unit, false)
   if unit.cont_pressdown then
@@ -35,7 +31,6 @@ end
 local ret = {
   InitInteractionItem = initInteractionItem,
   AddCommonListener = addCommonListener,
-  IsShowContKyeIcon = isShowContKyeIcon,
   SetSelectState = setSelectState
 }
 return ret

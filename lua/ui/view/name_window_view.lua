@@ -51,7 +51,7 @@ end
 function Name_windowView:onChangeNameResultNtf(errCode)
   if errCode == 0 then
     Z.AudioMgr:Play("UI_Event_NameSuccess")
-    Z.SDKReport.ReportEvent(Z.SDKReportEvent.NamedCharacter)
+    Z.SDKReport.Report(Z.SDKReportEvent.NameCharacter)
     local OnAniComplete = function()
       self.playerVM_:CloseNameWindow()
       Z.EPFlowBridge.OnLuaFunctionCallback("OPEN_NAME_WINDOW")
@@ -77,6 +77,7 @@ function Name_windowView:OnActive()
   self:initBinder()
   self:initComponents()
   self:BindEvents()
+  Z.SDKReport.Report(Z.SDKReportEvent.TutorialBegin)
 end
 
 function Name_windowView:OnDeActive()

@@ -19,8 +19,9 @@ function AccountData:Clear()
   self.LoginType = nil
   self.OpenID = nil
   self.Token = nil
-  self.OS = nil
   self.Expire = nil
+  self.OS = nil
+  self.BoundProviders = nil
 end
 
 return AccountData

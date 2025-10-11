@@ -75,6 +75,53 @@ local mergeDataFuncs = {
     local last = container.__data__.maxClimbUpLayerId
     container.__data__.maxClimbUpLayerId = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("maxClimbUpLayerId", last)
+  end,
+  [4] = function(container, buffer, watcherList)
+    local count = br.ReadInt32(buffer)
+    if count == -4 then
+      return
+    end
+    local t = {}
+    local last = container.__data__.raidBossIds
+    container.__data__.raidBossIds = t
+    for i = 1, count do
+      local v = br.ReadInt64(buffer)
+      t[#t + 1] = v
+      container.Watcher:MarkDirty("raidBossIds", last)
+    end
+  end,
+  [5] = function(container, buffer, watcherList)
+    local add = br.ReadInt32(buffer)
+    local remove = 0
+    local update = 0
+    if add == -4 then
+      return
+    end
+    if add == -1 then
+      add = br.ReadInt32(buffer)
+    else
+      remove = br.ReadInt32(buffer)
+      update = br.ReadInt32(buffer)
+    end
+    for i = 1, add do
+      local dk = br.ReadInt64(buffer)
+      local dv = br.ReadInt64(buffer)
+      container.raidBossKillTime.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("raidBossKillTime", dk, nil)
+    end
+    for i = 1, remove do
+      local dk = br.ReadInt64(buffer)
+      local last = container.raidBossKillTime.__data__[dk]
+      container.raidBossKillTime.__data__[dk] = nil
+      container.Watcher:MarkMapDirty("raidBossKillTime", dk, last)
+    end
+    for i = 1, update do
+      local dk = br.ReadInt64(buffer)
+      local dv = br.ReadInt64(buffer)
+      local last = container.raidBossKillTime.__data__[dk]
+      container.raidBossKillTime.__data__[dk] = dv
+      container.Watcher:MarkMapDirty("raidBossKillTime", dk, last)
+    end
   end
 }
 local setForbidenMt = function(t)
@@ -113,6 +160,12 @@ local resetData = function(container, pbData)
   if not pbData.maxClimbUpLayerId then
     container.__data__.maxClimbUpLayerId = 0
   end
+  if not pbData.raidBossIds then
+    container.__data__.raidBossIds = {}
+  end
+  if not pbData.raidBossKillTime then
+    container.__data__.raidBossKillTime = {}
+  end
   setForbidenMt(container)
   container.weekData.__data__ = {}
   setForbidenMt(container.weekData)
@@ -124,6 +177,9 @@ local resetData = function(container, pbData)
   container.compensation.__data__ = pbData.compensation
   setForbidenMt(container.compensation)
   container.__data__.compensation = nil
+  container.raidBossKillTime.__data__ = pbData.raidBossKillTime
+  setForbidenMt(container.raidBossKillTime)
+  container.__data__.raidBossKillTime = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -217,6 +273,48 @@ local getContainerElem = function(container)
     dataType = 0,
     data = container.maxClimbUpLayerId
   }
+  if container.raidBossIds ~= nil then
+    local data = {}
+    for index, repeatedItem in pairs(container.raidBossIds) do
+      data[index] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.raidBossIds = {
+      fieldId = 4,
+      dataType = 3,
+      data = data
+    }
+  else
+    ret.raidBossIds = {
+      fieldId = 4,
+      dataType = 3,
+      data = {}
+    }
+  end
+  if container.raidBossKillTime ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.raidBossKillTime) do
+      data[key] = {
+        fieldId = 0,
+        dataType = 0,
+        data = repeatedItem
+      }
+    end
+    ret.raidBossKillTime = {
+      fieldId = 5,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.raidBossKillTime = {
+      fieldId = 5,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -230,12 +328,16 @@ local new = function()
     },
     compensation = {
       __data__ = {}
+    },
+    raidBossKillTime = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.weekData)
   setForbidenMt(ret.compensation)
+  setForbidenMt(ret.raidBossKillTime)
   return ret
 end
 return {New = new}

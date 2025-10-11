@@ -18,6 +18,7 @@ function Achievement_badge_subView:OnActive()
   local datas = self.achievementVM_.GetAndSortAchievementClass(AchievementDefine.PermanentAchievementType)
   self.classifyLoopListView_ = LoopGridView.new(self, self.uiBinder.loop_item, AchievementItem, "achievement_badge_item_tpl", true)
   self.classifyLoopListView_:Init(datas)
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
   Z.EventMgr:Add(Z.ConstValue.Achievement.OnAchievementDataChange, self.refreshList, self)
 end
 

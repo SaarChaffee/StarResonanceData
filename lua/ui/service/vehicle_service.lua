@@ -45,7 +45,7 @@ end
 function VehicleService:OnLogout()
   local vehicleData = Z.DataMgr.Get("vehicle_data")
   for itemId, _ in pairs(vehicleData.VehicleRedWatcher) do
-    Z.ItemEventMgr.RemoveObjAllByEvent(E.ItemAddEventType.ItemId, itemId, self.vehicleUnlockItemChange_)
+    Z.ItemEventMgr.RemoveObjAllByEvent(E.ItemChangeType.AllChange, E.ItemAddEventType.ItemId, itemId, self.vehicleUnlockItemChange_)
   end
   Z.EventMgr:Remove(Z.ConstValue.Backpack.AddItem, self.onItemChange, self)
   Z.EventMgr:Remove(Z.ConstValue.Backpack.DelItem, self.onItemChange, self)

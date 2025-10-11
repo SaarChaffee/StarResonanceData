@@ -1,6 +1,8 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local TeamView = class("TeamView", super)
+local deadStateId = Z.PbEnum("EActorState", "ActorStateDead")
+local entChar = Z.PbEnum("EEntityType", "EntChar")
 local paths = {
   member_tpl = "ui/prefabs/team/team_member_tips_popup",
   team_icon_check = "ui/atlas/mainui/team/team_icon_check",
@@ -36,6 +38,7 @@ function TeamView:ctor(parent)
   self.allFunction_ = {}
   self.idCardShowList_ = {}
   self.memberHpAttrWatcher_ = {}
+  self.memberDeadAttrWatcher_ = {}
   self.memberBuffAttrWatcher_ = {}
   self.vm = Z.VMMgr.GetVM("team")
   self.entityVm_ = Z.VMMgr.GetVM("entity")
@@ -49,6 +52,7 @@ function TeamView:ctor(parent)
   self.friendData_ = Z.DataMgr.Get("friend_main_data")
   self.buffVm_ = Z.VMMgr.GetVM("buff")
   self.funcVm_ = Z.VMMgr.GetVM("gotofunc")
+  self.fighterBtnsVm_ = Z.VMMgr.GetVM("fighterbtns")
   
   function self.onInputAction_(inputActionEventData)
     self:switchVoiceState()
@@ -222,6 +226,14 @@ function TeamView:initBtns()
       self:setMemberPrepareState()
     end
   end)
+  self:AddClick(self.uiBinder.btn_punctuate, function()
+    local viewConfigKey = "main_copy_punctuate"
+    if Z.UIMgr:IsActive(viewConfigKey) then
+      Z.UIMgr:CloseView(viewConfigKey)
+    else
+      Z.UIMgr:OpenView(viewConfigKey)
+    end
+  end)
 end
 
 function TeamView:endDungeonPrepare()
@@ -353,6 +365,7 @@ function TeamView:OnDeActive()
   for index, value in pairs(self.conveneTimer_) do
     self.timerMgr:StopTimer(value)
   end
+  self:unBindTeamMemberAttrWatchers()
   self.conveneTimer_ = {}
 end
 
@@ -448,6 +461,7 @@ function TeamView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Team.RefreshPrepareState, self.setPrepareInfo, self)
   Z.EventMgr:Add(Z.ConstValue.Team.EndDungeonPrepare, self.endDungeonPrepare, self)
   Z.EventMgr:Add(Z.ConstValue.Team.RefreshMemberInfo, self.refreshMemberInfo, self)
+  Z.EventMgr:Add(Z.ConstValue.Team.CreateEntity, self.createEntity, self)
   self:bindAttrWatcher()
 end
 
@@ -458,6 +472,10 @@ function TeamView:memberOnLineChange(socialData)
     if self.memberHpAttrWatcher_[socialData.basicData.charID] then
       self:UnBindEntityLuaAttrWatcher(self.memberHpAttrWatcher_[socialData.basicData.charID])
       self.memberHpAttrWatcher_[socialData.basicData.charID] = nil
+    end
+    if self.memberDeadAttrWatcher_[socialData.basicData.charID] then
+      self.memberDeadAttrWatcher_[socialData.basicData.charID]:Dispose()
+      self.memberDeadAttrWatcher_[socialData.basicData.charID] = nil
     end
     if self.memberBuffAttrWatcher_[socialData.basicData.charID] then
       self:UnBindEntityLuaAttrWatcher(self.memberBuffAttrWatcher_[socialData.basicData.charID])
@@ -539,6 +557,18 @@ function TeamView:updateBuffInfo(charId)
   self:refreshBuffItem(memberItem.battle_icon_buff_2, gainBuffData)
 end
 
+function TeamView:createEntity(charId)
+  if self.memberHpAttrWatcher_[charId] then
+    self:UnBindEntityLuaAttrWatcher(self.memberHpAttrWatcher_[charId])
+    self.memberHpAttrWatcher_[charId] = nil
+  end
+  if self.memberDeadAttrWatcher_[charId] then
+    self.memberDeadAttrWatcher_[charId]:Dispose()
+    self.memberDeadAttrWatcher_[charId] = nil
+  end
+  self:addMemberAttrWatcher(charId)
+end
+
 function TeamView:addMemberAttrWatcher(charId)
   local ent = Z.EntityMgr:GetEntity(Z.PbEnum("EEntityType", "EntChar"), charId)
   if ent == nil then
@@ -547,9 +577,20 @@ function TeamView:addMemberAttrWatcher(charId)
   if self.memberHpAttrWatcher_[charId] == nil then
     self.memberHpAttrWatcher_[charId] = self:BindEntityLuaAttrWatcher({
       Z.PbAttrEnum("AttrHp"),
-      Z.PbAttrEnum("AttrMaxHp")
+      Z.PbAttrEnum("AttrMaxHp"),
+      Z.PbAttrEnum("AttrShieldList")
     }, ent, function()
       self:updateMemberData({charId = charId})
+    end)
+  end
+  if self.memberDeadAttrWatcher_[charId] == nil then
+    local uuid = self.entityVm_.EntIdToUuid(charId, entChar)
+    self.memberDeadAttrWatcher_[charId] = Z.DIServiceMgr.AttrStateComponentWatcherService:OnAttrStateChanged(uuid, function()
+      local ent = Z.EntityMgr:GetEntity(Z.PbEnum("EEntityType", "EntChar"), charId)
+      if ent and ent:GetLuaAttrState() == deadStateId and self.contMembers_[charId] then
+        self:updateHpComp(self.contMembers_[charId], 0)
+        self:setShield(self.contMembers_[charId], 0, 0)
+      end
     end)
   end
   if self.memberBuffAttrWatcher_[charId] == nil then
@@ -578,11 +619,15 @@ function TeamView:unBindTeamMemberAttrWatchers()
   for key, value in pairs(self.memberHpAttrWatcher_) do
     self:UnBindEntityLuaAttrWatcher(value)
   end
+  for key, value in pairs(self.memberDeadAttrWatcher_) do
+    value:Dispose()
+  end
   for key, value in pairs(self.memberBuffAttrWatcher_) do
     self:UnBindEntityLuaAttrWatcher(value)
   end
   self.memberHpAttrWatcher_ = {}
   self.memberBuffAttrWatcher_ = {}
+  self.memberDeadAttrWatcher_ = {}
 end
 
 function TeamView:quitAndApplyTeam(teamList)
@@ -597,21 +642,68 @@ function TeamView:updateApplyCaptainBtn()
   self.uiBinder.node_tips.node_apply_captain.tog.interactable = isApply == 0
 end
 
+function TeamView:updateHpComp(comp, hpValue)
+  comp.sliced_image.fillAmount = hpValue
+  comp.sliced_break.fillAmount = hpValue
+end
+
+function TeamView:setShield(uiBinder, maxHp, hpProgress, progressList)
+  if progressList ~= nil and 0 < #progressList then
+    local maxShieldValue = 0
+    for _, progressInfo in ipairs(progressList) do
+      if maxShieldValue < progressInfo.shieldValue then
+        maxShieldValue = progressInfo.shieldValue
+      end
+    end
+    uiBinder.sliced_shield.fillAmount = maxShieldValue / maxHp
+  else
+    uiBinder.sliced_shield.fillAmount = hpProgress
+  end
+end
+
 function TeamView:updateMemberItemHp(comp, memberData, ent, isForce)
   if ent then
-    local hpValue = ent:GetLuaAttr(Z.PbAttrEnum("AttrHp")).Value / ent:GetLuaAttr(Z.PbAttrEnum("AttrMaxHp")).Value
-    comp.sliced_image.fillAmount = hpValue
-    comp.sliced_break.fillAmount = hpValue
+    local curHp = ent:GetLuaAttr(Z.PbAttrEnum("AttrHp")).Value
+    local maxHp = ent:GetLuaAttr(Z.PbAttrEnum("AttrMaxHp")).Value
+    local shieldMaxValue = 0
+    if curHp == 0 then
+      self:setShield(comp, maxHp, 0)
+    else
+      local shieldList = ent:GetLuaAttr(Z.PbAttrEnum("AttrShieldList")).Value
+      local shieldProgressList = {}
+      for i = shieldList.count - 1, 0, -1 do
+        local shieldInfo = shieldList[i]
+        if shieldMaxValue < shieldInfo.value then
+          shieldMaxValue = shieldInfo.value
+        end
+        table.insert(shieldProgressList, {
+          shieldType = shieldInfo.shieldType,
+          shieldValue = shieldMaxValue + curHp
+        })
+      end
+      self:setShield(comp, maxHp, 0, shieldProgressList)
+    end
+    if memberData then
+      memberData.hp = curHp
+      memberData.maxHp = maxHp
+    end
+    local hpValue = curHp / maxHp
+    if maxHp < curHp + shieldMaxValue then
+      hpValue = curHp / (maxHp + shieldMaxValue)
+    end
+    if ent:GetLuaAttrState() == deadStateId then
+      hpValue = 0
+    end
+    self:updateHpComp(comp, hpValue)
   elseif isForce then
     if memberData then
       local hp = memberData.hp or 0
       local maxHp = memberData.maxHp or 0
       local hpValue = hp == maxHp and 1 or hp / maxHp
-      comp.sliced_image.fillAmount = hpValue
-      comp.sliced_break.fillAmount = hpValue
+      self:updateHpComp(comp, hpValue)
+      self:setShield(comp, maxHp, 0)
     else
-      comp.sliced_image.fillAmount = 1
-      comp.sliced_break.fillAmount = 1
+      self:updateHpComp(comp, 1)
     end
   end
 end
@@ -626,6 +718,9 @@ end
 function TeamView:updateMemberData(data)
   local data = data or {}
   local charId = data.charId
+  if charId == nil then
+    return
+  end
   local isForce = data.isForce
   if isForce then
     self:addMemberAttrWatcher(data.charId)
@@ -651,6 +746,7 @@ function TeamView:refreshTeam()
   self:unBindTeamMemberAttrWatchers()
   self:bindAttrWatchers()
   self:refreshSetoutNode()
+  self:refreshSceneMaskButton()
   self:refreshMemberBuffInfo()
 end
 
@@ -745,11 +841,9 @@ function TeamView:setMemberItem(v, member)
     local hp = member.hp or 0
     local maxHp = member.maxHp or 0
     local hpValue = hp == maxHp and 1 or hp / maxHp
-    v.sliced_break.fillAmount = hpValue
-    v.sliced_image.fillAmount = hpValue
+    self:updateHpComp(v, hpValue)
   else
-    v.sliced_image.fillAmount = 1
-    v.sliced_break.fillAmount = 1
+    self:updateHpComp(v, 1)
   end
   self:AddClick(v.btn_selected, function()
     if not self.entityVm_.CheckIsAIByEntId(member.charId) and member.charId ~= Z.ContainerMgr.CharSerialize.charId then
@@ -818,6 +912,12 @@ function TeamView:refreshSetoutNode()
   self.setoutNode_.Ref:SetVisible(self.setoutNode_.node_on, not self.isInBattle_ and not self.teamData_.IsDungeonPrepareIng)
   self.setoutNode_.Ref:SetVisible(self.setoutNode_.node_off, self.isInBattle_ and not self.teamData_.IsDungeonPrepareIng)
   self.setoutNode_.Ref:SetVisible(self.setoutNode_.node_ing, self.teamData_.IsDungeonPrepareIng)
+end
+
+function TeamView:refreshSceneMaskButton()
+  local leaderId = self.teamData_.TeamInfo.baseInfo.leaderId
+  local isLeader = leaderId == Z.ContainerMgr.CharSerialize.charBase.charId
+  self:SetUIVisible(self.uiBinder.btn_punctuate, Z.StageMgr.IsDungeonStage() and isLeader)
 end
 
 function TeamView:setCompActive()
@@ -1078,7 +1178,7 @@ function TeamView:refreshConveneCd(charId, text)
 end
 
 function TeamView:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.TeamVoice then
+  if inputActionEventData.ActionId == Z.InputActionIds.TeamVoice then
     self:switchVoiceState()
   end
 end

@@ -522,7 +522,7 @@ local openMonsterAndAffixTip = function(trans, autoClose)
       local des = affCfgData.Description
       local colorStr = AffixColor[affCfgData.EffectType]
       if colorStr then
-        affixName = string.format("<color=%s>%s</color>", colorStr, affixName .. ":")
+        affixName = string.format("<color=%s>%s</color>", colorStr, affixName .. Lang("colon"))
       end
       table.insert(affixDesList, affixName .. des)
     end
@@ -559,7 +559,6 @@ local getDungeonPersonValValue = function(charid, valName)
   if Z.ContainerMgr.DungeonSyncData.dungeonVarAll.dungeonVarAllMap then
     local personDungenVar = Z.ContainerMgr.DungeonSyncData.dungeonVarAll.dungeonVarAllMap[charid]
     if personDungenVar == nil then
-      logError("getDungeonPersonValValue: personDungenVar is nil, charid: " .. charid)
       return ""
     end
     for k, v in ipairs(personDungenVar.dungeonVarData) do

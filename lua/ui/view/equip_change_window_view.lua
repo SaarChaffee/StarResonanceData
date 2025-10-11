@@ -440,6 +440,32 @@ function Equip_change_subView:ItemSelected(itemUuid, configId)
   self:onEquipItemSelected(itemUuid, configId)
 end
 
+function Equip_change_subView:getCurEquipAttrData(curEquipAttr)
+  local data = {}
+  local curProfessionId = Z.ContainerMgr.CharSerialize.professionList.curProfessionId
+  if table.zcount(curEquipAttr.equipAttrSet.basicAttr) ~= 0 then
+    data.BasicAttrEffectDatas = self.equipAttrParseVM_.GetEquipShoolAttrByAttrDic(curEquipAttr.equipAttrSet.basicAttr, curProfessionId)
+  else
+    data.BasicAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.basicAttr)
+  end
+  if table.zcount(curEquipAttr.equipAttrSet.advanceAttr) ~= 0 then
+    data.AdvanceAttrEffectDatas = self.equipAttrParseVM_.GetEquipShoolAttrByAttrDic(curEquipAttr.equipAttrSet.advanceAttr, curProfessionId)
+  else
+    data.AdvanceAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.advanceAttr)
+  end
+  if table.zcount(curEquipAttr.equipAttrSet.recastAttr) ~= 0 then
+    data.RecastAttrEffectDatas = self.equipAttrParseVM_.GetEquipShoolAttrByAttrDic(curEquipAttr.equipAttrSet.recastAttr, curProfessionId)
+  else
+    data.RecastAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.recastAttr)
+  end
+  if table.zcount(curEquipAttr.equipAttrSet.rareQualityAttr) ~= 0 then
+    data.RareAttrEffectDatas = self.equipAttrParseVM_.GetEquipShoolAttrByAttrDic(curEquipAttr.equipAttrSet.rareQualityAttr, curProfessionId)
+  else
+    data.RareAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.rareQualityAttr)
+  end
+  return data
+end
+
 function Equip_change_subView:onEquipItemSelected(itemUuid, configId)
   self.selectedItemUuid_ = itemUuid
   self.selectItemConfigId_ = configId
@@ -474,12 +500,7 @@ function Equip_change_subView:onEquipItemSelected(itemUuid, configId)
   if putonEquipConfigId then
     curEquipAttr = self.equipVm_.GetEquipAttr(putonEquipConfigId, equipInfo.itemUuid)
     if curEquipAttr then
-      selectItemTipsData.data = {
-        BasicAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.basicAttr),
-        AdvanceAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.advanceAttr),
-        RecastAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.recastAttr),
-        RareAttrEffectDatas = self.equipAttrParseVM_.GetEquipAttrEffectByAttrDic(curEquipAttr.rareQualityAttr)
-      }
+      selectItemTipsData.data = self:getCurEquipAttrData(curEquipAttr)
     end
   end
   Z.TipsVM.CloseItemTipsView(self.selectItemTipsId_)

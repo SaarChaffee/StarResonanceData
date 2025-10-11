@@ -162,11 +162,12 @@ function AllTipsVM.OpenMessageView(noticeTipParam)
   end
   noticeTipParam.placeholderParam = Z.Placeholder.SetMePlaceholder(noticeTipParam.placeholderParam)
   noticeTipParam.placeholderParam = Z.Placeholder.SetNpcPlaceholder(noticeTipParam.placeholderParam)
+  noticeTipParam.placeholderParam = Z.Placeholder.SetPlayerSelfPronoun(noticeTipParam.placeholderParam)
   content = Z.Placeholder.Placeholder(content, noticeTipParam.placeholderParam)
   if msgCfg.ChatName ~= nil and msgCfg.ChatName ~= "" then
     noticeTipParam.placeholderParam = Z.Placeholder.SetMePlaceholder(noticeTipParam.placeholderParam)
     local chatName = Z.Placeholder.Placeholder(msgCfg.ChatName, noticeTipParam.placeholderParam)
-    content = chatName .. Lang(":") .. content
+    content = chatName .. Lang("colon") .. content
   end
   if tipsType ~= E.TipsType.PopTip and not noticeTipParam.HasAddSystemTipInfo then
     noticeTipParam.HasAddSystemTipInfo = true
@@ -267,11 +268,12 @@ function AllTipsVM.GetMessageContent(messageId, messageParam)
   local content = Z.TableMgr.DecodeLineBreak(msgCfg.Content)
   local placeholderParam = Z.Placeholder.SetMePlaceholder(messageParam)
   placeholderParam = Z.Placeholder.SetNpcPlaceholder(placeholderParam)
+  placeholderParam = Z.Placeholder.SetPlayerSelfPronoun(placeholderParam)
   content = Z.Placeholder.Placeholder(content, placeholderParam)
   if msgCfg.ChatName ~= nil and msgCfg.ChatName ~= "" then
     placeholderParam = Z.Placeholder.SetMePlaceholder(placeholderParam)
     local chatName = Z.Placeholder.Placeholder(msgCfg.ChatName, placeholderParam)
-    content = chatName .. Lang(":") .. content
+    content = chatName .. Lang("colon") .. content
   end
   return content
 end

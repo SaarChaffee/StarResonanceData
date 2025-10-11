@@ -5,6 +5,7 @@ package zproto;
 import "stru_notify_building_upgrade_end_request.proto";
 import "stru_notify_effect_buf_change_request.proto";
 import "stru_notify_invite_join_union_request.proto";
+import "stru_notify_member_online_request.proto";
 import "stru_notify_official_limit_update_request.proto";
 import "stru_notify_request_list_num_request.proto";
 import "stru_notify_union_activity_progress_request.proto";
@@ -63,6 +64,10 @@ message UnionNtf {
 
   message NotifyUnionSubFuncUnlock {
     zproto.NotifyUnionSubFuncUnlockRequest v_request = 1;
+  }
+
+  message NotifyMemberOnline {
+    zproto.NotifyMemberOnlineRequest v_request = 1;
   }
 }
 

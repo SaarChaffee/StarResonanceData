@@ -10,30 +10,56 @@ function gashaVM.OpenGashaView(gashaId)
   if type(gashaId) == "string" then
     gashaId = tonumber(gashaId)
   end
-  gashaId = tonumber(gashaId)
-  local gashaPool = Z.TableMgr.GetRow("GashaPoolTableMgr", gashaId)
-  if gashaPool == nil then
-    return
+  if gashaId ~= nil then
+    gashaId = tonumber(gashaId)
   end
   local openGashas_ = gashaVM.GetShowOpenGashas(0)
   if openGashas_ and #openGashas_ == 0 then
     Z.TipsVM.ShowTips(1382001)
     return
   end
-  if gashaPool.Work == 0 or not Z.TimeTools.CheckIsInTimeByTimeId(gashaPool.TimerId) then
+  if gashaId == nil then
     Z.UIMgr:OpenView("gasha_window")
+    return
+  end
+  local gashaPool = Z.TableMgr.GetRow("GashaPoolTableMgr", gashaId, true)
+  if gashaPool == nil then
+    Z.UIMgr:OpenView("gasha_window")
+    return
+  end
+  if gashaPool.Work == 0 or not Z.TimeTools.CheckIsInTimeByTimeId(gashaPool.TimerId) then
+    Z.TipsVM.ShowTips(1382006)
     return
   end
   Z.UIMgr:OpenView("gasha_window", {gashaId = gashaId})
 end
 
-function gashaVM.OpenSpecialGashaView(type)
-  local openGashas_ = gashaVM.GetShowOpenGashas(type)
+function gashaVM.OpenSpecialGashaView(gashaId)
+  if type(gashaId) == "string" then
+    gashaId = tonumber(gashaId)
+  end
+  if gashaId ~= nil then
+    gashaId = tonumber(gashaId)
+  end
+  if gashaId == nil then
+    Z.UIMgr:OpenView("gasha_window", {type = 1})
+    return
+  end
+  local openGashas_ = gashaVM.GetShowOpenGashas(1)
   if openGashas_ and #openGashas_ == 0 then
     Z.TipsVM.ShowTips(1382001)
     return
   end
-  Z.UIMgr:OpenView("gasha_window", {type = type})
+  local gashaPool = Z.TableMgr.GetRow("GashaPoolTableMgr", gashaId, true)
+  if gashaPool == nil then
+    Z.UIMgr:OpenView("gasha_window", {type = 1})
+    return
+  end
+  if gashaPool.Work == 0 or not Z.TimeTools.CheckIsInTimeByTimeId(gashaPool.TimerId) then
+    Z.TipsVM.ShowTips(1382006)
+    return
+  end
+  Z.UIMgr:OpenView("gasha_window", {type = 1, gashaId = gashaId})
 end
 
 function gashaVM.CloseGashaView()
@@ -337,7 +363,7 @@ end
 
 function gashaVM.RegisteFuncShow()
   local mainUiVm_ = Z.VMMgr.GetVM("mainui")
-  mainUiVm_.RegistClientFuncShow(800820, gashaVM.ShowFuncIcon)
+  mainUiVm_.RegistClientFuncShow(E.FunctionID.Gacha, gashaVM.ShowFuncIcon)
 end
 
 function gashaVM.ShowFuncIcon()

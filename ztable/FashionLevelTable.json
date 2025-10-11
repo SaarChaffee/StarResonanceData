@@ -2,7 +2,7 @@
   "1": {
     "Id": 1,
     "Score": 0,
-    "Name": "",
+    "Name": "Trainee",
     "ShortName": "",
     "Icon": "collection_icon_2",
     "Card": "",
@@ -11,7 +11,7 @@
   "2": {
     "Id": 2,
     "Score": 380,
-    "Name": "",
+    "Name": "Explorer",
     "ShortName": "",
     "Icon": "collection_icon_3",
     "Card": "",
@@ -22,7 +22,7 @@
   "3": {
     "Id": 3,
     "Score": 1800,
-    "Name": "",
+    "Name": "Master",
     "ShortName": "",
     "Icon": "collection_icon_4",
     "Card": "",
@@ -33,7 +33,7 @@
   "4": {
     "Id": 4,
     "Score": 3800,
-    "Name": "",
+    "Name": "Magician",
     "ShortName": "",
     "Icon": "collection_icon_5",
     "Card": "",
@@ -44,7 +44,7 @@
   "5": {
     "Id": 5,
     "Score": 12800,
-    "Name": "",
+    "Name": "Seal Watcher",
     "ShortName": "",
     "Icon": "collection_icon_6",
     "Card": "",

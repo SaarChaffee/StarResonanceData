@@ -355,6 +355,8 @@ import "stru_play_action_param.proto";
 import "stru_pollen_update_structure_request.proto";
 import "stru_process_add_request_request.proto";
 import "stru_profession_skill_active_request.proto";
+import "stru_profession_skill_reset_request.proto";
+import "stru_profession_skill_reset_special_request.proto";
 import "stru_profession_skill_upgrade_request.proto";
 import "stru_query_balance_reply.proto";
 import "stru_query_balance_request.proto";
@@ -409,6 +411,7 @@ import "stru_req_union_info_request.proto";
 import "stru_req_union_mems_list_reply.proto";
 import "stru_req_union_mems_list_request.proto";
 import "stru_request_add_friend_request.proto";
+import "stru_reset_profession_talent_by_single_node_request.proto";
 import "stru_reset_profession_talent_request.proto";
 import "stru_reward_personal_friendliness_lv_reply.proto";
 import "stru_reward_personal_friendliness_lv_request.proto";
@@ -2381,6 +2384,30 @@ message World {
 
   message UseProfessionSkillSkin {
     zproto.UseProfessionSkillSkinRequest v_request = 1;
+  }
+
+  message ResetProfessionTalentBySingleNode_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ResetProfessionTalentBySingleNode {
+    zproto.ResetProfessionTalentBySingleNodeRequest v_request = 1;
+  }
+
+  message ProfessionSkillResetSpecial_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionSkillResetSpecial {
+    zproto.ProfessionSkillResetSpecialRequest v_request = 1;
+  }
+
+  message ProfessionSkillReset_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionSkillReset {
+    zproto.ProfessionSkillResetRequest v_request = 1;
   }
 
   message FastCook_Ret {

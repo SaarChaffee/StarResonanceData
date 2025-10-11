@@ -219,6 +219,7 @@ local handlePlaceholderStr = function(content)
   Z.Placeholder.SetMePlaceholder(holderParam)
   local parkourtipsVm = Z.VMMgr.GetVM("parkourtips")
   holderParam = parkourtipsVm.SetParkourRecordPlaceholder(holderParam)
+  holderParam = Z.Placeholder.SetPlayerSelfPronoun(holderParam)
   local content = Z.Placeholder.Placeholder(content, holderParam)
   return content
 end

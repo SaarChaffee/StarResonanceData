@@ -132,7 +132,7 @@ end
 local sdkQuitVoiceRoom = function(roomName)
   Z.VoiceBridge.QuitRoom(roomName)
 end
-local joinTeamVoice = function()
+local joinTeamVoice = function(isReconnection)
   local serverData = Z.DataMgr.Get("server_data")
   local teamData = Z.DataMgr.Get("team_data")
   if teamData.TeamInfo.baseInfo.teamId == nil then
@@ -140,7 +140,7 @@ local joinTeamVoice = function()
   end
   local teamId = tostring(teamData.TeamInfo.baseInfo.teamId)
   local roomName = serverData:GetCurrentZoneId() .. teamId
-  if teamData.VoiceRoomName ~= roomName then
+  if teamData.VoiceRoomName ~= roomName or isReconnection then
     sdkJoinVoiceRoom(roomName)
   end
 end
@@ -245,6 +245,7 @@ local asyncCreatTeam = function(targetId, cancelToken)
     Z.EventMgr:Dispatch(Z.ConstValue.Team.EnterTeam)
     Z.VMMgr.GetVM("chat_main").ClearChannelQueueByChannelId(E.ChatChannelType.EChannelTeam)
     joinTeamVoice()
+    Z.SDKReport.Report(Z.SDKReportEvent.TeamUp)
   end
 end
 local setTeamApplyTime = function(teamId)
@@ -291,7 +292,9 @@ local asyncQuitTeam = function(cancelSource)
     quiteTeamVoice()
     teamData:SetTeamInfo({}, {})
     local param = {
-      player = {name = " "}
+      player = {
+        name = Z.ContainerMgr.CharSerialize.charBase.name
+      }
     }
     Z.TipsVM.ShowTipsLang(1000616, param)
     local teamList = teamData:GetLeaveAndApplyTeam()

@@ -7,10 +7,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "进入静态场景",
     "CommandOrParameterRemark": [
-      697345395,
-      697345396
+      "进入场景",
+      "场景ID 常用场景和对应id：{主城，8}{野图，7}{新手本，5002}"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -23,10 +23,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "进入动态场景",
     "CommandOrParameterRemark": [
-      697346484,
-      697346485
+      "进入动态场景、副本、镜像",
+      "副本ID 常用场景和对应id：{巨塔单人，1101}{巨塔多人，1111}{蒂娜单人，1001}{蒂娜多人，1011}"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -39,10 +39,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "移动位置",
     "CommandOrParameterRemark": [
-      697347573,
-      697347574
+      "移动当前角色",
+      "x轴坐标,y轴坐标,z轴坐标"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -55,9 +55,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "在主城使用-回到取名的视野层级",
     "CommandOrParameterRemark": [
-      697348662
+      "不小心跳过了取名又想取名，重新体验取名环节"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -70,9 +70,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "在主城使用-传送到取名剧情位置",
     "CommandOrParameterRemark": [
-      697349751
+      "传送到取名旅馆内"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -85,9 +85,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "清除屏蔽数据",
     "CommandOrParameterRemark": [
-      697350840
+      "清除屏蔽数据"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -100,10 +100,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "移动至对象位置",
     "CommandOrParameterRemark": [
-      697351929,
-      697351930
+      "移动当前角色至对象位置",
+      "对象Uuid"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -116,9 +116,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "无限星源能量",
     "CommandOrParameterRemark": [
-      697353018
+      "无限星源能量"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -131,9 +131,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "解锁所有职业",
     "CommandOrParameterRemark": [
-      697354107
+      "解锁所有职业"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -146,10 +146,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置技能无CD",
     "CommandOrParameterRemark": [
-      697380243,
-      697380244
+      "设置技能无CD",
+      "状态"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -162,9 +162,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "清空GM属性",
     "CommandOrParameterRemark": [
-      697381332
+      "清空GM属性"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -177,12 +177,12 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "增加属性",
     "CommandOrParameterRemark": [
-      697382421,
-      697382422,
-      697382423,
-      697382424
+      "增加属性",
+      "{属性id|属性值",
+      "属性id|属性值",
+      "...},[对象Uuid.0]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -195,10 +195,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加怪物",
     "CommandOrParameterRemark": [
-      697383510,
-      697383511
+      "添加monster至当前位置",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -211,10 +211,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加Buff效果",
     "CommandOrParameterRemark": [
-      697384599,
-      697384600
+      "添加效果至对象",
+      "效果ID,[对象Uuid],[效果层数],[效果持续时间]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -227,10 +227,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加天赋",
     "CommandOrParameterRemark": [
-      697385688,
-      697385689
+      "添加效果至对象",
+      "效果ID,[对象Uuid],[效果层数],[效果持续时间]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -243,10 +243,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "切换职业",
     "CommandOrParameterRemark": [
-      697386777,
-      697386778
+      "切换职业",
+      "职业id"
     ],
     "AuToClose": true,
     "OnOff": false
@@ -259,10 +259,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加NPC",
     "CommandOrParameterRemark": [
-      697387866,
-      697387867
+      "添加npc至当前位置",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -275,10 +275,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加道具",
     "CommandOrParameterRemark": [
-      697388955,
-      697388956
+      "添加道具",
+      "道具id,[道具数量.1],[绑定状态.1]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -291,10 +291,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加实体",
     "CommandOrParameterRemark": [
-      697390044,
-      697390045
+      "添加实体至当前位置",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -307,10 +307,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "移除Buff效果",
     "CommandOrParameterRemark": [
-      697416180,
-      697416181
+      "移除对象上的效果",
+      "效果ID,[对象Uuid.0]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -323,10 +323,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "释放技能",
     "CommandOrParameterRemark": [
-      697417269,
-      697417270
+      "释放技能",
+      "技能id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -339,10 +339,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "杀死NPC/怪物",
     "CommandOrParameterRemark": [
-      697418358,
-      697418359
+      "杀死NPC",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -355,9 +355,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开道具GM面板",
     "CommandOrParameterRemark": [
-      697419447
+      "打开道具GM面板"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -370,9 +370,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开任务GM面板",
     "CommandOrParameterRemark": [
-      697420536
+      "打开任务GM面板"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -385,9 +385,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "进入视野层级",
     "CommandOrParameterRemark": [
-      697421625
+      "进入视野层级 填视野层级配置id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -400,9 +400,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "退出视野层级",
     "CommandOrParameterRemark": [
-      697422714
+      "退出视野层级 一般0是放弃退出，1是成功退出"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -415,9 +415,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键穿戴已获得最好装备",
     "CommandOrParameterRemark": [
-      697423803
+      "一键穿戴已获得最好装备"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -430,9 +430,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开debugGUI界面",
     "CommandOrParameterRemark": [
-      697424892
+      "0：属性查看 1：buff查看 2：Pure组件查看 3：BGM 4：屏蔽数据记录"
     ],
     "AuToClose": true,
     "OnOff": false
@@ -445,7 +445,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加队友机器人",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -458,9 +458,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "随机坐标传送（性能测试用）",
     "CommandOrParameterRemark": [
-      697452117
+      "根据半径将当前的坐标的x和z随机一个位置"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -473,9 +473,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "切场景并移动到指定坐标",
     "CommandOrParameterRemark": [
-      697453206
+      "支持跨场景并设置坐标到指定位置"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -488,9 +488,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "生体元满级",
     "CommandOrParameterRemark": [
-      697454295
+      "生体元直接满级"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -503,9 +503,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键解锁所有功能",
     "CommandOrParameterRemark": [
-      697455384
+      "不改变等级和任务状态"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -518,9 +518,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键完成所有主线任务（解锁功能临时用）",
     "CommandOrParameterRemark": [
-      697456473
+      "一键完成一阶段所有任务（临时用），用来处理功能的解锁"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -533,9 +533,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键解锁所有职业",
     "CommandOrParameterRemark": [
-      697457562
+      "获取所有武器使，陶洛斯和杰拉德可能有bug加不上，用单独指令尝试一下"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -548,9 +548,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "获取天赋和重置天赋道具",
     "CommandOrParameterRemark": [
-      697458651
+      "获取天赋点和重置天赋道具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -563,9 +563,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加指定重铸次数/完美度装备",
     "CommandOrParameterRemark": [
-      697459740
+      "添加指定重铸次数/完美度装备"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -578,9 +578,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键添加所有共鸣之力道具",
     "CommandOrParameterRemark": [
-      697460829
+      "一键添加所有共鸣之力道具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -593,9 +593,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键解锁所有功能",
     "CommandOrParameterRemark": [
-      736480788
+      "一键解锁所有功能"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -608,9 +608,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键解锁传送点、共鸣",
     "CommandOrParameterRemark": [
-      736481877
+      "一键解锁传送点、共鸣"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -623,9 +623,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键添加所有共鸣之力道具",
     "CommandOrParameterRemark": [
-      736482966
+      "一键添加所有共鸣之力道具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -638,9 +638,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "解锁所有时装",
     "CommandOrParameterRemark": [
-      736484055
+      "解锁所有时装"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -653,9 +653,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "获取货币和特殊道具",
     "CommandOrParameterRemark": [
-      736485144
+      "获取货币和特殊道具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -668,9 +668,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "获取全部采集材料道具、全部制作材料道具",
     "CommandOrParameterRemark": [
-      736486233
+      "获取全部采集材料道具、全部制作材料道具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -683,9 +683,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "获取所有武器和装备",
     "CommandOrParameterRemark": [
-      736487322
+      "获取所有武器和装备"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -698,9 +698,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "获取所有养成道具",
     "CommandOrParameterRemark": [
-      736488411
+      "获取所有养成道具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -713,9 +713,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "获取天赋和天赋道具",
     "CommandOrParameterRemark": [
-      736489500
+      "获取天赋和天赋道具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -728,9 +728,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "获取所有料理道具",
     "CommandOrParameterRemark": [
-      736515636
+      "获取所有料理道具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -743,9 +743,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加所有载具",
     "CommandOrParameterRemark": [
-      736516725
+      "添加所有载具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -758,9 +758,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "获得所有玩具",
     "CommandOrParameterRemark": [
-      736517814
+      "一键添加所有玩具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -773,9 +773,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "解锁所有表情动作",
     "CommandOrParameterRemark": [
-      736518903
+      "解锁所有表情动作"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -788,9 +788,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "上坐骑",
     "CommandOrParameterRemark": [
-      736519992
+      "上坐骑"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -803,9 +803,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "下坐骑",
     "CommandOrParameterRemark": [
-      736521081
+      "下坐骑"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -818,9 +818,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "召唤载具",
     "CommandOrParameterRemark": [
-      736522170
+      "召唤载具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -833,9 +833,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "乘坐载具的指定位置",
     "CommandOrParameterRemark": [
-      736523259
+      "乘坐载具的指定位置"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -848,9 +848,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "下载具",
     "CommandOrParameterRemark": [
-      736524348
+      "下载具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -863,9 +863,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "(卡|慎点)所有交易交换道具",
     "CommandOrParameterRemark": [
-      736525437
+      "获取所有交易交换道具，会卡顿几秒钟"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -878,9 +878,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加所有烹饪、炼制材料999个",
     "CommandOrParameterRemark": [
-      736551573
+      "添加所有烹饪、炼制材料999个"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -893,9 +893,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开道具GM面板",
     "CommandOrParameterRemark": [
-      736552662
+      "打开道具GM面板"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -908,9 +908,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开伤害显示面板",
     "CommandOrParameterRemark": [
-      736553751
+      "打开伤害显示面板"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -923,9 +923,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "开启花火大会",
     "CommandOrParameterRemark": [
-      736554840
+      "开启花火大会（startFirework 1是播普通烟花，startFirework 2是播新年烟花）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -938,9 +938,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "关闭花火大会",
     "CommandOrParameterRemark": [
-      736555929
+      "关闭花火大会"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -953,9 +953,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "单人测试副本用",
     "CommandOrParameterRemark": [
-      736557018
+      "单人测试副本用"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -968,9 +968,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "无敌",
     "CommandOrParameterRemark": [
-      736558107
+      "无敌"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -983,9 +983,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "开启配置了开启条件的功能",
     "CommandOrParameterRemark": [
-      736559196
+      "（功能开启备用，优先使用[一键解锁所有功能]）满足等级和任务条件（需要多执行几次），任务卡住可尝试切换地图"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -998,9 +998,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "删除帐号数据",
     "CommandOrParameterRemark": [
-      736560285
+      "删除帐号数据"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1013,9 +1013,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "开启hudGM",
     "CommandOrParameterRemark": [
-      736561374
+      "开启hudGM，hudGmSwitch 0 关闭 ；hudGmSwitch 1 开启"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1028,9 +1028,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "法杖流派A全天赋",
     "CommandOrParameterRemark": [
-      736587510
+      "法杖流派A全天赋"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1043,9 +1043,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "原地复活",
     "CommandOrParameterRemark": [
-      736588599
+      "复活"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1058,9 +1058,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "巨塔BOSS战（需在巨塔副本内）",
     "CommandOrParameterRemark": [
-      736589688
+      "直接传送到巨塔BOSS房间（需在巨塔副本内）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1073,9 +1073,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "蒂娜BOSS战（需在蒂娜副本内）",
     "CommandOrParameterRemark": [
-      736590777
+      "Teleport to Tina Boss"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1088,7 +1088,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "龙爪BOSS战（需在龙爪副本内）",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1101,7 +1101,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "哥布林巢穴BOSS战（需在哥布林巢穴副本内）",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1114,7 +1114,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Challenge Boss Denvel (In Shadow Bastion)",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1127,7 +1127,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "蒂娜线性入口",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1140,7 +1140,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "巨塔线性",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1153,7 +1153,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "[day2]哥布林（先点我1次！再在下方选择职业）",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1166,7 +1166,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day2-太刀-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1179,7 +1179,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day2-魔杖-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1192,7 +1192,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day2-长枪-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1205,7 +1205,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day2-法环-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1218,7 +1218,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day2-卫刃-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1231,7 +1231,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day2-弓箭-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1244,7 +1244,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day2-剑盾-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1257,7 +1257,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "[day5]蒂娜（先点我1次！再在下方选择职业）",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1270,7 +1270,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day5-太刀-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1283,7 +1283,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day5-魔杖-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1296,7 +1296,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day5-长枪-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1309,7 +1309,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day5-法环-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1322,7 +1322,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day5-卫刃-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1335,7 +1335,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day5-弓箭-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1348,7 +1348,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day5-剑盾-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1361,7 +1361,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "[day7]巨塔（先点我1次！再在下方选择职业）",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1374,7 +1374,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day7-太刀-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1387,7 +1387,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day7-魔杖-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1400,7 +1400,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day7-长枪-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1413,7 +1413,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day7-法环-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1426,7 +1426,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day7-卫刃-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1439,7 +1439,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day7-弓箭-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1452,7 +1452,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day7-剑盾-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1465,7 +1465,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "[day11]卡尼曼（先点我1次！再在下方选择职业）",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1478,7 +1478,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day11-太刀-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1491,7 +1491,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day11-魔杖-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1504,7 +1504,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day11-长枪-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1517,7 +1517,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day11-法环-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1530,7 +1530,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day11-卫刃-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1543,7 +1543,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day11-弓箭-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1556,7 +1556,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day11-剑盾-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1569,7 +1569,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "[day17]龙爪（先点我1次！再在下方选择职业）",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1582,7 +1582,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day17-太刀-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1595,7 +1595,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day17-魔杖-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1608,7 +1608,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day17-长枪-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1621,7 +1621,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day17-法环-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1634,7 +1634,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day17-卫刃-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1647,7 +1647,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day17-弓箭-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1660,7 +1660,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day17-剑盾-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1673,7 +1673,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "[day22]MMM本（先点我1次！再在下方选择职业）",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1686,7 +1686,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day22-太刀-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1699,7 +1699,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day22-魔杖-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1712,7 +1712,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day22-长枪-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1725,7 +1725,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day22-法环-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1738,7 +1738,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day22-卫刃-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1751,7 +1751,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day22-弓箭-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1764,7 +1764,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "day22-剑盾-仅切职业和装备-清装备用cleanPackage 2",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -1777,9 +1777,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "单人测试副本用",
     "CommandOrParameterRemark": [
-      736774818
+      "单人测试副本用"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1792,10 +1792,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "怪物使用技能",
     "CommandOrParameterRemark": [
-      775616181,
-      775616182
+      "添加怪物释放指定技能",
+      "monsterID,技能id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1808,10 +1808,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加怪物",
     "CommandOrParameterRemark": [
-      775617270,
-      775617271
+      "添加monster至当前位置",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1824,10 +1824,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加Buff效果",
     "CommandOrParameterRemark": [
-      775618359,
-      775618360
+      "添加效果至对象",
+      "效果ID,[对象Uuid],[效果层数],[效果持续时间]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1840,10 +1840,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "移除Buff效果",
     "CommandOrParameterRemark": [
-      775619448,
-      775619449
+      "移除对象上的效果",
+      "效果ID,[对象Uuid.0]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1856,12 +1856,12 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "增加属性",
     "CommandOrParameterRemark": [
-      775620537,
-      775620538,
-      775620539,
-      775620540
+      "增加属性",
+      "{属性id|属性值",
+      "属性id|属性值",
+      "...},[对象Uuid.0]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1874,9 +1874,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "自杀",
     "CommandOrParameterRemark": [
-      775621626
+      "自杀"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1889,9 +1889,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "杀死所有玩家",
     "CommandOrParameterRemark": [
-      775622715
+      "杀死所有玩家"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1904,9 +1904,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "杀死所有小怪",
     "CommandOrParameterRemark": [
-      775623804
+      "杀死所有小怪"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1919,10 +1919,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置武器使怒气资源",
     "CommandOrParameterRemark": [
-      775624893,
-      775624894
+      "设置武器使怒气资源",
+      "[资源id，怒气13001],[值]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1935,9 +1935,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "禁用/启用怪物AI",
     "CommandOrParameterRemark": [
-      775651029
+      "禁用/启用怪物AI"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1950,12 +1950,12 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "显示角色属性",
     "CommandOrParameterRemark": [
-      775652118,
-      775652119,
-      775652120,
-      775652121
+      "显示角色属性(可在函数GMShowActorAttr自定义)",
+      "[对象Uuid.0]",
+      "显示属性类型(0-所有；1-所有不为0且不为nil；2-所有不为0的战斗属性；3-指定属性Id对应属性)",
+      "{属性id|属性id|...}"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1968,9 +1968,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "清除所有属性修改",
     "CommandOrParameterRemark": [
-      775653207
+      "清除所有对武器使属性的修改内容"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1983,9 +1983,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "战斗资源获取UP",
     "CommandOrParameterRemark": [
-      775654296
+      "战斗资源获取UP"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -1998,10 +1998,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置激昂状态",
     "CommandOrParameterRemark": [
-      775655385,
-      775655386
+      "设置激昂状态至对象",
+      "对象uuid,激昂状态"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2014,10 +2014,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置技能无CD",
     "CommandOrParameterRemark": [
-      775656474,
-      775656475
+      "设置技能无CD",
+      "状态"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2030,10 +2030,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "释放技能",
     "CommandOrParameterRemark": [
-      775657563,
-      775657564
+      "释放技能",
+      "技能id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2046,10 +2046,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "切换职业",
     "CommandOrParameterRemark": [
-      775658652,
-      775658653
+      "切换职业",
+      "职业id"
     ],
     "AuToClose": true,
     "OnOff": false
@@ -2062,10 +2062,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "杀死NPC/怪物",
     "CommandOrParameterRemark": [
-      775659741,
-      775659742
+      "杀死NPC",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2078,9 +2078,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "快速回能（跑酷）",
     "CommandOrParameterRemark": [
-      775660830
+      "快速回能（跑酷）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2093,9 +2093,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "解锁所有职业",
     "CommandOrParameterRemark": [
-      775686966
+      "解锁所有职业"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2108,9 +2108,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "无敌",
     "CommandOrParameterRemark": [
-      775688055
+      "无敌"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2123,9 +2123,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "解锁职业",
     "CommandOrParameterRemark": [
-      775689144
+      "解锁职业"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2138,11 +2138,11 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加护盾",
     "CommandOrParameterRemark": [
-      775690233,
-      775690234,
-      775690235
+      "护盾类型",
+      "护盾值",
+      "护盾持续时间"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2155,10 +2155,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开UI",
     "CommandOrParameterRemark": [
-      775691322,
-      775691323
+      "打开指定UI界面",
+      "功能id"
     ],
     "AuToClose": true,
     "OnOff": false
@@ -2171,9 +2171,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "单人测试副本用",
     "CommandOrParameterRemark": [
-      775692411
+      "单人测试副本用"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2186,10 +2186,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "怪物无CD 使用技能",
     "CommandOrParameterRemark": [
-      775693500,
-      775693501
+      "怪物无CD 释放指定技能",
+      "monsterID,技能id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2202,9 +2202,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "复活",
     "CommandOrParameterRemark": [
-      775694589
+      "复活"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2217,9 +2217,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "单人测试副本用",
     "CommandOrParameterRemark": [
-      775695678
+      "单人测试副本用"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2232,9 +2232,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "主城允许释放技能",
     "CommandOrParameterRemark": [
-      775696767
+      "主城允许释放技能"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2247,9 +2247,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "清除无敌效果",
     "CommandOrParameterRemark": [
-      775722903
+      "清除无敌效果"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2262,10 +2262,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "修改实体表现状态",
     "CommandOrParameterRemark": [
-      775723992,
-      775723993
+      "修改实体表现状态，实体uuid",
+      "表现状态枚举"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2278,9 +2278,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "副本状态",
     "CommandOrParameterRemark": [
-      814751574
+      "切换到副本下一个状态"
     ],
     "AuToClose": true,
     "OnOff": false
@@ -2293,9 +2293,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "显示切换次元按钮",
     "CommandOrParameterRemark": [
-      814752663
+      "显示切换次元按钮"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2308,9 +2308,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "进入副本营救蒂娜",
     "CommandOrParameterRemark": [
-      814753752
+      "进入副本营救蒂娜"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2323,9 +2323,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "跑图专用",
     "CommandOrParameterRemark": [
-      814754841
+      "跑图专用"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2338,11 +2338,11 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "副本强制进入结算",
     "CommandOrParameterRemark": [
-      814755930,
-      814755931,
-      814755932
+      "参数配",
+      "1 为副本胜利 参数配",
+      "0 为副本失败"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2355,9 +2355,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "解锁大秘境关卡（参数填0解锁所有，填具体数字解锁单个房间）",
     "CommandOrParameterRemark": [
-      814757019
+      "参数填0解锁所有，填具体数字解锁单个房间"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2370,9 +2370,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "修改副本目标id",
     "CommandOrParameterRemark": [
-      814758108
+      "修改副本目标id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2385,9 +2385,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "清除当前副本的所有词缀(不清除已触发的效果)",
     "CommandOrParameterRemark": [
-      814759197
+      "清除当前副本的所有词缀(不清除已触发的效果)"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2400,9 +2400,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "清除当前副本的所有词缀buff",
     "CommandOrParameterRemark": [
-      814760286
+      "清除当前副本的所有词缀buff"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2415,10 +2415,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "重新随机当前场景的词缀",
     "CommandOrParameterRemark": [
-      814786422,
-      814786423
+      "重新随机当前场景的词缀",
+      "[随机词缀池id]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2431,10 +2431,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "执行某个随机库的随机结果并输出日志",
     "CommandOrParameterRemark": [
-      814787511,
-      814787512
+      "执行某个随机库的随机结果并输出日志",
+      "[随机词缀池id]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2447,10 +2447,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "主动触发某个Actor的enterScene事件",
     "CommandOrParameterRemark": [
-      814788600,
-      814788601
+      "主动触发某个Actor的enterScene事件",
+      "[触发者id]（不填或填0 场景所有actor 都触发）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2463,9 +2463,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "主动触发场景词缀事件",
     "CommandOrParameterRemark": [
-      814789689
+      "主动触发场景词缀事件"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2478,9 +2478,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "触发关卡事件",
     "CommandOrParameterRemark": [
-      814790778
+      "触发关卡事件"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2493,10 +2493,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "播放过场动画",
     "CommandOrParameterRemark": [
-      814791867,
-      814791868
+      "播放过场动画",
+      "过场动画id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2509,10 +2509,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "结束过场动画",
     "CommandOrParameterRemark": [
-      814792956,
-      814792957
+      "结束过场动画",
+      "过场动画id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2525,9 +2525,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "执行交互模板事件",
     "CommandOrParameterRemark": [
-      814794045
+      "执行交互模板事件 前后端都会触发，会执行后端OnUserDoAction以及前端OnOptionSelect"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2540,9 +2540,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "直接传送到新手BOSS房间（需在新手场景内）",
     "CommandOrParameterRemark": [
-      814795134
+      "直接传送到新手BOSS房间（需在新手场景内）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2555,9 +2555,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Trigger customized level events",
     "CommandOrParameterRemark": [
-      814796223
+      "Trigger customized level events"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2570,10 +2570,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加装备",
     "CommandOrParameterRemark": [
-      853886967,
-      853886968
+      "添加装备",
+      "道具id,[gs等级.100],[绑定状态.1]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2586,9 +2586,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "洗练属性",
     "CommandOrParameterRemark": [
-      853888056
+      "洗练属性"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2601,9 +2601,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "保存洗练属性",
     "CommandOrParameterRemark": [
-      853889145
+      "保存洗练属性"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2616,11 +2616,11 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "穿装备",
     "CommandOrParameterRemark": [
-      853890234,
-      853890235,
-      853890236
+      "穿装备",
+      "部位id,",
+      "道具uuid"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2633,10 +2633,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "脱装备",
     "CommandOrParameterRemark": [
-      853891323,
-      853891324
+      "脱装备",
+      "部位id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2649,10 +2649,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置耐久度",
     "CommandOrParameterRemark": [
-      853892412,
-      853892413
+      "设置耐久度",
+      "道具uuid,耐久度值"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2665,9 +2665,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "装备转移",
     "CommandOrParameterRemark": [
-      853893501
+      "装备转移"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2680,10 +2680,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "装备突破",
     "CommandOrParameterRemark": [
-      853894590,
-      853894591
+      "装备突破",
+      "道具uuid"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2696,9 +2696,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "装备分解",
     "CommandOrParameterRemark": [
-      853895679
+      "装备分解"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2711,9 +2711,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "mod分解",
     "CommandOrParameterRemark": [
-      853921815
+      "mod分解"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2726,10 +2726,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "掉落物品",
     "CommandOrParameterRemark": [
-      853922904,
-      853922905
+      "掉落指定怪物的掉落物",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2742,10 +2742,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加道具",
     "CommandOrParameterRemark": [
-      853923993,
-      853923994
+      "添加道具",
+      "道具id,[道具数量.1],[绑定状态.1]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2758,10 +2758,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "整理背包",
     "CommandOrParameterRemark": [
-      853925082,
-      853925083
+      "整理背包",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2774,10 +2774,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "使用物品",
     "CommandOrParameterRemark": [
-      853926171,
-      853926172
+      "使用物品",
+      "道具Id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2790,9 +2790,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "消耗物品",
     "CommandOrParameterRemark": [
-      853927260
+      "消耗物品"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2805,9 +2805,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "来点血瓶，兄弟",
     "CommandOrParameterRemark": [
-      853928349
+      "添加999瓶药"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2820,11 +2820,11 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "显示GM属性",
     "CommandOrParameterRemark": [
-      853929438,
-      853929439,
-      853929440
+      "显示属性",
+      "{属性id",
+      "属性id...},[对象Uuid.0]）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2837,9 +2837,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加当前职业的所有天赋",
     "CommandOrParameterRemark": [
-      853930527
+      "0：默认当前职业，不支持职业选择"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2852,9 +2852,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "删除activeProfessionTalent添加的职业天赋，可以指定职业",
     "CommandOrParameterRemark": [
-      853931616
+      "0：默认当前职业，支持输入职业id删除"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2867,9 +2867,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "增加100个扭蛋券",
     "CommandOrParameterRemark": [
-      853957752
+      "目前只有一个奖池"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2882,9 +2882,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键添加发型解锁券道具",
     "CommandOrParameterRemark": [
-      853958841
+      "包含男女发型解锁券，会导致美容功能出现点不掉的小红点，不用报bug"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2897,10 +2897,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Set Container Value",
     "CommandOrParameterRemark": [
-      853959930,
-      853959931
+      "Set Container Value",
+      "Container Value ID, Value"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2913,10 +2913,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Set Claimed Gift Record",
     "CommandOrParameterRemark": [
-      853961019,
-      853961020
+      "Set Claimed Gift Record",
+      "Award ID, Quantity"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2929,10 +2929,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Get Drop Container Value",
     "CommandOrParameterRemark": [
-      853962108,
-      853962109
+      "Get Drop Container Value",
+      "Container Value ID"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2945,10 +2945,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Set Luck Value",
     "CommandOrParameterRemark": [
-      853963197,
-      853963198
+      "Set Luck Value",
+      "Luck Value ID, Value"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2961,10 +2961,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Get Luck Value",
     "CommandOrParameterRemark": [
-      853964286,
-      853964287
+      "Get Luck Value",
+      "Luck Value ID"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2977,10 +2977,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Convert Luck Value to Container Value",
     "CommandOrParameterRemark": [
-      853965375,
-      853965376
+      "Convert Luck Value to Container Value",
+      "Luck Value ID"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -2993,9 +2993,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开任务GM面板",
     "CommandOrParameterRemark": [
-      893022360
+      "打开任务GM面板"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3008,10 +3008,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "接取任务",
     "CommandOrParameterRemark": [
-      893023449,
-      893023450
+      "接取任务",
+      "任务id,步骤id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3024,10 +3024,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "完成任务",
     "CommandOrParameterRemark": [
-      893024538,
-      893024539
+      "完成任务",
+      "任务id,步骤id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3040,10 +3040,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "移除任务",
     "CommandOrParameterRemark": [
-      893025627,
-      893025628
+      "移除任务",
+      "任务id,步骤id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3056,10 +3056,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "完成到指定主线任务",
     "CommandOrParameterRemark": [
-      893026716,
-      893026717
+      "完成到指定主线任务",
+      "任务id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3072,9 +3072,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "任务跑测大礼包",
     "CommandOrParameterRemark": [
-      893027805
+      "无敌、开启跑酷、开启传送点、环境共鸣"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3087,9 +3087,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "进入视野层级",
     "CommandOrParameterRemark": [
-      893028894
+      "进入视野层级 填视野层级配置id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3102,9 +3102,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "退出视野层级",
     "CommandOrParameterRemark": [
-      893029983
+      "退出视野层级 一般0是放弃退出，1是成功退出"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3117,15 +3117,15 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "移动至对象位置",
     "CommandOrParameterRemark": [
-      893031072,
-      893031073,
-      893031074,
-      893031075,
-      893031076,
-      893031077,
-      893031078
+      "移动至对象位置",
+      "实体uid,实体typeid（实体type，1",
+      "Monster，2",
+      "",
+      "SceneObject，5",
+      "Zone，16",
+      "Collection）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3138,10 +3138,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "进入静态场景",
     "CommandOrParameterRemark": [
-      893057208,
-      893057209
+      "进入场景",
+      "场景ID 常用场景和对应id：{主城，8}{野图，7}{高原，9}"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3154,7 +3154,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置玩家等级",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -3167,10 +3167,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "进入动态场景",
     "CommandOrParameterRemark": [
-      893059386,
-      893059387
+      "进入动态场景、副本、镜像",
+      "副本ID 常用场景和对应id：{巨塔单人，1101}{巨塔多人，1111}{蒂娜单人，1001}{蒂娜多人，1011}"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3183,10 +3183,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "播放过场动画",
     "CommandOrParameterRemark": [
-      893060475,
-      893060476
+      "播放过场动画",
+      "过场动画id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3199,10 +3199,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "结束过场动画",
     "CommandOrParameterRemark": [
-      893061564,
-      893061565
+      "结束过场动画",
+      "过场动画id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3215,10 +3215,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开流图",
     "CommandOrParameterRemark": [
-      893062653,
-      893062654
+      "打开流图",
+      "流图ID"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3231,10 +3231,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "停止流图",
     "CommandOrParameterRemark": [
-      893063742,
-      893063743
+      "停止流图",
+      "流图ID（不填或填0 则停止当前的流图）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3247,9 +3247,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "开启跑酷",
     "CommandOrParameterRemark": [
-      893064831
+      "开启跑酷"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3262,9 +3262,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "解锁调查",
     "CommandOrParameterRemark": [
-      893065920
+      "解锁调查参数0解锁所有，有参数解锁指定id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3277,9 +3277,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "完成当前追踪中的任务步骤",
     "CommandOrParameterRemark": [
-      893067009
+      "完成当前任务步骤"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3292,9 +3292,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "跳过当前任务动态条件",
     "CommandOrParameterRemark": [
-      893093145
+      "跳过当前任务动态条件"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3307,7 +3307,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "增加5000赛季经验",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -3320,10 +3320,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "直接设置赛季头衔",
     "CommandOrParameterRemark": [
-      893095323,
-      893095324
+      "直接设置赛季头衔",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3336,9 +3336,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "手动触发英雄本轮转刷新机制",
     "CommandOrParameterRemark": [
-      893096412
+      "执行后直接刷新副本入口"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3351,9 +3351,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "升级到最高头衔",
     "CommandOrParameterRemark": [
-      893097501
+      "升级到[至高赏金猎手]"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3366,9 +3366,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "触发采集目标1次",
     "CommandOrParameterRemark": [
-      893098590
+      "包括采集+摸鱼"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3381,9 +3381,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "触发杀怪目标1次",
     "CommandOrParameterRemark": [
-      893099679
+      "击杀精英怪、首领1次"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3396,9 +3396,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "触发杀普通怪物目标1次",
     "CommandOrParameterRemark": [
-      893100768
+      "击杀普通怪物（每日活跃）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3411,9 +3411,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "触发钓鱼目标1次",
     "CommandOrParameterRemark": [
-      893101857
+      "钓鱼"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3426,9 +3426,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "触发委托完成目标1次",
     "CommandOrParameterRemark": [
-      893102946
+      "每日开拓局委托"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3441,9 +3441,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "触发烹饪目标1次",
     "CommandOrParameterRemark": [
-      893129082
+      "制作料理"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3456,10 +3456,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置捏脸数据",
     "CommandOrParameterRemark": [
-      932157753,
-      932157754
+      "设置捏脸数据",
+      "捏脸类型，类型ID"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3472,10 +3472,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "功能开关",
     "CommandOrParameterRemark": [
-      932158842,
-      932158843
+      "控制功能开启/关闭",
+      "功能id,状态"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3488,10 +3488,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "发送奖励",
     "CommandOrParameterRemark": [
-      932159931,
-      932159932
+      "发送奖励",
+      "奖励id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3504,10 +3504,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "显示通知公告",
     "CommandOrParameterRemark": [
-      932161020,
-      932161021
+      "显示通知公告",
+      "通知公告id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3520,9 +3520,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "显示玩家装等",
     "CommandOrParameterRemark": [
-      932162109
+      "显示玩家装等"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3535,10 +3535,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "更改头像",
     "CommandOrParameterRemark": [
-      932163198,
-      932163199
+      "更改头像",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3551,10 +3551,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开流图",
     "CommandOrParameterRemark": [
-      932164287,
-      932164288
+      "打开流图",
+      "流图ID"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3567,10 +3567,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "停止流图",
     "CommandOrParameterRemark": [
-      932165376,
-      932165377
+      "停止流图",
+      "流图ID（不填或填0 则停止当前的流图）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3583,10 +3583,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "修改任务目标数量",
     "CommandOrParameterRemark": [
-      932166465,
-      932166466
+      "修改任务目标数量",
+      "任务id,目标index,数量"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3599,10 +3599,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "更改名字",
     "CommandOrParameterRemark": [
-      932192601,
-      932192602
+      "更改名字",
+      "name→仅英文+数字"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3615,10 +3615,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "修改任务追踪",
     "CommandOrParameterRemark": [
-      932193690,
-      932193691
+      "修改任务任务追踪",
+      "任务id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3631,9 +3631,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键添加所有时装",
     "CommandOrParameterRemark": [
-      932194779
+      "一键添加所有时装，获得后在衣橱中更换使用"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3646,11 +3646,11 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置分辨率",
     "CommandOrParameterRemark": [
-      932195868,
-      932195869,
-      932195870
+      "宽",
+      "高",
+      "是否全屏"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3663,9 +3663,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "是否使用PC的UI",
     "CommandOrParameterRemark": [
-      932196957
+      "setIsPCUI 1：表示设置unity打开游戏为PC包显示UI样式，使用GM指令，然后重新运行，unity才会显示为PC端UI样式并且默认主界面隐藏鼠标，移动鼠标移动镜头；setIsPCUI 0：设置unity打开游戏为手机包显示UI样式，进入后默认鼠标显示，长按鼠标右键移动镜头，键位还是会响应"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3678,10 +3678,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "掉落物品",
     "CommandOrParameterRemark": [
-      932198046,
-      932198047
+      "掉落指定怪物的掉落物",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3694,10 +3694,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "整理背包",
     "CommandOrParameterRemark": [
-      932199135,
-      932199136
+      "整理背包",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3710,10 +3710,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "使用物品",
     "CommandOrParameterRemark": [
-      932200224,
-      932200225
+      "使用物品",
+      "道具Id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3726,9 +3726,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "消耗物品",
     "CommandOrParameterRemark": [
-      932201313
+      "消耗物品"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3741,9 +3741,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置玩家路点",
     "CommandOrParameterRemark": [
-      932202402
+      "设置玩家路点"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3756,9 +3756,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "取消玩家路点",
     "CommandOrParameterRemark": [
-      932228538
+      "取消玩家路点"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3771,9 +3771,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "锁定相机",
     "CommandOrParameterRemark": [
-      932229627
+      "锁定相机"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3786,9 +3786,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "解锁相机",
     "CommandOrParameterRemark": [
-      932230716
+      "解锁相机"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3801,9 +3801,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "保存捏脸数据",
     "CommandOrParameterRemark": [
-      932231805
+      "在捏脸界面使用，保存捏脸数据"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3816,10 +3816,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "读取捏脸数据",
     "CommandOrParameterRemark": [
-      932232894,
-      932232895
+      "在捏脸界面使用，读取捏脸数据",
+      "文件路径"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3832,9 +3832,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "保存衣橱数据",
     "CommandOrParameterRemark": [
-      932233983
+      "在衣橱界面使用，保存衣橱数据"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3847,10 +3847,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "读取衣橱数据",
     "CommandOrParameterRemark": [
-      932235072,
-      932235073
+      "在衣橱界面使用，读取衣橱数据",
+      "文件路径"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3863,11 +3863,11 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "显示引导",
     "CommandOrParameterRemark": [
-      932236161,
-      932236162,
-      932236163
+      "显示引导",
+      "引导ID",
+      "引导id..."
     ],
     "AuToClose": true,
     "OnOff": false
@@ -3880,9 +3880,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "关闭伤害面板",
     "CommandOrParameterRemark": [
-      932237250
+      "关闭伤害面板"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3895,9 +3895,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "清除引导完成状态",
     "CommandOrParameterRemark": [
-      932238339
+      "清除引导完成状态"
     ],
     "AuToClose": true,
     "OnOff": false
@@ -3910,15 +3910,15 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "清理背包",
     "CommandOrParameterRemark": [
-      932264475,
-      932264476,
-      932264477,
-      932264478,
-      932264479,
-      932264480,
-      932264481
+      "清理背包",
+      "ItemPackage.id，0",
+      "所有容器，1",
+      "背包道具，2",
+      "装备，5",
+      "迹象，7",
+      "衣橱"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3931,14 +3931,14 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "解锁传送点",
     "CommandOrParameterRemark": [
-      932265564,
-      932265565,
-      932265566,
-      932265567,
-      932265568,
-      932265569
+      "解锁传送mapId",
+      "地图id，type",
+      "传送点类型，0",
+      "所有，1",
+      "传送点，2",
+      "Engram Hub"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3951,10 +3951,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "完成问卷",
     "CommandOrParameterRemark": [
-      932266653,
-      932266654
+      "完成问卷",
+      "问卷id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3967,9 +3967,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "保存捏脸lua数据",
     "CommandOrParameterRemark": [
-      932267742
+      "在捏脸界面使用，保存捏脸数据"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3982,9 +3982,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "读取捏脸lua数据",
     "CommandOrParameterRemark": [
-      932268831
+      "在衣橱界面使用，读取衣橱数据文件名"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -3997,9 +3997,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "读取指定路径捏脸lua数据",
     "CommandOrParameterRemark": [
-      932269920
+      "在衣橱界面使用，读取衣橱数据目录/文件名"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4012,9 +4012,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "关闭特效显示",
     "CommandOrParameterRemark": [
-      932271009
+      "屏蔽所有动态添加的特效显示"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4027,9 +4027,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "关闭Hud显示",
     "CommandOrParameterRemark": [
-      932272098
+      "屏蔽所有Hud显示"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4042,9 +4042,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "活动id，即将开启状态设置还有多长时间",
     "CommandOrParameterRemark": [
-      932273187
+      "活动id，即将开启状态设置还有多长时间"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4057,9 +4057,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "加排行榜积分",
     "CommandOrParameterRemark": [
-      932274276
+      "加排行榜积分"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4072,9 +4072,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "加活动进度",
     "CommandOrParameterRemark": [
-      932300412
+      "加活动进度"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4087,9 +4087,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "开启&关闭上帝模式",
     "CommandOrParameterRemark": [
-      932301501
+      "开启&关闭上帝模式"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4102,9 +4102,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加客户端Buff",
     "CommandOrParameterRemark": [
-      932302590
+      "添加客户端Buff"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4117,9 +4117,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "删除客户端Buff",
     "CommandOrParameterRemark": [
-      932303679
+      "删除客户端Buff"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4132,7 +4132,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置扭蛋大小保底次数（共享保底id=大保底X=小保底Y）",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -4145,9 +4145,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "查询扭蛋大小保底次数",
     "CommandOrParameterRemark": [
-      932305857
+      "已不可用"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4160,9 +4160,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "保存捏脸lua数据",
     "CommandOrParameterRemark": [
-      932306946
+      "在捏脸界面使用，保存捏脸数据"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4175,9 +4175,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "读取捏脸lua数据",
     "CommandOrParameterRemark": [
-      932308035
+      "在衣橱界面使用，读取衣橱数据文件名"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4190,9 +4190,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "调整网络模式",
     "CommandOrParameterRemark": [
-      932309124
+      "调整网络模式，0普通模式，网络好的情况下更顺畅，1弱网优化模式，弱网下表现更好"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4205,9 +4205,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加的目标数量，为0则会增加一个超大值，触发完",
     "CommandOrParameterRemark": [
-      932310213
+      "targetType详见任务配置对应表格的目标枚举"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4220,9 +4220,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "创建协会后解锁协会场景",
     "CommandOrParameterRemark": [
-      932336349
+      "跳过协会场景众筹环节"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4235,9 +4235,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "获得协会经验、协会资金",
     "CommandOrParameterRemark": [
-      932337438
+      "协会经验道具ID10010001，协会资金道具ID10010002"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4250,7 +4250,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "加100协会活跃",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -4263,9 +4263,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "模拟充值",
     "CommandOrParameterRemark": [
-      932339616
+      "payment productId,0（productID为payment表ID，0为充值成功，1为充值失败）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4278,9 +4278,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "商城充值中的重置首充",
     "CommandOrParameterRemark": [
-      932340705
+      "商城充值中的重置首充，针对服务器所有人生效"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4293,9 +4293,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "关闭首充",
     "CommandOrParameterRemark": [
-      932341794
+      "后面参数修改为0则为开启首充"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4308,9 +4308,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "关闭加赠",
     "CommandOrParameterRemark": [
-      932342883
+      "后面参数修改为0则为开启加赠"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4323,9 +4323,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "测试的优惠券各获得一张",
     "CommandOrParameterRemark": [
-      932343972
+      "优惠券配置见mallcoupons表"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4338,9 +4338,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "切换特效是否异步加载",
     "CommandOrParameterRemark": [
-      932345061
+      "切换特效是否异步加载"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4353,9 +4353,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "切换特效是否监控数量",
     "CommandOrParameterRemark": [
-      932346150
+      "切换特效是否监控数量"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4368,9 +4368,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Display all outfits?",
     "CommandOrParameterRemark": [
-      932372286
+      "setShowAllFashion 0: Hide locked outfits 1: Show all outfits"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4383,9 +4383,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Request 100MB of dirty memory",
     "CommandOrParameterRemark": [
-      932373375
+      "Request 100MB of dirty memory"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4398,9 +4398,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Enable Power Saving Mode?",
     "CommandOrParameterRemark": [
-      932374464
+      "setSavePowerOpen 1: Turn on Power Saving Mode, setSavePowerOpen 0: Turn off Power Saving Mode"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4413,9 +4413,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置Rpc超时",
     "CommandOrParameterRemark": [
-      971293146
+      "Rpc超时时间，单位毫秒，默认值为5000"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4428,9 +4428,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "重载Lua",
     "CommandOrParameterRemark": [
-      971294235
+      "服务器重载Lua配置"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4443,9 +4443,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "退出登录",
     "CommandOrParameterRemark": [
-      971295324
+      "退出登录并删除缓存的账户信息"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4458,9 +4458,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "显示流式加载调试数据",
     "CommandOrParameterRemark": [
-      971296413
+      "显示流式加载调试数据"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4473,7 +4473,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "执行lua代码",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -4486,9 +4486,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "执行lua代码文件",
     "CommandOrParameterRemark": [
-      971298591
+      "只能执行搜索路径下的文件，使用的是相对路径"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4501,9 +4501,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "显示当日产出装等",
     "CommandOrParameterRemark": [
-      971299680
+      "显示当日产出装等"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4516,10 +4516,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置赛季日期",
     "CommandOrParameterRemark": [
-      971300769,
-      971300770
+      "设置赛季日期",
+      "赛季,天数"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4532,9 +4532,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "返回服务器时间和时区（可能弃用了）",
     "CommandOrParameterRemark": [
-      971301858
+      "当前服务器时间和时区（可能弃用了）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4547,9 +4547,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开区域调试",
     "CommandOrParameterRemark": [
-      971327994
+      "设置后需要重新进入当前场景"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4562,9 +4562,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "关闭区域调试",
     "CommandOrParameterRemark": [
-      971329083
+      "设置后需要重新进入当前场景"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4577,9 +4577,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "事件日志开关",
     "CommandOrParameterRemark": [
-      971330172
+      "事件日志开关，0打开，1关闭"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4592,9 +4592,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "打开DebugLog窗口",
     "CommandOrParameterRemark": [
-      971331261
+      "打开DebugLog窗口"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4607,9 +4607,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加任意数量克隆主角的Model",
     "CommandOrParameterRemark": [
-      971332350
+      "添加任意数量克隆主角的Model"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4622,9 +4622,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "快速确认读表问题",
     "CommandOrParameterRemark": [
-      971333439
+      "快速确认读表问题"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4637,9 +4637,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置赛季",
     "CommandOrParameterRemark": [
-      971334528
+      "设置赛季，赛季index需要大于0为有效赛季"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4652,9 +4652,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "清除本地偏好设置",
     "CommandOrParameterRemark": [
-      971335617
+      "清除所有本地偏好设置，调用的是是UserDataManager.Clear()"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4667,9 +4667,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "切换内网登录",
     "CommandOrParameterRemark": [
-      971336706
+      "绕过SDK通过内网输入Id登录,1切换，0还原。(仅在登录界面且SDK未登录时有效)"
     ],
     "AuToClose": true,
     "OnOff": false
@@ -4682,9 +4682,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "输出各模块战斗力日志",
     "CommandOrParameterRemark": [
-      971337795
+      "服务器日志输出自己的战斗力模块分布"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4697,9 +4697,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "暴力测试战斗相关流程(别乱点 会出事的)",
     "CommandOrParameterRemark": [
-      971363931
+      "暴力测试战斗相关流程(别乱点 会出事的)"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4712,9 +4712,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "暴力测试当前场景的所有事件(别乱点 会出事的)",
     "CommandOrParameterRemark": [
-      971365020
+      "暴力测试当前场景的所有事件(别乱点 会出事的)"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4727,9 +4727,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "读取当前服务器时间（包含偏移）",
     "CommandOrParameterRemark": [
-      971366109
+      "读取当前服务器时间（包含偏移）"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4742,9 +4742,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "设置相对时间偏移（针对当前服务器时间进行偏移，累加，无记忆）",
     "CommandOrParameterRemark": [
-      971367198
+      "执行后需要通过getTime确认时间已经偏移后再进行测试，执行过程需要10s左右"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4757,10 +4757,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加好友（无需同意）",
     "CommandOrParameterRemark": [
-      1010428539,
-      1010428540
+      "添加好友",
+      "好友UID"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4773,10 +4773,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "增加友好度经验",
     "CommandOrParameterRemark": [
-      1010429628,
-      1010429629
+      "增加友好度经验，不受上限控制",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4789,10 +4789,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "提升友好度等级",
     "CommandOrParameterRemark": [
-      1010430717,
-      1010430718
+      "提升友好度等级，不得低于当前等级",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4805,9 +4805,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "解锁极限空间评分级副本",
     "CommandOrParameterRemark": [
-      1010431806
+      "解锁极限空间评分级副本"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4820,9 +4820,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "进入玩法副本",
     "CommandOrParameterRemark": [
-      1010432895
+      "进入玩法副本"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4835,9 +4835,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "开启五段跳",
     "CommandOrParameterRemark": [
-      1537477123
+      "开启五段跳"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4850,9 +4850,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "开启漂浮",
     "CommandOrParameterRemark": [
-      1537478212
+      "开启漂浮"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4865,9 +4865,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "开启滑翔",
     "CommandOrParameterRemark": [
-      1537479301
+      "开启滑翔"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4880,10 +4880,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加场景物件",
     "CommandOrParameterRemark": [
-      1537480390,
-      1537480391
+      "添加场景物件至当前位置",
+      ""
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4896,9 +4896,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "添加个人（私人）实体",
     "CommandOrParameterRemark": [
-      1537481479
+      "添加个人（私人）实体"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4911,9 +4911,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "删除个人（私人）实体",
     "CommandOrParameterRemark": [
-      1537482568
+      "删除个人（私人）实体"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4926,9 +4926,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "开启跑酷",
     "CommandOrParameterRemark": [
-      1537483657
+      "开启跑酷"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4941,9 +4941,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "学习幻影冲锋",
     "CommandOrParameterRemark": [
-      1537484746
+      "学习幻影冲锋"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4956,9 +4956,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "环境共鸣技能激活",
     "CommandOrParameterRemark": [
-      1537485835
+      "环境共鸣技能激活"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4971,9 +4971,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键解锁所有传送点",
     "CommandOrParameterRemark": [
-      1537511971
+      "一键解锁所有传送点"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -4986,9 +4986,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键解锁断流点",
     "CommandOrParameterRemark": [
-      1537513060
+      "0代表解锁当前地图所有断流点（当前有性能问题 使用后需要重启客户端）输入断流点ID解锁当前地图指定枢纽下的断流点。50001：平原崖之遗迹；50002：平原英雄碑林；50003：平原安德拉废都；50004：平原明斯特霍恩；50005：平原卡尼曼"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -5001,9 +5001,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "开启所有委托调查",
     "CommandOrParameterRemark": [
-      1537514149
+      "委托调查每天刷3个，输入GM指令将开启所有委托调查的入口，输入指令后，需要重新在开拓局接一次任务，接完后将开启所有委托"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -5016,9 +5016,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "获得所有玩具",
     "CommandOrParameterRemark": [
-      1537515238
+      "一键添加所有玩具"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -5031,10 +5031,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "进入社区场景",
     "CommandOrParameterRemark": [
-      1576612516,
-      1576612517
+      "进入社区场景",
+      "场景id,社区编号"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -5047,10 +5047,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "使用社区地块",
     "CommandOrParameterRemark": [
-      1576613605,
-      1576613606
+      "使用社区地块",
+      "地块id"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -5063,10 +5063,10 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "进入内景",
     "CommandOrParameterRemark": [
-      1576614694,
-      1576614695
+      "进入内景",
+      "需要再外景副本内执行"
     ],
     "AuToClose": false,
     "OnOff": false
@@ -5079,7 +5079,7 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "一键添加家园家具",
     "CommandOrParameterRemark": [],
     "AuToClose": false,
     "OnOff": false
@@ -5092,9 +5092,9 @@
     "ParameterOrContent": [],
     "OptionalParameter": [],
     "ParameterCheck": [],
-    "ButtonShow": "",
+    "ButtonShow": "Save Homestead data locally",
     "CommandOrParameterRemark": [
-      1576616872
+      "Save Homestead data locally"
     ],
     "AuToClose": false,
     "OnOff": false

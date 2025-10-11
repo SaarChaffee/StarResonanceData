@@ -549,7 +549,7 @@ function Recommendedplay_mainView:RefreshUnionActivityRewardNum(functionID)
     end
   end
   normalAwardCount = maxLimitNum - nowAwardCount
-  local langString = self.uiBinder.Ref:SetVisible(self.uiBinder.lab_surplusetime, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_surplusetime, true)
   self.uiBinder.lab_surplusetime.text = Lang("UnionHuntAwardTotalCount", {cur = normalAwardCount, max = maxLimitNum})
 end
 
@@ -636,7 +636,9 @@ function Recommendedplay_mainView:refreshBtnChance(dungeonId)
   local _, buffCount, maxBuffCount, clothItemId, _ = self.hero_dungeon_mainVM_.GetChallengeHeroDungeonProbability(dungeonId)
   local itemCfg = Z.TableMgr.GetTable("ItemTableMgr").GetRow(clothItemId)
   if itemCfg then
-    self.uiBinder.btn_chance.img_icon:SetImage(itemCfg.Icon)
+    local itemVm = Z.VMMgr.GetVM("items")
+    local itemIcon = itemVm.GetItemIcon(clothItemId)
+    self.uiBinder.btn_chance.img_icon:SetImage(itemIcon)
     self.uiBinder.btn_chance.img_bg:SetImage(Z.ConstValue.QualityImgRoundBg .. itemCfg.Quality)
   end
   local haveGet = self.hero_dungeon_mainVM_.CheckProbabilityHaveGet(dungeonId)

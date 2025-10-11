@@ -32,6 +32,7 @@ function BattlePass_buy_permitView:OnActive()
   self:onInitModel()
   self:initWidgets()
   self:initParam()
+  self:initEffects()
   self:bindWatchers()
   self:initView()
 end
@@ -55,6 +56,7 @@ function BattlePass_buy_permitView:refreshLoopScrollRect()
 end
 
 function BattlePass_buy_permitView:OnDeActive()
+  self:releaseEffects()
   self.battlePassLoopScrollRect_:UnInit()
   self.battlePassLoopScrollRect_ = nil
   self:removeShowAwardItem()
@@ -77,6 +79,10 @@ function BattlePass_buy_permitView:bindWatchers()
 end
 
 function BattlePass_buy_permitView:onBattlePassDataUpDateFunc(dirtyTable)
+  if dirtyTable.id then
+    self:resetView()
+    return
+  end
   if dirtyTable.buyNormalPas or dirtyTable.buyPrimePass then
     self:setPayBtnState()
   end
@@ -145,11 +151,38 @@ function BattlePass_buy_permitView:setViewInfo()
   self.uiBinder.lab_perfection_return.text = Lang("BpCardReturn", {
     val = self.battlePassInfo_.PassRoi[2]
   })
-  local passPicture = string.split(self.battlePassInfo_.PassPicture, "=")
-  self.uiBinder.img_icon_normal:SetImage(passPicture[3])
-  self.uiBinder.img_icon_noble:SetImage(passPicture[4])
-  self.uiBinder.rimg_bg_normal:SetImage(passPicture[5])
-  self.uiBinder.rimg_bg_noble:SetImage(passPicture[6])
+  self.uiBinder.img_icon_normal:SetImage(self.battlePassInfo_.PassPicture[3])
+  self.uiBinder.img_icon_noble:SetImage(self.battlePassInfo_.PassPicture[4])
+  self.uiBinder.rimg_bg_normal:SetImage(self.battlePassInfo_.PassPicture[5])
+  self.uiBinder.rimg_bg_noble:SetImage(self.battlePassInfo_.PassPicture[6])
+end
+
+function BattlePass_buy_permitView:initEffects()
+  self.uiBinder.node_gold_title_eff:CreatEFFGO(self.battlePassInfo_.EffectPath[4], Vector3.zero)
+  self.uiBinder.node_gold_title_eff:SetEffectGoVisible(true)
+  self.uiBinder.node_gold_icon_eff:CreatEFFGO(self.battlePassInfo_.EffectPath[5], Vector3.zero)
+  self.uiBinder.node_gold_icon_eff:SetEffectGoVisible(true)
+  self.uiBinder.node_purple_title_eff:CreatEFFGO(self.battlePassInfo_.EffectPath[6], Vector3.zero)
+  self.uiBinder.node_purple_title_eff:SetEffectGoVisible(true)
+  self.uiBinder.node_purple_icon_eff:CreatEFFGO(self.battlePassInfo_.EffectPath[7], Vector3.zero)
+  self.uiBinder.node_purple_icon_eff:SetEffectGoVisible(true)
+end
+
+function BattlePass_buy_permitView:releaseEffects()
+  self.uiBinder.node_gold_title_eff:ReleseEffGo()
+  self.uiBinder.node_gold_icon_eff:ReleseEffGo()
+  self.uiBinder.node_purple_title_eff:ReleseEffGo()
+  self.uiBinder.node_purple_icon_eff:ReleseEffGo()
+end
+
+function BattlePass_buy_permitView:resetView()
+  self:removeShowAwardItem()
+  self:initParam()
+  self:refreshLoopScrollRect()
+  self:setViewInfo()
+  self:initFashion(self.playerModel_)
+  self:setPayBtnState()
+  self:initAwardItem()
 end
 
 function BattlePass_buy_permitView:setPayBtnState()
@@ -185,10 +218,11 @@ function BattlePass_buy_permitView:setPrice(serverProductIds, priceNumber, showT
     local showPrice = {}
     if data ~= nil then
       for index, value in ipairs(serverProductIds) do
-        if data[index] == nil then
-          showPrice[index] = currencySymbol .. priceNumber[index]
-        else
-          showPrice[index] = data[index].DisplayPrice
+        showPrice[index] = currencySymbol .. priceNumber[index]
+        for _, product in pairs(data) do
+          if product.ID == value then
+            showPrice[index] = product.DisplayPrice
+          end
         end
       end
     else
@@ -325,6 +359,9 @@ function BattlePass_buy_permitView:onInitModel()
 end
 
 function BattlePass_buy_permitView:initFashion(model)
+  if not model then
+    return
+  end
   self.fashionZlist_ = self.battlePassVM_.SetPlayerFashion(self.battlePassData_.CurBattlePassData.id)
   if not self.fashionZlist_ then
     return
@@ -341,18 +378,6 @@ function BattlePass_buy_permitView:setAllModelAttr(model, funcName, ...)
     ...
   }
   model[funcName](model, table.unpack(arg))
-end
-
-function BattlePass_buy_permitView:initFashion(model)
-  self.fashionZlist_ = self.battlePassVM_.SetPlayerFashion(self.battlePassData_.CurBattlePassData.id)
-  if not self.fashionZlist_ then
-    return
-  end
-  self:setAllModelAttr(model, "SetLuaAttr", Z.LocalAttr.EWearFashion, table.unpack({
-    self.fashionZlist_
-  }))
-  self.fashionZlist_:Recycle()
-  self.fashionZlist_ = nil
 end
 
 function BattlePass_buy_permitView:onStartAnimShow()

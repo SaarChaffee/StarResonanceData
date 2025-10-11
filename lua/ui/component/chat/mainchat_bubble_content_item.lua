@@ -45,6 +45,8 @@ function MainChatBubbleContentItem:OnRefresh(data)
   local content = ""
   if msgType == E.ChitChatMsgType.EChatMsgVoice then
     content = Lang("chatMiniVoicePC")
+  elseif msgType == E.ChitChatMsgType.EChatMsgPictureEmoji then
+    content = Z.ChatMsgHelper.GetEmojiText(data)
   else
     content = self.chatMainVm_.GetShowMsg(data, self.uiBinder.lab_info, self.uiBinder.lab_info_ref, Z.IsPCUI)
   end

@@ -21,6 +21,7 @@ function HomeService:OnLogin()
       local houseVm = Z.VMMgr.GetVM("house")
       houseVm.CloseAllHomeView()
       if container.homelandId ~= 0 then
+        Z.RedPointMgr.UpdateNodeCount(E.RedType.HouseInviteRed, 0)
         Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.FunctionOpen, "house_check_signature_popup")
         Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.FunctionOpen, "house_get_popup")
       end

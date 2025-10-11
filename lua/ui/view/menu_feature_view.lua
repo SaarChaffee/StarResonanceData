@@ -24,6 +24,16 @@ function Menu_featureView:OnSelectFaceStyle(faceId)
   self:refreshUIBySelectedStyle(faceId)
 end
 
+function Menu_featureView:OnClickFaceStyle(faceId)
+  self.faceVM_.RecordFaceEditorListCommand({
+    [1] = self.styleAttr_,
+    [2] = self.featureDataAttr_,
+    [3] = self.colorAttr_
+  })
+  self.faceVM_.SetFaceOptionByAttrType(self.styleAttr_, faceId)
+  self.faceVM_.CacheFaceData()
+end
+
 function Menu_featureView:OnActive()
   self:refreshScale()
   self:refreshRotate()

@@ -37,12 +37,7 @@ function PlayerVM:OpenUnstuckTip()
   local param = {
     val = math.ceil(configCD / 60)
   }
-  local labDesc
-  if Z.StageMgr.IsInNewbieScene() then
-    labDesc = Lang("UnstuckTipSpecial", param)
-  else
-    labDesc = Lang("UnstuckTipNormal", param)
-  end
+  local labDesc = Lang("UnstuckTipNormal", param)
   Z.DialogViewDataMgr:OpenNormalDialog(labDesc, function(cancelToken)
     self:AsyncSendUnstuck(cancelToken)
     local settingVM = Z.VMMgr.GetVM("setting")

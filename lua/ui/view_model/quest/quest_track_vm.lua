@@ -32,13 +32,14 @@ local canAdvanceQuest = function(questId)
 end
 local checkIsAllowReplaceTrack = function(isShowTips)
   local questData = Z.DataMgr.Get("quest_data")
+  local questVm = Z.VMMgr.GetVM("quest")
   if questData:IsInForceTrack() then
     if isShowTips then
       local questId = questData:GetForceTrackId()
       local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(questId)
       if questRow then
         local param = {
-          str = questRow.QuestName
+          str = questVm.GetQuestName(questRow.QuestId)
         }
         Z.TipsVM.ShowTipsLang(140201, param)
       end

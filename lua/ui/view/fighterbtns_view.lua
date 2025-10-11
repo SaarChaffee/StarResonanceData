@@ -116,7 +116,6 @@ function FighterBtnsView:OnRefresh()
   self:OnOpenAnimShow()
   self:updateBuffNoticeByList()
   self:refreshBtnContainerState()
-  self:checkSkillPanelToggleIsOn()
   self:refreshFlightAndGlidingSlot()
   self:refreshUnlockSkillSlot()
   self:refreshPlayerInfo()
@@ -186,22 +185,11 @@ function FighterBtnsView:OnOpenAnimShow()
   end
 end
 
-function FighterBtnsView:checkSkillPanelToggleIsOn(slotId)
+function FighterBtnsView:checkSkillPanelToggleIsOn()
   if Z.IsPCUI then
     return
   end
-  if self.vm:CheckIsBanSkill() then
-    self:refreshSkillCheckBtn(false)
-    self:refreshSkillPanel(false)
-    return
-  end
-  local skillPanelToggleIsOn = self.vm:GetSkillPanelShow()
-  if slotId == 1 then
-    skillPanelToggleIsOn = true
-  end
-  self.uiBinder.button_pos_group.toggle_skill.isOn = skillPanelToggleIsOn
-  self:refreshSkillCheckBtn(true)
-  self:refreshSkillPanel(skillPanelToggleIsOn)
+  self:refreshBtnContainerState()
 end
 
 function FighterBtnsView:InitPCKeyIcon()
@@ -218,6 +206,7 @@ function FighterBtnsView:OnDeActive()
   self:UnBindEvents()
   self:ClearBattleRes()
   self:clearBuffNotice()
+  self:cancelSwitchNormalSkillPanel()
   self.playerCtrlTmpMgr_:ClearCurTmpCtrlBtns()
   self.playerCtrlTmpMgr_ = nil
   self.abnormalStateView_:DeActive()
@@ -264,11 +253,11 @@ function FighterBtnsView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.RefreshFunctionBtnState, self.refreshFunctionBtn, self)
   Z.EventMgr:Add(Z.ConstValue.RoleLevelUp, self.refreshUnlockSkillSlot, self)
   Z.EventMgr:Add(Z.ConstValue.SkillSlotInstall, self.refreshUnlockSkillSlot, self)
-  Z.EventMgr:Add(Z.ConstValue.NormalAttackClicked, self.checkSkillPanelToggleIsOn, self)
   Z.EventMgr:Add(Z.ConstValue.AutoBattleChange, self.refreshAutoBattleSwitch, self)
   Z.EventMgr:Add(Z.ConstValue.IgnoreFlagChanged, self.refreshAutoBattleSwitch, self)
   Z.EventMgr:Add(Z.ConstValue.MainUI.UpDatePlayerStateBar, self.hidePlayerStateBar, self)
-  Z.EventMgr:Add(Z.ConstValue.PlayerSkillPanelChange, self.refreshSkillPanel, self)
+  Z.EventMgr:Add(Z.ConstValue.PlayerSkillPanelChange, self.onSkillInput, self)
+  Z.EventMgr:Add(Z.ConstValue.CancelSwitchNormalSkillPanel, self.cancelSwitchNormalSkillPanel, self)
   Z.EventMgr:Add(Z.ConstValue.Vehicle.UpdateRiding, self.refreshRidingBtn, self)
   Z.EventMgr:Add(Z.ConstValue.Vehicle.UpdateRiding, self.refreshPcSkillPanel, self)
   Z.EventMgr:Add(Z.ConstValue.Buff.ProfessionBuffRefreshView, self.refreshProfessionBuffTips, self)
@@ -447,6 +436,12 @@ function FighterBtnsView:BindLuaAttrWatchers()
     self:BindEntityLuaAttrWatcher({
       Z.PbAttrEnum("AttrCombatState")
     }, Z.EntityMgr.PlayerEnt, self.refreshPcSkillPanel)
+    self:BindEntityLuaAttrWatcher({
+      Z.PbAttrEnum("AttrInBattleShow")
+    }, Z.EntityMgr.PlayerEnt, self.checkBattleShowSkillPanelChange)
+    self:BindEntityLuaAttrWatcher({
+      Z.PbAttrEnum("AttrCombatState")
+    }, Z.EntityMgr.PlayerEnt, self.checkOutCombatSkillPanelChange)
     self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
       self:onPlayerStateChange()
     end)
@@ -466,9 +461,6 @@ function FighterBtnsView:BindLuaAttrWatchers()
     self:BindEntityLuaAttrWatcher({
       Z.LocalAttr.EHudTalentTag
     }, Z.EntityMgr.PlayerEnt, self.setTalentTag, true)
-    self:BindEntityLuaAttrWatcher({
-      Z.PbAttrEnum("AttrCombatState")
-    }, Z.EntityMgr.PlayerEnt, self.refreshSkillPanel)
     
     function self.equipListChangeFunc_(container, dirtys)
       if container.equipList then
@@ -906,8 +898,7 @@ function FighterBtnsView:onPlayerStateChange()
 end
 
 function FighterBtnsView:refreshBtnContainerState()
-  self:checkSkillPanelToggleIsOn()
-  local templateData = self.vm.GetBtnContainerState()
+  local templateData = self.vm:GetBtnContainerState()
   if not templateData then
     return
   end
@@ -919,7 +910,7 @@ function FighterBtnsView:refreshBtnContainerState()
     self.slotShow_[templateData.ForcedOpenSlot] = true
   end
   if templateData.IsChangeSkillPanel ~= nil then
-    self:refreshSkillPanel(templateData.IsChangeSkillPanel)
+    self:changeSkillPanelToggle(templateData.IsChangeSkillPanel)
   end
   if templateData.IsShowSkillCheckBtn ~= nil then
     self:refreshSkillCheckBtn(templateData.IsShowSkillCheckBtn)
@@ -937,6 +928,7 @@ end
 function FighterBtnsView:ChangedCtrlTemplate(tmpType)
   self.playerCtrlTmpMgr_:ClearCurTmpCtrlBtns()
   self.playerCtrlTmpMgr_:CreateTmpCtrlBtns(tmpType)
+  self.vm:SetPlayerCtrlTmpType(tmpType)
   self:inputUIFresh()
 end
 
@@ -1094,15 +1086,6 @@ function FighterBtnsView:initProfessionBtn()
   end)
 end
 
-function FighterBtnsView:initSkillPanelToggle()
-  if Z.IsPCUI then
-    return
-  end
-  self.uiBinder.button_pos_group.toggle_skill:AddListener(function(isOn)
-    self:refreshSkillPanel(isOn)
-  end)
-end
-
 function FighterBtnsView:onBuffChange()
   self:refreshSlotShowOrHide()
   if self.battleResHelper_ then
@@ -1197,8 +1180,10 @@ function FighterBtnsView:updateBuffTime(noticeData, buffData)
   local unit = noticeData.unit
   unit.lab_name.text = buffData.Name
   unit.battle_icon_buff_tpl.img_icon:SetImage(buffData.Icon)
-  unit.battle_icon_buff_tpl.Ref:SetVisible(unit.battle_icon_buff_tpl.lab_digit, buffData.Layer > 1)
   unit.battle_icon_buff_tpl.lab_digit.text = buffData.Layer
+  unit.battle_icon_buff_tpl.Ref:SetVisible(unit.battle_icon_buff_tpl.node_buff_mask, buffData.BuffType ~= E.EBuffType.Debuff)
+  unit.battle_icon_buff_tpl.Ref:SetVisible(unit.battle_icon_buff_tpl.node_debuff_mask, buffData.BuffType == E.EBuffType.Debuff)
+  unit.battle_icon_buff_tpl.Ref:SetVisible(unit.battle_icon_buff_tpl.node_layer, buffData.Layer > 1)
   unit.Trans:SetSiblingIndex(buffData.Index)
   local progress, stopProgress, imgIcon
   if buffData.BuffType ~= E.EBuffType.Gain then
@@ -1242,36 +1227,48 @@ function FighterBtnsView:updateBuffTime(noticeData, buffData)
   end
 end
 
-function FighterBtnsView:refreshSkillPanel(isShow, holdon)
+function FighterBtnsView:initSkillPanelToggle()
   if Z.IsPCUI then
     return
   end
-  if Z.EntityMgr.PlayerEnt.IsRiding then
-    isShow = true
+  self.uiBinder.button_pos_group.toggle_skill:AddListener(function(isOn)
+    self:refreshSkillPanel(isOn)
+    self.vm:SetSkillPanelLocked(not isOn)
+  end)
+end
+
+function FighterBtnsView:changeSkillPanelToggle(isBattlePanel)
+  if Z.IsPCUI then
+    return
   end
-  local isOn = isShow
-  if isOn == nil and Z.EntityMgr.PlayerEnt then
-    isOn = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrCombatState")).Value > 0
-    if self.isInBattleTimer_ then
-      self.timerMgr:StopTimer(self.isInBattleTimer_)
-    end
-    if isOn == false and not holdon then
-      self.isInBattleTimer_ = self.timerMgr:StartTimer(function()
-        self.uiBinder.button_pos_group.toggle_skill.isOn = isOn
-        self:refreshSkillPanel(false)
-      end, Z.Global.RouletteOffBattleSwitchTime)
-      return
-    end
+  if self.vm:GetSkillPanelLocked() then
+    return
   end
-  self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.node_skill_1, isOn)
-  self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.node_skill_2, not isOn)
-  self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.img_off, not isOn)
-  self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.img_on, isOn)
-  self.vm:SetSkillPanelShow(isOn)
+  self.uiBinder.button_pos_group.toggle_skill:SetIsOnWithoutCallBack(isBattlePanel)
+  self:refreshSkillPanel(isBattlePanel)
+end
+
+function FighterBtnsView:refreshSkillPanel(isShow)
+  if Z.IsPCUI then
+    return
+  end
+  if self.vm:CheckIsBanSkill() and not Z.EntityMgr.PlayerEnt.IsRiding then
+    isShow = false
+  end
+  if isShow then
+    self:cancelSwitchNormalSkillPanel()
+    self:checkRushSkillPanelChange()
+  end
+  self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.node_skill_1, isShow)
+  self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.node_skill_2, not isShow)
+  self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.img_off, not isShow)
+  self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.img_on, isShow)
+  self.isOnSkillPanel_ = isShow
+  self.vm:SetSkillPanelShow(isShow)
 end
 
 function FighterBtnsView:refreshSkillCheckBtn(isShow)
-  if Z.IsPCUI or isShow == nil then
+  if Z.IsPCUI then
     return
   end
   local professionVm = Z.VMMgr.GetVM("profession")
@@ -1283,7 +1280,74 @@ function FighterBtnsView:refreshSkillCheckBtn(isShow)
     self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.toggle_skill, false)
     return
   end
+  if self.vm:CheckIsBanSkill() and not Z.EntityMgr.PlayerEnt.IsRiding then
+    self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.toggle_skill, false)
+    return
+  end
   self.uiBinder.button_pos_group.Ref:SetVisible(self.uiBinder.button_pos_group.toggle_skill, isShow)
+end
+
+function FighterBtnsView:checkOutCombatSkillPanelChange()
+  if Z.IsPCUI then
+    return
+  end
+  local combatState = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrCombatState")).Value > 0
+  if not combatState and not Z.EntityMgr.PlayerEnt:GetLuaLocalAttrInBattleShow() then
+    self:delaySwitchNormalSkillPanel(5)
+  end
+end
+
+function FighterBtnsView:onSkillInput(isPress)
+  self:changeSkillPanelToggle(isPress)
+end
+
+function FighterBtnsView:checkBattleShowSkillPanelChange()
+  if Z.IsPCUI then
+    return
+  end
+  local combatState = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.PbAttrEnum("AttrCombatState")).Value > 0
+  if not combatState and not Z.EntityMgr.PlayerEnt:GetLuaLocalAttrInBattleShow() then
+    self:changeSkillPanelToggle(false)
+  end
+end
+
+function FighterBtnsView:checkRushSkillPanelChange()
+  if Z.IsPCUI then
+    return
+  end
+  local moveType = Z.EntityMgr.PlayerEnt:GetLuaAttrVirtualMoveType()
+  local dontShowBattleList = {
+    Z.PbEnum("EMoveType", "MoveDash")
+  }
+  if table.zcontains(dontShowBattleList, moveType) then
+    self:delaySwitchNormalSkillPanel(5)
+  end
+end
+
+function FighterBtnsView:delaySwitchNormalSkillPanel(time)
+  if Z.IsPCUI then
+    return
+  end
+  local currentTmpTable = self.playerCtrlTmpMgr_:GetCurrentTmpValue()
+  if currentTmpTable == E.PlayerCtrlBtnTmpType.Vehicles then
+    return
+  end
+  if self.delayHideSkillPanleTimer_ then
+    return
+  end
+  self.delayHideSkillPanleTimer_ = self.timerMgr:StartTimer(function()
+    self:changeSkillPanelToggle(false)
+  end, time)
+end
+
+function FighterBtnsView:cancelSwitchNormalSkillPanel()
+  if Z.IsPCUI then
+    return
+  end
+  if self.delayHideSkillPanleTimer_ then
+    self.timerMgr:StopTimer(self.delayHideSkillPanleTimer_)
+    self.delayHideSkillPanleTimer_ = nil
+  end
 end
 
 function FighterBtnsView:refreshFunctionBtn(functionId, isOpen)
@@ -1397,12 +1461,15 @@ end
 function FighterBtnsView:switchAISetMode()
   self:refreshSlotShowOrHide()
   self:refreshPcSkillPanel()
-  self:refreshSkillPanel(false)
   self:hidePlayerStateBar(not self.vm:CheckAISlotSetMode())
 end
 
 function FighterBtnsView:OpenSkillRoulette(slotId, open)
   if Z.IsPCUI then
+    return
+  end
+  local slotConfig = Z.TableMgr.GetRow("SkillSlotPositionTableMgr", slotId)
+  if slotConfig == nil or slotConfig.SlotLogicType == E.SkillSlotLogicType.SceneMaskSkill then
     return
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_skill_cancel, open)

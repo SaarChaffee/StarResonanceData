@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package zproto;
 
+import "stru_notify_community_apply_request.proto";
 import "stru_notify_community_apply_update_request.proto";
 import "stru_notify_community_check_in_change_request.proto";
 import "stru_notify_community_cleanliness_update_request.proto";
@@ -103,6 +104,10 @@ message GrpcCommunityNtf {
 
   message NotifyCommunityFurnitureItemUpdate {
     zproto.NotifyCommunityFurnitureItemUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityApply {
+    zproto.NotifyCommunityApplyRequest request = 1;
   }
 }
 

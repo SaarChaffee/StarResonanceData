@@ -1,7 +1,7 @@
 {
   "101": {
     "Id": 101,
-    "Name": "",
+    "Name": "Common Items",
     "DepositCount": 13,
     "TakeCount": 14,
     "HomeDepositCount": 41,
@@ -11,7 +11,7 @@
   },
   "201": {
     "Id": 201,
-    "Name": "",
+    "Name": "Precious Items",
     "DepositCount": 15,
     "TakeCount": 16,
     "HomeDepositCount": 43,
@@ -21,7 +21,7 @@
   },
   "301": {
     "Id": 301,
-    "Name": "",
+    "Name": "Seeds and Pollen",
     "DepositCount": 0,
     "TakeCount": 0,
     "HomeDepositCount": 31,
@@ -31,7 +31,7 @@
   },
   "401": {
     "Id": 401,
-    "Name": "",
+    "Name": "Flowers",
     "DepositCount": 0,
     "TakeCount": 0,
     "HomeDepositCount": 33,

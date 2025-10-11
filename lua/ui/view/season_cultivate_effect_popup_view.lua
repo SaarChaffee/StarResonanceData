@@ -67,6 +67,7 @@ function Season_cultivate_effect_popupView:showEffect(uibinder, info)
   uibinder.lab_level.text = string.zconcat(info.attrConfig.NodeName, " ", Lang("Grade", {
     val = info.nodeLevel
   }))
+  uibinder.layout_element.minWidth = uibinder.lab_level.preferredWidth
   Z.RichTextHelper.SetBinderTmpLabTextWithCommonLink(uibinder.lab_content, self.seasonCultivateVM_.GetAttributeDes(info.attrConfig.Id))
 end
 

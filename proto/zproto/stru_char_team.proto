@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package zproto;
 
+import "enum_e_team_member_type.proto";
 import "stru_team_mem_data.proto";
 import "stru_dirty_mask.proto";
 
@@ -14,5 +15,6 @@ message CharTeam {
   bool is_matching = 6;
   int32 char_team_version = 7;
   map<int64, zproto.TeamMemData> team_member_data = 8;
+  zproto.ETeamMemberType team_member_type = 9;
 }
 

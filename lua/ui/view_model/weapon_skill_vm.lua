@@ -59,6 +59,20 @@ function WeaponSkillVM:CloseWeaponSkillView()
   Z.UIMgr:CloseView("weapon_skill_main")
 end
 
+function WeaponSkillVM:OpenActivitySkillResetView()
+  local viewData = {isActivity = true}
+  Z.UIMgr:OpenView("weapon_skill_reset_popup", viewData)
+end
+
+function WeaponSkillVM:OpenSkillResetView()
+  local viewData = {isActivity = false}
+  Z.UIMgr:OpenView("weapon_skill_reset_popup", viewData)
+end
+
+function WeaponSkillVM:CloseSkillResetView()
+  Z.UIMgr:CloseView("weapon_skill_reset_popup")
+end
+
 function WeaponSkillVM:GetSkillRemodelLevel(skillId)
   local weaponVm = Z.VMMgr.GetVM("weapon")
   local weaponId = weaponVm.GetCurWeapon()
@@ -290,7 +304,7 @@ function WeaponSkillVM:ParseRemodelDesc(skillId, advanceLevel, isResonanceSkill,
         descEffectList = skillVM.ContrastSkillDecs(preDescEffectList, descEffectList)
         for index, value in ipairs(descEffectList) do
           local desc = ""
-          desc = value.Dec .. Lang(":") .. value.Num
+          desc = value.Dec .. Lang("colon") .. value.Num
           if index < #descEffectList then
             desc = desc .. "\n"
           end
@@ -413,9 +427,9 @@ function WeaponSkillVM:ParseResonanceSkillBaseDesc(skillId, advanceLevel)
         content = string.zconcat(content, [[
 
 
-]], value.Dec, Lang(":"), value.Num)
+]], value.Dec, Lang("colon"), value.Num)
       else
-        content = string.zconcat(content, "\n", value.Dec, Lang(":"), value.Num)
+        content = string.zconcat(content, "\n", value.Dec, Lang("colon"), value.Num)
       end
     end
   end
@@ -508,7 +522,7 @@ function WeaponSkillVM:ParseResonanceTransformation(skillId, advanceLevel, effec
         descEffectList = skillVM.GetSkillDecsWithColor(descEffectList)
         local desc = ""
         for _, effect in pairs(descEffectList) do
-          desc = string.zconcat(desc, effect.Dec, Lang(":"), effect.Num, "\n")
+          desc = string.zconcat(desc, effect.Dec, Lang("colon"), effect.Num, "\n")
         end
         table.insert(outList.attrList, {
           title = "",
@@ -1140,6 +1154,101 @@ function WeaponSkillVM:GetRecommendFightValue()
     resonanceSkillValue = self:GetResonanceSKillFightValue()
   end
   return skillLevelValue + skillRemodelValue + resonanceSkillValue
+end
+
+function WeaponSkillVM:CalSkillCostItem(skillId)
+  local allCostTable = {}
+  local levelUpCostItemId = {}
+  local remodelLevelCostItemId = {}
+  local weaponVm = Z.VMMgr.GetVM("weapon")
+  local level = weaponVm.GetShowSkillLevel(nil, skillId)
+  local upgradeId = self:GetSkillUpgradeId(skillId)
+  local levelUpData = self:GetlevelUpDataBySKillUpgradeId(upgradeId)
+  for _, levelUpRow in pairs(levelUpData) do
+    if level >= levelUpRow.SkillLevel and levelUpRow.SkillLevel > 1 then
+      for __, costTable in pairs(levelUpRow.Cost) do
+        local itemId = costTable[1]
+        local itemNum = costTable[2]
+        if allCostTable[itemId] == nil then
+          allCostTable[itemId] = 0
+        end
+        allCostTable[itemId] = allCostTable[itemId] + itemNum
+        if not table.zcontains(levelUpCostItemId, itemId) then
+          table.insert(levelUpCostItemId, itemId)
+        end
+      end
+    end
+  end
+  local remodelLevel = self:GetSkillRemodelLevel(skillId)
+  local skillRemodelData = self:GetSkillRemodelConfig(skillId)
+  for _, skillRemodelRow in pairs(skillRemodelData) do
+    if remodelLevel >= skillRemodelRow.Level then
+      for __, costTable in pairs(skillRemodelRow.UpgradeCost) do
+        local itemId = costTable[1]
+        local itemNum = costTable[2]
+        if allCostTable[itemId] == nil then
+          allCostTable[itemId] = 0
+        end
+        allCostTable[itemId] = allCostTable[itemId] + itemNum
+        if not table.zcontains(remodelLevelCostItemId, itemId) then
+          table.insert(remodelLevelCostItemId, itemId)
+        end
+      end
+      for __, costTable in pairs(skillRemodelRow.UpgradeExtraCost) do
+        local itemId = costTable[1]
+        local itemNum = costTable[2]
+        if allCostTable[itemId] == nil then
+          allCostTable[itemId] = 0
+        end
+        allCostTable[itemId] = allCostTable[itemId] + itemNum
+        if not table.zcontains(remodelLevelCostItemId, itemId) then
+          table.insert(remodelLevelCostItemId, itemId)
+        end
+      end
+    end
+  end
+  return allCostTable, levelUpCostItemId, remodelLevelCostItemId
+end
+
+function WeaponSkillVM:AsyncProfessionSkillResetSpecial(professionId, cancelToken)
+  local worldProxy = require("zproxy.world_proxy")
+  local ProfessionSkillResetSpecialRequest = {professionId = professionId}
+  local errCode = worldProxy.ProfessionSkillResetSpecial(ProfessionSkillResetSpecialRequest, cancelToken)
+  if errCode and errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
+    return false
+  end
+  return true
+end
+
+function WeaponSkillVM:AsyncProfessionSkillReset(professionId, cancelToken)
+  local worldProxy = require("zproxy.world_proxy")
+  local ProfessionSkillResetSpecialRequest = {professionId = professionId}
+  local errCode = worldProxy.ProfessionSkillReset(ProfessionSkillResetSpecialRequest, cancelToken)
+  if errCode and errCode ~= 0 then
+    Z.TipsVM.ShowTips(errCode)
+    return false
+  end
+  return true
+end
+
+function WeaponSkillVM:GetSceneMaskSkillList()
+  if self.sceneMaskSkillList_ == nil then
+    self.sceneMaskSkillList_ = {}
+    local configDict = Z.TableMgr.GetTable("SkillSlotPositionTableMgr").GetDatas()
+    for id, config in pairs(configDict) do
+      if config.SlotLogicType == E.SkillSlotLogicType.SceneMaskSkill then
+        table.insert(self.sceneMaskSkillList_, {
+          id = id,
+          skillId = config.SkillId
+        })
+      end
+    end
+    table.sort(self.sceneMaskSkillList_, function(a, b)
+      return a.id < b.id
+    end)
+  end
+  return self.sceneMaskSkillList_
 end
 
 return WeaponSkillVM

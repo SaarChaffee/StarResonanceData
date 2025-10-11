@@ -1,42 +1,42 @@
 {
   "1": {
     "Id": 1,
-    "TagName": "",
+    "TagName": "Mainline (temporary)",
     "TagBG": "friend_img_label_1",
     "TagIcon": "friend_icon_label_1",
     "Sequence": 1
   },
   "2": {
     "Id": 2,
-    "TagName": "",
+    "TagName": "Dungeon (temporary)",
     "TagBG": "friend_img_label_2",
     "TagIcon": "friend_icon_label_2",
     "Sequence": 2
   },
   "3": {
     "Id": 3,
-    "TagName": "",
+    "TagName": "Gathering (temporary)",
     "TagBG": "friend_img_label_1",
     "TagIcon": "friend_icon_label_1",
     "Sequence": 3
   },
   "4": {
     "Id": 4,
-    "TagName": "",
+    "TagName": "Novice (temporary)",
     "TagBG": "friend_img_label_2",
     "TagIcon": "friend_icon_label_2",
     "Sequence": 4
   },
   "5": {
     "Id": 5,
-    "TagName": "",
+    "TagName": "Casual (temporary)",
     "TagBG": "friend_img_label_1",
     "TagIcon": "friend_icon_label_1",
     "Sequence": 5
   },
   "6": {
     "Id": 6,
-    "TagName": "",
+    "TagName": "Hardcore (temporary)",
     "TagBG": "friend_img_label_2",
     "TagIcon": "friend_icon_label_2",
     "Sequence": 6

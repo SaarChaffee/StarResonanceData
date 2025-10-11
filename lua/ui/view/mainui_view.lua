@@ -314,7 +314,7 @@ function MainuiView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Match.MatchStartTimeChange, self.refreshMatchState, self)
   Z.EventMgr:Add(Z.ConstValue.Match.MatchStateChange, self.refreshMatchState, self)
   Z.EventMgr:Add(Z.ConstValue.Quest.SetParkourSingleActive, self.refreshParkourCountDownUI, self)
-  Z.EventMgr:Add(Z.ConstValue.Vehicle.UpdateRiding, self.refreshRidingBtn, self)
+  Z.EventMgr:Add(Z.ConstValue.Vehicle.UpdateRiding, self.refreshRidingBtnState, self)
   Z.EventMgr:Add(Z.ConstValue.Union.UnionDataReady, self.unionReady, self)
   Z.EventMgr:Add(Z.ConstValue.RefreshFunctionBtnState, self.refreshResonanceSkill, self)
   Z.EventMgr:Add(Z.ConstValue.OnSceneSwitchComplete, self.OnSceneSwitchComplete, self)
@@ -324,7 +324,7 @@ function MainuiView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Bubble.CurrentIdChanged, self.onBubbleIdChanged, self)
   self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
     if Z.EntityMgr.PlayerEnt then
-      self:refreshRidingBtn(Z.EntityMgr.PlayerEnt:GetLuaRidingId())
+      self:refreshRidingBtnState()
     end
   end)
   self.pathFindingWatcher_ = Z.DIServiceMgr.AttrPathFindingComponentWatcherService:OnLocalAttrStateChanged(function()
@@ -573,7 +573,7 @@ function MainuiView:loadAllTopFuncItem()
     end
     self:refreshQuestionnaireBtn()
     if Z.EntityMgr.PlayerEnt then
-      self:refreshRidingBtn(Z.EntityMgr.PlayerEnt:GetLuaRidingId())
+      self:refreshRidingBtnState()
     end
   end)()
 end
@@ -738,8 +738,8 @@ function MainuiView:registerPathFinding()
       self:clearPathFindingProgressTimer()
     end
     
-    Z.InputMgr:AddInputEventDelegate(self.onPathFindingPressedAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.PathFinding)
-    Z.InputMgr:AddInputEventDelegate(self.onPathFindingReleasedAction_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.PathFinding)
+    Z.InputMgr:AddInputEventDelegate(self.onPathFindingPressedAction_, Z.InputActionEventType.ButtonJustPressed, Z.InputActionIds.PathFinding)
+    Z.InputMgr:AddInputEventDelegate(self.onPathFindingReleasedAction_, Z.InputActionEventType.ButtonJustReleased, Z.InputActionIds.PathFinding)
   else
     self.uiBinder.btn_pathfinding.ClickCD = Z.Global.PathFindingCd
     self:AddClick(self.uiBinder.btn_pathfinding, function()
@@ -760,8 +760,8 @@ end
 
 function MainuiView:unRegisterPathFinding()
   if Z.IsPCUI then
-    Z.InputMgr:RemoveInputEventDelegate(self.onPathFindingPressedAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.PathFinding)
-    Z.InputMgr:RemoveInputEventDelegate(self.onPathFindingReleasedAction_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.PathFinding)
+    Z.InputMgr:RemoveInputEventDelegate(self.onPathFindingPressedAction_, Z.InputActionEventType.ButtonJustPressed, Z.InputActionIds.PathFinding)
+    Z.InputMgr:RemoveInputEventDelegate(self.onPathFindingReleasedAction_, Z.InputActionEventType.ButtonJustReleased, Z.InputActionIds.PathFinding)
     self.onPathFindingPressedAction_ = nil
     self.onPathFindingReleasedAction_ = nil
     self:clearPathFindingProgressTimer()
@@ -892,17 +892,6 @@ function MainuiView:refreshSeasonHandbookBtn()
   end
 end
 
-function MainuiView:refreshRidingBtn(rideId)
-  if self.units[E.FunctionID.VehicleRide] ~= nil then
-    if rideId ~= 0 then
-      self.units[E.FunctionID.VehicleRide].func_btn_img:SetImage(Z.ConstValue.MainUI.DownVehicleIcon)
-    else
-      self.units[E.FunctionID.VehicleRide].func_btn_img:SetImage(Z.ConstValue.MainUI.UpVehicleIcon)
-    end
-  end
-  self:refreshRidingBtnState()
-end
-
 function MainuiView:refreshRidingBtnState()
   self:refreshPathFindingBtn()
   if not Z.IsPCUI then
@@ -1013,7 +1002,11 @@ function MainuiView:refreshSceneLineUI()
           local diff = Z.ContainerMgr.DungeonSyncData.dungeonSceneInfo.difficulty
           dungeonTypeName = Z.VMMgr.GetVM("hero_dungeon_main").GetHeroDungeonTypeName(sceneId, diff)
         end
-        self.uiBinder.lab_map_name.text = dungeonRow.Name .. dungeonTypeName
+        if dungeonTypeName ~= "" then
+          self.uiBinder.lab_map_name.text = dungeonRow.Name .. Lang("Whippletree") .. dungeonTypeName
+        else
+          self.uiBinder.lab_map_name.text = dungeonRow.Name
+        end
       end
     end
     local isShowDungeonExit = self.vm_.CheckFunctionCanShowInScene(E.FunctionID.ExitDungeon)
@@ -1058,7 +1051,12 @@ function MainuiView:refreshSceneLineUI()
           lineId = sceneLineData.PlayerLineId,
           leftTime = Z.TimeFormatTools.FormatToDHMS(leftTIme)
         }
-        self.uiBinder.group_sceneline_recycle.lab_recycle_tips.text = Lang("SceneLineRecycleTips", param)
+        local isDynamicScene = sceneRow.SceneType == E.ESceneType.Dynamic
+        if isDynamicScene then
+          self.uiBinder.group_sceneline_recycle.lab_recycle_tips.text = Lang("DynamicSceneLineRecycleTips", param)
+        else
+          self.uiBinder.group_sceneline_recycle.lab_recycle_tips.text = Lang("SceneLineRecycleTips", param)
+        end
       end
     end, 1, -1, false, nil, true)
     self.uiBinder.autoscroll_recycle:StartAutoScroll()
@@ -1154,8 +1152,8 @@ function MainuiView:clearSkillBinder()
 end
 
 function MainuiView:OnTriggerInputAction(inputActionEventData)
-  local actionId = inputActionEventData.actionId
-  if inputActionEventData.actionId == Z.RewiredActionsConst.EnableMap then
+  local actionId = inputActionEventData.ActionId
+  if inputActionEventData.ActionId == Z.InputActionIds.EnableMap then
     if Z.UIMgr:CheckMainUIActionLimit(actionId) and Z.PlayerInputController:CheckChatAndMapAction(inputActionEventData) then
       self.vm_.GotoMainUIFunc(100302)
     end
@@ -1166,9 +1164,9 @@ function MainuiView:OnTriggerInputAction(inputActionEventData)
     Z.CoroUtil.create_coro_xpcall(function(...)
       expressionVM.QuickUseExpressionByInput(actionId)
     end)()
-    if actionId == Z.RewiredActionsConst.TrackUITurnRight then
+    if actionId == Z.InputActionIds.TrackUITurnRight then
       self:onChangeTrackView(false)
-    elseif actionId == Z.RewiredActionsConst.TrackUITurnLeft then
+    elseif actionId == Z.InputActionIds.TrackUITurnLeft then
       self:onChangeTrackView(true)
     end
   end

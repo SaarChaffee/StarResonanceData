@@ -23,7 +23,6 @@ function Shop_fashion_subView:ctor(parent)
 end
 
 function Shop_fashion_subView:OnActive()
-  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self.uiBinder.Trans:SetOffsetMin(0, 0)
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self:onStartAnimShow()
@@ -38,7 +37,6 @@ function Shop_fashion_subView:OnActive()
 end
 
 function Shop_fashion_subView:OnDeActive()
-  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   self.ESCInputFunction_ = nil
   self.secondListView_:UnInit()
   if self.curShopView_ then

@@ -66,7 +66,7 @@ function Weapon_role_main_mod_subView:OnRefresh()
 end
 
 function Weapon_role_main_mod_subView:OnTriggerInputAction(inputActionEventData)
-  if Z.IsPCUI and inputActionEventData.actionId == Z.RewiredActionsConst.RoleViewDetail then
+  if Z.IsPCUI and inputActionEventData.ActionId == Z.InputActionIds.RoleViewDetail then
     self.modVM_.EnterModView()
   end
 end

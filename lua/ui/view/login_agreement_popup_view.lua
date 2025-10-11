@@ -10,7 +10,6 @@ end
 
 function Login_agreement_popupView:OnActive()
   self:AddClick(self.uiBinder.btn_confirm, function()
-    Z.SDKReport.ReportEvent(Z.SDKReportEvent.AgreeAgreement)
     Z.UIMgr:CloseView("login_agreement_popup")
   end)
   self:AddClick(self.uiBinder.btn_cancel, function()

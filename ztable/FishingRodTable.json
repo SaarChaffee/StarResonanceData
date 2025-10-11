@@ -1,7 +1,7 @@
 {
   "11034001": {
     "Id": 11034001,
-    "Name": "",
+    "Name": "Fishing Pole",
     "ModelId": 2001,
     "FishingTemplateId": 60001,
     "Mount": "ap_r_weapon01_point",
@@ -21,7 +21,7 @@
   },
   "11034002": {
     "Id": 11034002,
-    "Name": "",
+    "Name": "Sturdy Fishing Pole",
     "ModelId": 2002,
     "FishingTemplateId": 60002,
     "Mount": "ap_r_weapon01_point",
@@ -41,7 +41,7 @@
   },
   "11034003": {
     "Id": 11034003,
-    "Name": "",
+    "Name": "Flexible Fishing Pole",
     "ModelId": 2003,
     "FishingTemplateId": 60003,
     "Mount": "ap_r_weapon01_point",

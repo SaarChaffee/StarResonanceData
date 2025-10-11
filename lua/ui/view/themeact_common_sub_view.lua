@@ -42,6 +42,7 @@ function Themeact_common_subView:initComponent()
     })
   end)
   self:SetUIVisible(self.uiBinder.btn_switch, self.curTimeStage_ ~= E.SeasonActivityTimeStage.NotOpen)
+  self.uiBinder.comp_dotween:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Themeact_common_subView:initChildActivity()

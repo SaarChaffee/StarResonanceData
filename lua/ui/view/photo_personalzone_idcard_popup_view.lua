@@ -105,7 +105,7 @@ function Photo_personalzone_idcard_popupView:refreshOnlineTime(personalzoneInfo)
         v.icon:SetImage(config.ShowTagRoute)
       end
     end
-  elseif self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId then
+  elseif self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId then
     self.uiBinder.binder_bg.Ref:SetVisible(self.onlineTimes_[1].bg, true)
     self.onlineTimes_[1].bg.enabled = false
     self.onlineTimes_[1].icon:SetImage(DEFINE.UNSHOWTAGICON)
@@ -143,7 +143,7 @@ function Photo_personalzone_idcard_popupView:refreshPersonalityLabels(personalzo
         v.icon:SetImage(config.ShowTagRoute)
       end
     end
-  elseif self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId then
+  elseif self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId then
     self.uiBinder.binder_bg.Ref:SetVisible(self.personalityLabels_[1].bg, true)
     self.personalityLabels_[1].bg.enabled = false
     self.personalityLabels_[1].icon:SetImage(DEFINE.UNSHOWTAGICON)
@@ -169,12 +169,17 @@ function Photo_personalzone_idcard_popupView:showRoleInfo()
   if personalZone and personalZone.titleId ~= 0 then
     local profileImageConfig = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(personalZone.titleId)
     if profileImageConfig and profileImageConfig.Unlock ~= DEFINE.ProfileImageUnlockType.DefaultUnlock then
-      self.uiBinder.lab_title.text = string.format("%s\239\188\154%s", Lang("PersonalzoneTitle"), profileImageConfig.Name)
+      self.uiBinder.lab_title.text = profileImageConfig.Name
     else
-      self.uiBinder.lab_title.text = string.format("%s\239\188\154%s", Lang("PersonalzoneTitle"), Lang("None"))
+      self.uiBinder.lab_title.text = Lang("None")
     end
   else
-    self.uiBinder.lab_title.text = string.format("%s\239\188\154%s", Lang("PersonalzoneTitle"), Lang("None"))
+    self.uiBinder.lab_title.text = Lang("None")
+  end
+  local cardBgId = self.personalzoneVm_.GetCurProfileImageId(DEFINE.ProfileImageType.Card)
+  local config = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(cardBgId)
+  if config ~= nil then
+    self.uiBinder.binder_bg.rimg_bg:SetImage(Z.ConstValue.PersonalZone.PersonalCBg .. config.Image)
   end
   local seasonData = Z.DataMgr.Get("season_title_data")
   local seasonTitleId = seasonData:GetCurRankInfo().curRanKStar

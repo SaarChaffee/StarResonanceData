@@ -253,6 +253,9 @@ function FishingData:SetStage(stage)
   if stage == E.FishingStage.EnterFishing then
     self:Clear()
   end
+  if stage == E.FishingStage.Quit then
+    self.timerMgr:Clear()
+  end
   Z.EventMgr:Dispatch(Z.ConstValue.Fishing.FishingStateChange)
   if stage == E.FishingStage.EndRodBreak or stage == E.FishingStage.EndRunAway then
     self.timerMgr:StartTimer(function()
@@ -583,6 +586,7 @@ function FishingData:UpdateFishingData(refreshRed)
 end
 
 function FishingData:updateFishingLevel()
+  local fishingVM = Z.VMMgr.GetVM("fishing")
   local level, progress, curFishingExp, needFishingExp = self:GetFishingLevelByExp()
   local lastProgress = self.PeripheralData.FishingLevelProgress and self.PeripheralData.FishingLevelProgress[1] or 0
   self.PeripheralData.FishingLevelProgress = {
@@ -593,7 +597,7 @@ function FishingData:updateFishingLevel()
   local lastLevel = self.FishingLevel
   self.FishingLevel = level
   if lastLevel and level > lastLevel then
-    self.ShowLevelUp = true
+    fishingVM.OpenFishingLevelUpTip()
   end
   if lastProgress ~= progress then
     Z.EventMgr:Dispatch(Z.ConstValue.Fishing.FishingLevelChange)

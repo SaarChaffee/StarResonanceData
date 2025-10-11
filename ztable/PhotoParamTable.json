@@ -1,7 +1,7 @@
 {
   "70101": {
     "Id": 70101,
-    "Des": "",
+    "Des": "Take a photo with Hero's Herb",
     "PointId": 1356,
     "DistanceTake": {
       "x": 5.0,
@@ -19,7 +19,7 @@
   },
   "70103": {
     "Id": 70103,
-    "Des": "",
+    "Des": "Take a photo at the Statue of the Hero",
     "PointId": 1428,
     "DistanceTake": {
       "x": 25.0,
@@ -37,7 +37,7 @@
   },
   "70102": {
     "Id": 70102,
-    "Des": "",
+    "Des": "Take a photo at Towering Ruin",
     "PointId": 1650,
     "DistanceTake": {
       "x": 30.0,
@@ -55,7 +55,7 @@
   },
   "70104": {
     "Id": 70104,
-    "Des": "",
+    "Des": "Take a photo at Andra Resting Post",
     "PointId": 1658,
     "DistanceTake": {
       "x": 35.0,
@@ -73,7 +73,7 @@
   },
   "70105": {
     "Id": 70105,
-    "Des": "",
+    "Des": "Take a photo at Andra Landing Battlefield",
     "PointId": 1668,
     "DistanceTake": {
       "x": 25.0,
@@ -91,7 +91,7 @@
   },
   "70106": {
     "Id": 70106,
-    "Des": "",
+    "Des": "Take a photo at Deep Memorial",
     "PointId": 1676,
     "DistanceTake": {
       "x": 20.0,
@@ -109,7 +109,7 @@
   },
   "70107": {
     "Id": 70107,
-    "Des": "",
+    "Des": "Take a photo at Minsterhorn",
     "PointId": 1682,
     "DistanceTake": {
       "x": 15.0,
@@ -127,7 +127,7 @@
   },
   "70108": {
     "Id": 70108,
-    "Des": "",
+    "Des": "Take a photo at Kanamia Tribe Entrance",
     "PointId": 1729,
     "DistanceTake": {
       "x": 25.0,
@@ -145,7 +145,7 @@
   },
   "70109": {
     "Id": 70109,
-    "Des": "",
+    "Des": "Take a photo at the Elder Council Hall",
     "PointId": 1741,
     "DistanceTake": {
       "x": 10.0,
@@ -163,7 +163,7 @@
   },
   "70110": {
     "Id": 70110,
-    "Des": "",
+    "Des": "Take a photo at Ruins of Andra City",
     "PointId": 1778,
     "DistanceTake": {
       "x": 10.0,
@@ -181,7 +181,7 @@
   },
   "70111": {
     "Id": 70111,
-    "Des": "",
+    "Des": "Take a photo at Dark Mist Fortress",
     "PointId": 1783,
     "DistanceTake": {
       "x": 5.0,
@@ -199,7 +199,7 @@
   },
   "70112": {
     "Id": 70112,
-    "Des": "",
+    "Des": "Take a photo with Caprahorns",
     "PointId": 0,
     "DistanceTake": {
       "x": 25.0,

@@ -75,6 +75,10 @@ function Union_group_popupView:onSendBtnClick()
 end
 
 function Union_group_popupView:onUnbindBtnClick()
+  if not Z.GameContext.IsPlayInMobile then
+    Z.TipsVM.ShowTips(1000587)
+    return
+  end
   local data = {
     tipDesc = Lang("UnionUnbindLabel"),
     verifyLabel = Lang("UnbindLabel"),

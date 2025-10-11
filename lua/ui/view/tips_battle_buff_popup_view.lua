@@ -10,13 +10,19 @@ function Tips_battle_buff_popupView:ctor()
 end
 
 function Tips_battle_buff_popupView:OnActive()
-  if self.viewData.buffList == 0 then
+  if #self.viewData.buffList == 0 then
     Z.UIMgr:CloseView("tips_battle_buff_popup")
     return
   end
+  self.buffList_ = self.viewData.buffList
+  if self.viewData.type == E.AbnormalPanelType.Boss then
+    self.uiBinder.node_buff:SetPivot(0.5, 1)
+  else
+    self.uiBinder.node_buff:SetPivot(0.5, 0)
+  end
   self:refreshPosition()
   self.buffLoopList_ = loopListView.new(self, self.uiBinder.loop_buff, buff_tips_item, "tips_battle_buff_tpl")
-  self.buffLoopList_:Init(self.viewData.buffList)
+  self.buffLoopList_:Init(self.buffList_)
   self:EventAddAsyncListener(self.uiBinder.presscheck.ContainGoEvent, function(isContain)
     if not isContain then
       Z.UIMgr:CloseView("tips_battle_buff_popup")
@@ -40,12 +46,13 @@ function Tips_battle_buff_popupView:refreshData(buffList, type)
     Z.UIMgr:CloseView("tips_battle_buff_popup")
     return
   end
+  self.buffList_ = buffList
   self:refreshPosition()
   self.buffLoopList_:RefreshListView(buffList, false)
 end
 
 function Tips_battle_buff_popupView:refreshPosition()
-  local height = math.min(#self.viewData.buffList * 127, 400)
+  local height = math.min(#self.buffList_ * 127, 400)
   self.uiBinder.node_buff:SetHeight(height)
   self.uiBinder.node_buff:SetWidth(407)
   self.uiBinder.node_buff:SetPos(self.viewData.position)

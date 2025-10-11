@@ -17,7 +17,7 @@ function Abnormal_stateView:OnActive()
   self.buffList_:Init({})
   self:BindLuaAttrWatchers()
   if self.viewData.viewType == E.AbnormalPanelType.Boss then
-    self.uiBinder.node_buff_tips:SetLocalPos(90, -193, 0)
+    self.uiBinder.node_buff_tips:SetLocalPos(90, -50, 0)
   else
     self.uiBinder.node_buff_tips:SetLocalPos(75, 36, 0)
   end
@@ -76,12 +76,8 @@ function Abnormal_stateView:refreshBuffList()
   Z.EventMgr:Dispatch(Z.ConstValue.Buff.BuffDataRefresh, self.buffDataList_, self.viewData.viewType)
 end
 
-function Abnormal_stateView:OnClickBuff(buffData)
-  if self.viewData.viewType == E.AbnormalPanelType.Boss then
-    self:openBuffTips({buffData})
-  else
-    self:openBuffTips(self.buffDataList_)
-  end
+function Abnormal_stateView:OnClickBuff()
+  self:openBuffTips(self.buffDataList_)
 end
 
 function Abnormal_stateView:openBuffTips(buffDataList)

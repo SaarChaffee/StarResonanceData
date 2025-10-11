@@ -24,7 +24,7 @@ function Personalzone_edit_badge_subView:OnActive()
   local allConfigs = self.personalZoneData_:GetAllMedalConfig()
   for _, configs in pairs(allConfigs) do
     for _, config in ipairs(configs) do
-      if 0 < self.itemsVm_.GetItemTotalCount(config.Id) then
+      if 0 < self.itemsVm_.GetItemTotalCount(config.Id) and Z.ConditionHelper.CheckCondition(config.Condition, false) then
         datasCount = datasCount + 1
         self.datas[datasCount] = config
       end

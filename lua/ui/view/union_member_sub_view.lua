@@ -1,8 +1,8 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Union_member_subView = class("Union_member_subView", super)
-local loopScrollRect = require("ui.component.loopscrollrect")
-local memberListItemTemplate = require("ui.component.union.union_member_list_item")
+local loopListView = require("ui.component.loop_list_view")
+local unionMemberListItem = require("ui.component.union.union_member_list_item")
 
 function Union_member_subView:ctor(parent)
   self.uiBinder = nil
@@ -18,7 +18,8 @@ function Union_member_subView:initComponent()
     [E.UnionMemberSortMode.Contribution] = self.uiBinder.binder_active,
     [E.UnionMemberSortMode.OfflineTime] = self.uiBinder.binder_state
   }
-  self.scrollRect_ = loopScrollRect.new(self.uiBinder.loopscroll_union_list, self, memberListItemTemplate)
+  self.loopListView_ = loopListView.new(self, self.uiBinder.loop_item, unionMemberListItem, "union_member_list_tpl")
+  self.loopListView_:Init({})
   self:AddAsyncClick(self.uiBinder.btn_manage, function()
     self:onManagerBtnClick()
   end)
@@ -146,7 +147,7 @@ function Union_member_subView:refreshUI()
     binder.trans_sort:SetLocalRot(0, 0, rotation)
   end
   local unionInfo = self.unionVM_:GetPlayerUnionInfo()
-  local onlineNum = unionInfo.baseInfo.onlineNum
+  local onlineNum = self.unionVM_:GetOnlineMemberCount()
   local totalNum = unionInfo.baseInfo.num
   local maxNum = unionInfo.baseInfo.maxNum
   self.uiBinder.lab_digit.text = Lang("UnionPeopleNum", {
@@ -154,8 +155,7 @@ function Union_member_subView:refreshUI()
     num2 = totalNum,
     num3 = maxNum
   })
-  self.scrollRect_:ClearCells()
-  self.scrollRect_:SetData(self.curMemberListData_)
+  self.loopListView_:RefreshListView(self.curMemberListData_)
 end
 
 function Union_member_subView:OnActive()
@@ -170,8 +170,8 @@ end
 function Union_member_subView:OnDeActive()
   self:UnBindEvents()
   self.uiBinder.input_name.text = ""
-  self.scrollRect_:ClearCells()
-  self.scrollRect_ = nil
+  self.loopListView_:UnInit()
+  self.loopListView_ = nil
   self.binderSortItemDict_ = nil
   Z.RedPointMgr.RemoveNodeItem(E.RedType.UnionApplyButton)
 end

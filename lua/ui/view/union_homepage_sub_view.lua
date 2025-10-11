@@ -145,17 +145,20 @@ function Union_homepage_subView:RefreshInfo(unionInfo)
   self.Logo_:SetLogo(logoData)
   self.uiBinder.lab_name.text = unionInfo.baseInfo.Name
   self.uiBinder.lab_grade_digit.text = unionInfo.baseInfo.level
-  self.uiBinder.lab_member_digit.text = string.zconcat(unionInfo.baseInfo.onlineNum, "/", unionInfo.baseInfo.num, "/", unionInfo.baseInfo.maxNum)
+  local onlineNum = self.unionVM_:GetOnlineMemberCount()
+  self.uiBinder.lab_member_digit.text = string.zconcat(onlineNum, "/", unionInfo.baseInfo.num, "/", unionInfo.baseInfo.maxNum)
   self.uiBinder.lab_id.text = Lang("ID") .. unionInfo.baseInfo.Id
   self.uiBinder.lab_date.text = Lang("CreateDate") .. os.date("%Y/%m/%d", unionInfo.createTime)
   local moneyItemConfig = Z.TableMgr.GetRow("ItemTableMgr", E.UnionResourceId.Gold)
   if moneyItemConfig then
-    self.uiBinder.rimg_money_icon:SetImage(moneyItemConfig.Icon)
+    local itemVm = Z.VMMgr.GetVM("items")
+    self.uiBinder.rimg_money_icon:SetImage(itemVm.GetItemIcon(moneyItemConfig.Id))
     self.uiBinder.lab_money_digit.text = self.unionVM_:GetUnionResourceCount(E.UnionResourceId.Gold)
   end
   local expItemConfig = Z.TableMgr.GetRow("ItemTableMgr", E.UnionResourceId.Exp)
   if expItemConfig then
-    self.uiBinder.rimg_exp_icon:SetImage(expItemConfig.Icon)
+    local itemVm = Z.VMMgr.GetVM("items")
+    self.uiBinder.rimg_exp_icon:SetImage(itemVm.GetItemIcon(expItemConfig.Id))
     self.uiBinder.lab_exp_digit.text = self.unionVM_:GetUnionResourceCount(E.UnionResourceId.Exp)
   end
   self.uiBinder.lab_manifesto.text = unionInfo.baseInfo.declaration

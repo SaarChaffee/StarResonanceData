@@ -196,13 +196,7 @@ function QuestTrackComp:refreshSelfVisible()
 end
 
 function QuestTrackComp:refreshQuestName(questId)
-  local name = ""
-  if 0 < questId then
-    local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(questId)
-    if questRow then
-      name = questRow.QuestName
-    end
-  end
+  local name = self.questVM_.GetQuestName(questId)
   self.uiBinder_.Ref:SetVisible(self.uiBinder_.group_quest_name, name ~= "")
   self.uiBinder_.lab_quest_name.text = name
 end

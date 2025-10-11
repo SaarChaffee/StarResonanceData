@@ -4,6 +4,7 @@ local House_mainView = class("House_mainView", super)
 local PlayerPortraitHgr = require("ui.component.role_info.common_player_portrait_item_mgr")
 local currency_item_list = require("ui.component.currency.currency_item_list")
 local REPORTDEFINE = require("ui.model.report_define")
+local houseRedClass = require("rednode.house_red")
 
 function House_mainView:ctor()
   self.uiBinder = nil
@@ -34,6 +35,7 @@ function House_mainView:initUiBinders()
   self.editBtn_ = self.uiBinder.btn_edit
   self.reportBtn_ = self.uiBinder.btn_report
   self.fabricateNode_ = self.uiBinder.node_fabricate
+  self.anim_do_ = self.uiBinder.anim_do
   self.headNodes_ = {
     self.uiBinder.node_head_1,
     self.uiBinder.node_head_2,
@@ -92,8 +94,12 @@ function House_mainView:RefreshCleaniness()
 end
 
 function House_mainView:refreshFarm()
-  self.farmNode_.lab_farm.text = Lang("Leisure") .. self.houseData_:GetEmptyLand()
-  self.flowerNode_.lab_flower.text = Lang("CanPick") .. self.houseData_:GetFlowerNum()
+  self.farmNode_.lab_farm.text = Lang("Leisure", {
+    val = self.houseData_:GetEmptyLand()
+  })
+  self.flowerNode_.lab_flower.text = Lang("CanPick", {
+    val = self.houseData_:GetFlowerNum()
+  })
 end
 
 function House_mainView:RefreshHouseQuest()
@@ -154,6 +160,7 @@ function House_mainView:initBtns()
     self.houseVm_.OpenHouseFurnitureGuideView()
   end)
   self:AddClick(self.applyListBtn_, function()
+    Z.RedPointMgr.OnClickRedDot(E.RedType.HouseInviteRed)
     self.houseVm_.OpenHouseApplyView()
   end)
   self:AddClick(self.editBtn_, function()
@@ -207,6 +214,7 @@ end
 function House_mainView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:initUiBinders()
+  self:onStartAnimShow()
   self:initBtns()
   self:initData()
   self.currencyItemList_ = currency_item_list.new()
@@ -218,6 +226,8 @@ function House_mainView:OnActive()
   Z.EventMgr:Add(Z.ConstValue.House.HouseQuestChanged, self.OnHouseQuestChanged, self)
   Z.EventMgr:Add(Z.ConstValue.House.HouseQuestFinished, self.OnHouseQuestChanged, self)
   Z.EventMgr:Add(Z.ConstValue.House.HouseExpChange, self.HouseExpChange, self)
+  houseRedClass.CheckInviteRed()
+  Z.RedPointMgr.LoadRedDotItem(E.RedType.HouseInviteRed, self, self.uiBinder.node_requisition_red)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot_level, Z.RedPointMgr.GetRedState(E.RedType.HouseLevelRed))
 end
 
@@ -258,6 +268,7 @@ end
 function House_mainView:OnDeActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   Z.EventMgr:RemoveObjAll(self)
+  Z.RedPointMgr.RemoveNodeItem(E.RedType.HouseInviteRed)
   self.currencyItemList_:UnInit()
 end
 
@@ -299,6 +310,10 @@ function House_mainView:openHouseIntroducEditPopup()
     isMultiLine = true
   }
   Z.TipsVM.OpenCommonPopupInput(data)
+end
+
+function House_mainView:onStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Open)
 end
 
 return House_mainView

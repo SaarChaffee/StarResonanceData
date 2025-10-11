@@ -116,6 +116,10 @@ function LoginView:HasUserCenterBtn()
   return self.userCenterVM_.GetUserCenterUrl(E.UserSupportType.Login) ~= ""
 end
 
+function LoginView:HasSwitchAccountBtn()
+  return self.currentSDKType_ ~= E.LoginSDKType.WeGame and self.currentSDKType_ ~= E.LoginSDKType.APJSteam and self.currentSDKType_ ~= E.LoginSDKType.APJEpic
+end
+
 function LoginView:login()
   self.waitLogin_ = true
   if self.serverAddr_ == nil or self.serverAddr_ == "" then
@@ -123,13 +127,10 @@ function LoginView:login()
     self:switchLoginState(E.LoginState.GetServerList)
     return
   end
-  if self.loginVm_:CheckServerStatus(self.serverAddr_) then
-    Z.CoroUtil.create_coro_xpcall(function()
-      self:switchLoginState(E.LoginState.WaitingConnect)
-      self.loginVm_:AsyncAuth(self.serverAddr_, self.accountName_)
-    end, function(err)
-      logError(err)
-    end)()
+  self:switchLoginState(E.LoginState.WaitingConnect)
+  local enableEnterGame = self.loginVm_:AsyncCheckServerStatus(self.serverAddr_)
+  if enableEnterGame then
+    self.loginVm_:AsyncAuth(self.serverAddr_, self.accountName_)
   else
     Z.EventMgr:Dispatch(Z.ConstValue.LoginEvt.SwitchLoginState, E.LoginState.GetServerList)
   end
@@ -283,6 +284,31 @@ function LoginView:initComponents()
       Z.GameContext.QuitGame()
     end)
   end)
+  self:AddClick(self.uiBinder.binder_btn_set.btn_discord, function()
+    Z.SDKWebView.OpenURL("https://discord.gg/starresonance", false)
+  end)
+  self:AddClick(self.uiBinder.binder_btn_set.btn_website, function()
+    Z.SDKWebView.OpenURL("https://www.playbpsr.com", false)
+  end)
+  self:AddClick(self.uiBinder.binder_btn_set.btn_x, function()
+    Z.SDKWebView.OpenURL("https://x.com/BPSR_Official", false)
+  end)
+  self:AddClick(self.uiBinder.binder_btn_set.btn_youtube, function()
+    Z.SDKWebView.OpenURL("https://www.youtube.com/@BPSR_Official", false)
+  end)
+  self:AddClick(self.uiBinder.binder_btn_set.btn_login_discord, function()
+    local isAPJPlatform = self.currentPlatform_ == E.LoginPlatformType.APJPlatform
+    if Z.GameContext.IsPC and isAPJPlatform then
+      Z.SDKAPJ.APJDiscordStartLogin(nil, nil, function(result)
+        if result then
+          local binderSet = self.uiBinder.binder_btn_set
+          binderSet.Ref:SetVisible(binderSet.btn_login_discord, false)
+        else
+          logError("APJDiscordStartLogin failed")
+        end
+      end)
+    end
+  end)
   self:AddClick(self.uiBinder.binder_btn_set.btn_close, function()
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("IsQuitGame"), function()
       Z.GameContext.QuitGame()
@@ -423,13 +449,19 @@ end
 function LoginView:showBtnSet(value)
   local binderSet = self.uiBinder.binder_btn_set
   binderSet.Ref:SetVisible(binderSet.btn_close, Z.IsPCUI)
-  binderSet.Ref:SetVisible(binderSet.btn_switch, value and self.currentSDKType_ ~= E.LoginSDKType.WeGame)
+  binderSet.Ref:SetVisible(binderSet.btn_switch, value and self:HasSwitchAccountBtn())
   binderSet.Ref:SetVisible(binderSet.btn_billboard, self:HasAfficheBtn())
   binderSet.Ref:SetVisible(binderSet.btn_repair, value and Z.GameContext.IsPC == false)
   binderSet.Ref:SetVisible(binderSet.btn_service, self:HasUserSupportBtn())
   binderSet.Ref:SetVisible(binderSet.btn_user_center, self:HasUserCenterBtn())
   binderSet.Ref:SetVisible(binderSet.btn_qrcode, false)
   binderSet.Ref:SetVisible(binderSet.node_qrcode, false)
+  local isAPJPlatform = self.currentPlatform_ == E.LoginPlatformType.APJPlatform
+  binderSet.Ref:SetVisible(binderSet.btn_discord, isAPJPlatform)
+  binderSet.Ref:SetVisible(binderSet.btn_website, isAPJPlatform)
+  binderSet.Ref:SetVisible(binderSet.btn_x, isAPJPlatform)
+  binderSet.Ref:SetVisible(binderSet.btn_youtube, isAPJPlatform)
+  binderSet.Ref:SetVisible(binderSet.btn_login_discord, isAPJPlatform and Z.GameContext.IsPC and Z.SDKAPJ.APJDiscordHasToken() == false)
   binderSet.Ref:SetVisible(binderSet.btn_animation, false)
   binderSet.Ref:SetVisible(binderSet.btn_setting, true)
   local serviceIcon = self.userSupportVM_.GetUserSupportIcon(E.UserSupportType.Login)
@@ -653,9 +685,6 @@ function LoginView:onLoginAccountStateEnter()
   self.uiBinder.binder_btn_set.Ref:SetVisible(self.uiBinder.binder_btn_set.btn_qrcode, self.currentSDKType_ == E.LoginSDKType.MSDK)
   self.uiBinder.binder_btn_set.Ref:SetVisible(self.uiBinder.binder_btn_set.node_qrcode, false)
   self.uiBinder.uibinder_friends.Ref.UIComp:SetVisible(false)
-  if self.loginData_.AutoLogin then
-    self.loginVm_:SDKLogin(self.loginData_.LastAccountData.LoginType, self.loginData_.LastAccountData.OpenID)
-  end
 end
 
 function LoginView:onLoginAccountStateExit()
@@ -714,10 +743,6 @@ function LoginView:onEnterGameStateEnter()
     local accountData = Z.DataMgr.Get("account_data")
     self.uiBinder.input_platform.text = tostring(accountData.PlatformType)
     self:SetUIVisible(self.uiBinder.trans_debug_platform, true)
-  end
-  if self.loginData_.AutoLogin then
-    self.loginData_.AutoLogin = false
-    self:login()
   end
 end
 

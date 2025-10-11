@@ -409,6 +409,8 @@ function mod_intensify_window_view:SetSelectUuid(uuid)
     end
     if self.selectUuids_[uuid] then
       self.selectUuids_[uuid] = nil
+    elseif table.zcount(self.selectUuids_) >= Z.Global.ModDecomposeLimit then
+      Z.TipsVM.ShowTipsLang(150044)
     else
       self.selectUuids_[uuid] = uuid
     end
@@ -419,13 +421,19 @@ function mod_intensify_window_view:SetSelectUuid(uuid)
 end
 
 function mod_intensify_window_view:selectAllBlueMod()
-  local tempCount = 0
+  local tempCount = table.zcount(self.selectUuids_)
+  if tempCount >= Z.Global.ModDecomposeLimit then
+    Z.TipsVM.ShowTipsLang(150045)
+  end
   local mgr = Z.TableMgr.GetTable("ItemTableMgr")
   for _, item in ipairs(self.modLoopItems_) do
     local itemConfig = mgr.GetRow(item.configId)
     if itemConfig.Quality == E.ItemQuality.Blue and not self.modVM_.IsModEquip(item.uuid) then
       self.selectUuids_[item.uuid] = item.uuid
       tempCount = tempCount + 1
+      if tempCount >= Z.Global.ModDecomposeLimit then
+        break
+      end
     end
   end
   if tempCount == 0 then

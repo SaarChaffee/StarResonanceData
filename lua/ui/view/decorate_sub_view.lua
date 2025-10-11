@@ -101,11 +101,11 @@ function Decorate_subView:refreshDecorateItem(unit, decorateInfo)
     unit.img_decorate_icon:SetImage(string.format("%s%s", IconPath, decorateInfo.res))
     unit.img_decorate_icon:SetColor(Color.New(1, 1, 1, decorateInfo.transparency))
     unit.rect_decorate_icon:SetScale(decorateInfo.iconScale.x, decorateInfo.iconScale.y)
+    local itemDecorateIconScale = unit.rect_decorate_icon.localScale
     if decorateInfo.isFlip then
-      unit.rect_decorate_icon:SetRot(0, 180, 0)
-    else
-      unit.rect_decorate_icon:SetRot(0, 0, 0)
+      itemDecorateIconScale.x = itemDecorateIconScale.x * -1
     end
+    unit.rect_decorate_icon.localScale = Vector2.New(itemDecorateIconScale.x, itemDecorateIconScale.y)
     unit.Trans:SetLocalEuler(0, 0, decorateInfo.rotateZ)
   elseif E.CamerasysFuncType.Text == decorateInfo.decorateType then
     unit.sizeFitter_input.Enabled = true
@@ -149,11 +149,8 @@ function Decorate_subView:bindDecorateItem(unit, decorateData)
   if decorateData.decorateType == E.CamerasysFuncType.Sticker then
     unit.btn_up_left:AddListener(function()
       decorateData.isFlip = not decorateData.isFlip
-      if decorateData.isFlip then
-        unit.rect_decorate_icon:SetRot(0, 180, 0)
-      else
-        unit.rect_decorate_icon:SetRot(0, 0, 0)
-      end
+      local itemDecorateIconScale = unit.rect_decorate_icon.localScale
+      unit.rect_decorate_icon.localScale = Vector2.New(itemDecorateIconScale.x * -1, itemDecorateIconScale.y)
     end)
     unit.evt_left.onDown:AddListener(function(go, pointerData)
       local position = unit.rect_unit.anchoredPosition

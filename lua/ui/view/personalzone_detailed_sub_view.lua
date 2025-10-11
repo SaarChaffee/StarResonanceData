@@ -76,6 +76,7 @@ function Personalzone_detailed_subView:OnActive()
   self.cardLoopScroll_:Init(self.datas_)
   self:refreshInfo()
   self.uiBinder.lab_num.text = self.collectionVM_.GetFashionCollectionPoints()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Personalzone_detailed_subView:OnDeActive()
@@ -97,6 +98,7 @@ function Personalzone_detailed_subView:SetSelect(id)
   end
   self.cardLoopScroll_:RefreshListView(self.datas_, false)
   self:refreshInfo()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
 end
 
 function Personalzone_detailed_subView:refreshInfo()

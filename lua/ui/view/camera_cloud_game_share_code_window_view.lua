@@ -7,6 +7,7 @@ function Camera_cloud_game_share_code_windowView:ctor()
   self.uiBinder = nil
   super.ctor(self, "camera_cloud_game_share_code_window")
   self.cameraVM_ = Z.VMMgr.GetVM("camerasys")
+  self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
   self.photoGraphTextureId_ = nil
 end
 
@@ -47,6 +48,9 @@ function Camera_cloud_game_share_code_windowView:initBtn()
   self:AddAsyncClick(self.uiBinder.btn_moments, function()
     self:shareImage(Bokura.Plugins.Share.SharePlatform.WeChatMoment)
   end)
+  self:AddAsyncClick(self.uiBinder.btn_apj, function()
+    self:shareImage(Bokura.Plugins.Share.SharePlatform.System)
+  end)
   self:AddAsyncClick(self.uiBinder.btn_save, function()
     self:saveImage()
   end)
@@ -56,8 +60,7 @@ function Camera_cloud_game_share_code_windowView:initView()
   local titlePath = self.uiBinder.preface_cache:GetString("titleImg")
   self.uiBinder.rimg_title:SetImage(titlePath)
   self.uiBinder.rimg_game:SetImage(logoImg)
-  local accountData = Z.DataMgr.Get("account_data")
-  self:SetUIVisible(self.uiBinder.node_share, not Z.IsPCUI and accountData.PlatformType == E.LoginPlatformType.TencentPlatform)
+  self:initShareNode()
   if not self.viewData then
     return
   end
@@ -69,6 +72,21 @@ function Camera_cloud_game_share_code_windowView:initView()
     return
   end
   self.uiBinder.rimg_code:SetTextureByColor32(rect.width, rect.height, colorData)
+end
+
+function Camera_cloud_game_share_code_windowView:initShareNode()
+  local isUnlockFunc = self.gotoFuncVM_.FuncIsOn(E.FunctionID.SDKShareLocalPhoto, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, isUnlockFunc and not Z.IsPCUI)
+  local currentPlatform = Z.SDKLogin.GetPlatform()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, false)
+  if currentPlatform == E.LoginPlatformType.TencentPlatform then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, true)
+  elseif currentPlatform == E.LoginPlatformType.APJPlatform then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, false)
+  end
 end
 
 function Camera_cloud_game_share_code_windowView:shareImage(sharePlatform)

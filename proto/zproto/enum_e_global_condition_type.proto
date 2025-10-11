@@ -89,5 +89,7 @@ enum EGlobalConditionType {
   GlobalConditionTypeHomeCohabitant = 101;
   GlobalConditionTypeNewbieOnline = 102;
   GlobalConditionSameUnion = 103;
+  GlobalConditionIsTeamLeader = 104;
+  GlobalConditionTypeWeeklyTowerMaxClimberId = 106;
 }
 

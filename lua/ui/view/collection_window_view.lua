@@ -22,7 +22,6 @@ function Collection_windowView:OnActive()
   self.uiBinder.tog_select.group = self.uiBinder.togs_tab
   self.uiBinder.tog_integral:SetIsOnWithoutCallBack(false)
   self.uiBinder.tog_select:SetIsOnWithoutCallBack(false)
-  self.uiBinder.lab_title.text = Lang("CollectionWindowTitle")
   self.uiBinder.tog_integral:AddListener(function()
     self:switchView(self.memberView_)
     self:refreshLabName(E.FunctionID.CollectionVipLevel, self.uiBinder.lab_title, "CollectionWindowTitleFirst")

@@ -151,7 +151,8 @@ function Exchange_mainView:SelectGoods(exchangeItemData)
     local itemCfg = Z.TableMgr.GetTable("ItemTableMgr").GetRow(itemConfigId)
     if itemCfg then
       self.uiBinder.lab_item_name.text = itemCfg.Name
-      self.uiBinder.rimg_item_icon:SetImage(itemCfg.Icon)
+      local itemVm = Z.VMMgr.GetVM("items")
+      self.uiBinder.rimg_item_icon:SetImage(itemVm.GetItemIcon(itemConfigId))
       self.uiBinder.img_name_quality_bg:SetImage(qualityPath .. itemCfg.Quality)
     end
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_bind, exchangeItemRow.Bind == 1)

@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "GroupName": "",
+    "GroupName": "Floor",
     "Sort": 1,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -9,7 +9,7 @@
   },
   "2": {
     "Id": 2,
-    "GroupName": "",
+    "GroupName": "Partition",
     "Sort": 3,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -17,7 +17,7 @@
   },
   "3": {
     "Id": 3,
-    "GroupName": "",
+    "GroupName": "Partition Wallpaper",
     "Sort": 4,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -25,7 +25,7 @@
   },
   "4": {
     "Id": 4,
-    "GroupName": "",
+    "GroupName": "Field",
     "Sort": 14,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -33,7 +33,7 @@
   },
   "5": {
     "Id": 5,
-    "GroupName": "",
+    "GroupName": "Lamps",
     "Sort": 9,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -41,7 +41,7 @@
   },
   "6": {
     "Id": 6,
-    "GroupName": "",
+    "GroupName": "Ornament",
     "Sort": 8,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -49,7 +49,7 @@
   },
   "7": {
     "Id": 7,
-    "GroupName": "",
+    "GroupName": "Wall Ornament",
     "Sort": 7,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -57,7 +57,7 @@
   },
   "8": {
     "Id": 8,
-    "GroupName": "",
+    "GroupName": "Furniture",
     "Sort": 6,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -65,7 +65,7 @@
   },
   "9": {
     "Id": 9,
-    "GroupName": "",
+    "GroupName": "Flower",
     "Sort": 13,
     "GroupIcon": "",
     "BuildGroup": 0,
@@ -73,7 +73,7 @@
   },
   "10": {
     "Id": 10,
-    "GroupName": "",
+    "GroupName": "Figurines",
     "Sort": 12,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -81,7 +81,7 @@
   },
   "11": {
     "Id": 11,
-    "GroupName": "",
+    "GroupName": "Badge",
     "Sort": 10,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -89,7 +89,7 @@
   },
   "12": {
     "Id": 12,
-    "GroupName": "",
+    "GroupName": "Gardening",
     "Sort": 11,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -97,7 +97,7 @@
   },
   "13": {
     "Id": 13,
-    "GroupName": "",
+    "GroupName": "Basic Furniture",
     "Sort": 5,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -105,7 +105,7 @@
   },
   "14": {
     "Id": 14,
-    "GroupName": "",
+    "GroupName": "Crafting Station",
     "Sort": 15,
     "GroupIcon": "",
     "BuildGroup": 1,
@@ -113,7 +113,7 @@
   },
   "15": {
     "Id": 15,
-    "GroupName": "",
+    "GroupName": "Building Materials",
     "Sort": 2,
     "GroupIcon": "",
     "BuildGroup": 1,

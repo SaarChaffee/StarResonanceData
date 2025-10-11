@@ -45,23 +45,25 @@ function UILoadingView:InitComp()
   if self.viewData == E.LoadingType.Progress then
     Z.AudioMgr:Play("Loading_On")
   end
-  if self.uiBinder.rimg_bg.texture == nil then
-    self.uiBinder.rimg_bg:SetColor(Color.black)
-    self.uiBinder.rimg_bg:SetImageWithCallback(self.loadingData_:GetRandomBg(), function()
-      if not self.IsActive or not self.uiBinder then
-        return
-      end
+  if self.viewData ~= E.LoadingType.NoEffect then
+    if self.uiBinder.rimg_bg.texture == nil then
+      self.uiBinder.rimg_bg:SetColor(Color.black)
+      self.uiBinder.rimg_bg:SetImageWithCallback(self.loadingData_:GetRandomBg(), function()
+        if not self.IsActive or not self.uiBinder then
+          return
+        end
+        self.uiBinder.rimg_bg:SetColor(Color.white)
+      end)
+    else
       self.uiBinder.rimg_bg:SetColor(Color.white)
-    end)
-  else
-    self.uiBinder.rimg_bg:SetColor(Color.white)
+    end
+    local title, content = self.loadingData_:GetRandomLabel()
+    self.uiBinder.lab_title.text = title
+    self.uiBinder.lab_content.text = content
+    self.uiBinder.aspect_fitter_progress:SetFullRect()
+    self.uiBinder.aspect_fitter_white:SetFullRect()
+    self.uiBinder.aspect_fitter_black:SetFullRect()
   end
-  local title, content = self.loadingData_:GetRandomLabel()
-  self.uiBinder.lab_title.text = title
-  self.uiBinder.lab_content.text = content
-  self.uiBinder.aspect_fitter_progress:SetFullRect()
-  self.uiBinder.aspect_fitter_white:SetFullRect()
-  self.uiBinder.aspect_fitter_black:SetFullRect()
 end
 
 function UILoadingView:UnInitComp()

@@ -583,7 +583,7 @@ local events = {
   end,
   Voice_RoomOffline = function(roomName, memberId)
     local teamVm = Z.VMMgr.GetVM("team")
-    teamVm.JoinTeamVoice()
+    teamVm.JoinTeamVoice(true)
     teamVm.RecoverMicState()
   end,
   Voice_ReportPlayer = function(code, info)
@@ -620,6 +620,10 @@ local events = {
     else
       data:DelHouseItem(configId, serverUuid)
     end
+    if data.CopyClientUidList[uuid] then
+      data.CopyClientUidList[uuid] = nil
+      data.CopyItemCount = data.CopyItemCount - 1
+    end
   end,
   HomeEntitySelectingSingle = function(entityId, configId)
     logGreen("HomeEntitySelectingSingle entityId:{0}", entityId)
@@ -643,14 +647,17 @@ local events = {
   end,
   HomeEntityCreatFailed = function(uidList)
     local data = Z.DataMgr.Get("home_editor_data")
+    local ids = {}
     for i = 0, uidList.count - 1 do
       for key, value in pairs(data.CopyUUidList) do
         if value == uidList[i] then
           data.CopyUUidList[key] = nil
         end
       end
+      ids[i + 1] = uidList[i]
       data.CopyClientUidList[uidList[i]] = nil
     end
+    Z.EventMgr:Dispatch(Z.ConstValue.Home.CancelSelectedUids, ids)
   end,
   HomeEntityStructureUpdate = function(uuid)
     Z.EventMgr:Dispatch(Z.ConstValue.Home.HomeEntityStructureUpdate, uuid)
@@ -783,6 +790,9 @@ local events = {
   end,
   ON_DEVICE_DISCONNECTED = function()
     Z.EventMgr:Dispatch(Z.ConstValue.Device.Disconnected)
+  end,
+  CreateTeamEntity = function(charId)
+    Z.EventMgr:Dispatch(Z.ConstValue.Team.CreateEntity, charId)
   end
 }
 local sendLuaEvent = function(eventName, ...)

@@ -157,7 +157,7 @@
       300026,
       300019
     ],
-    "SchoolDes": "",
+    "SchoolDes": "<i><style=\"accent-gn\">[Luck Proc Spec]</style></i><br>Masters various <linktext=1061><style=\"ItemQuality_5\">Sigils</style></linktext> and frequently procs to perform flashy combos, up to 10 meteors per second at peak performance.<br><br><style=\"accent-gn\">| Weapon Choices</style></style><br>1. Group Monster Clearing: <style=\"electro\">Thunderflash - Hand Cannon<br>2. Arcane Potential:<style=\"electro\">Judgment Blade - Reaper Scythe</style><br><br>| Stat Priority<br>Main: Strength<br>Sub: Luck",
     "RecommendDimension": "幸运流",
     "SchoolIcon": "",
     "PlayerSchoolIcon": "",
@@ -326,7 +326,7 @@
       301026,
       301018
     ],
-    "SchoolDes": "",
+    "SchoolDes": "<i><style=\"accent-gn\">[Crit Spec]</style></i><br>Every strike is a Crit hit, synergizing perfectly with weapon mechanics to deliver satisfying big numbers. Early game pairs well with rapid-fire Crit projectiles for consistent Attack.<br><br><style=\"accent-gn\">| Weapon Choices</style><br>1. Repeated Iaido Slash: <style=\"electro\">Judgment Blade - Reaper Scythe</style><br>2. Quick Empowered Attacks: <style=\"geo\">Sandstone Guard Blade</style><br><br><style=\"accent-gn\">| Stat Priority</style><br>Main: Strength<br>Sub: Dexterity",
     "RecommendDimension": "幸运流",
     "SchoolIcon": "",
     "PlayerSchoolIcon": "",
@@ -496,7 +496,7 @@
       302026,
       302018
     ],
-    "SchoolDes": "",
+    "SchoolDes": "<i><style=\"accent-gn\">[Combo Arcane Spec]</style></i><br>Stacks rapid combo and hits into a devastating burst.<br><br><style=\"accent-gn\">| Weapon Choices</style><br>1. Max Attack Speed (Stationary): <style=\"pyro\">Scourgefire Axe - Battle Axe</style><br>2. Max Attack Speed (Mobile): <style=\"electro\">Judgment Blade - Reaper Scythe</style><br>3. Versatile: <style=\"cryo\">Frostjade Staff - Staff</style><br><br><style=\"accent-gn\">| Stat Priority</style><br>Main: Strength<br>Sub: Agility",
     "RecommendDimension": "幸运流",
     "SchoolIcon": "",
     "PlayerSchoolIcon": "",
@@ -665,7 +665,7 @@
       303026,
       303018
     ],
-    "SchoolDes": "",
+    "SchoolDes": "<i><style=\"accent-gn\">[Passion Spec]</style></i> <br>High-risk, high-reward. Predicts incoming DMG and activates shields. Manipulates HP thresholds to amplify DMG. Combines with guard-conversion mechanics for steady shielding.<br><br><style=\"accent-gn\">| Weapon Choices</style><br>1. Lower HP, Faster Attacks: <style=\"pyro\">Scourgefire Axe - Battle Axe</style><br>2. High Attack Speed, Sustained Shielding: <style=\"anemo\">Justice Lance- Lance</style><br>3. High Crit, Sustained Shielding: <style=\"geo\">Sandstone Guard Blade</style><br><br><style=\"accent-gn\">| Stat Priority</style><br>Main: Strength<br>Sub: Dexterity",
     "RecommendDimension": "幸运流",
     "SchoolIcon": "",
     "PlayerSchoolIcon": "",
@@ -841,7 +841,7 @@
       304026,
       304020
     ],
-    "SchoolDes": "",
+    "SchoolDes": "<i><style=\"accent-gn\">[Healing Spec]</style></i><br>Instantly heals all allies at a critical moment with reduced CD for the next round of abilities.<br><br><style=\"accent-gn\">| Weapon Choices</style><br>1. Enhanced Healing: <style=\"dendro\">Fatewood Ring - Ring</style><br>2. Shield Boosting: <style=\"anemo\"><style=\"accent-gn\">Justice Lance- Lance</style><br><br>| Stat Priority</style><br>Main: Blessing<br>Sub: Dexterity",
     "RecommendDimension": "幸运流",
     "SchoolIcon": "",
     "PlayerSchoolIcon": "",
@@ -1017,7 +1017,7 @@
       305026,
       305020
     ],
-    "SchoolDes": "",
+    "SchoolDes": "<i><style=\"accent-gn\">[Control Spec]</style></i><br>Boosts crowd control efficiency, locking down groups of enemies and creating safe windows for allies to deal DMG. Can be paired with Torrent to supplement healing ability.<br><br><style=\"accent-gn\">| Weapon Choices</style><br>1. Enhanced Support: <style=\"cryo\">Frostjade Staff - Staff</style><br>2. Enhanced Healing:<style=\"dendro\">Fatewood Ring - Ring</style><br><br><style=\"accent-gn\">| Stat Priority</style><br>Main: Blessing<br>Sub: Luck",
     "RecommendDimension": "幸运流",
     "SchoolIcon": "",
     "PlayerSchoolIcon": "",
@@ -1194,7 +1194,7 @@
       306026,
       306020
     ],
-    "SchoolDes": "",
+    "SchoolDes": "<i><style=\"accent-gn\">[Battle Support Spec]</style></i><br>Boosts ally performance and suppresses enemies. Choose weapon based on your party's composition-melee vs ranged. <br><br><style=\"accent-gn\">| Weapon Choices</style><br>1. Melee Support: <style=\"electro\">Judgment Blade - Reaper Scythe</style><br>2. Ranged Support: <style=\"dendro\">Fatewood Ring - Ring</style><br><br><style=\"accent-gn\">| Stat Priority</style><br>Main: Blessing<br>Sub: Agility",
     "RecommendDimension": "幸运流",
     "SchoolIcon": "",
     "PlayerSchoolIcon": "",
@@ -1370,7 +1370,7 @@
       307026,
       307020
     ],
-    "SchoolDes": "",
+    "SchoolDes": "<i><style=\"accent-gn\">[Fortitude Spec]</style></i><br>Significantly enhances survivability in high-pressure moments. Absorbs enemy DMG and takes the heat off Allies.<br><br><style=\"accent-gn\">| Weapon Choices</style><br>1. Mobile Defense: <style=\"anemo\">Justice Lance- Lance</style><br>2. Stable Defense: <style=\"geo\">Sandstone Guard Blade</style><br><br><style=\"accent-gn\">| Stat Priority</style><br>Main: Resilience<br>Sub: Agility",
     "RecommendDimension": "幸运流",
     "SchoolIcon": "",
     "PlayerSchoolIcon": "",
@@ -1547,7 +1547,7 @@
       308026,
       308019
     ],
-    "SchoolDes": "",
+    "SchoolDes": "<i><style=\"accent-gn\">[Super Armor Breaker Spec]</style></i><br>Specializing in breaking enemy's Super Armor, weakening them and creating huge burst windows for the party.<br><br><style=\"accent-gn\">| Weapon Choices</style><br>1. Mobile Defense: <style=\"anemo\">Justice Lance- Lance</style><br>2. Stable Defense: <style=\"geo\">Sandstone Guard Blade</style><br><br><style=\"accent-gn\">| Stat Priority</style><br>Main: Resilience<br>Sub: Dexterity",
     "RecommendDimension": "幸运流",
     "SchoolIcon": "",
     "PlayerSchoolIcon": "",
@@ -1723,7 +1723,7 @@
       309026,
       309020
     ],
-    "SchoolDes": "",
+    "SchoolDes": "<i><style=\"accent-gn\">[Counter Spec]</style></i><br>Pulls enemies in with strong AoE taunts, reduces incoming DMG, and deals retaliation DMG when hit. Excels at close-range counterattacks.<br><br><style=\"accent-gn\">| Weapon Choices</style><br>1. Mobile Defense: <style=\"anemo\">Justice Lance- Lance</style><br>2. Stable Defense: <style=\"geo\">Sandstone Guard Blade</style><br><br><style=\"accent-gn\">| Stat Priority</style><br>Main: Resilience<br>Sub: Luck",
     "RecommendDimension": "幸运流",
     "SchoolIcon": "",
     "PlayerSchoolIcon": "",

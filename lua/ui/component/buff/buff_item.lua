@@ -16,6 +16,9 @@ function BuffItem:OnRefresh(data)
   else
     self.uiBinder.lab_digit.text = ""
   end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_buff_mask, data.BuffType ~= E.EBuffType.Debuff)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_debuff_mask, data.BuffType == E.EBuffType.Debuff)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_layer, data.Layer > 1)
   if data.DurationTime and data.DurationTime > 0 then
     local nowTime = Z.NumTools.GetPreciseDecimal(Z.ServerTime:GetServerTime() / 1000, 1)
     local nowValue = nowTime - data.CreateTime
@@ -34,7 +37,7 @@ function BuffItem:OnRefresh(data)
 end
 
 function BuffItem:OnPointerClick(go, eventData)
-  self.parent.UIView:OnClickBuff(self.data_)
+  self.parent.UIView:OnClickBuff()
 end
 
 return BuffItem

@@ -21,9 +21,10 @@ end
 
 function HandbookData:InitLocalSave()
   if Z.LocalUserDataMgr.ContainsByLua(E.LocalUserDataType.Character, handbookDefine.LocalSaveKey) then
-    self.LocalSave = cjson.decode(Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Character, handbookDefine.LocalSaveKey))
+    local str = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Character, handbookDefine.LocalSaveKey)
+    self.LocalSave = cjson.decode(str)
     if type(self.LocalSave) == "userdata" then
-      logError("Handbook New Decode Error To UserData")
+      logError("Handbook New Decode Error To UserData, LocalSave : " .. str)
       self.LocalSave = {}
     end
   else

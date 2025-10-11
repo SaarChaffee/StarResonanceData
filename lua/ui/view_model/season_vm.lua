@@ -31,8 +31,8 @@ local getCurSeasonTimeShow = function()
     seasonName = seasonGlobalRow.SeasonName
     local startTime, endTime, _ = Z.TimeTools.GetWholeStartEndTimeByTimerId(seasonGlobalRow.SeasonTimeId)
     if startTime and endTime then
-      local startTimeData = Z.TimeFormatTools.TicksFormatTime(startTime * 1000, E.TimeFormatType.YMD)
-      local endTimeData = Z.TimeFormatTools.TicksFormatTime(endTime * 1000, E.TimeFormatType.YMD)
+      local startTimeData = Z.TimeFormatTools.TicksFormatTime(startTime * 1000, E.TimeFormatType.YMD, false, true)
+      local endTimeData = Z.TimeFormatTools.TicksFormatTime(endTime * 1000, E.TimeFormatType.YMD, false, true)
       seasonTimeStr = string.zconcat(startTimeData, " ~ ", endTimeData)
     end
   end
@@ -180,6 +180,23 @@ local getSeasonActConfigByFuncId = function(funcId)
   end
   return nil
 end
+local getSeasonShowConfig = function()
+  local temp = {}
+  local curSeasonId = getCurrentSeasonId()
+  if not curSeasonId or curSeasonId == 0 then
+    return temp
+  end
+  local seasonPreviewDatas = Z.TableMgr.GetTable("SeasonlPreviewTableMgr").GetDatas()
+  for k, v in pairs(seasonPreviewDatas) do
+    if v.SeasonId == curSeasonId then
+      temp[#temp + 1] = v
+    end
+  end
+  table.sort(temp, function(a, b)
+    return a.Sort < b.Sort
+  end)
+  return temp
+end
 local ret = {
   RefreshSeasonData = refreshSeasonData,
   OpenSeasonMainView = openSeasonMainView,
@@ -196,6 +213,7 @@ local ret = {
   GetSeasonStartEndTime = getSeasonStartEndTime,
   GetCurrentSeasonId = getCurrentSeasonId,
   GetSeasonActConfigByFuncId = getSeasonActConfigByFuncId,
-  GetCurSeasonTimeShow = getCurSeasonTimeShow
+  GetCurSeasonTimeShow = getCurSeasonTimeShow,
+  GetSeasonShowConfig = getSeasonShowConfig
 }
 return ret

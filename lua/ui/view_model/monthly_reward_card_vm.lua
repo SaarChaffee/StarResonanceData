@@ -30,8 +30,14 @@ function MonthlyRewardCardVM:GetActiveMonthlyCardKey()
   return monthlyCardKey
 end
 
+function MonthlyRewardCardVM:GetTodayDate()
+  local delayTime = Z.Global.MonthCardRefreshMonthlyOffset * 1000
+  local today = Z.TimeFormatTools.Tp2YMDHMS(math.floor((Z.TimeTools.Now() - delayTime) / 1000))
+  return today
+end
+
 function MonthlyRewardCardVM:GetCurrentMonthlyCardKey()
-  local today = Z.TimeFormatTools.Tp2YMDHMS(math.floor(Z.TimeTools.Now() / 1000))
+  local today = self:GetTodayDate()
   local monthlyCardKey = today.year * 100 + today.month
   return monthlyCardKey
 end
@@ -53,20 +59,22 @@ function MonthlyRewardCardVM:AsyncClickMonthlyCardTips(cancelToken, ignoreError)
 end
 
 function MonthlyRewardCardVM:CheckEveryDayRewardPopupCanShow()
-  local monthlyCardData = Z.ContainerMgr.CharSerialize.monthlyCard
-  local canShow = monthlyCardData.tipsClicked == E.MonthlyCardTipsClicked.CanShow
-  local monthlyRewardCardData = Z.DataMgr.Get("monthly_reward_card_data")
-  if not canShow or monthlyRewardCardData.IsOpenedTipsCardView then
-    return
-  end
-  if self:GetActiveMonthlyCardKey() == 0 then
-    local cancelSource = Z.CancelSource.Rent()
-    self:AsyncClickMonthlyCardTips(cancelSource:CreateToken())
-    cancelSource:Recycle()
-    return
-  end
-  monthlyRewardCardData.IsOpenedTipsCardView = true
-  Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.Activities, "monthly_reward_card_window")
+  Z.CoroUtil.create_coro_xpcall(function()
+    local monthlyCardData = Z.ContainerMgr.CharSerialize.monthlyCard
+    local canShow = monthlyCardData.tipsClicked == E.MonthlyCardTipsClicked.CanShow
+    local monthlyRewardCardData = Z.DataMgr.Get("monthly_reward_card_data")
+    if not canShow or monthlyRewardCardData.IsOpenedTipsCardView then
+      return
+    end
+    if self:GetActiveMonthlyCardKey() == 0 then
+      local cancelSource = Z.CancelSource.Rent()
+      self:AsyncClickMonthlyCardTips(cancelSource:CreateToken())
+      cancelSource:Recycle()
+      return
+    end
+    monthlyRewardCardData.IsOpenedTipsCardView = true
+    Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.Activities, "monthly_reward_card_window")
+  end)()
 end
 
 function MonthlyRewardCardVM:MonthCardPrivilegeDesTableRow(labType)

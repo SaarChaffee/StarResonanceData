@@ -63,7 +63,13 @@ function ChatBubbleChannelNotice:refreshItemSource(leftOffest)
 end
 
 function ChatBubbleChannelNotice:refreshContent(leftOffest)
-  local content = self.chatMainVm_.GetShowMsg(self.data_, self.uiBinder.lab_content, self.uiBinder.lab_content_ref)
+  local content
+  local type, _, _, systemContent = Z.ChatMsgHelper.GetSystemType(self.data_)
+  if type == E.ESystemTipInfoType.ItemInfo then
+    content = systemContent
+  else
+    content = self.chatMainVm_.GetShowMsg(self.data_, self.uiBinder.lab_content, self.uiBinder.lab_content_ref)
+  end
   self.uiBinder.lab_content.text = content
   self.uiBinder.lab_content_ref:SetOffsetMin(leftOffest, 0)
   self.uiBinder.lab_content_ref:SetOffsetMax(-10, 0)

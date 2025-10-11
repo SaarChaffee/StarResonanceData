@@ -164,6 +164,7 @@ function Explore_monster_windowView:OnActive()
   self.monsterTargets_ = {}
   self.monsterTargetsUnits_ = {}
   self.unitTokenDict_ = {}
+  self.isStart_ = true
   self.filterName_ = stringEmpty_
   Z.UnrealSceneMgr:InitSceneCamera()
   Z.UnrealSceneMgr:SwitchGroupReflection(true)
@@ -261,6 +262,11 @@ function Explore_monster_windowView:initLeftToggle()
       if isOn then
         self.commonVM_.CommonPlayTogAnim(tog_.anim_tog, self.cancelSource:CreateToken())
         self:onClickLeftToogle(i)
+        if self.isStart_ then
+          self.isStart_ = false
+        else
+          self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+        end
       end
     end)
     local monsterType = i
@@ -271,6 +277,8 @@ function Explore_monster_windowView:initLeftToggle()
   local selectToggle_ = self.toggleList_[self.currentSelectMonsterType_]
   if selectToggle_.isOn == true then
     self:onClickLeftToogle(self.currentSelectMonsterType_)
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+    self.isStart_ = false
   else
     selectToggle_.isOn = true
   end
@@ -504,7 +512,7 @@ function Explore_monster_windowView:UnSelectMonsterListItem()
   self.monsterScrollRect_:ClearAllSelect()
 end
 
-function Explore_monster_windowView:ChangeMonster(data)
+function Explore_monster_windowView:ChangeMonster(data, isClick)
   self.curSelectMonsterData_ = data
   if self.curSelectMonsterData_.ExploreData.TreasureBoxId and self.curSelectMonsterData_.ExploreData.TreasureBoxId ~= 0 then
     self.isBoxReward_ = true
@@ -524,6 +532,9 @@ function Explore_monster_windowView:ChangeMonster(data)
   self:showTarget()
   self:showAwardItem()
   self:showBtnState()
+  if isClick then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
+  end
 end
 
 function Explore_monster_windowView:startAnimatedShow()

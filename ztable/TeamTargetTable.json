@@ -1,7 +1,7 @@
 {
   "999": {
     "Id": 999,
-    "Name": "",
+    "Name": "All",
     "HasFatherType": false,
     "BelongType": 0,
     "TimeCycle": "0",
@@ -15,12 +15,14 @@
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 0,
     "QuickJumpParam": [],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "1000": {
     "Id": 1000,
-    "Name": "",
+    "Name": "Custom",
     "HasFatherType": false,
     "BelongType": 0,
     "TimeCycle": "0",
@@ -34,12 +36,14 @@
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 0,
     "QuickJumpParam": [],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "2000": {
     "Id": 2000,
-    "Name": "",
+    "Name": "Bureau Commission",
     "HasFatherType": false,
     "BelongType": 0,
     "TimeCycle": "0",
@@ -57,12 +61,14 @@
       5,
       4361
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "2001": {
     "Id": 2001,
-    "Name": "",
+    "Name": "World Boss Crusade",
     "HasFatherType": false,
     "BelongType": 0,
     "TimeCycle": "0",
@@ -95,12 +101,14 @@
     "QuickJumpParam": [
       800902
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_worldboss"
   },
   "3000": {
     "Id": 3000,
-    "Name": "",
+    "Name": "Unstable Space",
     "HasFatherType": false,
     "BelongType": 0,
     "TimeCycle": "0",
@@ -114,12 +122,14 @@
     "Icon": "",
     "QuickJumpType": 0,
     "QuickJumpParam": [],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "3001": {
     "Id": 3001,
-    "Name": "",
+    "Name": "Unstable - Tina's Mindrealm",
     "HasFatherType": true,
     "BelongType": 3000,
     "TimeCycle": "0",
@@ -154,12 +164,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 3001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_2"
   },
   "3002": {
     "Id": 3002,
-    "Name": "",
+    "Name": "Unstable - Towering Ruin",
     "HasFatherType": true,
     "BelongType": 3000,
     "TimeCycle": "0",
@@ -194,12 +206,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 3001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_7"
   },
   "3003": {
     "Id": 3003,
-    "Name": "",
+    "Name": "Unstable - Goblin Lair",
     "HasFatherType": true,
     "BelongType": 3000,
     "TimeCycle": "0",
@@ -234,12 +248,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 3001,
+    "Difficulty": 0,
     "MatchPic": "ui/textures/dungeon_textures/dungeon_gebulin_1"
   },
   "3004": {
     "Id": 3004,
-    "Name": "",
+    "Name": "Unstable - Kanamia Tribe",
     "HasFatherType": true,
     "BelongType": 3000,
     "TimeCycle": "0",
@@ -274,12 +290,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 3001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_10"
   },
   "3005": {
     "Id": 3005,
-    "Name": "",
+    "Name": "Unstable - Dragon Claw Valley",
     "HasFatherType": true,
     "BelongType": 3000,
     "TimeCycle": "0",
@@ -314,12 +332,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 3001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_6"
   },
   "3006": {
     "Id": 3006,
-    "Name": "",
+    "Name": "Unstable - Dark Mist Fortress",
     "HasFatherType": true,
     "BelongType": 3000,
     "TimeCycle": "0",
@@ -354,12 +374,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 3001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_underandera_3"
   },
   "5000": {
     "Id": 5000,
-    "Name": "",
+    "Name": "Chaotic Realm",
     "HasFatherType": false,
     "BelongType": 0,
     "TimeCycle": "0",
@@ -373,12 +395,14 @@
     "Icon": "",
     "QuickJumpType": 0,
     "QuickJumpParam": [],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "5001": {
     "Id": 5001,
-    "Name": "",
+    "Name": "Chaotic - Tina's Mindrealm",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -409,12 +433,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_2"
   },
   "5002": {
     "Id": 5002,
-    "Name": "",
+    "Name": "Chaotic - Towering Ruin",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -445,12 +471,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_7"
   },
   "5003": {
     "Id": 5003,
-    "Name": "",
+    "Name": "Chaotic - Goblin Lair",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -481,12 +509,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/textures/dungeon_textures/dungeon_gebulin_1"
   },
   "5004": {
     "Id": 5004,
-    "Name": "",
+    "Name": "Chaotic - Kanamia Tribe",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -517,12 +547,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_10"
   },
   "5005": {
     "Id": 5005,
-    "Name": "",
+    "Name": "Chaotic - Tina's Mindrealm - Hard",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -553,12 +585,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_2"
   },
   "5006": {
     "Id": 5006,
-    "Name": "",
+    "Name": "Chaotic - Towering Ruin - Hard",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -589,12 +623,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_7"
   },
   "5007": {
     "Id": 5007,
-    "Name": "",
+    "Name": "Chaotic - Goblin Lair - Hard",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -625,12 +661,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/textures/dungeon_textures/dungeon_gebulin_1"
   },
   "5008": {
     "Id": 5008,
-    "Name": "",
+    "Name": "Chaotic - Kanamia Tribe - Hard",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -661,12 +699,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_10"
   },
   "5009": {
     "Id": 5009,
-    "Name": "",
+    "Name": "Chaotic - Tina's Mindrealm - Master 1",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -697,12 +737,23 @@
       4,
       421
     ],
-    "MatchID": 0,
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2101
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 1,
     "MatchPic": "ui/background/seasonact/activity_dina_2"
   },
   "5010": {
     "Id": 5010,
-    "Name": "",
+    "Name": "Chaotic - Towering Ruin - Master 1",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -733,12 +784,23 @@
       4,
       421
     ],
-    "MatchID": 0,
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2102
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 1,
     "MatchPic": "ui/background/seasonact/activity_dina_7"
   },
   "5011": {
     "Id": 5011,
-    "Name": "",
+    "Name": "Chaotic - Goblin Lair - Master 1",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -769,12 +831,23 @@
       4,
       421
     ],
-    "MatchID": 0,
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2103
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 1,
     "MatchPic": "ui/textures/dungeon_textures/dungeon_gebulin_1"
   },
   "5012": {
     "Id": 5012,
-    "Name": "",
+    "Name": "Chaotic - Kanamia Tribe - Master 1",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -805,12 +878,23 @@
       4,
       421
     ],
-    "MatchID": 0,
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2104
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 1,
     "MatchPic": "ui/background/seasonact/activity_dina_10"
   },
   "5013": {
     "Id": 5013,
-    "Name": "",
+    "Name": "Chaotic - Dragon Claw Valley",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -841,12 +925,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_6"
   },
   "5014": {
     "Id": 5014,
-    "Name": "",
+    "Name": "Chaotic - Dragon Claw Valley - Hard",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -877,12 +963,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_dina_6"
   },
   "5015": {
     "Id": 5015,
-    "Name": "",
+    "Name": "Chaotic - Dragon Claw Valley - Master 1",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -913,12 +1001,23 @@
       4,
       421
     ],
-    "MatchID": 0,
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2105
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 1,
     "MatchPic": "ui/background/seasonact/activity_dina_6"
   },
   "5016": {
     "Id": 5016,
-    "Name": "",
+    "Name": "Chaotic - Dark Mist Fortress",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -949,12 +1048,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_underandera_3"
   },
   "5017": {
     "Id": 5017,
-    "Name": "",
+    "Name": "Chaotic - Dark Mist Fortress - Hard",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -985,12 +1086,14 @@
       4,
       421
     ],
+    "MatchCondition": [],
     "MatchID": 5001,
+    "Difficulty": 0,
     "MatchPic": "ui/background/seasonact/activity_underandera_3"
   },
   "5018": {
     "Id": 5018,
-    "Name": "",
+    "Name": "Chaotic - Dark Mist Fortress - Master 1",
     "HasFatherType": true,
     "BelongType": 5000,
     "TimeCycle": "0",
@@ -1013,7 +1116,7 @@
         3
       ]
     ],
-    "Sort": 65,
+    "Sort": 66,
     "Icon": "team_copy_picture_21",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1021,12 +1124,305 @@
       4,
       421
     ],
-    "MatchID": 0,
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2108
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 1,
+    "MatchPic": "ui/background/seasonact/activity_underandera_3"
+  },
+  "5019": {
+    "Id": 5019,
+    "Name": "Chaotic - Goblin Lair - Master 6",
+    "HasFatherType": true,
+    "BelongType": 5000,
+    "TimeCycle": "0",
+    "Time": "000000|240000",
+    "FunctionID": 300212,
+    "RelativeDungeonId": 6009,
+    "TeamType": 0,
+    "MemberCountStopMatch": 5,
+    "Talent": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "Sort": 67,
+    "Icon": "team_copy_picture_15",
+    "QuickJumpType": 1,
+    "QuickJumpParam": [
+      8,
+      4,
+      421
+    ],
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2120
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 6,
+    "MatchPic": "ui/textures/dungeon_textures/dungeon_gebulin_1"
+  },
+  "5020": {
+    "Id": 5020,
+    "Name": "Chaotic - Tina's Mindrealm - Master 6",
+    "HasFatherType": true,
+    "BelongType": 5000,
+    "TimeCycle": "0",
+    "Time": "000000|240000",
+    "FunctionID": 300202,
+    "RelativeDungeonId": 1033,
+    "TeamType": 0,
+    "MemberCountStopMatch": 5,
+    "Talent": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "Sort": 68,
+    "Icon": "team_copy_picture_2",
+    "QuickJumpType": 1,
+    "QuickJumpParam": [
+      8,
+      4,
+      421
+    ],
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2120
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 6,
+    "MatchPic": "ui/background/seasonact/activity_dina_2"
+  },
+  "5021": {
+    "Id": 5021,
+    "Name": "Chaotic - Towering Ruin - Master 6",
+    "HasFatherType": true,
+    "BelongType": 5000,
+    "TimeCycle": "0",
+    "Time": "000000|240000",
+    "FunctionID": 300204,
+    "RelativeDungeonId": 1123,
+    "TeamType": 0,
+    "MemberCountStopMatch": 5,
+    "Talent": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "Sort": 69,
+    "Icon": "team_copy_picture_8",
+    "QuickJumpType": 1,
+    "QuickJumpParam": [
+      8,
+      4,
+      421
+    ],
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2120
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 6,
+    "MatchPic": "ui/background/seasonact/activity_dina_7"
+  },
+  "5022": {
+    "Id": 5022,
+    "Name": "Chaotic - Kanamia Tribe - Master 6",
+    "HasFatherType": true,
+    "BelongType": 5000,
+    "TimeCycle": "0",
+    "Time": "000000|240000",
+    "FunctionID": 300210,
+    "RelativeDungeonId": 6023,
+    "TeamType": 0,
+    "MemberCountStopMatch": 5,
+    "Talent": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "Sort": 70,
+    "Icon": "team_copy_picture_12",
+    "QuickJumpType": 1,
+    "QuickJumpParam": [
+      8,
+      4,
+      421
+    ],
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2120
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 6,
+    "MatchPic": "ui/background/seasonact/activity_dina_10"
+  },
+  "5023": {
+    "Id": 5023,
+    "Name": "Chaotic - Dragon Claw Valley - Master 6",
+    "HasFatherType": true,
+    "BelongType": 5000,
+    "TimeCycle": "0",
+    "Time": "000000|240000",
+    "FunctionID": 300208,
+    "RelativeDungeonId": 1223,
+    "TeamType": 0,
+    "MemberCountStopMatch": 5,
+    "Talent": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "Sort": 71,
+    "Icon": "team_copy_picture_6",
+    "QuickJumpType": 1,
+    "QuickJumpParam": [
+      8,
+      4,
+      421
+    ],
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2120
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 6,
+    "MatchPic": "ui/background/seasonact/activity_dina_6"
+  },
+  "5024": {
+    "Id": 5024,
+    "Name": "Chaotic - Dark Mist Fortress - Master 6",
+    "HasFatherType": true,
+    "BelongType": 5000,
+    "TimeCycle": "0",
+    "Time": "000000|240000",
+    "FunctionID": 300214,
+    "RelativeDungeonId": 1333,
+    "TeamType": 0,
+    "MemberCountStopMatch": 5,
+    "Talent": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "Sort": 72,
+    "Icon": "team_copy_picture_21",
+    "QuickJumpType": 1,
+    "QuickJumpParam": [
+      8,
+      4,
+      421
+    ],
+    "MatchCondition": [
+      [
+        14,
+        300998
+      ],
+      [
+        9,
+        2120
+      ]
+    ],
+    "MatchID": 1004,
+    "Difficulty": 6,
     "MatchPic": "ui/background/seasonact/activity_underandera_3"
   },
   "6000": {
     "Id": 6000,
-    "Name": "",
+    "Name": "Stimen Vaults",
     "HasFatherType": false,
     "BelongType": 0,
     "TimeCycle": "0",
@@ -1036,7 +1432,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 70,
+    "Sort": 1000,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1044,12 +1440,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6001": {
     "Id": 6001,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 1",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1059,7 +1457,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 71,
+    "Sort": 1001,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1067,12 +1465,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6002": {
     "Id": 6002,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 5",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1082,7 +1482,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 72,
+    "Sort": 1002,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1090,12 +1490,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6003": {
     "Id": 6003,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 6",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1105,7 +1507,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 73,
+    "Sort": 1003,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1113,12 +1515,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6004": {
     "Id": 6004,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 10",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1128,7 +1532,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 74,
+    "Sort": 1004,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1136,12 +1540,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6005": {
     "Id": 6005,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 15",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1151,7 +1557,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 75,
+    "Sort": 1005,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1159,12 +1565,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6006": {
     "Id": 6006,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 16",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1174,7 +1582,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 76,
+    "Sort": 1006,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1182,12 +1590,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6007": {
     "Id": 6007,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 20",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1197,7 +1607,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 77,
+    "Sort": 1007,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1205,12 +1615,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6008": {
     "Id": 6008,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 25",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1220,7 +1632,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 78,
+    "Sort": 1008,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1228,12 +1640,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6009": {
     "Id": 6009,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 30",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1243,7 +1657,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 79,
+    "Sort": 1009,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1251,12 +1665,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6010": {
     "Id": 6010,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 35",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1266,7 +1682,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 80,
+    "Sort": 1010,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1274,12 +1690,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6011": {
     "Id": 6011,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 40",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1289,7 +1707,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 81,
+    "Sort": 1011,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1297,12 +1715,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6012": {
     "Id": 6012,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 45",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1312,7 +1732,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 82,
+    "Sort": 1012,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1320,12 +1740,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6013": {
     "Id": 6013,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 50",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1335,7 +1757,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 83,
+    "Sort": 1013,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1343,12 +1765,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6014": {
     "Id": 6014,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 55",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1358,7 +1782,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 84,
+    "Sort": 1014,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1366,12 +1790,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6015": {
     "Id": 6015,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 60",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1381,7 +1807,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 85,
+    "Sort": 1015,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1389,12 +1815,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6016": {
     "Id": 6016,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 65",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1404,7 +1832,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 86,
+    "Sort": 1016,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1412,12 +1840,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6017": {
     "Id": 6017,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 70",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1427,7 +1857,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 87,
+    "Sort": 1017,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1435,12 +1865,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "6018": {
     "Id": 6018,
-    "Name": "",
+    "Name": "Stimen Vaults Floor 75",
     "HasFatherType": true,
     "BelongType": 6000,
     "TimeCycle": "0",
@@ -1450,7 +1882,7 @@
     "TeamType": 0,
     "MemberCountStopMatch": 0,
     "Talent": [],
-    "Sort": 88,
+    "Sort": 1018,
     "Icon": "team_copy_picture_7",
     "QuickJumpType": 1,
     "QuickJumpParam": [
@@ -1458,12 +1890,14 @@
       2,
       503376
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "7000": {
     "Id": 7000,
-    "Name": "",
+    "Name": "Floating Island - Dragon Shackles",
     "HasFatherType": false,
     "BelongType": 0,
     "TimeCycle": "",
@@ -1477,18 +1911,20 @@
     "Icon": "",
     "QuickJumpType": 0,
     "QuickJumpParam": [],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": ""
   },
   "7001": {
     "Id": 7001,
-    "Name": "",
+    "Name": "Clash! Dragon Shackles",
     "HasFatherType": true,
     "BelongType": 7000,
     "TimeCycle": "0",
     "Time": "000000|240000",
     "FunctionID": 300401,
-    "RelativeDungeonId": 1401,
+    "RelativeDungeonId": 13001,
     "TeamType": 1,
     "MemberCountStopMatch": 20,
     "Talent": [
@@ -1511,18 +1947,25 @@
     "QuickJumpParam": [
       300401
     ],
-    "MatchID": 0,
+    "MatchCondition": [
+      [
+        14,
+        300499
+      ]
+    ],
+    "MatchID": 1001,
+    "Difficulty": 0,
     "MatchPic": "ui/textures/roid/raid_easy_bg"
   },
   "7002": {
     "Id": 7002,
-    "Name": "",
+    "Name": "Brutal! Dragon Shackles",
     "HasFatherType": true,
     "BelongType": 7000,
     "TimeCycle": "0",
     "Time": "000000|240000",
     "FunctionID": 300402,
-    "RelativeDungeonId": 1402,
+    "RelativeDungeonId": 13002,
     "TeamType": 1,
     "MemberCountStopMatch": 20,
     "Talent": [
@@ -1545,18 +1988,25 @@
     "QuickJumpParam": [
       300401
     ],
-    "MatchID": 0,
+    "MatchCondition": [
+      [
+        14,
+        300499
+      ]
+    ],
+    "MatchID": 1002,
+    "Difficulty": 0,
     "MatchPic": "ui/textures/roid/raid_difficulty_bg"
   },
   "7003": {
     "Id": 7003,
-    "Name": "",
+    "Name": "Purge! Dragon Shackles",
     "HasFatherType": true,
     "BelongType": 7000,
     "TimeCycle": "0",
     "Time": "000000|240000",
     "FunctionID": 300403,
-    "RelativeDungeonId": 1403,
+    "RelativeDungeonId": 13003,
     "TeamType": 1,
     "MemberCountStopMatch": 20,
     "Talent": [
@@ -1579,7 +2029,9 @@
     "QuickJumpParam": [
       300401
     ],
+    "MatchCondition": [],
     "MatchID": 0,
+    "Difficulty": 0,
     "MatchPic": "ui/textures/roid/raid_nightmare_bg"
   }
 }

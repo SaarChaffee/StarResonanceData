@@ -17,7 +17,7 @@ function CommonTipsVM.OpenAffixTips(affixArray, posTrans)
       local des = affCfgData.Description
       local colorStr = AffixColor[affCfgData.EffectType]
       if colorStr then
-        affixName = string.format("<color=%s>%s</color>", colorStr, affixName .. Lang(":"))
+        affixName = string.format("<color=%s>%s</color>", colorStr, affixName .. Lang("colon"))
       end
       affixDesList[#affixDesList + 1] = affixName .. des
     end

@@ -7,7 +7,8 @@ E.ChatHyperLinkType = {
   FishingArchives = 8009005,
   PersonalZone = 3001001,
   UnionGroup = 1004020,
-  MasterDungeonScore = 1050001
+  MasterDungeonScore = 1050001,
+  LocalPosition = 3000002
 }
 
 function ChatMainData:ctor()
@@ -48,6 +49,7 @@ end
 
 function ChatMainData:onLanguageChange()
   self:initChannelCfg()
+  self:clearClientTips()
 end
 
 function ChatMainData:resetProp()
@@ -69,7 +71,7 @@ function ChatMainData:ResetData()
   self.comprehensiveId_ = -1
   self.curChannelId_ = nil
   self.sendChannelId_ = nil
-  self.curWorldGroupId_ = 0
+  self.curWorldGroupId_ = 1
   self.curWorldChannelState_ = 1
   self.banTime_ = 0
   self.emojiHistoryList_ = {}
@@ -109,7 +111,6 @@ function ChatMainData:ClearChatMsgQueue(ignoreSystemChannel)
       [E.ChatChannelType.EChannelUnion] = {},
       [E.ChatChannelType.EChannelPrivate] = {},
       [E.ChatChannelType.EComprehensive] = {},
-      [E.ChatChannelType.EMain] = {},
       [E.ChatChannelType.ESystem] = {}
     }
   else
@@ -119,7 +120,6 @@ function ChatMainData:ClearChatMsgQueue(ignoreSystemChannel)
     self.chatMsgQueue_[E.ChatChannelType.EChannelUnion] = {}
     self.chatMsgQueue_[E.ChatChannelType.EChannelPrivate] = {}
     self.chatMsgQueue_[E.ChatChannelType.EComprehensive] = {}
-    self.chatMsgQueue_[E.ChatChannelType.EMain] = {}
     if not ignoreSystemChannel then
       self.chatMsgQueue_[E.ChatChannelType.ESystem] = {}
     end
@@ -197,10 +197,6 @@ function ChatMainData:ClearChatDataFlg()
       [E.ChatWindow.Mini] = {flg = false, isRecord = false}
     },
     [E.ChatChannelType.EComprehensive] = {
-      [E.ChatWindow.Main] = {flg = false, isRecord = false},
-      [E.ChatWindow.Mini] = {flg = false, isRecord = false}
-    },
-    [E.ChatChannelType.EMain] = {
       [E.ChatWindow.Main] = {flg = false, isRecord = false},
       [E.ChatWindow.Mini] = {flg = false, isRecord = false}
     }
@@ -294,24 +290,6 @@ function ChatMainData:GetIsInitChatRecord()
   return self.isInitChatRecord_
 end
 
-function ChatMainData:AddPrivateChatByCharId(charId)
-  if #self.privateChatList_ > 0 then
-    for i = 1, #self.privateChatList_ do
-      if self.privateChatList_[i].charId == charId then
-        return
-      end
-    end
-  end
-  local privateChatItem = {
-    charId = charId,
-    loopItemType = E.FriendLoopItemType.EPrivateChat,
-    multiMsgList = {},
-    maxReadMsgId = 0,
-    isTop = false
-  }
-  self.privateChatList_[#self.privateChatList_ + 1] = privateChatItem
-end
-
 function ChatMainData:IsHavePrivateChat(charId)
   if #self.privateChatList_ > 0 then
     for i = 1, #self.privateChatList_ do
@@ -323,7 +301,7 @@ function ChatMainData:IsHavePrivateChat(charId)
   return false
 end
 
-function ChatMainData:AddPrivateChatListAddByTargetInfo(targetInfo)
+function ChatMainData:AddPrivateChatListAddByTargetInfo(targetInfo, isNew)
   if #self.privateChatList_ > 0 then
     for i = 1, #self.privateChatList_ do
       if self.privateChatList_[i].charId == targetInfo.charId then
@@ -334,12 +312,23 @@ function ChatMainData:AddPrivateChatListAddByTargetInfo(targetInfo)
   local privateChatItem = {
     charId = targetInfo.charId,
     maxReadMsgId = targetInfo.maxReadMsgId or 0,
-    isTop = targetInfo.isTop,
+    isTop = targetInfo.isTop or false,
     latestMsg = targetInfo.latestMsg,
     loopItemType = E.FriendLoopItemType.EPrivateChat,
     multiMsgList = {}
   }
-  self.privateChatList_[#self.privateChatList_ + 1] = privateChatItem
+  if isNew then
+    local index = 1
+    for i = 1, #self.privateChatList_ do
+      if not self.privateChatList_[i].isTop then
+        index = 1
+        break
+      end
+    end
+    table.insert(self.privateChatList_, index, privateChatItem)
+  else
+    self.privateChatList_[#self.privateChatList_ + 1] = privateChatItem
+  end
 end
 
 function ChatMainData:DelPrivateChatByCharId(charId)
@@ -403,7 +392,11 @@ local sortFunc = function(left, right)
     local leftFriendLinessLevel, leftFriendLinessExp = getFriendlinessValue(left)
     local rightFriendLinessLevel, rightFriendLinessExp = getFriendlinessValue(right)
     if leftFriendLinessLevel == rightFriendLinessLevel then
-      return leftFriendLinessExp > rightFriendLinessExp
+      if leftFriendLinessExp == rightFriendLinessExp then
+        return left.charId < right.charId
+      else
+        return leftFriendLinessExp > rightFriendLinessExp
+      end
     else
       return leftFriendLinessLevel > rightFriendLinessLevel
     end
@@ -460,6 +453,38 @@ function ChatMainData:initChannelCfg()
   end)
   self.isInitList_ = false
   self.channelList_ = {}
+end
+
+function ChatMainData:clearClientTips()
+  if self.chatMsgQueue_ then
+    for channelId, chatMsgQueue in pairs(self.chatMsgQueue_) do
+      self:clearChatMsgQueueClientTips(channelId, chatMsgQueue.multiMsgList)
+    end
+  end
+  if self.privateChatList_ then
+    for i = 1, #self.privateChatList_ do
+      self:clearChatMsgQueueClientTips(E.ChatChannelType.EChannelPrivate, self.privateChatList_[i].multiMsgList, self.privateChatList_[i].charId)
+    end
+  end
+end
+
+function ChatMainData:clearChatMsgQueueClientTips(channelId, chatMsgQueue, charId)
+  if not chatMsgQueue or #chatMsgQueue == 0 then
+    return
+  end
+  local isClear = false
+  for i = #chatMsgQueue, 1, -1 do
+    local chatMsgData = chatMsgQueue[i]
+    local msgType = Z.ChatMsgHelper.GetMsgType(chatMsgData)
+    if msgType == E.ChitChatMsgType.EChatMsgClientTips and chatMsgData.SystemType ~= E.ESystemTipInfoType.ItemInfo then
+      table.remove(chatMsgQueue, i)
+      isClear = true
+    end
+  end
+  if isClear then
+    self:SetChatDataFlg(channelId, E.ChatWindow.Main, true, false, charId)
+    self:SetChatDataFlg(channelId, E.ChatWindow.Mini, true, false, charId)
+  end
 end
 
 function ChatMainData:GetPlayerLevelTableData()
@@ -976,7 +1001,7 @@ function ChatMainData:GetComprehensiveConfig()
   local settingData = settingsTbl.GetRow(self.ComprehensiveConfigSettingId_)
   if settingData and self.channelCfg_ and next(self.channelCfg_) then
     for _, v in pairs(self.channelCfg_) do
-      if chatSettingData:GetSynthesis(v.Id) ~= nil and v.Id ~= E.ChatChannelType.ESystem and v.Id ~= E.ChatChannelType.EComprehensive and v.Id ~= E.ChatChannelType.EMain then
+      if chatSettingData:GetSynthesis(v.Id) ~= nil and v.Id ~= E.ChatChannelType.ESystem and v.Id ~= E.ChatChannelType.EComprehensive then
         table.insert(self.comprehensiveConfig_, 1, v)
       end
     end
@@ -1115,6 +1140,10 @@ function ChatMainData:GetShareData()
   return self.hyperLink_ and self.hyperLink_:GetShareData() or nil
 end
 
+function ChatMainData:GetShareParamList()
+  return self.hyperLink_ and self.hyperLink_:GetShareParamList() or nil
+end
+
 function ChatMainData:RefreshShareData(text, data, type)
   if type ~= self:GetShareHyperLinkType() then
     self.hyperLink_ = self:CreateHyperLinkData(type)
@@ -1164,6 +1193,8 @@ function ChatMainData:CreateHyperLinkData(type)
     data = require("chat_hyperlink.chat_hyperlink_personalzone").new()
   elseif type == E.ChatHyperLinkType.MasterDungeonScore then
     data = require("chat_hyperlink.chat_hyperlink_master_dungeon_score").new()
+  elseif type == E.ChatHyperLinkType.LocalPosition then
+    data = require("chat_hyperlink.chat_hyperlink_localposition").new()
   end
   return data
 end

@@ -1,7 +1,7 @@
 {
   "1007055": {
     "QuestId": 1007055,
-    "QuestName": "",
+    "QuestName": "Purge the Void Mage",
     "QuestDetail": "",
     "QuestType": 100,
     "QuestStep": 1007055001,
@@ -36,7 +36,7 @@
   },
   "1007056": {
     "QuestId": 1007056,
-    "QuestName": "",
+    "QuestName": "Purge the Void Mage",
     "QuestDetail": "",
     "QuestType": 100,
     "QuestStep": 1007056001,
@@ -71,7 +71,7 @@
   },
   "1007057": {
     "QuestId": 1007057,
-    "QuestName": "",
+    "QuestName": "Purge the Void Mage",
     "QuestDetail": "",
     "QuestType": 100,
     "QuestStep": 1007057001,
@@ -106,7 +106,7 @@
   },
   "1007058": {
     "QuestId": 1007058,
-    "QuestName": "",
+    "QuestName": "Purge the Void Mage",
     "QuestDetail": "",
     "QuestType": 100,
     "QuestStep": 1007058001,
@@ -141,8 +141,8 @@
   },
   "1001301": {
     "QuestId": 1001301,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Dark Mist Fortress",
+    "QuestDetail": "Investigate Dark Mist Fortress",
     "QuestType": 100,
     "QuestStep": 1001301008,
     "AwardId": 0,
@@ -182,7 +182,7 @@
   },
   "1001331": {
     "QuestId": 1001331,
-    "QuestName": "",
+    "QuestName": "Chaotic - Dark Mist Fortress",
     "QuestDetail": "",
     "QuestType": 100,
     "QuestStep": 1001331001,
@@ -216,8 +216,8 @@
   },
   "1001201": {
     "QuestId": 1001201,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Dragon Claw Valley",
+    "QuestDetail": "Investigate Dragon Claw Valley",
     "QuestType": 100,
     "QuestStep": 1001201016,
     "AwardId": 0,
@@ -250,7 +250,7 @@
   },
   "1001332": {
     "QuestId": 1001332,
-    "QuestName": "",
+    "QuestName": "Chaotic - Dark Mist Fortress",
     "QuestDetail": "",
     "QuestType": 100,
     "QuestStep": 1001332001,
@@ -284,7 +284,7 @@
   },
   "1001333": {
     "QuestId": 1001333,
-    "QuestName": "",
+    "QuestName": "Chaotic - Dark Mist Fortress",
     "QuestDetail": "",
     "QuestType": 100,
     "QuestStep": 1001333001,
@@ -318,7 +318,7 @@
   },
   "1001311": {
     "QuestId": 1001311,
-    "QuestName": "",
+    "QuestName": "Unstable - Dark Mist Fortress",
     "QuestDetail": "",
     "QuestType": 100,
     "QuestStep": 1001311002,
@@ -386,8 +386,8 @@
   },
   "1001302": {
     "QuestId": 1001302,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Dark Mist Fortress",
+    "QuestDetail": "Investigate Dark Mist Fortress",
     "QuestType": 100,
     "QuestStep": 1001302007,
     "AwardId": 0,
@@ -427,8 +427,8 @@
   },
   "1009200": {
     "QuestId": 1009200,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Dragon Shackles: Adept's Trial",
+    "QuestDetail": "Dragon Shackles: Adept's Trial",
     "QuestType": 100,
     "QuestStep": 1009200001,
     "AwardId": 0,
@@ -461,8 +461,8 @@
   },
   "10001": {
     "QuestId": 10001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Original Point",
+    "QuestDetail": "Waking up in a strange inn, there is a letter from a mysterious girl on the table...",
     "QuestType": 1,
     "QuestStep": 10001081,
     "AwardId": 30000070,
@@ -510,8 +510,8 @@
   },
   "10092": {
     "QuestId": 10092,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Journey of the Shining One",
+    "QuestDetail": "Partnered with Airona, let's explore the Seabreeze Festival together!",
     "QuestType": 1,
     "QuestStep": 10092004,
     "AwardId": 30000500,
@@ -558,8 +558,8 @@
   },
   "10009": {
     "QuestId": 10009,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Snow and Void Engram",
+    "QuestDetail": "While investigating the Tales of the Plains with Airona, discovered the rumored Snow Knight...",
     "QuestType": 1,
     "QuestStep": 10009081,
     "AwardId": 30000370,
@@ -588,8 +588,8 @@
   },
   "10089": {
     "QuestId": 10089,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Proof of Victory",
+    "QuestDetail": "The defeated monster dropped loot, open it with the gift from Tina.",
     "QuestType": 1,
     "QuestStep": 10089009,
     "AwardId": 30000520,
@@ -637,8 +637,8 @@
   },
   "10095": {
     "QuestId": 10095,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Stepping into the Unknown",
+    "QuestDetail": "Guided by the clue, together with the two girls, you continue to investigate the Void Engram.",
     "QuestType": 1,
     "QuestStep": 10095037,
     "AwardId": 30000530,
@@ -681,8 +681,8 @@
   },
   "10090": {
     "QuestId": 10090,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Phantom Veil Tread",
+    "QuestDetail": "Head to the cliff of the ruins, find clues about the Void Engram.",
     "QuestType": 1,
     "QuestStep": 10090028,
     "AwardId": 30000540,
@@ -730,8 +730,8 @@
   },
   "10088": {
     "QuestId": 10088,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Peace Returned",
+    "QuestDetail": "The man in black and the Void Engram have disappeared, and the Tales of the Plains are temporarily concluded. It's time to go to the Pioneer Bureau to claim your reward!",
     "QuestType": 1,
     "QuestStep": 10088002,
     "AwardId": 30000550,
@@ -779,8 +779,8 @@
   },
   "10003": {
     "QuestId": 10003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Welcome to the Bureau!",
+    "QuestDetail": "At the Bureau, you met Valeria, who became your guide. Register as an adventurer and set forth on an exciting new journey!",
     "QuestType": 1,
     "QuestStep": 10003020,
     "AwardId": 30000090,
@@ -809,8 +809,8 @@
   },
   "10087": {
     "QuestId": 10087,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Pursuit of a Secret",
+    "QuestDetail": "A new mysterious commission has appeared: search for the Snow Knight thief who stole a diary with Airona. Speaking of Snow Knight, you both think of a certain red-haired girl...",
     "QuestType": 1,
     "QuestStep": 10087031,
     "AwardId": 30000560,
@@ -859,8 +859,8 @@
   },
   "10097": {
     "QuestId": 10097,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Veiled Glyphs",
+    "QuestDetail": "Tina indeed has clues about the Snow Knight thief. She takes you and Airona to a suspect's hiding alley. So far, the commission is going smoothly, but is that really the case?",
     "QuestType": 1,
     "QuestStep": 10097048,
     "AwardId": 30000110,
@@ -903,8 +903,8 @@
   },
   "10010": {
     "QuestId": 10010,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Ethereal Revenant",
+    "QuestDetail": "The Man in Black who previously disappeared has reappeared! He is very interested in you and seems to be plotting something.",
     "QuestType": 1,
     "QuestStep": 10010064,
     "AwardId": 30000120,
@@ -937,8 +937,8 @@
   },
   "10099": {
     "QuestId": 10099,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Reunion Under the Shadow",
+    "QuestDetail": "Tina, who was eroded by the Void Engram, is missing. Go find her with your companions.",
     "QuestType": 1,
     "QuestStep": 10099016,
     "AwardId": 30000130,
@@ -974,8 +974,8 @@
   },
   "10011": {
     "QuestId": 10011,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Into the Black and White",
+    "QuestDetail": "The Man in Black appears once again, and at the same time, Tina falls into a deeper crisis...",
     "QuestType": 1,
     "QuestStep": 10011048,
     "AwardId": 30000030,
@@ -1065,8 +1065,8 @@
   },
   "10201": {
     "QuestId": 10201,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Aftermath",
+    "QuestDetail": "After the fireworks festival ended, you returned to The Double-Faced Coin and unexpectedly received a mysterious gift...",
     "QuestType": 1,
     "QuestStep": 10201058,
     "AwardId": 30000180,
@@ -1089,8 +1089,8 @@
   },
   "10202": {
     "QuestId": 10202,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Sin and Deception, a Witch",
+    "QuestDetail": "Learned a hidden past. Someone's future and fate changed because of it.",
     "QuestType": 1,
     "QuestStep": 10202043,
     "AwardId": 30000190,
@@ -1118,8 +1118,8 @@
   },
   "10203": {
     "QuestId": 10203,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "A day with the detective",
+    "QuestDetail": "Head to the Artisan Guild to find the secrets of the Medal and the Void Engram.",
     "QuestType": 1,
     "QuestStep": 10203161,
     "AwardId": 30000200,
@@ -1156,8 +1156,8 @@
   },
   "10204": {
     "QuestId": 10204,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tread upon the heavy land",
+    "QuestDetail": "The Void Engram outbreak is related to Hruga, but how did the Void Engram end up in the medal? Go with Olvera to the Artisan Guild to investigate.",
     "QuestType": 1,
     "QuestStep": 10204021,
     "AwardId": 30000210,
@@ -1196,8 +1196,8 @@
   },
   "10205": {
     "QuestId": 10205,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Shadow lurking",
+    "QuestDetail": "The small medal led to a big event. Search with your companions for an organization hidden behind the scenes.",
     "QuestType": 1,
     "QuestStep": 10205037,
     "AwardId": 30000220,
@@ -1236,8 +1236,8 @@
   },
   "10206": {
     "QuestId": 10206,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Luno Loop",
+    "QuestDetail": "After the investigation concluded, return to Asterleeds with Airona and enjoy a moment of peace.",
     "QuestType": 1,
     "QuestStep": 10206058,
     "AwardId": 30000230,
@@ -1271,8 +1271,8 @@
   },
   "10207": {
     "QuestId": 10207,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The unwavering heart of redemption",
+    "QuestDetail": "Is the person who destroyed important documents in Asterleeds also related to the Dark Mist Legion? Tina, who is pursuing the criminal, encounters an injured guard saved by a mysterious boy. Ask him what happened.",
     "QuestType": 1,
     "QuestStep": 10207001,
     "AwardId": 30000240,
@@ -1306,8 +1306,8 @@
   },
   "10208": {
     "QuestId": 10208,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The unwavering heart of redemption",
+    "QuestDetail": "Is the person who destroyed important documents in Asterleeds also related to the Dark Mist Legion? Tina, who is pursuing the criminal, encounters an injured guard saved by a mysterious boy. Ask him what happened.",
     "QuestType": 1,
     "QuestStep": 10208047,
     "AwardId": 30000250,
@@ -1349,8 +1349,8 @@
   },
   "10209": {
     "QuestId": 10209,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The sea brings a traveler",
+    "QuestDetail": "A boy from Byrnhald, met you at the seaside.",
     "QuestType": 1,
     "QuestStep": 10209037,
     "AwardId": 30000260,
@@ -1395,8 +1395,8 @@
   },
   "10210": {
     "QuestId": 10210,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The secret escort plan",
+    "QuestDetail": "Tina and Tatta encountered trouble on their way back to Asterleeds and urgently need assistance.",
     "QuestType": 1,
     "QuestStep": 10210001,
     "AwardId": 30000270,
@@ -1450,8 +1450,8 @@
   },
   "10211": {
     "QuestId": 10211,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Seek in the past",
+    "QuestDetail": "Head to the second-floor archive room in Ocean Hill to find old stories about the Dark Mist Legion and Jayden.",
     "QuestType": 1,
     "QuestStep": 10211049,
     "AwardId": 30000280,
@@ -1508,8 +1508,8 @@
   },
   "10212": {
     "QuestId": 10212,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Before the action",
+    "QuestDetail": "After making preparations, leave the city with your companions.",
     "QuestType": 1,
     "QuestStep": 10212102,
     "AwardId": 30000290,
@@ -1549,8 +1549,8 @@
   },
   "10213": {
     "QuestId": 10213,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Echoes at the Towering Ruin",
+    "QuestDetail": "Follow the clues left by Tina to find the road to the Towering Ruin.",
     "QuestType": 1,
     "QuestStep": 10213018,
     "AwardId": 30000300,
@@ -1585,8 +1585,8 @@
   },
   "10214": {
     "QuestId": 10214,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Can the heart be awakened",
+    "QuestDetail": "Use the Imagine Seed at a critical moment. Past events hidden in memory will appear.",
     "QuestType": 1,
     "QuestStep": 10214004,
     "AwardId": 30000310,
@@ -1623,8 +1623,8 @@
   },
   "10215": {
     "QuestId": 10215,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Arrive at a new storm",
+    "QuestDetail": "Search for Denvel's traces with your companions, heading to that fortress of silence and calamity.",
     "QuestType": 1,
     "QuestStep": 10215067,
     "AwardId": 30000320,
@@ -1656,8 +1656,8 @@
   },
   "10302": {
     "QuestId": 10302,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Promised Thing",
+    "QuestDetail": "That stubborn priest holds the key to dispelling the Void Engram. Discuss countermeasures with your companions.",
     "QuestType": 1,
     "QuestStep": 10302006,
     "AwardId": 30000650,
@@ -1700,8 +1700,8 @@
   },
   "10303": {
     "QuestId": 10303,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Void Engram Syndrome",
+    "QuestDetail": "There seems to be an anomaly among the Void Units. Investigate their situation carefully.",
     "QuestType": 1,
     "QuestStep": 10303018,
     "AwardId": 30000660,
@@ -1747,8 +1747,8 @@
   },
   "10304": {
     "QuestId": 10304,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Light and Extinction",
+    "QuestDetail": "Go alone to Minsterhorn to investigate the lightning storm anomaly.",
     "QuestType": 1,
     "QuestStep": 10304001,
     "AwardId": 30000670,
@@ -1771,8 +1771,8 @@
   },
   "10307": {
     "QuestId": 10307,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Decay of Wind",
+    "QuestDetail": "There seems to be a similar anomaly in the Forest of Monuments. Go assist Airona.",
     "QuestType": 1,
     "QuestStep": 10307022,
     "AwardId": 30000690,
@@ -1795,8 +1795,8 @@
   },
   "10308": {
     "QuestId": 10308,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Spectacular View",
+    "QuestDetail": "The forest ranger couple seems to be trapped at the center of the anomaly.....",
     "QuestType": 1,
     "QuestStep": 10308001,
     "AwardId": 30000700,
@@ -1819,8 +1819,8 @@
   },
   "10309": {
     "QuestId": 10309,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The past cannot be frozen",
+    "QuestDetail": "Reunite with Tina and Tatta. At the right time, learn Tatta's secret......",
     "QuestType": 1,
     "QuestStep": 10309019,
     "AwardId": 30000710,
@@ -1855,8 +1855,8 @@
   },
   "10311": {
     "QuestId": 10311,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The paradox of love and hate",
+    "QuestDetail": "Before falling into a coma, Tatta confessed to you the past he had buried.",
     "QuestType": 1,
     "QuestStep": 10311001,
     "AwardId": 30000720,
@@ -1888,8 +1888,8 @@
   },
   "10312": {
     "QuestId": 10312,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Wandering hope",
+    "QuestDetail": "After meeting at the post station, Airona informs everyone of Denvel's true plot.",
     "QuestType": 1,
     "QuestStep": 10312001,
     "AwardId": 30000730,
@@ -1927,8 +1927,8 @@
   },
   "10313": {
     "QuestId": 10313,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Vanishing things",
+    "QuestDetail": "Accompany Tina to the Andra Tunnel to search for Engram, but encounter the trapped priest Stanley. He doesn't seem to have a friendly face towards you......",
     "QuestType": 1,
     "QuestStep": 10313001,
     "AwardId": 30000740,
@@ -1968,8 +1968,8 @@
   },
   "10401": {
     "QuestId": 10401,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Chase the Moonlight",
+    "QuestDetail": "You and your companions arrive at the tribe of the aliens. Someone left a mysterious message, seemingly guiding you forward...",
     "QuestType": 1,
     "QuestStep": 10401045,
     "AwardId": 30000890,
@@ -2006,8 +2006,8 @@
   },
   "10403": {
     "QuestId": 10403,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Roar of Dragon and Wind",
+    "QuestDetail": "A sudden storm sweeps through the tribe, you and your companions go to investigate.",
     "QuestType": 1,
     "QuestStep": 10403033,
     "AwardId": 30000910,
@@ -2052,8 +2052,8 @@
   },
   "10404": {
     "QuestId": 10404,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Faint Hope",
+    "QuestDetail": "After collecting three keys, you finally arrive at the Forbidden Zone's gate. Behind the gate is the sacred relic of Kanamia, also the divine heritage you have been pursuing for a long time.",
     "QuestType": 1,
     "QuestStep": 10404001,
     "AwardId": 30000920,
@@ -2093,8 +2093,8 @@
   },
   "10601": {
     "QuestId": 10601,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Like Spring Unfolding Her First Rose",
+    "QuestDetail": "To retrieve the stolen Hruga's Horn, a new adventure begins, but the journey is never without its twists and turns-this time is no exception.",
     "QuestType": 1,
     "QuestStep": 10601001,
     "AwardId": 0,
@@ -2122,8 +2122,8 @@
   },
   "10602": {
     "QuestId": 10602,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "In the Moments After Those Dreams",
+    "QuestDetail": "Airona has fallen into a deep sleep. it's best to rest at a local's home and regain strength.",
     "QuestType": 1,
     "QuestStep": 10602004,
     "AwardId": 0,
@@ -2153,8 +2153,8 @@
   },
   "10603": {
     "QuestId": 10603,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "A Place Never Visited",
+    "QuestDetail": "Parting ways with the warm-hearted Fafala, return to the journey of searching for the Hruga's Horn. This time, Airona has found new clues.",
     "QuestType": 1,
     "QuestStep": 10603001,
     "AwardId": 0,
@@ -2182,8 +2182,8 @@
   },
   "10604": {
     "QuestId": 10604,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Knocking on Doors That Won't Open",
+    "QuestDetail": "The place where the so-called \"Engram Anomaly\" appears seems complicated, and it's hard to venture in recklessly as an adventurer.",
     "QuestType": 1,
     "QuestStep": 10604001,
     "AwardId": 0,
@@ -2214,8 +2214,8 @@
   },
   "10605": {
     "QuestId": 10605,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Suddenly Done Well and Just Right",
+    "QuestDetail": "The guards at the Sislesa Mines are overly loyal. This path won't work, another way must be found.",
     "QuestType": 1,
     "QuestStep": 10605001,
     "AwardId": 0,
@@ -2250,8 +2250,8 @@
   },
   "10606": {
     "QuestId": 10606,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Leaking Bell Understood by Someone",
+    "QuestDetail": "A pickpocket daring enough to steal near the Pillar of Divinity must have extraordinary skills-at least her psychological quality far exceeds that of ordinary people. Even as a prisoner, she has not stopped \"working hard.\"",
     "QuestType": 1,
     "QuestStep": 10606001,
     "AwardId": 0,
@@ -2286,8 +2286,8 @@
   },
   "10607": {
     "QuestId": 10607,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Night Steps into the Long Street",
+    "QuestDetail": "Striking a deal with Darya, there's finally a way to enter the heavily guarded Sislesa Mines.",
     "QuestType": 1,
     "QuestStep": 10607001,
     "AwardId": 0,
@@ -2315,8 +2315,8 @@
   },
   "10608": {
     "QuestId": 10608,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Silent eyes without a smile",
+    "QuestDetail": "There were some minor incidents along the way, but successfully infiltrated the Sislesa Mines, and indeed, something is amiss here.",
     "QuestType": 1,
     "QuestStep": 10608001,
     "AwardId": 0,
@@ -2347,8 +2347,8 @@
   },
   "10609": {
     "QuestId": 10609,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Stars tremble and fall into the dust",
+    "QuestDetail": "The influence of the Illusion Flower cannot be underestimated, and the miners are deeply affected by it. However, unlike the pilgrims, they cannot obtain Star Soul Bottles. Forced by unfair treatment, they close their hearts and do not easily trust outsiders.",
     "QuestType": 1,
     "QuestStep": 10609001,
     "AwardId": 0,
@@ -2379,8 +2379,8 @@
   },
   "10610": {
     "QuestId": 10610,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Futile sorrow in bitter times",
+    "QuestDetail": "The brutal actions of the Blackstone Legion are deeply infuriating, making it hard to stay calm and detached.",
     "QuestType": 1,
     "QuestStep": 10610001,
     "AwardId": 0,
@@ -2411,8 +2411,8 @@
   },
   "10611": {
     "QuestId": 10611,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Burning dreams of fire in dreams",
+    "QuestDetail": "Although the weak miners were rescued, Darya seems to be in low spirits.",
     "QuestType": 1,
     "QuestStep": 10611001,
     "AwardId": 0,
@@ -2439,8 +2439,8 @@
   },
   "10612": {
     "QuestId": 10612,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "There is a lion hidden in her eyes",
+    "QuestDetail": "Successfully escaped the mines, avoiding being blocked and surrounded by the Blackstone Legion. This is certainly good, but the investigation has not made progress yet, and more ideas are needed.",
     "QuestType": 1,
     "QuestStep": 10612001,
     "AwardId": 0,
@@ -2468,8 +2468,8 @@
   },
   "19001": {
     "QuestId": 19001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Repel Bertram's subordinates",
+    "QuestDetail": "Repel Bertram's subordinates!",
     "QuestType": 67,
     "QuestStep": 19001037,
     "AwardId": 0,
@@ -2502,8 +2502,8 @@
   },
   "19003": {
     "QuestId": 19003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Time to Report",
+    "QuestDetail": "As the investigation deepened, arrived at the scene of the Knighting Ceremony...",
     "QuestType": 18,
     "QuestStep": 19003130,
     "AwardId": 0,
@@ -2546,8 +2546,8 @@
   },
   "19004": {
     "QuestId": 19004,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Escort the citizens",
+    "QuestDetail": "As the investigation deepened, arrived at the scene of the Knighting Ceremony...",
     "QuestType": 18,
     "QuestStep": 19004001,
     "AwardId": 0,
@@ -2592,8 +2592,8 @@
   },
   "20001": {
     "QuestId": 20001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "New talents. New trials.",
+    "QuestDetail": "Defeat powerful monsters across the plains to unlock more Talent options.",
     "QuestType": 59,
     "QuestStep": 20001002,
     "AwardId": 31000860,
@@ -2629,8 +2629,8 @@
   },
   "20003": {
     "QuestId": 20003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Defeat the elite Goblin Crossbow hiding in Ancient City of Vill to further improve yourself.",
     "QuestType": 59,
     "QuestStep": 20003003,
     "AwardId": 31000280,
@@ -2657,8 +2657,8 @@
   },
   "20005": {
     "QuestId": 20005,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Defeat the Void Arachnocrab hiding in the underground district to further improve yourself.",
     "QuestType": 59,
     "QuestStep": 20005006,
     "AwardId": 31000300,
@@ -2685,8 +2685,8 @@
   },
   "20007": {
     "QuestId": 20007,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Defeat the Brigand Guard Captain in the Brigand camp to further improve yourself.",
     "QuestType": 59,
     "QuestStep": 20007005,
     "AwardId": 31000320,
@@ -2713,8 +2713,8 @@
   },
   "20009": {
     "QuestId": 20009,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Defeat the Muku Warrior in the Muku Camp.",
     "QuestType": 59,
     "QuestStep": 20009006,
     "AwardId": 31000340,
@@ -2741,8 +2741,8 @@
   },
   "20010": {
     "QuestId": 20010,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Eliminate 50 Boarriers in Windhowl Canyon.",
     "QuestType": 59,
     "QuestStep": 20010010,
     "AwardId": 31000350,
@@ -2779,8 +2779,8 @@
   },
   "20040": {
     "QuestId": 20040,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Grey is the Grey of Lies",
+    "QuestDetail": "It's detective time! Try to find clues about the contact person.",
     "QuestType": 3,
     "QuestStep": 20040001,
     "AwardId": 31000710,
@@ -2817,8 +2817,8 @@
   },
   "20041": {
     "QuestId": 20041,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Red is the Red of Eagerness",
+    "QuestDetail": "You've obtained new clues from the spy Grey Crow, discuss the next steps with Tina.",
     "QuestType": 3,
     "QuestStep": 20041001,
     "AwardId": 30000040,
@@ -2856,8 +2856,8 @@
   },
   "20042": {
     "QuestId": 20042,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "A Colorful Ending",
+    "QuestDetail": "Team up with your good partner Tina to uncover the spy's secrets!",
     "QuestType": 3,
     "QuestStep": 20042001,
     "AwardId": 31000720,
@@ -2898,8 +2898,8 @@
   },
   "20043": {
     "QuestId": 20043,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Purple is the Purple of Melancholy",
+    "QuestDetail": "A little kid by the roadside called out to you. Listen to what he has to say...",
     "QuestType": 3,
     "QuestStep": 20043014,
     "AwardId": 31000700,
@@ -2941,8 +2941,8 @@
   },
   "30101": {
     "QuestId": 30101,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Whereabouts of the Council Candidate",
+    "QuestDetail": "The council candidate is missing? This is a big deal!",
     "QuestType": 3,
     "QuestStep": 30101001,
     "AwardId": 31000610,
@@ -2984,8 +2984,8 @@
   },
   "30102": {
     "QuestId": 30102,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Missing Goods",
+    "QuestDetail": "Griff's caravan and his valuable goods have disappeared, this is not a good sign.",
     "QuestType": 3,
     "QuestStep": 30102001,
     "AwardId": 31000580,
@@ -3027,8 +3027,8 @@
   },
   "30103": {
     "QuestId": 30103,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Contraband?!",
+    "QuestDetail": "Someone is buying contraband in Asterleeds market. Find out what's going on.",
     "QuestType": 3,
     "QuestStep": 30103003,
     "AwardId": 31000590,
@@ -3079,8 +3079,8 @@
   },
   "30104": {
     "QuestId": 30104,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Azure Flower and Flawless Love",
+    "QuestDetail": "A father and daughter seem to be having a heated argument... Go see what's happening.",
     "QuestType": 3,
     "QuestStep": 30104001,
     "AwardId": 31000560,
@@ -3156,8 +3156,8 @@
   },
   "30105": {
     "QuestId": 30105,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Rat Infestation?",
+    "QuestDetail": "There is said to be a severe rat infestation in Port Town... But there seems to be something fishy about it. Try to uncover the truth.",
     "QuestType": 3,
     "QuestStep": 30105001,
     "AwardId": 31000520,
@@ -3242,8 +3242,8 @@
   },
   "30106": {
     "QuestId": 30106,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Scavenger's Trouble",
+    "QuestDetail": "Poor Bobby was beaten by his fellow scavengers. Try to stop the infighting among the scavengers.",
     "QuestType": 3,
     "QuestStep": 30106001,
     "AwardId": 31000630,
@@ -3314,8 +3314,8 @@
   },
   "30107": {
     "QuestId": 30107,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Unqualified Treasure Hunter",
+    "QuestDetail": "Adventure and treasure hunting are a man's romance, but abandoning family for it is another matter.",
     "QuestType": 3,
     "QuestStep": 30107001,
     "AwardId": 31000640,
@@ -3374,8 +3374,8 @@
   },
   "30108": {
     "QuestId": 30108,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Enigmatic Witch",
+    "QuestDetail": "Camille's grandmother was deceived by someone claiming to be a great witch. Help her out.",
     "QuestType": 3,
     "QuestStep": 30108001,
     "AwardId": 31000570,
@@ -3440,8 +3440,8 @@
   },
   "30109": {
     "QuestId": 30109,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Ee-chan's partner?",
+    "QuestDetail": "During my exploration, I unexpectedly saved a scholar researching Ee-chan and Ee-chan who was looking for a partner.<br>At the scholar's request, I took on the task of assisting in finding Ee-chan's partner.",
     "QuestType": 3,
     "QuestStep": 30109001,
     "AwardId": 31000540,
@@ -3529,8 +3529,8 @@
   },
   "30110": {
     "QuestId": 30110,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Unable to Forget",
+    "QuestDetail": "While passing through the goblin tribe, I met a father in distress. His son is suspected to have died in the war. Unable to accept it, he hopes to find a definite answer.",
     "QuestType": 3,
     "QuestStep": 30110001,
     "AwardId": 31000600,
@@ -3622,8 +3622,8 @@
   },
   "30111": {
     "QuestId": 30111,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Where's the Cat?",
+    "QuestDetail": "Sophie's sister ran up to the roof and disappeared. Wait, her sister is a cat? No wonder...",
     "QuestType": 3,
     "QuestStep": 30111001,
     "AwardId": 31000510,
@@ -3725,8 +3725,8 @@
   },
   "30112": {
     "QuestId": 30112,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Line Malfunction!",
+    "QuestDetail": "Aven's glasses are broken, and he is having a headache about how to repair the circuits.",
     "QuestType": 3,
     "QuestStep": 30112001,
     "AwardId": 31000550,
@@ -3829,8 +3829,8 @@
   },
   "30113": {
     "QuestId": 30113,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Transportation Crisis",
+    "QuestDetail": "The caravan was attacked by goblins again, protect the caravan through the difficulties.",
     "QuestType": 3,
     "QuestStep": 30113001,
     "AwardId": 31000530,
@@ -3936,8 +3936,8 @@
   },
   "30114": {
     "QuestId": 30114,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Hide and Seek - Part One",
+    "QuestDetail": "Play an exciting game of hide and seek with the children of Minsterhorn!",
     "QuestType": 3,
     "QuestStep": 30114001,
     "AwardId": 31000620,
@@ -3968,8 +3968,8 @@
   },
   "31001": {
     "QuestId": 31001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Potential",
+    "QuestDetail": "Learn about potential from Airona.",
     "QuestType": 65,
     "QuestStep": 31001001,
     "AwardId": 31000010,
@@ -4001,8 +4001,8 @@
   },
   "31010": {
     "QuestId": 31010,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Invitation from the Designer Guild",
+    "QuestDetail": "Received an invitation letter from the Designers' Guild, go to the fashion general store and talk to Sherry.",
     "QuestType": 60,
     "QuestStep": 31010001,
     "AwardId": 31000100,
@@ -4035,8 +4035,8 @@
   },
   "31013": {
     "QuestId": 31013,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Unstable Space",
+    "QuestDetail": "About the ruins in Asterleeds",
     "QuestType": 56,
     "QuestStep": 31013001,
     "AwardId": 31000170,
@@ -4071,8 +4071,8 @@
   },
   "31016": {
     "QuestId": 31016,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Epic Gear Exchange",
+    "QuestDetail": "Go to the Artisan Guild to learn about the Epic gear exchange service.",
     "QuestType": 52,
     "QuestStep": 31016001,
     "AwardId": 31000160,
@@ -4106,8 +4106,8 @@
   },
   "31050": {
     "QuestId": 31050,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Gear Refinement",
+    "QuestDetail": "Find Harvey to learn about Gear Refinement.",
     "QuestType": 64,
     "QuestStep": 31050001,
     "AwardId": 31000210,
@@ -4139,8 +4139,8 @@
   },
   "31051": {
     "QuestId": 31051,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Journey",
+    "QuestDetail": "In the journey of exploration, there are always some memorable things.",
     "QuestType": 63,
     "QuestStep": 31051001,
     "AwardId": 31000220,
@@ -4172,8 +4172,8 @@
   },
   "31061": {
     "QuestId": 31061,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Know Your Enemy",
+    "QuestDetail": "Try using <style=\"emph-gn\">Monster Detection</style> to find nearby monsters",
     "QuestType": 61,
     "QuestStep": 31061001,
     "AwardId": 31000130,
@@ -4208,8 +4208,8 @@
   },
   "31063": {
     "QuestId": 31063,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Chaotic Realm",
+    "QuestDetail": "There seems to be new progress in the research on the ruins in Asterleeds.",
     "QuestType": 56,
     "QuestStep": 31063003,
     "AwardId": 31000060,
@@ -4244,8 +4244,8 @@
   },
   "31071": {
     "QuestId": 31071,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Only the Sea Breeze Knows",
+    "QuestDetail": "Valeria received a strange letter, and the sender turned out to be Rab, the mascot of the Seabreeze Festival? To uncover the truth behind it, Valeria has entrusted you to help her investigate...",
     "QuestType": 3,
     "QuestStep": 31071001,
     "AwardId": 31000390,
@@ -4278,7 +4278,7 @@
   },
   "31074": {
     "QuestId": 31074,
-    "QuestName": "",
+    "QuestName": "Queue for Headwear",
     "QuestDetail": "",
     "QuestType": 53,
     "QuestStep": 31074001,
@@ -4321,8 +4321,8 @@
   },
   "39001": {
     "QuestId": 39001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Daily Check-in",
+    "QuestDetail": "Find the Guild manager for a daily check-in.",
     "QuestType": 68,
     "QuestStep": 39001001,
     "AwardId": 31000470,
@@ -4354,8 +4354,8 @@
   },
   "39002": {
     "QuestId": 39002,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Guild Cargo",
+    "QuestDetail": "Find Douglas to complete a cargo delivery.",
     "QuestType": 68,
     "QuestStep": 39002001,
     "AwardId": 31000480,
@@ -4387,8 +4387,8 @@
   },
   "39003": {
     "QuestId": 39003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Guild Tour",
+    "QuestDetail": "Let's take a look around the Guild together!",
     "QuestType": 73,
     "QuestStep": 39003009,
     "AwardId": 31000490,
@@ -4599,8 +4599,8 @@
   },
   "110001": {
     "QuestId": 110001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Swing Freely",
+    "QuestDetail": "The sea breeze of Asterleeds passes through every street and alley, and through every free heart. The rhythmic melody resounds in the square. At this moment, why not put aside all worries and troubles, and let's swing freely!",
     "QuestType": 11,
     "QuestStep": 110001001,
     "AwardId": 0,
@@ -4623,8 +4623,8 @@
   },
   "120001": {
     "QuestId": 120001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "[Daily] Bureau Commissions",
+    "QuestDetail": "Go to Asteria Plains to check the event location and complete the commission.",
     "QuestType": 16,
     "QuestStep": 120001001,
     "AwardId": 11200010,
@@ -4647,8 +4647,8 @@
   },
   "130000": {
     "QuestId": 130000,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Parkour - Beach Gliding",
+    "QuestDetail": "The parkour track - Beach Gliding is now open, you can go to the registration point to participate in the competition.<br>This track requires the <style=\"emph-gn\">Floating Glide</style> Terra Resonance ability.",
     "QuestType": 12,
     "QuestStep": 130000001,
     "AwardId": 0,
@@ -4676,7 +4676,7 @@
   },
   "130002": {
     "QuestId": 130002,
-    "QuestName": "",
+    "QuestName": "Complete the Parkour Race",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 130002001,
@@ -4710,8 +4710,8 @@
   },
   "130003": {
     "QuestId": 130003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Parkour - Tower Climb",
+    "QuestDetail": "Parkour Track - Climb the Giant Tower is now open, you can go to the registration point to participate in the competition.<br>This track requires the <style=\"emph-gn\">Floating Glide</style> Terra Resonance ability.",
     "QuestType": 12,
     "QuestStep": 130003001,
     "AwardId": 0,
@@ -4739,7 +4739,7 @@
   },
   "130007": {
     "QuestId": 130007,
-    "QuestName": "",
+    "QuestName": "Complete Parkour Goals",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 130007001,
@@ -4773,7 +4773,7 @@
   },
   "130008": {
     "QuestId": 130008,
-    "QuestName": "",
+    "QuestName": "Complete 3 Laps",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 130008010,
@@ -4807,8 +4807,8 @@
   },
   "180002": {
     "QuestId": 180002,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Engram Convergence Point",
+    "QuestDetail": "Explore the gathering place where Engrams flow.",
     "QuestType": 75,
     "QuestStep": 180002001,
     "AwardId": 31000020,
@@ -4840,8 +4840,8 @@
   },
   "180003": {
     "QuestId": 180003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Terra Resonance",
+    "QuestDetail": "Try to sense the Engram within the Resonant Element. (When in a wind field, use <style=\"emph-gn\">float</style> at certain heights to ride the currents to higher elevations)",
     "QuestType": 65,
     "QuestStep": 180003004,
     "AwardId": 31000030,
@@ -4868,8 +4868,8 @@
   },
   "180004": {
     "QuestId": 180004,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "True Sight and Breakpoints",
+    "QuestDetail": "By sensing Engrams, you can observe some special scenes that ordinary people cannot see. Try to use the ability of insight to find the points where Engrams are blocked and restore their normal circulation.",
     "QuestType": 75,
     "QuestStep": 180004001,
     "AwardId": 31000040,
@@ -4901,8 +4901,8 @@
   },
   "185002": {
     "QuestId": 185002,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Unfinished Dream",
+    "QuestDetail": "Wake up in a tavern",
     "QuestType": 18,
     "QuestStep": 185002024,
     "AwardId": 0,
@@ -4935,8 +4935,8 @@
   },
   "185003": {
     "QuestId": 185003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Invitation of Sea Breeze",
+    "QuestDetail": "Met Tina on the plains",
     "QuestType": 18,
     "QuestStep": 185003025,
     "AwardId": 0,
@@ -4978,8 +4978,8 @@
   },
   "185006": {
     "QuestId": 185006,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Cliff Ruins",
+    "QuestDetail": "Encounter the Man in Black at Cliff Ruins",
     "QuestType": 18,
     "QuestStep": 185006001,
     "AwardId": 0,
@@ -5018,7 +5018,7 @@
   },
   "185013": {
     "QuestId": 185013,
-    "QuestName": "",
+    "QuestName": "Tread upon the heavy land",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185013012,
@@ -5061,7 +5061,7 @@
   },
   "185016": {
     "QuestId": 185016,
-    "QuestName": "",
+    "QuestName": "The Victim Speaks",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185016002,
@@ -5113,7 +5113,7 @@
   },
   "185017": {
     "QuestId": 185017,
-    "QuestName": "",
+    "QuestName": "Sequence of Nightmare",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185017002,
@@ -5163,7 +5163,7 @@
   },
   "185023": {
     "QuestId": 185023,
-    "QuestName": "",
+    "QuestName": "The secret escort plan",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185023002,
@@ -5215,7 +5215,7 @@
   },
   "185024": {
     "QuestId": 185024,
-    "QuestName": "",
+    "QuestName": "Crisis Looms",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185024003,
@@ -5264,7 +5264,7 @@
   },
   "185200": {
     "QuestId": 185200,
-    "QuestName": "",
+    "QuestName": "Remnants of Old Memories",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185200006,
@@ -5313,7 +5313,7 @@
   },
   "185201": {
     "QuestId": 185201,
-    "QuestName": "",
+    "QuestName": "Into the Shadows",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185201001,
@@ -5365,7 +5365,7 @@
   },
   "185203": {
     "QuestId": 185203,
-    "QuestName": "",
+    "QuestName": "Dissolving the Real and Unreal",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185203029,
@@ -5408,7 +5408,7 @@
   },
   "185204": {
     "QuestId": 185204,
-    "QuestName": "",
+    "QuestName": "The lone boy who braves the flames",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185204001,
@@ -5452,7 +5452,7 @@
   },
   "185205": {
     "QuestId": 185205,
-    "QuestName": "",
+    "QuestName": "The unwavering heart of redemption",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185205021,
@@ -5500,7 +5500,7 @@
   },
   "185206": {
     "QuestId": 185206,
-    "QuestName": "",
+    "QuestName": "Calamity's Herald and Dawn's Whisper",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185206001,
@@ -5550,7 +5550,7 @@
   },
   "185207": {
     "QuestId": 185207,
-    "QuestName": "",
+    "QuestName": "The unwavering heart of redemption",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185207003,
@@ -5599,7 +5599,7 @@
   },
   "185208": {
     "QuestId": 185208,
-    "QuestName": "",
+    "QuestName": "Tread upon the heavy land",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185208001,
@@ -5648,7 +5648,7 @@
   },
   "185210": {
     "QuestId": 185210,
-    "QuestName": "",
+    "QuestName": "Chaos Deduction",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185210053,
@@ -5690,8 +5690,8 @@
   },
   "185212": {
     "QuestId": 185212,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Shadowed Whispers",
+    "QuestDetail": "The Void Engram seems to be spreading from nearby, try to find the source.",
     "QuestType": 18,
     "QuestStep": 185212001,
     "AwardId": 0,
@@ -5733,7 +5733,7 @@
   },
   "185301": {
     "QuestId": 185301,
-    "QuestName": "",
+    "QuestName": "In the Desolation",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185301006,
@@ -5767,7 +5767,7 @@
   },
   "185302": {
     "QuestId": 185302,
-    "QuestName": "",
+    "QuestName": "Facing the Disaster",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185302003,
@@ -5831,7 +5831,7 @@
   },
   "185303": {
     "QuestId": 185303,
-    "QuestName": "",
+    "QuestName": "Parting and Reunion",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185303011,
@@ -5878,7 +5878,7 @@
   },
   "185304": {
     "QuestId": 185304,
-    "QuestName": "",
+    "QuestName": "Wandering in the Lightning",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185304044,
@@ -5926,7 +5926,7 @@
   },
   "185307": {
     "QuestId": 185307,
-    "QuestName": "",
+    "QuestName": "Scattered Stardust",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185307014,
@@ -5978,7 +5978,7 @@
   },
   "185309": {
     "QuestId": 185309,
-    "QuestName": "",
+    "QuestName": "Stealth! Shadow Interstice",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185309025,
@@ -6031,7 +6031,7 @@
   },
   "185310": {
     "QuestId": 185310,
-    "QuestName": "",
+    "QuestName": "Chasing the End of Fate",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185310008,
@@ -6090,7 +6090,7 @@
   },
   "185311": {
     "QuestId": 185311,
-    "QuestName": "",
+    "QuestName": "Where the Ashes Lie",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185311016,
@@ -6161,7 +6161,7 @@
   },
   "185312": {
     "QuestId": 185312,
-    "QuestName": "",
+    "QuestName": "Completely Lost",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185312013,
@@ -6233,7 +6233,7 @@
   },
   "185402": {
     "QuestId": 185402,
-    "QuestName": "",
+    "QuestName": "Revelation of the Moon",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185402019,
@@ -6274,7 +6274,7 @@
   },
   "185404": {
     "QuestId": 185404,
-    "QuestName": "",
+    "QuestName": "Trial! The Kanamia Brave",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185404014,
@@ -6325,7 +6325,7 @@
   },
   "185405": {
     "QuestId": 185405,
-    "QuestName": "",
+    "QuestName": "Storm Incoming",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185405006,
@@ -6373,8 +6373,8 @@
   },
   "185601": {
     "QuestId": 185601,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Protect Airona",
+    "QuestDetail": "Eliminate the Monsters and Protect the Unconscious Airona",
     "QuestType": 18,
     "QuestStep": 185601001,
     "AwardId": 0,
@@ -6407,8 +6407,8 @@
   },
   "185602": {
     "QuestId": 185602,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Rest at the Fafala's House",
+    "QuestDetail": "Airona is still unconscious, and at Fafala's invitation, we came to her house to rest for a while...",
     "QuestType": 18,
     "QuestStep": 185602001,
     "AwardId": 0,
@@ -6448,7 +6448,7 @@
   },
   "185603": {
     "QuestId": 185603,
-    "QuestName": "",
+    "QuestName": "Catch the thief",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 0,
@@ -6489,8 +6489,8 @@
   },
   "185604": {
     "QuestId": 185604,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Eliminate all monsters",
+    "QuestDetail": "Eliminate all monsters",
     "QuestType": 18,
     "QuestStep": 185604001,
     "AwardId": 0,
@@ -6530,8 +6530,8 @@
   },
   "185605": {
     "QuestId": 185605,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Eliminate all monsters",
+    "QuestDetail": "Eliminate all monsters",
     "QuestType": 18,
     "QuestStep": 185605001,
     "AwardId": 0,
@@ -6571,8 +6571,8 @@
   },
   "185606": {
     "QuestId": 185606,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Eliminate the Illusion Flowers in the mine",
+    "QuestDetail": "Eliminate the Illusion Flowers in the mine",
     "QuestType": 1,
     "QuestStep": 185606001,
     "AwardId": 0,
@@ -6612,8 +6612,8 @@
   },
   "186001": {
     "QuestId": 186001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Monsters by the wagon",
+    "QuestDetail": "Griff's caravan and his valuable goods have disappeared, this is not a good sign.",
     "QuestType": 67,
     "QuestStep": 186001001,
     "AwardId": 0,
@@ -6665,8 +6665,8 @@
   },
   "186002": {
     "QuestId": 186002,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Monsters by the box",
+    "QuestDetail": "Griff's caravan and his valuable goods have disappeared, this is not a good sign.",
     "QuestType": 67,
     "QuestStep": 186002001,
     "AwardId": 0,
@@ -6718,8 +6718,8 @@
   },
   "186003": {
     "QuestId": 186003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat the thugs who kidnapped Nelson",
+    "QuestDetail": "The council candidate is missing? This is a big deal!",
     "QuestType": 67,
     "QuestStep": 186003001,
     "AwardId": 0,
@@ -6771,8 +6771,8 @@
   },
   "186004": {
     "QuestId": 186004,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Suspect appears",
+    "QuestDetail": "The council candidate is missing? This is a big deal!",
     "QuestType": 67,
     "QuestStep": 186004001,
     "AwardId": 0,
@@ -6824,8 +6824,8 @@
   },
   "186006": {
     "QuestId": 186006,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Find the person acquiring contraband",
+    "QuestDetail": "Someone is buying contraband in Asterleeds market. Find out what's going on.",
     "QuestType": 67,
     "QuestStep": 186006001,
     "AwardId": 0,
@@ -6886,8 +6886,8 @@
   },
   "186007": {
     "QuestId": 186007,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat the monsters guarding the inheritance",
+    "QuestDetail": "Someone is buying contraband in Asterleeds market. Find out what's going on.",
     "QuestType": 67,
     "QuestStep": 186007001,
     "AwardId": 0,
@@ -6962,8 +6962,8 @@
   },
   "186008": {
     "QuestId": 186008,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat the scavengers",
+    "QuestDetail": "Poor Bobby was beaten by his fellow scavengers. Try to stop the infighting among the scavengers.",
     "QuestType": 67,
     "QuestStep": 186008001,
     "AwardId": 0,
@@ -7044,8 +7044,8 @@
   },
   "186009": {
     "QuestId": 186009,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat Charles and his group",
+    "QuestDetail": "Poor Bobby was beaten by his fellow scavengers. Try to stop the infighting among the scavengers.",
     "QuestType": 67,
     "QuestStep": 186009001,
     "AwardId": 0,
@@ -7126,8 +7126,8 @@
   },
   "186010": {
     "QuestId": 186010,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat the goblins at the foot of the mountain",
+    "QuestDetail": "Defeat the noisy demi-humans",
     "QuestType": 67,
     "QuestStep": 186010001,
     "AwardId": 0,
@@ -7213,8 +7213,8 @@
   },
   "186011": {
     "QuestId": 186011,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Rescue Sera",
+    "QuestDetail": "Defeat the suddenly appearing Brigands and protect Sera!",
     "QuestType": 67,
     "QuestStep": 186011001,
     "AwardId": 0,
@@ -7300,8 +7300,8 @@
   },
   "186013": {
     "QuestId": 186013,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat Daniel and his group",
+    "QuestDetail": "Defeat the thugs gathered by Daniel",
     "QuestType": 67,
     "QuestStep": 186013001,
     "AwardId": 0,
@@ -7391,8 +7391,8 @@
   },
   "186015": {
     "QuestId": 186015,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat the inheritance automaton",
+    "QuestDetail": "Adventure and treasure hunting are a man's romance, but abandoning family for it is another matter.",
     "QuestType": 67,
     "QuestStep": 186015001,
     "AwardId": 0,
@@ -7456,8 +7456,8 @@
   },
   "186017": {
     "QuestId": 186017,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Ritual site",
+    "QuestDetail": "Camille's grandmother was deceived by someone claiming to be a great witch. Help her out.",
     "QuestType": 67,
     "QuestStep": 186017001,
     "AwardId": 0,
@@ -7532,8 +7532,8 @@
   },
   "186018": {
     "QuestId": 186018,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Wake up Jenny",
+    "QuestDetail": "Camille's grandmother was deceived by someone claiming to be a great witch. Help her out.",
     "QuestType": 67,
     "QuestStep": 186018002,
     "AwardId": 0,
@@ -7608,8 +7608,8 @@
   },
   "186019": {
     "QuestId": 186019,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat the monsters besieging Ee-chan",
+    "QuestDetail": "During my exploration, I unexpectedly saved a scholar researching Ee-chan and Ee-chan who was looking for a partner.<br>At the scholar's request, I took on the task of assisting in finding Ee-chan's partner.",
     "QuestType": 67,
     "QuestStep": 186019001,
     "AwardId": 0,
@@ -7707,8 +7707,8 @@
   },
   "186020": {
     "QuestId": 186020,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat monsters to obtain metal parts",
+    "QuestDetail": "During my exploration, I unexpectedly saved a scholar researching Ee-chan and Ee-chan who was looking for a partner.<br>At the scholar's request, I took on the task of assisting in finding Ee-chan's partner.",
     "QuestType": 67,
     "QuestStep": 186020001,
     "AwardId": 0,
@@ -7806,8 +7806,8 @@
   },
   "186021": {
     "QuestId": 186021,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat nearby monsters",
+    "QuestDetail": "Poor Bobby was beaten by his fellow scavengers. Try to stop the infighting among the scavengers.",
     "QuestType": 67,
     "QuestStep": 186021001,
     "AwardId": 0,
@@ -7888,8 +7888,8 @@
   },
   "186022": {
     "QuestId": 186022,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Raiding monsters",
+    "QuestDetail": "While passing through the goblin tribe, I met a father in distress. His son is suspected to have died in the war. Unable to accept it, he hopes to find a definite answer.",
     "QuestType": 67,
     "QuestStep": 186022001,
     "AwardId": 0,
@@ -7991,8 +7991,8 @@
   },
   "186023": {
     "QuestId": 186023,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Raiding monsters",
+    "QuestDetail": "While passing through the goblin tribe, I met a father in distress. His son is suspected to have died in the war. Unable to accept it, he hopes to find a definite answer.",
     "QuestType": 67,
     "QuestStep": 186023001,
     "AwardId": 0,
@@ -8094,8 +8094,8 @@
   },
   "186024": {
     "QuestId": 186024,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Raiding monsters",
+    "QuestDetail": "While passing through the goblin tribe, I met a father in distress. His son is suspected to have died in the war. Unable to accept it, he hopes to find a definite answer.",
     "QuestType": 67,
     "QuestStep": 186024001,
     "AwardId": 0,
@@ -8197,8 +8197,8 @@
   },
   "186026": {
     "QuestId": 186026,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Escort the convoy to the city gate",
+    "QuestDetail": "The caravan was attacked by goblins again, protect the caravan through the difficulties.",
     "QuestType": 67,
     "QuestStep": 186026001,
     "AwardId": 0,
@@ -8338,8 +8338,8 @@
   },
   "205012": {
     "QuestId": 205012,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Capture \"Grey Crow\"",
+    "QuestDetail": "\"Grey Crow\" has finally appeared, find a way to capture him!",
     "QuestType": 67,
     "QuestStep": 205012002,
     "AwardId": 0,
@@ -8372,8 +8372,8 @@
   },
   "205015": {
     "QuestId": 205015,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Find \"Grey Crow\"",
+    "QuestDetail": "According to Bertram's confession, \"Grey Crow\" will appear in The Spinning Rudder, and the note from Tina might be a key clue...",
     "QuestType": 67,
     "QuestStep": 205015001,
     "AwardId": 0,
@@ -8406,8 +8406,8 @@
   },
   "205020": {
     "QuestId": 205020,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Second Act",
+    "QuestDetail": "Chaos and Lost Old Dreams",
     "QuestType": 18,
     "QuestStep": 205020003,
     "AwardId": 0,
@@ -8440,8 +8440,8 @@
   },
   "310018": {
     "QuestId": 310018,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Try gathering",
+    "QuestDetail": "Search the plains for some gatherable items.",
     "QuestType": 50,
     "QuestStep": 310018002,
     "AwardId": 31000230,
@@ -8507,8 +8507,8 @@
   },
   "500001": {
     "QuestId": 500001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Culinary",
+    "QuestDetail": "The \"Foxtail\" restaurant has been open on the Food District of Asterleeds for 10 years. Except for the year during and after the Asterleeds Independence War, people could see Halva hanging the \"Open\" sign on the door every morning. Halva is the chef and owner of the \"Foxtail\" restaurant. He is a culinary master with a unique perspective and persistent pursuit of popular cuisine. Despite his age, his passion remains undiminished, and his skills have become even more refined. If you want to learn about Culinary, go ask him!",
     "QuestType": 62,
     "QuestStep": 500001003,
     "AwardId": 31000430,
@@ -8564,8 +8564,8 @@
   },
   "186025": {
     "QuestId": 186025,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Capture the escaping Daniel",
+    "QuestDetail": "Capture Daniel without disturbing the residents",
     "QuestType": 67,
     "QuestStep": 186025001,
     "AwardId": 0,
@@ -8667,8 +8667,8 @@
   },
   "186031": {
     "QuestId": 186031,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Defeat the Mysterious Researcher",
+    "QuestDetail": "Adventure and treasure hunting are a man's romance, but abandoning family for it is another matter.",
     "QuestType": 67,
     "QuestStep": 186031001,
     "AwardId": 0,
@@ -8779,8 +8779,8 @@
   },
   "170000": {
     "QuestId": 170000,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Adventurers",
+    "QuestDetail": "Learn about Adventurers from Airona.",
     "QuestType": 74,
     "QuestStep": 170000001,
     "AwardId": 31000440,
@@ -8812,8 +8812,8 @@
   },
   "30000": {
     "QuestId": 30000,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Pay off the Debt",
+    "QuestDetail": "Airona sent someone to deliver a message, it seems there's some trouble...",
     "QuestType": 3,
     "QuestStep": 30000001,
     "AwardId": 31000730,
@@ -8847,8 +8847,8 @@
   },
   "170100": {
     "QuestId": 170100,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Become a Stormblade!",
+    "QuestDetail": "Milia is waiting for adventurers who crave power. Pass her trial to become a Stormblade.",
     "QuestType": 77,
     "QuestStep": 170100002,
     "AwardId": 31000740,
@@ -8875,8 +8875,8 @@
   },
   "170101": {
     "QuestId": 170101,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Become a Wind Knight!",
+    "QuestDetail": "Milia is waiting for adventurers who crave power. Pass her trial to become a Wind Knight.",
     "QuestType": 77,
     "QuestStep": 170101002,
     "AwardId": 31000750,
@@ -8903,8 +8903,8 @@
   },
   "170102": {
     "QuestId": 170102,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Become a Frost Mage!",
+    "QuestDetail": "Milia is waiting for adventurers who crave power. Pass her trial to become an Frost Mage.",
     "QuestType": 77,
     "QuestStep": 170102002,
     "AwardId": 31000760,
@@ -8931,8 +8931,8 @@
   },
   "170103": {
     "QuestId": 170103,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Become a Marksman!",
+    "QuestDetail": "Milia is waiting for adventurers who crave power. Pass her trial to become a Marksman.",
     "QuestType": 77,
     "QuestStep": 170103002,
     "AwardId": 31000770,
@@ -8959,8 +8959,8 @@
   },
   "170104": {
     "QuestId": 170104,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Become a Verdant Oracle!",
+    "QuestDetail": "Milia is waiting for adventurers who crave power. Pass her trial to become a Verdant Oracle.",
     "QuestType": 77,
     "QuestStep": 170104002,
     "AwardId": 31000780,
@@ -8987,8 +8987,8 @@
   },
   "170105": {
     "QuestId": 170105,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Become a Heavy Guardian!",
+    "QuestDetail": "Milia is waiting for adventurers who crave power. Pass her trial to become a Heavy Guardian.",
     "QuestType": 77,
     "QuestStep": 170105002,
     "AwardId": 31000790,
@@ -9015,8 +9015,8 @@
   },
   "170106": {
     "QuestId": 170106,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Become a Shield Knight!",
+    "QuestDetail": "Milia is waiting for adventurers who crave power. Pass her trial to become a Shield Knight.",
     "QuestType": 77,
     "QuestStep": 170106002,
     "AwardId": 31000800,
@@ -9043,8 +9043,8 @@
   },
   "170003": {
     "QuestId": 170003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Invitation from the Adventurer Guild",
+    "QuestDetail": "Received a letter from the Adventurer Guild, go talk to Nora...",
     "QuestType": 71,
     "QuestStep": 170003001,
     "AwardId": 31000450,
@@ -9077,8 +9077,8 @@
   },
   "170004": {
     "QuestId": 170004,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Invitation from the Fishing Guild",
+    "QuestDetail": "A letter from the the Bluewave Anglers invites you to chat at the recruitment center in the Central District.",
     "QuestType": 72,
     "QuestStep": 170004001,
     "AwardId": 31000460,
@@ -9112,8 +9112,8 @@
   },
   "10503": {
     "QuestId": 10503,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Like a nightmare...",
+    "QuestDetail": "Something is happening in Asterleeds. Find someone who knows what's going on.",
     "QuestType": 1,
     "QuestStep": 10503010,
     "AwardId": 30000950,
@@ -9141,8 +9141,8 @@
   },
   "30116": {
     "QuestId": 30116,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Custom Mount for the Council Member",
+    "QuestDetail": "There is an eye-catching mount by the roadside...",
     "QuestType": 3,
     "QuestStep": 30116026,
     "AwardId": 31000660,
@@ -9180,8 +9180,8 @@
   },
   "186029": {
     "QuestId": 186029,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Attack Mount",
+    "QuestDetail": "Test the modified mount",
     "QuestType": 67,
     "QuestStep": 186029003,
     "AwardId": 0,
@@ -9229,8 +9229,8 @@
   },
   "185501": {
     "QuestId": 185501,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Unfading Thing",
+    "QuestDetail": "The situation has taken an unexpected turn! Try using the Engram Collector to suppress the spread of Void Sigils in Dragon Claw Valley.",
     "QuestType": 18,
     "QuestStep": 185501011,
     "AwardId": 0,
@@ -9275,8 +9275,8 @@
   },
   "30115": {
     "QuestId": 30115,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Artisan's Troubles",
+    "QuestDetail": "The streetlights outside the city are damaged, assist the Artisan in going out of the city to repair them.",
     "QuestType": 3,
     "QuestStep": 30115022,
     "AwardId": 31000650,
@@ -9326,8 +9326,8 @@
   },
   "186027": {
     "QuestId": 186027,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Clear Monsters",
+    "QuestDetail": "Defeat the monsters attacking the streetlights.",
     "QuestType": 67,
     "QuestStep": 186027004,
     "AwardId": 0,
@@ -9382,8 +9382,8 @@
   },
   "10501": {
     "QuestId": 10501,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Like bubbles...",
+    "QuestDetail": "Obtained the Engram Collector. Now discuss the next move with your companions.",
     "QuestType": 1,
     "QuestStep": 10501006,
     "AwardId": 30000930,
@@ -9425,8 +9425,8 @@
   },
   "186028": {
     "QuestId": 186028,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Clear Monsters",
+    "QuestDetail": "Defeat the monsters attracted by the streetlights",
     "QuestType": 67,
     "QuestStep": 186028001,
     "AwardId": 0,
@@ -9481,8 +9481,8 @@
   },
   "10502": {
     "QuestId": 10502,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Like a distant star...",
+    "QuestDetail": "Go with your companions to Minsterhorn to check on the situation of Void Sigils there.",
     "QuestType": 1,
     "QuestStep": 10502001,
     "AwardId": 30000940,
@@ -9519,8 +9519,8 @@
   },
   "801301": {
     "QuestId": 801301,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801301007,
     "AwardId": 10000020,
@@ -9543,8 +9543,8 @@
   },
   "801302": {
     "QuestId": 801302,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801302001,
     "AwardId": 10000020,
@@ -9567,8 +9567,8 @@
   },
   "801304": {
     "QuestId": 801304,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801304001,
     "AwardId": 10000020,
@@ -9591,8 +9591,8 @@
   },
   "801306": {
     "QuestId": 801306,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801306002,
     "AwardId": 10000020,
@@ -9615,8 +9615,8 @@
   },
   "801307": {
     "QuestId": 801307,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801307002,
     "AwardId": 10000020,
@@ -9639,8 +9639,8 @@
   },
   "801308": {
     "QuestId": 801308,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801308002,
     "AwardId": 10000020,
@@ -9663,8 +9663,8 @@
   },
   "801309": {
     "QuestId": 801309,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801309002,
     "AwardId": 10000020,
@@ -9687,8 +9687,8 @@
   },
   "801310": {
     "QuestId": 801310,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801310002,
     "AwardId": 10000020,
@@ -9711,8 +9711,8 @@
   },
   "801311": {
     "QuestId": 801311,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801311002,
     "AwardId": 10000020,
@@ -9735,8 +9735,8 @@
   },
   "801312": {
     "QuestId": 801312,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801312002,
     "AwardId": 10000020,
@@ -9759,8 +9759,8 @@
   },
   "801313": {
     "QuestId": 801313,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801313002,
     "AwardId": 10000020,
@@ -9783,8 +9783,8 @@
   },
   "801315": {
     "QuestId": 801315,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801315007,
     "AwardId": 10000020,
@@ -9807,8 +9807,8 @@
   },
   "801316": {
     "QuestId": 801316,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801316007,
     "AwardId": 10000020,
@@ -9831,8 +9831,8 @@
   },
   "801317": {
     "QuestId": 801317,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801317002,
     "AwardId": 10000020,
@@ -9855,8 +9855,8 @@
   },
   "801318": {
     "QuestId": 801318,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801318007,
     "AwardId": 10000020,
@@ -9879,8 +9879,8 @@
   },
   "801319": {
     "QuestId": 801319,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801319007,
     "AwardId": 10000020,
@@ -9903,8 +9903,8 @@
   },
   "801321": {
     "QuestId": 801321,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801321007,
     "AwardId": 10000020,
@@ -9927,8 +9927,8 @@
   },
   "801322": {
     "QuestId": 801322,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801322007,
     "AwardId": 10000020,
@@ -9951,8 +9951,8 @@
   },
   "801323": {
     "QuestId": 801323,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801323007,
     "AwardId": 10000020,
@@ -9975,8 +9975,8 @@
   },
   "801324": {
     "QuestId": 801324,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801324007,
     "AwardId": 10000020,
@@ -9999,8 +9999,8 @@
   },
   "801325": {
     "QuestId": 801325,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801325007,
     "AwardId": 10000020,
@@ -10023,8 +10023,8 @@
   },
   "801326": {
     "QuestId": 801326,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801326007,
     "AwardId": 10000020,
@@ -10047,8 +10047,8 @@
   },
   "801327": {
     "QuestId": 801327,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 801327007,
     "AwardId": 10000020,
@@ -10071,8 +10071,8 @@
   },
   "801328": {
     "QuestId": 801328,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801328002,
     "AwardId": 10000020,
@@ -10095,8 +10095,8 @@
   },
   "801329": {
     "QuestId": 801329,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 801329002,
     "AwardId": 10000020,
@@ -10119,8 +10119,8 @@
   },
   "802301": {
     "QuestId": 802301,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 802301007,
     "AwardId": 10000020,
@@ -10143,8 +10143,8 @@
   },
   "802302": {
     "QuestId": 802302,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 802302010,
     "AwardId": 10000020,
@@ -10167,8 +10167,8 @@
   },
   "802303": {
     "QuestId": 802303,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 802303009,
     "AwardId": 10000020,
@@ -10191,8 +10191,8 @@
   },
   "802304": {
     "QuestId": 802304,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 802304009,
     "AwardId": 10000020,
@@ -10215,8 +10215,8 @@
   },
   "802305": {
     "QuestId": 802305,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 802305009,
     "AwardId": 10000020,
@@ -10239,8 +10239,8 @@
   },
   "802306": {
     "QuestId": 802306,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Race Against Time",
+    "QuestDetail": "Collect particles along the path",
     "QuestType": 6,
     "QuestStep": 802306009,
     "AwardId": 10000020,
@@ -10263,8 +10263,8 @@
   },
   "802308": {
     "QuestId": 802308,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 802308002,
     "AwardId": 10000020,
@@ -10287,8 +10287,8 @@
   },
   "802309": {
     "QuestId": 802309,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 802309002,
     "AwardId": 10000020,
@@ -10311,8 +10311,8 @@
   },
   "802310": {
     "QuestId": 802310,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 802310002,
     "AwardId": 10000020,
@@ -10335,8 +10335,8 @@
   },
   "802311": {
     "QuestId": 802311,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 802311002,
     "AwardId": 10000020,
@@ -10359,8 +10359,8 @@
   },
   "802312": {
     "QuestId": 802312,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 802312002,
     "AwardId": 10000020,
@@ -10383,8 +10383,8 @@
   },
   "802313": {
     "QuestId": 802313,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tracking and Tracing",
+    "QuestDetail": "Collect 6 particles within the time limit",
     "QuestType": 6,
     "QuestStep": 802313002,
     "AwardId": 10000020,
@@ -10407,8 +10407,8 @@
   },
   "185025": {
     "QuestId": 185025,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Catch the escaping Johnny",
+    "QuestDetail": "Someone is buying contraband in Asterleeds market. Find out what's going on.",
     "QuestType": 67,
     "QuestStep": 185025001,
     "AwardId": 0,
@@ -10519,8 +10519,8 @@
   },
   "185026": {
     "QuestId": 185026,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Capture Johnny",
+    "QuestDetail": "Someone is buying contraband in Asterleeds market. Find out what's going on.",
     "QuestType": 67,
     "QuestStep": 185026001,
     "AwardId": 0,
@@ -10572,8 +10572,8 @@
   },
   "185008": {
     "QuestId": 185008,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Art of Virtual Void Engram",
+    "QuestDetail": "Encounter the Man in Black at Cliff Ruins",
     "QuestType": 18,
     "QuestStep": 185008001,
     "AwardId": 0,
@@ -10615,7 +10615,7 @@
   },
   "706501": {
     "QuestId": 706501,
-    "QuestName": "",
+    "QuestName": "[Swift Pedal]",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 706501002,
@@ -10649,8 +10649,8 @@
   },
   "170005": {
     "QuestId": 170005,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Pioneer Bureau Commmissions",
+    "QuestDetail": "Valeria introduced you to three crucial matters for adventurers. First, let's listen to her detailed explanation about the commission quests from the Pioneer Bureau.",
     "QuestType": 78,
     "QuestStep": 170005001,
     "AwardId": 31000680,
@@ -10658,7 +10658,12 @@
     "PreQuest": [],
     "PreQuestLogic": "(170018)",
     "MustPreQuest": [],
-    "AccessLimit": [],
+    "AccessLimit": [
+      [
+        "1",
+        "55"
+      ]
+    ],
     "AccpetType": [
       0
     ],
@@ -10680,8 +10685,8 @@
   },
   "170006": {
     "QuestId": 170006,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Trial Path!",
+    "QuestDetail": "Complete the trial on the third level of the Trial Path!",
     "QuestType": 79,
     "QuestStep": 170006002,
     "AwardId": 31000690,
@@ -10717,7 +10722,7 @@
   },
   "186000": {
     "QuestId": 186000,
-    "QuestName": "",
+    "QuestName": "The true face of the \"Ghost\"",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186000001,
@@ -10757,8 +10762,8 @@
   },
   "10504": {
     "QuestId": 10504,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Entrusted One",
+    "QuestDetail": "To gather more information about Denvel, seek Tatta's help...",
     "QuestType": 1,
     "QuestStep": 10504011,
     "AwardId": 30000960,
@@ -10785,8 +10790,8 @@
   },
   "10505": {
     "QuestId": 10505,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Clashing Blades",
+    "QuestDetail": "Head to the Artisan Guild and tell Airona everything. However, the Guild is under a new wave of attacks, defeat the monsters with your companions first.",
     "QuestType": 1,
     "QuestStep": 10505018,
     "AwardId": 30000970,
@@ -10813,8 +10818,8 @@
   },
   "10506": {
     "QuestId": 10506,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Final Journey",
+    "QuestDetail": "Head to the Shrine and prepare to face Denvel.",
     "QuestType": 1,
     "QuestStep": 10506021,
     "AwardId": 30000980,
@@ -10841,8 +10846,8 @@
   },
   "10508": {
     "QuestId": 10508,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Warm and Alive",
+    "QuestDetail": "The events have temporarily come to a halt, and Asterleeds has entered a period of recuperation. Talk to the people of this city.",
     "QuestType": 1,
     "QuestStep": 10508009,
     "AwardId": 30000990,
@@ -10883,8 +10888,8 @@
   },
   "20002": {
     "QuestId": 20002,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Eliminate 50 goblins and embark on the path of training.",
     "QuestType": 59,
     "QuestStep": 20002001,
     "AwardId": 31000270,
@@ -10916,8 +10921,8 @@
   },
   "20004": {
     "QuestId": 20004,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Eliminate 50 Arachnocrabs of any kind and continue on the path of training.",
     "QuestType": 59,
     "QuestStep": 20004003,
     "AwardId": 31000290,
@@ -10954,8 +10959,8 @@
   },
   "20006": {
     "QuestId": 20006,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Eliminate 50 Brigands of any kind to further improve yourself.",
     "QuestType": 59,
     "QuestStep": 20006003,
     "AwardId": 31000310,
@@ -10992,8 +10997,8 @@
   },
   "20008": {
     "QuestId": 20008,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Eliminate 50 Mukus in Muku Camp.",
     "QuestType": 59,
     "QuestStep": 20008003,
     "AwardId": 31000330,
@@ -11030,8 +11035,8 @@
   },
   "20011": {
     "QuestId": 20011,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Defeat the Great Warhog in Windhowl Canyon.",
     "QuestType": 59,
     "QuestStep": 20011002,
     "AwardId": 31000360,
@@ -11058,8 +11063,8 @@
   },
   "31075": {
     "QuestId": 31075,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "[Limited Event]",
+    "QuestDetail": "Help Kiki solve her \"Holiday Crisis!\"",
     "QuestType": 84,
     "QuestStep": 31075003,
     "AwardId": 31000260,
@@ -11098,7 +11103,7 @@
   },
   "706503": {
     "QuestId": 706503,
-    "QuestName": "",
+    "QuestName": "Bomb Trap",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 706503001,
@@ -11132,7 +11137,7 @@
   },
   "706505": {
     "QuestId": 706505,
-    "QuestName": "",
+    "QuestName": "Wind Obstruction",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 706505001,
@@ -11166,7 +11171,7 @@
   },
   "706504": {
     "QuestId": 706504,
-    "QuestName": "",
+    "QuestName": "Crossbow Obstruction",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 706504001,
@@ -11200,7 +11205,7 @@
   },
   "706502": {
     "QuestId": 706502,
-    "QuestName": "",
+    "QuestName": "Cargo Delivery",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 706502001,
@@ -11234,8 +11239,8 @@
   },
   "20012": {
     "QuestId": 20012,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Eliminate 50 Bzzars in the underground district to continue your training journey.",
     "QuestType": 59,
     "QuestStep": 20012003,
     "AwardId": 31000820,
@@ -11272,8 +11277,8 @@
   },
   "20013": {
     "QuestId": 20013,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Defeat the Void Bzzar in the underground district.",
     "QuestType": 59,
     "QuestStep": 20013001,
     "AwardId": 31000830,
@@ -11300,8 +11305,8 @@
   },
   "170110": {
     "QuestId": 170110,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "New Class",
+    "QuestDetail": "During their adventure journey, adventurers will encounter various tricky challenges. Mastering different Classes can help them deal with these troubles more easily!",
     "QuestType": 80,
     "QuestStep": 170110001,
     "AwardId": 31000840,
@@ -11333,7 +11338,7 @@
   },
   "707001": {
     "QuestId": 707001,
-    "QuestName": "",
+    "QuestName": "Invisible Light Bridge",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 707001001,
@@ -11367,8 +11372,8 @@
   },
   "30120": {
     "QuestId": 30120,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Let's do parkour together!",
+    "QuestDetail": "Join the parkour challenge with everyone and showcase your excellent parkour skills!<br><style=\"emph-gn\">Location: \"Parkour Registration Point\" next to the \"Unit X\" Research Facility in Asterleeds</style><br><style=\"emph-gn\">Opening Time: August 31, 19:00~20:00</style>",
     "QuestType": 3,
     "QuestStep": 30120002,
     "AwardId": 31000870,
@@ -11423,8 +11428,8 @@
   },
   "30121": {
     "QuestId": 30121,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Ecological Monitoring: Water Survey",
+    "QuestDetail": "A scholar stated that they are conducting a research project on the ecological recovery process after the Asterleeds Independence War.",
     "QuestType": 3,
     "QuestStep": 30121007,
     "AwardId": 31000900,
@@ -11475,8 +11480,8 @@
   },
   "30118": {
     "QuestId": 30118,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Missing Repair Artisan",
+    "QuestDetail": "The Artisan Seth, who repairs street lamps, has suddenly disappeared. Could it be related to the mysterious heritage he found on the street lamp earlier? Assist Carlisto in investigating.",
     "QuestType": 3,
     "QuestStep": 30118026,
     "AwardId": 31000890,
@@ -11510,7 +11515,7 @@
   },
   "186045": {
     "QuestId": 186045,
-    "QuestName": "",
+    "QuestName": "Defeat the inheritance automaton",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186045001,
@@ -11555,8 +11560,8 @@
   },
   "30125": {
     "QuestId": 30125,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Candidate's Speech",
+    "QuestDetail": "The candidate Eddie is preparing a speech for his campaign for councilor, but the speech was blown away by the wind when he went out. Head to Minsterhorn and help him retrieve these scattered manuscripts.",
     "QuestType": 3,
     "QuestStep": 30125030,
     "AwardId": 31000930,
@@ -11605,8 +11610,8 @@
   },
   "30137": {
     "QuestId": 30137,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Scattered Shadows and Broken Mirrors",
+    "QuestDetail": "Several unfriendly-looking thugs are gathered at the door of a house, chatting about something and not allowing outsiders to approach. What are their intentions?",
     "QuestType": 3,
     "QuestStep": 30137001,
     "AwardId": 31001010,
@@ -11647,8 +11652,8 @@
   },
   "30141": {
     "QuestId": 30141,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Non-Benign Competition",
+    "QuestDetail": "A fruit stall owner stated that they are facing malicious competition from a nearby fruit store and want to expand their business route, but it seems things are not that simple...",
     "QuestType": 3,
     "QuestStep": 30141006,
     "AwardId": 31001040,
@@ -11680,8 +11685,8 @@
   },
   "30122": {
     "QuestId": 30122,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Her and His Treasure",
+    "QuestDetail": "A generous noble lady is looking for her lost \"treasure\"...",
     "QuestType": 2,
     "QuestStep": 30122001,
     "AwardId": 31000890,
@@ -11739,7 +11744,7 @@
   },
   "185406": {
     "QuestId": 185406,
-    "QuestName": "",
+    "QuestName": "Stealth! Feint and Diversion",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185406010,
@@ -11788,8 +11793,8 @@
   },
   "30136": {
     "QuestId": 30136,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Shadow of Bapharian",
+    "QuestDetail": "A mysterious vendor inadvertently mentioned the term \"The Shadow of Bapharian\" and pointed out a location. What does it mean? Go and find out...",
     "QuestType": 3,
     "QuestStep": 30136001,
     "AwardId": 31001000,
@@ -11836,7 +11841,7 @@
   },
   "186063": {
     "QuestId": 186063,
-    "QuestName": "",
+    "QuestName": "Defeat the Legacy Traffickers",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186063001,
@@ -11890,8 +11895,8 @@
   },
   "30123": {
     "QuestId": 30123,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Ted's Treasure",
+    "QuestDetail": "The young Artisan Levi found a box left by the former Guildmaster Ted and is eager to open it. He believes it contains the master Artisan's secrets left by Ted. Is it really as he thinks?",
     "QuestType": 3,
     "QuestStep": 30123001,
     "AwardId": 31000910,
@@ -11956,8 +11961,8 @@
   },
   "30131": {
     "QuestId": 30131,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Great Adventure! Wonder Cuisine Study Club",
+    "QuestDetail": "A diner claims to be a member of the \"Wonder Cuisine Study Club\" and can make uniquely flavored avant-garde dishes, but there is something odd about his words... Anyway, head to the plains and help him collect some materials.",
     "QuestType": 3,
     "QuestStep": 30131001,
     "AwardId": 31000960,
@@ -11992,8 +11997,8 @@
   },
   "30146": {
     "QuestId": 30146,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Recover the Balloons",
+    "QuestDetail": "Guard Ron made a big mistake and let the balloons for shooting practice fly away, which could lead to an accident...",
     "QuestType": 3,
     "QuestStep": 30146003,
     "AwardId": 31001050,
@@ -12029,8 +12034,8 @@
   },
   "30132": {
     "QuestId": 30132,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Scout Express",
+    "QuestDetail": "Scout Scott hasn't replied to his mother Teresa for several days. Help this worried mother find out what's going on.",
     "QuestType": 3,
     "QuestStep": 30132001,
     "AwardId": 31000970,
@@ -12062,8 +12067,8 @@
   },
   "30126": {
     "QuestId": 30126,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Friendly Spar?",
+    "QuestDetail": "In the Asterleeds Defense Corps, the guards are eager to have a match with the adventurers.",
     "QuestType": 3,
     "QuestStep": 30126001,
     "AwardId": 31000940,
@@ -12104,7 +12109,7 @@
   },
   "186051": {
     "QuestId": 186051,
-    "QuestName": "",
+    "QuestName": "Friendly Spar?",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186051001,
@@ -12156,8 +12161,8 @@
   },
   "30139": {
     "QuestId": 30139,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Secrets of the Ruined City",
+    "QuestDetail": "After entering the Ruins of Andra City, Sandro's friend Grace went missing. Take Grace's dog Fido to find him.",
     "QuestType": 3,
     "QuestStep": 30139001,
     "AwardId": 31001030,
@@ -12213,8 +12218,8 @@
   },
   "30127": {
     "QuestId": 30127,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Charlie, the Divine Warrior",
+    "QuestDetail": "Outside the Ruins of Andra City, a mysterious man seems to be digging the ground non-stop...",
     "QuestType": 3,
     "QuestStep": 30127001,
     "AwardId": 31001160,
@@ -12258,8 +12263,8 @@
   },
   "30138": {
     "QuestId": 30138,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Atop the Giant Tower",
+    "QuestDetail": "Gary lost his bag at the top of the giant tower, help him retrieve it.",
     "QuestType": 3,
     "QuestStep": 30138001,
     "AwardId": 31001020,
@@ -12303,7 +12308,7 @@
   },
   "186071": {
     "QuestId": 186071,
-    "QuestName": "",
+    "QuestName": "Defeat the monster and protect Fido",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186071001,
@@ -12361,7 +12366,7 @@
   },
   "186072": {
     "QuestId": 186072,
-    "QuestName": "",
+    "QuestName": "Defeat the monster and protect Fido",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186072001,
@@ -12419,7 +12424,7 @@
   },
   "186073": {
     "QuestId": 186073,
-    "QuestName": "",
+    "QuestName": "Defeat the Void Spawner, Grace",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186073001,
@@ -12477,8 +12482,8 @@
   },
   "30133": {
     "QuestId": 30133,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The courage and patience of wild fishing",
+    "QuestDetail": "\"Do you know what's most important when fishing in the wild?\"<br>Luya asked calmly with his eyes closed.<br>He held the fishing rod like a swordsman holding a sword that is his lifeline, without a trace of trembling in his hands...",
     "QuestType": 3,
     "QuestStep": 30133012,
     "AwardId": 31000980,
@@ -12520,8 +12525,8 @@
   },
   "30134": {
     "QuestId": 30134,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Treasure Map Blind Box",
+    "QuestDetail": "On the vast The Continent of Magna, treasures left by lost civilizations are buried...<br>At least, that's what the treasure map says.",
     "QuestType": 3,
     "QuestStep": 30134007,
     "AwardId": 31000990,
@@ -12565,7 +12570,7 @@
   },
   "186033": {
     "QuestId": 186033,
-    "QuestName": "",
+    "QuestName": "Lizardmen Blocking the Way",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186033001,
@@ -12616,7 +12621,7 @@
   },
   "186052": {
     "QuestId": 186052,
-    "QuestName": "",
+    "QuestName": "Defeat the mysterious monster",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186052001,
@@ -12671,7 +12676,7 @@
   },
   "186053": {
     "QuestId": 186053,
-    "QuestName": "",
+    "QuestName": "Exterminate the Goblin camp",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186053001,
@@ -12727,7 +12732,7 @@
   },
   "186055": {
     "QuestId": 186055,
-    "QuestName": "",
+    "QuestName": "Defeat the cunning thug",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186055001,
@@ -12783,7 +12788,7 @@
   },
   "30124": {
     "QuestId": 30124,
-    "QuestName": "",
+    "QuestName": "Mr. Cellophane's camping lamp",
     "QuestDetail": "",
     "QuestType": 53,
     "QuestStep": 30124001,
@@ -12812,7 +12817,7 @@
   },
   "186061": {
     "QuestId": 186061,
-    "QuestName": "",
+    "QuestName": "Defeat the attacking gang members",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186061001,
@@ -12870,7 +12875,7 @@
   },
   "186062": {
     "QuestId": 186062,
-    "QuestName": "",
+    "QuestName": "Battle with the Blazing Gang",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186062001,
@@ -12928,8 +12933,8 @@
   },
   "30149": {
     "QuestId": 30149,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Is love letting go?",
+    "QuestDetail": "The owner of The Double-Faced Coin has sent word through someone that an old acquaintance has a special request for you. Go to the agreed location on Entertainment District and check it out.",
     "QuestType": 3,
     "QuestStep": 30149001,
     "AwardId": 31001060,
@@ -12996,8 +13001,8 @@
   },
   "30150": {
     "QuestId": 30150,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Multiple chain debt problems",
+    "QuestDetail": "The heir of the \"Mermaid,\" young Meller, has asked you to help collect overdue debts from old customers who haven't come to pay.",
     "QuestType": 3,
     "QuestStep": 30150001,
     "AwardId": 31001070,
@@ -13056,8 +13061,8 @@
   },
   "10801": {
     "QuestId": 10801,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Every step is inevitable",
+    "QuestDetail": "The actual control of the mine has quietly changed hands, and the whole story must be investigated as soon as possible.",
     "QuestType": 1,
     "QuestStep": 10801001,
     "AwardId": 0,
@@ -13093,7 +13098,7 @@
   },
   "186056": {
     "QuestId": 186056,
-    "QuestName": "",
+    "QuestName": "Goblin Extermination",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186056001,
@@ -13154,7 +13159,7 @@
   },
   "185314": {
     "QuestId": 185314,
-    "QuestName": "",
+    "QuestName": "Unable to Migrate",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185314038,
@@ -13226,8 +13231,8 @@
   },
   "30201": {
     "QuestId": 30201,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Glimmer in the Forest",
+    "QuestDetail": "A frightened scholar was found at the entrance of the Flower Valley. After talking, it was learned that he was researching \"plants that emit fluorescence\" with his companions in the valley. He got lost while searching for samples alone and was surrounded by monsters, thus trapped here.",
     "QuestType": 3,
     "QuestStep": 30201001,
     "AwardId": 31001080,
@@ -13285,8 +13290,8 @@
   },
   "10802": {
     "QuestId": 10802,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Fully awake but to no avail",
+    "QuestDetail": "The Blackstone Legion is divided, and former loyalists are no longer trustworthy, while the truth is hidden in layers of fog.",
     "QuestType": 1,
     "QuestStep": 10802001,
     "AwardId": 0,
@@ -13324,8 +13329,8 @@
   },
   "10803": {
     "QuestId": 10803,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Those long-trekked fragments",
+    "QuestDetail": "The conspiracy finally reveals the tip of the iceberg, and in the power struggle, some still remain true to themselves. Go find those rebels.",
     "QuestType": 1,
     "QuestStep": 10803001,
     "AwardId": 0,
@@ -13364,8 +13369,8 @@
   },
   "10804": {
     "QuestId": 10804,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Layered with silence",
+    "QuestDetail": "The illegal mining of Ruby has long existed. What is hidden behind this shady smuggling, and what waves will be stirred by the Hruga's Horn brought to the plateau?",
     "QuestType": 1,
     "QuestStep": 10804002,
     "AwardId": 0,
@@ -13405,8 +13410,8 @@
   },
   "10805": {
     "QuestId": 10805,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Light drops into the deepest part of my eyes",
+    "QuestDetail": "While clarifying the source of the Ruby, it is equally crucial to prevent this dangerous material from flowing out of the mine.",
     "QuestType": 1,
     "QuestStep": 10805003,
     "AwardId": 0,
@@ -13446,8 +13451,8 @@
   },
   "10806": {
     "QuestId": 10806,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Walk along the wall of non-poetry",
+    "QuestDetail": "The rebel leader tainted with Hruga's aura complicates matters further, and the miners' situation becomes more dangerous. The narrower the path, the more carefully it must be traversed.",
     "QuestType": 1,
     "QuestStep": 10806001,
     "AwardId": 0,
@@ -13488,8 +13493,8 @@
   },
   "10807": {
     "QuestId": 10807,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Believe in silent promises",
+    "QuestDetail": "After finding the outflow channel of the Ruby, the final piece of this puzzle is finally completed. However, upon returning to the underground mining area, what awaits is an empty sorting area...",
     "QuestType": 1,
     "QuestStep": 10807002,
     "AwardId": 0,
@@ -13531,8 +13536,8 @@
   },
   "10808": {
     "QuestId": 10808,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Sleepwalkers and the Drifting Moon",
+    "QuestDetail": "In turbulent times, the differences between people are magnified, but fortunately, Grieg unites miners of different positions and identities. However, reaching a consensus is just the beginning of action, not the end.",
     "QuestType": 1,
     "QuestStep": 10808001,
     "AwardId": 0,
@@ -13576,8 +13581,8 @@
   },
   "10809": {
     "QuestId": 10809,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Black stirs a storm in the eyes",
+    "QuestDetail": "Taking the first step to confront the Blackstone Legion, but it was unsuccessful, so they had to return to find Grieg and ask if there was an alternative plan.",
     "QuestType": 1,
     "QuestStep": 10809001,
     "AwardId": 0,
@@ -13621,8 +13626,8 @@
   },
   "10810": {
     "QuestId": 10810,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Board your Flame Chariot",
+    "QuestDetail": "The epic of heroes should not be built on the sacrifice of the innocent. To protect the miners of the Sislesa Mine, it is necessary to return to Asterleeds and request more forces to intervene.",
     "QuestType": 1,
     "QuestStep": 10810002,
     "AwardId": 0,
@@ -13668,8 +13673,8 @@
   },
   "10811": {
     "QuestId": 10811,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Transparently passing through the years like glass",
+    "QuestDetail": "For various considerations, Lamond does not want Asterleeds to openly confront the The Duchy of Byrnhald. However, there is still a chance. Perhaps by changing the approach, the goal can still be achieved.",
     "QuestType": 1,
     "QuestStep": 10811010,
     "AwardId": 0,
@@ -13717,8 +13722,8 @@
   },
   "30203": {
     "QuestId": 30203,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Susan by the Sea (Part One)",
+    "QuestDetail": "An elderly person from Jennifer's family has gone missing. Fortunately, they shouldn't have gone far. Ask around the neighborhood and bring the elderly person back home.",
     "QuestType": 3,
     "QuestStep": 30203001,
     "AwardId": 31001100,
@@ -13756,7 +13761,7 @@
   },
   "30299": {
     "QuestId": 30299,
-    "QuestName": "",
+    "QuestName": "Susan by the Sea (Part One)",
     "QuestDetail": "",
     "QuestType": 53,
     "QuestStep": 30299001,
@@ -13791,7 +13796,7 @@
   },
   "709001": {
     "QuestId": 709001,
-    "QuestName": "",
+    "QuestName": "[Void Robot]",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 709001001,
@@ -13825,8 +13830,8 @@
   },
   "30204": {
     "QuestId": 30204,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Susan by the Sea (Part II)",
+    "QuestDetail": "After accepting Jennifer's commission, I inquired with everyone who might know Roy's whereabouts. Finally, I found a clue from Valeria: Roy had once gone on a mission with a forest expedition team.",
     "QuestType": 3,
     "QuestStep": 30204001,
     "AwardId": 31001110,
@@ -13867,7 +13872,7 @@
   },
   "186101": {
     "QuestId": 186101,
-    "QuestName": "",
+    "QuestName": "Defeat the monster",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186101001,
@@ -13919,7 +13924,7 @@
   },
   "708501": {
     "QuestId": 708501,
-    "QuestName": "",
+    "QuestName": "[Boars Run]",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 708501001,
@@ -13953,7 +13958,7 @@
   },
   "709501": {
     "QuestId": 709501,
-    "QuestName": "",
+    "QuestName": "[Spider Dodge]",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 709501001,
@@ -13987,8 +13992,8 @@
   },
   "30209": {
     "QuestId": 30209,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Reborn Delicacy",
+    "QuestDetail": "In the camp of Duskdye Woods , a hungry adventurer looks extremely tired...",
     "QuestType": 3,
     "QuestStep": 30209001,
     "AwardId": 31001140,
@@ -14035,8 +14040,8 @@
   },
   "30202": {
     "QuestId": 30202,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Resonance in the Forest",
+    "QuestDetail": "Another scholar has requested to investigate the strange buzzing sound in the valley. According to his research, the monsters in the valley might be fighting for territory because of this buzzing sound.",
     "QuestType": 3,
     "QuestStep": 30202001,
     "AwardId": 31001090,
@@ -14094,8 +14099,8 @@
   },
   "30208": {
     "QuestId": 30208,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Dog barking",
+    "QuestDetail": "While exploring the Everfall Forest, a torn diary page was discovered. The handwriting, still crisp and unweathered, revealed that someone had become lost in this place, desperately searching for a way home. Just then, the sharp barking of dogs echoed in the distance, hinting that something was unfolding nearby...",
     "QuestType": 3,
     "QuestStep": 30208001,
     "AwardId": 31001130,
@@ -14157,7 +14162,7 @@
   },
   "186102": {
     "QuestId": 186102,
-    "QuestName": "",
+    "QuestName": "Defeat the monster in front of you",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186102001,
@@ -14230,7 +14235,7 @@
   },
   "186103": {
     "QuestId": 186103,
-    "QuestName": "",
+    "QuestName": "Defeat the monster in front of you",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186103001,
@@ -14303,8 +14308,8 @@
   },
   "30210": {
     "QuestId": 30210,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Shadows of the Past",
+    "QuestDetail": "The archaeologist Hills from Byrnhaldt wanders around the Ruins of Andra City all day, as if searching for the time that has passed...",
     "QuestType": 3,
     "QuestStep": 30210002,
     "AwardId": 31001150,
@@ -14351,7 +14356,7 @@
   },
   "30298": {
     "QuestId": 30298,
-    "QuestName": "",
+    "QuestName": "Shadows of the Past",
     "QuestDetail": "",
     "QuestType": 53,
     "QuestStep": 30298001,
@@ -14400,8 +14405,8 @@
   },
   "185009": {
     "QuestId": 185009,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Secret Shadows in the Alley",
+    "QuestDetail": "Intercept Abeku in the back alley",
     "QuestType": 18,
     "QuestStep": 185009001,
     "AwardId": 0,
@@ -14443,8 +14448,8 @@
   },
   "30205": {
     "QuestId": 30205,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Susan by the Sea (Part III)",
+    "QuestDetail": "Finally learned from Bell about Roy's disappearance. Useful clues should be found within the exploration team's activity range at that time.",
     "QuestType": 3,
     "QuestStep": 30205006,
     "AwardId": 31001120,
@@ -14487,8 +14492,8 @@
   },
   "10510": {
     "QuestId": 10510,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Finale of the Nightmare",
+    "QuestDetail": "Everything will eventually settle. Head to Dark Mist Fortress and sever the chains of evil.",
     "QuestType": 1,
     "QuestStep": 10510006,
     "AwardId": 30001000,
@@ -14524,8 +14529,8 @@
   },
   "10511": {
     "QuestId": 10511,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Starlight Ephemera",
+    "QuestDetail": "The Void Mist has engulfed Dark Mist Fortress. In the desperate moment, Tina unleashed the power of the Core of Stellarium. The light of Engram saved everyone. But a heavy price was paid...",
     "QuestType": 1,
     "QuestStep": 10511001,
     "AwardId": 30001010,
@@ -14557,8 +14562,8 @@
   },
   "30211": {
     "QuestId": 30211,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Dragon's Temptation",
+    "QuestDetail": "\"Every beat of my pulse is proof of your existence.\"<br>The latest controversial work by a famous continental author!<br>A love waltz co-written by humans and dragons!",
     "QuestType": 3,
     "QuestStep": 30211003,
     "AwardId": 31000950,
@@ -14606,8 +14611,8 @@
   },
   "185510": {
     "QuestId": 185510,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Sudden Calamity",
+    "QuestDetail": "Help Jerrad and Asterleeds Defense Corps fend off the Dark Mist Legion's attack!",
     "QuestType": 18,
     "QuestStep": 185510002,
     "AwardId": 0,
@@ -14650,8 +14655,8 @@
   },
   "30212": {
     "QuestId": 30212,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Stimen Vaults",
+    "QuestDetail": "You received a mysterious card full of typos, inviting you to meet near the brewery in Port Town...",
     "QuestType": 61,
     "QuestStep": 30212019,
     "AwardId": 31001170,
@@ -14726,8 +14731,8 @@
   },
   "185515": {
     "QuestId": 185515,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Extinguished Flames",
+    "QuestDetail": "Go to the Pioneer Bureau to find Tatta, but an unexpected situation occurs on site...",
     "QuestType": 18,
     "QuestStep": 185515001,
     "AwardId": 0,
@@ -14771,8 +14776,8 @@
   },
   "185516": {
     "QuestId": 185516,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Unextinguished Hope",
+    "QuestDetail": "Together with Tina, find Tatta outside the chaotic Pioneer Bureau. He brings clues to the last Void Sigil.",
     "QuestType": 18,
     "QuestStep": 185516006,
     "AwardId": 0,
@@ -14818,8 +14823,8 @@
   },
   "185520": {
     "QuestId": 185520,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Echoes of the Other Shore",
+    "QuestDetail": "Discuss the next steps with your companions in the face of the threat from the last Void Sigil.",
     "QuestType": 18,
     "QuestStep": 185520001,
     "AwardId": 0,
@@ -14861,7 +14866,7 @@
   },
   "185033": {
     "QuestId": 185033,
-    "QuestName": "",
+    "QuestName": "Stimen Vaults",
     "QuestDetail": "",
     "QuestType": 81,
     "QuestStep": 185033001,
@@ -14942,8 +14947,8 @@
   },
   "185525": {
     "QuestId": 185525,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Journey of Light",
+    "QuestDetail": "Go to the final battleground with your companions before everything becomes irreversible.",
     "QuestType": 18,
     "QuestStep": 185525002,
     "AwardId": 0,
@@ -14986,8 +14991,8 @@
   },
   "185526": {
     "QuestId": 185526,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Embrace the Void",
+    "QuestDetail": "The moment of destiny is near. Destroy the last Void Sigil and stop Denvel's conspiracy.",
     "QuestType": 18,
     "QuestStep": 185526001,
     "AwardId": 0,
@@ -15036,7 +15041,7 @@
   },
   "185409": {
     "QuestId": 185409,
-    "QuestName": "",
+    "QuestName": "Belated Devotion",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185409006,
@@ -15085,8 +15090,8 @@
   },
   "185530": {
     "QuestId": 185530,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Embrace the Void",
+    "QuestDetail": "The moment of destiny is near. Destroy the last Void Sigil and stop Denvel's conspiracy.",
     "QuestType": 18,
     "QuestStep": 185530002,
     "AwardId": 0,
@@ -15138,7 +15143,7 @@
   },
   "185410": {
     "QuestId": 185410,
-    "QuestName": "",
+    "QuestName": "Brand New Light",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185410014,
@@ -15187,8 +15192,8 @@
   },
   "185505": {
     "QuestId": 185505,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Heart That Never Left",
+    "QuestDetail": "Talk to the girl who appeared in the village and try to use the Engram Collector to suppress the spread of the Void Sigil in Minsterhorn.",
     "QuestType": 18,
     "QuestStep": 185505007,
     "AwardId": 0,
@@ -15239,8 +15244,8 @@
   },
   "10513": {
     "QuestId": 10513,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Waxing and Waning",
+    "QuestDetail": "Asterleeds' adventure draws to a close, and hidden memories will guide you into the next journey.",
     "QuestType": 1,
     "QuestStep": 10513001,
     "AwardId": 30001020,
@@ -15275,8 +15280,8 @@
   },
   "10701": {
     "QuestId": 10701,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Reasonable Choice",
+    "QuestDetail": "Darya has returned to the mine, and the next issue is how to obtain a large number of Star Soul Bottles.",
     "QuestType": 1,
     "QuestStep": 10701001,
     "AwardId": 0,
@@ -15303,8 +15308,8 @@
   },
   "10702": {
     "QuestId": 10702,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Song of Truth and Pilgrimage",
+    "QuestDetail": "The pilgrims are holding a lively gathering, maybe you can find clues on how to obtain a large number of Star Soul Bottles here.",
     "QuestType": 1,
     "QuestStep": 10702002,
     "AwardId": 0,
@@ -15335,8 +15340,8 @@
   },
   "10703": {
     "QuestId": 10703,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Seeping into the Earth Like Gentle Rain",
+    "QuestDetail": "Go with Boyce to find 1st Class Priest Lothar to discuss changes in the mining area and obtain support for Star Soul Bottles.",
     "QuestType": 1,
     "QuestStep": 10703001,
     "AwardId": 0,
@@ -15368,7 +15373,7 @@
   },
   "185701": {
     "QuestId": 185701,
-    "QuestName": "",
+    "QuestName": "Infiltrate the Caravan",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185701001,
@@ -15410,7 +15415,7 @@
   },
   "10704": {
     "QuestId": 10704,
-    "QuestName": "",
+    "QuestName": "Exploring the Hidden Path",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10704001,
@@ -15443,7 +15448,7 @@
   },
   "10705": {
     "QuestId": 10705,
-    "QuestName": "",
+    "QuestName": "Words Unspoken and Endless Chatter",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10705002,
@@ -15482,7 +15487,7 @@
   },
   "10706": {
     "QuestId": 10706,
-    "QuestName": "",
+    "QuestName": "Drinking the Truth and Lies of the Tide",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10706001,
@@ -15522,7 +15527,7 @@
   },
   "185703": {
     "QuestId": 185703,
-    "QuestName": "",
+    "QuestName": "Investigating the Black Market Merchant",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185703010,
@@ -15566,7 +15571,7 @@
   },
   "10707": {
     "QuestId": 10707,
-    "QuestName": "",
+    "QuestName": "Beneath the Mountain Mustard, a Heart of Stone",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10707001,
@@ -15605,7 +15610,7 @@
   },
   "10708": {
     "QuestId": 10708,
-    "QuestName": "",
+    "QuestName": "Dreams of Returning Home on the Plateau",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10708035,
@@ -15646,7 +15651,7 @@
   },
   "10709": {
     "QuestId": 10709,
-    "QuestName": "",
+    "QuestName": "Dreams of Returning Home on the Plateau",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10709004,
@@ -15690,7 +15695,7 @@
   },
   "10710": {
     "QuestId": 10710,
-    "QuestName": "",
+    "QuestName": "The Way of Cooperation",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10710017,
@@ -15727,7 +15732,7 @@
   },
   "10711": {
     "QuestId": 10711,
-    "QuestName": "",
+    "QuestName": "The Crimson Mistake",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10711007,
@@ -15764,7 +15769,7 @@
   },
   "185704": {
     "QuestId": 185704,
-    "QuestName": "",
+    "QuestName": "Rescuing Trapped Miners",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185704001,
@@ -15808,8 +15813,8 @@
   },
   "30300": {
     "QuestId": 30300,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Secret Whispered in the Wind",
+    "QuestDetail": "Assist the leader of the scholar group, Smith, in surveying the relics left by past civilizations in the ruins. Restore and reconstruct the deeply buried history in the Windhowl Canyon.",
     "QuestType": 3,
     "QuestStep": 30300001,
     "AwardId": 31001310,
@@ -15885,7 +15890,7 @@
   },
   "185705": {
     "QuestId": 185705,
-    "QuestName": "",
+    "QuestName": "Help the Merchant Move Goods",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185705002,
@@ -15929,8 +15934,8 @@
   },
   "30311": {
     "QuestId": 30311,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Archivist",
+    "QuestDetail": "Documents in the scholar camp's archives often go missing unexpectedly. Assist the manager, James, in investigating.",
     "QuestType": 3,
     "QuestStep": 30311002,
     "AwardId": 31001350,
@@ -15957,8 +15962,8 @@
   },
   "30301": {
     "QuestId": 30301,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Seeking the Invisible Treasure",
+    "QuestDetail": "Assist Destinee in searching for the rampaging machines and reclaiming the Miracle Heritage, Tear of Mordia",
     "QuestType": 3,
     "QuestStep": 30301001,
     "AwardId": 31001370,
@@ -16040,7 +16045,7 @@
   },
   "186104": {
     "QuestId": 186104,
-    "QuestName": "",
+    "QuestName": "Defeat the Attacking Machines",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186104001,
@@ -16127,8 +16132,8 @@
   },
   "20020": {
     "QuestId": 20020,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Borrow the name from Sea breeze",
+    "QuestDetail": "On the beach, a pair of twin sisters are having an incredible conversation, go check it out",
     "QuestType": 2,
     "QuestStep": 20020033,
     "AwardId": 32000040,
@@ -16164,8 +16169,8 @@
   },
   "30312": {
     "QuestId": 30312,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Make Windward Potions",
+    "QuestDetail": "The Smelting Grayson in the camp seems to be pestered by his apprentice, what is going on...",
     "QuestType": 3,
     "QuestStep": 30312001,
     "AwardId": 31001330,
@@ -16200,7 +16205,7 @@
   },
   "186105": {
     "QuestId": 186105,
-    "QuestName": "",
+    "QuestName": "Eliminate surrounding threats",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186105001,
@@ -16293,7 +16298,7 @@
   },
   "186106": {
     "QuestId": 186106,
-    "QuestName": "",
+    "QuestName": "Defeat the incoming Colossus",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186106002,
@@ -16386,8 +16391,8 @@
   },
   "30302": {
     "QuestId": 30302,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The eternal sound of chanting among the clouds",
+    "QuestDetail": "Collect information hidden in the ruins and uncover the truth of the Modia Egg.",
     "QuestType": 3,
     "QuestStep": 30302001,
     "AwardId": 31001320,
@@ -16472,7 +16477,7 @@
   },
   "186107": {
     "QuestId": 186107,
-    "QuestName": "",
+    "QuestName": "Clear the surrounding monsters",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186107001,
@@ -16568,7 +16573,7 @@
   },
   "186108": {
     "QuestId": 186108,
-    "QuestName": "",
+    "QuestName": "Help the scholar",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186108003,
@@ -16664,7 +16669,7 @@
   },
   "185541": {
     "QuestId": 185541,
-    "QuestName": "",
+    "QuestName": "Then and Now",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185541018,
@@ -16710,7 +16715,7 @@
   },
   "186109": {
     "QuestId": 186109,
-    "QuestName": "",
+    "QuestName": "Defeat the incoming monsters",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 0,
@@ -16806,7 +16811,7 @@
   },
   "186110": {
     "QuestId": 186110,
-    "QuestName": "",
+    "QuestName": "Defeat Misty",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186110001,
@@ -16902,8 +16907,8 @@
   },
   "30313": {
     "QuestId": 30313,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Set Off! Scholar Group's Canyon Ruins Exploration!",
+    "QuestDetail": "The scholar group in Asterleeds is recruiting reliable adventurers to conduct exploration activities in Windhowl Canyon. Get detailed information from the leader, Smith.",
     "QuestType": 3,
     "QuestStep": 30313001,
     "AwardId": 31001300,
@@ -16944,8 +16949,8 @@
   },
   "30314": {
     "QuestId": 30314,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The mystery of ancient texts",
+    "QuestDetail": "The scholar group's philologist Charlie is standing by a cliff, seemingly collecting some strange ancient texts...",
     "QuestType": 3,
     "QuestStep": 30314001,
     "AwardId": 31001340,
@@ -16983,7 +16988,7 @@
   },
   "186112": {
     "QuestId": 186112,
-    "QuestName": "",
+    "QuestName": "Clear the surrounding monsters",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186112001,
@@ -17032,8 +17037,8 @@
   },
   "30315": {
     "QuestId": 30315,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The end of the demi-humans",
+    "QuestDetail": "The security captain of the Merchant Camp, Barry, seems very troubled. It is said that the camp has been targeted...",
     "QuestType": 3,
     "QuestStep": 30315001,
     "AwardId": 31001360,
@@ -17083,7 +17088,7 @@
   },
   "186113": {
     "QuestId": 186113,
-    "QuestName": "",
+    "QuestName": "Eliminate the nearby demi-human threat",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186113002,
@@ -17135,7 +17140,7 @@
   },
   "186114": {
     "QuestId": 186114,
-    "QuestName": "",
+    "QuestName": "Reduce the demi-humans entrenched here",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186114002,
@@ -17187,7 +17192,7 @@
   },
   "186115": {
     "QuestId": 186115,
-    "QuestName": "",
+    "QuestName": "Exterminate the demi-humans here",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186115002,
@@ -17239,7 +17244,7 @@
   },
   "710101": {
     "QuestId": 710101,
-    "QuestName": "",
+    "QuestName": "[Aerial Patrol]",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 710101001,
@@ -17273,8 +17278,8 @@
   },
   "30401": {
     "QuestId": 30401,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The secret underground world",
+    "QuestDetail": "You received an unsigned letter inviting you to visit the shadow side of Asterleeds, the \"Underground District.\"",
     "QuestType": 3,
     "QuestStep": 30401028,
     "AwardId": 31001380,
@@ -17308,7 +17313,7 @@
   },
   "710201": {
     "QuestId": 710201,
-    "QuestName": "",
+    "QuestName": "[Aerial Patrol]",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 710201001,
@@ -17342,8 +17347,8 @@
   },
   "30206": {
     "QuestId": 30206,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Susan by the Sea (Part Four)",
+    "QuestDetail": "Roy's disappearance seems to be related to a person named Ryan. Investigate around him.",
     "QuestType": 3,
     "QuestStep": 30206001,
     "AwardId": 31001280,
@@ -17388,7 +17393,7 @@
   },
   "710301": {
     "QuestId": 710301,
-    "QuestName": "",
+    "QuestName": "[Aerial Patrol]",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 710301001,
@@ -17422,7 +17427,7 @@
   },
   "186401": {
     "QuestId": 186401,
-    "QuestName": "",
+    "QuestName": "Teach the lackeys a lesson",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186401001,
@@ -17467,7 +17472,7 @@
   },
   "707101": {
     "QuestId": 707101,
-    "QuestName": "",
+    "QuestName": "[Blocking Light Bridge]",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 707101002,
@@ -17501,8 +17506,8 @@
   },
   "30207": {
     "QuestId": 30207,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Susan by the Sea (Part Five)",
+    "QuestDetail": "Everything is ready, it's time to bring things to a close. Now, all that's left is to bring Swindler to justice!",
     "QuestType": 3,
     "QuestStep": 30207001,
     "AwardId": 31001290,
@@ -17552,7 +17557,7 @@
   },
   "707201": {
     "QuestId": 707201,
-    "QuestName": "",
+    "QuestName": "[Obstacle Light Bridge]",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 707201001,
@@ -17586,7 +17591,7 @@
   },
   "707301": {
     "QuestId": 707301,
-    "QuestName": "",
+    "QuestName": "[Mechanism Light Bridge]",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 707301001,
@@ -17620,7 +17625,7 @@
   },
   "186116": {
     "QuestId": 186116,
-    "QuestName": "",
+    "QuestName": "Defeat Ryan",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186116001,
@@ -17681,8 +17686,8 @@
   },
   "170007": {
     "QuestId": 170007,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Choose a Life Skill",
+    "QuestDetail": "Regnus is rich in natural resources, including plants, fungi, animals, minerals, and more. Some people, through experience and research, find and collect these natural resources in a reasonable manner, while others process the collected resources into various items useful for life and combat. This is what is known as a Life Skill.",
     "QuestType": 50,
     "QuestStep": 170007001,
     "AwardId": 31001180,
@@ -17718,7 +17723,7 @@
   },
   "186117": {
     "QuestId": 186117,
-    "QuestName": "",
+    "QuestName": "Defeat Swindler's minions",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186117002,
@@ -17779,8 +17784,8 @@
   },
   "30402": {
     "QuestId": 30402,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Embark on the path to promotion?",
+    "QuestDetail": "Follow the guidance of the Hobos' leader and head to the connecting passage between Zone 1 and Zone 2 to find the contact person of the Floating Party.",
     "QuestType": 3,
     "QuestStep": 30402001,
     "AwardId": 31001390,
@@ -17820,7 +17825,7 @@
   },
   "186402": {
     "QuestId": 186402,
-    "QuestName": "",
+    "QuestName": "Repel the fierce debtor",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186402001,
@@ -17871,7 +17876,7 @@
   },
   "186403": {
     "QuestId": 186403,
-    "QuestName": "",
+    "QuestName": "Repel the suffering debtor",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186403001,
@@ -17922,7 +17927,7 @@
   },
   "186404": {
     "QuestId": 186404,
-    "QuestName": "",
+    "QuestName": "Negotiate with the leader of the Floating Party",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186404002,
@@ -17976,7 +17981,7 @@
   },
   "186405": {
     "QuestId": 186405,
-    "QuestName": "",
+    "QuestName": "Act with the leader of the Floating Party",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186405001,
@@ -18030,8 +18035,8 @@
   },
   "170008": {
     "QuestId": 170008,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Botany",
+    "QuestDetail": "Sid is a renowned phytologist in Regnus. Almost every adventurer owns a copy of his book \"The Magical Plants of Regnus.\" Whether it's for stopping external bleeding or pain relief and detoxification, if you've read his book, you can always find the corresponding plants in the wild. Go ask him about Botany.",
     "QuestType": 50,
     "QuestStep": 170008001,
     "AwardId": 31001190,
@@ -18063,7 +18068,7 @@
   },
   "186406": {
     "QuestId": 186406,
-    "QuestName": "",
+    "QuestName": "Defeat the Scorpion",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186406001,
@@ -18170,8 +18175,8 @@
   },
   "170009": {
     "QuestId": 170009,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Mineralogy",
+    "QuestDetail": "The \"Golden Spirit\" prospecting team is the first prospecting team officially recognized by Asterleeds, mainly undertaking prospecting commissions from Asterleeds officials and the Pioneer Bureau. As the first leader of the prospecting team, Aile has retired from the front line and now stays in the city to teach young people who are just getting into prospecting. Be careful, he is very strict.",
     "QuestType": 50,
     "QuestStep": 170009001,
     "AwardId": 31001200,
@@ -18204,7 +18209,7 @@
   },
   "186407": {
     "QuestId": 186407,
-    "QuestName": "",
+    "QuestName": "Defeat Dumb Hammer",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186407001,
@@ -18311,8 +18316,8 @@
   },
   "170010": {
     "QuestId": 170010,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Gemology",
+    "QuestDetail": "With the emergence of Gemology and Gemcrafting, members of the \"Golden Spirit\" Prospecting Team led by Safia concluded that clinging to traditional methods would result in stagnation. They departed to form the \"Brilliant Crystals\" Research Team. Safiya is likely the most knowledgeable person about crystals in all of Asterleeds. Speak with her to learn about Gemology.",
     "QuestType": 50,
     "QuestStep": 170010001,
     "AwardId": 31001210,
@@ -18346,7 +18351,7 @@
   },
   "186408": {
     "QuestId": 186408,
-    "QuestName": "",
+    "QuestName": "Defeat the attacking guards",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186408001,
@@ -18453,8 +18458,8 @@
   },
   "170011": {
     "QuestId": 170011,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Learn about Gemcrafting",
+    "QuestDetail": "The Artisan Guild claims that with the ancient relic \"Orb Refining Device,\" they can create many items beneficial for adventuring. Go to the Artisan Guild to learn more.",
     "QuestType": 50,
     "QuestStep": 170011001,
     "AwardId": 31001220,
@@ -18489,7 +18494,7 @@
   },
   "186409": {
     "QuestId": 186409,
-    "QuestName": "",
+    "QuestName": "Defeat Volkmann",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186409001,
@@ -18596,8 +18601,8 @@
   },
   "170012": {
     "QuestId": 170012,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Smelting",
+    "QuestDetail": "The Artisan Guild intends to teach adventurers a technique for forging using relics. By processing metal ores, they can create materials that greatly aid in adventures. Go to the second floor of the Artisan Guild and ask relic expert Gary about it.",
     "QuestType": 50,
     "QuestStep": 170012001,
     "AwardId": 31001230,
@@ -18634,8 +18639,8 @@
   },
   "30320": {
     "QuestId": 30320,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Belligerent elements",
+    "QuestDetail": "Head to Zone 3, complete the quest assigned by the Floating Party boss, and find the councilor.",
     "QuestType": 3,
     "QuestStep": 30320001,
     "AwardId": 31001400,
@@ -18731,8 +18736,8 @@
   },
   "170014": {
     "QuestId": 170014,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Alchemy",
+    "QuestDetail": "The Imagine Research Institute has developed a new technique called \"Alchemy.\" It is said that it can not only create various powerful potions but also many interesting tools. Go to the Imagine Research Institute to learn more.",
     "QuestType": 50,
     "QuestStep": 170014001,
     "AwardId": 31001250,
@@ -18770,7 +18775,7 @@
   },
   "186410": {
     "QuestId": 186410,
-    "QuestName": "",
+    "QuestName": "Teach a lesson to the Robber Gang members",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186410001,
@@ -18877,8 +18882,8 @@
   },
   "30404": {
     "QuestId": 30404,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Dawn emerging from the core of the earth",
+    "QuestDetail": "Learn the truth from Wally and make a choice...",
     "QuestType": 3,
     "QuestStep": 30404001,
     "AwardId": 31001410,
@@ -18925,7 +18930,7 @@
   },
   "186411": {
     "QuestId": 186411,
-    "QuestName": "",
+    "QuestName": "Final Negotiation",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186411001,
@@ -18987,7 +18992,7 @@
   },
   "186412": {
     "QuestId": 186412,
-    "QuestName": "",
+    "QuestName": "Defeat the combination of Scorpion and Dumb Hammer",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186412001,
@@ -19049,8 +19054,8 @@
   },
   "30316": {
     "QuestId": 30316,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The true and false ship spirit",
+    "QuestDetail": "Is there really a ship spirit on the Andra?",
     "QuestType": 3,
     "QuestStep": 30316001,
     "AwardId": 31001450,
@@ -19094,7 +19099,7 @@
   },
   "185535": {
     "QuestId": 185535,
-    "QuestName": "",
+    "QuestName": "The Heart That Never Left",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185535025,
@@ -19146,8 +19151,8 @@
   },
   "30319": {
     "QuestId": 30319,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Abyssal Creature Research",
+    "QuestDetail": "At the entrance of the Skimmer's Lair, a young man dressed as a scholar shivers as he looks at the area ahead",
     "QuestType": 3,
     "QuestStep": 30319001,
     "AwardId": 31001420,
@@ -19250,7 +19255,7 @@
   },
   "186415": {
     "QuestId": 186415,
-    "QuestName": "",
+    "QuestName": "Retrieve items from monsters",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186415001,
@@ -19359,8 +19364,8 @@
   },
   "30501": {
     "QuestId": 30501,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Lost Inventory",
+    "QuestDetail": "Traveler Uncle Zack has posted a commission, seemingly related to an underwater cave...",
     "QuestType": 3,
     "QuestStep": 30501001,
     "AwardId": 31001430,
@@ -19392,8 +19397,8 @@
   },
   "30502": {
     "QuestId": 30502,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "To the city where the sea breeze blows",
+    "QuestDetail": "In the depths of the underwater cave, a strange girl is waiting, seemingly in need of help.",
     "QuestType": 3,
     "QuestStep": 30502001,
     "AwardId": 31001440,
@@ -19421,8 +19426,8 @@
   },
   "30505": {
     "QuestId": 30505,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Thousand Flowers Story - Cobalt Sea Lily",
+    "QuestDetail": "With the discovery of the underwater cave, adventurers, scholars, merchants, fishermen, and others from Asterleeds flocked in, fearing they would miss the opportunity to change their lives if they were a step too late.<br>An area never before revealed to the world promises great rewards but also comes with great risks.<br>Botanist Sid feels somewhat troubled by this...",
     "QuestType": 3,
     "QuestStep": 30505004,
     "AwardId": 31001460,
@@ -19460,7 +19465,7 @@
   },
   "186501": {
     "QuestId": 186501,
-    "QuestName": "",
+    "QuestName": "Defeat the monster",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186501001,
@@ -19500,7 +19505,7 @@
   },
   "185101": {
     "QuestId": 185101,
-    "QuestName": "",
+    "QuestName": "Reunited Memories",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185101002,
@@ -19545,8 +19550,8 @@
   },
   "10012": {
     "QuestId": 10012,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Sea breeze, fireworks, and you",
+    "QuestDetail": "At dusk, you head to the beach for an appointment and join Airona for the fireworks festival. What kind of memories will you create on this night woven with stars and fireworks?",
     "QuestType": 1,
     "QuestStep": 10012012,
     "AwardId": 30000880,
@@ -19626,7 +19631,7 @@
   },
   "185110": {
     "QuestId": 185110,
-    "QuestName": "",
+    "QuestName": "Starry Night, Fireworks Parade",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185110008,
@@ -19673,8 +19678,8 @@
   },
   "30410": {
     "QuestId": 30410,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Nutritional Drink Trap",
+    "QuestDetail": "It seems that someone in the underground district needs to make a strengthening potion but is struggling to gather the materials. Go and check it out.",
     "QuestType": 3,
     "QuestStep": 30410001,
     "AwardId": 31001580,
@@ -19720,8 +19725,8 @@
   },
   "30408": {
     "QuestId": 30408,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Sewer Energy Network",
+    "QuestDetail": "Erwin, the leader of the Artisan Guild energy team, is troubled and hopes someone can go to the sewers to see what is wrong with Asterleeds' energy network.",
     "QuestType": 3,
     "QuestStep": 30408001,
     "AwardId": 31001560,
@@ -19779,8 +19784,8 @@
   },
   "30411": {
     "QuestId": 30411,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Paradise Circus: The Riddler Appears",
+    "QuestDetail": "The eerie atmosphere of the sewers has attracted many curious individuals, including the Riddler... It is said that solving the Riddler's twisted riddles will yield generous rewards. Is it true?",
     "QuestType": 3,
     "QuestStep": 30411002,
     "AwardId": 31001590,
@@ -19832,8 +19837,8 @@
   },
   "170001": {
     "QuestId": 170001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Choice of Class Paths",
+    "QuestDetail": "There is a dividing line between adventurers of the same Class, and that is the choice of <style=\"emph-gn\">Class paths</style>. Go ask Airona for her advice on this!",
     "QuestType": 80,
     "QuestStep": 170001002,
     "AwardId": 31001260,
@@ -19876,8 +19881,8 @@
   },
   "30409": {
     "QuestId": 30409,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Food Core Problem",
+    "QuestDetail": "Food sources in the underground world have always been a major issue. A gang member, unable to bear the hunger, came up with the idea of raising Boarriers. However, he seems to have encountered some minor troubles...",
     "QuestType": 3,
     "QuestStep": 30409001,
     "AwardId": 31001570,
@@ -19937,8 +19942,8 @@
   },
   "31062": {
     "QuestId": 31062,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Boss Hunt",
+    "QuestDetail": "They possess far greater Stamina and a myriad of attack methods compared to adventurers. Each one is the king of their own tribe, and they are called <style=\"emph-gn\">bosses</style> by adventurers.",
     "QuestType": 61,
     "QuestStep": 31062001,
     "AwardId": 31001270,
@@ -19968,8 +19973,8 @@
   },
   "20014": {
     "QuestId": 20014,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Eliminate 50 storm Goblins in Windhowl Canyon.",
     "QuestType": 59,
     "QuestStep": 20014003,
     "AwardId": 31001470,
@@ -20006,8 +20011,8 @@
   },
   "20015": {
     "QuestId": 20015,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Defeat the Storm Goblin Warriors in Windhowl Canyon.",
     "QuestType": 59,
     "QuestStep": 20015001,
     "AwardId": 31001480,
@@ -20034,8 +20039,8 @@
   },
   "20016": {
     "QuestId": 20016,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Eliminate 50 Shadow Scout and Radical Shadow Gunners on the outskirts of Ruins of Andra City.",
     "QuestType": 59,
     "QuestStep": 20016003,
     "AwardId": 31001490,
@@ -20072,8 +20077,8 @@
   },
   "20017": {
     "QuestId": 20017,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Defeat the Shadow Captain on the outskirts of Ruins of Andra City (\"It's almost over, I swear.\" - Airona)",
     "QuestType": 59,
     "QuestStep": 20017001,
     "AwardId": 31001500,
@@ -20100,8 +20105,8 @@
   },
   "20018": {
     "QuestId": 20018,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Eliminate 50 Radical Shadow Wardens and Shadow Blade inside Ruins of Andra City to face the final test.",
     "QuestType": 59,
     "QuestStep": 20018003,
     "AwardId": 31001510,
@@ -20138,8 +20143,8 @@
   },
   "20019": {
     "QuestId": 20019,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Talent Training",
+    "QuestDetail": "Defeat the Shadow Commander inside Ruins of Andra City.<br>The end of training is the beginning of a new journey.",
     "QuestType": 59,
     "QuestStep": 20019001,
     "AwardId": 31001520,
@@ -20166,7 +20171,7 @@
   },
   "185040": {
     "QuestId": 185040,
-    "QuestName": "",
+    "QuestName": "Not a Friendly Greeting",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185040001,
@@ -20220,7 +20225,7 @@
   },
   "185019": {
     "QuestId": 185019,
-    "QuestName": "",
+    "QuestName": "Emergency! Festival Crisis",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185019001,
@@ -20272,8 +20277,8 @@
   },
   "30506": {
     "QuestId": 30506,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Lamp Genie Agent",
+    "QuestDetail": "It is said that the Lamp Genie visits the Statue of the Hero every day, lighting the lamps beside the sculptures to guide the souls of heroes.",
     "QuestType": 3,
     "QuestStep": 30506001,
     "AwardId": 31001600,
@@ -20329,8 +20334,8 @@
   },
   "30151": {
     "QuestId": 30151,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Pale Azure Lake Ecological Monitoring",
+    "QuestDetail": "Pale Azure Lake is located in the northern part of Asteria Plains, near the Kanamia Forest. It is famous for its light blue water and abundant fish. After completing the project \"Ecological Monitoring and Water Quality Survey of the Landing Battle Site,\" scholar Kaibo shifted his research focus to the ecological monitoring of Pale Azure Lake...",
     "QuestType": 3,
     "QuestStep": 30151003,
     "AwardId": 31001620,
@@ -20411,8 +20416,8 @@
   },
   "10300": {
     "QuestId": 10300,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Story of Promise",
+    "QuestDetail": "Returning to Asterleeds, you reunite with old friends and make a new promise.",
     "QuestType": 1,
     "QuestStep": 10300017,
     "AwardId": 30000640,
@@ -20466,7 +20471,7 @@
   },
   "185041": {
     "QuestId": 185041,
-    "QuestName": "",
+    "QuestName": "Sail! Wave Carnival",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185041001,
@@ -20522,8 +20527,8 @@
   },
   "30507": {
     "QuestId": 30507,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Regular Visits",
+    "QuestDetail": "Unexpectedly rescued a soldier in distress at the edge of the Statue of the Hero cliff. His purpose for being here is...",
     "QuestType": 3,
     "QuestStep": 30507001,
     "AwardId": 31001610,
@@ -20555,7 +20560,7 @@
   },
   "186502": {
     "QuestId": 186502,
-    "QuestName": "",
+    "QuestName": "Repel Goblins",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186502001,
@@ -20593,8 +20598,8 @@
   },
   "10402": {
     "QuestId": 10402,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Twilight People",
+    "QuestDetail": "Following Rorola's lead, you arrive at the Wander Site of the Kanamian. The final key is hidden somewhere within the Wander Site.",
     "QuestType": 1,
     "QuestStep": 10402001,
     "AwardId": 30000900,
@@ -20702,7 +20707,7 @@
   },
   "185211": {
     "QuestId": 185211,
-    "QuestName": "",
+    "QuestName": "Just like companions",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185211002,
@@ -20783,7 +20788,7 @@
   },
   "185220": {
     "QuestId": 185220,
-    "QuestName": "",
+    "QuestName": "Party on the waves",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185220001,
@@ -20849,7 +20854,7 @@
   },
   "185111": {
     "QuestId": 185111,
-    "QuestName": "",
+    "QuestName": "Fervor! Thunder Demon!",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185111003,
@@ -20901,8 +20906,8 @@
   },
   "30508": {
     "QuestId": 30508,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Stolen Melody",
+    "QuestDetail": "Behind a tree near the Ancient City of Vill is hiding a young man, secretly watching the goblins in the distance.",
     "QuestType": 3,
     "QuestStep": 30508001,
     "AwardId": 31001690,
@@ -20931,7 +20936,7 @@
   },
   "186503": {
     "QuestId": 186503,
-    "QuestName": "",
+    "QuestName": "Search for the Stolen Instrument",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186503001,
@@ -20971,8 +20976,8 @@
   },
   "30500": {
     "QuestId": 30500,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Bubbles of Lies",
+    "QuestDetail": "A noisy group has arrived at the Pioneers' Guild. It seems there's a tricky problem waiting to be solved... What could it be?",
     "QuestType": 3,
     "QuestStep": 30500002,
     "AwardId": 31001630,
@@ -21020,8 +21025,8 @@
   },
   "30511": {
     "QuestId": 30511,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "To the Sea! Experimental Cuisine Club!",
+    "QuestDetail": "The opening of the Skimmer's Lair has attracted many groups to explore, including the Experimental Cuisine Club. But it seems they've run into some serious trouble...",
     "QuestType": 3,
     "QuestStep": 30511001,
     "AwardId": 31001640,
@@ -21064,7 +21069,7 @@
   },
   "802001": {
     "QuestId": 802001,
-    "QuestName": "",
+    "QuestName": "Demi-human Q&A",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 802001001,
@@ -21098,7 +21103,7 @@
   },
   "800201": {
     "QuestId": 800201,
-    "QuestName": "",
+    "QuestName": "Andra Defense Battle",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 800201001,
@@ -21132,7 +21137,7 @@
   },
   "186511": {
     "QuestId": 186511,
-    "QuestName": "",
+    "QuestName": "Defeat Wilbert",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186511001,
@@ -21186,7 +21191,7 @@
   },
   "802101": {
     "QuestId": 802101,
-    "QuestName": "",
+    "QuestName": "Demi-human Q&A",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 802101001,
@@ -21220,8 +21225,8 @@
   },
   "170015": {
     "QuestId": 170015,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Reforge",
+    "QuestDetail": "Talk to Maxim from the Artisan Guild to learn about Reforge.",
     "QuestType": 64,
     "QuestStep": 170015002,
     "AwardId": 31001530,
@@ -21265,8 +21270,8 @@
   },
   "30517": {
     "QuestId": 30517,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Stardust Coral",
+    "QuestDetail": "A young girl exploring the Skimmer's Lair claims she's in a bit of trouble and needs an adventurer. What's going on exactly?",
     "QuestType": 3,
     "QuestStep": 30517001,
     "AwardId": 31001650,
@@ -21319,8 +21324,8 @@
   },
   "170016": {
     "QuestId": 170016,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Gear Refinement",
+    "QuestDetail": "Talk to Maxim from the Artisan Guild to learn about Gear Refinement.",
     "QuestType": 64,
     "QuestStep": 170016001,
     "AwardId": 31001540,
@@ -21364,8 +21369,8 @@
   },
   "30509": {
     "QuestId": 30509,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Undersea Tourism Plan",
+    "QuestDetail": "Members of the Black Cat Tour Group have also arrived at the Skimmer's Lair to expand their tourism routes, but it looks like they've run into serious trouble...",
     "QuestType": 3,
     "QuestStep": 30509001,
     "AwardId": 31001670,
@@ -21420,8 +21425,8 @@
   },
   "30516": {
     "QuestId": 30516,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Anemone Painkiller",
+    "QuestDetail": "A merchant has discovered a new use for anemones: making painkillers. But the workers collecting the anemones seem to be slowing down. Are they slacking off, or is there something else going on?",
     "QuestType": 3,
     "QuestStep": 30516001,
     "AwardId": 31001660,
@@ -21455,8 +21460,8 @@
   },
   "170017": {
     "QuestId": 170017,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Embed",
+    "QuestDetail": "Talk to Maxim from the Artisan Guild to learn about Embed.",
     "QuestType": 64,
     "QuestStep": 170017001,
     "AwardId": 31001550,
@@ -21500,7 +21505,7 @@
   },
   "186504": {
     "QuestId": 186504,
-    "QuestName": "",
+    "QuestName": "Overcome the phantom and return to reality",
     "QuestDetail": "",
     "QuestType": 20,
     "QuestStep": 186504001,
@@ -21545,8 +21550,8 @@
   },
   "30521": {
     "QuestId": 30521,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Salt and Scabs",
+    "QuestDetail": "I received a strange letter, inviting me to meet somewhere in the Skimmer's Lair... Should I go check it out?",
     "QuestType": 3,
     "QuestStep": 30521001,
     "AwardId": 31001680,
@@ -21608,7 +21613,7 @@
   },
   "186513": {
     "QuestId": 186513,
-    "QuestName": "",
+    "QuestName": "Defeat the pirates",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186513001,
@@ -21676,7 +21681,7 @@
   },
   "186512": {
     "QuestId": 186512,
-    "QuestName": "",
+    "QuestName": "Defeat the pirates",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186512001,
@@ -21768,7 +21773,7 @@
   },
   "185403": {
     "QuestId": 185403,
-    "QuestName": "",
+    "QuestName": "Trial! The Kanamia Brave",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185403003,
@@ -21819,8 +21824,8 @@
   },
   "30601": {
     "QuestId": 30601,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Sound of the End",
+    "QuestDetail": "The truth buried in Windhowl Canyon: the traitorous assistant Misty, the elusive poacher, the still-active divine relics among the ruins, and the seemingly protective machine... What is the real story?",
     "QuestType": 3,
     "QuestStep": 30601001,
     "AwardId": 31001780,
@@ -21887,8 +21892,8 @@
   },
   "30303": {
     "QuestId": 30303,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Sword Hidden in the Notes",
+    "QuestDetail": "Smith's apprentice, Esmeralda, is trying to investigate the ecological cycle in Windhowl Canyon. What exactly is causing the animals to riot?",
     "QuestType": 3,
     "QuestStep": 30303001,
     "AwardId": 31001710,
@@ -21926,7 +21931,7 @@
   },
   "186416": {
     "QuestId": 186416,
-    "QuestName": "",
+    "QuestName": "Subdue mercenaries",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186416001,
@@ -21970,7 +21975,7 @@
   },
   "186417": {
     "QuestId": 186417,
-    "QuestName": "",
+    "QuestName": "Defeat Misty",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186417001,
@@ -22045,7 +22050,7 @@
   },
   "186418": {
     "QuestId": 186418,
-    "QuestName": "",
+    "QuestName": "Rescue Destinee",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186418008,
@@ -22120,8 +22125,8 @@
   },
   "30317": {
     "QuestId": 30317,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Expand to a second campsite",
+    "QuestDetail": "Misty and Smith are discussing the location for the second campsite. Where should it be?",
     "QuestType": 3,
     "QuestStep": 30317001,
     "AwardId": 31001700,
@@ -22154,7 +22159,7 @@
   },
   "186505": {
     "QuestId": 186505,
-    "QuestName": "",
+    "QuestName": "Forester's Cabin",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186505001,
@@ -22199,7 +22204,7 @@
   },
   "186118": {
     "QuestId": 186118,
-    "QuestName": "",
+    "QuestName": "Eliminate nearby monster threats",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186118001,
@@ -22238,7 +22243,7 @@
   },
   "186119": {
     "QuestId": 186119,
-    "QuestName": "",
+    "QuestName": "Investigate this area",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186119001,
@@ -22282,8 +22287,8 @@
   },
   "30703": {
     "QuestId": 30703,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Nest-Seeking Scavenger",
+    "QuestDetail": "A group of Scavengers is recruiting adventurers to escort them to the mysterious \"Duskdye Woods .\" Although the invitation is worded a bit oddly, it might be worth investigating.",
     "QuestType": 3,
     "QuestStep": 30703001,
     "AwardId": 31001720,
@@ -22328,8 +22333,8 @@
   },
   "30701": {
     "QuestId": 30701,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "A dead monster is a good monster",
+    "QuestDetail": "Nearby caravans have been repeatedly attacked by monsters. Investigations reveal that the local monsters are responsible. Join the guards to eliminate the monsters entrenched here.",
     "QuestType": 3,
     "QuestStep": 30701001,
     "AwardId": 31001730,
@@ -22360,7 +22365,7 @@
   },
   "186120": {
     "QuestId": 186120,
-    "QuestName": "",
+    "QuestName": "Clear out nearby monsters",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186120001,
@@ -22407,8 +22412,8 @@
   },
   "30602": {
     "QuestId": 30602,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Food Theft Incident",
+    "QuestDetail": "Food has been repeatedly stolen from the Scavenger camp. Who is responsible?",
     "QuestType": 3,
     "QuestStep": 30602001,
     "AwardId": 31001770,
@@ -22479,8 +22484,8 @@
   },
   "30215": {
     "QuestId": 30215,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Return to Everfall Forest",
+    "QuestDetail": "The Everfall Forest, known for its perpetual rainfall, was once home to the Scavengers-until a rise in monster activity compelled them to abandon the camp they built with their own hands. Now, they are determined to reclaim their home - go and lend them a hand.",
     "QuestType": 3,
     "QuestStep": 30215001,
     "AwardId": 31001750,
@@ -22522,8 +22527,8 @@
   },
   "30702": {
     "QuestId": 30702,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Perfumer's Tale: Chapter of Extraction",
+    "QuestDetail": "A young man has reportedly been seen held captive by Goblins. We should check it out.",
     "QuestType": 3,
     "QuestStep": 30702001,
     "AwardId": 31001740,
@@ -22561,7 +22566,7 @@
   },
   "186420": {
     "QuestId": 186420,
-    "QuestName": "",
+    "QuestName": "The food-stealing Goblin has finally shown itself.",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186420001,
@@ -22638,8 +22643,8 @@
   },
   "30216": {
     "QuestId": 30216,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Crisis Averted",
+    "QuestDetail": "To protect this camp, the Scavengers must deal with the nearby monster infestations. Help Alex resolve this imminent threat.",
     "QuestType": 3,
     "QuestStep": 30216001,
     "AwardId": 31001760,
@@ -22678,7 +22683,7 @@
   },
   "186701": {
     "QuestId": 186701,
-    "QuestName": "",
+    "QuestName": "Soothe the Muku",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186701001,
@@ -22724,8 +22729,8 @@
   },
   "30214": {
     "QuestId": 30214,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Water Source Cleanup Plan",
+    "QuestDetail": "Wilhelmina says the water source in the camp is often polluted. The culprit turns out to be a cunning goblin. Figure something out.",
     "QuestType": 3,
     "QuestStep": 30214001,
     "AwardId": 31001810,
@@ -22757,7 +22762,7 @@
   },
   "185042": {
     "QuestId": 185042,
-    "QuestName": "",
+    "QuestName": "Sail! Wave Carnival",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185042001,
@@ -22823,8 +22828,8 @@
   },
   "30413": {
     "QuestId": 30413,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Dark Side of the Moon",
+    "QuestDetail": "A collector in the sewers seems urgently in need of someone to handle a rare underground ritual, a funeral.",
     "QuestType": 3,
     "QuestStep": 30413001,
     "AwardId": 31001880,
@@ -22875,7 +22880,7 @@
   },
   "186421": {
     "QuestId": 186421,
-    "QuestName": "",
+    "QuestName": "Attend the funeral",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186421001,
@@ -22933,8 +22938,8 @@
   },
   "30213": {
     "QuestId": 30213,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Hydrologically-Driven Ecological Research",
+    "QuestDetail": "A scholar needs help gathering materials for her research. Give her a hand.",
     "QuestType": 3,
     "QuestStep": 30213001,
     "AwardId": 31001800,
@@ -22962,7 +22967,7 @@
   },
   "186032": {
     "QuestId": 186032,
-    "QuestName": "",
+    "QuestName": "Water Source Cleanup Plan",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186032001,
@@ -23001,7 +23006,7 @@
   },
   "186081": {
     "QuestId": 186081,
-    "QuestName": "",
+    "QuestName": "Water Source Cleanup Plan",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186081004,
@@ -23040,8 +23045,8 @@
   },
   "30603": {
     "QuestId": 30603,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Ace Pilot",
+    "QuestDetail": "Matthew at the Merchant Camp seems to be recruiting a capable adventurer, but he has some strange requirements. What could be the problem?",
     "QuestType": 3,
     "QuestStep": 30603001,
     "AwardId": 31001850,
@@ -23114,7 +23119,7 @@
   },
   "186111": {
     "QuestId": 186111,
-    "QuestName": "",
+    "QuestName": "Repel the Golem",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186111002,
@@ -23198,8 +23203,8 @@
   },
   "30604": {
     "QuestId": 30604,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Missing Scholars",
+    "QuestDetail": "Three geology scholars from the Scholar Camp have been missing all day. Help find them.",
     "QuestType": 3,
     "QuestStep": 30604001,
     "AwardId": 31001870,
@@ -23287,8 +23292,8 @@
   },
   "30605": {
     "QuestId": 30605,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Senior Artisan and His Apprentice",
+    "QuestDetail": "In the Scholar Camp, apprentice Albert and his mentor Grayson are once again arguing about surveying the canyon ruins. Maybe you can help mediate.",
     "QuestType": 3,
     "QuestStep": 30605001,
     "AwardId": 31001890,
@@ -23346,7 +23351,7 @@
   },
   "186422": {
     "QuestId": 186422,
-    "QuestName": "",
+    "QuestName": "Repel the Oncoming Colossus",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186422001,
@@ -23406,8 +23411,8 @@
   },
   "30606": {
     "QuestId": 30606,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Artisan's Legacy",
+    "QuestDetail": "Misty stole the letter opener. Albert couldn't complete his experimental project and felt upset. Grayson may have a way to reignite his motivation...",
     "QuestType": 3,
     "QuestStep": 30606001,
     "AwardId": 31001900,
@@ -23458,7 +23463,7 @@
   },
   "186423": {
     "QuestId": 186423,
-    "QuestName": "",
+    "QuestName": "Assist Destinee in defeating the Golem",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186423001,
@@ -23520,7 +23525,7 @@
   },
   "10901": {
     "QuestId": 10901,
-    "QuestName": "",
+    "QuestName": "Gods Closed Their Eyes at This Moment",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10901001,
@@ -23559,7 +23564,7 @@
   },
   "10902": {
     "QuestId": 10902,
-    "QuestName": "",
+    "QuestName": "How the Clouds Part to Reveal the Sun",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10902001,
@@ -23608,7 +23613,7 @@
   },
   "10903": {
     "QuestId": 10903,
-    "QuestName": "",
+    "QuestName": "Multiplied by Infinite What Ifs",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10903001,
@@ -23665,7 +23670,7 @@
   },
   "10904": {
     "QuestId": 10904,
-    "QuestName": "",
+    "QuestName": "The Moonlit Night",
     "QuestDetail": "",
     "QuestType": 1,
     "QuestStep": 10904001,
@@ -23722,7 +23727,7 @@
   },
   "185901": {
     "QuestId": 185901,
-    "QuestName": "",
+    "QuestName": "Organize the Warehouse",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185901001,
@@ -23789,7 +23794,7 @@
   },
   "185902": {
     "QuestId": 185902,
-    "QuestName": "",
+    "QuestName": "Illusory Bloom Battle",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185902001,
@@ -23856,8 +23861,8 @@
   },
   "30704": {
     "QuestId": 30704,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Missing Children",
+    "QuestDetail": "Several children have recently vanished in the Duskdye Woods . Search teams have come up empty-handed, and people are worried. But now, a man claiming to be a detective says he can find them...",
     "QuestType": 3,
     "QuestStep": 30704001,
     "AwardId": 31001910,
@@ -23899,8 +23904,8 @@
   },
   "30609": {
     "QuestId": 30609,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Reflections in the Net",
+    "QuestDetail": "A cry for help echoes in a narrow tunnel. What's going on?",
     "QuestType": 3,
     "QuestStep": 30609001,
     "AwardId": 31001930,
@@ -23988,7 +23993,7 @@
   },
   "186121": {
     "QuestId": 186121,
-    "QuestName": "",
+    "QuestName": "Eliminate the monsters nearby",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186121001,
@@ -24041,7 +24046,7 @@
   },
   "185542": {
     "QuestId": 185542,
-    "QuestName": "",
+    "QuestName": "Dreams and Reality",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185542007,
@@ -24091,8 +24096,8 @@
   },
   "30217": {
     "QuestId": 30217,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Faded Map",
+    "QuestDetail": "Tristrom and Zeke are arguing again. What's it about this time?",
     "QuestType": 3,
     "QuestStep": 30217001,
     "AwardId": 31001820,
@@ -24145,7 +24150,7 @@
   },
   "186122": {
     "QuestId": 186122,
-    "QuestName": "",
+    "QuestName": "Pose as a Child to Be the Bait",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186122002,
@@ -24198,7 +24203,7 @@
   },
   "186424": {
     "QuestId": 186424,
-    "QuestName": "",
+    "QuestName": "Defeat the Brigand group",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186424001,
@@ -24297,8 +24302,8 @@
   },
   "30510": {
     "QuestId": 30510,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Tidal Relic",
+    "QuestDetail": "A young man named Ryan is recruiting help to search for undersea treasure. What kind of treasure could be worth all the trouble?",
     "QuestType": 3,
     "QuestStep": 30510001,
     "AwardId": 31001860,
@@ -24356,7 +24361,7 @@
   },
   "186123": {
     "QuestId": 186123,
-    "QuestName": "",
+    "QuestName": "Cave Exploration",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186123001,
@@ -24409,8 +24414,8 @@
   },
   "30218": {
     "QuestId": 30218,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Crime in the Forest",
+    "QuestDetail": "Bad news has spread through the camp... What happened?",
     "QuestType": 3,
     "QuestStep": 30218001,
     "AwardId": 31001830,
@@ -24467,7 +24472,7 @@
   },
   "186124": {
     "QuestId": 186124,
-    "QuestName": "",
+    "QuestName": "Eliminate the Enemy",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186124001,
@@ -24520,8 +24525,8 @@
   },
   "30607": {
     "QuestId": 30607,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Missing Scavengers",
+    "QuestDetail": "Zeke is currently searching for individuals to locate the scavengers lost in the Everfall Forest. It's believed that these scavengers may be in grave danger and need to be found immediately. Lend a hand to Zeke!",
     "QuestType": 3,
     "QuestStep": 30607001,
     "AwardId": 31001790,
@@ -24614,8 +24619,8 @@
   },
   "30608": {
     "QuestId": 30608,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Trial Run! New Prototype!",
+    "QuestDetail": "Staff from the Pioneer Bureau are looking for adventurers to help test a new device. Go see what it's about.",
     "QuestType": 3,
     "QuestStep": 30608001,
     "AwardId": 31001920,
@@ -24709,7 +24714,7 @@
   },
   "186508": {
     "QuestId": 186508,
-    "QuestName": "",
+    "QuestName": "Giant Sea Monster",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186508001,
@@ -24778,8 +24783,8 @@
   },
   "30705": {
     "QuestId": 30705,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Where Are the Rare Mushrooms?",
+    "QuestDetail": "A mushroom merchant from Asterleeds wants to explore the dangerous forest. Lend him a hand!",
     "QuestType": 3,
     "QuestStep": 30705001,
     "AwardId": 31002010,
@@ -24828,7 +24833,7 @@
   },
   "186125": {
     "QuestId": 186125,
-    "QuestName": "",
+    "QuestName": "Rock Survey and Mushroom Harvesting",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186125002,
@@ -24907,8 +24912,8 @@
   },
   "30706": {
     "QuestId": 30706,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "The Surveyor's Troubles",
+    "QuestDetail": "Staff from the Pioneer Bureau are looking for adventurers to help test a new device. Go see what it's about.",
     "QuestType": 3,
     "QuestStep": 30706001,
     "AwardId": 31002020,
@@ -24954,7 +24959,7 @@
   },
   "186126": {
     "QuestId": 186126,
-    "QuestName": "",
+    "QuestName": "Survey the Ruins",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186126001,
@@ -25011,8 +25016,8 @@
   },
   "30610": {
     "QuestId": 30610,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Equivalent Exchange",
+    "QuestDetail": "Word is that the Kanamians prefer bartering over using Luno.",
     "QuestType": 3,
     "QuestStep": 30610003,
     "AwardId": 31001970,
@@ -25115,8 +25120,8 @@
   },
   "30153": {
     "QuestId": 30153,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Time Imprint",
+    "QuestDetail": "On a hill near Minsterhorn, someone appears troubled by something.",
     "QuestType": 3,
     "QuestStep": 30153001,
     "AwardId": 31001960,
@@ -25186,8 +25191,8 @@
   },
   "170107": {
     "QuestId": 170107,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Become a Beat Performer!",
+    "QuestDetail": "Milia is waiting for an adventurer seeking power. Pass her trial to become a Beat Performer.",
     "QuestType": 77,
     "QuestStep": 170107002,
     "AwardId": 31001940,
@@ -25214,8 +25219,8 @@
   },
   "170018": {
     "QuestId": 170018,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Activity and Honor Coins",
+    "QuestDetail": "Valeria wants to introduce you to the activity system and Honor Coins. Go talk to her to learn more.",
     "QuestType": 78,
     "QuestStep": 170018001,
     "AwardId": 31002070,
@@ -25259,8 +25264,8 @@
   },
   "30612": {
     "QuestId": 30612,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Chant, Morning Star (Part I)",
+    "QuestDetail": "The beginning, the origin, the start-call it what you will. It's the story of those people, a tale of love and adventure.",
     "QuestType": 3,
     "QuestStep": 30612001,
     "AwardId": 31002000,
@@ -25316,8 +25321,8 @@
   },
   "30611": {
     "QuestId": 30611,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Bon Voyage",
+    "QuestDetail": "Scholar or Fisher? Two people tired of their current lives meet. What choices will they make?",
     "QuestType": 3,
     "QuestStep": 30611001,
     "AwardId": 31001980,
@@ -25415,8 +25420,8 @@
   },
   "30152": {
     "QuestId": 30152,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Message from the Tides",
+    "QuestDetail": "Near the entrance of the Skimmer's Lair, a young man appears to be injured.",
     "QuestType": 3,
     "QuestStep": 30152001,
     "AwardId": 31001990,
@@ -25487,8 +25492,8 @@
   },
   "30708": {
     "QuestId": 30708,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Till the Rain Stops",
+    "QuestDetail": "To catch the culprit who killed Malorie, the Scavenger Camp has mobilized all resources and set up an ambush near the ruins. They've even brought in an artisan expert for support. Will they catch the killer?",
     "QuestType": 3,
     "QuestStep": 30708001,
     "AwardId": 31001840,
@@ -25537,7 +25542,7 @@
   },
   "186708": {
     "QuestId": 186708,
-    "QuestName": "",
+    "QuestName": "Defeat the enemies",
     "QuestDetail": "",
     "QuestType": 67,
     "QuestStep": 186708001,
@@ -25592,8 +25597,8 @@
   },
   "320024": {
     "QuestId": 320024,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Stay tuned!",
+    "QuestDetail": "Stay tuned!",
     "QuestType": 19,
     "QuestStep": 320024001,
     "AwardId": 0,
@@ -25616,8 +25621,8 @@
   },
   "30613": {
     "QuestId": 30613,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Chant, Morning Star (Part II)",
+    "QuestDetail": "The beginning, the origin, the start-call it what you will. It's the story of those people, a tale of love and adventure.",
     "QuestType": 3,
     "QuestStep": 30613001,
     "AwardId": 31001950,
@@ -25669,7 +25674,7 @@
   },
   "130009": {
     "QuestId": 130009,
-    "QuestName": "",
+    "QuestName": "Complete the Parkour Race",
     "QuestDetail": "",
     "QuestType": 15,
     "QuestStep": 130009016,
@@ -25703,8 +25708,8 @@
   },
   "170019": {
     "QuestId": 170019,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Artisanry",
+    "QuestDetail": "Artisanry is an ancient skill passed down through generations. People design and process various types of wood into furniture and other items, building their dream homes piece by piece. Once, there was a renowned master carpenter in Asterleeds who led the post-war reconstruction. Perhaps due to his age or the toll of the demanding work, he passed away after getting the city through the toughest time. His adopted son, also his apprentice, took over his work. Go find Cicero to learn more about Artisanry.",
     "QuestType": 50,
     "QuestStep": 170019001,
     "AwardId": 31002080,
@@ -25744,8 +25749,8 @@
   },
   "170020": {
     "QuestId": 170020,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "About Weaving",
+    "QuestDetail": "Spin the wool of Caprahorns into yarn, extract plant pigments to make natural dyes, and weave dyed yarns into carpets with intricate patterns... Each beautiful carpet involves a complex process. If you want to learn more about weaving, go talk to Maina.",
     "QuestType": 50,
     "QuestStep": 170020001,
     "AwardId": 31002090,
@@ -25786,7 +25791,7 @@
   },
   "185801": {
     "QuestId": 185801,
-    "QuestName": "",
+    "QuestName": "Milo's Ambush",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185801001,
@@ -25845,8 +25850,8 @@
   },
   "30161": {
     "QuestId": 30161,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Blessing of the Stars and Sea Breeze",
+    "QuestDetail": "A mysterious voice seems to call out to you from above.",
     "QuestType": 3,
     "QuestStep": 30161001,
     "AwardId": 0,
@@ -25881,8 +25886,8 @@
   },
   "30162": {
     "QuestId": 30162,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Oath of Sea Breeze and Fireworks",
+    "QuestDetail": "On Asterleeds beach, a girl smiles at you.",
     "QuestType": 3,
     "QuestStep": 30162001,
     "AwardId": 0,
@@ -25918,8 +25923,8 @@
   },
   "30163": {
     "QuestId": 30163,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Rhythm of the Sea Breeze",
+    "QuestDetail": "At the food festival, citizens dance around the stage.",
     "QuestType": 3,
     "QuestStep": 30163001,
     "AwardId": 0,
@@ -25956,7 +25961,7 @@
   },
   "185706": {
     "QuestId": 185706,
-    "QuestName": "",
+    "QuestName": "Lower the Blackstone Squad's alert",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185706001,
@@ -26000,7 +26005,7 @@
   },
   "185802": {
     "QuestId": 185802,
-    "QuestName": "",
+    "QuestName": "Monster Attack",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185802001,
@@ -26059,8 +26064,8 @@
   },
   "30165": {
     "QuestId": 30165,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Carol of the Sea Breeze",
+    "QuestDetail": "A kind priest looks at you.",
     "QuestType": 3,
     "QuestStep": 30165001,
     "AwardId": 0,
@@ -26098,7 +26103,7 @@
   },
   "185803": {
     "QuestId": 185803,
-    "QuestName": "",
+    "QuestName": "Investigate the monster's bite marks",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185803003,
@@ -26157,8 +26162,8 @@
   },
   "30164": {
     "QuestId": 30164,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Poetry of the Sea Breeze",
+    "QuestDetail": "A well-dressed gentleman looks at you.",
     "QuestType": 3,
     "QuestStep": 30164001,
     "AwardId": 0,
@@ -26197,7 +26202,7 @@
   },
   "185804": {
     "QuestId": 185804,
-    "QuestName": "",
+    "QuestName": "Investigate the distribution channels for the Rubys",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185804001,
@@ -26256,7 +26261,7 @@
   },
   "185805": {
     "QuestId": 185805,
-    "QuestName": "",
+    "QuestName": "Tail Reiner",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185805001,
@@ -26315,7 +26320,7 @@
   },
   "185806": {
     "QuestId": 185806,
-    "QuestName": "",
+    "QuestName": "Infiltrate the garrison",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185806001,
@@ -26374,7 +26379,7 @@
   },
   "185807": {
     "QuestId": 185807,
-    "QuestName": "",
+    "QuestName": "Follow the trail left by Darya",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185807002,
@@ -26433,7 +26438,7 @@
   },
   "185808": {
     "QuestId": 185808,
-    "QuestName": "",
+    "QuestName": "Find the eavesdropper",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185808002,
@@ -26492,7 +26497,7 @@
   },
   "185809": {
     "QuestId": 185809,
-    "QuestName": "",
+    "QuestName": "Defeat this group of soldiers",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185809001,
@@ -26551,7 +26556,7 @@
   },
   "185810": {
     "QuestId": 185810,
-    "QuestName": "",
+    "QuestName": "Leave No One Behind",
     "QuestDetail": "",
     "QuestType": 18,
     "QuestStep": 185810001,
@@ -26610,7 +26615,7 @@
   },
   "30171": {
     "QuestId": 30171,
-    "QuestName": "",
+    "QuestName": "Smelting Recipe Quest",
     "QuestDetail": "",
     "QuestType": 3,
     "QuestStep": 30171001,
@@ -26650,8 +26655,8 @@
   },
   "171001": {
     "QuestId": 171001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Ocean Platinum Card",
+    "QuestDetail": "The Council assigns a personal agent to each Ocean Platinum Card holder to handle related matters. <br>Now, it's time to meet your exclusive agent.",
     "QuestType": 82,
     "QuestStep": 171001001,
     "AwardId": 31002140,
@@ -26662,7 +26667,7 @@
     "AccessLimit": [
       [
         "1",
-        "25"
+        "40"
       ]
     ],
     "AccpetType": [
@@ -26688,7 +26693,7 @@
   },
   "30172": {
     "QuestId": 30172,
-    "QuestName": "",
+    "QuestName": "Gemcrafting Recipe Quest",
     "QuestDetail": "",
     "QuestType": 3,
     "QuestStep": 30172001,
@@ -26728,8 +26733,8 @@
   },
   "171002": {
     "QuestId": 171002,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Homestead Tour",
+    "QuestDetail": "Agent Connor... or rather, now Butler Connor. <br>Butler Connor will give me a tour of this private island that belongs to me only. Let's go take a look.",
     "QuestType": 82,
     "QuestStep": 171002001,
     "AwardId": 31002160,
@@ -26764,7 +26769,7 @@
   },
   "30173": {
     "QuestId": 30173,
-    "QuestName": "",
+    "QuestName": "Artisanry Recipe Quest",
     "QuestDetail": "",
     "QuestType": 3,
     "QuestStep": 30173001,
@@ -26804,7 +26809,7 @@
   },
   "171000": {
     "QuestId": 171000,
-    "QuestName": "",
+    "QuestName": "Misty Island",
     "QuestDetail": "",
     "QuestType": 81,
     "QuestStep": 171000002,
@@ -26850,7 +26855,7 @@
   },
   "30174": {
     "QuestId": 30174,
-    "QuestName": "",
+    "QuestName": "Weaving Recipe Quest",
     "QuestDetail": "",
     "QuestType": 3,
     "QuestStep": 30174001,
@@ -26890,7 +26895,7 @@
   },
   "30175": {
     "QuestId": 30175,
-    "QuestName": "",
+    "QuestName": "Alchemy Recipe Quest",
     "QuestDetail": "",
     "QuestType": 3,
     "QuestStep": 30175001,
@@ -26930,7 +26935,7 @@
   },
   "30176": {
     "QuestId": 30176,
-    "QuestName": "",
+    "QuestName": "Culinary Recipe Quest",
     "QuestDetail": "",
     "QuestType": 3,
     "QuestStep": 30176001,
@@ -26970,8 +26975,8 @@
   },
   "30177": {
     "QuestId": 30177,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Submit Culinary Material",
+    "QuestDetail": "Submit the required materials to Gaido for generous rewards.",
     "QuestType": 83,
     "QuestStep": 30177002,
     "AwardId": 34000040,
@@ -27006,8 +27011,8 @@
   },
   "30178": {
     "QuestId": 30178,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Submit Weaving Material",
+    "QuestDetail": "Submit the required materials to Gaido for generous rewards.",
     "QuestType": 83,
     "QuestStep": 30178002,
     "AwardId": 34000050,
@@ -27042,8 +27047,8 @@
   },
   "30179": {
     "QuestId": 30179,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Submit Botany Material",
+    "QuestDetail": "Submit the required materials to Gaido for generous rewards.",
     "QuestType": 83,
     "QuestStep": 30179002,
     "AwardId": 34000060,
@@ -27078,8 +27083,8 @@
   },
   "30180": {
     "QuestId": 30180,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Submit Alchemy Material",
+    "QuestDetail": "Submit the required materials to Gaido for generous rewards.",
     "QuestType": 83,
     "QuestStep": 30180001,
     "AwardId": 34000070,
@@ -27114,8 +27119,8 @@
   },
   "30181": {
     "QuestId": 30181,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Submit Gemcrafting Material",
+    "QuestDetail": "Submit the required materials to Gaido for generous rewards.",
     "QuestType": 83,
     "QuestStep": 30181001,
     "AwardId": 34000080,
@@ -27150,8 +27155,8 @@
   },
   "30182": {
     "QuestId": 30182,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Submit Gemology Material",
+    "QuestDetail": "Submit the required materials to Gaido for generous rewards.",
     "QuestType": 83,
     "QuestStep": 30182001,
     "AwardId": 34000090,
@@ -27186,8 +27191,8 @@
   },
   "30183": {
     "QuestId": 30183,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Submit Smelting Material",
+    "QuestDetail": "Submit the required materials to Gaido for generous rewards.",
     "QuestType": 83,
     "QuestStep": 30183001,
     "AwardId": 34000100,
@@ -27222,8 +27227,8 @@
   },
   "30184": {
     "QuestId": 30184,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Submit Artisanry Material",
+    "QuestDetail": "Submit the required materials to Gaido for generous rewards.",
     "QuestType": 83,
     "QuestStep": 30184001,
     "AwardId": 34000110,
@@ -27258,8 +27263,8 @@
   },
   "30185": {
     "QuestId": 30185,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Submit Mineralogy Material",
+    "QuestDetail": "Submit the required materials to Gaido for generous rewards.",
     "QuestType": 83,
     "QuestStep": 30185001,
     "AwardId": 34000120,
@@ -27294,8 +27299,8 @@
   },
   "171003": {
     "QuestId": 171003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "I Want a Bigger House!",
+    "QuestDetail": "Everything's great in the homestead, except the house feels too small... Maybe Connor knows how to expand it?",
     "QuestType": 82,
     "QuestStep": 171003001,
     "AwardId": 0,
@@ -27330,8 +27335,8 @@
   },
   "171004": {
     "QuestId": 171004,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "An Even Bigger House!",
+    "QuestDetail": "The new house is nice, but it could be more spacious... Connor might be able to help!",
     "QuestType": 82,
     "QuestStep": 171004001,
     "AwardId": 0,
@@ -27366,8 +27371,8 @@
   },
   "171005": {
     "QuestId": 171005,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Expand the Space!",
+    "QuestDetail": "The island's usable space is a bit small... Ask Connor when the other areas will open.",
     "QuestType": 82,
     "QuestStep": 171005001,
     "AwardId": 0,
@@ -27402,8 +27407,8 @@
   },
   "171006": {
     "QuestId": 171006,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Expand to More Space!",
+    "QuestDetail": "If you want to visit other parts of the island, continue the second phase of expansion... Check with Connor on the progress.",
     "QuestType": 82,
     "QuestStep": 171006001,
     "AwardId": 0,
@@ -27438,8 +27443,8 @@
   },
   "171007": {
     "QuestId": 171007,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Can We Expand the Space Even More?!",
+    "QuestDetail": "Connor can help with anything related to the homestead, including the third phase of island expansion.",
     "QuestType": 82,
     "QuestStep": 171007001,
     "AwardId": 0,
@@ -27474,8 +27479,8 @@
   },
   "50001": {
     "QuestId": 50001,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "[Limited Event] Master's Trial: Scorching Warfare",
+    "QuestDetail": "A true master never stops pushing their limits. During the event period, conquer Master Dungeons of the Chaotic Realm and accumulate 2,000 points to complete the trial! <br><style=\"emph-gn\">Quest Duration: active during Master's Trial: Scorching Warfare</style>",
     "QuestType": 84,
     "QuestStep": 50001001,
     "AwardId": 70011010,
@@ -27512,8 +27517,8 @@
   },
   "171008": {
     "QuestId": 171008,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Using Crafting Station",
+    "QuestDetail": "A Homestead Crafting Station has already been placed in your home. Let's use it to create your first furniture now!",
     "QuestType": 82,
     "QuestStep": 171008001,
     "AwardId": 31002170,
@@ -27548,8 +27553,8 @@
   },
   "171009": {
     "QuestId": 171009,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Planting on Your Island",
+    "QuestDetail": "Connor's Quick Tips: A Novice Guide to Homestead Farming- 1. Purchase seeds: Seeds can be purchased from Homestead Merchant Delphine. 2. Plant the seeds: Approach the soil and sow your favorite seeds. Water the seeds you planted. 3. Harvest and profit: Once the crops are fully grown, harvest and sell them! Enjoy your peaceful farming time on the island!",
     "QuestType": 82,
     "QuestStep": 171009001,
     "AwardId": 31002180,
@@ -27584,8 +27589,8 @@
   },
   "171010": {
     "QuestId": 171010,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Complete a Homestead Commission",
+    "QuestDetail": "Talk to Butler Connor to learn about and complete a Homestead commission.",
     "QuestType": 82,
     "QuestStep": 171010001,
     "AwardId": 31002190,
@@ -27620,8 +27625,8 @@
   },
   "171011": {
     "QuestId": 171011,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Upgrade Homestead",
+    "QuestDetail": "Keep adding new facilities to increase your Homestead Level!",
     "QuestType": 82,
     "QuestStep": 171011001,
     "AwardId": 31002200,
@@ -27661,8 +27666,8 @@
   },
   "171012": {
     "QuestId": 171012,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Customize Homestead",
+    "QuestDetail": "Speak with Butler Connor to learn how to rearrange and decorate your Homestead layout.",
     "QuestType": 82,
     "QuestStep": 171012001,
     "AwardId": 31002210,
@@ -27697,8 +27702,8 @@
   },
   "171013": {
     "QuestId": 171013,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Homestead Warehouse",
+    "QuestDetail": "Talk to Sophia the Maid and try accessing the Homestead Warehouse once.",
     "QuestType": 82,
     "QuestStep": 171013001,
     "AwardId": 31002220,
@@ -27733,8 +27738,8 @@
   },
   "50002": {
     "QuestId": 50002,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Mysterious Legacy",
+    "QuestDetail": "Hughie seems to have an urgent task for you. A mysterious Bapharian Relic has been discovered on the Floating Island. Researchers are investigating on-site. <br>The Legacy is believed to hold unimaginable power...<br><style=\"emph-gn\">Quest time limit: Sanctum of the Chained Dragon - Adept's Training event</style>",
     "QuestType": 84,
     "QuestStep": 50002006,
     "AwardId": 70011070,
@@ -27776,8 +27781,8 @@
   },
   "50003": {
     "QuestId": 50003,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Echoes of the Ancients",
+    "QuestDetail": "The Legacy on the Floating Island has been activated. Thalia claims it connects to a mysterious Floating Island. <br>Through the Legacy, the silhouette of the island can faintly be seen. Deep within, there could be ancient dragons slumbering...<br>It's time to uncover the truth of this unknown land!",
     "QuestType": 84,
     "QuestStep": 50003003,
     "AwardId": 70011080,
@@ -27841,6 +27846,262 @@
       [
         1007808,
         1007802
+      ]
+    ],
+    "Note": "",
+    "AwardPreview": []
+  },
+  "900101": {
+    "QuestId": 900101,
+    "QuestName": "Collect Cloud Particles",
+    "QuestDetail": "",
+    "QuestType": 15,
+    "QuestStep": 900101001,
+    "AwardId": 0,
+    "FollowQuest": 0,
+    "PreQuest": [],
+    "PreQuestLogic": "",
+    "MustPreQuest": [],
+    "AccessLimit": [
+      [
+        "1",
+        "999"
+      ]
+    ],
+    "AccpetType": [
+      0
+    ],
+    "TimeLimit": [],
+    "ContinueLimit": [],
+    "AbortLimit": [
+      [
+        "13",
+        "9001"
+      ]
+    ],
+    "GiveUp": false,
+    "StepFlowPath": "bin/task/task_step/900101/900101-3",
+    "NpcMarkedByQuest": [],
+    "Note": "",
+    "AwardPreview": []
+  },
+  "50005": {
+    "QuestId": 50005,
+    "QuestName": "Winter is coming!",
+    "QuestDetail": "Go to Floating Island - Dragon Shackles to defeat Rin·Izcorgiky in any difficulty!",
+    "QuestType": 85,
+    "QuestStep": 50005001,
+    "AwardId": 31002230,
+    "FollowQuest": 0,
+    "PreQuest": [],
+    "PreQuestLogic": "",
+    "MustPreQuest": [],
+    "AccessLimit": [
+      [
+        "1",
+        "50"
+      ],
+      [
+        "18",
+        "40111"
+      ]
+    ],
+    "AccpetType": [
+      0
+    ],
+    "TimeLimit": [],
+    "ContinueLimit": [],
+    "AbortLimit": [],
+    "GiveUp": false,
+    "StepFlowPath": "bin/task/task_step/huodong/50001/50001-19",
+    "NpcMarkedByQuest": [
+      [
+        1007808,
+        1007802
+      ]
+    ],
+    "Note": "",
+    "AwardPreview": []
+  },
+  "900102": {
+    "QuestId": 900102,
+    "QuestName": "[Bombs and Gales]",
+    "QuestDetail": "",
+    "QuestType": 15,
+    "QuestStep": 0,
+    "AwardId": 0,
+    "FollowQuest": 0,
+    "PreQuest": [],
+    "PreQuestLogic": "",
+    "MustPreQuest": [],
+    "AccessLimit": [
+      [
+        "1",
+        "999"
+      ]
+    ],
+    "AccpetType": [
+      0
+    ],
+    "TimeLimit": [],
+    "ContinueLimit": [],
+    "AbortLimit": [
+      [
+        "13",
+        "9001"
+      ]
+    ],
+    "GiveUp": false,
+    "StepFlowPath": "",
+    "NpcMarkedByQuest": [],
+    "Note": "",
+    "AwardPreview": []
+  },
+  "50006": {
+    "QuestId": 50006,
+    "QuestName": "Return of Darkness",
+    "QuestDetail": "Go to Floating Island- Dragon Shackles to defeat Bone·Xiolotl in any difficulty!",
+    "QuestType": 85,
+    "QuestStep": 50006001,
+    "AwardId": 31002240,
+    "FollowQuest": 0,
+    "PreQuest": [],
+    "PreQuestLogic": "",
+    "MustPreQuest": [],
+    "AccessLimit": [
+      [
+        "1",
+        "50"
+      ],
+      [
+        "18",
+        "40111"
+      ]
+    ],
+    "AccpetType": [
+      0
+    ],
+    "TimeLimit": [],
+    "ContinueLimit": [],
+    "AbortLimit": [],
+    "GiveUp": false,
+    "StepFlowPath": "bin/task/task_step/huodong/50001/50001-20",
+    "NpcMarkedByQuest": [
+      [
+        1007808,
+        1007802
+      ]
+    ],
+    "Note": "",
+    "AwardPreview": []
+  },
+  "50007": {
+    "QuestId": 50007,
+    "QuestName": "Radiant Light",
+    "QuestDetail": "Go to Floating Island - Dragon Shackles to defeat Light·Tonatiuh in any difficulty!",
+    "QuestType": 85,
+    "QuestStep": 50007001,
+    "AwardId": 31002250,
+    "FollowQuest": 0,
+    "PreQuest": [],
+    "PreQuestLogic": "",
+    "MustPreQuest": [],
+    "AccessLimit": [
+      [
+        "1",
+        "50"
+      ],
+      [
+        "18",
+        "40111"
+      ]
+    ],
+    "AccpetType": [
+      0
+    ],
+    "TimeLimit": [],
+    "ContinueLimit": [],
+    "AbortLimit": [],
+    "GiveUp": false,
+    "StepFlowPath": "bin/task/task_step/huodong/50001/50001-21",
+    "NpcMarkedByQuest": [
+      [
+        1007808,
+        1007802
+      ]
+    ],
+    "Note": "",
+    "AwardPreview": []
+  },
+  "1204001": {
+    "QuestId": 1204001,
+    "QuestName": "Finish",
+    "QuestDetail": "",
+    "QuestType": 15,
+    "QuestStep": 1204001007,
+    "AwardId": 0,
+    "FollowQuest": 0,
+    "PreQuest": [],
+    "PreQuestLogic": "",
+    "MustPreQuest": [],
+    "AccessLimit": [
+      [
+        "12",
+        "12040"
+      ]
+    ],
+    "AccpetType": [
+      0
+    ],
+    "TimeLimit": [],
+    "ContinueLimit": [],
+    "AbortLimit": [
+      [
+        "13",
+        "12040"
+      ]
+    ],
+    "GiveUp": false,
+    "StepFlowPath": "bin/task/task_step/1204001/1204001-3",
+    "NpcMarkedByQuest": [],
+    "Note": "",
+    "AwardPreview": []
+  },
+  "50008": {
+    "QuestId": 50008,
+    "QuestName": "[Limited Event] Learn about Skill Reset",
+    "QuestDetail": "Limited Event – Skill Reset has started! Find Milia at the Pioneer Bureau to learn about it. <br><style=\"emph-gn\">From now to September 14th, 2025, at 23:59 (UTC-2)</style>",
+    "QuestType": 84,
+    "QuestStep": 50008001,
+    "AwardId": 31002260,
+    "FollowQuest": 0,
+    "PreQuest": [],
+    "PreQuestLogic": "",
+    "MustPreQuest": [],
+    "AccessLimit": [
+      [
+        "18",
+        "100010"
+      ]
+    ],
+    "AccpetType": [
+      0
+    ],
+    "TimeLimit": [],
+    "ContinueLimit": [],
+    "AbortLimit": [
+      [
+        "18",
+        "100011"
+      ]
+    ],
+    "GiveUp": false,
+    "StepFlowPath": "bin/task/task_step/huodong/50001/50001-28",
+    "NpcMarkedByQuest": [
+      [
+        1007808,
+        1007802,
+        21701001
       ]
     ],
     "Note": "",

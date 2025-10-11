@@ -179,6 +179,16 @@ function fighterBtns_vm:SetSkillPanelShow(isSwitch)
   weaponData.SkillPanelToggleIsOn = isSwitch
 end
 
+function fighterBtns_vm:GetSkillPanelLocked()
+  local weaponData = Z.DataMgr.Get("weapon_data")
+  return weaponData.SkillPanelToggleLocked
+end
+
+function fighterBtns_vm:SetSkillPanelLocked(isLocked)
+  local weaponData = Z.DataMgr.Get("weapon_data")
+  weaponData.SkillPanelToggleLocked = isLocked
+end
+
 function fighterBtns_vm:OpenSetAutoBattleSlotView()
   Z.UIMgr:OpenView("battle_auto_battle_set")
 end
@@ -214,6 +224,12 @@ function fighterBtns_vm:GetBtnContainerState()
   local stateID = Z.EntityMgr.PlayerEnt:GetLuaLocalAttrState()
   if not stateID or not Z.EntityMgr.PlayerEnt then
     return
+  end
+  if Z.EntityMgr.PlayerEnt:GetLuaLocalAttrInBattleShow() or Z.EntityMgr.PlayerEnt:GetLuaIsInCombat() then
+    templateData.Type = E.PlayerCtrlBtnTmpType.Default
+    templateData.IsChangeSkillPanel = true
+    templateData.IsShowSkillCheckBtn = true
+    return templateData
   end
   if Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.LocalAttr.EMultiActionState).Value ~= 0 then
     templateData.Type = E.PlayerCtrlBtnTmpType.MulAction
@@ -257,12 +273,14 @@ function fighterBtns_vm:GetBtnContainerState()
     return templateData
   end
   if Z.PbEnum("EActorState", "ActorStateRideControl") == stateID then
+    self:SetSkillPanelLocked(false)
     templateData.Type = E.PlayerCtrlBtnTmpType.Vehicles
-    templateData.IsChangeSkillPanel = false
+    templateData.IsChangeSkillPanel = true
     templateData.PCShowBtnType = E.PlayerCtrlBtnPCShowBtnType.Vehicles
     return templateData
   end
   if Z.EntityMgr.PlayerEnt.IsRiding then
+    self:SetSkillPanelLocked(false)
     if Z.PbEnum("EActorState", "ActorStateRide") == stateID then
       templateData.Type = E.PlayerCtrlBtnTmpType.VehiclePassenger
       templateData.IsChangeSkillPanel = false
@@ -270,13 +288,23 @@ function fighterBtns_vm:GetBtnContainerState()
       return templateData
     end
     templateData.Type = E.PlayerCtrlBtnTmpType.Vehicles
-    templateData.IsChangeSkillPanel = false
+    templateData.IsChangeSkillPanel = true
     templateData.PCShowBtnType = E.PlayerCtrlBtnPCShowBtnType.Vehicles
     return templateData
   end
   templateData.Type = E.PlayerCtrlBtnTmpType.Default
   templateData.PCShowBtnType = E.PlayerCtrlBtnPCShowBtnType.Less
+  templateData.IsChangeSkillPanel = false
+  templateData.IsShowSkillCheckBtn = true
   return templateData
+end
+
+function fighterBtns_vm:SetPlayerCtrlTmpType(tmplateType)
+  self.playerCtrlTmpType = tmplateType
+end
+
+function fighterBtns_vm:GetPlayerCtrlTmpType()
+  return self.playerCtrlTmpType
 end
 
 return fighterBtns_vm

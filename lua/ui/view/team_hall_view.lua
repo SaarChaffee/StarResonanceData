@@ -109,7 +109,10 @@ function Team_hallView:initBtns()
     if not teamTargetRow then
       return
     end
-    self.matchVm_.RequestBeginMatch(E.MatchType.Team, teamTargetRow.RelativeDungeonId, self.cancelSource:CreateToken())
+    self.matchVm_.RequestBeginMatch(E.MatchType.Team, {
+      dungeonId = teamTargetRow.RelativeDungeonId,
+      difficulty = teamTargetRow.Difficulty
+    }, self.cancelSource:CreateToken())
   end)
   self:AddAsyncClick(self.btn_cancel_, function()
     self.matchVm_.AsyncCancelMatch()
@@ -228,7 +231,7 @@ function Team_hallView:setCompActive()
   local showMatch = false
   local teamTargetRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(self.targetId_)
   if teamTargetRow then
-    showMatch = teamTargetRow.MatchID and teamTargetRow.MatchID > 0
+    showMatch = teamTargetRow.MatchID and teamTargetRow.MatchID > 0 and Z.ConditionHelper.CheckCondition(teamTargetRow.MatchCondition)
   end
   self.uiBinder.Ref:SetVisible(self.cont_lab_tips_, not havTeam and matching and showMatch)
   self.uiBinder.Ref:SetVisible(self.btn_cancel_, not havTeam and matching and showMatch)

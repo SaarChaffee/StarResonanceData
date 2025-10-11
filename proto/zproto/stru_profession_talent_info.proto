@@ -8,5 +8,6 @@ message ProfessionTalentInfo {
   uint32 used_talent_points = 1;
   repeated uint32 talent_node_ids = 2;
   int32 talent_stage_cfg_id = 4;
+  int32 talent_ilegal_reset_count = 5;
 }
 

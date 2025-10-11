@@ -80,7 +80,10 @@ E.DlgPreferencesKeyType = {
   MatchLeaderConfirmTips = "MatchLeaderConfirmTips",
   PersonalzoneSecondCheck = "PersonalzoneSecondCheck",
   ResonanceItemDecompose1 = "ResonanceItemDecompose1",
-  ResonanceItemDecompose2 = "ResonanceItemDecompose2"
+  ResonanceItemDecompose2 = "ResonanceItemDecompose2",
+  MailGetTips = "MailGetTips",
+  MailDeleteTips = "MailDeleteTips",
+  SettingDeviceChange = "SettingDeviceChange"
 }
 E.PlayerBattleResType = {
   TdlPurpleRes = 12041,
@@ -106,7 +109,8 @@ E.MapMode = {World = 0, Area = 1}
 E.MapFlagTypeId = {
   TransferDoor = 103,
   CustomTag1 = 301,
-  CustomTag2 = 302
+  CustomTag2 = 302,
+  PositionShare = 303
 }
 E.SceneTagType = {
   SceneEnter = 2,
@@ -573,7 +577,8 @@ E.GoalGuideSource = {
   CanAcceptSideQuest = 10,
   CanAcceptAreaQuest = 11,
   CanAcceptGuideQuest = 12,
-  CanAcceptEventQuest = 13
+  CanAcceptEventQuest = 13,
+  PositionShare = 14
 }
 E.GoalParam = {
   Type = 1,
@@ -758,7 +763,8 @@ E.ChatFuncType = {
   Emoji = 1,
   Record = 2,
   Backpack = 3,
-  QuickMessage = 4
+  QuickMessage = 4,
+  LocalPosition = 5
 }
 E.FunctionID = {
   None = 0,
@@ -970,6 +976,7 @@ E.FunctionID = {
   TapTapEvaluation = 900113,
   TokenLink = 900114,
   AppleStoreEvaluation = 900115,
+  GoogleStoreEvaluation = 900120,
   TencentWechatOriginalShare = 300008,
   SDKShareLocalPhoto = 102414,
   SDKShareCloudPhoto = 102415,
@@ -982,6 +989,8 @@ E.FunctionID = {
   PathFinding = 102900,
   LeisureActivities = 800200,
   Achievement = 800515,
+  Gacha = 800820,
+  SpecialGacha = 800821,
   HouseQuest = 102505,
   PlayerNewbie = 100502,
   HomeFlowerRecycle = 106105,
@@ -1005,7 +1014,10 @@ E.FunctionID = {
   FashionDyeing = 101107,
   TeamTwenty = 101011,
   ChatVoiceInput = 102206,
-  ChatVoiceText = 102207
+  ChatVoiceText = 102207,
+  DisplayCustomHeadPhoto = 100912,
+  DisplayCustomHalfBody = 100913,
+  CdKey = 500450
 }
 E.BackpackFuncId = {
   Backpack = 100101,
@@ -1171,6 +1183,10 @@ E.SettingID = {
   CameraMelee = 1022,
   RemoveMouseRestrictions = 1023,
   CameraMove = 1021,
+  CameraInertia = 1025,
+  HorizontalSensitivityHandle = 1026,
+  VerticalSensitivityHandle = 1027,
+  MouseSpeedHandle = 1028,
   KeyHint = 2001,
   EffSelf = 3001,
   EffEnemy = 3002,
@@ -1327,7 +1343,8 @@ E.MapFlagType = {
   NotEntity = 2,
   AreaName = 3,
   Custom = 4,
-  Team = 5
+  Team = 5,
+  Position = 6
 }
 E.MapSubViewType = {
   Info = 1,
@@ -1405,6 +1422,15 @@ E.SkillType = {
   WeaponSkill = 1,
   MysteriesSkill = 2,
   EnvironmentSkill = 3
+}
+E.SkillSlotLogicType = {
+  Normal = 0,
+  WeaponSkill = 1,
+  MysteriesSkill = 2,
+  InteractiveSkill = 3,
+  EnvironmentSkill = 4,
+  MountSkill = 5,
+  SceneMaskSkill = 200
 }
 E.SlotName = {
   SkillSlot_1 = "1",
@@ -1677,7 +1703,8 @@ E.SceneObjType = {
   Resonance = 3,
   Transfer = 4,
   WorldQuest = 5,
-  Collection = 6
+  Collection = 6,
+  MonsterHunt = 7
 }
 E.RedType = {
   TeamApplyMain = 1,
@@ -1860,8 +1887,8 @@ E.RedType = {
   UnionDanceCount = 3005,
   HouseRed = 4000,
   HouseLevelRed = 4001,
+  HouseInviteRed = 4002,
   WeeklyHuntTarget = 1601,
-  WeeklyHuntAward = 1602,
   SkillSkinUnlock = 172,
   SkillSkinBtn = 173,
   WeeklyHuntAward = 1602,
@@ -2231,7 +2258,8 @@ E.QuickJumpType = {
   Function = 2,
   TraceNearestTarget = 4,
   Message = 5,
-  GoUnionTarget = 6
+  GoUnionTarget = 6,
+  TraceScenePosition = 7
 }
 E.TrackType = {
   Point = 1,
@@ -2239,7 +2267,8 @@ E.TrackType = {
   Monster = 3,
   Zone = 4,
   SceneObject = 5,
-  Collection = 7
+  Collection = 7,
+  Position = 8
 }
 E.NearTraceTargetType = {
   Npc = 1,
@@ -2713,6 +2742,11 @@ E.HomeFarmActionType = {
   Harvest = 6
 }
 E.HomeEnvMode = {EnvPrefab = 0, EnvColor = 1}
+E.EHomeEditType = {
+  All = 0,
+  AllNoOverlying = 1,
+  NoOverlyingXZRotate = 2
+}
 E.EWorldChannelState = {
   Low = 1,
   Hot = 2,
@@ -2774,12 +2808,14 @@ E.MenuBannerType = {FuncPreview = 1, Theme = 2}
 E.ThemeActivitySubType = {SeasonActivity = 1, PandoraActivity = 2}
 E.ThemeActivityFuncType = {Sign = 2, Shop = 3}
 E.ThemeActivityFunctionId = {
-  Sign = 820005,
+  Sign1 = 820005,
+  Sign2 = 820009,
   Entrance = 820001,
   Celebration = 820002
 }
 E.ThemeActivityRedDot = {
-  [E.ThemeActivityFunctionId.Sign] = 82000004
+  [E.ThemeActivityFunctionId.Sign1] = 82000004,
+  [E.ThemeActivityFunctionId.Sign2] = 82000008
 }
 E.SeasonActivityTimeStage = {
   NotOpen = 0,
@@ -2813,7 +2849,7 @@ E.DpsDpdTypeList = {
   DamageSecond = 4,
   CureSecond = 5
 }
-E.SignActivityType = {ThemeActivity = 1}
+E.SignActivityType = {ThemeActivity1 = 1, ThemeActivity2 = 2}
 E.ESceneType = {
   Unknown = 0,
   Static = 1,
@@ -2844,5 +2880,23 @@ E.LeisureActivityState = {
   TodayOpenAndCurOpen = 0,
   TodayOpen = 1,
   TodayNotOpen = 2
+}
+E.SeasonPreviewType = {Single = 1, Double = 2}
+E.InputDirectionType = {
+  None = 0,
+  Front = 1,
+  Back = 2,
+  Left = 3,
+  Right = 4
+}
+E.HttpPictureDownFoldType = {Head = "head", HalfBody = "halfBody"}
+E.CameraSysInputKey = {
+  ESC = 108,
+  Shot = 162,
+  Hide = 161,
+  Translation = 160,
+  Move = 159,
+  LeftPanel = 163,
+  rightPanel = 164
 }
 return E

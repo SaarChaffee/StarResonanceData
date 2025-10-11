@@ -30,11 +30,11 @@ function HandbookDictionariesLoopListItem:OnRefresh(data)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_new, isNew)
 end
 
-function HandbookDictionariesLoopListItem:OnSelected(isSelected)
+function HandbookDictionariesLoopListItem:OnSelected(isSelected, isClick)
   if isSelected then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_off, false)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, true)
-    self.parent.UIView:SelectId(self.data)
+    self.parent.UIView:SelectId(self.data, isClick)
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_off, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, false)

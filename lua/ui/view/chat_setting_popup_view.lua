@@ -134,10 +134,9 @@ function Chat_setting_popupView:initMainChat()
     funcIndex = 1
   }
   self.mainChatChannelLoop_:Init(dataList)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_auto_hide, Z.IsPCUI)
-  if not Z.IsPCUI then
-    return
-  end
+  self.uiBinder.Ref:SetVisible(self.uiBinder.tog_isHide, Z.IsPCUI)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_bottom, Z.IsPCUI)
+  self.uiBinder.node_auto_hide:SetHeight(Z.IsPCUI and 333 or 200)
   local channel_key_pad = require("ui.view.cont_num_keyboard_view")
   self.channelKeyPad_ = channel_key_pad.new(self)
   self.uiBinder.tog_isHide:AddListener(function(isOn)

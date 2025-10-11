@@ -189,7 +189,7 @@
   "12010018": {
     "Id": 12010018,
     "UIModelScale": 0.6,
-    "UIModelPositionY": 0.0,
+    "UIModelPositionY": 0.03,
     "UIModelRotationY": 140,
     "IdleAction": "as_vehicle_yacht_idle",
     "RunAction": "as_vehicle_yacht_run",
@@ -585,7 +585,7 @@
   "12010054": {
     "Id": 12010054,
     "UIModelScale": 0.6,
-    "UIModelPositionY": 0.0,
+    "UIModelPositionY": 0.03,
     "UIModelRotationY": 140,
     "IdleAction": "as_vehicle_yacht_idle",
     "RunAction": "as_vehicle_yacht_run",
@@ -595,13 +595,35 @@
   },
   "12010055": {
     "Id": 12010055,
-    "UIModelScale": 0.7,
-    "UIModelPositionY": 0.0,
+    "UIModelScale": 0.6,
+    "UIModelPositionY": 0.2,
     "UIModelRotationY": 140,
-    "IdleAction": "",
-    "RunAction": "",
+    "IdleAction": "as_vehicle_monsterfish_idle",
+    "RunAction": "as_vehicle_monsterfish_run",
     "RunRoleAction": "",
     "MainSeat": "",
     "RoleInfoCameraId": 1
+  },
+  "12010056": {
+    "Id": 12010056,
+    "UIModelScale": 0.6,
+    "UIModelPositionY": 0.2,
+    "UIModelRotationY": 140,
+    "IdleAction": "as_vehicle_monsterfish_idle",
+    "RunAction": "as_vehicle_monsterfish_run",
+    "RunRoleAction": "",
+    "MainSeat": "",
+    "RoleInfoCameraId": 1
+  },
+  "12010058": {
+    "Id": 12010058,
+    "UIModelScale": 0.6,
+    "UIModelPositionY": -0.05,
+    "UIModelRotationY": 140,
+    "IdleAction": "as_vehicle_airdrop01_idle",
+    "RunAction": "as_vehicle_airdrop01_run",
+    "RunRoleAction": "",
+    "MainSeat": "",
+    "RoleInfoCameraId": 3
   }
 }

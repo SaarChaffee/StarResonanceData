@@ -28,5 +28,11 @@
     "Param": "mesasgetableID.具体的提示文字",
     "Example": "1020001",
     "RefreshNum": "配置5时，点击反馈为弹出飘条提示"
+  },
+  "6": {
+    "Type": 6,
+    "Param": "无参数",
+    "Example": "",
+    "RefreshNum": "判断是否有协会，协会场景是否建造好，如果是可直接传回协会，如果否弹出对应提示"
   }
 }

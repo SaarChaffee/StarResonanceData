@@ -164,7 +164,7 @@ function TencentVM.PrivilegeBtnClick(param)
   elseif accountData.LoginType == E.LoginType.WeChat then
     if param == nil then
       Z.UIMgr:OpenView("common_privilege_popup")
-    elseif param == Z.EntityMgr.PlayerEnt.EntId then
+    elseif param == Z.EntityMgr.PlayerEnt.CharId then
       Z.TipsVM.ShowTipsLang(100012)
     else
       Z.TipsVM.ShowTipsLang(100013)
@@ -415,24 +415,6 @@ function TencentVM.OpenTaptapEvaluationPopup()
     labYes = confirmLabel
   }
   Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
-end
-
-function TencentVM.OpenAppleStoreEvaluationPopup()
-  if Z.SDKDevices.IsCloudGame then
-    return
-  end
-  if Z.SDKDevices.RuntimeOS ~= E.OS.iOS then
-    return
-  end
-  local countKey = "AppleStoreEvaluation_Count"
-  local timeKey = "AppleStoreEvaluation_Time"
-  local count = Z.UserDataManager.GetInt(countKey, 0)
-  if count < 3 then
-    Z.SDKTencent.Review()
-    count = count + 1
-    Z.UserDataManager.SetInt(countKey, count)
-    Z.UserDataManager.SetLong(timeKey, os.time())
-  end
 end
 
 return TencentVM

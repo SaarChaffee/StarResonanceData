@@ -18,5 +18,6 @@ message UnionInfo {
   zproto.DanceBall dance_ball = 9;
   string group_id = 10;
   int32 group_type = 11;
+  bool is_name_regist = 12;
 }
 

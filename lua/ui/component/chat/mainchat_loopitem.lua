@@ -40,9 +40,9 @@ function mainchatLoopItem:OnRefresh(data)
   elseif type == E.ChitChatMsgType.EChatMsgVoice then
     content = string.zconcat(channelName, Z.ChatMsgHelper.GetPlayerName(data), ":", Lang("chatMiniVoice"))
   elseif type == E.ChitChatMsgType.EChatMsgClientTips then
-    local systemType = Z.ChatMsgHelper.GetSystemType(data)
-    if systemType == E.ESystemTipInfoType.ItemInfo then
-      content = string.zconcat(channelName, Lang("ChaBubbleGet"), content)
+    local type, _, _, systemContent = Z.ChatMsgHelper.GetSystemType(data)
+    if type == E.ESystemTipInfoType.ItemInfo then
+      content = Lang("ChaBubbleGet", {content = systemContent})
     else
       content = string.zconcat(channelName, content)
     end

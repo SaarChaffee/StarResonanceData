@@ -21,7 +21,10 @@ function MatchData:SetMatchData(data, isCancel)
     matchTeamVm_.CancelMatchingTimer()
     return
   end
-  if data.matchKeyInfo == nil or isCancel then
+  if self.matchInfo_ ~= nil and data.matchToken ~= self.matchInfo_.matchToken then
+    return
+  end
+  if data.matchStatus == E.MatchSatatusType.ReadyEnd or isCancel or data.matchKeyInfo == nil then
     self:ClearMatchData()
     local matchTeamVm_ = Z.VMMgr.GetVM("match_team")
     matchTeamVm_.CancelMatchingTimer()
@@ -33,6 +36,7 @@ function MatchData:SetMatchData(data, isCancel)
   self.matchInfo_ = data
   self.matchType_ = data.matchKeyInfo.matchType
   self.matchPlayerInfo_ = data.matchPlayerInfo
+  logGreen("[Match] SetMatchData Get Match Player Count is " .. table.zcount(self.matchPlayerInfo_) .. "  token is " .. self.matchInfo_.matchToken)
   self:SetMatchStartTime(data.matchTime * 1000)
   if self.matchState_ == matchStatus then
     return
@@ -40,6 +44,8 @@ function MatchData:SetMatchData(data, isCancel)
   self.matchState_ = matchStatus
   if matchStatus == E.MatchSatatusType.WaitReady then
     matchVm_.OpenMatchView(self.matchType_)
+    local matchTeamVm_ = Z.VMMgr.GetVM("match_team")
+    matchTeamVm_.CancelMatchingTimer()
   else
     matchVm_.CloseMatchView()
   end
@@ -75,10 +81,12 @@ function MatchData:SetMatchPlayerInfo(matchPlayerInfo, matchToken)
   if self.matchInfo_.matchToken ~= matchToken then
     return
   end
+  logGreen("[Match] SetMatchPlayerInfo Get Match Player Count is " .. table.zcount(matchPlayerInfo) .. "  token is " .. matchToken)
   self.matchPlayerInfo_ = matchPlayerInfo
 end
 
 function MatchData:GetMatchPlayerInfo()
+  logGreen("[Match] GetMatchPlayerInfo Get Match Player Count is " .. table.zcount(self.matchPlayerInfo_) .. "  token is " .. self.matchInfo_.matchToken)
   return self.matchPlayerInfo_
 end
 

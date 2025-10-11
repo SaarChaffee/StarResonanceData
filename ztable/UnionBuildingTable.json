@@ -1,8 +1,8 @@
 {
   "1": {
     "Id": 1,
-    "BuildingName": "",
-    "BuildingTxt": "",
+    "BuildingName": "Guild Center",
+    "BuildingTxt": "Guild Center, once crowdfunding is initiated, all players in the Guild can enter. Upgrading the Guild Center unlocks more content.",
     "Picture": "ui/textures/union_2/union_device",
     "SmallPicture": "ui/textures/union_2/union_linshi",
     "QuickJumpType": 1,
@@ -15,8 +15,8 @@
   },
   "2": {
     "Id": 2,
-    "BuildingName": "",
-    "BuildingTxt": "",
+    "BuildingName": "Boon Fountain",
+    "BuildingTxt": "Activate the Boon Fountain, all Guild members can enjoy the blessings, requires daily activation by the Guild administrator.",
     "Picture": "ui/textures/union_2/union_device04",
     "SmallPicture": "ui/textures/union_2/union_linshi04",
     "QuickJumpType": 1,
@@ -33,8 +33,8 @@
   },
   "3": {
     "Id": 3,
-    "BuildingName": "",
-    "BuildingTxt": "",
+    "BuildingName": "Practice Room",
+    "BuildingTxt": "Let's practice the new skills we just learned!",
     "Picture": "ui/textures/union_2/union_device05",
     "SmallPicture": "ui/textures/union_2/union_linshi05",
     "QuickJumpType": 1,
@@ -51,8 +51,8 @@
   },
   "4": {
     "Id": 4,
-    "BuildingName": "",
-    "BuildingTxt": "",
+    "BuildingName": "Leisure Area",
+    "BuildingTxt": "Upgrade the leisure area to accommodate more guild members!",
     "Picture": "ui/textures/union_2/union_device06",
     "SmallPicture": "ui/textures/union_2/union_linshi06",
     "QuickJumpType": 1,
@@ -69,8 +69,8 @@
   },
   "5": {
     "Id": 5,
-    "BuildingName": "",
-    "BuildingTxt": "",
+    "BuildingName": "Grocery Store",
+    "BuildingTxt": "Use Guild Token to exchange items at the guild store!",
     "Picture": "ui/textures/union_2/union_device03",
     "SmallPicture": "ui/textures/union_2/union_linshi03",
     "QuickJumpType": 1,
@@ -87,8 +87,8 @@
   },
   "6": {
     "Id": 6,
-    "BuildingName": "",
-    "BuildingTxt": "",
+    "BuildingName": "Photo Panel",
+    "BuildingTxt": "Upgrade the Photo Panel to customize images, go take some photos!",
     "Picture": "ui/textures/union_2/union_device02",
     "SmallPicture": "ui/textures/union_2/union_linshi02",
     "QuickJumpType": 1,
@@ -105,8 +105,8 @@
   },
   "7": {
     "Id": 7,
-    "BuildingName": "",
-    "BuildingTxt": "",
+    "BuildingName": "ID Machine",
+    "BuildingTxt": "A machine used to customize avatars and Namecard photos. Put on your favorite outfit to create a personalized avatar and Namecard photo!",
     "Picture": "ui/textures/union_2/union_device10",
     "SmallPicture": "ui/textures/union_2/union_linshi10",
     "QuickJumpType": 1,

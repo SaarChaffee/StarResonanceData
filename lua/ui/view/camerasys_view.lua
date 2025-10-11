@@ -1492,8 +1492,9 @@ function CamerasysView:OnMountsTrigger()
 end
 
 function CamerasysView:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.Mounts then
+  if inputActionEventData.ActionId == Z.InputActionIds.Mounts then
     self:OnMountsTrigger()
+  elseif inputActionEventData.ActionId == Z.InputActionIds.PhotoGamepadPointVisible then
   end
 end
 

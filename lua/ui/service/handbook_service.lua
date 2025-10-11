@@ -11,7 +11,6 @@ function HandbookService:OnLogin()
 end
 
 function HandbookService:OnLogout()
-  Z.DataMgr.Get("handbook_data"):SaveLocalSave()
 end
 
 function HandbookService:OnEnterScene(sceneId)

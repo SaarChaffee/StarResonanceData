@@ -60,6 +60,7 @@ function MonthlyCardService:showPrivilegesTips(dirtys)
     for k, v in pairs(dirtys.monthlyCardInfo) do
       if v:IsNew() and k >= curKey then
         Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.Activities, "monthly_reward_card_privilege_window")
+        Z.SDKReport.Report(Z.SDKReportEvent.BuyMonthlyCard)
         break
       end
     end

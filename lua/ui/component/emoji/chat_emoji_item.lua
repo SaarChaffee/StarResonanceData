@@ -32,8 +32,7 @@ function ChatEmojiItem:OnPointerClick(go, eventData)
     self:showUnlockTips()
     return
   end
-  local msg = string.zconcat("emojiPic=%s=%s", self.data_.Res, self.data_.Id)
-  self.parent.UIView:SendMessage(msg, E.ChitChatMsgType.EChatMsgPictureEmoji, self.data_.Id)
+  self.parent.UIView:SendMessage("", E.ChitChatMsgType.EChatMsgPictureEmoji, self.data_.Id)
 end
 
 function ChatEmojiItem:refreshLockState()

@@ -31,7 +31,7 @@ function ExploreMonsterMonsterItem:OnSelected(isSelected, isClick)
       Z.AudioMgr:Play("sys_general_frame")
     end
     local data = self:GetCurData()
-    self.parentUIView_:ChangeMonster(data)
+    self.parentUIView_:ChangeMonster(data, isClick)
   end
   self:refreshSelectState(isSelected)
 end

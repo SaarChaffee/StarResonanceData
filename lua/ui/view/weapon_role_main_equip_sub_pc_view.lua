@@ -86,7 +86,6 @@ function Weapon_role_main_equip_sub_pcView:refershEquipment()
       local equipInfo = equipList[key]
       if equipInfo and equipInfo.itemUuid > 0 then
         local itemTabData = self.itemsVm_.GetItemTabDataByUuid(equipInfo.itemUuid)
-        local itemData = Z.ContainerMgr.CharSerialize.itemPackage.packages[E.BackPackItemPackageType.Equip].items[equipInfo.itemUuid]
         if itemTabData then
           value.Ref:SetVisible(value.img_equip_off, false)
           value.Ref:SetVisible(value.rimg_icon, true)
@@ -116,12 +115,21 @@ function Weapon_role_main_equip_sub_pcView:refershEquipment()
           else
             value.Ref:SetVisible(value.item_perfect, false)
           end
+          if equipRow and equipRow.EquipGs then
+            value.Ref:SetVisible(value.lab_lv, true)
+            value.lab_lv.text = Lang("GSEqual", {
+              val = equipRow.EquipGs
+            })
+          else
+            value.Ref:SetVisible(value.lab_lv, false)
+          end
         end
       else
         value.Ref:SetVisible(value.item_perfect, false)
         value.Ref:SetVisible(value.img_damage, false)
         value.Ref:SetVisible(value.img_equip_off, true)
         value.Ref:SetVisible(value.rimg_icon, false)
+        value.Ref:SetVisible(value.lab_lv, false)
         value.Ref:SetVisible(value.img_unlocked, true)
         if key <= E.EquipPart.Shoe then
           value.rimg_quality:SetImage("ui/textures/weap_pc/weap_equip_00")

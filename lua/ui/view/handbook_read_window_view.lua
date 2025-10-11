@@ -19,6 +19,7 @@ function Handbook_read_windowView:OnActive()
   self.selectType_ = nil
   self.selectId_ = nil
   self.tabs_ = {}
+  self.isStart_ = true
   self.readingLoop_ = loop_grid_view.new(self, self.uiBinder.subview.node_list, handbookReadingWorksLoopGridItem, "handbook_read_item_tpl")
   self.readingLoop_:Init({})
   self:AddClick(self.uiBinder.btn_close, function()
@@ -63,11 +64,16 @@ function Handbook_read_windowView:OnActive()
     self.uiBinder.togs_group:SetAllTogglesOff()
     self.tabs_[1].tog_tab_select.isOn = true
   end)()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_info)
   Z.EventMgr:Add(Z.ConstValue.Handbook.ReadDetailRefresh, self.refreshGridLoop, self)
 end
 
 function Handbook_read_windowView:OnDeActive()
   Z.EventMgr:Remove(Z.ConstValue.Handbook.ReadDetailRefresh, self.refreshGridLoop, self)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_info)
   self.uiBinder.togs_group:ClearAll()
   self.tabs_ = {}
   self.readingLoop_:UnInit()
@@ -115,14 +121,22 @@ function Handbook_read_windowView:selectType(type)
     self.readingLoop_:ClearAllSelect()
     self.readingLoop_:RefreshListView({})
   end
+  if self.isStart_ then
+    self.isStart_ = false
+  else
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+  end
 end
 
-function Handbook_read_windowView:SelectId(id)
+function Handbook_read_windowView:SelectId(id, isClick)
   if id == self.selectId_ then
     return
   end
   self.selectId_ = id
   self:refreshSubView()
+  if isClick then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
+  end
 end
 
 function Handbook_read_windowView:refreshSubView()

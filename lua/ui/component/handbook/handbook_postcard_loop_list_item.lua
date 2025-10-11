@@ -28,12 +28,16 @@ function HandbookPostcardLoopListItem:OnRefresh(data)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, self.IsSelected)
   local isNew = self.handbookVM_.IsNew(handbookDefine.HandbookType.Postcard, self.data)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_new, isNew)
+  self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
 end
 
 function HandbookPostcardLoopListItem:OnSelected(isSelected)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, isSelected)
   if isSelected then
     self.parent.UIView:SelectId(self.data)
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+  else
+    self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
   end
   local isNew = self.handbookVM_.IsNew(handbookDefine.HandbookType.Postcard, self.data)
   if isNew then

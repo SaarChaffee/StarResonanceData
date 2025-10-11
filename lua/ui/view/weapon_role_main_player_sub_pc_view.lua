@@ -197,8 +197,8 @@ function Weapon_role_main_player_sub_pcView:showAttrDetails(Id)
         local transFactor = fightAttrTranRow[attrTransHeadName[Id]]
         local value = Z.EntityMgr.PlayerEnt:GetLuaAttr(attrTransDict[Id]).Value
         local addAttr = value / (value + transFactor[1] + roleLv * transFactor[2]) * 100
-        content = string.zconcat(Lang("BaseAttr"), fightAttrData.OfficialName, Lang(":"), fightAttrData.BaseAttr / 100, "%")
-        content = string.zconcat(content, "\n", fightAttrData.OfficialName, Lang(":"), value, "[", addAttr - addAttr % 0.01, "%", "]")
+        content = string.zconcat(Lang("BaseAttr"), fightAttrData.OfficialName, Lang("colon"), fightAttrData.BaseAttr / 100, "%")
+        content = string.zconcat(content, "\n", fightAttrData.OfficialName, Lang("colon"), value, "[", addAttr - addAttr % 0.01, "%", "]")
       end
       desc = string.zconcat(desc, "\n", content)
     end
@@ -222,7 +222,7 @@ function Weapon_role_main_player_sub_pcView:showRoleInfo()
   local viewData = {
     id = Z.ContainerMgr.CharSerialize.charBase.avatarInfo.avatarId,
     modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value,
-    charId = Z.EntityMgr.PlayerEnt.EntId,
+    charId = Z.EntityMgr.PlayerEnt.CharId,
     token = self.cancelSource:CreateToken()
   }
   if Z.ContainerMgr.CharSerialize.charBase.avatarInfo and Z.ContainerMgr.CharSerialize.charBase.avatarInfo.avatarFrameId then
@@ -281,7 +281,7 @@ function Weapon_role_main_player_sub_pcView:onChangePortrait(avatarId, frameId)
   local viewData = {
     id = avatarId,
     modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value,
-    charId = Z.EntityMgr.PlayerEnt.EntId,
+    charId = Z.EntityMgr.PlayerEnt.CharId,
     headFrameId = frameId,
     token = self.cancelSource:CreateToken()
   }

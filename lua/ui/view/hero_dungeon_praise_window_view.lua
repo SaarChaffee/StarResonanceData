@@ -171,7 +171,7 @@ function Hero_dungeon_praise_windowView:openTitleTips(playItem, titleData)
 end
 
 function Hero_dungeon_praise_windowView:playAnim(charId, animaId)
-  if Z.EntityMgr.PlayerEnt and charId == Z.EntityMgr.PlayerEnt.EntId then
+  if Z.EntityMgr.PlayerEnt and charId == Z.EntityMgr.PlayerEnt.CharId then
     Z.ZAnimActionPlayMgr:PlayAction(animaId, true)
   end
 end
@@ -202,7 +202,9 @@ function Hero_dungeon_praise_windowView:BindEvents()
   self.leaveBtn_:AddListener(function()
     self.anim_:CoroPlay(Z.DOTweenAnimType.Close, function()
       Z.CoroUtil.create_coro_xpcall(function()
-        self.vm_.QuitDungeon(self.cancelSource:CreateToken())
+        if Z.UIMgr:IsActive("hero_dungeon_praise_window") then
+          self.vm_.QuitDungeon(self.cancelSource:CreateToken())
+        end
       end)()
     end, function(err)
     end)

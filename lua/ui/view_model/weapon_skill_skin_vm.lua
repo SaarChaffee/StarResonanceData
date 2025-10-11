@@ -83,6 +83,18 @@ function WeaponSkillSkinVM:GetWeaponSkinId(professionId)
 end
 
 function WeaponSkillSkinVM:GetWeaponOriginSkinId(professionId)
+  local equipVm = Z.VMMgr.GetVM("equip_system")
+  local item = equipVm.GetItemByPartId(E.EquipPart.Weapon)
+  if item then
+    local equipWeaponRow = Z.TableMgr.GetRow("EquipWeaponTableMgr", item.configId, true)
+    if equipWeaponRow and equipWeaponRow.WeaponSkinId ~= 0 then
+      return equipWeaponRow.WeaponSkinId
+    end
+  end
+  local professionRow = Z.TableMgr.GetRow("ProfessionSystemTableMgr", professionId, true)
+  if professionRow then
+    return professionRow.WeaponSkinId
+  end
   local weaponData = Z.TableMgr.GetTable("WeaponSkinTableMgr").GetDatas()
   for _, value in pairs(weaponData) do
     if value.ProfessionId == professionId and value.Original == 1 then

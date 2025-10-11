@@ -17,13 +17,13 @@ function PrivilegesData:UnInit()
 end
 
 function PrivilegesData:InitPrivilegesData(data)
-  if not data or table.zcount(data.allSourcePrivilegeEffectsMap) <= 0 then
-    return
-  end
   self.privilegesData_ = {}
-  for k, v in pairs(data.allSourcePrivilegeEffectsMap) do
-    self.privilegesData_[k] = v
+  if data and table.zcount(data.allSourcePrivilegeEffectsMap) > 0 then
+    for k, v in pairs(data.allSourcePrivilegeEffectsMap) do
+      self.privilegesData_[k] = v
+    end
   end
+  Z.EventMgr:Dispatch(Z.ConstValue.PrivilegesDataChanged)
 end
 
 function PrivilegesData:GetAllPrivilegesData()

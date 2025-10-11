@@ -16,6 +16,7 @@ end
 
 function House_level_subView:OnActive()
   self:bindBtnClick()
+  self:onStartAnimShow()
   self:initViewList()
   Z.EventMgr:Add(Z.ConstValue.House.HouseExpChange, self.OnHouseExpChange, self)
   Z.EventMgr:Add(Z.ConstValue.House.HouseCleaninessChange, self.OnsHouseCleaninessChange, self)
@@ -184,6 +185,10 @@ function House_level_subView:bindBtnClick()
       self.houseVm_.AsyncUpgradeHouse(self.curLevel - 1, self.cancelSource:CreateToken())
     end
   end)
+end
+
+function House_level_subView:onStartAnimShow()
+  self.uiBinder.anim_do:Restart(Z.DOTweenAnimType.Open)
 end
 
 return House_level_subView

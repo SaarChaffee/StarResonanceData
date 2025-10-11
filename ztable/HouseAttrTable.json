@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Name": "",
+    "Name": "Homestead Interior",
     "ModelID": 80011,
     "FollowType": 0,
     "IsFlying": false,
@@ -18,7 +18,7 @@
   },
   "2": {
     "Id": 2,
-    "Name": "",
+    "Name": "Homestead Exterior",
     "ModelID": 80011,
     "FollowType": 0,
     "IsFlying": false,

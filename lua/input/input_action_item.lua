@@ -103,9 +103,6 @@ function InputActionItem:triggerAction(inputActionEventData)
   if not self.enable_ then
     return
   end
-  if not self:checkIsGamepadComboPressed(inputActionEventData) then
-    return
-  end
   if self.actionCallback_ then
     self.actionCallback_()
     return
@@ -113,7 +110,7 @@ function InputActionItem:triggerAction(inputActionEventData)
   if self.keyboardRow_ then
     local funcId = self.keyboardRow_.FunctionId
     if funcId and funcId ~= 0 then
-      self:triggerFunc(inputActionEventData.actionId, funcId)
+      self:triggerFunc(inputActionEventData.ActionId, funcId)
     end
   else
     logError("keyboardRow is nil ")
@@ -125,10 +122,6 @@ function InputActionItem:triggerFunc(actionId, funcId)
     return
   end
   self.mainUiVm_.GotoMainUIFunc(funcId)
-end
-
-function InputActionItem:checkIsGamepadComboPressed(inputActionEventData)
-  return Z.PlayerInputController:IsGamepadComboValidForAction(inputActionEventData)
 end
 
 return InputActionItem

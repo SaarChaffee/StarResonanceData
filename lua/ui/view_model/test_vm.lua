@@ -34,6 +34,36 @@ end
 function ret.xxxx()
   local testVm = Z.VMMgr.GetVM("test")
   testVm.TestAwardsTimerLimit()
+  local timerMgr = Z.TimerMgr.new()
+  timerMgr:StartTimer(function()
+    local interactionData_ = Z.DataMgr.Get("interaction_data")
+    local handleDataList = interactionData_:GetData()
+    local count = #handleDataList
+    if count < 1 then
+      return
+    end
+    if count == 1 then
+      handleDataList[1]:OnBtnClick()
+      return
+    end
+    if count == 2 then
+      handleDataList[2]:OnBtnClick()
+      return
+    end
+  end, 1, -1)
+  Z.EventMgr:Add(Z.ConstValue.RefreshIdCard, function(recvCharIdList)
+    local charIdList = recvCharIdList
+    if not charIdList or charIdList.count == 0 then
+      logError("charIdList is nil or empty")
+      return
+    end
+    for i = 0, charIdList.count do
+      local uuid = charIdList[i]
+      local entityVm = Z.VMMgr.GetVM("entity")
+      local charID = entityVm.UuidToEntId(uuid)
+      logError("uuid = " .. uuid .. "  charID = " .. charID)
+    end
+  end)
 end
 
 return ret

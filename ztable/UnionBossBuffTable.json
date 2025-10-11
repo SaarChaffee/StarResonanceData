@@ -2,10 +2,10 @@
   "102101": {
     "BossId": 102101,
     "GuideGroup": 1,
-    "Title": "",
+    "Title": "Clash! Floating Island - Dragon Shackles",
     "Sort": 1,
     "Buff": 882260,
-    "Desc": "",
+    "Desc": "Blessing Buffs are granted after 20 guildmembers clear the dungeon.",
     "ConditionValue": 20,
     "RecordLimit": 50,
     "OpenConditionValue": [
@@ -19,10 +19,10 @@
   "102401": {
     "BossId": 102401,
     "GuideGroup": 1,
-    "Title": "",
+    "Title": "Clash! Floating Island - Dragon Shackles",
     "Sort": 2,
     "Buff": 882263,
-    "Desc": "",
+    "Desc": "Blessing Buffs are granted after 20 guildmembers clear the dungeon.",
     "ConditionValue": 20,
     "RecordLimit": 50,
     "OpenConditionValue": [
@@ -36,10 +36,10 @@
   "102701": {
     "BossId": 102701,
     "GuideGroup": 1,
-    "Title": "",
+    "Title": "Clash! Floating Island - Dragon Shackles",
     "Sort": 3,
     "Buff": 882266,
-    "Desc": "",
+    "Desc": "Blessing Buffs are granted after 20 guildmembers clear the dungeon.",
     "ConditionValue": 20,
     "RecordLimit": 50,
     "OpenConditionValue": [
@@ -53,10 +53,10 @@
   "102104": {
     "BossId": 102104,
     "GuideGroup": 2,
-    "Title": "",
+    "Title": "Brutal! Floating Island - Dragon Shackles",
     "Sort": 4,
     "Buff": 882261,
-    "Desc": "",
+    "Desc": "Blessing Buffs are granted after 20 guildmembers clear the dungeon.",
     "ConditionValue": 20,
     "RecordLimit": 50,
     "OpenConditionValue": [
@@ -70,10 +70,10 @@
   "102450": {
     "BossId": 102450,
     "GuideGroup": 2,
-    "Title": "",
+    "Title": "Brutal! Floating Island - Dragon Shackles",
     "Sort": 5,
     "Buff": 882264,
-    "Desc": "",
+    "Desc": "Blessing Buffs are granted after 20 guildmembers clear the dungeon.",
     "ConditionValue": 20,
     "RecordLimit": 50,
     "OpenConditionValue": [
@@ -87,10 +87,10 @@
   "102720": {
     "BossId": 102720,
     "GuideGroup": 2,
-    "Title": "",
+    "Title": "Brutal! Floating Island - Dragon Shackles",
     "Sort": 6,
     "Buff": 882267,
-    "Desc": "",
+    "Desc": "Blessing Buffs are granted after 20 guildmembers clear the dungeon.",
     "ConditionValue": 20,
     "RecordLimit": 50,
     "OpenConditionValue": [
@@ -104,10 +104,10 @@
   "102105": {
     "BossId": 102105,
     "GuideGroup": 3,
-    "Title": "",
+    "Title": "Purge! Floating Island - Dragon Shackles",
     "Sort": 7,
     "Buff": 882262,
-    "Desc": "",
+    "Desc": "Blessing Buffs are granted after 20 guildmembers clear the dungeon.",
     "ConditionValue": 20,
     "RecordLimit": 50,
     "OpenConditionValue": [
@@ -121,10 +121,10 @@
   "102451": {
     "BossId": 102451,
     "GuideGroup": 3,
-    "Title": "",
+    "Title": "Purge! Floating Island - Dragon Shackles",
     "Sort": 8,
     "Buff": 882265,
-    "Desc": "",
+    "Desc": "Blessing Buffs are granted after 20 guildmembers clear the dungeon.",
     "ConditionValue": 20,
     "RecordLimit": 50,
     "OpenConditionValue": [
@@ -138,10 +138,10 @@
   "102721": {
     "BossId": 102721,
     "GuideGroup": 3,
-    "Title": "",
+    "Title": "Purge! Floating Island - Dragon Shackles",
     "Sort": 9,
     "Buff": 882268,
-    "Desc": "",
+    "Desc": "Blessing Buffs are granted after 20 guildmembers clear the dungeon.",
     "ConditionValue": 20,
     "RecordLimit": 50,
     "OpenConditionValue": [

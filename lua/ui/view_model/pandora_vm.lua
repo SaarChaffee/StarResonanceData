@@ -107,4 +107,25 @@ function PandoraVM:CheckUnShowPopup()
   ZPandora.SendMessageToApp(appId, jsonSend)
 end
 
+function PandoraVM:SendNotchHeight(appId)
+  local paramSend = {
+    type = PANDORA_DEFINE.MessageType.SendNotchHeight,
+    appId = appId,
+    content = tostring(Z.UIRoot.NotchHeight)
+  }
+  local jsonSend = cjson.encode(paramSend)
+  ZPandora.SendMessageToApp(appId, jsonSend)
+end
+
+function PandoraVM:CheckIsBelongToActivity(extraInfo)
+  if extraInfo ~= nil and extraInfo.windowConfig ~= nil and extraInfo.windowConfig.parameter ~= nil and extraInfo.windowConfig.parameter.belongToApp ~= nil then
+    local appId = extraInfo.windowConfig.parameter.belongToApp
+    if type(appId) == "number" then
+      appId = tostring(math.floor(appId))
+    end
+    return appId == PANDORA_DEFINE.APP_ID.Activity
+  end
+  return false
+end
+
 return PandoraVM

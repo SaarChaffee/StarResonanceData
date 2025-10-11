@@ -32,7 +32,8 @@ E.PlaceHolderType = {
   PlaceHolderTypeFishItem = 9,
   PlaceHolderTypeFishRank = 10,
   PlaceHolderTypeUnionGroup = 11,
-  PlaceHolderTypeMasterMode = 12
+  PlaceHolderTypeMasterMode = 12,
+  PlaceHolderTypeScenePosition = 13
 }
 E.ClientPlaceHolderType = {
   UnionHunt = 1,
@@ -130,7 +131,7 @@ end
 
 function ret.AsyncUpdatePrivateChatList(data)
   if not chatMainData:IsInBlack(data.addTargetInfo.charId) then
-    chatMainData:AddPrivateChatListAddByTargetInfo(data.addTargetInfo)
+    chatMainData:AddPrivateChatListAddByTargetInfo(data.addTargetInfo, true)
     ret.AsyncUpdatePrivateChatCharInfo()
   end
   chatMainData:DelPrivateChatByCharId(data.delTargetId)
@@ -160,14 +161,12 @@ end
 
 function ret.ClearChannelQueueByChannelId(chatChannelType)
   chatMainData:ClearClientChannelData(E.ChatChannelType.EComprehensive, chatChannelType)
-  chatMainData:ClearClientChannelData(E.ChatChannelType.EMain, chatChannelType)
   chatMainData:ClearChannelQueueByChannelId(chatChannelType)
   if settingData:GetSynthesis(chatChannelType) then
     chatMainData:ClearComprehensiveChannelChatTipsAndChannelMsg()
     ret.checkChatQueueTimeTips(E.ChatChannelType.EComprehensive)
   end
   chatMainData:SetChatDataFlg(E.ChatChannelType.EComprehensive, E.ChatWindow.Main, true, true)
-  chatMainData:SetChatDataFlg(E.ChatChannelType.EMain, E.ChatWindow.Main, true, true)
 end
 
 function ret.asyncInitRecord()
@@ -274,7 +273,7 @@ function ret.AsyncCreatePrivateChat(charId, cancelToken)
   local request = {}
   request.targetId = charId
   chitChatProxy.CreatePrivateChatSession(request, cancelToken)
-  chatMainData:AddPrivateChatByCharId(charId)
+  chatMainData:AddPrivateChatListAddByTargetInfo({charId = charId}, true)
 end
 
 function ret.AsyncDeletePrivateChat(charId, cancelToken)
@@ -448,12 +447,6 @@ function ret.saveChatData(channelId, chatMsgData, isRecord, targetId, maxCount, 
   chatMainData:SaveChatMsgDataToChannelQueue(channelId, chatMsgData, targetId, isRecord, maxCount, autoSort)
   chatMainData:SetChatDataFlg(channelId, E.ChatWindow.Main, true, isRecord, targetId)
   chatMainData:SetChatDataFlg(channelId, E.ChatWindow.Mini, true, isRecord, targetId)
-  local sendCharId = Z.ChatMsgHelper.GetCharId(chatMsgData)
-  if sendCharId == Z.ContainerMgr.CharSerialize.charId then
-    return
-  end
-  local friendVM = Z.VMMgr.GetVM("friends_main")
-  friendVM.CheckFriendChatRed(sendCharId)
 end
 
 function ret.checkPrivateChatNewMsgTips(channelId, charId)
@@ -486,7 +479,6 @@ function ret.saveChannelMsg(channelId, chatMsgList, isRecord, targetId, autoSort
         if channelId ~= E.ChatChannelType.ESystem or not saveToSystemChannel then
           ret.saveChatData(channelId, chatMsgData, isRecord, targetId)
         end
-        ret.saveMainMsg(chatMsgData, isRecord)
         ret.checkComprehensive(channelId, chatMsgData, isRecord, autoSort)
         if not isRecord then
           ret.addBullet(chatMsgData)
@@ -496,9 +488,6 @@ function ret.saveChannelMsg(channelId, chatMsgList, isRecord, targetId, autoSort
   end
   if isRecord then
     Z.EventMgr:Dispatch(Z.ConstValue.Chat.GetRecord, channelId)
-  end
-  if channelId == E.ChatChannelType.EChannelPrivate then
-    Z.EventMgr:Dispatch(Z.ConstValue.Chat.NewPrivateChatMsg)
   end
 end
 
@@ -558,63 +547,19 @@ function ret.saveComprehensiveMsg(chatMsgData, isRecord)
   end
 end
 
-function ret.saveMainMsg(chatMsgData, isRecord, ignoreMainChannel)
-  if ignoreMainChannel then
-    return
-  end
-  if settingData:GetChatList(Z.ChatMsgHelper.GetChannelId(chatMsgData)) then
-    ret.saveChatData(E.ChatChannelType.EMain, chatMsgData, isRecord, nil, mainChannelQueueCount)
-  end
-end
-
 function ret.SetReceiveSystemMsg(info)
-  local msg = ""
-  local darkMsg = ""
-  if info.Type == E.ESystemTipInfoType.ItemInfo then
-    if info.Id then
-      local contentStr = Z.VMMgr.GetVM("items").ApplyItemNameWithQualityTag(info.Id)
-      if info.Content ~= "" and contentStr ~= "" then
-        local param = {
-          item = {
-            name = contentStr,
-            num = info.Content
-          }
-        }
-        msg = Lang("systemItemNoticeDark", param)
-      end
-      local contentDarkStr = Z.VMMgr.GetVM("items").ApplyItemNameWithQualityTag(info.Id)
-      if info.Content ~= "" and contentDarkStr ~= "" then
-        local param = {
-          item = {
-            name = contentDarkStr,
-            num = info.Content
-          }
-        }
-        darkMsg = Lang("systemItemNoticeDark", param)
-      end
-    end
-  elseif info.Type == E.ESystemTipInfoType.MessageInfo and info.Content ~= "" then
-    msg = info.Content
-    darkMsg = info.Content
-  end
   local chatMsgData = {
     ChannelId = E.ChatChannelType.ESystem,
-    MsgText = msg,
     SystemType = info.Type,
     SystemId = info.Id,
-    HeadStr = info.HeadStr
+    SystemContent = info.Content,
+    HeadStr = info.HeadStr,
+    MsgText = info.Content
   }
   ret.saveChatData(E.ChatChannelType.ESystem, chatMsgData, false)
   if settingData:GetSynthesis(E.ChatChannelType.ESystem) then
     ret.saveChatData(E.ChatChannelType.EComprehensive, chatMsgData, false)
   end
-  local mainChatMsgData = {
-    ChannelId = E.ChatChannelType.ESystem,
-    MsgText = darkMsg,
-    SystemType = info.Type,
-    SystemId = info.Id
-  }
-  ret.saveMainMsg(mainChatMsgData)
   ret.addBullet(chatMsgData)
   Z.EventMgr:Dispatch(Z.ConstValue.Chat.BubbleMsg, chatMsgData)
 end
@@ -735,18 +680,26 @@ function ret.checkFriendMsgData(channelId, chatMsg)
   if chatMsg.sendCharInfo then
     sendCharId = chatMsg.sendCharInfo.charID
   end
-  if not friendMainData:IsFriendByCharId(sendCharId) then
-    return
+  if sendCharId == Z.ContainerMgr.CharSerialize.charBase.charId then
+    local targetId = 0
+    if chatMsg.msgInfo then
+      targetId = chatMsg.msgInfo.targetId
+    end
+    Z.EventMgr:Dispatch(Z.ConstValue.Friend.ChatSelfSendNewMessage, targetId)
+  else
+    if chatMainData:GetPrivateChatItemByCharId(sendCharId) then
+      Z.EventMgr:Dispatch(Z.ConstValue.Friend.ChatPrivateNewMessage, sendCharId)
+    end
+    local mainUIData = Z.DataMgr.Get("mainui_data")
+    mainUIData.MainUIPCShowFriendMessage = true
+    if friendMainData:IsFriendByCharId(sendCharId) then
+      Z.EventMgr:Dispatch(Z.ConstValue.Friend.FriendNewMessage)
+    end
   end
-  local mainUIData = Z.DataMgr.Get("mainui_data")
-  mainUIData.MainUIPCShowFriendMessage = true
-  if not chatMainData:GetPrivateChatItemByCharId(sendCharId) then
-    return
-  end
-  Z.EventMgr:Dispatch(Z.ConstValue.Friend.FriendNewMessage, sendCharId)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.FriendChatTab, chatMainData:GetPrivateChatUnReadCount())
 end
 
-function ret.CheckFriendNewMessage()
+function ret.CheckMainUIFriendNewMessage()
   local isShowFriendNewMessage = false
   local privateChatList = chatMainData:GetPrivateChatList()
   for i = 1, #privateChatList do
@@ -773,7 +726,7 @@ function ret.checkCanSendMessage(channelId)
       Z.TipsVM.ShowTipsLang(1000100)
       return false
     end
-  elseif channelId == E.ChatChannelType.EChannelNull or channelId == E.ChatChannelType.EChannelGroup or channelId == E.ChatChannelType.EChannelTopNotice or channelId == E.ChatChannelType.ESystem or channelId == E.ChatChannelType.EMain then
+  elseif channelId == E.ChatChannelType.EChannelNull or channelId == E.ChatChannelType.EChannelGroup or channelId == E.ChatChannelType.EChannelTopNotice or channelId == E.ChatChannelType.ESystem then
     return false
   end
   return true
@@ -1027,6 +980,32 @@ function ret.AsyncSendShare(channelId, type, cancelToken)
   local request = {}
   request.channelType = channelId
   request.objectType = type
+  local errCode = worldProxy.ShareObjectInChat(request, cancelToken)
+  if errCode == 0 then
+    local goalVM = Z.VMMgr.GetVM("goal")
+    goalVM.SetGoalFinish(E.GoalType.ChatChannel, channelId)
+    return true
+  else
+    Z.TipsVM.ShowTips(errCode)
+    return false
+  end
+end
+
+function ret.AsyncLocalPosition(channelId, cancelToken)
+  channelId = channelId == E.ChatChannelType.EComprehensive and chatMainData:GetComprehensiveId() or channelId
+  local request = {}
+  request.channelType = channelId
+  request.objectType = Z.PbEnum("ShareObjectType", "ShareObjectTypePosition")
+  local itemShareData = chatMainData:GetShareData()
+  if itemShareData.string1 then
+    request.beforeDesc = itemShareData.string1
+  end
+  if itemShareData.string2 then
+    request.afterDesc = itemShareData.string2
+  end
+  local targetId = channelId == E.ChatChannelType.EChannelPrivate and chatMainData:GetPrivateSelectId() or 0
+  request.targetCharId = targetId
+  request.paramList = chatMainData:GetShareParamList()
   local errCode = worldProxy.ShareObjectInChat(request, cancelToken)
   if errCode == 0 then
     local goalVM = Z.VMMgr.GetVM("goal")
@@ -1314,6 +1293,16 @@ function ret.calcHyperLink(paramList, linkData, param, chatMsgData, chatHyperLin
         hyperLinkData = chatMainData:CreateHyperLinkData(E.ChatHyperLinkType.MasterDungeonScore)
       end
       isShowHyperlink = true
+    elseif placeHolder.type == E.PlaceHolderType.PlaceHolderTypeScenePosition then
+      protoData = pb.decode("zproto.PlaceHolderScenePosition", placeHolder.bytesContent)
+      if protoData then
+        linkData[1] = {
+          type = E.PlaceHolderType.PlaceHolderTypeScenePosition,
+          value = protoData
+        }
+        hyperLinkData = chatMainData:CreateHyperLinkData(E.ChatHyperLinkType.LocalPosition)
+      end
+      isShowHyperlink = true
     end
   end
   if chatHyperLink.FuncType == E.ClientPlaceHolderType.UnionGroup then
@@ -1332,7 +1321,7 @@ function ret.calcNoticeParam(paramList, linkData, param, chatMsgData, chatHyperL
   local placeHolderUnion
   local placeHolderBuff = {}
   local placeHolderTimestamp
-  if chatHyperLink.Id == E.ChatHyperLinkType.ItemShare or chatHyperLink.Id == E.ChatHyperLinkType.FishingArchives or chatHyperLink.Id == E.ChatHyperLinkType.FishingIllrate or chatHyperLink.Id == E.ChatHyperLinkType.FishingRank or chatHyperLink.Id == E.ChatHyperLinkType.PersonalZone or chatHyperLink.Id == E.ChatHyperLinkType.UnionGroup or chatHyperLink.Id == E.ChatHyperLinkType.MasterDungeonScore then
+  if chatHyperLink.Id == E.ChatHyperLinkType.ItemShare or chatHyperLink.Id == E.ChatHyperLinkType.FishingArchives or chatHyperLink.Id == E.ChatHyperLinkType.FishingIllrate or chatHyperLink.Id == E.ChatHyperLinkType.FishingRank or chatHyperLink.Id == E.ChatHyperLinkType.PersonalZone or chatHyperLink.Id == E.ChatHyperLinkType.UnionGroup or chatHyperLink.Id == E.ChatHyperLinkType.MasterDungeonScore or chatHyperLink.Id == E.ChatHyperLinkType.LocalPosition then
     ret.calcHyperLink(paramList, linkData, param, chatMsgData, chatHyperLink, hyperLinkData)
     if chatHyperLink.FuncType == E.ClientPlaceHolderType.PersonalZone or chatHyperLink.FuncType == E.ClientPlaceHolderType.ItemShare or chatHyperLink.FuncType == E.ClientPlaceHolderType.UnionGroup then
       linkData[1].isClient = true
@@ -1460,7 +1449,7 @@ function ret.addLinkClick(tmp, parent, linkData, chatMsgData)
           if linkValue.type == E.ClientPlaceHolderType.UnionHunt then
             ret.onClickEnterUnionHunt()
           elseif linkValue.type == E.ClientPlaceHolderType.GoToWorldBoss then
-            local gotoFuncVM = Z.VMMgr.GetVM("gotoFunc")
+            local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
             gotoFuncVM.GoToFunc(800902)
           elseif linkValue.type == E.ClientPlaceHolderType.UnionWarDance then
             Z.CoroUtil.create_coro_xpcall(function()
@@ -1489,6 +1478,8 @@ function ret.addLinkClick(tmp, parent, linkData, chatMsgData)
           ret.onClickFishingRank(parent, linkValue.value, linkValue.playerName)
         elseif linkValue.type == E.PlaceHolderType.PlaceHolderTypeMasterMode then
           ret.onClickMasterDungeonScore(parent, linkValue.value, linkValue.playerName)
+        elseif linkValue.type == E.PlaceHolderType.PlaceHolderTypeScenePosition then
+          ret.onClickPositionShare(linkValue.value)
         end
       end
     end, true)
@@ -1625,6 +1616,25 @@ function ret.onClickMasterDungeonScore(parent, data, playerName)
   viewData.parent = parent
   viewData.playerName = playerName
   Z.UIMgr:OpenView("hero_dungeon_master_share_window", viewData)
+end
+
+function ret.onClickPositionShare(data)
+  local sceneVM = Z.VMMgr.GetVM("scene")
+  if not sceneVM.CheckSceneUnlock(data.SceneId, true) then
+    return
+  end
+  local miniMapVM = Z.VMMgr.GetVM("minimap")
+  if not miniMapVM.CheckSceneID(data.SceneId, true) then
+    Z.TipsVM.ShowTips(102915)
+    return
+  end
+  local quickJumpVM = Z.VMMgr.GetVM("quick_jump")
+  quickJumpVM.DoJumpByConfigParam(E.QuickJumpType.TraceScenePosition, {
+    data.SceneId,
+    E.TrackType.Position,
+    E.GoalGuideSource.PositionShare,
+    Vector3.New(data.PositionX, data.PositionY, data.PositionZ)
+  })
 end
 
 function ret.addTipsByConfigId(configId, isClearChannelQueue)

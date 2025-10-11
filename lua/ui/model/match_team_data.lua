@@ -31,6 +31,17 @@ function MatchTeamData:GetCurMatchingDungeonId()
   end
 end
 
+function MatchTeamData:GetCurMatchingMasterDifficulty()
+  local targetID = self:GetCurMatchingTargetId()
+  if targetID == nil then
+    return
+  end
+  local targetInfo = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetID)
+  if targetInfo then
+    return targetInfo.Difficulty
+  end
+end
+
 function MatchTeamData:UnInit()
   self.CancelSource:Recycle()
 end

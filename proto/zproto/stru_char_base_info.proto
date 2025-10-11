@@ -52,5 +52,6 @@ message CharBaseInfo {
   int32 day_acc_dur_time = 39;
   int64 last_acc_dur_timestamp = 40;
   int64 save_serial = 41;
+  int64 last_online_time = 42;
 }
 

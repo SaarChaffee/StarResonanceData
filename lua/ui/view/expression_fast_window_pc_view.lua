@@ -56,24 +56,30 @@ function Expression_fast_window_pcView:addExpressionAction()
     expressionVM.CloseExpressionFastWindow()
   end
   
-  Z.FuncInputActionComp:SetActionCallback(Z.RewiredActionsConst.ExpressionFast, function()
+  Z.FuncInputActionComp:SetActionCallback(Z.InputActionIds.ExpressionFast, function()
   end)
 end
 
 function Expression_fast_window_pcView:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.ExpressionSetting then
+  if inputActionEventData.ActionId == Z.InputActionIds.ExpressionSetting then
     self.onOpenExpressionAction_()
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.ExpressionPageSwitch then
-    self.onUIVertical_(inputActionEventData)
+  if inputActionEventData.ActionId == Z.InputActionIds.ExpressionPageSwitch then
+    if inputActionEventData:IsCurrentInputSource(Panda.ZInput.EInputDeviceType.Joystick) then
+      if inputActionEventData.EventType == Panda.ZInput.EInputActionEventType.AxisJustChanged then
+        self.onUIVertical_(inputActionEventData)
+      end
+    else
+      self.onUIVertical_(inputActionEventData)
+    end
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.ExpressionFast then
+  if inputActionEventData.ActionId == Z.InputActionIds.ExpressionFast then
     self.onCloseExpressionAction_()
   end
 end
 
 function Expression_fast_window_pcView:removeExpressionAction()
-  Z.FuncInputActionComp:SetActionCallback(Z.RewiredActionsConst.ExpressionFast, nil)
+  Z.FuncInputActionComp:SetActionCallback(Z.InputActionIds.ExpressionFast, nil)
 end
 
 function Expression_fast_window_pcView:bindBtnClick()
@@ -98,6 +104,7 @@ function Expression_fast_window_pcView:OnDeActive()
   self.wheelData_:SetWheelSlotClicked(false)
   self.curSelectIndex_ = 0
   Z.ZInputMapModeMgr:ChangeInputMode(Z.ZInputMapModeMgr.GamePlayDefaultMode)
+  self.expressionVm_.CloseTipsActionNamePopup()
 end
 
 function Expression_fast_window_pcView:initWheelList()

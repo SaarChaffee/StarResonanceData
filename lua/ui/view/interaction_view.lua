@@ -29,6 +29,7 @@ function InteractionView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.DeActiveOption, self.refreshLoopList, self)
   Z.EventMgr:Add(Z.ConstValue.PointClickOption, self.onPointClickOption, self)
   Z.EventMgr:Add(Z.ConstValue.SelectInteractionOption, self.refreshInteractionView, self)
+  Z.EventMgr:Add(Z.ConstValue.LanguageChange, self.refreshBtnContent, self)
 end
 
 function InteractionView:BindLuaAttrWatchers()
@@ -101,6 +102,26 @@ function InteractionView:refreshLoopList()
   self:setScrollViewVisible(0 < count)
   self.uiBinder.Ref:SetVisible(self.uiBinder.main_mouse, Z.IsPCUI and 2 <= count)
   self:checkCameraZoom()
+end
+
+function InteractionView:refreshBtnContent()
+  Z.CoroUtil.create_coro_xpcall(function()
+    local handleDataList = self.interactionData_:GetData()
+    local count = #handleDataList
+    if count <= 0 then
+      return
+    end
+    for i = 1, count do
+      handleDataList[i]:AsyncRefreshContentStr()
+    end
+    local curSelectIndex = self.loopListView_:GetSelectedIndex()
+    if curSelectIndex < 1 or count < curSelectIndex then
+      curSelectIndex = 1
+    end
+    self.loopListView_:ClearAllSelect()
+    self.loopListView_:RefreshListView(handleDataList)
+    self.loopListView_:SetSelected(curSelectIndex)
+  end)()
 end
 
 function InteractionView:unInitLoopComp()

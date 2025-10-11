@@ -4250,5 +4250,17 @@
     "AutoRecycle": 0,
     "Limit": 0,
     "IsBlocked": false
+  },
+  "205": {
+    "Id": 205,
+    "ItemID": 1072020,
+    "ItemName": "蔷薇宝石商店-情感动作：舞蹈二式",
+    "GetItem": [
+      50002102
+    ],
+    "FunctionId": 106106,
+    "AutoRecycle": 0,
+    "Limit": 0,
+    "IsBlocked": false
   }
 }

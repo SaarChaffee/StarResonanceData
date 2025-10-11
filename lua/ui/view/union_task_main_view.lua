@@ -117,9 +117,9 @@ function Union_task_mainView:initBinders()
   function self.UpdateFunc(num)
     if self.curSelectData_ then
       local priceOffsetNum = self:GetPriceOffsetNum(self.curSelectData_.offsetType)
-      local price = num * priceOffsetNum * self.curSelectData_.resolveData.SingleValue
+      local price = math.floor(num * priceOffsetNum * self.curSelectData_.resolveData.SingleValue)
       self.curSubmitNum_ = price
-      self.uiBinder.lab_add.text = "+" .. string.format("%.0f", price)
+      self.uiBinder.lab_add.text = "+" .. price
       self.curNum_ = num
     end
   end

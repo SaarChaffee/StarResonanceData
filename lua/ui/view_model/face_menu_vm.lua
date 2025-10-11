@@ -17,6 +17,9 @@ local checkStyleIsAllowUse = function(faceRow, checkUnlock)
   if faceRow.Sex ~= faceData.Gender and faceRow.Sex ~= 0 then
     return false
   end
+  if not Z.ConditionHelper.CheckCondition(faceRow.Condition, false) then
+    return false
+  end
   if checkUnlock then
     local isUnlocked = faceData:GetFaceStyleItemIsUnlocked(faceRow.Id)
     if isUnlocked == false then

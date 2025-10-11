@@ -58,9 +58,6 @@ end
 local getIsInSelectCharScene = function()
   return current == Z.EStageType.SelectChar
 end
-local isInNewbieScene = function()
-  return getCurrentSceneId() == Z.Global.Dungeon000
-end
 local OnPrepareSwitchScene = function(sceneId)
   stages[current]:OnPrepareSwitchScene(sceneId)
 end
@@ -68,9 +65,6 @@ local onLeaveScene = function()
   stages[current]:OnLeaveScene()
   local interactionData = Z.DataMgr.Get("interaction_data")
   interactionData:Clear()
-  if isInNewbieScene() then
-    Z.SDKReport.ReportEvent(Z.SDKReportEvent.TutorialComplete)
-  end
 end
 local onLeaveStage = function()
   stages[current]:OnLeaveStage()
@@ -93,9 +87,6 @@ local onEnterScene = function(sceneId)
   local dungeonVm = Z.VMMgr.GetVM("dungeon")
   dungeonVm.UpdateDungeonData(false)
   dungeonVm.UpdateDungeonTimerInfo()
-  if isInNewbieScene() then
-    Z.SDKReport.ReportEvent(Z.SDKReportEvent.TutorialStart)
-  end
 end
 local isInVisualLayer = function()
   local isIn = false
@@ -127,7 +118,6 @@ return {
   GetCurrentStageType = getCurrentStageType,
   GetIsInLogin = getIsInLogin,
   GetIsInDungeon = getIsInDungeon,
-  IsInNewbieScene = isInNewbieScene,
   GetIsInGameScene = getIsInGameScene,
   GetIsInSelectCharScene = getIsInSelectCharScene,
   IsInVisualLayer = isInVisualLayer,

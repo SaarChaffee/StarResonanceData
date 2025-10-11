@@ -187,6 +187,15 @@ local OnCallStub = function(call)
       impl:NotifyCommunityFurnitureItemUpdate(call, pbMsg.request)
       return
     end
+    if call:GetMethodId() == 24 then
+      local pbData = call:GetCallData()
+      local pbMsg = pb.decode("zproto.GrpcCommunityNtf.NotifyCommunityApply", pbData)
+      if MessageInspectBridge.InInspectState == true then
+        MessageInspectBridge.HandleReceiveMessage(1453563045, 24, cJson.encode(pbMsg), pbData, true)
+      end
+      impl:NotifyCommunityApply(call, pbMsg.request)
+      return
+    end
   end, function(err)
     logError([[
 error={0}

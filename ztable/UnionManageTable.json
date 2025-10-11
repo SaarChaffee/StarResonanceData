@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Position": "",
+    "Position": "Master",
     "PositionNum": 1,
     "UnionManage": [
       {
@@ -80,7 +80,7 @@
   },
   "2": {
     "Id": 2,
-    "Position": "",
+    "Position": "Vice Master",
     "PositionNum": 2,
     "UnionManage": [
       {
@@ -166,7 +166,7 @@
   },
   "3": {
     "Id": 3,
-    "Position": "",
+    "Position": "Administrator",
     "PositionNum": 3,
     "UnionManage": [
       {
@@ -221,7 +221,7 @@
   },
   "4": {
     "Id": 4,
-    "Position": "",
+    "Position": "Member",
     "PositionNum": 0,
     "UnionManage": [],
     "ShowSort": 4,
@@ -229,7 +229,7 @@
   },
   "10": {
     "Id": 10,
-    "Position": "",
+    "Position": "Custom 1",
     "PositionNum": 0,
     "UnionManage": [
       {
@@ -298,7 +298,7 @@
   },
   "11": {
     "Id": 11,
-    "Position": "",
+    "Position": "Custom 2",
     "PositionNum": 0,
     "UnionManage": [
       {
@@ -367,7 +367,7 @@
   },
   "12": {
     "Id": 12,
-    "Position": "",
+    "Position": "Custom 3",
     "PositionNum": 0,
     "UnionManage": [
       {
@@ -436,7 +436,7 @@
   },
   "13": {
     "Id": 13,
-    "Position": "",
+    "Position": "Custom 4",
     "PositionNum": 0,
     "UnionManage": [
       {

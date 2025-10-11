@@ -17,6 +17,8 @@ local closePubOptionView = function()
   Z.UIMgr:CloseView("pub_talk_option_window")
 end
 local createTalkOptionData = function(content, func, iconPath, iconStyle)
+  local holderParam = Z.Placeholder.SetPlayerSelfPronoun()
+  content = Z.Placeholder.Placeholder(content, holderParam)
   local option = {}
   option.Content = content
   option.Func = func
@@ -163,12 +165,13 @@ local createNpcQuestOptionsForFlow = function(npcId)
     return configA.QuestType < configB.QuestType
   end)
   local questIconVm = Z.VMMgr.GetVM("quest_icon")
+  local questVm = Z.VMMgr.GetVM("quest")
   for _, data in pairs(tempData) do
     local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(data.questId)
     if questRow then
       local param = {
         quest = {
-          name = questRow.QuestName
+          name = questVm.GetQuestName(questRow.QuestId)
         }
       }
       local content = Lang("QuestAbout", param)

@@ -32,6 +32,7 @@ end
 function Shop_windowView:OnActive()
   Z.AudioMgr:Play("UI_Event_ShopWindowEnter")
   Z.UnrealSceneMgr:InitSceneCamera()
+  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:onStartAnimShow()
   self.uiBinder.Ref:SetVisible(self.uiBinder.lab_desc, true)
   local nameCfg = self.functionCfg_.GetRow(E.FunctionID.Shop)
@@ -70,6 +71,7 @@ end
 
 function Shop_windowView:OnDeActive()
   self:HideBanner()
+  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   self.firstLoopListView_:UnInit()
   self.showData_ = nil
   if self.currencyItemList_ then

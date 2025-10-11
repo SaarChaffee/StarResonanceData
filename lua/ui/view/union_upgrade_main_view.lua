@@ -45,6 +45,7 @@ function Union_upgrade_mainView:OnDeActive()
   self:unBindEvents()
   self:unInitBuffItem()
   self:unInitLoopListView()
+  self:closeItemTips()
 end
 
 function Union_upgrade_mainView:OnRefresh()

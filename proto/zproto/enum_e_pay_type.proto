@@ -13,5 +13,8 @@ enum EPayType {
   PayTypeApjAndroid = 7;
   PayTypeApjPc = 8;
   PayTypeApjWeb = 9;
+  PayTypeApjStream = 10;
+  PayTypeApjEpic = 11;
+  PayTypeXd = 12;
 }
 

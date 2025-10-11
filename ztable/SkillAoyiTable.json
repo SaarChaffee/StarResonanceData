@@ -36,8 +36,8 @@
     "MonsterId": 4201,
     "ModelRatio": 0.45,
     "ModelAnim": "as_mon_shouren_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Void Ogre",
+    "Dialogue": "This is battle!",
     "SkillAdvancedItem": [
       [
         3000001,
@@ -79,8 +79,8 @@
     "MonsterId": 10057,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_gebulin-ss_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Muku Warrior",
+    "Dialogue": "Come on, feel the tremor of battle!",
     "SkillAdvancedItem": [
       [
         3000034,
@@ -119,8 +119,8 @@
     "MonsterId": 10012,
     "ModelRatio": 0.8,
     "ModelAnim": "as_mon_gebulin-ds_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Inferno Goblin Mage",
+    "Dialogue": "Meteor... Burst!",
     "SkillAdvancedItem": [
       [
         3000003,
@@ -165,8 +165,8 @@
     "MonsterId": 10064,
     "ModelRatio": 1.0,
     "ModelAnim": "as_mon_solider-rifle_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Shadow Captain",
+    "Dialogue": "Understand? Practice makes perfect!",
     "SkillAdvancedItem": [
       [
         3000004,
@@ -210,8 +210,8 @@
     "MonsterId": 10031,
     "ModelRatio": 0.8,
     "ModelAnim": "as_mon_yezhu_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Boarrier Tyrant",
+    "Dialogue": "Roar, are you ready for the savage charge!",
     "SkillAdvancedItem": [
       [
         3000006,
@@ -257,8 +257,8 @@
     "MonsterId": 10029,
     "ModelRatio": 0.45,
     "ModelAnim": "as_mon_gebulin-ss_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Muku King",
+    "Dialogue": "The sound of prayer is saying: Don't give up!",
     "SkillAdvancedItem": [
       [
         3000007,
@@ -319,8 +319,8 @@
     "MonsterId": 4202,
     "ModelRatio": 1.0,
     "ModelAnim": "as_wpnpc_f_base_iruna_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Airona",
+    "Dialogue": "Life, eternal...",
     "SkillAdvancedItem": [
       [
         3000008,
@@ -363,8 +363,8 @@
     "MonsterId": 10010,
     "ModelRatio": 0.37,
     "ModelAnim": "as_mon_shouren-ds_fidle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Tempest Ogre",
+    "Dialogue": "Darkness, to be illuminated by thunder!",
     "SkillAdvancedItem": [
       [
         3000009,
@@ -396,8 +396,8 @@
     "MonsterId": 10009,
     "ModelRatio": 0.4,
     "ModelAnim": "as_mon_shouren-ds_fidle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Frost Ogre",
+    "Dialogue": "Frost... descends!!!",
     "SkillAdvancedItem": [
       [
         3000010,
@@ -458,8 +458,8 @@
     "MonsterId": 3000033,
     "ModelRatio": 1.0,
     "ModelAnim": "as_wpnpc_f_base_tina_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Tina",
+    "Dialogue": "Time... stagnates... release!",
     "SkillAdvancedItem": [
       [
         3000011,
@@ -500,8 +500,8 @@
     "MonsterId": 10018,
     "ModelRatio": 0.45,
     "ModelAnim": "as_mon_shouren_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Inferno Ogre",
+    "Dialogue": "Burn, flames, incinerate everything!",
     "SkillAdvancedItem": [
       [
         3000025,
@@ -550,8 +550,8 @@
     "MonsterId": 10056,
     "ModelRatio": 1.0,
     "ModelAnim": "as_mon_solider-sssword_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Brigand Leader",
+    "Dialogue": "Come, feel the heat of my battle axe!",
     "SkillAdvancedItem": [
       [
         3000028,
@@ -586,8 +586,8 @@
     "MonsterId": 10035,
     "ModelRatio": 0.8,
     "ModelAnim": "as_mon_gebulin-ssfc_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Goblin Guard",
+    "Dialogue": "My sword, never fails!",
     "SkillAdvancedItem": [
       [
         3000012,
@@ -629,8 +629,8 @@
     "MonsterId": 10019,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_gebulin-ss_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Goblin Warrior",
+    "Dialogue": "Clap clap clap, a rain of swords, hahaha...",
     "SkillAdvancedItem": [
       [
         3000013,
@@ -669,8 +669,8 @@
     "MonsterId": 10065,
     "ModelRatio": 1.0,
     "ModelAnim": "as_mon_solider-sssword_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Shadow Commander",
+    "Dialogue": "This slash, cuts more than just the retreat...",
     "SkillAdvancedItem": [
       [
         3000015,
@@ -731,8 +731,8 @@
     "MonsterId": 3000032,
     "ModelRatio": 1.0,
     "ModelAnim": "as_wpnpc_f_base_olvera_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Olvera",
+    "Dialogue": "Don't blink, this is the cold light slashing towards you!",
     "SkillAdvancedItem": [
       [
         3000019,
@@ -769,8 +769,8 @@
     "MonsterId": 10059,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_gebulin-ds_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Muku Chief",
+    "Dialogue": "Smash! Smash! Smash! Destruction is art!",
     "SkillAdvancedItem": [
       [
         3000020,
@@ -802,8 +802,8 @@
     "MonsterId": 10042,
     "ModelRatio": 0.45,
     "ModelAnim": "as_mon_shouren_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Mighty Colossus",
+    "Dialogue": "I... didn't... mean it...",
     "SkillAdvancedItem": [
       [
         3000032,
@@ -844,8 +844,8 @@
     "MonsterId": 10007,
     "ModelRatio": 0.4,
     "ModelAnim": "as_mon_shouren_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Storm Goblin King",
+    "Dialogue": "Come here, where else do you want to go?!",
     "SkillAdvancedItem": [
       [
         3000024,
@@ -884,8 +884,8 @@
     "MonsterId": 10008,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_gebulin-ss_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Jungle Goblin Warrior",
+    "Dialogue": "Roar... no one can stop me!",
     "SkillAdvancedItem": [
       [
         3000026,
@@ -928,8 +928,8 @@
     "MonsterId": 10052,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_gebulin-ds_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Muku Scout",
+    "Dialogue": "Haven't you heard? No matter how skilled in martial arts, one still fears a kitchen knife!",
     "SkillAdvancedItem": [
       [
         3000027,
@@ -981,8 +981,8 @@
     "MonsterId": 10034,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_xiezhu_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Void Arachnocrab",
+    "Dialogue": "Indestructible!",
     "SkillAdvancedItem": [
       [
         3000030,
@@ -1017,8 +1017,8 @@
     "MonsterId": 10055,
     "ModelRatio": 1.0,
     "ModelAnim": "as_mon_solider-shield_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Brigand Guard Captain",
+    "Dialogue": "Stand behind me, I will block everything!",
     "SkillAdvancedItem": [
       [
         3000031,
@@ -1054,8 +1054,8 @@
     "MonsterId": 10038,
     "ModelRatio": 1.0,
     "ModelAnim": "as_mon_solider-dagger_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Brigand Scout Leader",
+    "Dialogue": "Hey, I'm here... no no no, I'm actually here...",
     "SkillAdvancedItem": [
       [
         3000035,
@@ -1089,8 +1089,8 @@
     "MonsterId": 10032,
     "ModelRatio": 0.8,
     "ModelAnim": "as_mon_yezhu_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Golden Juggernaut",
+    "Dialogue": "Tremble, in my voice...",
     "SkillAdvancedItem": [
       [
         3000036,
@@ -1123,8 +1123,8 @@
     "MonsterId": 10105,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_yuren-ds_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Lizardman Mage",
+    "Dialogue": "Shh, quiet...",
     "SkillAdvancedItem": [
       [
         3000022,
@@ -1166,8 +1166,8 @@
     "MonsterId": 10104,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_yuren-ds_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Lizardman Hunter",
+    "Dialogue": "No one can escape!",
     "SkillAdvancedItem": [
       [
         3000016,
@@ -1208,8 +1208,8 @@
     "MonsterId": 10069,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_xiezhu_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Phantom Arachnocrab",
+    "Dialogue": "Cocooned? Oh no, this is just a temporary hibernation...",
     "SkillAdvancedItem": [
       [
         3000029,
@@ -1270,8 +1270,8 @@
     "MonsterId": 3000041,
     "ModelRatio": 1.0,
     "ModelAnim": "as_wpnpc_m_base_tata_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Tatta",
+    "Dialogue": "The flames will protect me!",
     "SkillAdvancedItem": [
       [
         3000037,
@@ -1306,8 +1306,8 @@
     "MonsterId": 10080,
     "ModelRatio": 0.8,
     "ModelAnim": "as_mon_yezhu_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Great Warhog",
+    "Dialogue": "Explode! Thunder Light!",
     "SkillAdvancedItem": [
       [
         3000038,
@@ -1340,8 +1340,8 @@
     "MonsterId": 10066,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_gebulin-ds_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Storm Goblin Warrior",
+    "Dialogue": "Let it go with the wind...",
     "SkillAdvancedItem": [
       [
         3000039,
@@ -1378,8 +1378,8 @@
     "MonsterId": 10076,
     "ModelRatio": 1.0,
     "ModelAnim": "as_mon_huangfeng_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Void Bzzar",
+    "Dialogue": "I am a little bee, flying among the flowers... Hehe!",
     "SkillAdvancedItem": [
       [
         3000040,
@@ -1422,8 +1422,8 @@
     "MonsterId": 10077,
     "ModelRatio": 0.5,
     "ModelAnim": "as_mon_fengchao_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Venobzzar Incubator",
+    "Dialogue": "Explode! Core of poison!",
     "SkillAdvancedItem": [
       [
         3000041,
@@ -1463,8 +1463,8 @@
     "MonsterId": 10081,
     "ModelRatio": 0.8,
     "ModelAnim": "as_mon_yezhu_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Iron Fang",
+    "Dialogue": "Leap, thrust, shatter everything!",
     "SkillAdvancedItem": [
       [
         3000042,
@@ -1504,8 +1504,8 @@
     "MonsterId": 10084,
     "ModelRatio": 0.6,
     "ModelAnim": "as_mon_feiyu_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Celestial Flier",
+    "Dialogue": "Shh, quiet...",
     "SkillAdvancedItem": [
       [
         3000043,
@@ -1541,8 +1541,8 @@
     "MonsterId": 10085,
     "ModelRatio": 0.6,
     "ModelAnim": "as_mon_yuren-ss_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Lizardman King",
+    "Dialogue": "Tides, smooth everything!",
     "SkillAdvancedItem": [
       [
         3000044,
@@ -1574,8 +1574,8 @@
     "MonsterId": 10086,
     "ModelRatio": 0.45,
     "ModelAnim": "as_mon_gebulin-ss_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Goblin King",
+    "Dialogue": "Are you ready? Full army attack!",
     "SkillAdvancedItem": [
       [
         3000045,
@@ -1608,8 +1608,8 @@
     "MonsterId": 10058,
     "ModelRatio": 0.7,
     "ModelAnim": "as_mon_gebulin-ssfc_idle",
-    "ResonanceObject": "",
-    "Dialogue": "",
+    "ResonanceObject": "Muku Vanguard",
+    "Dialogue": "Shh, quiet...",
     "SkillAdvancedItem": [
       [
         3000046,

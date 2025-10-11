@@ -10,7 +10,8 @@ function WeaponData:ctor()
   self.cacheWeaponSkillData_ = nil
   self.cacheSlotSkillInfoMap = nil
   self.cacheWeaponObtains_ = {}
-  self.SkillPanelToggleIsOn = true
+  self.SkillPanelToggleIsOn = false
+  self.SkillPanelToggleLocked = false
   self.timerMgr_ = Z.TimerMgr.new()
 end
 
@@ -34,7 +35,8 @@ function WeaponData:Clear()
   self.cacheWeaponSkillData_ = nil
   self.cacheWeaponAttrData_ = nil
   self.BattleRes = {}
-  self.SkillPanelToggleIsOn = true
+  self.SkillPanelToggleIsOn = false
+  self.SkillPanelToggleLocked = false
   self.drawIdToPropIdDict_ = nil
   self.propIdToDrawIdDict_ = nil
   self.cacheSlotSkillInfoMap = nil
@@ -151,24 +153,17 @@ end
 
 function WeaponData:InitSlotSkill()
   self.cacheSlotSkillInfoMap = {}
-  for id, professionInfo in pairs(Z.ContainerMgr.CharSerialize.professionList.professionList) do
-    self.cacheSlotSkillInfoMap[id] = {}
-    for slotId, skillId in pairs(professionInfo.slotSkillInfoMap) do
-      self.cacheSlotSkillInfoMap[id][slotId] = skillId
-    end
+  for slotId, skillId in pairs(Z.ContainerMgr.CharSerialize.slots.slots) do
+    self.cacheSlotSkillInfoMap[slotId] = skillId
   end
 end
 
 function WeaponData:UpdateSlotSkill(slotId, skillId)
-  local professionVm = Z.VMMgr.GetVM("profession")
-  local professionId = professionVm:GetContainerProfession()
-  self.cacheSlotSkillInfoMap[professionId][slotId] = skillId
+  self.cacheSlotSkillInfoMap[slotId] = skillId
 end
 
 function WeaponData:GetWeaponSlotSkill(slotId)
-  local professionVm = Z.VMMgr.GetVM("profession")
-  local professionId = professionVm:GetContainerProfession()
-  return self.cacheSlotSkillInfoMap[professionId][slotId] or 0
+  return self.cacheSlotSkillInfoMap[slotId] or 0
 end
 
 function WeaponData:GetResonancePropIdByDrawId(drawId)

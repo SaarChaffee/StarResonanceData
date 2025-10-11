@@ -48,28 +48,28 @@ function Battle_auto_battle_setView:OnDeActive()
 end
 
 local slotActionIdMap = {
-  [Z.RewiredActionsConst.SpecialSkill] = 2,
-  [Z.RewiredActionsConst.Skill1] = 3,
-  [Z.RewiredActionsConst.Skill2] = 4,
-  [Z.RewiredActionsConst.Skill3] = 5,
-  [Z.RewiredActionsConst.UltimateSkill] = 6,
-  [Z.RewiredActionsConst.SupportSkill1] = 7,
-  [Z.RewiredActionsConst.SupportSkill2] = 8,
-  [Z.RewiredActionsConst.Skill4] = 9
+  [Z.InputActionIds.SpecialSkill] = 2,
+  [Z.InputActionIds.Skill1] = 3,
+  [Z.InputActionIds.Skill2] = 4,
+  [Z.InputActionIds.Skill3] = 5,
+  [Z.InputActionIds.UltimateSkill] = 6,
+  [Z.InputActionIds.SupportSkill1] = 7,
+  [Z.InputActionIds.SupportSkill2] = 8,
+  [Z.InputActionIds.Skill4] = 9
 }
 
 function Battle_auto_battle_setView:OnTriggerInputAction(inputActionEventData)
   if not Z.IsPCUI then
     return
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.ExitUI then
+  if inputActionEventData.ActionId == Z.InputActionIds.ExitUI then
     self:cancel()
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.OpenChat then
+  if inputActionEventData.ActionId == Z.InputActionIds.OpenChat then
     self:save()
   end
-  if slotActionIdMap[inputActionEventData.actionId] then
-    local slotId = slotActionIdMap[inputActionEventData.actionId]
+  if slotActionIdMap[inputActionEventData.ActionId] then
+    local slotId = slotActionIdMap[inputActionEventData.ActionId]
     self:onSelectSkill(slotId, self.uiBinder[tostring(slotId)])
   end
 end

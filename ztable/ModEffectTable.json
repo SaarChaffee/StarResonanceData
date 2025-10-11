@@ -2,7 +2,7 @@
   "1": {
     "Id": 1,
     "EffectID": 1110,
-    "EffectName": "",
+    "EffectName": "Strength Boost",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_011",
     "EffectConfig": [],
@@ -10,7 +10,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 0,
@@ -19,7 +19,7 @@
   "2": {
     "Id": 2,
     "EffectID": 1110,
-    "EffectName": "",
+    "EffectName": "Strength Boost",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_011",
     "EffectConfig": [
@@ -33,7 +33,7 @@
     "EffectValue": [],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 7,
@@ -42,7 +42,7 @@
   "3": {
     "Id": 3,
     "EffectID": 1110,
-    "EffectName": "",
+    "EffectName": "Strength Boost",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_011",
     "EffectConfig": [
@@ -56,7 +56,7 @@
     "EffectValue": [],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 14,
@@ -65,7 +65,7 @@
   "4": {
     "Id": 4,
     "EffectID": 1110,
-    "EffectName": "",
+    "EffectName": "Strength Boost",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_011",
     "EffectConfig": [
@@ -84,7 +84,7 @@
     "EffectValue": [],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 29,
@@ -93,7 +93,7 @@
   "5": {
     "Id": 5,
     "EffectID": 1110,
-    "EffectName": "",
+    "EffectName": "Strength Boost",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_011",
     "EffectConfig": [
@@ -112,7 +112,7 @@
     "EffectValue": [],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 44,
@@ -121,7 +121,7 @@
   "6": {
     "Id": 6,
     "EffectID": 1110,
-    "EffectName": "",
+    "EffectName": "Strength Boost",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_011",
     "EffectConfig": [
@@ -145,7 +145,7 @@
     "EffectValue": [],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 167,
@@ -154,7 +154,7 @@
   "7": {
     "Id": 7,
     "EffectID": 1110,
-    "EffectName": "",
+    "EffectName": "Strength Boost",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_011",
     "EffectConfig": [
@@ -178,7 +178,7 @@
     "EffectValue": [],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 254,
@@ -187,7 +187,7 @@
   "8": {
     "Id": 8,
     "EffectID": 1111,
-    "EffectName": "",
+    "EffectName": "Agility Boost",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_039",
     "EffectConfig": [],
@@ -199,7 +199,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 0,
@@ -208,7 +208,7 @@
   "9": {
     "Id": 9,
     "EffectID": 1111,
-    "EffectName": "",
+    "EffectName": "Agility Boost",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_039",
     "EffectConfig": [
@@ -230,7 +230,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 7,
@@ -239,7 +239,7 @@
   "10": {
     "Id": 10,
     "EffectID": 1111,
-    "EffectName": "",
+    "EffectName": "Agility Boost",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_039",
     "EffectConfig": [
@@ -261,7 +261,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 14,
@@ -270,7 +270,7 @@
   "11": {
     "Id": 11,
     "EffectID": 1111,
-    "EffectName": "",
+    "EffectName": "Agility Boost",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_039",
     "EffectConfig": [
@@ -297,7 +297,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 29,
@@ -306,7 +306,7 @@
   "12": {
     "Id": 12,
     "EffectID": 1111,
-    "EffectName": "",
+    "EffectName": "Agility Boost",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_039",
     "EffectConfig": [
@@ -333,7 +333,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 44,
@@ -342,7 +342,7 @@
   "13": {
     "Id": 13,
     "EffectID": 1111,
-    "EffectName": "",
+    "EffectName": "Agility Boost",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_039",
     "EffectConfig": [
@@ -374,7 +374,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 167,
@@ -383,7 +383,7 @@
   "14": {
     "Id": 14,
     "EffectID": 1111,
-    "EffectName": "",
+    "EffectName": "Agility Boost",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_039",
     "EffectConfig": [
@@ -415,7 +415,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 254,
@@ -424,7 +424,7 @@
   "15": {
     "Id": 15,
     "EffectID": 1112,
-    "EffectName": "",
+    "EffectName": "Intellect Boost",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_034",
     "EffectConfig": [],
@@ -436,7 +436,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 0,
@@ -445,7 +445,7 @@
   "16": {
     "Id": 16,
     "EffectID": 1112,
-    "EffectName": "",
+    "EffectName": "Intellect Boost",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_034",
     "EffectConfig": [
@@ -467,7 +467,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 7,
@@ -476,7 +476,7 @@
   "17": {
     "Id": 17,
     "EffectID": 1112,
-    "EffectName": "",
+    "EffectName": "Intellect Boost",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_034",
     "EffectConfig": [
@@ -498,7 +498,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 14,
@@ -507,7 +507,7 @@
   "18": {
     "Id": 18,
     "EffectID": 1112,
-    "EffectName": "",
+    "EffectName": "Intellect Boost",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_034",
     "EffectConfig": [
@@ -534,7 +534,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 29,
@@ -543,7 +543,7 @@
   "19": {
     "Id": 19,
     "EffectID": 1112,
-    "EffectName": "",
+    "EffectName": "Intellect Boost",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_034",
     "EffectConfig": [
@@ -570,7 +570,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 44,
@@ -579,7 +579,7 @@
   "20": {
     "Id": 20,
     "EffectID": 1112,
-    "EffectName": "",
+    "EffectName": "Intellect Boost",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_034",
     "EffectConfig": [
@@ -611,7 +611,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 167,
@@ -620,7 +620,7 @@
   "21": {
     "Id": 21,
     "EffectID": 1112,
-    "EffectName": "",
+    "EffectName": "Intellect Boost",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_034",
     "EffectConfig": [
@@ -652,7 +652,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 254,
@@ -661,7 +661,7 @@
   "22": {
     "Id": 22,
     "EffectID": 1113,
-    "EffectName": "",
+    "EffectName": "Special Attack",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_002",
     "EffectConfig": [],
@@ -673,7 +673,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 0,
@@ -682,7 +682,7 @@
   "23": {
     "Id": 23,
     "EffectID": 1113,
-    "EffectName": "",
+    "EffectName": "Special Attack",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_002",
     "EffectConfig": [
@@ -704,7 +704,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 7,
@@ -713,7 +713,7 @@
   "24": {
     "Id": 24,
     "EffectID": 1113,
-    "EffectName": "",
+    "EffectName": "Special Attack",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_002",
     "EffectConfig": [
@@ -735,7 +735,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 14,
@@ -744,7 +744,7 @@
   "25": {
     "Id": 25,
     "EffectID": 1113,
-    "EffectName": "",
+    "EffectName": "Special Attack",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_002",
     "EffectConfig": [
@@ -771,7 +771,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 29,
@@ -780,7 +780,7 @@
   "26": {
     "Id": 26,
     "EffectID": 1113,
-    "EffectName": "",
+    "EffectName": "Special Attack",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_002",
     "EffectConfig": [
@@ -807,7 +807,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 44,
@@ -816,7 +816,7 @@
   "27": {
     "Id": 27,
     "EffectID": 1113,
-    "EffectName": "",
+    "EffectName": "Special Attack",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_002",
     "EffectConfig": [
@@ -848,7 +848,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 167,
@@ -857,7 +857,7 @@
   "28": {
     "Id": 28,
     "EffectID": 1113,
-    "EffectName": "",
+    "EffectName": "Special Attack",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_002",
     "EffectConfig": [
@@ -889,7 +889,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 254,
@@ -898,7 +898,7 @@
   "29": {
     "Id": 29,
     "EffectID": 1114,
-    "EffectName": "",
+    "EffectName": "Elite Strike",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_038",
     "EffectConfig": [],
@@ -910,7 +910,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 0,
@@ -919,7 +919,7 @@
   "30": {
     "Id": 30,
     "EffectID": 1114,
-    "EffectName": "",
+    "EffectName": "Elite Strike",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_038",
     "EffectConfig": [
@@ -941,7 +941,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 7,
@@ -950,7 +950,7 @@
   "31": {
     "Id": 31,
     "EffectID": 1114,
-    "EffectName": "",
+    "EffectName": "Elite Strike",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_038",
     "EffectConfig": [
@@ -972,7 +972,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 14,
@@ -981,7 +981,7 @@
   "32": {
     "Id": 32,
     "EffectID": 1114,
-    "EffectName": "",
+    "EffectName": "Elite Strike",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_038",
     "EffectConfig": [
@@ -1008,7 +1008,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 29,
@@ -1017,7 +1017,7 @@
   "33": {
     "Id": 33,
     "EffectID": 1114,
-    "EffectName": "",
+    "EffectName": "Elite Strike",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_038",
     "EffectConfig": [
@@ -1044,7 +1044,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 44,
@@ -1053,7 +1053,7 @@
   "34": {
     "Id": 34,
     "EffectID": 1114,
-    "EffectName": "",
+    "EffectName": "Elite Strike",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_038",
     "EffectConfig": [
@@ -1085,7 +1085,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 167,
@@ -1094,7 +1094,7 @@
   "35": {
     "Id": 35,
     "EffectID": 1114,
-    "EffectName": "",
+    "EffectName": "Elite Strike",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_038",
     "EffectConfig": [
@@ -1126,7 +1126,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 254,
@@ -1135,7 +1135,7 @@
   "36": {
     "Id": 36,
     "EffectID": 1205,
-    "EffectName": "",
+    "EffectName": "Healing Boost",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_023",
     "EffectConfig": [],
@@ -1147,7 +1147,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 0,
@@ -1156,7 +1156,7 @@
   "37": {
     "Id": 37,
     "EffectID": 1205,
-    "EffectName": "",
+    "EffectName": "Healing Boost",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_023",
     "EffectConfig": [
@@ -1178,7 +1178,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 7,
@@ -1187,7 +1187,7 @@
   "38": {
     "Id": 38,
     "EffectID": 1205,
-    "EffectName": "",
+    "EffectName": "Healing Boost",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_023",
     "EffectConfig": [
@@ -1209,7 +1209,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 14,
@@ -1218,7 +1218,7 @@
   "39": {
     "Id": 39,
     "EffectID": 1205,
-    "EffectName": "",
+    "EffectName": "Healing Boost",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_023",
     "EffectConfig": [
@@ -1245,7 +1245,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 29,
@@ -1254,7 +1254,7 @@
   "40": {
     "Id": 40,
     "EffectID": 1205,
-    "EffectName": "",
+    "EffectName": "Healing Boost",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_023",
     "EffectConfig": [
@@ -1281,7 +1281,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 44,
@@ -1290,7 +1290,7 @@
   "41": {
     "Id": 41,
     "EffectID": 1205,
-    "EffectName": "",
+    "EffectName": "Healing Boost",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_023",
     "EffectConfig": [
@@ -1322,7 +1322,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 167,
@@ -1331,7 +1331,7 @@
   "42": {
     "Id": 42,
     "EffectID": 1205,
-    "EffectName": "",
+    "EffectName": "Healing Boost",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_023",
     "EffectConfig": [
@@ -1363,7 +1363,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 254,
@@ -1372,7 +1372,7 @@
   "43": {
     "Id": 43,
     "EffectID": 1206,
-    "EffectName": "",
+    "EffectName": "Healing Enhance",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_042",
     "EffectConfig": [],
@@ -1384,7 +1384,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 0,
@@ -1393,7 +1393,7 @@
   "44": {
     "Id": 44,
     "EffectID": 1206,
-    "EffectName": "",
+    "EffectName": "Healing Enhance",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_042",
     "EffectConfig": [
@@ -1415,7 +1415,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 7,
@@ -1424,7 +1424,7 @@
   "45": {
     "Id": 45,
     "EffectID": 1206,
-    "EffectName": "",
+    "EffectName": "Healing Enhance",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_042",
     "EffectConfig": [
@@ -1446,7 +1446,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 14,
@@ -1455,7 +1455,7 @@
   "46": {
     "Id": 46,
     "EffectID": 1206,
-    "EffectName": "",
+    "EffectName": "Healing Enhance",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_042",
     "EffectConfig": [
@@ -1482,7 +1482,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 29,
@@ -1491,7 +1491,7 @@
   "47": {
     "Id": 47,
     "EffectID": 1206,
-    "EffectName": "",
+    "EffectName": "Healing Enhance",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_042",
     "EffectConfig": [
@@ -1518,7 +1518,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 44,
@@ -1527,7 +1527,7 @@
   "48": {
     "Id": 48,
     "EffectID": 1206,
-    "EffectName": "",
+    "EffectName": "Healing Enhance",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_042",
     "EffectConfig": [
@@ -1559,7 +1559,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 167,
@@ -1568,7 +1568,7 @@
   "49": {
     "Id": 49,
     "EffectID": 1206,
-    "EffectName": "",
+    "EffectName": "Healing Enhance",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_042",
     "EffectConfig": [
@@ -1600,7 +1600,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 254,
@@ -1609,7 +1609,7 @@
   "50": {
     "Id": 50,
     "EffectID": 1307,
-    "EffectName": "",
+    "EffectName": "Resistance",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_009",
     "EffectConfig": [],
@@ -1617,7 +1617,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 0,
@@ -1626,7 +1626,7 @@
   "51": {
     "Id": 51,
     "EffectID": 1307,
-    "EffectName": "",
+    "EffectName": "Resistance",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_009",
     "EffectConfig": [
@@ -1640,7 +1640,7 @@
     "EffectValue": [],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 7,
@@ -1649,7 +1649,7 @@
   "52": {
     "Id": 52,
     "EffectID": 1307,
-    "EffectName": "",
+    "EffectName": "Resistance",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_009",
     "EffectConfig": [
@@ -1663,7 +1663,7 @@
     "EffectValue": [],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 14,
@@ -1672,7 +1672,7 @@
   "53": {
     "Id": 53,
     "EffectID": 1307,
-    "EffectName": "",
+    "EffectName": "Resistance",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_009",
     "EffectConfig": [
@@ -1691,7 +1691,7 @@
     "EffectValue": [],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 29,
@@ -1700,7 +1700,7 @@
   "54": {
     "Id": 54,
     "EffectID": 1307,
-    "EffectName": "",
+    "EffectName": "Resistance",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_009",
     "EffectConfig": [
@@ -1719,7 +1719,7 @@
     "EffectValue": [],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 44,
@@ -1728,7 +1728,7 @@
   "55": {
     "Id": 55,
     "EffectID": 1307,
-    "EffectName": "",
+    "EffectName": "Resistance",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_009",
     "EffectConfig": [
@@ -1752,7 +1752,7 @@
     "EffectValue": [],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 167,
@@ -1761,7 +1761,7 @@
   "56": {
     "Id": 56,
     "EffectID": 1307,
-    "EffectName": "",
+    "EffectName": "Resistance",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_009",
     "EffectConfig": [
@@ -1785,7 +1785,7 @@
     "EffectValue": [],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 254,
@@ -1794,7 +1794,7 @@
   "57": {
     "Id": 57,
     "EffectID": 1308,
-    "EffectName": "",
+    "EffectName": "Armor",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_014",
     "EffectConfig": [],
@@ -1802,7 +1802,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 0,
@@ -1811,7 +1811,7 @@
   "58": {
     "Id": 58,
     "EffectID": 1308,
-    "EffectName": "",
+    "EffectName": "Armor",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_014",
     "EffectConfig": [
@@ -1825,7 +1825,7 @@
     "EffectValue": [],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 7,
@@ -1834,7 +1834,7 @@
   "59": {
     "Id": 59,
     "EffectID": 1308,
-    "EffectName": "",
+    "EffectName": "Armor",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_014",
     "EffectConfig": [
@@ -1848,7 +1848,7 @@
     "EffectValue": [],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 14,
@@ -1857,7 +1857,7 @@
   "60": {
     "Id": 60,
     "EffectID": 1308,
-    "EffectName": "",
+    "EffectName": "Armor",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_014",
     "EffectConfig": [
@@ -1876,7 +1876,7 @@
     "EffectValue": [],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 29,
@@ -1885,7 +1885,7 @@
   "61": {
     "Id": 61,
     "EffectID": 1308,
-    "EffectName": "",
+    "EffectName": "Armor",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_014",
     "EffectConfig": [
@@ -1904,7 +1904,7 @@
     "EffectValue": [],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 44,
@@ -1913,7 +1913,7 @@
   "62": {
     "Id": 62,
     "EffectID": 1308,
-    "EffectName": "",
+    "EffectName": "Armor",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_014",
     "EffectConfig": [
@@ -1937,7 +1937,7 @@
     "EffectValue": [],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 167,
@@ -1946,7 +1946,7 @@
   "63": {
     "Id": 63,
     "EffectID": 1308,
-    "EffectName": "",
+    "EffectName": "Armor",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_014",
     "EffectConfig": [
@@ -1970,7 +1970,7 @@
     "EffectValue": [],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 254,
@@ -1979,7 +1979,7 @@
   "64": {
     "Id": 64,
     "EffectID": 1407,
-    "EffectName": "",
+    "EffectName": "Cast Focus",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_013",
     "EffectConfig": [],
@@ -1987,7 +1987,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 0,
@@ -1996,7 +1996,7 @@
   "65": {
     "Id": 65,
     "EffectID": 1407,
-    "EffectName": "",
+    "EffectName": "Cast Focus",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_013",
     "EffectConfig": [
@@ -2010,7 +2010,7 @@
     "EffectValue": [],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 7,
@@ -2019,7 +2019,7 @@
   "66": {
     "Id": 66,
     "EffectID": 1407,
-    "EffectName": "",
+    "EffectName": "Cast Focus",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_013",
     "EffectConfig": [
@@ -2033,7 +2033,7 @@
     "EffectValue": [],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 14,
@@ -2042,7 +2042,7 @@
   "67": {
     "Id": 67,
     "EffectID": 1407,
-    "EffectName": "",
+    "EffectName": "Cast Focus",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_013",
     "EffectConfig": [
@@ -2056,7 +2056,7 @@
     "EffectValue": [],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 29,
@@ -2065,7 +2065,7 @@
   "68": {
     "Id": 68,
     "EffectID": 1407,
-    "EffectName": "",
+    "EffectName": "Cast Focus",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_013",
     "EffectConfig": [
@@ -2079,7 +2079,7 @@
     "EffectValue": [],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 44,
@@ -2088,7 +2088,7 @@
   "69": {
     "Id": 69,
     "EffectID": 1407,
-    "EffectName": "",
+    "EffectName": "Cast Focus",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_013",
     "EffectConfig": [
@@ -2107,7 +2107,7 @@
     "EffectValue": [],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 167,
@@ -2116,7 +2116,7 @@
   "70": {
     "Id": 70,
     "EffectID": 1407,
-    "EffectName": "",
+    "EffectName": "Cast Focus",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_013",
     "EffectConfig": [
@@ -2135,7 +2135,7 @@
     "EffectValue": [],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 254,
@@ -2144,7 +2144,7 @@
   "71": {
     "Id": 71,
     "EffectID": 1408,
-    "EffectName": "",
+    "EffectName": "Attack SPD",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_026",
     "EffectConfig": [],
@@ -2152,7 +2152,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 0,
@@ -2161,7 +2161,7 @@
   "72": {
     "Id": 72,
     "EffectID": 1408,
-    "EffectName": "",
+    "EffectName": "Attack SPD",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_026",
     "EffectConfig": [
@@ -2175,7 +2175,7 @@
     "EffectValue": [],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 7,
@@ -2184,7 +2184,7 @@
   "73": {
     "Id": 73,
     "EffectID": 1408,
-    "EffectName": "",
+    "EffectName": "Attack SPD",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_026",
     "EffectConfig": [
@@ -2198,7 +2198,7 @@
     "EffectValue": [],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 14,
@@ -2207,7 +2207,7 @@
   "74": {
     "Id": 74,
     "EffectID": 1408,
-    "EffectName": "",
+    "EffectName": "Attack SPD",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_026",
     "EffectConfig": [
@@ -2221,7 +2221,7 @@
     "EffectValue": [],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 29,
@@ -2230,7 +2230,7 @@
   "75": {
     "Id": 75,
     "EffectID": 1408,
-    "EffectName": "",
+    "EffectName": "Attack SPD",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_026",
     "EffectConfig": [
@@ -2244,7 +2244,7 @@
     "EffectValue": [],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 44,
@@ -2253,7 +2253,7 @@
   "76": {
     "Id": 76,
     "EffectID": 1408,
-    "EffectName": "",
+    "EffectName": "Attack SPD",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_026",
     "EffectConfig": [
@@ -2272,7 +2272,7 @@
     "EffectValue": [],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 167,
@@ -2281,7 +2281,7 @@
   "77": {
     "Id": 77,
     "EffectID": 1408,
-    "EffectName": "",
+    "EffectName": "Attack SPD",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_026",
     "EffectConfig": [
@@ -2300,7 +2300,7 @@
     "EffectValue": [],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 254,
@@ -2309,7 +2309,7 @@
   "78": {
     "Id": 78,
     "EffectID": 1409,
-    "EffectName": "",
+    "EffectName": "Crit Focus",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_019",
     "EffectConfig": [],
@@ -2317,7 +2317,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 0,
@@ -2326,7 +2326,7 @@
   "79": {
     "Id": 79,
     "EffectID": 1409,
-    "EffectName": "",
+    "EffectName": "Crit Focus",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_019",
     "EffectConfig": [
@@ -2340,7 +2340,7 @@
     "EffectValue": [],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 7,
@@ -2349,7 +2349,7 @@
   "80": {
     "Id": 80,
     "EffectID": 1409,
-    "EffectName": "",
+    "EffectName": "Crit Focus",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_019",
     "EffectConfig": [
@@ -2363,7 +2363,7 @@
     "EffectValue": [],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 14,
@@ -2372,7 +2372,7 @@
   "81": {
     "Id": 81,
     "EffectID": 1409,
-    "EffectName": "",
+    "EffectName": "Crit Focus",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_019",
     "EffectConfig": [
@@ -2391,7 +2391,7 @@
     "EffectValue": [],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 29,
@@ -2400,7 +2400,7 @@
   "82": {
     "Id": 82,
     "EffectID": 1409,
-    "EffectName": "",
+    "EffectName": "Crit Focus",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_019",
     "EffectConfig": [
@@ -2419,7 +2419,7 @@
     "EffectValue": [],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 44,
@@ -2428,7 +2428,7 @@
   "83": {
     "Id": 83,
     "EffectID": 1409,
-    "EffectName": "",
+    "EffectName": "Crit Focus",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_019",
     "EffectConfig": [
@@ -2457,7 +2457,7 @@
     "EffectValue": [],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 167,
@@ -2466,7 +2466,7 @@
   "84": {
     "Id": 84,
     "EffectID": 1409,
-    "EffectName": "",
+    "EffectName": "Crit Focus",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_019",
     "EffectConfig": [
@@ -2495,7 +2495,7 @@
     "EffectValue": [],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 254,
@@ -2504,7 +2504,7 @@
   "85": {
     "Id": 85,
     "EffectID": 1410,
-    "EffectName": "",
+    "EffectName": "Luck Focus",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_048",
     "EffectConfig": [],
@@ -2512,7 +2512,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 0,
@@ -2521,7 +2521,7 @@
   "86": {
     "Id": 86,
     "EffectID": 1410,
-    "EffectName": "",
+    "EffectName": "Luck Focus",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_048",
     "EffectConfig": [
@@ -2535,7 +2535,7 @@
     "EffectValue": [],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 7,
@@ -2544,7 +2544,7 @@
   "87": {
     "Id": 87,
     "EffectID": 1410,
-    "EffectName": "",
+    "EffectName": "Luck Focus",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_048",
     "EffectConfig": [
@@ -2558,7 +2558,7 @@
     "EffectValue": [],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 14,
@@ -2567,7 +2567,7 @@
   "88": {
     "Id": 88,
     "EffectID": 1410,
-    "EffectName": "",
+    "EffectName": "Luck Focus",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_048",
     "EffectConfig": [
@@ -2586,7 +2586,7 @@
     "EffectValue": [],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 29,
@@ -2595,7 +2595,7 @@
   "89": {
     "Id": 89,
     "EffectID": 1410,
-    "EffectName": "",
+    "EffectName": "Luck Focus",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_048",
     "EffectConfig": [
@@ -2614,7 +2614,7 @@
     "EffectValue": [],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 44,
@@ -2623,7 +2623,7 @@
   "90": {
     "Id": 90,
     "EffectID": 1410,
-    "EffectName": "",
+    "EffectName": "Luck Focus",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_048",
     "EffectConfig": [
@@ -2652,7 +2652,7 @@
     "EffectValue": [],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 167,
@@ -2661,7 +2661,7 @@
   "91": {
     "Id": 91,
     "EffectID": 1410,
-    "EffectName": "",
+    "EffectName": "Luck Focus",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_048",
     "EffectConfig": [
@@ -2690,7 +2690,7 @@
     "EffectValue": [],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 254,
@@ -2699,7 +2699,7 @@
   "92": {
     "Id": 92,
     "EffectID": 2104,
-    "EffectName": "",
+    "EffectName": "DMG Stack",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_016",
     "EffectConfig": [],
@@ -2712,7 +2712,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 0,
@@ -2721,7 +2721,7 @@
   "93": {
     "Id": 93,
     "EffectID": 2104,
-    "EffectName": "",
+    "EffectName": "DMG Stack",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_016",
     "EffectConfig": [
@@ -2744,7 +2744,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 14,
@@ -2753,7 +2753,7 @@
   "94": {
     "Id": 94,
     "EffectID": 2104,
-    "EffectName": "",
+    "EffectName": "DMG Stack",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_016",
     "EffectConfig": [
@@ -2776,7 +2776,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 29,
@@ -2785,7 +2785,7 @@
   "95": {
     "Id": 95,
     "EffectID": 2104,
-    "EffectName": "",
+    "EffectName": "DMG Stack",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_016",
     "EffectConfig": [
@@ -2813,7 +2813,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 59,
@@ -2822,7 +2822,7 @@
   "96": {
     "Id": 96,
     "EffectID": 2104,
-    "EffectName": "",
+    "EffectName": "DMG Stack",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_016",
     "EffectConfig": [
@@ -2850,7 +2850,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 89,
@@ -2859,7 +2859,7 @@
   "97": {
     "Id": 97,
     "EffectID": 2104,
-    "EffectName": "",
+    "EffectName": "DMG Stack",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_016",
     "EffectConfig": [
@@ -2893,7 +2893,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 298,
@@ -2902,7 +2902,7 @@
   "98": {
     "Id": 98,
     "EffectID": 2104,
-    "EffectName": "",
+    "EffectName": "DMG Stack",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_016",
     "EffectConfig": [
@@ -2936,7 +2936,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 448,
@@ -2945,7 +2945,7 @@
   "99": {
     "Id": 99,
     "EffectID": 2105,
-    "EffectName": "",
+    "EffectName": "Agile",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_006",
     "EffectConfig": [],
@@ -2958,7 +2958,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 0,
@@ -2967,7 +2967,7 @@
   "100": {
     "Id": 100,
     "EffectID": 2105,
-    "EffectName": "",
+    "EffectName": "Agile",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_006",
     "EffectConfig": [
@@ -2990,7 +2990,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 14,
@@ -2999,7 +2999,7 @@
   "101": {
     "Id": 101,
     "EffectID": 2105,
-    "EffectName": "",
+    "EffectName": "Agile",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_006",
     "EffectConfig": [
@@ -3022,7 +3022,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 29,
@@ -3031,7 +3031,7 @@
   "102": {
     "Id": 102,
     "EffectID": 2105,
-    "EffectName": "",
+    "EffectName": "Agile",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_006",
     "EffectConfig": [
@@ -3059,7 +3059,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 59,
@@ -3068,7 +3068,7 @@
   "103": {
     "Id": 103,
     "EffectID": 2105,
-    "EffectName": "",
+    "EffectName": "Agile",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_006",
     "EffectConfig": [
@@ -3096,7 +3096,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 89,
@@ -3105,7 +3105,7 @@
   "104": {
     "Id": 104,
     "EffectID": 2105,
-    "EffectName": "",
+    "EffectName": "Agile",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_006",
     "EffectConfig": [
@@ -3139,7 +3139,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 298,
@@ -3148,7 +3148,7 @@
   "105": {
     "Id": 105,
     "EffectID": 2105,
-    "EffectName": "",
+    "EffectName": "Agile",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_006",
     "EffectConfig": [
@@ -3182,7 +3182,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 1,
     "IsNegative": false,
     "FightValue": 448,
@@ -3191,7 +3191,7 @@
   "106": {
     "Id": 106,
     "EffectID": 2204,
-    "EffectName": "",
+    "EffectName": "Life Condense",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_012",
     "EffectConfig": [],
@@ -3205,7 +3205,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 0,
@@ -3214,7 +3214,7 @@
   "107": {
     "Id": 107,
     "EffectID": 2204,
-    "EffectName": "",
+    "EffectName": "Life Condense",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_012",
     "EffectConfig": [
@@ -3238,7 +3238,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 14,
@@ -3247,7 +3247,7 @@
   "108": {
     "Id": 108,
     "EffectID": 2204,
-    "EffectName": "",
+    "EffectName": "Life Condense",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_012",
     "EffectConfig": [
@@ -3271,7 +3271,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 29,
@@ -3280,7 +3280,7 @@
   "109": {
     "Id": 109,
     "EffectID": 2204,
-    "EffectName": "",
+    "EffectName": "Life Condense",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_012",
     "EffectConfig": [
@@ -3309,7 +3309,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 59,
@@ -3318,7 +3318,7 @@
   "110": {
     "Id": 110,
     "EffectID": 2204,
-    "EffectName": "",
+    "EffectName": "Life Condense",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_012",
     "EffectConfig": [
@@ -3347,7 +3347,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 89,
@@ -3356,7 +3356,7 @@
   "111": {
     "Id": 111,
     "EffectID": 2204,
-    "EffectName": "",
+    "EffectName": "Life Condense",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_012",
     "EffectConfig": [
@@ -3392,7 +3392,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 298,
@@ -3401,7 +3401,7 @@
   "112": {
     "Id": 112,
     "EffectID": 2204,
-    "EffectName": "",
+    "EffectName": "Life Condense",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_012",
     "EffectConfig": [
@@ -3437,7 +3437,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 448,
@@ -3446,7 +3446,7 @@
   "113": {
     "Id": 113,
     "EffectID": 2205,
-    "EffectName": "",
+    "EffectName": "First Aid",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_024",
     "EffectConfig": [],
@@ -3459,7 +3459,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 0,
@@ -3468,7 +3468,7 @@
   "114": {
     "Id": 114,
     "EffectID": 2205,
-    "EffectName": "",
+    "EffectName": "First Aid",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_024",
     "EffectConfig": [
@@ -3491,7 +3491,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 14,
@@ -3500,7 +3500,7 @@
   "115": {
     "Id": 115,
     "EffectID": 2205,
-    "EffectName": "",
+    "EffectName": "First Aid",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_024",
     "EffectConfig": [
@@ -3523,7 +3523,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 29,
@@ -3532,7 +3532,7 @@
   "116": {
     "Id": 116,
     "EffectID": 2205,
-    "EffectName": "",
+    "EffectName": "First Aid",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_024",
     "EffectConfig": [
@@ -3560,7 +3560,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 59,
@@ -3569,7 +3569,7 @@
   "117": {
     "Id": 117,
     "EffectID": 2205,
-    "EffectName": "",
+    "EffectName": "First Aid",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_024",
     "EffectConfig": [
@@ -3597,7 +3597,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 89,
@@ -3606,7 +3606,7 @@
   "118": {
     "Id": 118,
     "EffectID": 2205,
-    "EffectName": "",
+    "EffectName": "First Aid",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_024",
     "EffectConfig": [
@@ -3640,7 +3640,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 298,
@@ -3649,7 +3649,7 @@
   "119": {
     "Id": 119,
     "EffectID": 2205,
-    "EffectName": "",
+    "EffectName": "First Aid",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_024",
     "EffectConfig": [
@@ -3683,7 +3683,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 2,
     "IsNegative": false,
     "FightValue": 448,
@@ -3692,7 +3692,7 @@
   "120": {
     "Id": 120,
     "EffectID": 2304,
-    "EffectName": "",
+    "EffectName": "Final Protection",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_045",
     "EffectConfig": [],
@@ -3707,7 +3707,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 0,
@@ -3716,7 +3716,7 @@
   "121": {
     "Id": 121,
     "EffectID": 2304,
-    "EffectName": "",
+    "EffectName": "Final Protection",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_045",
     "EffectConfig": [
@@ -3741,7 +3741,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 14,
@@ -3750,7 +3750,7 @@
   "122": {
     "Id": 122,
     "EffectID": 2304,
-    "EffectName": "",
+    "EffectName": "Final Protection",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_045",
     "EffectConfig": [
@@ -3775,7 +3775,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 29,
@@ -3784,7 +3784,7 @@
   "123": {
     "Id": 123,
     "EffectID": 2304,
-    "EffectName": "",
+    "EffectName": "Final Protection",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_045",
     "EffectConfig": [
@@ -3814,7 +3814,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 59,
@@ -3823,7 +3823,7 @@
   "124": {
     "Id": 124,
     "EffectID": 2304,
-    "EffectName": "",
+    "EffectName": "Final Protection",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_045",
     "EffectConfig": [
@@ -3853,7 +3853,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 89,
@@ -3862,7 +3862,7 @@
   "125": {
     "Id": 125,
     "EffectID": 2304,
-    "EffectName": "",
+    "EffectName": "Final Protection",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_045",
     "EffectConfig": [
@@ -3900,7 +3900,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 298,
@@ -3909,7 +3909,7 @@
   "126": {
     "Id": 126,
     "EffectID": 2304,
-    "EffectName": "",
+    "EffectName": "Final Protection",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_045",
     "EffectConfig": [
@@ -3947,7 +3947,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 3,
     "IsNegative": false,
     "FightValue": 448,
@@ -3956,7 +3956,7 @@
   "127": {
     "Id": 127,
     "EffectID": 2404,
-    "EffectName": "",
+    "EffectName": "Life Wave",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_004",
     "EffectConfig": [],
@@ -3968,7 +3968,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 0,
@@ -3977,7 +3977,7 @@
   "128": {
     "Id": 128,
     "EffectID": 2404,
-    "EffectName": "",
+    "EffectName": "Life Wave",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_004",
     "EffectConfig": [
@@ -3999,7 +3999,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 14,
@@ -4008,7 +4008,7 @@
   "129": {
     "Id": 129,
     "EffectID": 2404,
-    "EffectName": "",
+    "EffectName": "Life Wave",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_004",
     "EffectConfig": [
@@ -4030,7 +4030,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 29,
@@ -4039,7 +4039,7 @@
   "130": {
     "Id": 130,
     "EffectID": 2404,
-    "EffectName": "",
+    "EffectName": "Life Wave",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_004",
     "EffectConfig": [
@@ -4066,7 +4066,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 59,
@@ -4075,7 +4075,7 @@
   "131": {
     "Id": 131,
     "EffectID": 2404,
-    "EffectName": "",
+    "EffectName": "Life Wave",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_004",
     "EffectConfig": [
@@ -4102,7 +4102,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 89,
@@ -4111,7 +4111,7 @@
   "132": {
     "Id": 132,
     "EffectID": 2404,
-    "EffectName": "",
+    "EffectName": "Life Wave",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_004",
     "EffectConfig": [
@@ -4143,7 +4143,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 298,
@@ -4152,7 +4152,7 @@
   "133": {
     "Id": 133,
     "EffectID": 2404,
-    "EffectName": "",
+    "EffectName": "Life Wave",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_004",
     "EffectConfig": [
@@ -4184,7 +4184,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 448,
@@ -4193,7 +4193,7 @@
   "134": {
     "Id": 134,
     "EffectID": 2405,
-    "EffectName": "",
+    "EffectName": "Life Steal",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_035",
     "EffectConfig": [],
@@ -4206,7 +4206,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 0,
@@ -4215,7 +4215,7 @@
   "135": {
     "Id": 135,
     "EffectID": 2405,
-    "EffectName": "",
+    "EffectName": "Life Steal",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_035",
     "EffectConfig": [
@@ -4238,7 +4238,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 14,
@@ -4247,7 +4247,7 @@
   "136": {
     "Id": 136,
     "EffectID": 2405,
-    "EffectName": "",
+    "EffectName": "Life Steal",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_035",
     "EffectConfig": [
@@ -4270,7 +4270,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 29,
@@ -4279,7 +4279,7 @@
   "137": {
     "Id": 137,
     "EffectID": 2405,
-    "EffectName": "",
+    "EffectName": "Life Steal",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_035",
     "EffectConfig": [
@@ -4307,7 +4307,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 59,
@@ -4316,7 +4316,7 @@
   "138": {
     "Id": 138,
     "EffectID": 2405,
-    "EffectName": "",
+    "EffectName": "Life Steal",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_035",
     "EffectConfig": [
@@ -4344,7 +4344,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 89,
@@ -4353,7 +4353,7 @@
   "139": {
     "Id": 139,
     "EffectID": 2405,
-    "EffectName": "",
+    "EffectName": "Life Steal",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_035",
     "EffectConfig": [
@@ -4387,7 +4387,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 298,
@@ -4396,7 +4396,7 @@
   "140": {
     "Id": 140,
     "EffectID": 2405,
-    "EffectName": "",
+    "EffectName": "Life Steal",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_035",
     "EffectConfig": [
@@ -4430,7 +4430,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 448,
@@ -4439,7 +4439,7 @@
   "141": {
     "Id": 141,
     "EffectID": 2406,
-    "EffectName": "",
+    "EffectName": "Team Luck & Crit",
     "Level": 0,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_017",
     "EffectConfig": [],
@@ -4452,7 +4452,7 @@
     "EffectValue": [],
     "EnhancementNum": 0,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 0,
@@ -4461,7 +4461,7 @@
   "142": {
     "Id": 142,
     "EffectID": 2406,
-    "EffectName": "",
+    "EffectName": "Team Luck & Crit",
     "Level": 1,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_017",
     "EffectConfig": [
@@ -4484,7 +4484,7 @@
     ],
     "EnhancementNum": 1,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 14,
@@ -4493,7 +4493,7 @@
   "143": {
     "Id": 143,
     "EffectID": 2406,
-    "EffectName": "",
+    "EffectName": "Team Luck & Crit",
     "Level": 2,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_017",
     "EffectConfig": [
@@ -4516,7 +4516,7 @@
     ],
     "EnhancementNum": 4,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 29,
@@ -4525,7 +4525,7 @@
   "144": {
     "Id": 144,
     "EffectID": 2406,
-    "EffectName": "",
+    "EffectName": "Team Luck & Crit",
     "Level": 3,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_017",
     "EffectConfig": [
@@ -4553,7 +4553,7 @@
     ],
     "EnhancementNum": 8,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 59,
@@ -4562,7 +4562,7 @@
   "145": {
     "Id": 145,
     "EffectID": 2406,
-    "EffectName": "",
+    "EffectName": "Team Luck & Crit",
     "Level": 4,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_017",
     "EffectConfig": [
@@ -4590,7 +4590,7 @@
     ],
     "EnhancementNum": 12,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 89,
@@ -4599,7 +4599,7 @@
   "146": {
     "Id": 146,
     "EffectID": 2406,
-    "EffectName": "",
+    "EffectName": "Team Luck & Crit",
     "Level": 5,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_017",
     "EffectConfig": [
@@ -4633,7 +4633,7 @@
     ],
     "EnhancementNum": 16,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 298,
@@ -4642,7 +4642,7 @@
   "147": {
     "Id": 147,
     "EffectID": 2406,
-    "EffectName": "",
+    "EffectName": "Team Luck & Crit",
     "Level": 6,
     "EffectConfigIcon": "ui/atlas/mod_effect/mod_effect_icon_017",
     "EffectConfig": [
@@ -4676,7 +4676,7 @@
     ],
     "EnhancementNum": 20,
     "PlayerLevel": 1,
-    "EffectOverview": "",
+    "EffectOverview": "Lv.1: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[2]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[1]*}<br><br>Lv.2: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[4]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[3]*}<br><br>Lv.3: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[6]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[5]*}<br><br>Lv.4: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[8]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[7]*}<br><br>Lv.5: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[10]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[9]*}<br><br>Lv.6: <style=\"tipsYellow\">(Link</style><style=\"accent-gn\"> +{*val[12]*} </style><style=\"tipsYellow\">can be activated)</style><br>{*val[11]*}",
     "EffectType": 4,
     "IsNegative": false,
     "FightValue": 448,

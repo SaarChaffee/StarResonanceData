@@ -1,5 +1,6 @@
 local CommonPlayerPortraitNewItem = class("CommonPlayerPortraitNewItem")
 local DEFINE = require("ui.model.personalzone_define")
+local switch_vm = Z.VMMgr.GetVM("switch")
 
 function CommonPlayerPortraitNewItem:ctor()
   self.snapshotVm_ = Z.VMMgr.GetVM("snapshot")
@@ -95,7 +96,7 @@ end
 
 function CommonPlayerPortraitNewItem:GetLocalHeadPortrait(charId, modelId)
   local path = self.snapshotVm_.GetInternalHeadPortrait(charId, modelId)
-  if type(path) == "number" then
+  if switch_vm.CheckFuncSwitch(E.FunctionID.DisplayCustomHeadPhoto) and type(path) == "number" then
     self:SetRimgPortrait(path)
   else
     self:SetModelPortrait(modelId)
@@ -137,6 +138,9 @@ function CommonPlayerPortraitNewItem:SetImgPortrait(headId)
 end
 
 function CommonPlayerPortraitNewItem:SetRimgPortrait(headId)
+  if not switch_vm.CheckFuncSwitch(E.FunctionID.DisplayCustomHeadPhoto) then
+    return
+  end
   if not (self.uiBinder ~= nil and self.token_) or Z.CancelSource.IsCanceled(self.token_) then
     return
   end

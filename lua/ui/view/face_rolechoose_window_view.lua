@@ -42,6 +42,7 @@ function Face_rolechoose_windowView:ctor()
   self.snapShotVM_ = Z.VMMgr.GetVM("snapshot")
   self.playerVM_ = Z.VMMgr.GetVM("player")
   self.playerData_ = Z.DataMgr.Get("player_data")
+  self.downloadVm_ = Z.VMMgr.GetVM("download")
 end
 
 function Face_rolechoose_windowView:OnActive()
@@ -356,14 +357,17 @@ function Face_rolechoose_windowView:refreshRoleFigure(uiBinder, socialData)
   Z.CoroUtil.create_coro_xpcall(function()
     uiBinder.Ref:SetVisible(uiBinder.img_role, false)
     uiBinder.Ref:SetVisible(uiBinder.rimg_role, false)
+    local switchVm = Z.VMMgr.GetVM("switch")
     local textureData = {}
     if socialData.avatarInfo and socialData.avatarInfo.halfBody and socialData.avatarInfo.halfBody.url ~= "" then
-      textureData.textureId = self.snapShotVM_.AsyncDownLoadPictureByUrl(socialData.avatarInfo.halfBody.url)
       textureData.auditing = socialData.avatarInfo.halfBody.verify.ReviewStartTime
     end
-    if textureData.auditing and textureData.auditing == E.EPictureReviewType.EPictureReviewed then
-      uiBinder.Ref:SetVisible(uiBinder.rimg_role, true)
-      uiBinder.rimg_role:SetNativeTexture(textureData.textureId)
+    if switchVm.CheckFuncSwitch(E.FunctionID.DisplayCustomHalfBody) and textureData.auditing and textureData.auditing == E.EPictureReviewType.EPictureReviewed then
+      local name = self.downloadVm_:GetFileName(socialData.charId, socialData.avatarInfo.halfBody.verify.version, E.HttpPictureDownFoldType.HalfBody)
+      self.downloadVm_:GetPicture(name, socialData.avatarInfo.halfBody.url, self.cancelSource:CreateToken(), function(nativeTextureId)
+        textureData.textureId = nativeTextureId
+        self:getHalfBodyTextureCallBack(textureData, socialData, uiBinder)
+      end, E.HttpPictureDownFoldType.HalfBody)
     else
       local modelId = Z.ModelManager:GetModelIdByGenderAndSize(socialData.basicData.gender, socialData.basicData.bodySize)
       local path = self.snapShotVM_.GetModelHalfPortrait(modelId)
@@ -375,6 +379,22 @@ function Face_rolechoose_windowView:refreshRoleFigure(uiBinder, socialData)
       end
     end
   end)()
+end
+
+function Face_rolechoose_windowView:getHalfBodyTextureCallBack(textureData, socialData, uiBinder)
+  if textureData.textureId ~= 0 and textureData.textureId ~= -1 then
+    uiBinder.Ref:SetVisible(uiBinder.rimg_role, true)
+    uiBinder.rimg_role:SetNativeTexture(textureData.textureId)
+  else
+    local modelId = Z.ModelManager:GetModelIdByGenderAndSize(socialData.basicData.gender, socialData.basicData.bodySize)
+    local path = self.snapShotVM_.GetModelHalfPortrait(modelId)
+    if path ~= nil then
+      uiBinder.Ref:SetVisible(uiBinder.img_role, true)
+      uiBinder.img_role:SetImage(path)
+    else
+      logError("[refreshRoleFigure] The path of GetModelHalfPortrait is nil.")
+    end
+  end
 end
 
 function Face_rolechoose_windowView:refreshButtonState()
@@ -392,6 +412,7 @@ function Face_rolechoose_windowView:refreshButtonState()
   self:SetUIVisible(self.uiBinder.btn_delete, isSelectedRole and not isDeleted)
   self:SetUIVisible(self.uiBinder.btn_cancel_delete, isSelectedRole and isDeleted and not self.isLogining_)
   self:SetUIVisible(self.uiBinder.btn_entergame, isSelectedRole and not isDeleted and not self.isLogining_)
+  self:SetUIVisible(self.uiBinder.node_enter, not isDeleted)
   self:SetUIVisible(self.uiBinder.node_mask, self.isLogining_)
   self:SetUIVisible(self.uiBinder.node_progress, self.isLogining_)
   self:SetUIVisible(self.uiBinder.lab_time, isDeleted)

@@ -57,6 +57,7 @@ function Handbook_character_windowView:OnActive()
   if functionConfig then
     self.uiBinder.lab_title.text = functionConfig.Name
   end
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Handbook_character_windowView:OnDeActive()
@@ -75,7 +76,7 @@ function Handbook_character_windowView:OnDestory()
   Z.UnrealSceneMgr:CloseUnrealScene("handbook_character_window")
 end
 
-function Handbook_character_windowView:SelectId(id)
+function Handbook_character_windowView:SelectId(id, isClick)
   if id == self.selectId_ then
     return
   end
@@ -103,6 +104,9 @@ function Handbook_character_windowView:SelectId(id)
     self.uiBinder.lab_weap.text = Lang("HandbookLockContent")
     self.uiBinder.lab_character.text = Lang("HandbookLockContent")
     self.uiBinder.lab_content.text = Lang("HandbookLockContent")
+  end
+  if isClick then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
   end
 end
 

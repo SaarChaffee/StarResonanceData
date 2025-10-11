@@ -17,7 +17,9 @@ DEF.MessageType = {
   RefreshAnnounce = "panameraRefreshADData",
   CloseApp = "pandoraCloseApp",
   panameraCheckUnShowData = "panameraCheckUnShowData",
-  panameraCheckUnShowDataResult = "panameraCheckUnShowDataResult"
+  panameraCheckUnShowDataResult = "panameraCheckUnShowDataResult",
+  GetNotchHeight = "pandoraGetNotchHeight",
+  SendNotchHeight = "getNotchHeightResult"
 }
 DEF.EventName = {
   ResourceReady = "ResourceReady",

@@ -6,7 +6,7 @@ function DialogViewDataManager:ctor()
   Z.EventMgr:Add(Z.ConstValue.UIClose, self.onCloseViewEvent, self)
 end
 
-function DialogViewDataManager:CheckAndOpenPreferencesDialog(desc, onConfirmFunc, onCancelFunc, preferencesType, preferencesKey, itemList)
+function DialogViewDataManager:CheckAndOpenPreferencesDialog(desc, onConfirmFunc, onCancelFunc, preferencesType, preferencesKey, itemList, ignoreConfirmFunc)
   if self:CheckNeedShowDlg(preferencesType, preferencesKey) then
     local data = {
       dlgType = E.DlgType.YesNo,
@@ -26,7 +26,7 @@ function DialogViewDataManager:CheckAndOpenPreferencesDialog(desc, onConfirmFunc
       itemList = itemList
     }
     self:OpenDialogView(data)
-  else
+  elseif not ignoreConfirmFunc then
     Z.CoroUtil.create_coro_xpcall(function()
       onConfirmFunc()
     end)()

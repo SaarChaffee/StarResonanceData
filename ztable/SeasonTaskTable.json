@@ -29,8 +29,8 @@
     "ShowWeek": 1,
     "QuickJumpType": 0,
     "QuickJumpParam": [],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Daily Task",
+    "AddDesc": "Follow the guide to quickly become a seasoned adventurer!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_dailytarget_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_dailytarget_2",
     "Desc": "完成本页的{*val*}个目标"
@@ -49,8 +49,8 @@
     "QuickJumpParam": [
       600100
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Story",
+    "AddDesc": "A hidden past, someone's future and destiny changed because of it",
     "PicHor": "ui/textures/sevendaystarget/mengxin_quest09_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_quest09_2",
     "Desc": "完成主线任务“罪与诳语，一位魔女”"
@@ -69,8 +69,8 @@
     "QuickJumpParam": [
       800505
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Activity",
+    "AddDesc": "Complete daily objectives to earn corresponding Activity Merits",
     "PicHor": "ui/textures/sevendaystarget/mengxin_activation_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_activation_2",
     "Desc": "累计日活跃度达到{*val*}"
@@ -89,8 +89,8 @@
     "QuickJumpParam": [
       200001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Gear",
+    "AddDesc": "Higher quality gear can enhance the combat experience",
     "PicHor": "ui/textures/sevendaystarget/mengxin_equip01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_equip01_2",
     "Desc": "同时穿戴4件蓝色品质的装备"
@@ -109,8 +109,8 @@
     "QuickJumpParam": [
       200502
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Skills",
+    "AddDesc": "Upgrading skill levels can increase combat power",
     "PicHor": "ui/textures/sevendaystarget/mengxin_skill01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_skill01_2",
     "Desc": "任意1个技能升到5级"
@@ -129,8 +129,8 @@
     "QuickJumpParam": [
       104200
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Talents",
+    "AddDesc": "Use talents to grow stronger and define your unique combat style.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_tianfu_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_tianfu_2",
     "Desc": "天赋点总分配数达到{*val*}个"
@@ -149,8 +149,8 @@
     "QuickJumpParam": [
       501000
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Life Skill",
+    "AddDesc": "Gemology, Alchemy, Culinary... there's never enough Focus!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_lifeprofession_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_lifeprofession_2",
     "Desc": "累计消耗{*val*}精力"
@@ -171,8 +171,8 @@
       2,
       3399
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Trial",
+    "AddDesc": "Master your Class through Trials",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben01_2",
     "Desc": "通关任意职业的第5层试炼\t"
@@ -193,8 +193,8 @@
       4,
       421
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Dungeon",
+    "AddDesc": "The \"Unit X\" is urgently needing the assistance!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben02_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben02_2",
     "Desc": "通关{*val*}次“不稳定空间”挑战"
@@ -215,8 +215,8 @@
       7,
       1
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Combat",
+    "AddDesc": "You have become stronger and can challenge boss monsters now",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "参与击败1个首领怪物\t"
@@ -235,8 +235,8 @@
     "QuickJumpParam": [
       100101
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Culinary",
+    "AddDesc": "Cooking can enhance some personal attributes",
     "PicHor": "ui/textures/sevendaystarget/mengxin_cook_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_cook_2",
     "Desc": "食用{*val*}个疗愈香膏·等级1"
@@ -255,8 +255,8 @@
     "QuickJumpParam": [
       500100
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Guild",
+    "AddDesc": "You can make friends in the Guild and participate in Guild activities",
     "PicHor": "ui/textures/sevendaystarget/mengxin_union_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_union_2",
     "Desc": "加入{*val*}个协会"
@@ -275,8 +275,8 @@
     "QuickJumpParam": [
       102001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Take Photos",
+    "AddDesc": "Photos are the magic that freezes time!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_dailytarget_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_dailytarget_2",
     "Desc": "完成1次自拍\t"
@@ -295,8 +295,8 @@
     "QuickJumpParam": [
       102251
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Settings",
+    "AddDesc": "Set up in advance, convenient and efficient!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_setting_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_setting_2",
     "Desc": "完成1次快捷轮盘的设置"
@@ -315,8 +315,8 @@
     "QuickJumpParam": [
       800818
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Shopping",
+    "AddDesc": "Spend, spend, spend hard!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_shop_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_shop_2",
     "Desc": "在荣誉商店中购买{*val*}件商品"
@@ -351,8 +351,8 @@
     "ShowWeek": 1,
     "QuickJumpType": 0,
     "QuickJumpParam": [],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Daily Task",
+    "AddDesc": "Follow the guide to quickly become a seasoned adventurer!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_dailytarget_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_dailytarget_2",
     "Desc": "完成本页的8个目标\t"
@@ -371,8 +371,8 @@
     "QuickJumpParam": [
       600100
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Story",
+    "AddDesc": "Go to Ocean Hill to learn about the Dark Mist Legion and Jayden.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_quest10_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_quest11_2",
     "Desc": "完成主线任务“于往事中寻觅”"
@@ -391,8 +391,8 @@
     "QuickJumpParam": [
       800505
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Activity",
+    "AddDesc": "Complete daily objectives to earn corresponding Activity Merits",
     "PicHor": "ui/textures/sevendaystarget/mengxin_activation_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_activation_2",
     "Desc": "累计活跃度达到400\t"
@@ -411,8 +411,8 @@
     "QuickJumpParam": [
       800510
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Title",
+    "AddDesc": "Upgrading titles can earn valuable rewards",
     "PicHor": "ui/textures/sevendaystarget/mengxin_bizhang_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_bizhang_2",
     "Desc": "赛季头衔达到“见习侦查员Ⅱ”\t"
@@ -431,8 +431,8 @@
     "QuickJumpParam": [
       200001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Ability Growth",
+    "AddDesc": "A symbol and manifestation of overall strength",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "能力评分达到4000\t"
@@ -451,8 +451,8 @@
     "QuickJumpParam": [
       200101
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Adventurer",
+    "AddDesc": "Adventurer, you are strong now.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_playerlevel_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_playerlevel_2",
     "Desc": "生体元等级达到18\t"
@@ -471,8 +471,8 @@
     "QuickJumpParam": [
       200001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Gear",
+    "AddDesc": "Higher quality gear can enhance the combat experience",
     "PicHor": "ui/textures/sevendaystarget/mengxin_equip01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_equip01_2",
     "Desc": "同时穿戴2件紫色品质的装备\t"
@@ -493,8 +493,8 @@
       2,
       3399
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Trial",
+    "AddDesc": "Master your Class through Trials",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben01_2",
     "Desc": "通关任意职业的第8层试炼\t"
@@ -513,8 +513,8 @@
     "QuickJumpParam": [
       101001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Dungeon",
+    "AddDesc": "Clearing so many dungeons, you are a very strong adventurer",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben05_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben05_2",
     "Desc": "组队参与并通关任意副本{*val*}次\t"
@@ -533,8 +533,8 @@
     "QuickJumpParam": [
       500888
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Stimen Vaults",
+    "AddDesc": "The Bapharian Ruins descend underground, filled with secrets",
     "PicHor": "ui/textures/sevendaystarget/mengxin_pata_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_pata_2",
     "Desc": "通关双周爬塔第8层\t"
@@ -555,8 +555,8 @@
       7,
       1
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Combat",
+    "AddDesc": "You have become stronger and can challenge boss monsters now",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "参与击败1个首领怪物\t"
@@ -575,8 +575,8 @@
     "QuickJumpParam": [
       500100
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Guild",
+    "AddDesc": "The guild is another home!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_union_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_union_2",
     "Desc": "完成协会活动中心导览任务"
@@ -595,8 +595,8 @@
     "QuickJumpParam": [
       102001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Take Photos",
+    "AddDesc": "Photos are the magic that freezes time!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_friends_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_friends_2",
     "Desc": "完成1次多人模式拍照"
@@ -615,8 +615,8 @@
     "QuickJumpParam": [
       100101
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Benefits",
+    "AddDesc": "Wow, benefits from the Pioneer Bureau!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_benefit_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_benefit_2",
     "Desc": "打开{*val*}次“初级星拓箱”"
@@ -635,8 +635,8 @@
     "QuickJumpParam": [
       800601
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Shopping",
+    "AddDesc": "Spend, spend, spend hard!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_shop_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_shop_2",
     "Desc": "在赛季积分商店中购买1件商品\t"
@@ -671,8 +671,8 @@
     "ShowWeek": 1,
     "QuickJumpType": 0,
     "QuickJumpParam": [],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Daily Task",
+    "AddDesc": "Follow the guide to quickly become a seasoned adventurer!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_dailytarget_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_dailytarget_2",
     "Desc": "完成本页的8个目标\t"
@@ -691,8 +691,8 @@
     "QuickJumpParam": [
       600100
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Story",
+    "AddDesc": "Track Denvel down and enter the fortress of calamity.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_quest03_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_quest03_2",
     "Desc": "完成主线任务“抵达新的风暴”"
@@ -711,8 +711,8 @@
     "QuickJumpParam": [
       600100
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Side Quests",
+    "AddDesc": "A letter invites you to the shadow side: the Underground District.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_quest07_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_quest07_2",
     "Desc": "完成支线任务“地下的秘密世界”"
@@ -731,8 +731,8 @@
     "QuickJumpParam": [
       200001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Gear",
+    "AddDesc": "Higher quality gear can enhance the combat experience",
     "PicHor": "ui/textures/sevendaystarget/mengxin_equip01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_equip01_2",
     "Desc": "同时穿戴2件紫色品质完美度达到10的装备"
@@ -751,8 +751,8 @@
     "QuickJumpParam": [
       200502
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Skills",
+    "AddDesc": "Combining skills can enhance the combat experience",
     "PicHor": "ui/textures/sevendaystarget/mengxin_skill01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_skill01_2",
     "Desc": "激活任务5个可选技能\t"
@@ -771,8 +771,8 @@
     "QuickJumpParam": [
       104200
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Talents",
+    "AddDesc": "Use talents to grow stronger and define your unique combat style.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_tianfu_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_tianfu_2",
     "Desc": "天赋点总分配数达到{*val*}个"
@@ -791,8 +791,8 @@
     "QuickJumpParam": [
       501000
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Life Skill",
+    "AddDesc": "Gemology, Alchemy, Culinary... there's never enough Focus!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_lifeprofession_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_lifeprofession_2",
     "Desc": "累计消耗{*val*}精力"
@@ -813,8 +813,8 @@
       4,
       421
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Dungeon",
+    "AddDesc": "The \"Unit X\" is urgently needing the assistance!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben03_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben03_2",
     "Desc": "通关3次“不稳定空间”挑战\t"
@@ -835,8 +835,8 @@
       2,
       3399
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Trial",
+    "AddDesc": "Master your Class through Trials",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben01_2",
     "Desc": "通关任意职业的第11层试炼\t"
@@ -857,8 +857,8 @@
       4,
       421
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Dungeon",
+    "AddDesc": "Explore unknown spaces, earn rich rewards, and investigate together!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben02_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben02_2",
     "Desc": "通关1次任意\"极限空间\"的普通模式"
@@ -877,8 +877,8 @@
     "QuickJumpParam": [
       800902
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Challenge",
+    "AddDesc": "◆Challenge powerful bosses. Win big rewards!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_worldboss_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_worldboss_2",
     "Desc": "参与1次世界boss活动\t"
@@ -899,8 +899,8 @@
       2,
       42
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Guild",
+    "AddDesc": "Join the Guild, take on cargo quests, and help it grow!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_union_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_union_2",
     "Desc": "完成1次协会货运\t"
@@ -922,8 +922,8 @@
       2,
       1
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Trading",
+    "AddDesc": "Find a new owner for idle items",
     "PicHor": "ui/textures/sevendaystarget/mengxin_trade_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_trade_2",
     "Desc": "在交易所里上架1次商品"
@@ -942,8 +942,8 @@
     "QuickJumpParam": [
       102300
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Social",
+    "AddDesc": "Looking for Friends",
     "PicHor": "ui/textures/sevendaystarget/mengxin_friends_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_friends_2",
     "Desc": "拥有{*val*}个好友"
@@ -978,8 +978,8 @@
     "ShowWeek": 1,
     "QuickJumpType": 0,
     "QuickJumpParam": [],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Daily Task",
+    "AddDesc": "Follow the guide to quickly become a seasoned adventurer!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_dailytarget_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_dailytarget_2",
     "Desc": "完成本页的8个目标\t"
@@ -998,8 +998,8 @@
     "QuickJumpParam": [
       200001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Ability Growth",
+    "AddDesc": "A symbol and manifestation of overall strength",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "能力评分达到6000\t"
@@ -1018,8 +1018,8 @@
     "QuickJumpParam": [
       200101
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Adventurer",
+    "AddDesc": "Adventurer, you are strong now.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_playerlevel_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_playerlevel_2",
     "Desc": "生体元等级达到29"
@@ -1038,8 +1038,8 @@
     "QuickJumpParam": [
       200001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Gear",
+    "AddDesc": "Refine each part of your gear to greatly enhance its effects!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_refine_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_refine_2",
     "Desc": "进行5次装备精炼\t"
@@ -1058,8 +1058,8 @@
     "QuickJumpParam": [
       200502
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Skills",
+    "AddDesc": "Upgrading skill levels can increase combat power",
     "PicHor": "ui/textures/sevendaystarget/mengxin_skill01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_skill01_2",
     "Desc": "任意1个技能升到12级\t"
@@ -1078,8 +1078,8 @@
     "QuickJumpParam": [
       501000
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Life Skill",
+    "AddDesc": "You can be considered a side job expert now",
     "PicHor": "ui/textures/sevendaystarget/mengxin_lifeprofession_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_lifeprofession_2",
     "Desc": "任意生活职业等级达到5级"
@@ -1100,8 +1100,8 @@
       4,
       421
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Dungeon",
+    "AddDesc": "Explore unknown spaces, earn rich rewards, and investigate together!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben06_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben06_2",
     "Desc": "通关1次任意\"极限空间\"的困难模式\t"
@@ -1122,8 +1122,8 @@
       2,
       3399
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Trial",
+    "AddDesc": "Master your Class through Trials",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben01_2",
     "Desc": "通关任意职业的第13层试炼\t"
@@ -1144,8 +1144,8 @@
       7,
       2
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Combat",
+    "AddDesc": "You have become stronger and can challenge elite monsters",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "参与击败{*val*}个精英怪物"
@@ -1166,8 +1166,8 @@
       2,
       11
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Shopping",
+    "AddDesc": "Spend, spend, spend hard!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_shop_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_shop_2",
     "Desc": "在协会杂货铺购买1次道具\t"
@@ -1188,8 +1188,8 @@
       2,
       11
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Guild",
+    "AddDesc": "Quickly join activities with your Guild buddies",
     "PicHor": "ui/textures/sevendaystarget/mengxin_union_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_union_2",
     "Desc": "通关一次任意难度的协会狩猎活动"
@@ -1208,8 +1208,8 @@
     "QuickJumpParam": [
       100101
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Benefits",
+    "AddDesc": "Wow, the Pioneer Bureau is giving out benefits again!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_benefit_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_benefit_2",
     "Desc": "打开40次“初级星拓箱”\t"
@@ -1230,8 +1230,8 @@
       5,
       4732
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Fishing",
+    "AddDesc": "When in doubt, go fishing first.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fishing_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fishing_2",
     "Desc": "钓鱼2次\t"
@@ -1250,8 +1250,8 @@
     "QuickJumpParam": [
       800819
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Shopping",
+    "AddDesc": "Spend, spend, spend hard!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_shop_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_shop_2",
     "Desc": "在声望商店中购买1件商品\t"
@@ -1286,8 +1286,8 @@
     "ShowWeek": 1,
     "QuickJumpType": 0,
     "QuickJumpParam": [],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Daily Task",
+    "AddDesc": "Follow the guide to quickly become a seasoned adventurer!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_dailytarget_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_dailytarget_2",
     "Desc": "完成本页的8个目标\t"
@@ -1306,8 +1306,8 @@
     "QuickJumpParam": [
       600100
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Story",
+    "AddDesc": "The forest ranger couple seems to be trapped in the center of the Engram Anomaly...",
     "PicHor": "ui/textures/sevendaystarget/mengxin_quest05_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_quest05_2",
     "Desc": "完成主线任务“绝景”"
@@ -1326,8 +1326,8 @@
     "QuickJumpParam": [
       800510
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Title",
+    "AddDesc": "Upgrading titles can earn valuable rewards",
     "PicHor": "ui/textures/sevendaystarget/mengxin_bizhang_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_bizhang_2",
     "Desc": "赛季头衔达到“见习侦查员Ⅲ”\t"
@@ -1346,8 +1346,8 @@
     "QuickJumpParam": [
       200502
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Skills",
+    "AddDesc": "Combining skills can enhance the combat experience",
     "PicHor": "ui/textures/sevendaystarget/mengxin_skill01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_skill01_2",
     "Desc": "激活任务7个可选技能\t"
@@ -1366,8 +1366,8 @@
     "QuickJumpParam": [
       200501
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Battle Imagine",
+    "AddDesc": "Equip Battle Imagine to enrich combat experience with tactical skill sets.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_skill02_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_skill02_2",
     "Desc": "装配2个共鸣之力"
@@ -1386,8 +1386,8 @@
     "QuickJumpParam": [
       200502
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Skills",
+    "AddDesc": "Advanced skills can enhance combat power.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_skill01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_skill01_2",
     "Desc": "任意1个技能进阶到2阶\t"
@@ -1406,8 +1406,8 @@
     "QuickJumpParam": [
       104200
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Talents",
+    "AddDesc": "Use talents to grow stronger and define your unique combat style.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_tianfu_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_tianfu_2",
     "Desc": "天赋点总分配数达到10个"
@@ -1426,8 +1426,8 @@
     "QuickJumpParam": [
       501000
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Life Skill",
+    "AddDesc": "Gemology, Alchemy, Culinary... there's never enough Focus!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_lifeprofession_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_lifeprofession_2",
     "Desc": "累计消耗{*val*}精力"
@@ -1448,8 +1448,8 @@
       2,
       3399
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Trial",
+    "AddDesc": "Master your Class through Trials",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben01_2",
     "Desc": "通关任意职业的第13层试炼\t"
@@ -1470,8 +1470,8 @@
       4,
       421
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Dungeon",
+    "AddDesc": "Explore unknown spaces, earn rich rewards, and investigate together!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben03_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben03_2",
     "Desc": "通关1次任意\"极限空间\"的普通模式"
@@ -1490,8 +1490,8 @@
     "QuickJumpParam": [
       101001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Assist in Battle",
+    "AddDesc": "Friends and family assist, doubling combat power",
     "PicHor": "ui/textures/sevendaystarget/mengxin_zhuzhan_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_zhuzhan_2",
     "Desc": "完成2次助战"
@@ -1512,8 +1512,8 @@
       7,
       1
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Combat",
+    "AddDesc": "You have become stronger and can challenge boss monsters now",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "参与击败1个首领怪物\t"
@@ -1532,8 +1532,8 @@
     "QuickJumpParam": [
       100804
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Map Exploration",
+    "AddDesc": "Follow the manual to track down bosses and elites, complete the hunt to receive massive rewards",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "怪物讨伐手册的等级升至2级\t"
@@ -1552,8 +1552,8 @@
     "QuickJumpParam": [
       102001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Take Photos",
+    "AddDesc": "Photos are the magic that freezes time!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battlephoto_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battlephoto_2",
     "Desc": "完成1次战斗模式拍照"
@@ -1572,8 +1572,8 @@
     "QuickJumpParam": [
       800817
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Shopping",
+    "AddDesc": "Spend, spend, spend hard!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_shop_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_shop_2",
     "Desc": "在友情点商店中购买1件商品\t"
@@ -1608,8 +1608,8 @@
     "ShowWeek": 1,
     "QuickJumpType": 0,
     "QuickJumpParam": [],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Daily Task",
+    "AddDesc": "Follow the guide to quickly become a seasoned adventurer!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_dailytarget_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_dailytarget_2",
     "Desc": "完成本页的8个目标\t"
@@ -1628,8 +1628,8 @@
     "QuickJumpParam": [
       200101
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Adventurer",
+    "AddDesc": "Adventurer, you are strong now.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_playerlevel_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_playerlevel_2",
     "Desc": "生体元等级达到32\t"
@@ -1648,8 +1648,8 @@
     "QuickJumpParam": [
       200001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Gear",
+    "AddDesc": "Higher quality gear can enhance the combat experience",
     "PicHor": "ui/textures/sevendaystarget/mengxin_equip02_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_equip02_2",
     "Desc": "同时穿戴4件紫色品质完美度达到10的装备\t"
@@ -1668,8 +1668,8 @@
     "QuickJumpParam": [
       200001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Gear",
+    "AddDesc": "Refine each part of your gear to greatly enhance its effects!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_refine_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_refine_2",
     "Desc": "任意4个装备部位的精炼等级达到3\t"
@@ -1690,8 +1690,8 @@
       4,
       421
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Dungeon",
+    "AddDesc": "Explore unknown spaces, earn rich rewards, and investigate together!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben03_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben03_2",
     "Desc": "通关1次任意\"极限空间\"的普通模式"
@@ -1710,8 +1710,8 @@
     "QuickJumpParam": [
       101001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Dungeon",
+    "AddDesc": "Clearing so many dungeons, you are a very strong adventurer",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben05_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben05_2",
     "Desc": "组队参与并通关任意副本{*val*}次\t"
@@ -1730,8 +1730,8 @@
     "QuickJumpParam": [
       100802
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Map Exploration",
+    "AddDesc": "Every three steps a small scene, every ten steps a big scene, Astrea is truly a tourist destination!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_world_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_world_2",
     "Desc": "完成2次景点打卡\t"
@@ -1752,8 +1752,8 @@
       7,
       2
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Combat",
+    "AddDesc": "You have become stronger and can challenge elite monsters",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "参与击败{*val*}个精英怪物"
@@ -1772,8 +1772,8 @@
     "QuickJumpParam": [
       800902
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Challenge",
+    "AddDesc": "◆Challenge powerful bosses. Win big rewards!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_worldboss_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_worldboss_2",
     "Desc": "在讨伐领主活动中累计获得2000点贡献值\t"
@@ -1792,8 +1792,8 @@
     "QuickJumpParam": [
       100101
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Benefits",
+    "AddDesc": "Wow, the Pioneer Bureau is giving out benefits again!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_benefit_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_benefit_2",
     "Desc": "打开40次“初级星拓箱”\t"
@@ -1812,8 +1812,8 @@
     "QuickJumpParam": [
       101101
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Fashion",
+    "AddDesc": "Fashionista Extraordinaire",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fashioncollect_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fashioncollect_2",
     "Desc": "衣橱收集度达到{*val*}"
@@ -1832,8 +1832,8 @@
     "QuickJumpParam": [
       102300
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Social",
+    "AddDesc": "On the Hunt for Friends",
     "PicHor": "ui/textures/sevendaystarget/mengxin_friends_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_friends_2",
     "Desc": "拥有{*val*}个好友"
@@ -1868,8 +1868,8 @@
     "ShowWeek": 1,
     "QuickJumpType": 0,
     "QuickJumpParam": [],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Graduation Challenge",
+    "AddDesc": "Complete 80 objectives in this manual",
     "PicHor": "ui/textures/sevendaystarget/mengxin_dailytarget_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_dailytarget_2",
     "Desc": "完成本手册的80个目标"
@@ -1888,8 +1888,8 @@
     "QuickJumpParam": [
       600100
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Story",
+    "AddDesc": "Encountered the trapped Priest Stanley. He doesn't seem to have a good attitude towards you...",
     "PicHor": "ui/textures/sevendaystarget/mengxin_quest06_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_quest06_2",
     "Desc": "完成主线任务“消逝之物”"
@@ -1908,8 +1908,8 @@
     "QuickJumpParam": [
       600100
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Side Quests",
+    "AddDesc": "There's a recruitment for the Dragon Claw Valley on the Pioneer Bureau's bulletin board...",
     "PicHor": "ui/textures/sevendaystarget/mengxin_quest08_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_quest08_2",
     "Desc": "完成支线任务“出发！学者团的龙爪遗迹探索！”"
@@ -1928,8 +1928,8 @@
     "QuickJumpParam": [
       800510
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Title",
+    "AddDesc": "Upgrading titles can earn valuable rewards",
     "PicHor": "ui/textures/sevendaystarget/mengxin_bizhang_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_bizhang_2",
     "Desc": "赛季头衔达到“初阶追踪者Ⅰ”\t"
@@ -1948,8 +1948,8 @@
     "QuickJumpParam": [
       200001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Ability Growth",
+    "AddDesc": "A symbol and manifestation of overall strength",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "能力评分达到8000\t"
@@ -1968,8 +1968,8 @@
     "QuickJumpParam": [
       200101
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Adventurer",
+    "AddDesc": "Adventurer, you are strong now.",
     "PicHor": "ui/textures/sevendaystarget/mengxin_playerlevel_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_playerlevel_2",
     "Desc": "生体元等级达到35\t"
@@ -1988,8 +1988,8 @@
     "QuickJumpParam": [
       200001
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Gear",
+    "AddDesc": "Perform gear embedding once",
     "PicHor": "ui/textures/sevendaystarget/mengxin_equip02_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_equip02_2",
     "Desc": "进行1次装备镶嵌"
@@ -2008,8 +2008,8 @@
     "QuickJumpParam": [
       800506
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Title",
+    "AddDesc": "What a dazzling Emblem, it must belong to a pro!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_title_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_title_2",
     "Desc": "臂章的核心效果达到4级\t"
@@ -2028,8 +2028,8 @@
     "QuickJumpParam": [
       501000
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Life Skill",
+    "AddDesc": "You can be considered a side job expert now",
     "PicHor": "ui/textures/sevendaystarget/mengxin_lifeprofession_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_lifeprofession_2",
     "Desc": "任意生活职业等级达到5级"
@@ -2050,8 +2050,8 @@
       4,
       421
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Dungeon",
+    "AddDesc": "Explore unknown spaces, earn rich rewards, and investigate together!",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben06_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben06_2",
     "Desc": "通关1次任意\"极限空间\"的困难模式\t"
@@ -2072,8 +2072,8 @@
       2,
       3399
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Trial",
+    "AddDesc": "Master your Class through Trials",
     "PicHor": "ui/textures/sevendaystarget/mengxin_fuben01_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_fuben01_2",
     "Desc": "通关任意职业的第14层试炼\t"
@@ -2092,8 +2092,8 @@
     "QuickJumpParam": [
       500888
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Stimen Vaults",
+    "AddDesc": "The Bapharian Ruins descend underground, filled with secrets",
     "PicHor": "ui/textures/sevendaystarget/mengxin_pata_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_pata_2",
     "Desc": "双周爬塔目标占位\t"
@@ -2114,8 +2114,8 @@
       7,
       1
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Map Exploration",
+    "AddDesc": "Defeat the boss monsters on the wild map",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "参与击败3个首领怪物\t"
@@ -2134,8 +2134,8 @@
     "QuickJumpParam": [
       100804
     ],
-    "Title": "",
-    "AddDesc": "",
+    "Title": "Map Exploration",
+    "AddDesc": "Follow the manual to track down bosses and elites, complete the hunt to receive massive rewards",
     "PicHor": "ui/textures/sevendaystarget/mengxin_battle_1",
     "PicVer": "ui/textures/sevendaystarget/mengxin_battle_2",
     "Desc": "怪物讨伐手册的等级升至2级\t"

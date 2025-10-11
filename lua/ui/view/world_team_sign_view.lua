@@ -1,6 +1,7 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local World_team_signView = class("World_team_signView", super)
+local MasterChallenDungeonTableMap = require("table.MasterChallenDungeonTableMap")
 
 function World_team_signView:ctor(parent)
   self.uiBinder = nil
@@ -50,10 +51,23 @@ function World_team_signView:refreshState(matchType)
     elseif matchType == E.MatchType.Team then
       local matchTeamData = Z.DataMgr.Get("match_team_data")
       local dungeonID = matchTeamData:GetCurMatchingDungeonId()
-      local cfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
+      local difficulty = matchTeamData:GetCurMatchingMasterDifficulty()
       local targetName = ""
-      if cfg then
-        targetName = cfg.Name
+      if difficulty and 0 < difficulty then
+        local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[dungeonID][difficulty]
+        local masterChallengeDungeonTableRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+        local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
+        if dungeonsTableRow and masterChallengeDungeonTableRow then
+          targetName = Lang("DungeonMasterName", {
+            dungeonName = dungeonsTableRow.Name,
+            masterName = masterChallengeDungeonTableRow.DungeonTypeName
+          })
+        end
+      else
+        local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
+        if dungeonsTableRow then
+          targetName = dungeonsTableRow.Name
+        end
       end
       self.uiBinder.lab_name.text = targetName
     end

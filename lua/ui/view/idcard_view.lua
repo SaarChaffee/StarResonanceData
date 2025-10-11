@@ -19,6 +19,8 @@ function IdcardView:ctor()
   self.deadVM_ = Z.VMMgr.GetVM("dead")
   self.cameraVM_ = Z.VMMgr.GetVM("camerasys")
   self.reportVM_ = Z.VMMgr.GetVM("report")
+  self.switchVM_ = Z.VMMgr.GetVM("switch")
+  self.downloadVm_ = Z.VMMgr.GetVM("download")
 end
 
 function IdcardView:OnActive()
@@ -36,7 +38,10 @@ end
 
 function IdcardView:setPlayerUnion(unionName)
   self.unionName_ = unionName
-  self.uiBinder.lab_union.text = string.format("%s%s%s", Lang("Union"), Lang(":"), self.unionName_)
+  self.uiBinder.lab_union.text = Lang("IdCardInfo", {
+    val1 = Lang("Union"),
+    val2 = self.unionName_
+  })
 end
 
 function IdcardView:setPlayerInfo(cardData)
@@ -49,22 +54,34 @@ function IdcardView:setPlayerInfo(cardData)
       local teamTargetData = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(cardData.teamData.teamTargetId)
       if teamTargetData then
         local targetName = teamTargetData.Name
-        local teamMaxNum = teamTargetData.TeamType == 0 and 5 or 20
+        local teamMaxNum = cardData.teamData.teamMemberType == E.ETeamMemberType.Five and 5 or 20
         info = targetName .. " " .. cardData.teamData.teamNum .. "/" .. teamMaxNum
       end
     end
   end
-  self.uiBinder.lab_team.text = Lang("Team") .. Lang(":") .. info
+  self.uiBinder.lab_team.text = Lang("IdCardInfo", {
+    val1 = Lang("Team"),
+    val2 = info
+  })
   if cardData.personalZone and cardData.personalZone.titleId and cardData.personalZone.titleId ~= 0 then
     local titleId = cardData.personalZone.titleId
     local titleConfig = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(titleId)
     if titleConfig then
-      self.uiBinder.lab_gs.text = string.format("%s%s%s", Lang("PersonalzoneTitle"), Lang(":"), titleConfig.Name)
+      self.uiBinder.lab_gs.text = Lang("IdCardInfo", {
+        val1 = Lang("PersonalzoneTitle"),
+        val2 = titleConfig.Name
+      })
     else
-      self.uiBinder.lab_gs.text = string.format("%s%s%s", Lang("PersonalzoneTitle"), Lang(":"), Lang("None"))
+      self.uiBinder.lab_gs.text = Lang("IdCardInfo", {
+        val1 = Lang("PersonalzoneTitle"),
+        val2 = Lang("None")
+      })
     end
   else
-    self.uiBinder.lab_gs.text = string.format("%s%s%s", Lang("PersonalzoneTitle"), Lang(":"), Lang("None"))
+    self.uiBinder.lab_gs.text = Lang("IdCardInfo", {
+      val1 = Lang("PersonalzoneTitle"),
+      val2 = Lang("None")
+    })
   end
   if cardData.basicData then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(cardData.basicData.isNewbie))
@@ -83,7 +100,10 @@ function IdcardView:setPlayerInfo(cardData)
       self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_profession_bg, true)
     end
   end
-  self.uiBinder.lab_union.text = string.format("%s%s%s", Lang("Union"), Lang(":"), cardData.unionData == nil and Lang("None") or cardData.unionData.name)
+  self.uiBinder.lab_union.text = Lang("IdCardInfo", {
+    val1 = Lang("Union"),
+    val2 = cardData.unionData == nil and Lang("None") or cardData.unionData.name
+  })
   if cardData.masterModeDungeonData then
     local score = cardData.masterModeDungeonData.seasonScore
     local scoreText = Z.VMMgr.GetVM("hero_dungeon_main").GetPlayerSeasonMasterDungeonTotalScoreWithColor(score)
@@ -111,7 +131,7 @@ function IdcardView:setPlayerInfo(cardData)
   end
   if cardData.seasonRank then
     local seasonData = Z.DataMgr.Get("season_data")
-    local seasonTitleId = cardData.seasonRank[seasonData.CurSeasonId]
+    local seasonTitleId = cardData.seasonRank.seasonRanks[seasonData.CurSeasonId]
     if seasonTitleId and seasonTitleId ~= 0 then
       local seasonRankConfig = Z.TableMgr.GetTable("SeasonRankTableMgr").GetRow(seasonTitleId)
       if seasonRankConfig then
@@ -133,7 +153,7 @@ function IdcardView:setPlayerInfo(cardData)
   end
   self:refreshMedals(cardData)
   if Z.EntityMgr.PlayerEnt then
-    self.uiBinder.Ref:SetVisible(self.uiBinder.node_personal, cardData.basicData.charID ~= Z.EntityMgr.PlayerEnt.EntId)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_personal, cardData.basicData.charID ~= Z.EntityMgr.PlayerEnt.CharId)
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_personal, false)
     logError("PlayerEnt is nil")
@@ -174,42 +194,36 @@ function IdcardView:setDefaultModelHalf(cardData)
   end
 end
 
+function IdcardView:getHalfBodyTextureCallBack(cardData, nativeTextureId)
+  if self.uiBinder == nil then
+    return
+  end
+  if nativeTextureId and nativeTextureId ~= -1 then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_idcard_figure, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_idcard_figure, true)
+    self.uiBinder.rimg_idcard_figure:SetNativeTexture(nativeTextureId)
+  else
+    self:setDefaultModelHalf(cardData)
+  end
+end
+
 function IdcardView:setIdCardItem(cardData)
   if self.uiBinder == nil then
     return
   end
-  local cardId = self.viewData.cardId
   local havTeam = self.teamVM_.CheckIsInTeam()
   local teamInfo = self.teamData_.TeamInfo.baseInfo
   local isSameTeam = havTeam and cardData.teamData ~= nil and teamInfo.teamId == cardData.teamData.teamId
-  local selectIsLeader = teamInfo.leaderId == cardId
+  local selectIsLeader = teamInfo.leaderId == self.cardId_
   local selfIsLeader = teamInfo.leaderId == Z.ContainerMgr.CharSerialize.charBase.charId
   if not self.viewData.photoData then
-    if Z.EntityMgr.PlayerEnt and cardData.charId == Z.EntityMgr.PlayerEnt.EntId then
-      local textureData = self.vm_.GetGetReviewAvatarInfo(cardData.charId, self.cancelSource:CreateToken())
-      if self.uiBinder == nil then
-        return
-      end
-      if textureData and textureData.auditing == E.EPictureReviewType.EPictureReviewed then
-        self.uiBinder.Ref:SetVisible(self.uiBinder.img_idcard_figure, false)
-        self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_idcard_figure, true)
-        self.uiBinder.rimg_idcard_figure:SetNativeTexture(textureData.textureId)
-      else
-        self:setDefaultModelHalf(cardData)
-      end
+    if not self.switchVM_.CheckFuncSwitch(E.FunctionID.DisplayCustomHalfBody) then
+      self:setDefaultModelHalf(cardData)
     elseif cardData.avatarInfo and cardData.avatarInfo.halfBody and not string.zisEmpty(cardData.avatarInfo.halfBody.url) and cardData.avatarInfo.halfBody.verify.ReviewStartTime == E.EPictureReviewType.EPictureReviewed then
-      local snapshotVm = Z.VMMgr.GetVM("snapshot")
-      local nativeTextureId = snapshotVm.AsyncDownLoadPictureByUrl(cardData.avatarInfo.halfBody.url)
-      if self.uiBinder == nil then
-        return
-      end
-      if nativeTextureId then
-        self.uiBinder.Ref:SetVisible(self.uiBinder.img_idcard_figure, false)
-        self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_idcard_figure, true)
-        self.uiBinder.rimg_idcard_figure:SetNativeTexture(nativeTextureId)
-      else
-        self:setDefaultModelHalf(cardData)
-      end
+      local name = self.downloadVm_:GetFileName(cardData.charId, cardData.avatarInfo.halfBody.verify.version, E.HttpPictureDownFoldType.HalfBody)
+      self.downloadVm_:GetPicture(name, cardData.avatarInfo.halfBody.url, self.cancelSource:CreateToken(), function(nativeTextureId)
+        self:getHalfBodyTextureCallBack(cardData, nativeTextureId)
+      end, E.HttpPictureDownFoldType.HalfBody)
     else
       self:setDefaultModelHalf(cardData)
     end
@@ -227,7 +241,7 @@ function IdcardView:setIdCardItem(cardData)
   self.units[E.IdCardFuncId.SendMsg].Ref.UIComp:SetVisible(true)
   self:refreshFriendBtn(cardData.charId)
   local unionFuncId = 500100
-  local isUnionFuncOpen = Z.VMMgr.GetVM("switch").CheckFuncSwitch(unionFuncId)
+  local isUnionFuncOpen = self.switchVM_.CheckFuncSwitch(unionFuncId)
   local isOpenUnionApplicationUI = Z.UIMgr:IsActive("union_application_popup")
   local isOpenUnionMainUI = Z.UIMgr:IsActive("union_main")
   local isUnionMember = self.unionVM_:IsUnionMember(cardData.charId)
@@ -242,10 +256,10 @@ function IdcardView:setIdCardItem(cardData)
   self.units[E.IdCardFuncId.EnterLine].Ref.UIComp:SetVisible(false)
   Z.CoroUtil.create_coro_xpcall(function()
     local socialVm_ = Z.VMMgr.GetVM("social")
-    local socialData_ = socialVm_.AsyncGetSocialData(0, Z.EntityMgr.PlayerEnt.EntId, self.cancelSource:CreateToken())
+    local socialData_ = socialVm_.AsyncGetSocialData(0, Z.EntityMgr.PlayerEnt.CharId, self.cancelSource:CreateToken())
     local friendMainData = Z.DataMgr.Get("friend_main_data")
     local isFriend = friendMainData:IsFriendByCharId(cardData.charId)
-    local isSceneLineFuncOpen = Z.VMMgr.GetVM("switch").CheckFuncSwitch(E.FunctionID.SceneLine)
+    local isSceneLineFuncOpen = self.switchVM_.CheckFuncSwitch(E.FunctionID.SceneLine)
     local friendSceneId = cardData.basicData.sceneId
     local playerSceneId = socialData_.basicData.sceneId
     local friendLineId = cardData.sceneData.lineId
@@ -254,7 +268,7 @@ function IdcardView:setIdCardItem(cardData)
   end)()
   local isShowWarehouseBtn = false
   self.units[E.IdCardFuncId.InvteWarehouse].Ref.UIComp:SetVisible(isShowWarehouseBtn)
-  local isRideFunction = Z.VMMgr.GetVM("switch").CheckFuncSwitch(E.FunctionID.Vehicle)
+  local isRideFunction = self.switchVM_.CheckFuncSwitch(E.FunctionID.Vehicle)
   if self.viewData.rideId == nil or not isRideFunction then
     self.units[E.IdCardFuncId.ApplyForRide].Ref.UIComp:SetVisible(false)
     self.units[E.IdCardFuncId.InviteRide].Ref.UIComp:SetVisible(false)
@@ -315,7 +329,7 @@ function IdcardView:setIdCardItem(cardData)
     if not havTeam then
       self.teamVM_.AsyncCreatTeam(E.TeamTargetId.Costume, self.cancelSource:CreateToken())
     end
-    self.teamVM_.AsyncInviteToTeam(cardId, self.cancelSource:CreateToken())
+    self.teamVM_.AsyncInviteToTeam(self.cardId_, self.cancelSource:CreateToken())
     self.vm_.CloseIdCardView()
   end)
   self:AddAsyncClick(self.units[E.IdCardFuncId.RequestLeader].btn_idcard, function()
@@ -335,14 +349,14 @@ function IdcardView:setIdCardItem(cardData)
     if not self:checkCanSwitch(E.IdCardFuncId.TransferLeader) then
       return
     end
-    self.teamVM_.AsyncTransferLeader(cardId, self.cancelSource:CreateToken())
+    self.teamVM_.AsyncTransferLeader(self.cardId_, self.cancelSource:CreateToken())
     self.vm_.CloseIdCardView()
   end)
   self:AddAsyncClick(self.units[E.IdCardFuncId.KickTeam].btn_idcard, function()
     if not self:checkCanSwitch(E.IdCardFuncId.KickTeam) then
       return
     end
-    self.teamVM_.AsyncTickOut(cardId, self.cancelSource:CreateToken())
+    self.teamVM_.AsyncTickOut(self.cardId_, self.cancelSource:CreateToken())
     self.vm_.CloseIdCardView()
   end)
   self:AddAsyncClick(self.units[E.IdCardFuncId.InviteAction].btn_idcard, function()
@@ -355,7 +369,7 @@ function IdcardView:setIdCardItem(cardData)
       return
     end
     local multActionVM = Z.VMMgr.GetVM("multaction")
-    multActionVM.SetInviteId(self.viewData.cardId)
+    multActionVM.SetInviteId(self.cardId_)
     Z.EventMgr:Dispatch(Z.ConstValue.Idcard.InviteAction)
     gotoFuncVM.GoToFunc(functionId)
     self.vm_.CloseIdCardView()
@@ -364,14 +378,14 @@ function IdcardView:setIdCardItem(cardData)
     if not self:checkCanSwitch(E.IdCardFuncId.AddFriend) then
       return
     end
-    Z.VMMgr.GetVM("friends_main").AsyncSendAddFriend(self.viewData.cardId, E.FriendAddSource.EIdcard, self.cancelSource:CreateToken())
+    Z.VMMgr.GetVM("friends_main").AsyncSendAddFriend(self.cardId_, E.FriendAddSource.EIdcard, self.cancelSource:CreateToken())
     self.vm_.CloseIdCardView()
   end)
   self:AddAsyncClick(self.units[E.IdCardFuncId.SendMsg].btn_idcard, function()
     if not self:checkCanSwitch(E.IdCardFuncId.SendMsg) then
       return
     end
-    Z.VMMgr.GetVM("friends_main").OpenPrivateChat(self.viewData.cardId)
+    Z.VMMgr.GetVM("friends_main").OpenPrivateChat(self.cardId_)
     self.vm_.CloseIdCardView()
   end)
   self:AddClick(self.units[E.IdCardFuncId.BlockPlayer].btn_idcard, function()
@@ -379,10 +393,9 @@ function IdcardView:setIdCardItem(cardData)
       return
     end
     local chatMainVM_ = self.chatMainVM_
-    local id = self.viewData.cardId
     local token = self.cancelSource
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("FriendAddBlackTipsContent"), function()
-      local ret = chatMainVM_.AsyncSetBlack(id, true, token)
+      local ret = chatMainVM_.AsyncSetBlack(self.cardId_, true, token)
       if ret then
         Z.TipsVM.ShowTipsLang(130104)
       end
@@ -396,7 +409,7 @@ function IdcardView:setIdCardItem(cardData)
       return
     end
     Z.DialogViewDataMgr:OpenNormalDialog(Lang("FriendRemoveBlackTipsContent"), function(cancelToken)
-      local ret = self.chatMainVM_.AsyncSetBlack(self.viewData.cardId, false, self.cancelSource)
+      local ret = self.chatMainVM_.AsyncSetBlack(self.cardId_, false, self.cancelSource)
       if ret then
         Z.TipsVM.ShowTipsLang(130105)
       end
@@ -521,6 +534,7 @@ end
 function IdcardView:OnRefresh()
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_idcard_figure, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_idcard_figure, false)
+  self.cardId_ = self.viewData.cardId
   self:setPlayerInfo(self.viewData.cardData)
   self:setPhotoData()
 end

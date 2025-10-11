@@ -45,9 +45,14 @@ function Handbook_postcard_windowView:OnActive()
   if functionConfig then
     self.uiBinder.lab_title.text = functionConfig.Name
   end
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_info)
 end
 
 function Handbook_postcard_windowView:OnDeActive()
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_info)
   self.postcardLoop_:UnInit()
   self.postcardLoop_ = nil
 end
@@ -79,6 +84,7 @@ function Handbook_postcard_windowView:SelectId(id)
     self.uiBinder.Ref:SetVisible(self.uiBinder.lab_lock, true)
     self.uiBinder.lab_title_name.text = Lang("HandbookLockContent")
   end
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
 end
 
 return Handbook_postcard_windowView

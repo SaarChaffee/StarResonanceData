@@ -24,6 +24,10 @@ end
 function MainUIData:OnReconnect()
 end
 
+function MainUIData:OnLanguageChange()
+  self.cacheKeyInfoMap_ = nil
+end
+
 function MainUIData:Clear()
   self:ResetData()
   self.IsShowLeftBtn = true

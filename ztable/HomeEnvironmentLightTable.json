@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Name": "",
+    "Name": "Default",
     "Type": 1,
     "Prefab": "",
     "Color": [],
@@ -13,7 +13,7 @@
   },
   "2": {
     "Id": 2,
-    "Name": "",
+    "Name": "Chirping Morning",
     "Type": 1,
     "Prefab": "",
     "Color": [
@@ -30,7 +30,7 @@
   },
   "3": {
     "Id": 3,
-    "Name": "",
+    "Name": "Scorching Noon",
     "Type": 1,
     "Prefab": "",
     "Color": [
@@ -47,7 +47,7 @@
   },
   "4": {
     "Id": 4,
-    "Name": "",
+    "Name": "Romantic Sunset",
     "Type": 1,
     "Prefab": "",
     "Color": [
@@ -64,7 +64,7 @@
   },
   "5": {
     "Id": 5,
-    "Name": "",
+    "Name": "Tranquil Night",
     "Type": 1,
     "Prefab": "",
     "Color": [
@@ -81,7 +81,7 @@
   },
   "7": {
     "Id": 7,
-    "Name": "",
+    "Name": "Main City",
     "Type": 2,
     "Prefab": "weather_data/home_system_outdoor_001/home_system_outdoor_001_env_center",
     "Color": [],
@@ -93,7 +93,7 @@
   },
   "8": {
     "Id": 8,
-    "Name": "",
+    "Name": "Plains",
     "Type": 2,
     "Prefab": "weather_data/home_system_outdoor_002/home_system_outdoor_002_env_center",
     "Color": [],

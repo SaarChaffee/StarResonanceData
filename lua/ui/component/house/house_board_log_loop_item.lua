@@ -7,7 +7,7 @@ end
 
 function HouseBoardLogLoopItem:OnRefresh(data)
   self.uiBinder.btn_chankan.Ref.UIComp:SetVisible(false)
-  self.uiBinder.lab_time.text = Z.TimeFormatTools.TicksFormatTime(data.time * 1000, E.TimeFormatType.YMD)
+  self.uiBinder.lab_time.text = Z.TimeFormatTools.TicksFormatTime(data.time * 1000, E.TimeFormatType.YMD, false, true)
   local values = {}
   if data.operatorChar then
     values.val1 = data.operatorChar.charBasicData.basicData.name

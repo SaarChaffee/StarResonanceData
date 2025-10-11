@@ -189,6 +189,7 @@ function Talk_dialog_windowView:caleTextWidth(str)
 end
 
 function Talk_dialog_windowView:getNameByNpcList(npcIdList)
+  local entityVm = Z.VMMgr.GetVM("entity")
   local name = ""
   for _, npcId in pairs(npcIdList) do
     if npcId == 0 then
@@ -199,9 +200,9 @@ function Talk_dialog_windowView:getNameByNpcList(npcIdList)
         name = name .. " " .. playName
       end
     else
-      local npcRow = Z.TableMgr.GetTable("NpcTableMgr").GetRow(npcId)
-      if npcRow then
-        name = name .. " " .. npcRow.Name
+      local npcName = entityVm.GetNpcName(npcId)
+      if npcName then
+        name = name .. " " .. npcName
       end
     end
   end
@@ -282,10 +283,10 @@ function Talk_dialog_windowView:isAllowNext(notCheckTyper)
 end
 
 function Talk_dialog_windowView:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.Jump then
+  if inputActionEventData.ActionId == Z.InputActionIds.Jump then
     self.onSpace_(inputActionEventData)
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.Interact and inputActionEventData.eventType == Z.InputActionEventType.ButtonPressedForTimeJustReleased then
+  if inputActionEventData.ActionId == Z.InputActionIds.Interact and inputActionEventData.EventType == Z.InputActionEventType.ButtonPressedForTimeJustReleased then
     self.onSpace_(inputActionEventData)
   end
 end

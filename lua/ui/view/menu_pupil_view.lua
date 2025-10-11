@@ -142,10 +142,17 @@ end
 
 function Menu_pupilView:getCurHSVByLRAndArea()
   local hsv
+  local isArea = self.faceData_:GetFaceOptionValue(Z.PbEnum("EFaceDataType", "PupilIsArea"))
   if self.curLR_ == eLR.Left then
     hsv = self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelLEyeArrColor, self.curArea_)
+    if not isArea then
+      hsv.v = self.faceVM_.GetPupilOffsetV(Z.ModelAttr.EModelLEyeArrColor, self.curArea_)
+    end
   else
     hsv = self.faceVM_.GetFaceOptionByAttrType(Z.ModelAttr.EModelREyeArrColor, self.curArea_)
+    if not isArea then
+      hsv.v = self.faceVM_.GetPupilOffsetV(Z.ModelAttr.EModelREyeArrColor, self.curArea_)
+    end
   end
   return hsv
 end

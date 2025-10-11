@@ -35,6 +35,7 @@ function Personalzone_edit_windowView:ctor()
 end
 
 function Personalzone_edit_windowView:OnActive()
+  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   Z.UnrealSceneMgr:InitSceneCamera()
   Z.UnrealSceneMgr:SwitchGroupReflection(true)
   self:initUI()
@@ -81,6 +82,7 @@ function Personalzone_edit_windowView:OnActive()
   self.selectTogKey_ = nil
   self.leftSubViews_ = {}
   self.curLeftSubView_ = nil
+  self.isPlayOpenAnim_ = false
   for key, tog in pairs(self.togs_) do
     if TogConfig[key].FuncId then
       self.uiBinder.Ref:SetVisible(tog, self.gotofuncVm_.CheckFuncCanUse(TogConfig[key].FuncId, true))
@@ -104,6 +106,11 @@ function Personalzone_edit_windowView:OnActive()
           else
             self.rightGroupSubView_:Active(viewData, self.uiBinder.node_right)
           end
+          if not self.isPlayOpenAnim_ then
+            self.isPlayOpenAnim_ = true
+          else
+            self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+          end
         else
           Z.DialogViewDataMgr:OpenNormalDialog(Lang(TogConfig[key].Tips), function()
             self.selectTogKey_ = key
@@ -119,6 +126,11 @@ function Personalzone_edit_windowView:OnActive()
               self:ChangeShowSubFunc(TogConfig[key].FuncId, true, TogConfig[key].FuncId, key)
             else
               self.rightGroupSubView_:Active(viewData, self.uiBinder.node_right)
+            end
+            if not self.isPlayOpenAnim_ then
+              self.isPlayOpenAnim_ = true
+            else
+              self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
             end
           end, function()
             self.togs_[self.selectTogKey_].isOn = true
@@ -144,9 +156,11 @@ function Personalzone_edit_windowView:OnActive()
       Z.UnrealSceneMgr:ChangeBinderGOTexture("sky", 0, "_MainTex", config.Image2, self.cancelSource:CreateToken())
     end
   end)()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Personalzone_edit_windowView:OnDeActive()
+  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   if self.leftSubViews_ then
     for _, v in pairs(self.leftSubViews_) do
       v:DeActive()

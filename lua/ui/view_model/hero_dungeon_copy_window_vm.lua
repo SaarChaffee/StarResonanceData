@@ -22,7 +22,7 @@ local playCallFunc = function(cutId, tab, teamMembers, showCount)
       local indexType = SettlementNodeIndex.IntToEnum(0)
       data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(indexType, 0)
       data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(indexType, 0)
-      teamEntData[Z.EntityMgr.PlayerEnt.EntId] = data
+      teamEntData[Z.EntityMgr.PlayerEnt.CharId] = data
     end
   end
   local ret = {}

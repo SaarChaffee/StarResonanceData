@@ -16,7 +16,7 @@ function WeaponResonanceAdvanceLoopItem:OnRefresh(data)
     self.uiBinder.lab_value.text = data.lastValue
     self.uiBinder.lab_add_value.text = data.curValue
     local valueHeight = math.max(self.uiBinder.lab_value.preferredHeight, self.uiBinder.lab_add_value.preferredHeight)
-    itemHeight = valueHeight + 60
+    itemHeight = valueHeight + math.max(60, self.uiBinder.lab_name.preferredHeight + 30)
   elseif data.type == 2 then
     self.uiBinder.lab_name.text = data.desc
     self.uiBinder.lab_value.text = ""

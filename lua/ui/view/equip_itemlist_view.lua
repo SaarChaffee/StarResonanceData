@@ -400,6 +400,15 @@ function Equip_itemlistView:SetSelectItem(selectedItemUuid)
   end
 end
 
+function Equip_itemlistView:UnSetSelectItem(selectedItemUuid)
+  for index, value in ipairs(self.curItemDatas_) do
+    if value.itemUuid == selectedItemUuid then
+      self.loopGridView_:UnSelectIndex(index)
+      return
+    end
+  end
+end
+
 function Equip_itemlistView:GetCurSelectPartId()
   return self.curPartId_
 end

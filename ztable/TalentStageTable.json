@@ -2,7 +2,7 @@
   "100": {
     "Id": 100,
     "Name": [
-      1725369064
+      "Expertise I"
     ],
     "WeaponType": 1,
     "BdType": 0,
@@ -98,8 +98,8 @@
   "101": {
     "Id": 101,
     "Name": [
-      1725370153,
-      1725370154
+      "Expertise II",
+      "Iaido Slash Spec"
     ],
     "WeaponType": 1,
     "BdType": 0,
@@ -113,39 +113,39 @@
       5212,
       8466,
       8470,
-      105017,
-      139002,
-      33040,
-      123028,
-      5600,
-      5210,
-      1315,
-      134026,
-      5596,
-      5593,
       9102,
       143004,
       154001,
+      105017,
+      5600,
+      1315,
+      5596,
+      5210,
+      5593,
+      33040,
+      123028,
+      33041,
+      9101,
       109017,
-      5211,
-      5208,
       8469,
       8468,
-      1318,
-      5597,
-      33041,
+      5211,
+      5208,
       132003,
-      140002,
-      142002,
-      147002,
-      124028,
-      5594,
-      9100,
-      110019,
+      5612,
+      38071,
+      106018,
       5602,
       128029,
-      50102,
-      113018
+      124028,
+      144003,
+      141002,
+      140002,
+      151002,
+      149003,
+      112018,
+      5601,
+      8467
     ],
     "NeedPoint": 40,
     "OpenCondition": [
@@ -169,7 +169,7 @@
       2105,
       2404
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Iaido Slash</color> as the Special Attack, stacking a large amount of <color=#fcbe03>Thunder Sigils</color> to deliver <color=#fcbe03>high burst DMG on a single skill cast</color>.",
     "MainVideoShow": "weapon/tdl/tdl_lz",
     "MainSkillShow": [
       1705,
@@ -219,8 +219,8 @@
   "102": {
     "Id": 102,
     "Name": [
-      1725371242,
-      1725371243
+      "Expertise II",
+      "Moonstrike Spec"
     ],
     "WeaponType": 1,
     "BdType": 1,
@@ -291,7 +291,7 @@
       2105,
       2404
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Moonstrike</color> as the Special Attack. Consuming <color=#fcbe03>3</color> <color=#fcbe03>Thunder Sigils</color> to unleash a Special Attack will synchronize with the <color=#fcbe03>Moonblade</color> summoned by <color=#fcbe03>Scythe Wheel</color>. Follows up with rapid attacks to extend the Moonblade's duration and trigger various additional effects.",
     "MainVideoShow": "weapon/tdl/tdl_lz2",
     "MainSkillShow": [
       1705,
@@ -341,7 +341,7 @@
   "103": {
     "Id": 103,
     "Name": [
-      1725372331
+      "Expertise I"
     ],
     "WeaponType": 2,
     "BdType": 0,
@@ -438,8 +438,8 @@
   "104": {
     "Id": 104,
     "Name": [
-      1725373420,
-      1725373421
+      "Expertise II",
+      "Icicle Spec"
     ],
     "WeaponType": 2,
     "BdType": 0,
@@ -447,45 +447,45 @@
     "RootId": 233002,
     "RecommendTalent": [
       233002,
-      5579,
-      2256,
       5205,
       222011,
-      7237,
-      214011,
+      5579,
+      2256,
       2257,
       217011,
-      5204,
-      220011,
       7236,
       216011,
+      7239,
+      5588,
       5586,
       234002,
-      5206,
-      255001,
-      5588,
-      7239,
-      247002,
+      7237,
+      214011,
+      33039,
+      6042,
+      223027,
+      240001,
+      5204,
       252001,
       249001,
-      5587,
-      241002,
-      5207,
-      221011,
       6047,
       219011,
-      215011,
-      5585,
-      254001,
-      6693,
-      244001,
       2258,
-      250001,
-      5583,
-      251001,
       5577,
       242002,
-      5876
+      5583,
+      251001,
+      5587,
+      241002,
+      215011,
+      250001,
+      6693,
+      244001,
+      38070,
+      224027,
+      221011,
+      5876,
+      245001
     ],
     "NeedPoint": 40,
     "OpenCondition": [
@@ -510,7 +510,7 @@
       2104,
       2105
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Frost Lance</color> as the Special Attack. Improves <color=#fcbe03>Frost Crystal</color> acquisition. <color=#fcbe03>Frost Crystal</color> allows the Special Attack to bypass casting time.",
     "MainVideoShow": "weapon/fz/fz_lz",
     "MainSkillShow": [
       1239,
@@ -560,8 +560,8 @@
   "105": {
     "Id": 105,
     "Name": [
-      1725374509,
-      1725374510
+      "Expertise II",
+      "Frostbeam Spec"
     ],
     "WeaponType": 2,
     "BdType": 1,
@@ -569,45 +569,45 @@
     "RootId": 212017,
     "RecommendTalent": [
       212017,
-      5569,
-      2252,
-      6301,
-      225026,
       8462,
       206017,
+      5569,
+      2252,
       2253,
-      210017,
       6302,
       211017,
+      6301,
+      225026,
+      35084,
+      6043,
+      223026,
+      263001,
       8463,
       231003,
-      5574,
-      234001,
-      6303,
-      270001,
-      5581,
       8464,
+      5581,
       269001,
+      210017,
       2255,
       261001,
-      6045,
-      271001,
-      6304,
-      209017,
       6046,
+      209017,
       207018,
-      5573,
-      235001,
-      264001,
-      6695,
-      260001,
       6696,
       258001,
-      5572,
-      265001,
       6697,
       257001,
-      5571
+      35085,
+      224026,
+      5575,
+      268001,
+      5571,
+      259001,
+      235001,
+      6045,
+      271001,
+      5574,
+      234001
     ],
     "NeedPoint": 40,
     "OpenCondition": [
@@ -630,7 +630,7 @@
       2104,
       2105
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Frostbeam</color> as the Special Attack. Stacks <color=#fcbe03>Frost Crystals</color> to boost the DMG of Special Attacks, and consumes <color=#fcbe03>Frost Crystals</color> to restore <color=#fcbe03>Ice Energy</color>.",
     "MainVideoShow": "weapon/fz/fz_lz2",
     "MainSkillShow": [
       1240,
@@ -680,7 +680,7 @@
   "106": {
     "Id": 106,
     "Name": [
-      1725375598
+      "Expertise I"
     ],
     "WeaponType": 4,
     "BdType": 0,
@@ -776,8 +776,8 @@
   "107": {
     "Id": 107,
     "Name": [
-      1725376687,
-      1725376688
+      "Expertise II",
+      "Vanguard Spec"
     ],
     "WeaponType": 4,
     "BdType": 0,
@@ -787,28 +787,24 @@
       433007,
       1499,
       6090,
-      1500,
-      434012,
-      6087,
-      409014,
-      6388,
-      1503,
       6086,
       411014,
+      6087,
       6091,
+      1500,
+      434012,
+      409014,
+      6089,
+      6096,
       6386,
       35105,
-      6385,
-      442001,
+      8586,
+      1503,
+      8584,
+      452001,
       6095,
       406014,
-      441001,
-      451001,
-      447001,
-      6093,
-      412015,
-      6387,
-      423012,
+      453001,
       443002,
       6094,
       410014,
@@ -816,14 +812,18 @@
       413014,
       6682,
       448001,
-      43049,
-      407014,
-      6088,
-      444002,
       6685,
       440001,
+      43049,
+      407014,
       6683,
-      445001
+      445001,
+      6088,
+      444002,
+      6092,
+      405014,
+      6388,
+      447001
     ],
     "NeedPoint": 40,
     "OpenCondition": [
@@ -847,7 +847,7 @@
       2105,
       2404
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Gale Thrust</color> as the Special Attack. Boosts <color=#fcbe03>Courage</color> accumulation, allowing for more frequent use of <color=#fcbe03>Gale Thrust</color>. By maintaining high stacks of <color=#fcbe03>Sharp</color>, you can trigger the core mechanic that consumes Courage to reset skill CDs, further boosting the frequency of <color=#fcbe03>Spiral Thrust</color>.",
     "MainVideoShow": "weapon/cq/cq_lz",
     "MainSkillShow": [
       1420,
@@ -897,8 +897,8 @@
   "108": {
     "Id": 108,
     "Name": [
-      1725377776,
-      1725377777
+      "Expertise II",
+      "Skyward Spec"
     ],
     "WeaponType": 4,
     "BdType": 1,
@@ -908,28 +908,27 @@
       432008,
       1501,
       6100,
-      1502,
-      434011,
-      6099,
-      418011,
-      7301,
-      1504,
       6097,
       416010,
-      6101,
       7300,
-      37119,
-      7299,
-      456001,
-      6098,
-      417010,
       6687,
       467001,
+      37119,
+      6099,
+      6101,
+      418011,
+      6098,
+      5247,
+      33057,
+      6103,
+      5248,
+      1504,
+      7301,
+      417010,
       463001,
-      6105,
-      414010,
-      7302,
-      423011,
+      466001,
+      6106,
+      420010,
       459001,
       6107,
       419010,
@@ -939,12 +938,13 @@
       457001,
       33058,
       422010,
+      5249,
+      425023,
+      424023,
+      7302,
+      423011,
       6689,
-      468001,
-      6102,
-      469001,
-      455001,
-      470001
+      468001
     ],
     "NeedPoint": 40,
     "OpenCondition": [
@@ -969,7 +969,7 @@
       2105,
       2404
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Skyfall</color> as the Special Attack. Boosts <color=#fcbe03>Sharp</color> accumulation when using <color=#fcbe03>Skyfall</color>. Allows for more frequent use of <color=#fcbe03>Instant Edge</color>. Restores <color=#fcbe03>Courage</color> after <color=#fcbe03>Instant Edge</color>. Focuses on smooth transitions between two core skills.",
     "MainVideoShow": "weapon/cq/cq_lz2",
     "MainSkillShow": [
       1420,
@@ -1019,7 +1019,7 @@
   "109": {
     "Id": 109,
     "Name": [
-      1725378865
+      "Expertise I"
     ],
     "WeaponType": 5,
     "BdType": 0,
@@ -1115,8 +1115,8 @@
   "110": {
     "Id": 110,
     "Name": [
-      1725405001,
-      1725405002
+      "Expertise II",
+      "Smite Spec"
     ],
     "WeaponType": 5,
     "BdType": 0,
@@ -1186,7 +1186,7 @@
       2205,
       2406
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Wild Bloom</color> as the Special Attack, dealing damage while providing <color=#fcbe03>healing</color> effects.",
     "MainVideoShow": "weapon/fh/fh_lz",
     "MainSkillShow": [
       1519,
@@ -1236,8 +1236,8 @@
   "111": {
     "Id": 111,
     "Name": [
-      1725406090,
-      1725406091
+      "Expertise II",
+      "Lifebind Spec"
     ],
     "WeaponType": 5,
     "BdType": 1,
@@ -1306,7 +1306,7 @@
       2205,
       2406
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Life Bloom</color> as the Special Attack, sacrificing damage capability to provide stronger <color=#fcbe03>healing</color> effects.",
     "MainVideoShow": "weapon/fh/fh_lz2",
     "MainSkillShow": [
       1521,
@@ -1356,7 +1356,7 @@
   "112": {
     "Id": 112,
     "Name": [
-      1725407179
+      "Expertise I"
     ],
     "WeaponType": 9,
     "BdType": 0,
@@ -1448,8 +1448,8 @@
   "113": {
     "Id": 113,
     "Name": [
-      1725408268,
-      1725408269
+      "Expertise II",
+      "Earthfort Spec"
     ],
     "WeaponType": 9,
     "BdType": 0,
@@ -1515,7 +1515,7 @@
       1308,
       2304
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Shield Bash</color> as the Special Attack. Utilizes a <color=#fcbe03>Shield</color> to absorb damage and gains increased damage while <color=#fcbe03>shielded</color>. Effective in any situation that requires damage mitigation.",
     "MainVideoShow": "weapon/wr/wr_lz",
     "MainSkillShow": [
       1924,
@@ -1565,8 +1565,8 @@
   "114": {
     "Id": 114,
     "Name": [
-      1725409357,
-      1725409358
+      "Expertise II",
+      "Block Spec"
     ],
     "WeaponType": 9,
     "BdType": 1,
@@ -1633,7 +1633,7 @@
       1410,
       2304
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Countercrush</color> as the Special Attack, enhancing <color=#fcbe03>Block</color> to steadily reduce incoming Attack Damage. Especially effective in scenarios with predominantly physical attacks.",
     "MainVideoShow": "weapon/wr/wr_lz2",
     "MainSkillShow": [
       1937,
@@ -1683,7 +1683,7 @@
   "115": {
     "Id": 115,
     "Name": [
-      1725410446
+      "Expertise I"
     ],
     "WeaponType": 11,
     "BdType": 0,
@@ -1778,8 +1778,8 @@
   "116": {
     "Id": 116,
     "Name": [
-      1725411535,
-      1725411536
+      "Expertise II",
+      "Wildpack Spec"
     ],
     "WeaponType": 11,
     "BdType": 0,
@@ -1794,38 +1794,38 @@
       34105,
       1108010,
       1150001,
-      6295,
-      1112010,
-      5550,
-      1130002,
-      5551,
-      5549,
-      1124011,
       8461,
       1111010,
-      5544,
+      8460,
+      1112010,
       5547,
       1106010,
-      3066,
-      5545,
-      1105010,
-      5553,
-      1110010,
-      5552,
-      1114005,
+      5551,
+      1151001,
+      5549,
+      1124011,
+      5550,
+      1130002,
       5543,
       1145001,
-      6701,
-      1138001,
+      5553,
+      1105010,
+      34106,
+      1143001,
+      6700,
+      1146001,
+      1110010,
+      5546,
+      5552,
+      1114005,
       1137001,
       1139001,
-      1143001,
-      1148001,
-      1147001,
-      6703,
-      1136001,
-      43034,
-      1142001
+      1140001,
+      6701,
+      1138001,
+      1141001,
+      6293,
+      1123011
     ],
     "NeedPoint": 40,
     "OpenCondition": [
@@ -1848,7 +1848,7 @@
       2104,
       2105
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Storm Arrow</color> as the Special Attack. Enhances the ability to fight alongside <color=#fcbe03>Wild Wolf</color>. Strive to maintain the Photon Reforge state to increase DMG frequency of <color=#fcbe03>Storm Arrow</color>, accelerate Wild Wolf's attacks, summon additional <color=#fcbe03>Wild Wolves</color>, <color=#fcbe03>Phantom Wolves</color>, and more.",
     "MainVideoShow": "weapon/gj/gj_lz",
     "MainSkillShow": [
       2230,
@@ -1898,8 +1898,8 @@
   "117": {
     "Id": 117,
     "Name": [
-      1725412624,
-      1725412625
+      "Expertise II",
+      "Falconry Spec"
     ],
     "WeaponType": 11,
     "BdType": 1,
@@ -1910,42 +1910,42 @@
       3069,
       3070,
       1118004,
-      6299,
-      1115003,
-      6300,
+      5202,
+      5559,
       1112011,
-      5561,
-      1119004,
+      1120003,
+      6298,
+      34107,
+      1115003,
+      1152001,
       5560,
       1162001,
       5562,
       1124012,
-      5200,
-      1122003,
-      5555,
-      5559,
-      1120003,
-      3068,
-      5554,
-      1117003,
-      5564,
-      1116003,
-      5563,
-      1121003,
+      5561,
+      1119004,
+      5201,
+      33038,
       5556,
-      1167001,
-      1163001,
-      1158001,
+      5564,
+      1117003,
+      6707,
+      1164001,
+      5557,
+      5563,
+      1157001,
+      1160001,
+      1165001,
+      6705,
+      1166001,
       38069,
       1156001,
       1161001,
-      6706,
-      1154001,
-      6704,
-      1153001,
-      5557,
-      1159001,
-      34108
+      1116003,
+      1163001,
+      1158001,
+      6297,
+      1123012
     ],
     "NeedPoint": 40,
     "OpenCondition": [
@@ -1970,7 +1970,7 @@
       2104,
       2105
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Double Arrow</color> as the Special Attack. Enhances the ability to fight alongside <color=#fcbe03>Falcon</color>. <color=#fcbe03>Crit hits</color> trigger coordinated attack from <color=#fcbe03>Falcon</color>. Focuses on increasing <color=#fcbe03>Crit</color> frequency.",
     "MainVideoShow": "weapon/gj/gj_lz2",
     "MainSkillShow": [
       2234,
@@ -2020,7 +2020,7 @@
   "118": {
     "Id": 118,
     "Name": [
-      1725413713
+      "Expertise I"
     ],
     "WeaponType": 13,
     "BdType": 0,
@@ -2117,8 +2117,8 @@
   "119": {
     "Id": 119,
     "Name": [
-      1725414802,
-      1725414803
+      "Expertise II",
+      "Dissonance Spec"
     ],
     "WeaponType": 13,
     "BdType": 0,
@@ -2189,7 +2189,7 @@
       2205,
       2406
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Amplified Beat</color> as the Special Attack. <color=#fcbe03>Heroic Melody</color> enhances DMG and healing conversion, while Talents allow <color=#fcbe03>Rhapsody of Flame</color> to <color=#fcbe03>double Luck Chance</color> for frequent DMG and healing effects.",
     "MainVideoShow": "weapon/jt/jt_lz",
     "MainSkillShow": [
       2308,
@@ -2239,8 +2239,8 @@
   "120": {
     "Id": 120,
     "Name": [
-      1725440938,
-      1725440939
+      "Expertise II",
+      "Concerto Spec"
     ],
     "WeaponType": 13,
     "BdType": 1,
@@ -2310,7 +2310,7 @@
       2205,
       2406
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Healing Beat</color> as its Special Attack, emphasizing the coordinated performance between <color=#fcbe03>Healing Melody</color> and <color=#fcbe03>speaker</color>.",
     "MainVideoShow": "weapon/jt/jt_lz2",
     "MainSkillShow": [
       2312,
@@ -2360,7 +2360,7 @@
   "121": {
     "Id": 121,
     "Name": [
-      1725442027
+      "Expertise I"
     ],
     "WeaponType": 12,
     "BdType": 0,
@@ -2456,8 +2456,8 @@
   "122": {
     "Id": 122,
     "Name": [
-      1725443116,
-      1725443117
+      "Expertise II",
+      "Recovery Spec"
     ],
     "WeaponType": 12,
     "BdType": 0,
@@ -2527,7 +2527,7 @@
       2404,
       2405
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Valor Bash</color> as the Special Attack. Improves defenses through <color=#fcbe03>Valor Bash</color>. Maintains <color=#fcbe03>Lightforged Body</color> to absorb half incoming DMG. Casting <color=#fcbe03>Judgment</color> restores lost HP.",
     "MainVideoShow": "weapon/jd/jd_lz",
     "MainSkillShow": [
       2408,
@@ -2577,8 +2577,8 @@
   "123": {
     "Id": 123,
     "Name": [
-      1725444205,
-      1725444206
+      "Expertise II",
+      "Shield Spec"
     ],
     "WeaponType": 12,
     "BdType": 1,
@@ -2647,7 +2647,7 @@
       2404,
       2405
     ],
-    "MainDesShow": "",
+    "MainDesShow": "A Spec that uses <color=#fcbe03>Vanguard Strike</color> as the Special Attack. Uses <color=#fcbe03>Vanguard Strike</color> to get <color=#fcbe03>Lightforged Barrier</color>. Increases max HP and provides special skill resources. Maintains <color=#fcbe03>Lightforged Body</color> to absorb half the incoming DMG. Casting <color=#fcbe03>Judgment</color> restores lost HP.",
     "MainVideoShow": "weapon/jd/jd_lz2",
     "MainSkillShow": [
       2421,

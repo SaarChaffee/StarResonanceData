@@ -657,22 +657,6 @@ local getPlayerShowName = function(charId, playerName)
   end
   return playerName
 end
-local checkFriendChatRed = function(charId)
-  if Z.IsPCUI then
-    if friendMainData:GetFriendViewOpen() and friendMainData:GetFriendViewType() == E.FriendViewType.Chat and friendMainData:GetChatSelectCharId() == charId then
-      return
-    end
-  else
-    if friendMainData:GetFriendViewOpen() and friendMainData:GetIsShowFriendChat() and friendMainData:GetFriendViewType() == E.FriendViewType.Chat and friendMainData:GetChatSelectCharId() == charId then
-      return
-    end
-    if friendMainData:GetFriendViewOpen() and friendMainData:GetIsShowFriendChat() and friendMainData:GetFriendViewType() == E.FriendViewType.Friend and friendMainData:GetAddressSelectCharId() == charId then
-      return
-    end
-  end
-  local chatMainData = Z.DataMgr.Get("chat_main_data")
-  Z.RedPointMgr.UpdateNodeCount(E.RedType.FriendChatTab, chatMainData:GetPrivateChatUnReadCount())
-end
 local ret = {
   UpdateGroupShowList = updateGroupShowList,
   GetFriendAndGroupList = getFriendAndGroupList,
@@ -713,7 +697,6 @@ local ret = {
   RefreshTotalFriendLiness = refreshTotalFriendLiness,
   RewardTotalFriendlinessLv = rewardTotalFriendlinessLv,
   UpdateFriendliness = updateFriendliness,
-  GetPlayerShowName = getPlayerShowName,
-  CheckFriendChatRed = checkFriendChatRed
+  GetPlayerShowName = getPlayerShowName
 }
 return ret

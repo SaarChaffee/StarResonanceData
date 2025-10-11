@@ -174,11 +174,13 @@ local setNpcName = function(placeholderParam)
   end
   
   function placeholderParam.npcname(npcId)
-    local npcTable = Z.TableMgr.GetTable("NpcTableMgr").GetRow(npcId)
-    if not npcTable then
+    local entityVm = Z.VMMgr.GetVM("entity")
+    local npcName = entityVm.GetNpcName(npcId)
+    if npcName then
+      return npcName
+    else
       return ""
     end
-    return npcTable.Name
   end
   
   return placeholderParam
@@ -223,7 +225,9 @@ local setQuestName = function(placeholderParam)
     if not questTable then
       return ""
     end
-    return questTable.QuestName
+    local param = Z.Placeholder.SetPlayerSelfPronoun()
+    local ret = Z.Placeholder.Placeholder(questTable.QuestName, param)
+    return ret
   end
   
   return placeholderParam
@@ -241,6 +245,18 @@ local setCollectionName = function(placeholderParam)
     return collectionTable.CollectionName
   end
   
+  return placeholderParam
+end
+local setPlayerSelfPronoun = function(placeholderParam)
+  if placeholderParam == nil then
+    placeholderParam = {}
+  end
+  local gender = Z.ContainerMgr.CharSerialize.charBase.gender
+  if gender == Z.PbEnum("EGender", "GenderMale") then
+    placeholderParam.playerself = Lang("PlayerselfMale")
+  else
+    placeholderParam.playerself = Lang("PlayerselfFemale")
+  end
   return placeholderParam
 end
 local placeholderHandle = function(content, param)
@@ -313,6 +329,7 @@ local ret = {
   SetMonsterName = setMonsterName,
   SetQuestName = setQuestName,
   SetCollectionName = setCollectionName,
+  SetPlayerSelfPronoun = setPlayerSelfPronoun,
   Placeholder = placeholder,
   Placeholder_task = placeholder_task,
   SetTextColor = setTextColor,

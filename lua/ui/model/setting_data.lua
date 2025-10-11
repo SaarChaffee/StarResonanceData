@@ -65,18 +65,4 @@ function SettingData:UnInit()
   super.UnInit(self)
 end
 
-function SettingData:AddDisplayActionKeyId(keyId)
-  if not self.displayGamepadActionCache_[keyId] then
-    self.displayGamepadActionCache_[keyId] = true
-  end
-end
-
-function SettingData:GetDisplayGamepadActionKeyIds()
-  local keyIds = {}
-  for keyId, _ in pairs(self.displayGamepadActionCache_) do
-    table.insert(keyIds, keyId)
-  end
-  return keyIds
-end
-
 return SettingData

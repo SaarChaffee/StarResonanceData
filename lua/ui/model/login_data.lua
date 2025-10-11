@@ -6,12 +6,10 @@ function LoginData:ctor()
 end
 
 function LoginData:Init()
-  self.AutoLogin = false
   self.LastAccountData = nil
 end
 
 function LoginData:Uninit()
-  self.AutoLogin = false
   self.LastAccountData = nil
 end
 

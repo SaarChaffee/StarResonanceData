@@ -11,6 +11,7 @@ function PandoraData:Init()
   self.appResourceDict_ = {}
   self.PopupOpenTag = false
   self.PopupQueryTag = false
+  self.PopupQueryTagOnClose = false
 end
 
 function PandoraData:UnInit()
@@ -23,6 +24,7 @@ function PandoraData:Clear()
   self.appResourceDict_ = {}
   self.PopupOpenTag = false
   self.PopupQueryTag = false
+  self.PopupQueryTagOnClose = false
 end
 
 function PandoraData:IsResourceReady(appName)

@@ -122,7 +122,8 @@ function Warehouse_tips_subView:refreshMonthCardTips()
   local labPrivilegeTitle = hasMonthlyCard and Lang("MonthlyCardPrivilegesIsOn") or Lang("MonthlyCardPrivileges")
   self.uiBinder.lab_title.text = labPrivilegeTitle
   if monthlyCardData then
-    self.uiBinder.uiBinder_card.rimg_card:SetImage(monthlyCardData.ItemConfig.Icon)
+    local itemVm = Z.VMMgr.GetVM("items")
+    self.uiBinder.uiBinder_card.rimg_card:SetImage(itemVm.GetItemIcon(monthlyCardData.ItemConfig.Id))
   else
     hasMonthlyCard = false
   end

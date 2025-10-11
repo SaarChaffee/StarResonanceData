@@ -29,7 +29,7 @@ function Steer_tips_windowView:OnActive()
   self.event_trigger_.onDrag:AddListener(function()
     self:triggerEvent()
   end)
-  Z.EventMgr:Add(Z.ConstValue.SteerEventName.OnSaveCompletedGuide, self.finishGduie, self)
+  Z.EventMgr:Add(Z.ConstValue.SteerEventName.OnSaveCompletedGuide, self.finishGuide, self)
 end
 
 function Steer_tips_windowView:triggerEvent()
@@ -57,7 +57,7 @@ function Steer_tips_windowView:triggerEvent()
   Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnFinishGuideEvent, tab)
 end
 
-function Steer_tips_windowView:finishGduie(guideid)
+function Steer_tips_windowView:finishGuide(guideid)
   if self.setCameraId_[guideid] then
     local idList = ZUtil.Pool.Collections.ZList_int.Rent()
     idList:Add(self.setCameraId_[guideid])
@@ -85,16 +85,6 @@ function Steer_tips_windowView:initData()
 end
 
 function Steer_tips_windowView:OnDeActive()
-end
-
-function Steer_tips_windowView:getKeyCodeDesc(keyCode)
-  local contrastTbl = Z.TableMgr.GetTable("SetKeyboardContrastTableMgr")
-  local row = contrastTbl.GetRow(keyCode)
-  if row then
-    return row.Keyboard
-  else
-    return ""
-  end
 end
 
 function Steer_tips_windowView:loadLab(steerId, content)
@@ -210,10 +200,12 @@ function Steer_tips_windowView:getMouseTabAndKeyTab(guideData)
       return KeyboardTab, mouseTab, keyboardArray
     end
     if 1 < #keyList then
+      local tempStr = ""
       for _, keyCode in ipairs(keyList) do
         keyboardArray[#keyboardArray + 1] = keyCode
-        KeyboardTab["key" .. keyCode] = keyCode
+        tempStr = string.zconcat(tempStr, keyCode)
       end
+      KeyboardTab["key" .. keyId] = tempStr
     else
       keyboardArray[#keyboardArray + 1] = keyList[1]
       KeyboardTab["key" .. keyId] = keyList[1]
@@ -425,7 +417,7 @@ function Steer_tips_windowView:refreshGuide(guideInfoDatas)
           else
             if 0 < #guideData.KeyboardId then
               if not guideData.IsShowUIFrame then
-                str = guideData.TextAround
+                str = Z.IsPCUI and guideData.TextAround or guideData.MobileTextAround
               end
             else
               str = guideData.TextMiddle

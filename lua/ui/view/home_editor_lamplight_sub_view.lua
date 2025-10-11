@@ -285,10 +285,12 @@ function Home_editor_lamplight_subView:refreshLightUI()
         if structure.lamplightInfo then
           lightState = structure.lamplightInfo.state
         end
+        local itemVm = Z.VMMgr.GetVM("items")
+        local itemIcon = itemVm.GetItemIcon(itemId)
         local data = {
           uuid = uid,
           name = structure.name ~= "" and structure.name or itemCfg.Name,
-          icon = itemCfg.Icon,
+          icon = itemIcon,
           state = lightState
         }
         table.insert(self.lightData_, data)

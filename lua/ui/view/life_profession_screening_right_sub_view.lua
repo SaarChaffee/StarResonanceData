@@ -43,8 +43,14 @@ function Life_profession_screening_right_subView:InitLevelFilter()
   self.uiBinder.Ref:SetVisible(self.uiBinder.input_max, false)
   self:AddClick(self.uiBinder.btn_num_min, function()
     self.keypad_:Active({
-      max = self.curFilterMaxLevel,
-      min = self.minLevel
+      max = self.maxLevel,
+      min = self.minLevel,
+      onInputOk = function(num)
+        self:OnInputOk(num)
+      end,
+      onKeyPadClose = function(num)
+        self:OnKeyPadClose()
+      end
     }, self.uiBinder.group_keypadroot_min)
     self.curIsMin = true
     self.curIsMax = false
@@ -52,7 +58,13 @@ function Life_profession_screening_right_subView:InitLevelFilter()
   self:AddClick(self.uiBinder.btn_num_max, function()
     self.keypad_:Active({
       max = self.maxLevel,
-      min = self.curFilterMinLevel
+      min = self.minLevel,
+      onInputOk = function(num)
+        self:OnInputOk(num)
+      end,
+      onKeyPadClose = function(num)
+        self:OnKeyPadClose()
+      end
     }, self.uiBinder.group_keypadroot_max)
     self.curIsMin = false
     self.curIsMax = true
@@ -238,6 +250,26 @@ function Life_profession_screening_right_subView:InputNum(num)
     if num < self.minLevel then
       num = self.minLevel
     end
+    self.curFilterMinLevel = num
+  end
+  if self.curIsMax then
+    if num > self.maxLevel then
+      num = self.maxLevel
+    end
+    self.curFilterMaxLevel = num
+  end
+  self:refreshSlider()
+  self:RefreshLevelFilter()
+end
+
+function Life_profession_screening_right_subView:OnInputOk(num)
+  if num == 0 then
+    num = 1
+  end
+  if self.curIsMin then
+    if num < self.minLevel then
+      num = self.minLevel
+    end
     if num > self.curFilterMaxLevel then
       num = self.curFilterMaxLevel
     end
@@ -251,6 +283,27 @@ function Life_profession_screening_right_subView:InputNum(num)
       num = self.curFilterMinLevel
     end
     self.curFilterMaxLevel = num
+  end
+  self:refreshSlider()
+  self:RefreshLevelFilter()
+end
+
+function Life_profession_screening_right_subView:OnKeyPadClose()
+  if self.curIsMin then
+    if self.curFilterMinLevel < self.minLevel then
+      self.curFilterMinLevel = self.minLevel
+    end
+    if self.curFilterMinLevel > self.curFilterMaxLevel then
+      self.curFilterMinLevel = self.curFilterMaxLevel
+    end
+  end
+  if self.curIsMax then
+    if self.curFilterMaxLevel > self.maxLevel then
+      self.curFilterMaxLevel = self.maxLevel
+    end
+    if self.curFilterMaxLevel < self.curFilterMinLevel then
+      self.curFilterMaxLevel = self.curFilterMinLevel
+    end
   end
   self:refreshSlider()
   self:RefreshLevelFilter()

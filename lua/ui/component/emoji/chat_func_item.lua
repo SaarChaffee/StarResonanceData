@@ -19,6 +19,13 @@ function ChatFuncItem:OnSelected(isSelected)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_off, not self.IsSelected)
 end
 
+function ChatFuncItem:OnPointerClick(go, eventData)
+  if not self.IsSelected then
+    return
+  end
+  self.parent.UIView:OnPointerClickSelectFuncTab(self.data_.funcType, self.data_.funcRow.Id)
+end
+
 function ChatFuncItem:OnRecycle()
   self:clearRed()
 end

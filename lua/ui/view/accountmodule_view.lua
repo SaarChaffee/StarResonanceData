@@ -56,11 +56,11 @@ function AccountmoduleView:setPlayerInfo()
       logError("PlayerEnt is nil")
       return
     end
-    self.socialData_ = self.socialVm_.AsyncGetSocialData(0, Z.EntityMgr.PlayerEnt.EntId, self.cancelSource:CreateToken())
+    self.socialData_ = self.socialVm_.AsyncGetSocialData(0, Z.EntityMgr.PlayerEnt.CharId, self.cancelSource:CreateToken())
     local viewData = {}
     viewData.id = self.socialData_.avatarInfo.avatarId
     viewData.modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
-    viewData.charId = Z.EntityMgr.PlayerEnt.EntId
+    viewData.charId = Z.EntityMgr.PlayerEnt.CharId
     viewData.headFrameId = nil
     viewData.token = self.cancelSource:CreateToken()
     if self.socialData_.avatarInfo and self.socialData_.avatarInfo.avatarFrameId then
@@ -140,8 +140,14 @@ function AccountmoduleView:setPlayerInfo()
   self:AddAsyncClick(self.uiBinder.btn_user_center, function()
     self.userCenterVM_.OpenUserCenter(E.UserSupportType.Setting)
   end)
+  self:SetUIVisible(self.uiBinder.btn_cdkey, gotoFuncVM.CheckFuncCanUse(E.FunctionID.CdKey, true))
+  self:AddClick(self.uiBinder.btn_cdkey, function()
+    Z.UIMgr:OpenView("set_exchange_popup")
+  end)
   local currentPlatform = Z.SDKLogin.GetPlatform()
   local isAPJPlat = currentPlatform == E.LoginPlatformType.APJPlatform
+  local sdkType = Z.SDKLogin.GetSDKType()
+  isAPJPlat = isAPJPlat and sdkType ~= E.LoginSDKType.APJEpic and sdkType ~= E.LoginSDKType.APJSteam
   self:SetUIVisible(self.uiBinder.btn_pay_set, not Z.GameContext.IsPlayInMobile and isAPJPlat)
   self:AddAsyncClick(self.uiBinder.btn_pay_set, function()
     Z.SDKPay.OpenPaymentSetting()

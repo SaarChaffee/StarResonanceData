@@ -16,6 +16,15 @@ local OnCallStub = function(call)
       impl:NotifySocialData(call, pbMsg.vRequest)
       return
     end
+    if call:GetMethodId() == 2 then
+      local pbData = call:GetCallData()
+      local pbMsg = pb.decode("zproto.SocialNtf.NotifyShowTips", pbData)
+      if MessageInspectBridge.InInspectState == true then
+        MessageInspectBridge.HandleReceiveMessage(625772963, 2, cJson.encode(pbMsg), pbData, true)
+      end
+      impl:NotifyShowTips(call, pbMsg.vRequest)
+      return
+    end
   end, function(err)
     logError([[
 error={0}

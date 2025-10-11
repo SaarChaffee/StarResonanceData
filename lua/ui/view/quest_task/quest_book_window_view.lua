@@ -21,6 +21,7 @@ function Quest_book_windowView:OnActive()
   self.isFirst_ = true
   self:onStartAnimShow()
   self:initComp()
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_info)
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
   self.uiBinder.node_loop_eff:SetEffectGoVisible(true)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
@@ -75,6 +76,7 @@ function Quest_book_windowView:OnDeActive()
   self.episodeAndPhasesDatas_ = {}
   self.unLockedChapterInfos_ = nil
   self.isFirst_ = true
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_info)
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_loop_eff)
   self.uiBinder.node_loop_eff:SetEffectGoVisible(false)
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
@@ -136,9 +138,10 @@ function Quest_book_windowView:OnSelectPhase(questInfoTableRow)
     self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
   end
   self.isFirst_ = false
+  local placeholderParam = Z.Placeholder.SetPlayerSelfPronoun()
+  self.lab_content_.text = Z.Placeholder.Placeholder(questInfoTableRow.TaskInfo, placeholderParam)
   self.selectQuestInfoTableRow_ = questInfoTableRow
-  self.lab_content_.text = questInfoTableRow.TaskInfo
-  self.lab_title_.text = questInfoTableRow.PhaseName
+  self.lab_title_.text = Z.Placeholder.Placeholder(questInfoTableRow.PhaseName, placeholderParam)
   self.scroll_content_.VerticalNormalizedPosition = 1
   local picPath = questInfoTableRow.TitlePic
   if picPath == nil or picPath == "0" or picPath == "" then

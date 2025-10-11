@@ -14021,7 +14021,7 @@
   },
   "75012": {
     "ModelPrefabID": 75012,
-    "ModelPrefabDesc": "载具幻想-别致剧院·光星",
+    "ModelPrefabDesc": "载具幻想-律动音浪",
     "Skeleton": "ch_vehicle_dancestage_01",
     "Effect": [],
     "AnimTemplate": "animtpl/ch_vehicle_dancestage_01",
@@ -14109,7 +14109,7 @@
     "Skeleton": "ch_vehicle_yacht_01",
     "Effect": [
       [
-        "ep_root_eff_point",
+        "cfg_ep_eff_body01_point",
         "effect/common_new/vehicle/p_fx_vehicle_yacht01_stationary_01"
       ]
     ],
@@ -14528,7 +14528,7 @@
   },
   "75043": {
     "ModelPrefabID": 75043,
-    "ModelPrefabDesc": "载具幻想-别致剧院·炫星",
+    "ModelPrefabDesc": "载具幻想-律动音浪·狂响",
     "Skeleton": "ch_vehicle_dancestage02_01",
     "Effect": [],
     "AnimTemplate": "animtpl/ch_vehicle_dancestage02_01",
@@ -14612,7 +14612,7 @@
   },
   "75049": {
     "ModelPrefabID": 75049,
-    "ModelPrefabDesc": "载具幻想-别致剧院·辉星",
+    "ModelPrefabDesc": "载具幻想-律动音浪·辉星",
     "Skeleton": "ch_vehicle_dancestage_02",
     "Effect": [],
     "AnimTemplate": "animtpl/ch_vehicle_dancestage_01",
@@ -14626,7 +14626,7 @@
   },
   "75050": {
     "ModelPrefabID": 75050,
-    "ModelPrefabDesc": "载具幻想-别致剧院·赫星",
+    "ModelPrefabDesc": "载具幻想-律动音浪·赫星",
     "Skeleton": "ch_vehicle_dancestage_03",
     "Effect": [],
     "AnimTemplate": "animtpl/ch_vehicle_dancestage_01",
@@ -14672,11 +14672,11 @@
     "Skeleton": "ch_vehicle_dihu01_04",
     "Effect": [
       [
-        "Tail04_J",
+        "cfg_ep_sd_hip_j_point",
         "effect/common_new/vehicle/p_fx_vehicle_dihu01_weiba"
       ],
       [
-        "Neck2_J",
+        "cfg_ep_sd_head_j_point",
         "effect/common_new/vehicle/p_fx_vehicle_dihu01_tou"
       ],
       [
@@ -14711,7 +14711,7 @@
     "Skeleton": "ch_vehicle_yacht02_01",
     "Effect": [
       [
-        "ep_root_eff_point",
+        "cfg_ep_eff_body01_point",
         "effect/common_new/vehicle/p_fx_vehicle_yacht02_stationary_01"
       ]
     ],
@@ -14726,10 +14726,38 @@
   },
   "75055": {
     "ModelPrefabID": 75055,
-    "ModelPrefabDesc": "载具幻想-魔鬼鱼",
+    "ModelPrefabDesc": "载具幻想-星间飞行",
     "Skeleton": "ch_vehicle_monsterfish01_01",
     "Effect": [],
     "AnimTemplate": "animtpl/ch_vehicle_monsterfish01_01",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
+  "75056": {
+    "ModelPrefabID": 75056,
+    "ModelPrefabDesc": "载具幻想-星间飞行·掠影",
+    "Skeleton": "ch_vehicle_monsterfish02_01",
+    "Effect": [],
+    "AnimTemplate": "animtpl/ch_vehicle_monsterfish01_01",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
+  "75058": {
+    "ModelPrefabID": 75058,
+    "ModelPrefabDesc": "载具幻想-异世界快递箱（APJ）",
+    "Skeleton": "ch_vehicle_airdrop01_02",
+    "Effect": [],
+    "AnimTemplate": "animtpl/ch_vehicle_airdrop01_01",
     "RotateCurves": [],
     "Weapon": [],
     "UseHeadIK": false,
@@ -15237,7 +15265,7 @@
     "ModelPrefabDesc": "展示哥布林",
     "Skeleton": "ch_mon_gebulin01-ds_01",
     "Effect": [],
-    "AnimTemplate": "animtpl/ch_f_skeleton",
+    "AnimTemplate": "animtpl/ch_f_skeleton_delta07",
     "RotateCurves": [],
     "Weapon": [],
     "UseHeadIK": false,
@@ -15265,6 +15293,24 @@
     "ModelPrefabDesc": "空悬浮平台",
     "Skeleton": "skm_stk_platform003_a",
     "Effect": [],
+    "AnimTemplate": "",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
+  "80049": {
+    "ModelPrefabID": 80049,
+    "ModelPrefabDesc": "浮空炸弹",
+    "Skeleton": "prefabs/ch_dummy",
+    "Effect": [
+      [
+        "effect/common_new/env/p_fx_scene_dragonscar_particle_lei"
+      ]
+    ],
     "AnimTemplate": "",
     "RotateCurves": [],
     "Weapon": [],
@@ -16103,7 +16149,7 @@
   "89045": {
     "ModelPrefabID": 89045,
     "ModelPrefabDesc": "棉花",
-    "Skeleton": "skm_stk_coll_youlanguo_02",
+    "Skeleton": "skm_stk_coll_mianhua_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -16117,7 +16163,7 @@
   "89046": {
     "ModelPrefabID": 89046,
     "ModelPrefabDesc": "天虹草",
-    "Skeleton": "skm_stk_coll_youlanguo_01",
+    "Skeleton": "skm_stk_coll_tianhongcao_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -16131,7 +16177,7 @@
   "89047": {
     "ModelPrefabID": 89047,
     "ModelPrefabDesc": "石灰岩",
-    "Skeleton": "skm_stk_coll_orecopper_c_01",
+    "Skeleton": "skm_stk_coll_shihuiyan_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -16145,7 +16191,7 @@
   "89048": {
     "ModelPrefabID": 89048,
     "ModelPrefabDesc": "板岩",
-    "Skeleton": "skm_stk_coll_oreiron_c_01",
+    "Skeleton": "skm_stk_coll_banyan_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -16159,7 +16205,7 @@
   "89049": {
     "ModelPrefabID": 89049,
     "ModelPrefabDesc": "花岗岩",
-    "Skeleton": "skm_stk_coll_oregold_c_01",
+    "Skeleton": "skm_stk_coll_huagangyan_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -16173,7 +16219,7 @@
   "89050": {
     "ModelPrefabID": 89050,
     "ModelPrefabDesc": "天虹石",
-    "Skeleton": "skm_stk_coll_andelafeiliao_01",
+    "Skeleton": "skm_stk_coll_tianhongshi_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -16187,7 +16233,7 @@
   "89051": {
     "ModelPrefabID": 89051,
     "ModelPrefabDesc": "风谷谜石",
-    "Skeleton": "skm_stk_coll_andelafeiliao_01",
+    "Skeleton": "skm_stk_coll_fenggumishi_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -16201,7 +16247,7 @@
   "89052": {
     "ModelPrefabID": 89052,
     "ModelPrefabDesc": "黯蓝谜石",
-    "Skeleton": "skm_stk_coll_andelafeiliao_01",
+    "Skeleton": "skm_stk_coll_anlanmishi_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -19124,6 +19170,20 @@
     "LookAtDistance": 0,
     "AnimFadeTemplate": ""
   },
+  "1310070": {
+    "ModelPrefabID": 1310070,
+    "ModelPrefabDesc": "太刀07版皮肤",
+    "Skeleton": "ch_wp_olvera-07_01",
+    "Effect": [],
+    "AnimTemplate": "",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
   "1320020": {
     "ModelPrefabID": 1320020,
     "ModelPrefabDesc": "法杖02版皮肤",
@@ -19184,6 +19244,20 @@
     "ModelPrefabID": 1320060,
     "ModelPrefabDesc": "法杖06版皮肤",
     "Skeleton": "ch_wp_boyce-06_01",
+    "Effect": [],
+    "AnimTemplate": "",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
+  "1320070": {
+    "ModelPrefabID": 1320070,
+    "ModelPrefabDesc": "法杖07版皮肤",
+    "Skeleton": "ch_wp_boyce-07_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -19264,6 +19338,20 @@
     "LookAtDistance": 0,
     "AnimFadeTemplate": ""
   },
+  "1340070": {
+    "ModelPrefabID": 1340070,
+    "ModelPrefabDesc": "长枪07版皮肤",
+    "Skeleton": "ch_wp_tina-07_01",
+    "Effect": [],
+    "AnimTemplate": "",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
   "1350020": {
     "ModelPrefabID": 1350020,
     "ModelPrefabDesc": "法环02版皮肤",
@@ -19324,6 +19412,20 @@
     "ModelPrefabID": 1350060,
     "ModelPrefabDesc": "法环06版皮肤",
     "Skeleton": "ch_wp_iruna-06_01",
+    "Effect": [],
+    "AnimTemplate": "",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
+  "1350070": {
+    "ModelPrefabID": 1350070,
+    "ModelPrefabDesc": "法环07版皮肤",
+    "Skeleton": "ch_wp_iruna-07_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -19404,6 +19506,20 @@
     "LookAtDistance": 0,
     "AnimFadeTemplate": ""
   },
+  "1370070": {
+    "ModelPrefabID": 1370070,
+    "ModelPrefabDesc": "卫刃07版皮肤",
+    "Skeleton": "ch_wp_comeau-07_01",
+    "Effect": [],
+    "AnimTemplate": "",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
   "1390020": {
     "ModelPrefabID": 1390020,
     "ModelPrefabDesc": "弓02版皮肤",
@@ -19464,6 +19580,20 @@
     "ModelPrefabID": 1390060,
     "ModelPrefabDesc": "弓06版皮肤",
     "Skeleton": "ch_wp_rodri-06_01",
+    "Effect": [],
+    "AnimTemplate": "",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
+  "1390070": {
+    "ModelPrefabID": 1390070,
+    "ModelPrefabDesc": "弓07版皮肤",
+    "Skeleton": "ch_wp_rodri-07_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],
@@ -19614,6 +19744,34 @@
     "LookAtDistance": 0,
     "AnimFadeTemplate": ""
   },
+  "1400070": {
+    "ModelPrefabID": 1400070,
+    "ModelPrefabDesc": "剑盾07版皮肤·剑",
+    "Skeleton": "ch_wp_farfara01-07_01",
+    "Effect": [],
+    "AnimTemplate": "",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
+  "1400071": {
+    "ModelPrefabID": 1400071,
+    "ModelPrefabDesc": "剑盾07版皮肤·盾",
+    "Skeleton": "ch_wp_farfara02-07_01",
+    "Effect": [],
+    "AnimTemplate": "",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
   "1410020": {
     "ModelPrefabID": 1410020,
     "ModelPrefabDesc": "吉他02版皮肤",
@@ -19674,6 +19832,20 @@
     "ModelPrefabID": 1410060,
     "ModelPrefabDesc": "吉他06版皮肤",
     "Skeleton": "ch_wp_guitar-06_01",
+    "Effect": [],
+    "AnimTemplate": "",
+    "RotateCurves": [],
+    "Weapon": [],
+    "UseHeadIK": false,
+    "LookAtAngle": 0,
+    "LookAtSpeed": 0,
+    "LookAtDistance": 0,
+    "AnimFadeTemplate": ""
+  },
+  "1410070": {
+    "ModelPrefabID": 1410070,
+    "ModelPrefabDesc": "吉他07版皮肤",
+    "Skeleton": "ch_wp_guitar-07_01",
     "Effect": [],
     "AnimTemplate": "",
     "RotateCurves": [],

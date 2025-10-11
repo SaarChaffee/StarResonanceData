@@ -28,6 +28,10 @@ function HouseGuideLoopItem:OnSelected(OnSelected)
   end
 end
 
+function HouseGuideLoopItem:OnPointerClick(go, eventData)
+  self.parent.UIView:OnItemStartAnimShow()
+end
+
 function HouseGuideLoopItem:OnUnInit()
 end
 

@@ -10348,7 +10348,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5001,
     "EnchantId": 1003,
     "EquipNameGroupId": 0,
     "QualitychiIdType": 301,
@@ -10394,7 +10394,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5001,
     "EnchantId": 1003,
     "EquipNameGroupId": 0,
     "QualitychiIdType": 301,
@@ -10440,7 +10440,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5001,
     "EnchantId": 1003,
     "EquipNameGroupId": 0,
     "QualitychiIdType": 301,
@@ -10486,7 +10486,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5001,
     "EnchantId": 1003,
     "EquipNameGroupId": 0,
     "QualitychiIdType": 301,
@@ -10532,7 +10532,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5001,
     "EnchantId": 1003,
     "EquipNameGroupId": 0,
     "QualitychiIdType": 301,
@@ -10578,7 +10578,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5001,
     "EnchantId": 1003,
     "EquipNameGroupId": 0,
     "QualitychiIdType": 301,
@@ -10624,7 +10624,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5001,
     "EnchantId": 1003,
     "EquipNameGroupId": 0,
     "QualitychiIdType": 301,
@@ -10670,7 +10670,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5001,
     "EnchantId": 1003,
     "EquipNameGroupId": 0,
     "QualitychiIdType": 301,
@@ -10693,8 +10693,8 @@
     "EquipGs": 90,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -10714,7 +10714,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5002,
     "EnchantId": 1003,
     "EquipNameGroupId": 2000609,
     "QualitychiIdType": 301,
@@ -10739,8 +10739,8 @@
     "EquipGs": 90,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -10760,7 +10760,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5002,
     "EnchantId": 1003,
     "EquipNameGroupId": 2000610,
     "QualitychiIdType": 301,
@@ -10785,8 +10785,8 @@
     "EquipGs": 90,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -10806,7 +10806,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5002,
     "EnchantId": 1003,
     "EquipNameGroupId": 2000611,
     "QualitychiIdType": 301,
@@ -10831,8 +10831,8 @@
     "EquipGs": 90,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -10852,7 +10852,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5002,
     "EnchantId": 1003,
     "EquipNameGroupId": 2000612,
     "QualitychiIdType": 301,
@@ -10877,8 +10877,8 @@
     "EquipGs": 90,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -10898,7 +10898,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5002,
     "EnchantId": 1003,
     "EquipNameGroupId": 2000613,
     "QualitychiIdType": 301,
@@ -10923,8 +10923,8 @@
     "EquipGs": 90,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -10944,7 +10944,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5002,
     "EnchantId": 1003,
     "EquipNameGroupId": 2000614,
     "QualitychiIdType": 301,
@@ -10969,8 +10969,8 @@
     "EquipGs": 90,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -10990,7 +10990,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5002,
     "EnchantId": 1003,
     "EquipNameGroupId": 2000615,
     "QualitychiIdType": 301,
@@ -11015,8 +11015,8 @@
     "EquipGs": 90,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -11036,7 +11036,7 @@
     ],
     "IsAllowAdvancedAttrSame": false,
     "RecastingAttrLibId": [],
-    "DecomposeId": 0,
+    "DecomposeId": 5002,
     "EnchantId": 1003,
     "EquipNameGroupId": 2000616,
     "QualitychiIdType": 301,
@@ -11059,8 +11059,8 @@
     "EquipGs": 100,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -11104,8 +11104,8 @@
     "EquipGs": 100,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -11149,8 +11149,8 @@
     "EquipGs": 100,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -11194,8 +11194,8 @@
     "EquipGs": 100,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -11239,8 +11239,8 @@
     "EquipGs": 100,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -11284,8 +11284,8 @@
     "EquipGs": 100,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -11329,8 +11329,8 @@
     "EquipGs": 100,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [
@@ -11374,8 +11374,8 @@
     "EquipGs": 100,
     "WearCondition": [
       [
-        1,
-        60
+        45,
+        53
       ]
     ],
     "PerfectUpperLimit": [

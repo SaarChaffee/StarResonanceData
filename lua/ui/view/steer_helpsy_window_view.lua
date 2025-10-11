@@ -22,6 +22,7 @@ function Steer_helpsy_windowView:initUIBinders()
   self.lab_title = self.uiBinder.lab_title
   self.lab_content = self.uiBinder.lab_content
   self.group_rimg = self.uiBinder.group_rimg
+  self.rimgNode_ = self.uiBinder.node_rimg
   self.scrollview_lab = self.uiBinder.scrollview_lab
   self.scenemask = self.uiBinder.scenemask
   self.dotParent_ = self.uiBinder.node_pages
@@ -115,7 +116,9 @@ function Steer_helpsy_windowView:SelectShow(index)
   self.lab_content.text = Z.TableMgr.DecodeLineBreak(data.content)
   if data.res == "" or data.res == nil then
     self.uiBinder.Ref:SetVisible(self.group_video, false)
-    self.uiBinder.Ref:SetVisible(self.group_rimg, false)
+    self.uiBinder.Ref:SetVisible(self.rimgNode_, false)
+    self.uiBinder.rect_scrollview:SetAnchorPosition(0, -20)
+    self.uiBinder.rect_scrollview:SetSizeDelta(1000, 660)
   elseif string.find(data.res, "video") then
     self:playVideo(data.res)
   else
@@ -126,14 +129,18 @@ end
 
 function Steer_helpsy_windowView:playVideo(path)
   self.uiBinder.Ref:SetVisible(self.btn_play, false)
-  self.uiBinder.Ref:SetVisible(self.group_rimg, false)
+  self.uiBinder.Ref:SetVisible(self.rimgNode_, false)
   self.uiBinder.Ref:SetVisible(self.group_video, true)
+  self.uiBinder.rect_scrollview:SetAnchorPosition(0, -574)
+  self.uiBinder.rect_scrollview:SetSizeDelta(1000, 246)
   self.group_video:Prepare("helpsys/" .. path .. ".mp4", false, true)
 end
 
 function Steer_helpsy_windowView:showImage(path)
-  self.uiBinder.Ref:SetVisible(self.group_rimg, true)
+  self.uiBinder.Ref:SetVisible(self.rimgNode_, true)
   self.uiBinder.Ref:SetVisible(self.group_video, false)
+  self.uiBinder.rect_scrollview:SetAnchorPosition(0, -574)
+  self.uiBinder.rect_scrollview:SetSizeDelta(1000, 246)
   self.group_rimg:SetImage("ui/textures/helpsys/" .. path)
 end
 

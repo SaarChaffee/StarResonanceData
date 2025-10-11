@@ -152,8 +152,9 @@ function Map_info_quest_rightView:refreshDescInfo()
   end
   local questRow = questTbl.GetRow(self.questId_)
   if questRow then
-    self.lab_title_.text = questRow.QuestName
-    self.lab_content_.text = questRow.QuestDetail
+    self.lab_title_.text = self.questVM_.GetQuestName(self.questId_)
+    local param = Z.Placeholder.SetPlayerSelfPronoun()
+    self.lab_content_.text = Z.Placeholder.Placeholder(questRow.QuestDetail, param)
   end
 end
 

@@ -325,6 +325,12 @@ function Chat_input_box_tpl_pcView:onSendBtnClick()
           self.chatData_:ClearShareData()
           self:clearChatInput()
         end
+      elseif hyperlinkType == E.ChatHyperLinkType.LocalPosition then
+        self.chatData_:RefreshShareData(chatDraft.msg, self.chatData_:GetShareProtoData(), hyperlinkType)
+        if self.chatMainVm_.AsyncLocalPosition(self.channelId_, self.chatData_.CancelSource:CreateToken()) then
+          self.chatData_:ClearShareData()
+          self:clearChatInput()
+        end
       end
     else
       local ret = self.chatMainVm_.AsyncSendMessage(self.channelId_, self.charId_, chatDraft.msg, msgType, nil, self.chatData_.CancelSource:CreateToken(), chatDraft.fileId, chatDraft.fileTime, chatDraft.voiceMsg)
@@ -399,8 +405,6 @@ function Chat_input_box_tpl_pcView:onMoreBtnClick()
 end
 
 function Chat_input_box_tpl_pcView:onValueChange(text)
-  text = string.gsub(text, "\n", "")
-  text = string.gsub(text, "\r", "")
   text = Z.RichTextHelper.RmoveHrefTag(text)
   self:onCheckChar(text)
   self.chatData_:SetChatDraft({msg = text}, self.channelId_, self.windowType_, self.charId_)
@@ -473,6 +477,12 @@ end
 function Chat_input_box_tpl_pcView:InputItem(item)
   local text = self.uiBinder.input_field.text
   self.chatData_:RefreshShareData(text, item, E.ChatHyperLinkType.ItemShare)
+  self.uiBinder.input_field.text = self.chatData_:GetHyperLinkShareContent()
+end
+
+function Chat_input_box_tpl_pcView:InputLocalPosition()
+  local text = self.uiBinder.input_field.text
+  self.chatData_:RefreshShareData(text, nil, E.ChatHyperLinkType.LocalPosition)
   self.uiBinder.input_field.text = self.chatData_:GetHyperLinkShareContent()
 end
 

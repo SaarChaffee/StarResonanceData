@@ -1146,6 +1146,18 @@
     "InitialValue": 0,
     "RefreshTime": 0
   },
+  "2007": {
+    "Id": 2007,
+    "EventType": 0,
+    "ParaOne": [],
+    "ParaTwo": [],
+    "CountGrow": [],
+    "AttrMapping": [],
+    "LowerLimit": -10000,
+    "UpperLimit": 10000,
+    "InitialValue": 0,
+    "RefreshTime": 0
+  },
   "3001": {
     "Id": 3001,
     "EventType": 2,
@@ -1180,6 +1192,18 @@
     "AttrMapping": [],
     "LowerLimit": 0,
     "UpperLimit": 190000,
+    "InitialValue": 0,
+    "RefreshTime": 0
+  },
+  "2008": {
+    "Id": 2008,
+    "EventType": 0,
+    "ParaOne": [],
+    "ParaTwo": [],
+    "CountGrow": [],
+    "AttrMapping": [],
+    "LowerLimit": 0,
+    "UpperLimit": 100,
     "InitialValue": 0,
     "RefreshTime": 0
   }

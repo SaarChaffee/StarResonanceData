@@ -272,6 +272,10 @@ function Home_editor_operation_subView:initBtn()
         end
         self.parent:exitOperationState()
       else
+        if not self.selectedEntityIds_ then
+          self.parent:exitOperationState()
+          return
+        end
         local entityId = self.selectedEntityIds_[1]
         local groupId = self.data_.FurnitureGroupInfoDic[entityId]
         if groupId then
@@ -647,9 +651,33 @@ function Home_editor_operation_subView:refreshGroupState()
   self.rightNode_.Ref:SetVisible(self.exitGroupBtn_, isShowExitGroupBtn)
   self.rightNode_.Ref:SetVisible(self.editorGroupBtn_, isShowEditorBtn)
   self.isSelectSingle_ = not isShowCreateBtn and not isShowRemoveBtn and not isShowEditorBtn
-  self.rotateNode_.Ref:SetVisible(self.rotateXNode_, self.isSelectSingle_)
-  self.rotateNode_.Ref:SetVisible(self.rotateZNode_, self.isSelectSingle_)
+  local isShowXZRotateNode = self:checkShowXZRotateNodeByUuidList()
+  self.rotateNode_.Ref:SetVisible(self.rotateXNode_, self.isSelectSingle_ and isShowXZRotateNode)
+  self.rotateNode_.Ref:SetVisible(self.rotateZNode_, self.isSelectSingle_ and isShowXZRotateNode)
   self.uiBinder.Ref:SetVisible(self.exitBtnNode_, self.data_.IsGroupEditorState and not self.data_.CurEditorGroupEntityId)
+end
+
+function Home_editor_operation_subView:checkShowXZRotateNodeByUuidList()
+  if self.viewData and self.viewData.configId and not self:checkShowXZRotateNodeByItemId(self.viewData.configId) then
+    return false
+  end
+  if self.selectedEntityIds_ and #self.selectedEntityIds_ > 0 then
+    for i = 1, #self.selectedEntityIds_ do
+      local itemId = self.data_:GetItemIdByUid(self.selectedEntityIds_[i])
+      if itemId and not self:checkShowXZRotateNodeByItemId(itemId) then
+        return false
+      end
+    end
+  end
+  return true
+end
+
+function Home_editor_operation_subView:checkShowXZRotateNodeByItemId(itemId)
+  local row = Z.TableMgr.GetTable("HousingItemsMgr").GetRow(itemId, true)
+  if row and row.EditType == E.EHomeEditType.NoOverlyingXZRotate then
+    return false
+  end
+  return true
 end
 
 return Home_editor_operation_subView

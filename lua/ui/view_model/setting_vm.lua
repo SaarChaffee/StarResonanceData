@@ -265,6 +265,62 @@ local getGrade = function(id)
     }
   end
 end
+local setLensCompensateTable = function(id, value)
+  local str = table.concat(value, "=")
+  setString(id, str)
+end
+local getDefaultCompensateTable = function(id)
+  local defaultValue = {}
+  local row
+  if 0 <= id then
+    local settingTbl = Z.TableMgr.GetTable("SettingsTableMgr")
+    row = settingTbl.GetRow(id)
+  end
+  if row then
+    local idArrays = string.split(row.Value, "=")
+    if idArrays and #idArrays == 3 then
+      table.insert(defaultValue, tonumber(idArrays[1]))
+      table.insert(defaultValue, tonumber(idArrays[2]))
+      table.insert(defaultValue, tonumber(idArrays[3]))
+    end
+  end
+  return defaultValue
+end
+local getLensCompensateTable = function(id)
+  local deafultValue = getDefaultCompensateTable(id)
+  local row
+  if 0 <= id then
+    local settingTbl = Z.TableMgr.GetTable("SettingsTableMgr")
+    row = settingTbl.GetRow(id)
+  end
+  if row then
+    local value = ""
+    if row.DataStorage == settingData.DataStorage.ClientDeviceData then
+      value = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Device, "BKL_SETID_" .. id, "")
+    elseif row.DataStorage == settingData.DataStorage.ClientEnvData then
+      value = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Env, "BKL_SETID_" .. id, "")
+    elseif row.DataStorage == settingData.DataStorage.ClientAccountData then
+      value = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Account, "BKL_SETID_" .. id, "")
+    elseif row.DataStorage == settingData.DataStorage.ClientCharacterData then
+      value = Z.LocalUserDataMgr.GetStringByLua(E.LocalUserDataType.Character, "BKL_SETID_" .. id, "")
+    elseif row.DataStorage == settingData.DataStorage.ServerData and Z.ContainerMgr.CharSerialize.settingData.settingMap[id] then
+      value = Z.ContainerMgr.CharSerialize.settingData.settingMap[id]
+    end
+    if value == "" then
+      return deafultValue
+    end
+    local result = {}
+    local idArrays = string.split(value, "=")
+    if idArrays and #idArrays == 3 then
+      table.insert(result, tonumber(idArrays[1]))
+      table.insert(result, tonumber(idArrays[2]))
+      table.insert(result, tonumber(idArrays[3]))
+    end
+    return result
+  else
+    return deafultValue
+  end
+end
 local SettingFunctionConfig = {
   [E.SettingID.EffSelf] = {get = getString, set = setString},
   [E.SettingID.EffEnemy] = {get = getString, set = setString},
@@ -273,6 +329,9 @@ local SettingFunctionConfig = {
   [E.SettingID.EffectRest] = {get = getString, set = setString},
   [E.SettingID.HorizontalSensitivity] = {get = getFloat, set = setFloat},
   [E.SettingID.VerticalSensitivity] = {get = getFloat, set = setFloat},
+  [E.SettingID.HorizontalSensitivityHandle] = {get = getFloat, set = setFloat},
+  [E.SettingID.VerticalSensitivityHandle] = {get = getFloat, set = setFloat},
+  [E.SettingID.MouseSpeedHandle] = {get = getFloat, set = setFloat},
   [E.SettingID.Master] = {get = getFloat, set = setFloat},
   [E.SettingID.Bgm] = {get = getFloat, set = setFloat},
   [E.SettingID.Sfx] = {get = getFloat, set = setFloat},
@@ -291,18 +350,18 @@ local SettingFunctionConfig = {
   [E.SettingID.SkillController] = {get = getBoolean, set = setInt},
   [E.SettingID.SkillControllerPcUp] = {get = getInt, set = setInt},
   [E.SettingID.CameraMove] = {get = getBoolean, set = setInt},
-  [E.SettingID.CameraTranslationRotate] = {get = getBoolean, set = setInt},
-  [E.SettingID.CameraReleasingSkill] = {get = getBoolean, set = setInt},
-  [E.SettingID.CameraReleasingSkillAngle] = {get = getBoolean, set = setInt},
-  [E.SettingID.CameraSeek] = {get = getBoolean, set = setInt},
-  [E.SettingID.CameraMelee] = {get = getBoolean, set = setInt},
+  [E.SettingID.CameraTranslationRotate] = {get = getLensCompensateTable, set = setLensCompensateTable},
+  [E.SettingID.CameraReleasingSkill] = {get = getLensCompensateTable, set = setLensCompensateTable},
+  [E.SettingID.CameraReleasingSkillAngle] = {get = getLensCompensateTable, set = setLensCompensateTable},
+  [E.SettingID.CameraSeek] = {get = getLensCompensateTable, set = setLensCompensateTable},
+  [E.SettingID.CameraMelee] = {get = getLensCompensateTable, set = setLensCompensateTable},
   [E.SettingID.RemoveMouseRestrictions] = {get = getBoolean, set = setInt},
   [E.ClientSettingID.Grade] = {get = getGrade, set = setGrade},
   [E.ClientSettingID.AutoPlay] = {get = getBoolean, set = setInt},
-  [E.SettingID.CameraTemplate] = {get = getBoolean, set = setInt},
-  [E.SettingID.PitchAngleCorrection] = {get = getBoolean, set = setInt},
-  [E.SettingID.BattleZoomCorrection] = {get = getBoolean, set = setInt},
-  [E.SettingID.BattlePitchAngkeCorrection] = {get = getBoolean, set = setInt},
+  [E.SettingID.CameraTemplate] = {get = getLensCompensateTable, set = setLensCompensateTable},
+  [E.SettingID.PitchAngleCorrection] = {get = getLensCompensateTable, set = setLensCompensateTable},
+  [E.SettingID.BattleZoomCorrection] = {get = getLensCompensateTable, set = setLensCompensateTable},
+  [E.SettingID.BattlePitchAngkeCorrection] = {get = getLensCompensateTable, set = setLensCompensateTable},
   [E.SettingID.ShowSkillTag] = {get = getBoolean, set = setInt},
   [E.SettingID.AutoBattle] = {get = getBoolean, set = setInt},
   [E.SettingID.WeaponDisplay] = {get = getBoolean, set = setInt},
@@ -312,7 +371,8 @@ local SettingFunctionConfig = {
   [E.SettingID.ShowTaskEffect] = {get = getBoolean, set = setInt},
   [E.SettingID.ToyVisible] = {get = getInt, set = setInt},
   [E.SettingID.HudNumberClose] = {get = getBoolean, set = setInt},
-  [E.SettingID.HudNumberSimple] = {get = getBoolean, set = setInt}
+  [E.SettingID.HudNumberSimple] = {get = getBoolean, set = setInt},
+  [E.SettingID.CameraInertia] = {get = getBoolean, set = setInt}
 }
 local set = function(id, value)
   local setFunc
@@ -342,6 +402,9 @@ local setPlayerGlideAttr = function(ctrlMode, diveMode)
   Z.EntityMgr.PlayerEnt:SetLuaLocalAttrGlideDiveMode(diveMode)
 end
 local setCameraRotateSpeed = function()
+  if Z.InputMgr.InputDeviceType == Panda.ZInput.EInputDeviceType.Joystick then
+    return
+  end
   local updateValue = function(level, member, arrTable)
     if arrTable then
       Z.LuaBridge.UpdatePlayerCameraSpeed(member, arrTable[level])
@@ -354,6 +417,28 @@ local setCameraRotateSpeed = function()
   local vLevel = math.floor(get(E.SettingID.VerticalSensitivity))
   updateValue(hLevel, EContextMember.CameraRotRateX, Z.Global.CameraHorizontalRange)
   updateValue(vLevel, EContextMember.CameraRotRateY, Z.Global.CameraVerticalRange)
+end
+local setHandleCameraRotateSpeed = function()
+  if Z.InputMgr.InputDeviceType ~= Panda.ZInput.EInputDeviceType.Joystick then
+    return
+  end
+  local updateValue = function(level, member, arrTable)
+    if arrTable then
+      Z.LuaBridge.UpdatePlayerCameraSpeed(member, arrTable[level])
+    else
+      logError("setCameraRotateSpeed failed level={0} member={1}", level, member)
+    end
+  end
+  local EContextMember = Z.PGame.EContextMember
+  local hLevel = math.floor(get(E.SettingID.HorizontalSensitivityHandle))
+  local vLevel = math.floor(get(E.SettingID.VerticalSensitivityHandle))
+  updateValue(hLevel, EContextMember.CameraRotRateX, Z.Global.HandleCamHorizontalRange)
+  updateValue(vLevel, EContextMember.CameraRotRateY, Z.Global.HandleCamVerticalRange)
+end
+local setHandleMouseSpeed = function()
+  local speedLevel = math.floor(get(E.SettingID.MouseSpeedHandle))
+  local speedValue = Z.Global.HandleMouseSpeedRange[speedLevel] or 1
+  Z.MouseMgr:SetMouseSpeed(speedValue)
 end
 local getLensCompensateId = function(settingId)
   return lensCompensateIds_[settingId]
@@ -478,10 +563,13 @@ local ret = {
   AsyncSaveSetting = asyncSaveSetting,
   SetPlayerGlideAttr = setPlayerGlideAttr,
   SetCameraRotateSpeed = setCameraRotateSpeed,
+  SetHandleCameraRotateSpeed = setHandleCameraRotateSpeed,
+  SetHandleMouseSpeed = setHandleMouseSpeed,
   Get = get,
   Set = set,
   GetLensCompensateId = getLensCompensateId,
   GetAllLensCompensateId = getAllLensCompensateId,
+  GetDefaultCompensateTable = getDefaultCompensateTable,
   ConvertEnumToVFXLevel = convertEnumToVFXLevel,
   GetVFXLevelEnum = getVFXLevelEnum,
   ImageQualityChanged = imageQualityChanged,

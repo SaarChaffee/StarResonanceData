@@ -1,14 +1,16 @@
 local ChatMsgHelper = {}
 local iconPathRoot = "ui/atlas/mainui/chat/"
 local iconPath = {
-  [E.ChatChannelType.EChannelWorld] = "chat_world",
-  [E.ChatChannelType.EChannelScene] = "chat_world",
-  [E.ChatChannelType.EChannelTeam] = "chat_teammate",
+  [E.ChatChannelType.EComprehensive] = "chat_world",
+  [E.ChatChannelType.EChannelWorld] = "chat_friend",
   [E.ChatChannelType.EChannelUnion] = "chat_association",
+  [E.ChatChannelType.EChannelTeam] = "chat_teammate",
+  [E.ChatChannelType.EChannelScene] = "chat_private_chat",
   [E.ChatChannelType.EChannelPrivate] = {
     [1] = "chat_private_chat",
     [2] = "chat_friend"
-  }
+  },
+  [E.ChatChannelType.ESystem] = "chat_notice"
 }
 
 function ChatMsgHelper.GetChatHyperlink(chatMsgData)
@@ -191,7 +193,18 @@ end
 
 function ChatMsgHelper.GetSystemType(chatMsgData)
   local headStr = chatMsgData.HeadStr or Lang("Acquire")
-  return chatMsgData.SystemType, chatMsgData.SystemId, headStr
+  local systemContent = ""
+  if chatMsgData.SystemType == E.ESystemTipInfoType.ItemInfo then
+    local contentStr = Z.VMMgr.GetVM("items").ApplyItemNameWithQualityTag(chatMsgData.SystemId)
+    local param = {
+      item = {
+        name = contentStr,
+        num = chatMsgData.SystemContent
+      }
+    }
+    systemContent = Lang("systemItemNoticeDark", param)
+  end
+  return chatMsgData.SystemType, chatMsgData.SystemId, headStr, systemContent
 end
 
 function ChatMsgHelper.GetVoiceFileId(chatMsgData)

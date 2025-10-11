@@ -42,6 +42,9 @@ local resetData = function(container, pbData)
   if not pbData.orderIndexList then
     container.__data__.orderIndexList = {}
   end
+  if not pbData.orderIndexRefundList then
+    container.__data__.orderIndexRefundList = {}
+  end
   setForbidenMt(container)
   container.firstPay:ResetData(pbData.firstPay)
   container.__data__.firstPay = nil
@@ -51,6 +54,13 @@ local resetData = function(container, pbData)
   container.orderIndexList.__data__ = pbData.orderIndexList
   setForbidenMt(container.orderIndexList)
   container.__data__.orderIndexList = nil
+  container.orderIndexRefundList.__data__ = {}
+  setForbidenMt(container.orderIndexRefundList)
+  for k, v in pairs(pbData.orderIndexRefundList) do
+    container.orderIndexRefundList.__data__[k] = require("zcontainer.refund_item_info").New()
+    container.orderIndexRefundList[k]:ResetData(v)
+  end
+  container.__data__.orderIndexRefundList = nil
 end
 local mergeData = function(container, buffer, watcherList)
   if not container or not container.__data__ then
@@ -186,6 +196,35 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  if container.orderIndexRefundList ~= nil then
+    local data = {}
+    for key, repeatedItem in pairs(container.orderIndexRefundList) do
+      if repeatedItem == nil then
+        data[key] = {
+          fieldId = 6,
+          dataType = 1,
+          data = nil
+        }
+      else
+        data[key] = {
+          fieldId = 6,
+          dataType = 1,
+          data = repeatedItem:GetContainerElem()
+        }
+      end
+    end
+    ret.orderIndexRefundList = {
+      fieldId = 6,
+      dataType = 2,
+      data = data
+    }
+  else
+    ret.orderIndexRefundList = {
+      fieldId = 6,
+      dataType = 2,
+      data = {}
+    }
+  end
   return ret
 end
 local new = function()
@@ -200,12 +239,16 @@ local new = function()
     },
     orderIndexList = {
       __data__ = {}
+    },
+    orderIndexRefundList = {
+      __data__ = {}
     }
   }
   ret.Watcher = require("zcontainer.container_watcher").new(ret)
   setForbidenMt(ret)
   setForbidenMt(ret.orderList)
   setForbidenMt(ret.orderIndexList)
+  setForbidenMt(ret.orderIndexRefundList)
   return ret
 end
 return {New = new}

@@ -1,4 +1,4 @@
-local super = require("ui.component.loopscrollrectitem")
+local super = require("ui.component.loop_list_view_item")
 local playerProtraitMgr = require("ui.component.role_info.common_player_portrait_item_mgr")
 local UnionMemberListItem = class("UnionMemberListItem", super)
 local SDKDefine = require("ui.model.sdk_define")
@@ -10,10 +10,16 @@ function UnionMemberListItem:ctor()
 end
 
 function UnionMemberListItem:OnInit()
-  self:Selected(false)
-end
-
-function UnionMemberListItem:OnReset()
+  self.uiBinder.btn_wechatprivilege:AddListener(function()
+    local data = self:GetCurData()
+    if data == nil then
+      return
+    end
+    self.sdkVM_.PrivilegeBtnClick(data.socialData.basicData.charID)
+  end)
+  self.uiBinder.btn_qqprivilege:AddListener(function()
+    self.sdkVM_.PrivilegeBtnClick()
+  end)
 end
 
 function UnionMemberListItem:OnUnInit()
@@ -23,13 +29,11 @@ function UnionMemberListItem:OnUnInit()
   end
 end
 
-function UnionMemberListItem:Refresh()
-  self.index_ = self.component.Index + 1
-  self.data_ = self.parent:GetDataByIndex(self.index_)
-  self:SetUI(self.data_)
-end
-
-function UnionMemberListItem:SetUI(data)
+function UnionMemberListItem:OnRefresh(data)
+  local token = self:getParentViewToken()
+  if token == nil then
+    return
+  end
   local basicData = data.socialData.basicData
   local positionName = self.unionVM_:GetOfficialName(data.baseData.officialId)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_newbie, Z.VMMgr.GetVM("player"):IsShowNewbie(basicData.isNewbie))
@@ -50,10 +54,11 @@ function UnionMemberListItem:SetUI(data)
   end
   self.headItem_ = playerProtraitMgr.InsertNewPortraitBySocialData(self.uiBinder.bind_head, data.socialData, function()
     self:onItemClick()
-  end, self.parent.uiView.cancelSource:CreateToken())
+  end, token)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_wechatprivilege, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_qqprivilege, false)
-  if self:isSelf(basicData.charID) then
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.IsSelected)
+  if basicData.charID == Z.EntityMgr.PlayerEnt.CharId then
     local accountData = Z.DataMgr.Get("account_data")
     local isPrivilege = self.sdkVM_.IsShowPrivilege()
     if accountData.LoginType == E.LoginType.QQ and isPrivilege then
@@ -71,16 +76,10 @@ function UnionMemberListItem:SetUI(data)
       end
     end
   end
-  self.uiBinder.btn_wechatprivilege:AddListener(function()
-    self.sdkVM_.PrivilegeBtnClick(basicData.charID)
-  end)
-  self.uiBinder.btn_qqprivilege:AddListener(function()
-    self.sdkVM_.PrivilegeBtnClick()
-  end)
 end
 
-function UnionMemberListItem:Selected(isSelected)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, isSelected)
+function UnionMemberListItem:OnSelected()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.IsSelected)
 end
 
 function UnionMemberListItem:OnPointerClick(go, eventData)
@@ -89,13 +88,24 @@ end
 
 function UnionMemberListItem:onItemClick()
   Z.CoroUtil.create_coro_xpcall(function()
+    local curData = self:GetCurData()
+    if curData == nil then
+      return
+    end
+    local token = self:getParentViewToken()
+    if token == nil then
+      return
+    end
     local idCardVM = Z.VMMgr.GetVM("idcard")
-    idCardVM.AsyncGetCardData(self.data_.socialData.basicData.charID, self.parent.uiView.cancelSource:CreateToken())
+    idCardVM.AsyncGetCardData(curData.socialData.basicData.charID, token)
   end)()
 end
 
-function UnionMemberListItem:isSelf(charID)
-  return charID == Z.EntityMgr.PlayerEnt.EntId
+function UnionMemberListItem:getParentViewToken()
+  if self.parent and self.parent.UIView and self.parent.UIView.cancelSource then
+    return self.parent.UIView.cancelSource:CreateToken()
+  end
+  return nil
 end
 
 return UnionMemberListItem

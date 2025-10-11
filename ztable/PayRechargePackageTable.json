@@ -2,7 +2,7 @@
   "1001": {
     "Id": 1001,
     "ProductId": [],
-    "Name": "",
+    "Name": "Wish Ticket Bundle (Not Yet Implemented)",
     "UnlockConditions": [],
     "ShowTimerId": 10101,
     "TimerId": 10101,
@@ -12,7 +12,7 @@
         1
       ]
     ],
-    "ShowOriginalPrice": 1.5,
+    "ShowOriginalPrice": 25.0,
     "Label": [
       [
         "1"
@@ -37,7 +37,7 @@
       1,
       40002
     ],
-    "Name": "",
+    "Name": "Airona's Special",
     "UnlockConditions": [],
     "ShowTimerId": 10101,
     "TimerId": 10101,
@@ -47,7 +47,7 @@
         1
       ]
     ],
-    "ShowOriginalPrice": 1.8,
+    "ShowOriginalPrice": 10.0,
     "Label": [
       [
         "1"
@@ -72,7 +72,7 @@
       1,
       40003
     ],
-    "Name": "",
+    "Name": "Street Skater",
     "UnlockConditions": [],
     "ShowTimerId": 10101,
     "TimerId": 10101,
@@ -82,7 +82,7 @@
         1
       ]
     ],
-    "ShowOriginalPrice": 1.48,
+    "ShowOriginalPrice": 25.0,
     "Label": [
       [
         "1"
@@ -107,7 +107,7 @@
       1,
       40004
     ],
-    "Name": "",
+    "Name": "Phase 2 Test Pack",
     "UnlockConditions": [],
     "ShowTimerId": 10101,
     "TimerId": 10101,
@@ -117,7 +117,7 @@
         1
       ]
     ],
-    "ShowOriginalPrice": 1.8,
+    "ShowOriginalPrice": 30.0,
     "Label": [
       [
         "1"

@@ -2,9 +2,9 @@
   "1": {
     "Id": 1,
     "ProfessionId": 1,
-    "Name": "",
+    "Name": "Stormblade",
     "Icon": "ui/atlas/profession/profession_horizontal_03",
-    "Intro": "",
+    "Intro": "Wields a <color=#fcbe03>Reaper Scythe</color>, excelling in <color=#fcbe03>close-range combat</color>. Switches seamlessly between scythe and longsword forms, delivering <color=#fcbe03>precise area strikes</color>.",
     "Element": 3,
     "Talent": 1,
     "TalentColor": "#db8787",
@@ -72,12 +72,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "每1%精通，使每枚雷之印的增伤+2.5%"
+        "",
+        "Each 1% Expertise increases the DMG of Thunder Sigil-consuming skills by 2.5%"
       ],
       [
-        "1",
-        "每1%精通提供1.8%霹雳连斩、雷霆之镰、神罚之镰伤害"
+        "",
+        "Each 1% Expertise grants 1.5% DMG to Thundercut, Storm Scythe, and Divine Sickle"
       ]
     ],
     "AttackShow": [
@@ -106,9 +106,9 @@
   "2": {
     "Id": 2,
     "ProfessionId": 2,
-    "Name": "",
+    "Name": "Frost Mage",
     "Icon": "ui/atlas/profession/profession_horizontal_05",
-    "Intro": "",
+    "Intro": "Wields a <color=#fcbe03>Frost Staff</color>, excelling in <color=#fcbe03>long-range combat</color>. Commands the power of ice to deliver <color=#fcbe03>wide-area DMG</color> and formidable <color=#fcbe03>control</color>.",
     "Element": 2,
     "Talent": 1,
     "TalentColor": "#db8787",
@@ -169,12 +169,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "每1%精通提供0.65%冰元素加成"
+        "",
+        "Each 1% Expertise grants 0.65% Ice Element bonus"
       ],
       [
-        "1",
-        "每1%精通提供1.2%寒冰能量获取效率以及0.2%冰元素加成"
+        "",
+        "Each 1% Expertise increases Ice Energy gain by 1% and Ice Element bonus by 0.4%"
       ]
     ],
     "AttackShow": [
@@ -203,9 +203,9 @@
   "3": {
     "Id": 3,
     "ProfessionId": 3,
-    "Name": "",
+    "Name": "Scourgefire Axe - Battle Axe",
     "Icon": "ui/atlas/profession/profession_horizontal_01",
-    "Intro": "",
+    "Intro": "A melee weapon with outstanding offensive power.<br>Each strike can inflict <color=#fcbe03>Ignite</color>, dealing <color=#fcbe03>Special DMG</color>.<br>By stacking Energy, unleashes an <color=#fcbe03>Ultimate</color>, entering a powerful burst state. Boosting <color=#fcbe03>Attack SPD</color> greatly increases DMG during this state.",
     "Element": 1,
     "Talent": 1,
     "TalentColor": "#db8787",
@@ -254,12 +254,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "附加火元素伤害"
+        "",
+        "Adds Fire DMG"
       ],
       [
-        "1",
-        "附加火元素伤害"
+        "",
+        "Adds Fire DMG"
       ]
     ],
     "AttackShow": [
@@ -288,9 +288,9 @@
   "4": {
     "Id": 4,
     "ProfessionId": 4,
-    "Name": "",
+    "Name": "Wind Knight",
     "Icon": "ui/atlas/profession/profession_horizontal_02",
-    "Intro": "",
+    "Intro": "Excels in <color=#fcbe03>close-range</color> combat, using a <color=#fcbe03>Lance</color> as a weapon. Agile and fast, possessing excellent <color=#fcbe03>small area attack</color> capabilities.",
     "Element": 5,
     "Talent": 1,
     "TalentColor": "#db8787",
@@ -357,12 +357,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "每1%精通提供0.65%风元素加成"
+        "",
+        "Each 1% Expertise grants 0.65% Wind Element bonus"
       ],
       [
-        "1",
-        "每1%精通提供0.65%风元素加成"
+        "",
+        "Each 1% Expertise grants 0.65% Wind Element bonus"
       ]
     ],
     "AttackShow": [
@@ -391,9 +391,9 @@
   "5": {
     "Id": 5,
     "ProfessionId": 5,
-    "Name": "",
+    "Name": "Verdant Oracle",
     "Icon": "ui/atlas/profession/profession_horizontal_04",
-    "Intro": "",
+    "Intro": "Wields a <color=#fcbe03>Nature Ring</color>, excelling in <color=#fcbe03>long-range healing</color>. Channels the verdant essence of the forest to deliver exceptional <color=#fcbe03>healing</color> and <color=#fcbe03>buffs</color>.",
     "Element": 4,
     "Talent": 2,
     "TalentColor": "#83c49a",
@@ -458,12 +458,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "每1%精通提供0.7%森元素加成以及0.3%护盾强度"
+        "",
+        "Each 1% Expertise grants 0.7% Forest Element bonus and 0.3% Shield strength"
       ],
       [
-        "1",
-        "每1%精通提供1%治疗强度"
+        "",
+        "Each 1% Expertise increases healing by 1%"
       ]
     ],
     "AttackShow": [
@@ -492,9 +492,9 @@
   "8": {
     "Id": 8,
     "ProfessionId": 8,
-    "Name": "",
+    "Name": "Thunder Flash - Hand Cannon",
     "Icon": "ui/atlas/profession/profession_horizontal_01",
-    "Intro": "",
+    "Intro": "Excels in <color=#fcbe03>long-range combat</color>,<br>capable of striking wide areas with rapid fire. Boosting <color=#fcbe03>Sigil chance</color> greatly increases trigger frequency.<br>Can <color=#fcbe03>charge</color> at close range to deal massive DMG. Boosts <color=#fcbe03>critical rate</color> for dealing massive DMG.",
     "Element": 3,
     "Talent": 1,
     "TalentColor": "#db8787",
@@ -543,12 +543,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "附加雷元素伤害"
+        "",
+        "Adds Thunder DMG"
       ],
       [
-        "1",
-        "附加雷元素伤害"
+        "",
+        "Adds Thunder DMG"
       ]
     ],
     "AttackShow": [
@@ -577,9 +577,9 @@
   "9": {
     "Id": 9,
     "ProfessionId": 9,
-    "Name": "",
+    "Name": "Heavy Guardian",
     "Icon": "ui/atlas/profession/profession_horizontal_06",
-    "Intro": "",
+    "Intro": "Wields a <color=#fcbe03>Guardblade</color>, excelling in <color=#fcbe03>close-range combat</color>. Channels the power of stone to form a protective shell, offering exceptional <color=#fcbe03>defense</color> and <color=#fcbe03>control</color>.",
     "Element": 6,
     "Talent": 3,
     "TalentColor": "#68a6cd",
@@ -647,12 +647,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "每1%精通提供2.5%护盾强度"
+        "",
+        "Each 1% Expertise increases Shield strength by 2.5%"
       ],
       [
-        "1",
-        "每1%精通提供0.2%格挡减伤、0.2%幸运格挡减伤"
+        "",
+        "Each 1% Expertise grants 0.2% Block DMG Reduction and 0.2% Lucky Block DMG Reduction"
       ]
     ],
     "AttackShow": [
@@ -681,9 +681,9 @@
   "10": {
     "Id": 10,
     "ProfessionId": 10,
-    "Name": "",
+    "Name": "Ritual Dance of Shadowspirits: Ceremonial Blade / Staff",
     "Icon": "ui/atlas/profession/profession_horizontal_01",
-    "Intro": "",
+    "Intro": "A mid-to-close-range weapon enabling Coordinated Attacks.",
     "Element": 8,
     "Talent": 1,
     "TalentColor": "#db8787",
@@ -732,12 +732,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "附加暗元素伤害"
+        "",
+        "Adds Dark DMG"
       ],
       [
-        "1",
-        "附加暗元素伤害"
+        "",
+        "Adds Dark DMG"
       ]
     ],
     "AttackShow": [
@@ -766,9 +766,9 @@
   "11": {
     "Id": 11,
     "ProfessionId": 11,
-    "Name": "",
+    "Name": "Marksman",
     "Icon": "ui/atlas/profession/profession_horizontal_07",
-    "Intro": "",
+    "Intro": "Wields a <color=#fcbe03>bow</color>, excelling in <color=#fcbe03>long-range</color> combat. Partners with animal companions to unleash <color=#fcbe03>wide-area attacks</color>.",
     "Element": 7,
     "Talent": 1,
     "TalentColor": "#db8787",
@@ -830,12 +830,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "每1%精通提供3%宠物伤害"
+        "",
+        "Each 1% Expertise increases Companion's DMG by 2.75%"
       ],
       [
-        "1",
-        "每1%精通提供0.55%光元素加成"
+        "",
+        "Each 1% Expertise grants 0.6% Light Element bonus"
       ]
     ],
     "AttackShow": [
@@ -864,9 +864,9 @@
   "12": {
     "Id": 12,
     "ProfessionId": 12,
-    "Name": "",
+    "Name": "Shield Knight",
     "Icon": "ui/atlas/profession/profession_horizontal_01",
-    "Intro": "",
+    "Intro": "Wields a <color=#fcbe03>Sword and Shield</color>, excelling in <color=#fcbe03>close-range combat</color>. Wears radiant lightforged armor, boasting exceptional <color=#fcbe03>defense</color> and <color=#fcbe03>self-healing</color>.",
     "Element": 7,
     "Talent": 3,
     "TalentColor": "#68a6cd",
@@ -932,12 +932,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "每1%精通提供2.5%光明圣盾获取效率"
+        "",
+        "Each 1% Expertise increases Radiant Shield gain by 2.5% and all Element Resistance by 0.2%"
       ],
       [
-        "1",
-        "每1%精通提供3%光铸屏障生命提升效果"
+        "",
+        "Each 1% Expertise increases Lightforged Barrier HP boost effect by 3% and all Element Resistance by 0.2%"
       ]
     ],
     "AttackShow": [
@@ -966,9 +966,9 @@
   "13": {
     "Id": 13,
     "ProfessionId": 13,
-    "Name": "",
+    "Name": "Beat Performer",
     "Icon": "ui/atlas/profession/profession_horizontal_08",
-    "Intro": "",
+    "Intro": "Excels in <color=#fcbe03>long-range</color> combat, using a <color=#fcbe03>Guitar</color> as a weapon. <color=#fcbe03>Heals</color> while attacking, excels in granting Allies <color=#fcbe03>buffs</color>, and possesses excellent <color=#fcbe03>support</color> capabilities.",
     "Element": 1,
     "Talent": 2,
     "TalentColor": "#83c49a",
@@ -1033,12 +1033,12 @@
     ],
     "MasteryDes": [
       [
-        "0",
-        "每1%精通提供1%安和曲转换加成效果"
+        "",
+        "Each 1% Expertise increases Peaceful Tune conversion bonus by 1%"
       ],
       [
-        "1",
-        "每1%精通使得鸣奏·愈合乐章衰退速度降低0.35%"
+        "",
+        "Each 1% Expertise reduces Healing Melody decay rate by 0.35%"
       ]
     ],
     "AttackShow": [

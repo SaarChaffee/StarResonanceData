@@ -16,9 +16,38 @@ function SDKVM:OpenTaptapEvaluationPopup()
 end
 
 function SDKVM:OpenAppleStoreEvaluationPopup()
-  local vm = getVM()
-  if vm ~= nil and vm.OpenAppleStoreEvaluationPopup ~= nil then
-    vm.OpenAppleStoreEvaluationPopup()
+  if Z.SDKDevices.IsCloudGame then
+    return
+  end
+  if Z.SDKDevices.RuntimeOS ~= E.OS.iOS then
+    return
+  end
+  local countKey = "AppleStoreEvaluation_Count"
+  local timeKey = "AppleStoreEvaluation_Time"
+  local count = Z.UserDataManager.GetInt(countKey, 0)
+  if count < 3 then
+    Z.SDKReview.Review()
+    count = count + 1
+    Z.UserDataManager.SetInt(countKey, count)
+    Z.UserDataManager.SetLong(timeKey, os.time())
+  end
+end
+
+function SDKVM:OpenGoogleStoreEvaluationPopup()
+  if Z.SDKDevices.IsCloudGame then
+    return
+  end
+  if Z.SDKDevices.RuntimeOS ~= E.OS.Android then
+    return
+  end
+  local countKey = "GoogleStoreEvaluation_Count"
+  local timeKey = "GoogleStoreEvaluation_Time"
+  local count = Z.UserDataManager.GetInt(countKey, 0)
+  if count < 3 then
+    Z.SDKReview.Review()
+    count = count + 1
+    Z.UserDataManager.SetInt(countKey, count)
+    Z.UserDataManager.SetLong(timeKey, os.time())
   end
 end
 
@@ -144,11 +173,29 @@ function SDKVM.GetHttpNoticeUrl()
   if sdkTypeConfig == nil then
     return ""
   end
-  local httpNoticeUrlPath = sdkTypeConfig.HttpNoticeUrlPath
+  local sdkData = Z.DataMgr.Get("sdk_data")
+  local httpNoticeUrlPath = sdkData.HttpNoticeUrl
+  if Z.GameContext.IsPreviewEnvironment() then
+    httpNoticeUrlPath = sdkData.HttpNoticePreviewUrl
+  end
   if httpNoticeUrlPath == nil then
     return ""
   end
   return httpNoticeUrlPath
+end
+
+function SDKVM.GetCommunityLabel()
+  if not Z.Global.MaintenanceTipsSwitch then
+    return ""
+  end
+  local labelKey = Z.Global.MaintenanceTipsShow
+  if Z.LangMgr:IsContainKey(labelKey) then
+    return Lang(labelKey, {
+      url = Z.Global.MaintenanceTipsURL
+    })
+  else
+    return ""
+  end
 end
 
 return SDKVM

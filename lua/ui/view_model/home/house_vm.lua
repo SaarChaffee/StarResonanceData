@@ -382,11 +382,10 @@ function HouseVm.AsyncAcceptRejectInvitation(charId, homeId, accept, token)
     accept = accept
   }
   local ret = worldProxy.CommunityAcceptRejectInvitation(request, token)
-  if ret.errCode == 0 then
-    Z.EventMgr:Dispatch(Z.ConstValue.House.RefreshApplyList)
-  else
+  if ret.errCode ~= 0 then
     Z.TipsVM.ShowTips(ret.errCode)
   end
+  Z.EventMgr:Dispatch(Z.ConstValue.House.RefreshApplyList)
 end
 
 function HouseVm.AsyncGetPersonData(token)

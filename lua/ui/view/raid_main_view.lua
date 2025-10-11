@@ -7,16 +7,23 @@ local previewRewardItem = require("ui.component.common_recharge.common_preview_l
 function Raid_mainView:ctor()
   self.uiBinder = nil
   super.ctor(self, "raid_main")
+  self.matchVm_ = Z.VMMgr.GetVM("match")
+  self.matchTeamVm_ = Z.VMMgr.GetVM("match_team")
+  self.matchTeamData_ = Z.DataMgr.Get("match_team_data")
 end
 
 function Raid_mainView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self.raidVm_ = Z.VMMgr.GetVM("raid")
   self.dungeonVM_ = Z.VMMgr.GetVM("hero_dungeon_main")
+  self.helpsysVM_ = Z.VMMgr.GetVM("helpsys")
   self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
   self:AddAsyncClick(self.uiBinder.btn_team, function()
     local teamMainVm = Z.VMMgr.GetVM("team_main")
     teamMainVm.EnterTeamTargetByDungeonId(self.dungeonId_)
+  end)
+  self:AddClick(self.uiBinder.btn_ask, function()
+    self.helpsysVM_.OpenFullScreenTipsView(self.curRaidDungeonData_.Content)
   end)
   self:AddAsyncClick(self.uiBinder.btn_go, function()
     local dungeonData = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.dungeonId_)
@@ -63,6 +70,24 @@ function Raid_mainView:OnActive()
   else
     self:OnClickDiffToggle(self.diff_)
   end
+  self:AddClick(self.uiBinder.btn_match, function()
+    self.matchVm_.RequestBeginMatch(E.MatchType.Team, {
+      dungeonId = self.dungeonId_
+    }, self.cancelSource:CreateToken())
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_cancel_match, function()
+    self.matchVm_.AsyncCancelMatch()
+  end)
+  Z.EventMgr:Add(Z.ConstValue.Match.MatchStateChange, self.refreshMatchState, self)
+end
+
+function Raid_mainView:refreshMatchState()
+  local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_)
+  local isMatching = self.matchVm_.IsMatching()
+  local curMatchingDungeonID = self.matchTeamData_:GetCurMatchingDungeonId()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_team, not isCanMatch)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_match, isCanMatch and (not isMatching or curMatchingDungeonID ~= self.dungeonId_))
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_cancel_match, isCanMatch and isMatching and curMatchingDungeonID == self.dungeonId_)
 end
 
 function Raid_mainView:OnClickDiffToggle(diff)
@@ -73,11 +98,13 @@ function Raid_mainView:OnClickDiffToggle(diff)
   self.diff_ = diff
   self.curRaidDungeonData_ = self.raidDungeons_[diff]
   self.dungeonId_ = self.curRaidDungeonData_.DungeonId
+  self:refreshMatchState()
   self.dungeonRow_ = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.dungeonId_)
   if self.dungeonRow_ == nil then
     return
   end
   self.uiBinder.lab_title.text = self.dungeonRow_.Name
+  self.uiBinder.lab_left_title.text = self.curRaidDungeonData_.Name
   self.uiBinder.lab_tips.text = self.curRaidDungeonData_.Desc
   self.uiBinder.lab_ability.text = Lang("GSSuggest", {
     val = self.dungeonRow_.RecommendFightValue
@@ -171,6 +198,7 @@ function Raid_mainView:refreshLoopReward(reward)
 end
 
 function Raid_mainView:OnDeActive()
+  Z.EventMgr:Remove(Z.ConstValue.Match.MatchStateChange, self.refreshMatchState, self)
   if self.rewardLoopList_ then
     self.rewardLoopList_:UnInit()
     self.rewardLoopList_ = nil

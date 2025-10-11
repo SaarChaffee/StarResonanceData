@@ -1,6 +1,10 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Themeact_entrance_subView = class("Themeact_entrance_subView", super)
+local TITLE_RIMG_PATH = "ui/textures/themeact/themeact_lab/themeact_title_01"
+local ACT_RIMG_PATH_1 = "ui/textures/themeact/themeact_rests/themeact_01"
+local ACT_RIMG_PATH_2 = "ui/textures/themeact/themeact_rests/themeact_02"
+local ACT_RIMG_PATH_3 = "ui/textures/themeact/themeact_rests/themeact_03"
 
 function Themeact_entrance_subView:ctor(parent)
   self.uiBinder = nil
@@ -12,6 +16,7 @@ function Themeact_entrance_subView:OnActive()
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self:initData()
   self:initComponent()
+  self:setRawImage()
   self:refreshActivityList()
 end
 
@@ -68,6 +73,13 @@ function Themeact_entrance_subView:refreshActivityInfo(activityId, index)
       quickJumpVM.DoJumpByConfigParam(config.QuickJumpType, config.QuickJumpParam)
     end)
   end
+end
+
+function Themeact_entrance_subView:setRawImage()
+  self.uiBinder.rimg_title:SetImage(TITLE_RIMG_PATH)
+  self.uiBinder.rimg_01:SetImage(ACT_RIMG_PATH_1)
+  self.uiBinder.rimg_02:SetImage(ACT_RIMG_PATH_2)
+  self.uiBinder.rimg_03:SetImage(ACT_RIMG_PATH_3)
 end
 
 return Themeact_entrance_subView

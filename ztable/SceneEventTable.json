@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Name": "",
+    "Name": "Protect Allied Target",
     "TargetList": [],
     "Difficult": 1,
     "CompleteAction": [
@@ -15,7 +15,7 @@
   },
   "2": {
     "Id": 2,
-    "Name": "",
+    "Name": "Break Through Enemy Forces",
     "TargetList": [
       112221,
       112222
@@ -32,7 +32,7 @@
   },
   "3": {
     "Id": 3,
-    "Name": "",
+    "Name": "Defeat Soldiers",
     "TargetList": [
       100125
     ],
@@ -42,7 +42,7 @@
   },
   "700001": {
     "Id": 700001,
-    "Name": "",
+    "Name": "Bane Lord Invasion",
     "TargetList": [
       700001
     ],
@@ -52,7 +52,7 @@
   },
   "1021001": {
     "Id": 1021001,
-    "Name": "",
+    "Name": "Protect Tina",
     "TargetList": [
       100161,
       100162
@@ -69,7 +69,7 @@
   },
   "1021006": {
     "Id": 1021006,
-    "Name": "",
+    "Name": "Rescue Asterleeds Soldiers",
     "TargetList": [
       100187,
       100188
@@ -86,7 +86,7 @@
   },
   "1111006": {
     "Id": 1111006,
-    "Name": "",
+    "Name": "Dimensional Communication",
     "TargetList": [
       111113,
       111114
@@ -103,7 +103,7 @@
   },
   "6011001": {
     "Id": 6011001,
-    "Name": "",
+    "Name": "Defeat the Storm Weaver",
     "TargetList": [
       6011001,
       6011002
@@ -120,7 +120,7 @@
   },
   "6011002": {
     "Id": 6011002,
-    "Name": "",
+    "Name": "Defeat Dark Twin Spirits",
     "TargetList": [
       6011003,
       6011004,
@@ -139,7 +139,7 @@
   },
   "6011003": {
     "Id": 6011003,
-    "Name": "",
+    "Name": "Help Necalli retrieve engrams",
     "TargetList": [
       6011006,
       6011007,
@@ -158,7 +158,7 @@
   },
   "6011004": {
     "Id": 6011004,
-    "Name": "",
+    "Name": "Shatter the Shield and Rescue the Bound Necalli",
     "TargetList": [
       6011009,
       6011010
@@ -175,7 +175,7 @@
   },
   "6011006": {
     "Id": 6011006,
-    "Name": "",
+    "Name": "Capture the Boarlet",
     "TargetList": [
       6011013,
       6011014
@@ -192,7 +192,7 @@
   },
   "6009001": {
     "Id": 6009001,
-    "Name": "",
+    "Name": "Clear the Arachnocrabs",
     "TargetList": [
       600120,
       600121
@@ -209,7 +209,7 @@
   },
   "1211002": {
     "Id": 1211002,
-    "Name": "",
+    "Name": "Windbreaking Shadow.",
     "TargetList": [
       121103,
       121104
@@ -226,7 +226,7 @@
   },
   "1021002": {
     "Id": 1021002,
-    "Name": "",
+    "Name": "Ambush - Elite",
     "TargetList": [
       100166,
       100167
@@ -243,7 +243,7 @@
   },
   "1021003": {
     "Id": 1021003,
-    "Name": "",
+    "Name": "Rescue Asterleeds Soldiers",
     "TargetList": [
       100168,
       100169
@@ -260,7 +260,7 @@
   },
   "1021004": {
     "Id": 1021004,
-    "Name": "",
+    "Name": "Engram Imbalance",
     "TargetList": [
       100172,
       100173
@@ -277,7 +277,7 @@
   },
   "1021005": {
     "Id": 1021005,
-    "Name": "",
+    "Name": "Manned Mech",
     "TargetList": [
       100185,
       100186
@@ -294,7 +294,7 @@
   },
   "1111001": {
     "Id": 1111001,
-    "Name": "",
+    "Name": "Ambush",
     "TargetList": [
       111103,
       111104
@@ -311,7 +311,7 @@
   },
   "1111002": {
     "Id": 1111002,
-    "Name": "",
+    "Name": "Star Energy Charging",
     "TargetList": [
       111105,
       111106
@@ -328,7 +328,7 @@
   },
   "1111003": {
     "Id": 1111003,
-    "Name": "",
+    "Name": "Dimensional Symbiosis",
     "TargetList": [
       111107,
       111108
@@ -345,7 +345,7 @@
   },
   "1111004": {
     "Id": 1111004,
-    "Name": "",
+    "Name": "Laser Killing Array",
     "TargetList": [
       111109,
       111110
@@ -362,7 +362,7 @@
   },
   "1111005": {
     "Id": 1111005,
-    "Name": "",
+    "Name": "Mechanical Wreckage",
     "TargetList": [
       111111,
       111112
@@ -379,7 +379,7 @@
   },
   "1211001": {
     "Id": 1211001,
-    "Name": "",
+    "Name": "Escort Investigator",
     "TargetList": [
       121101,
       121102
@@ -396,7 +396,7 @@
   },
   "1211006": {
     "Id": 1211006,
-    "Name": "",
+    "Name": "Consume Full Energy",
     "TargetList": [
       121114
     ],
@@ -412,7 +412,7 @@
   },
   "6001001": {
     "Id": 6001001,
-    "Name": "",
+    "Name": "Ambush",
     "TargetList": [
       600101,
       600102
@@ -429,7 +429,7 @@
   },
   "6001002": {
     "Id": 6001002,
-    "Name": "",
+    "Name": "Protect Villagers",
     "TargetList": [
       600103,
       600104
@@ -446,7 +446,7 @@
   },
   "6001003": {
     "Id": 6001003,
-    "Name": "",
+    "Name": "Engram Imbalance",
     "TargetList": [
       600105,
       600106
@@ -463,7 +463,7 @@
   },
   "6001004": {
     "Id": 6001004,
-    "Name": "",
+    "Name": "Engram Line Turbulence",
     "TargetList": [
       600107,
       600108
@@ -480,7 +480,7 @@
   },
   "6001005": {
     "Id": 6001005,
-    "Name": "",
+    "Name": "Rescue Villagers",
     "TargetList": [
       600109,
       600110
@@ -497,7 +497,7 @@
   },
   "6011005": {
     "Id": 6011005,
-    "Name": "",
+    "Name": "Consume Particles",
     "TargetList": [
       6011011,
       6011012
@@ -514,7 +514,7 @@
   },
   "2000101": {
     "Id": 2000101,
-    "Name": "",
+    "Name": "Trial Together",
     "TargetList": [
       2000102,
       2000103
@@ -525,7 +525,7 @@
   },
   "1331001": {
     "Id": 1331001,
-    "Name": "",
+    "Name": "Recover Imagine Fragments",
     "TargetList": [
       1331001,
       1331002
@@ -542,7 +542,7 @@
   },
   "1331011": {
     "Id": 1331011,
-    "Name": "",
+    "Name": "Destroy the Corrupted Source",
     "TargetList": [
       1331011,
       1331012
@@ -559,7 +559,7 @@
   },
   "5111001": {
     "Id": 5111001,
-    "Name": "",
+    "Name": "Thunder Demon Smackdown",
     "TargetList": [
       511101
     ],

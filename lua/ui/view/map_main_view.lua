@@ -58,6 +58,7 @@ function Map_mainView:OnRefresh()
   self.selectScene_ = self.viewData.sceneId or self.mapVM_.GetMapShowSceneId()
   self:checkSceneUnlock(self.selectScene_)
   self.isCanSwitchWorldMap_ = self.mapVM_.IsCanSwitchWorldMap(self.selectScene_)
+  self:switchAreaMap()
   self:checkCallBack()
 end
 
@@ -239,7 +240,6 @@ function Map_mainView:initComp()
     self:onWorldMapFlagClick(self.uiBinder.binder_world_map.comp_player_flag, curSceneId)
   end)
   self:initDropDown()
-  self:switchAreaMap()
   local isDungeon, isCanExplore = self:getDungeonState()
   if isDungeon and isCanExplore then
     self:SwitchRightSubView(E.MapSubViewType.DungeonAdd)
@@ -274,7 +274,7 @@ function Map_mainView:initDropDown()
   end, true)
   self.uiBinder.drop_down:AddOnClickListener(function()
     for index, sceneId in ipairs(self.selectableSceneList_) do
-      local steerIds = Z.GuideMgr:GetLoadSteerIdByTypeAndParm(E.DynamicSteerType.SceneId, sceneId)
+      local steerIds = Z.GuideMgr:GetLoadSteerIdByTypeAndParam(E.DynamicSteerType.SceneId, sceneId)
       for i = #steerIds, 1, -1 do
         self.uiBinder.drop_down:AddZUiSteerIdByIndex(index, steerIds[i])
       end
@@ -490,24 +490,26 @@ function Map_mainView:SwitchRightSubView(mapSubViewType, viewData)
   if subView == nil then
     return
   end
-  self:SetUIVisible(self.uiBinder.node_right_info, false)
   if self.curShowSubView_ and self.curShowSubView_ ~= subView then
     self.curShowSubView_:DeActive()
   end
   self.curShowSubView_ = subView
   self.curShowSubView_:Active(viewData, self.uiBinder.node_right_sub_view)
+  self:refreshMapFuncParent()
+  self:SetUIVisible(self.uiBinder.node_right_info, false)
 end
 
 function Map_mainView:CloseRightSubView(isTogOff)
   if not isTogOff then
     self:CancelFlagSelect()
   end
-  self:SetUIVisible(self.uiBinder.node_right_info, true)
-  self:removeOptions()
   if self.curShowSubView_ then
     self.curShowSubView_:DeActive()
   end
   self.curShowSubView_ = nil
+  self:removeOptions()
+  self:refreshMapFuncParent()
+  self:SetUIVisible(self.uiBinder.node_right_info, true)
 end
 
 function Map_mainView:SwitchLeftSubView(mapSubViewType, viewData)
@@ -771,8 +773,7 @@ function Map_mainView:refreshStaticInfo()
   else
     self.uiBinder.trans_map_bg:SetAnchorPosition(0, 0)
   end
-  local isSubViewShow = self.curShowSubView_ and self.curShowSubView_.IsActive
-  self:showOrHideMapFunc(not isSubViewShow)
+  self:refreshMapFuncParent()
   self:SetUIVisible(self.uiBinder.trans_player_arrow, self.selectScene_ == curSceneId)
   self:SetUIVisible(self.uiBinder.node_world, self.curMapMode_ == E.MapMode.World)
   self:SetUIVisible(self.uiBinder.node_world_map, self.curMapMode_ == E.MapMode.World)
@@ -793,6 +794,11 @@ function Map_mainView:refreshStaticInfo()
       self.uiBinder.lab_area_map_name.text = row.Name
     end
   end
+end
+
+function Map_mainView:refreshMapFuncParent()
+  local isSubViewShow = self.curShowSubView_ and self.curShowSubView_.IsActive
+  self:showOrHideMapFunc(not isSubViewShow)
 end
 
 function Map_mainView:refreshDropDownOption()

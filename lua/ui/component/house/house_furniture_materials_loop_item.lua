@@ -23,9 +23,6 @@ function HouseMaterialsLoopItem:OnRefresh(data)
   self.itemClass_:RefreshByData(itemData)
 end
 
-function HouseMaterialsLoopItem:OnSelected(OnSelected)
-end
-
 function HouseMaterialsLoopItem:OnUnInit()
   self.itemClass_:UnInit()
 end

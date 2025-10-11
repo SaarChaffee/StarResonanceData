@@ -23,10 +23,12 @@ end
 function Weapon_resonance_skill_tipsView:OnActive()
   self:initData()
   self:initComponent()
+  self:bindEvents()
 end
 
 function Weapon_resonance_skill_tipsView:OnDeActive()
   self:unInitLoopListView()
+  self:unBindEvents()
   self:clearTagFrameTimer()
   self:clearTagItem()
   Z.CommonTipsVM.CloseUnderline()
@@ -74,6 +76,18 @@ function Weapon_resonance_skill_tipsView:initComponent()
   self:AddAsyncClick(self.uiBinder.btn_lookeffect, function()
     self:operateAdvancedSkill()
   end)
+end
+
+function Weapon_resonance_skill_tipsView:bindEvents()
+  Z.EventMgr:Add(Z.ConstValue.Backpack.AddItem, self.onItemChange, self)
+  Z.EventMgr:Add(Z.ConstValue.Backpack.DelItem, self.onItemChange, self)
+  Z.EventMgr:Add(Z.ConstValue.Backpack.ItemCountChange, self.onItemChange, self)
+end
+
+function Weapon_resonance_skill_tipsView:unBindEvents()
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.AddItem, self.onItemChange, self)
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.DelItem, self.onItemChange, self)
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.ItemCountChange, self.onItemChange, self)
 end
 
 function Weapon_resonance_skill_tipsView:initLoopListView()
@@ -228,34 +242,36 @@ function Weapon_resonance_skill_tipsView:refreshSkillButton()
     if not self.isUnlock_ then
       self.uiBinder.lab_tips.text = Lang("AdvanceNotActiveTips")
       isShowTips = true
-    elseif isMaxLv then
-      self.uiBinder.lab_tips.text = Lang("ResonanceMaxLevel2")
-      isShowTips = true
-    elseif serverAdvanceLevel >= self.curAdvanceLevel_ then
-      self.uiBinder.lab_tips.text = Lang("ResonanceAdvanceTip1")
-      isShowTips = true
-    elseif self.curAdvanceLevel_ > serverAdvanceLevel + 1 then
-      self.uiBinder.lab_tips.text = Lang("ResonanceAdvanceTip2")
-      isShowTips = true
-    end
-    self.uiBinder.lab_cost_title.text = Lang("AdvanceCost")
-  elseif self.isUnlock_ then
-    self.uiBinder.lab_operate.text = Lang(isMaxLv and "ResonanceMaxLevel2" or "Advanced")
-    self.uiBinder.lab_cost_title.text = Lang("ActivationCost")
-    if not self.weaponSkillVM_:CheckResonanceSkillRemodelMax(self.curSkillId_) then
-      local nextLvRemodelRow = self.weaponSkillVM_:GetResonanceSkillRemodelRow(self.curSkillId_, self.curAdvanceLevel_ + 1)
-      if nextLvRemodelRow and nextLvRemodelRow.UlockSkillLevel then
-        local conditionEnough = Z.ConditionHelper.CheckCondition(nextLvRemodelRow.UnlockCondition)
-        if not conditionEnough then
-          for _, condition in ipairs(nextLvRemodelRow.UlockSkillLevel) do
-            if condition[1] == E.ConditionType.Level then
-              self.uiBinder.lab_operate.text = string.format(Lang("rolelv_skill_remodel"), condition[2])
-              break
+    else
+      if isMaxLv then
+        self.uiBinder.lab_tips.text = Lang("ResonanceMaxLevel2")
+        isShowTips = true
+      elseif serverAdvanceLevel >= self.curAdvanceLevel_ then
+        self.uiBinder.lab_tips.text = Lang("ResonanceAdvanceTip1")
+        isShowTips = true
+      elseif self.curAdvanceLevel_ > serverAdvanceLevel + 1 then
+        self.uiBinder.lab_tips.text = Lang("ResonanceAdvanceTip2")
+        isShowTips = true
+      end
+      if not self.weaponSkillVM_:CheckResonanceSkillRemodelMax(self.curSkillId_) then
+        local nextLvRemodelRow = self.weaponSkillVM_:GetResonanceSkillRemodelRow(self.curSkillId_, self.curAdvanceLevel_)
+        if nextLvRemodelRow and nextLvRemodelRow.UlockSkillLevel then
+          local conditionEnough = Z.ConditionHelper.CheckCondition(nextLvRemodelRow.UlockSkillLevel)
+          if not conditionEnough then
+            for _, condition in ipairs(nextLvRemodelRow.UlockSkillLevel) do
+              if condition[1] == E.ConditionType.Level then
+                self.uiBinder.lab_operate.text = string.format(Lang("rolelv_skill_remodel"), condition[2])
+                break
+              end
             end
           end
         end
       end
     end
+    self.uiBinder.lab_cost_title.text = Lang("AdvanceCost")
+  elseif self.isUnlock_ then
+    self.uiBinder.lab_operate.text = Lang(isMaxLv and "ResonanceMaxLevel2" or "Advanced")
+    self.uiBinder.lab_cost_title.text = Lang("ActivationCost")
   else
     self.uiBinder.lab_operate.text = Lang("Activation")
     self.uiBinder.lab_cost_title.text = Lang("ActivationCost")
@@ -298,6 +314,12 @@ function Weapon_resonance_skill_tipsView:operateAdvancedSkill()
     end
     if self.weaponSkillVM_:CheckResonanceSkillRemodelMax(self.curSkillId_) then
       return
+    end
+    if not self.weaponSkillVM_:CheckResonanceSkillRemodelMax(self.curSkillId_) then
+      local nextLvRemodelRow = self.weaponSkillVM_:GetResonanceSkillRemodelRow(self.curSkillId_, self.curAdvanceLevel_)
+      if nextLvRemodelRow and nextLvRemodelRow.UlockSkillLevel and not Z.ConditionHelper.CheckCondition(nextLvRemodelRow.UlockSkillLevel, true) then
+        return
+      end
     end
     if self.costNotEnoughItem_ ~= nil then
       Z.TipsVM.ShowTips(150107)
@@ -342,6 +364,13 @@ function Weapon_resonance_skill_tipsView:unLoadRedDotItem()
     Z.RedPointMgr.RemoveNodeItem(self.advanceNodeId_, self)
     self.advanceNodeId_ = nil
   end
+end
+
+function Weapon_resonance_skill_tipsView:onItemChange(item)
+  if item == nil or item.configId == nil then
+    return
+  end
+  self:refreshSkillCost()
 end
 
 return Weapon_resonance_skill_tipsView

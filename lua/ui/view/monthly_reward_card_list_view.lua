@@ -52,9 +52,14 @@ function Monthly_reward_card_listView:OnActive()
   if functionConfig then
     self.uiBinder.lab_title.text = functionConfig.Name
   end
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_info)
 end
 
 function Monthly_reward_card_listView:OnDeActive()
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_info)
   self.monthlyCardData_ = nil
   self.currentCardIndex_ = nil
   self.loopListView_:UnInit()
@@ -76,7 +81,7 @@ function Monthly_reward_card_listView:initBtn()
   end)
 end
 
-function Monthly_reward_card_listView:SetCardInfo(id)
+function Monthly_reward_card_listView:SetCardInfo(id, isClick)
   if self.selectId_ and self.selectId_ == id then
     return
   end
@@ -85,6 +90,9 @@ function Monthly_reward_card_listView:SetCardInfo(id)
     self.uiBinder.rimg_card:SetImage(config.Resources)
     self.uiBinder.lab_bottom_title.text = config.Name
     self.uiBinder.lab_desc.text = config.DictionaryDes
+  end
+  if isClick then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
   end
 end
 

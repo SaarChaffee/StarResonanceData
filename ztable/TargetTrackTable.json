@@ -154,5 +154,17 @@
     "Icon": "ui/atlas/hud/quest_state/quest_icon_state_not_2",
     "UiShrinkDistance": [],
     "UiMinScale": 90
+  },
+  "14": {
+    "Id": 14,
+    "Type": "坐标链接追踪",
+    "Team": 3,
+    "SceneTrack": 1,
+    "MapTrack": 1,
+    "StartDistance": 0,
+    "EndDistance": 5,
+    "Icon": "ui/atlas/hud/quest_state/common_img_dot04",
+    "UiShrinkDistance": [],
+    "UiMinScale": 0
   }
 }

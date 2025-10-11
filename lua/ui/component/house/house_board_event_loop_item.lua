@@ -16,7 +16,7 @@ end
 
 function HouseBoardEventLoopItem:OnRefresh(data)
   self.uiBinder.btn_chankan.Ref.UIComp:SetVisible(true)
-  self.uiBinder.lab_time.text = Z.TimeFormatTools.TicksFormatTime(data.time * 1000, E.TimeFormatType.YMD)
+  self.uiBinder.lab_time.text = Z.TimeFormatTools.TicksFormatTime(data.time * 1000, E.TimeFormatType.YMD, false, true)
   Z.CoroUtil.create_coro_xpcall(function()
     self.selectedCharId_ = 0
     local str = ""

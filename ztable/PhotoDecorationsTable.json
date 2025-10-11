@@ -1782,5 +1782,37 @@
     "Sequence": 14,
     "Res": "ui/background/punch_card_machine_bg/personalzone_player_bg_14",
     "Hide": 0
+  },
+  "224": {
+    "Id": 224,
+    "Type": 6,
+    "Parameter": 0,
+    "Sequence": 15,
+    "Res": "ui/background/punch_card_machine_bg/personalzone_player_bg_15",
+    "Hide": 0
+  },
+  "225": {
+    "Id": 225,
+    "Type": 6,
+    "Parameter": 0,
+    "Sequence": 16,
+    "Res": "ui/background/punch_card_machine_bg/personalzone_player_bg_16",
+    "Hide": 0
+  },
+  "226": {
+    "Id": 226,
+    "Type": 6,
+    "Parameter": 0,
+    "Sequence": 17,
+    "Res": "ui/background/punch_card_machine_bg/personalzone_player_bg_17",
+    "Hide": 0
+  },
+  "227": {
+    "Id": 227,
+    "Type": 6,
+    "Parameter": 0,
+    "Sequence": 18,
+    "Res": "ui/background/punch_card_machine_bg/personalzone_player_bg_18",
+    "Hide": 0
   }
 }

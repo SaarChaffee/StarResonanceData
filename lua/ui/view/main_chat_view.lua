@@ -35,7 +35,7 @@ function Main_chatView:OnActive()
       self:checkChatBullet()
     end, 1, -1)
   else
-    self.chatData_:SetChatDataFlg(E.ChatChannelType.EMain, E.ChatWindow.Main, true, false)
+    self.chatData_:SetChatDataFlg(E.ChatChannelType.EComprehensive, E.ChatWindow.Main, true, false)
     self:checkMainChatList()
     self.checkDataListTimer_ = self.timerMgr:StartTimer(function()
       self:checkChatBullet()
@@ -96,13 +96,13 @@ function Main_chatView:checkChatBullet()
 end
 
 function Main_chatView:checkMainChatList()
-  local dataFlg = self.chatData_:GetChatDataFlg(E.ChatChannelType.EMain, E.ChatWindow.Main)
+  local dataFlg = self.chatData_:GetChatDataFlg(E.ChatChannelType.EComprehensive, E.ChatWindow.Main)
   if dataFlg.flg then
-    self.chatData_:SetChatDataFlg(E.ChatChannelType.EMain, E.ChatWindow.Main, false, false)
+    self.chatData_:SetChatDataFlg(E.ChatChannelType.EComprehensive, E.ChatWindow.Main, false, false)
   else
     return
   end
-  local msgList = self.chatData_:GetChannelQueueByChannelId(E.ChatChannelType.EMain, nil, true)
+  local msgList = self.chatData_:GetChannelQueueByChannelId(E.ChatChannelType.EComprehensive, nil, true)
   self.chatLoopListView_:RefreshListView(msgList, false)
   self.chatLoopListView_:MovePanelToItemIndex(#msgList)
 end
@@ -145,11 +145,11 @@ function Main_chatView:playBullet(chatMsgData)
   local speed = 0
   if speedEnum then
     if speedEnum == E.BulletSpeed.low then
-      speed = 3
+      speed = 180
     elseif speedEnum == E.BulletSpeed.mid then
-      speed = 5
+      speed = 300
     else
-      speed = 8
+      speed = 480
     end
   end
   Z.CoroUtil.create_coro_xpcall(function()

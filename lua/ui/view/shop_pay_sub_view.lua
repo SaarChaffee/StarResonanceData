@@ -23,6 +23,7 @@ function Shop_pay_subView:OnActive()
   self.productions = {}
   self:BindEvents()
   self:GetPaymentInfo()
+  Z.SDKReport.Report(Z.SDKReportEvent.OpenStore)
 end
 
 function Shop_pay_subView:BindEvents()

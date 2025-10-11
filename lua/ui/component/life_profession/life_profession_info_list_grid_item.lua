@@ -71,7 +71,7 @@ function LifeProfessionInfoListGridItem:OnRefresh(data)
   self.uiBinder.lab_title.text = name
   self.uiBinder.lab_content.text = content
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_lock, isProductionUnlocked)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.IsSelected)
 end
 
 function LifeProfessionInfoListGridItem:OnUnInit()

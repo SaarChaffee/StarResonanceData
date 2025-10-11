@@ -41,6 +41,7 @@ function Chemistry_experiment_subView:OnActive()
       Z.TipsVM.ShowTipsLang(1002057)
     else
       self.lifeProfessionVM_.AsyncRequestLifeProfessionRDAlchemy(self.selectData_.configId, self.cancelSource:CreateToken())
+      Z.AudioMgr:Play("UI_Event_LifeProfession_Success")
       self.uiBinder.effect_root:SetEffectGoVisible(true)
       self.uiBinder.effect_root:Play()
       self:chemstryExperimentRefresh()

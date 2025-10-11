@@ -188,6 +188,7 @@ function QuestVM.HandelQuestComplete(questId, bFinish)
   Z.EventMgr:Dispatch(Z.ConstValue.NpcQuestIconChange, questId)
   questTrackVM.OnQuestEnd(questId, bFinish)
   questData:RemoveLoadedQuest(questId)
+  Z.SDKReport.ReportMissionCompleted(questId)
 end
 
 function QuestVM.UpdateStep(questId, oldStepId, oldState)
@@ -550,8 +551,19 @@ function QuestVM.PlaceholderTaskContent(content, placeholderParam)
   placeholderParam = Z.Placeholder.SetNpcName(placeholderParam)
   placeholderParam = Z.Placeholder.SetMonsterName(placeholderParam)
   placeholderParam = Z.Placeholder.SetCollectionName(placeholderParam)
+  placeholderParam = Z.Placeholder.SetPlayerSelfPronoun(placeholderParam)
   local ret = Z.Placeholder.Placeholder(content, placeholderParam)
   return ret
+end
+
+function QuestVM.GetQuestName(questId)
+  local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(questId)
+  if questRow then
+    local placeholderParam = Z.Placeholder.SetPlayerSelfPronoun()
+    local ret = Z.Placeholder.Placeholder(questRow.QuestName, placeholderParam)
+    return ret
+  end
+  return ""
 end
 
 return QuestVM

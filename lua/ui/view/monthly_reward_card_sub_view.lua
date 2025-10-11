@@ -107,12 +107,15 @@ function Monthly_reward_card_subView:initView()
     local currencySymbol = self.shopVm_.GetShopItemCurrencySymbol()
     self.showPrice_ = nil
     if data ~= nil then
-      if data[1] == nil then
+      for index, value in pairs(data) do
+        if value.ID == serverProductId_ then
+          self.monthlyPrice_ = value.Price
+          self.showPrice_ = value.DisplayPrice
+        end
+      end
+      if self.showPrice_ == nil then
         self.monthlyPrice_ = paymentRow.Price
         self.showPrice_ = currencySymbol .. paymentRow.Price
-      else
-        self.monthlyPrice_ = data[1].Price
-        self.showPrice_ = data[1].DisplayPrice
       end
     else
       self.monthlyPrice_ = paymentRow.Price
@@ -250,7 +253,7 @@ function Monthly_reward_card_subView:refreshGiftData()
 end
 
 function Monthly_reward_card_subView:refreshMonthlyNum()
-  local today = Z.TimeFormatTools.Tp2YMDHMS(math.floor(Z.TimeTools.Now() / 1000))
+  local today = self.monthlyCardVM_:GetTodayDate()
   local isVisible = false
   local isAllBuy = 0
   for i = 1, Z.Global.MonthCardBuyTime do

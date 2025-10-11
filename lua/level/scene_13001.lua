@@ -19,7 +19,7 @@ function Scene:InitEvents()
     count = -1,
     entity = {actorType = 5, tableUid = 188},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, 6)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, 6, false)
       Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1073})
     end
   }
@@ -40,7 +40,7 @@ function Scene:InitEvents()
     eventId = 102505,
     count = -1,
     action = function(localSelf)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, 0, false)
     end
   }
   self.EventItems[53] = {
@@ -62,7 +62,7 @@ function Scene:InitEvents()
     count = -1,
     entity = {actorType = 5, tableUid = 104126},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, 0, false)
     end
   }
   self.EventItems[102120] = {
@@ -73,7 +73,7 @@ function Scene:InitEvents()
     count = -1,
     entity = {actorType = 5, tableUid = 103933},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, 4)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, 4, false)
       Z.EventMgr:Dispatch(Z.ConstValue.SteerEventName.OnTriggerEvent, {1072})
     end
   }
@@ -85,7 +85,7 @@ function Scene:InitEvents()
     count = -1,
     entity = {actorType = 5, tableUid = 103934},
     action = function(localSelf, isGroup, groupId, zoneEntId, entity)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, 5)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, 5, false)
     end
   }
 end

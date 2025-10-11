@@ -1,5 +1,6 @@
 local matchVm = {}
 local worldProxy = require("zproxy.world_proxy")
+local MasterChallenDungeonTableMap = require("table.MasterChallenDungeonTableMap")
 
 function matchVm.HandleError(errCode)
   if errCode ~= nil and errCode ~= 0 and Z.PbEnum("EErrorCode", "ErrAsynchronousReturn") ~= errCode then
@@ -113,11 +114,26 @@ function matchVm.TryChangeMatch(newMatchType, param)
   local oldTargetName, newTargetName, confirmFunc, beginMatchFunc
   if matchType == E.MatchType.Team then
     local dungeonID = matchTeamData:GetCurMatchingDungeonId()
+    local difficulty = matchTeamData:GetCurMatchingMasterDifficulty()
     if newMatchType == matchType and param == dungeonID then
       return
     end
-    local cfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
-    oldTargetName = cfg.Name
+    if difficulty and 0 < difficulty then
+      local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[dungeonID][difficulty]
+      local masterChallengeDungeonTableRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+      local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
+      if dungeonsTableRow and masterChallengeDungeonTableRow then
+        oldTargetName = Lang("DungeonMasterName", {
+          dungeonName = dungeonsTableRow.Name,
+          masterName = masterChallengeDungeonTableRow.DungeonTypeName
+        })
+      end
+    else
+      local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
+      if dungeonsTableRow then
+        oldTargetName = dungeonsTableRow.Name
+      end
+    end
   elseif matchType == E.MatchType.Activity then
     local actID = MatchActivityData:GetActivityId()
     if newMatchType == matchType and param == actID then
@@ -127,13 +143,31 @@ function matchVm.TryChangeMatch(newMatchType, param)
     oldTargetName = cfg.Name
   end
   if newMatchType == E.MatchType.Team then
-    local dungeonID = param
-    local cfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
-    newTargetName = cfg.Name
+    local dungeonId = param.dungeonId
+    local difficulty = param.difficulty
+    if difficulty and 0 < difficulty then
+      local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[dungeonId][difficulty]
+      local masterChallengeDungeonTableRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+      local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
+      if dungeonsTableRow and masterChallengeDungeonTableRow then
+        newTargetName = Lang("DungeonMasterName", {
+          dungeonName = dungeonsTableRow.Name,
+          masterName = masterChallengeDungeonTableRow.DungeonTypeName
+        })
+      end
+    else
+      local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
+      if dungeonsTableRow then
+        newTargetName = dungeonsTableRow.Name
+      end
+    end
     
     function beginMatchFunc()
       local teamMainVm = Z.VMMgr.GetVM("team_main")
-      local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonID)
+      local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonId, difficulty)
+      if not targetId then
+        return
+      end
       local requestParam = {}
       requestParam.targetId = targetId
       local settingInfo = Z.ContainerMgr.CharSerialize.settingData.settingMap

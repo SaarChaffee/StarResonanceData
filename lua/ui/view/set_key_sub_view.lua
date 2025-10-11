@@ -1,6 +1,7 @@
 local UI = Z.UI
 local super = require("ui.ui_subview_base")
 local Set_key_subView = class("Set_key_subView", super)
+local rewiredElementIdentifiers = require("utility/rewired_element_identifiers")
 local keyLoopItem = require("ui.component.setting.setting_key_loop_item")
 local attrDetailsPrefabPath_ = "ui/prefabs/set/set_item_input_tpl"
 
@@ -17,32 +18,22 @@ function Set_key_subView:OnActive()
   self.uiBinder.set_key_sub:SetSizeDelta(0, 0)
   self.keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
   self:createKeyMapList()
-  local isKeyHintOpen = self.settingVM_.Get(E.SettingID.KeyHint)
-  self.uiBinder.cont_set_show.cont_hint_open.cont_switch.switch.IsOn = isKeyHintOpen
   self.isAllowChange_ = false
-  self.uiBinder.cont_set_show.cont_hint_open.cont_switch.switch:AddListener(function(isOn)
-    self.settingVM_.Set(E.SettingID.KeyHint, isOn)
-    Z.EventMgr:Dispatch(Z.ConstValue.KeyHintOpenChange, isOn)
-  end)
+  Z.EventMgr:Add(Z.ConstValue.Device.DeviceTypeChange, self.onDeviceChange, self)
   self:AddClick(self.uiBinder.btn_reset, function()
     self:onClickReset()
   end)
-  self:initSettingUIDict()
+  self:refreshModifier(1, self.uiBinder.dpd_gamepad_1, self.uiBinder.img_icon_arrow_1, self.uiBinder.img_icon_down_1)
+  self:refreshModifier(2, self.uiBinder.dpd_gamepad_2, self.uiBinder.img_icon_arrow_2, self.uiBinder.img_icon_down_2)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_arrow_1, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_down_1, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_arrow_2, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_down_2, false)
 end
 
-function Set_key_subView:initSettingUIDict()
-  self.setting2UIDict_ = {}
-  self.setting2UIDict_[E.SettingID.KeyHint] = self.uiBinder.cont_set_show
-end
-
-function Set_key_subView:refreshAllSettingVisible()
-  local settingVisibleData = Z.DataMgr.Get("setting_visible_data")
-  for k, v in pairs(self.setting2UIDict_) do
-    local show = settingVisibleData:CheckVisible(k)
-    if not show then
-      v.Ref.UIComp:SetVisible(show)
-    end
-  end
+function Set_key_subView:onDeviceChange()
+  self:refreshModifier(1, self.uiBinder.dpd_gamepad_1, self.uiBinder.img_icon_arrow_1, self.uiBinder.img_icon_down_1)
+  self:refreshModifier(2, self.uiBinder.dpd_gamepad_2, self.uiBinder.img_icon_arrow_2, self.uiBinder.img_icon_down_2)
 end
 
 function Set_key_subView:createKeyMapList()
@@ -51,17 +42,50 @@ function Set_key_subView:createKeyMapList()
   end)()
 end
 
+function Set_key_subView:refreshModifier(modifierIndex, dpd, img_arrow, img_arrow_down)
+  local modifierList = Z.InputMgr:GetGamePadModifiers(modifierIndex - 1)
+  local options = {}
+  for i = 0, modifierList.Count - 1 do
+    local modifierId = rewiredElementIdentifiers.GetGamePadModifierByElementId(modifierList[i])
+    local keyId = rewiredElementIdentifiers.GetGamePadKeyIdByElementId(modifierId, Z.InputMgr.GamepadType)
+    if keyId ~= nil then
+      local desc = ""
+      local contrastRow = Z.TableMgr.GetTable("SetKeyboardContrastTableMgr").GetRow(keyId)
+      if contrastRow then
+        if contrastRow.ShowType == 1 then
+          desc = string.zconcat("<sprite name=\"", contrastRow.Keyboard, "\">")
+        else
+          desc = contrastRow.Keyboard
+        end
+      end
+      table.insert(options, desc)
+    end
+  end
+  dpd:ClearAll()
+  dpd:AddListener(function(index)
+    Z.InputMgr:ChangeGamePadModifier(modifierIndex - 1, modifierList[index])
+    Z.EventMgr:Dispatch(Z.ConstValue.Device.DeviceTypeChange)
+  end, true)
+  dpd:AddOnClickListener(function(index)
+    self.uiBinder.Ref:SetVisible(img_arrow, false)
+    self.uiBinder.Ref:SetVisible(img_arrow_down, true)
+  end)
+  dpd:AddHideListener(function(index)
+    self.uiBinder.Ref:SetVisible(img_arrow, true)
+    self.uiBinder.Ref:SetVisible(img_arrow_down, false)
+  end)
+  dpd:AddOptions(options)
+end
+
 function Set_key_subView:setDataList()
   self:clearAllKeyUnits()
-  for i, keyboardTableRow in ipairs(self.keyVM_.GetShowKeyList()) do
-    if keyboardTableRow == nil then
-      logError("[Setting] keyboardTableRow is nil")
-    end
+  local list = self.keyVM_.GetShowKeyCtxList()
+  for i, settingKeyCtx in ipairs(list) do
     local name = string.format("key_%d", i)
     local unit = self:AsyncLoadUiUnit(attrDetailsPrefabPath_, name, self.uiBinder.cont_set_key.node_content)
     local item = keyLoopItem.new()
     table.insert(self.keyItems_, item)
-    item:Init(self, keyboardTableRow, unit)
+    item:Init(self, settingKeyCtx, unit)
   end
 end
 
@@ -77,6 +101,7 @@ end
 function Set_key_subView:OnDeActive()
   self:clearAllKeyUnits()
   Z.InputMgr:CloseInputMapperListening()
+  Z.EventMgr:Remove(Z.ConstValue.Device.DeviceTypeChange, self.onDeviceChange, self)
 end
 
 function Set_key_subView:onClickReset()
@@ -89,17 +114,7 @@ function Set_key_subView:onClickReset()
 end
 
 function Set_key_subView:RefreshAllItem()
-  if self.ConflictActionIds ~= nil and self.ConflictActionIds.Count > 0 then
-    for i = 0, self.ConflictActionIds.Count - 1 do
-      local actionId = self.ConflictActionIds[i]
-      self.keyVM_.ReBindActionByActionId(actionId)
-    end
-  end
   self:createKeyMapList()
-end
-
-function Set_key_subView:OnRefresh()
-  self:refreshAllSettingVisible()
 end
 
 return Set_key_subView

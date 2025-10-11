@@ -21,6 +21,8 @@ function QuestionnaireVM.OpenQuestionnaireUrl(url)
     logGreen("OpenQuestionnaire URL :" .. url)
     Z.SDKWebView.OpenWebView(url, false)
   end
+  logGreen("OpenQuestionnaire URL :" .. url)
+  Z.SDKWebView.OpenWebView(url, true)
 end
 
 function QuestionnaireVM.CheckQuestionnaireIsOpen(info, levelLimit, dayLimit)

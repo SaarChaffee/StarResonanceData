@@ -11,5 +11,6 @@ enum ShareObjectType {
   ShareObjectTypePersonalZone = 5;
   ShareObjectTypeUnionGrowFund = 6;
   ShareObjectTypeMasterMode = 7;
+  ShareObjectTypePosition = 8;
 }
 

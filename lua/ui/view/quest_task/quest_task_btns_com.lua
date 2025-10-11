@@ -4,9 +4,9 @@ local ForceSkipTime = 1.5
 local ShowFirstDuration = 5
 local ShowDuration = 3
 local ignoreActionIds = {
-  Z.RewiredActionsConst.Interact,
-  Z.RewiredActionsConst.ExitUI,
-  Z.RewiredActionsConst.Zoom
+  Z.InputActionIds.Interact,
+  Z.InputActionIds.ExitUI,
+  Z.InputActionIds.Zoom
 }
 local SkipBtnState = {
   Hide = 1,
@@ -71,7 +71,7 @@ function QuestTaskBtnsCom:ctor()
       return
     end
     for _, value in ipairs(ignoreActionIds) do
-      if value == inputActionData.actionId then
+      if value == inputActionData.ActionId then
         return
       end
     end
@@ -148,22 +148,22 @@ function QuestTaskBtnsCom:registerInput()
   if not self.init_ then
     return
   end
-  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.onPressF_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Interact)
-  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.whenPressF_, Z.InputActionEventType.ButtonPressed, Z.RewiredActionsConst.Interact)
-  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.onReleseF_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.Interact)
+  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.onPressF_, Z.InputActionEventType.ButtonJustPressed, Z.InputActionIds.Interact)
+  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.whenPressF_, Z.InputActionEventType.ButtonPressed, Z.InputActionIds.Interact)
+  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.onReleseF_, Z.InputActionEventType.ButtonJustReleased, Z.InputActionIds.Interact)
   Z.InputLuaBridge:AddInputEventDelegateWithoutActionId(self.anyActionPress_, Z.InputActionEventType.ButtonJustPressed)
-  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.excKeyPress_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.ExitUI)
+  Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.excKeyPress_, Z.InputActionEventType.ButtonJustPressed, Z.InputActionIds.ExitUI)
 end
 
 function QuestTaskBtnsCom:unRegisterInput()
   if not self.init_ then
     return
   end
-  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.onPressF_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Interact)
-  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.whenPressF_, Z.InputActionEventType.ButtonPressed, Z.RewiredActionsConst.Interact)
-  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.onReleseF_, Z.InputActionEventType.ButtonJustReleased, Z.RewiredActionsConst.Interact)
+  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.onPressF_, Z.InputActionEventType.ButtonJustPressed, Z.InputActionIds.Interact)
+  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.whenPressF_, Z.InputActionEventType.ButtonPressed, Z.InputActionIds.Interact)
+  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.onReleseF_, Z.InputActionEventType.ButtonJustReleased, Z.InputActionIds.Interact)
   Z.InputLuaBridge:RemoveInputEventDelegateWithoutActionId(self.anyActionPress_, Z.InputActionEventType.ButtonJustPressed)
-  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.excKeyPress_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.ExitUI)
+  Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.excKeyPress_, Z.InputActionEventType.ButtonJustPressed, Z.InputActionIds.ExitUI)
 end
 
 function QuestTaskBtnsCom:refreshPromptText()
@@ -224,8 +224,8 @@ function QuestTaskBtnsCom:doSkip()
   else
     self.talkOptionVM_.CloseOptionView()
     Z.UIMgr:FadeOut()
-    Z.EPFlowBridge.SkipAllFlow()
     Z.EventMgr:Dispatch(Z.ConstValue.Quest.OnSkipTalk)
+    Z.EPFlowBridge.SkipAllFlow()
   end
 end
 

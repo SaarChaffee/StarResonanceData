@@ -9,10 +9,12 @@ local refreshGuideType = {
 local ShowType = {
   All = 0,
   Pc = 1,
-  Mobile = 2
+  Mobile = 2,
+  Controller = 3
 }
 local GuideEventSystem = require("utility.guide_event")
 local GuideCondition = require("utility.guide_condition")
+local GuideAutoCheckCondition = require("utility.guide_auto_check_condition")
 local notOpenSteerViewByViewConfigKeys = {
   "steer_helpsy_window",
   "helpsys_window",
@@ -27,30 +29,30 @@ function GuideManager:setLoadItemSteerData()
   for key, guideCfgData in pairs(self.notActiveGuideTab_) do
     local type = tonumber(guideCfgData.data.DynamicUI[1])
     if type then
-      local parm = table.concat(guideCfgData.data.DynamicUI, "=", 2)
-      parm = tonumber(parm) or parm
+      local param = table.concat(guideCfgData.data.DynamicUI, "=", 2)
+      param = tonumber(param) or param
       if self.loadItemSteerDic_[type] == nil then
         self.loadItemSteerDic_[type] = {}
       end
-      if self.loadItemSteerDic_[type][parm] == nil then
-        self.loadItemSteerDic_[type][parm] = {}
+      if self.loadItemSteerDic_[type][param] == nil then
+        self.loadItemSteerDic_[type][param] = {}
       end
-      table.insert(self.loadItemSteerDic_[type][parm], guideCfgData.data.Id)
+      table.insert(self.loadItemSteerDic_[type][param], guideCfgData.data.Id)
     end
   end
 end
 
-function GuideManager:GetLoadSteerIdByTypeAndParm(type, param)
+function GuideManager:GetLoadSteerIdByTypeAndParam(type, param)
   if self.loadItemSteerDic_ and self.loadItemSteerDic_[type] then
     return self.loadItemSteerDic_[type][param] or {}
   end
   return {}
 end
 
-function GuideManager:SetSteerId(steerWidget, type, parm)
+function GuideManager:SetSteerId(steerWidget, type, param)
   if steerWidget and steerWidget.Steer then
     steerWidget.Steer:ClearSteerList()
-    local steerIds = self:GetLoadSteerIdByTypeAndParm(type, parm)
+    local steerIds = self:GetLoadSteerIdByTypeAndParam(type, param)
     for index, steerId in ipairs(steerIds) do
       if steerId then
         steerWidget.Steer:OnAddSteerId(steerId)
@@ -59,10 +61,10 @@ function GuideManager:SetSteerId(steerWidget, type, parm)
   end
 end
 
-function GuideManager:SetSteerIdByComp(steerComp, type, parm)
+function GuideManager:SetSteerIdByComp(steerComp, type, param)
   if steerComp then
     steerComp:ClearSteerList()
-    local steerIds = self:GetLoadSteerIdByTypeAndParm(type, parm)
+    local steerIds = self:GetLoadSteerIdByTypeAndParam(type, param)
     for index, steerId in ipairs(steerIds) do
       if steerId then
         steerComp:OnAddSteerId(steerId)
@@ -161,6 +163,8 @@ function GuideManager:Clear()
     Z.DIServiceMgr.ZCfgTimerService:UnRegisterTimerAction(timerId, value)
   end
   GuideEventSystem:UnInit()
+  self:UnregInputAction()
+  Z.EventMgr:Remove(Z.ConstValue.LanguageChange, self.ResetConfigData, self)
 end
 
 function GuideManager:InitCfgData()
@@ -176,6 +180,7 @@ function GuideManager:InitCfgData()
     GuideEventSystem:Init()
     self:CheckIsAddInputEvent()
   end
+  self:RegInputAction()
 end
 
 function GuideManager:InitGuideData()
@@ -195,6 +200,8 @@ function GuideManager:InitGuideData()
   self:InitCfgData()
   self.isInitFinish_ = true
   self:addTimeEvent()
+  self.inputActionMap = {}
+  Z.EventMgr:Add(Z.ConstValue.LanguageChange, self.ResetConfigData, self)
 end
 
 function GuideManager:timeEvent(timerId, state, offestIndex)
@@ -251,17 +258,17 @@ end
 
 function GuideManager:CheckIsAddInputEvent()
   for _, guideData in ipairs(self.notActiveGuideTab_) do
-    for i = 1, #guideData.triggerParms do
-      local trigger = guideData.triggerParms[i]
+    for i = 1, #guideData.triggerParams do
+      local trigger = guideData.triggerParams[i]
       if trigger.tp == E.SteerType.InputEvent then
-        local parm = trigger.parm
-        if parm then
-          local parmType = type(parm)
-          if parmType == "string" then
-            local parmTab = string.split(parm, "=")
-            Z.SteerMgr:OnRegEventByTypeId(tonumber(parmTab[1]))
+        local param = trigger.param
+        if param then
+          local paramType = type(param)
+          if paramType == "string" then
+            local paramTab = string.split(param, "=")
+            Z.SteerMgr:OnRegEventByTypeId(tonumber(paramTab[1]))
           else
-            Z.SteerMgr:OnRegEventByTypeId(tonumber(parm))
+            Z.SteerMgr:OnRegEventByTypeId(tonumber(param))
           end
         end
       end
@@ -283,15 +290,51 @@ function GuideManager:ClearNowShowGuideId()
   self.nowShowGuideIdDic_ = {}
 end
 
+function GuideManager:getCurrentPlatform()
+  if not Z.IsPCUI then
+    return ShowType.Mobile
+  else
+    local inputType = Z.InputMgr.InputDeviceType
+    if inputType == Panda.ZInput.EInputDeviceType.Joystick then
+      return ShowType.Controller
+    else
+      return ShowType.Pc
+    end
+  end
+end
+
+function GuideManager:CheckPcChoice(pcchoice, platformType)
+  if pcchoice == nil or #pcchoice < 1 then
+    return true
+  end
+  for _, p in ipairs(pcchoice) do
+    if p and (p == platformType or p == ShowType.All) then
+      return true
+    end
+  end
+  return false
+end
+
+function GuideManager:OnDeviceTypeChange()
+  if self.activeGuideTab_ == nil or #self.activeGuideTab_ == 0 then
+    return
+  end
+  self:RefreshGuideView()
+end
+
 function GuideManager:setNowShowGuide()
+  local platformType = self:getCurrentPlatform()
   self.nowGuideData_ = {}
   for _, guideData in ipairs(self.activeGuideTab_) do
     local isShow = true
-    for index, parms in ipairs(guideData.showParms) do
-      isShow = GuideCondition["GuideCondition" .. parms.tp](parms)
+    for index, params in ipairs(guideData.showParams) do
+      isShow = GuideCondition["GuideCondition" .. params.tp](params)
       if isShow == false then
         break
       end
+    end
+    if isShow and not self:CheckPcChoice(guideData.data.Pcchoice, platformType) then
+      isShow = false
     end
     self.nowGuideData_[guideData.data.Id] = guideData
     guideData.isShow = isShow
@@ -304,25 +347,18 @@ end
 
 function GuideManager:OnChangeIdList(eventType, ...)
   local isRefresh = false
-  local platformType = Z.IsPCUI and ShowType.Pc or ShowType.Mobile
+  local platformType = self:getCurrentPlatform()
   for key, guideId in pairs((...)) do
     for i = #self.notActiveGuideTab_, 1, -1 do
-      local isActive = false
       local guiData = self.notActiveGuideTab_[i].data
       if guiData.Id == guideId then
-        if guiData.Pcchoice == ShowType.All then
-          isActive = true
-        elseif guiData.Pcchoice == platformType then
-          isActive = true
-        end
-        if isActive then
-          isRefresh = true
-          table.insert(self.activeGuideTab_, self.notActiveGuideTab_[i])
-          table.remove(self.notActiveGuideTab_, i)
-        end
+        isRefresh = true
+        table.insert(self.activeGuideTab_, self.notActiveGuideTab_[i])
+        table.remove(self.notActiveGuideTab_, i)
       end
     end
   end
+  self:checkIsAutoFinish()
   if refreshGuideType[eventType] then
     isRefresh = true
   end
@@ -331,45 +367,64 @@ function GuideManager:OnChangeIdList(eventType, ...)
   end
 end
 
-function GuideManager:onChangeEvent(eventType, ...)
-  local paramType = type(...)
-  local isRefresh = false
-  local platformType = Z.IsPCUI and ShowType.Pc or ShowType.Mobile
-  if paramType == "table" then
-    self:OnChangeIdList(eventType, ...)
-  else
-    for i = #self.notActiveGuideTab_, 1, -1 do
-      local trigger = self.notActiveGuideTab_[i].triggerParms
-      local guiData = self.notActiveGuideTab_[i].data
-      local isActive = false
-      if guiData.Pcchoice == ShowType.All then
-        isActive = true
-      elseif guiData.Pcchoice == platformType then
-        isActive = true
-      end
-      if isActive then
-        for j = 1, #trigger do
-          if trigger[j].tp == eventType then
-            local value
-            if paramType == "string" then
-              value = tostring(trigger[j].parm)
-            elseif paramType == "number" then
-              value = tonumber(trigger[j].parm)
-            end
-            local state = false
-            if eventType == E.SteerType.BagItem then
-              state = GuideCondition["GuideCondition" .. eventType](value)
-            end
-            if value == (...) or state then
-              isRefresh = true
-              table.insert(self.activeGuideTab_, self.notActiveGuideTab_[i])
-              table.remove(self.notActiveGuideTab_, i)
-              break
-            end
+function GuideManager:checkIsAutoFinish()
+  local autoFinishList = {}
+  local index = 1
+  for i = #self.activeGuideTab_, 1, -1 do
+    local autoParams = self.activeGuideTab_[i].autoCompletionParams
+    if next(autoParams) then
+      for _, value in ipairs(autoParams) do
+        local func = GuideAutoCheckCondition["CheckCondition" .. value.tp]
+        if func then
+          local isFinish = func(value.param)
+          if isFinish then
+            autoFinishList[index] = self.activeGuideTab_[i].data.Id
+            index = index + 1
+            table.remove(self.activeGuideTab_, i)
+            break
           end
         end
       end
     end
+  end
+  for index, value in ipairs(autoFinishList) do
+    self:saveCompletedGuide(value)
+    self:onRemoveEvent(E.SteerType.OnFinishSteer, value)
+    self:onChangeEvent(E.SteerType.OnFinishSteer, value)
+  end
+end
+
+function GuideManager:onChangeEvent(eventType, ...)
+  local paramType = type(...)
+  local isRefresh = false
+  local platformType = self:getCurrentPlatform()
+  if paramType == "table" then
+    self:OnChangeIdList(eventType, ...)
+  else
+    for i = #self.notActiveGuideTab_, 1, -1 do
+      local trigger = self.notActiveGuideTab_[i].triggerParams
+      for j = 1, #trigger do
+        if trigger[j].tp == eventType then
+          local value
+          if paramType == "string" then
+            value = tostring(trigger[j].param)
+          elseif paramType == "number" then
+            value = tonumber(trigger[j].param)
+          end
+          local state = false
+          if eventType == E.SteerType.BagItem then
+            state = GuideCondition["GuideCondition" .. eventType](value)
+          end
+          if value == (...) or state then
+            isRefresh = true
+            table.insert(self.activeGuideTab_, self.notActiveGuideTab_[i])
+            table.remove(self.notActiveGuideTab_, i)
+            break
+          end
+        end
+      end
+    end
+    self:checkIsAutoFinish()
     if refreshGuideType[eventType] then
       isRefresh = true
     end
@@ -396,15 +451,15 @@ function GuideManager:onRemoveEvent(eventType, param)
   local guideIds = {}
   for index, guideInfoData in pairs(self.nowGuideData_) do
     if guideInfoData.data then
-      local finish = guideInfoData.finishParms
+      local finish = guideInfoData.finishParams
       for __, finishData in ipairs(finish) do
         if finishData.tp == eventType then
           local paramType = type(param)
           local value
           if paramType == "string" then
-            value = tostring(finishData.parm) or ""
+            value = tostring(finishData.param) or ""
           elseif paramType == "number" then
-            value = (finishData.parm == "" or finishData.parm == nil) and 0 or tonumber(finishData.parm) or -1
+            value = (finishData.param == "" or finishData.param == nil) and 0 or tonumber(finishData.param) or -1
           end
           local state = false
           if eventType == E.SteerType.AlreadyPutEquip then
@@ -421,6 +476,34 @@ function GuideManager:onRemoveEvent(eventType, param)
   if 0 < #guideIds and self:RemoveNowGuide(guideIds) then
     self:RefreshGuideView()
   end
+end
+
+function GuideManager:RegInputAction()
+  self.inputActionMap = {}
+  
+  function self.onInputAction_(inputActionData)
+    self:onRemoveEvent(E.SteerType.OnInputKey, inputActionData.ActionId)
+    self:onRemoveEvent(E.SteerType.AtWillOperation)
+  end
+  
+  for index, guideInfoData in pairs(self.notActiveGuideTab_) do
+    if guideInfoData.data then
+      local finish = guideInfoData.finishParams
+      for __, finishData in ipairs(finish) do
+        if finishData.tp == E.SteerType.OnInputKey and not table.zcontainsKey(self.inputActionMap, tonumber(finishData.param)) then
+          table.insert(self.inputActionMap, tonumber(finishData.param))
+          Z.InputLuaBridge:AddInputEventDelegateWithActionId(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, tonumber(finishData.param))
+        end
+      end
+    end
+  end
+end
+
+function GuideManager:UnregInputAction()
+  for k, v in pairs(self.inputActionMap) do
+    Z.InputLuaBridge:RemoveInputEventDelegateWithActionId(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, v)
+  end
+  self.inputActionMap = {}
 end
 
 function GuideManager:RemoveNowGuide(guideIds)
@@ -466,7 +549,11 @@ end
 
 function GuideManager:saveCompletedGuide(guideId)
   Z.CoroUtil.create_coro_xpcall(function()
-    worldProxy.SaveCompletedGuide(guideId, self.cancelSource:CreateToken())
+    local token
+    if self.cancelSource then
+      token = self.cancelSource:CreateToken()
+    end
+    worldProxy.SaveCompletedGuide(guideId, token)
   end)()
 end
 
@@ -498,6 +585,7 @@ function GuideManager:showGuide(guideId)
   local guideCfgData = Z.TableMgr.GetTable("GuideTableMgr").GetRow(guideId)
   if guideCfgData then
     table.insert(self.activeGuideTab_, self:getGuideDataByCfgData(guideCfgData))
+    self:checkIsAutoFinish()
     self:RefreshGuideView()
   end
 end
@@ -505,58 +593,89 @@ end
 function GuideManager:getGuideDataByCfgData(guideCfgData)
   local guideData = {}
   guideData.data = guideCfgData
-  guideData.triggerParms = {}
-  guideData.finishParms = {}
-  guideData.showParms = {}
+  guideData.triggerParams = {}
+  guideData.finishParams = {}
+  guideData.showParams = {}
+  guideData.autoCompletionParams = {}
   for index, type in ipairs(guideCfgData.ShowConditionType) do
-    local parmTab = {}
-    parmTab.tp = type
-    local parm = string.split(guideCfgData.ShowConditionValue, "=")[index]
-    local showParms = string.split(parm, "|")
-    parmTab.parms = {}
-    for i = 1, #showParms do
-      local parm = showParms[i]
-      if parm then
-        table.insert(parmTab.parms, parm)
+    local paramTab = {}
+    paramTab.tp = type
+    local param = string.split(guideCfgData.ShowConditionValue, "=")[index]
+    local showParams = string.split(param, "|")
+    paramTab.params = {}
+    for i = 1, #showParams do
+      local param = showParams[i]
+      if param then
+        table.insert(paramTab.params, param)
       end
     end
-    table.insert(guideData.showParms, parmTab)
+    table.insert(guideData.showParams, paramTab)
   end
   local triggerTypes = string.split(guideCfgData.TriggerConditionType, "|")
-  local triggerParms = string.split(guideCfgData.TriggerConditionValue, "|")
+  local triggerParams = string.split(guideCfgData.TriggerConditionValue, "|")
   for i = 1, #triggerTypes do
     local tp = tonumber(triggerTypes[i])
     if tp then
       if tp == E.SteerType.Timer then
-        local timerId = tonumber(triggerParms[i])
+        local timerId = tonumber(triggerParams[i])
         if timerId then
           self.timerIds_[timerId] = true
         end
       end
-      table.insert(guideData.triggerParms, {
+      table.insert(guideData.triggerParams, {
         tp = tp,
-        parm = triggerParms[i]
+        param = triggerParams[i]
       })
     end
   end
-  local finishParmss = string.split(guideCfgData.CompletionConditionValue, "|")
+  local finishParams = string.split(guideCfgData.CompletionConditionValue, "|")
   local finishTypes = string.split(guideCfgData.CompletionConditionType, "|")
   for i = 1, #finishTypes do
     local tp = tonumber(finishTypes[i])
     if tp then
       if tp == E.SteerType.Timer then
-        local timerId = tonumber(finishParmss[i])
+        local timerId = tonumber(finishParams[i])
         if timerId then
           self.timerIds_[timerId] = true
         end
       end
-      table.insert(guideData.finishParms, {
+      table.insert(guideData.finishParams, {
         tp = tp,
-        parm = finishParmss[i]
+        param = finishParams[i]
+      })
+    end
+  end
+  local autoCompleteParams = string.split(guideCfgData.AutoCompleteConditionValue, "|")
+  local autoCompleteTypes = string.split(guideCfgData.AutoCompleteConditionType, "|")
+  for i = 1, #autoCompleteTypes do
+    local tp = tonumber(autoCompleteTypes[i])
+    if tp then
+      table.insert(guideData.autoCompletionParams, {
+        tp = tp,
+        param = autoCompleteParams[i]
       })
     end
   end
   return guideData
+end
+
+function GuideManager:ResetConfigData()
+  if self.notActiveGuideTab_ ~= nil then
+    for i, v in ipairs(self.notActiveGuideTab_) do
+      if v.data ~= nil then
+        local config = Z.TableMgr.GetRow("GuideTableMgr", v.data.Id)
+        self.notActiveGuideTab_[i] = self:getGuideDataByCfgData(config)
+      end
+    end
+  end
+  if self.activeGuideTab_ ~= nil then
+    for i, v in ipairs(self.activeGuideTab_) do
+      if v.data ~= nil then
+        local config = Z.TableMgr.GetRow("GuideTableMgr", v.data.Id)
+        self.activeGuideTab_[i] = self:getGuideDataByCfgData(config)
+      end
+    end
+  end
 end
 
 return GuideManager

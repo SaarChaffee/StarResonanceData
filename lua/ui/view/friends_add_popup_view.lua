@@ -124,7 +124,7 @@ end
 
 function Friends_add_popupView:refreshUuid()
   if Z.EntityMgr.PlayerEnt then
-    self.uiBinder.lab_uuid.text = string.format("%s:%s", Lang("friendUid"), Z.EntityMgr.PlayerEnt.EntId)
+    self.uiBinder.lab_uuid.text = string.format("%s:%s", Lang("friendUid"), Z.EntityMgr.PlayerEnt.CharId)
   else
     self.uiBinder.lab_uuid.text = ""
     logError("PlayerEnt is nil")

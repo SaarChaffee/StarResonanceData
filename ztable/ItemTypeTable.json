@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Name": "",
+    "Name": "Currency",
     "Package": 100,
     "Classify": 0,
     "SortId": 0,
@@ -11,7 +11,7 @@
   },
   "2": {
     "Id": 2,
-    "Name": "",
+    "Name": "Points",
     "Package": 100,
     "Classify": 0,
     "SortId": 0,
@@ -21,7 +21,7 @@
   },
   "3": {
     "Id": 3,
-    "Name": "",
+    "Name": "Special",
     "Package": 100,
     "Classify": 0,
     "SortId": 0,
@@ -31,7 +31,7 @@
   },
   "4": {
     "Id": 4,
-    "Name": "",
+    "Name": "Focus",
     "Package": 100,
     "Classify": 0,
     "SortId": 0,
@@ -41,7 +41,7 @@
   },
   "31": {
     "Id": 31,
-    "Name": "",
+    "Name": "Life Skills Cultivation",
     "Package": 102,
     "Classify": 0,
     "SortId": 0,
@@ -51,7 +51,7 @@
   },
   "101": {
     "Id": 101,
-    "Name": "",
+    "Name": "Consumable",
     "Package": 1,
     "Classify": 11,
     "SortId": 1501,
@@ -63,7 +63,7 @@
   },
   "102": {
     "Id": 102,
-    "Name": "",
+    "Name": "Growth Item",
     "Package": 1,
     "Classify": 12,
     "SortId": 1201,
@@ -75,7 +75,7 @@
   },
   "103": {
     "Id": 103,
-    "Name": "",
+    "Name": "Quest Item",
     "Package": 1,
     "Classify": 14,
     "SortId": 1401,
@@ -87,7 +87,7 @@
   },
   "104": {
     "Id": 104,
-    "Name": "",
+    "Name": "Gift Box",
     "Package": 1,
     "Classify": 15,
     "SortId": 1102,
@@ -99,7 +99,7 @@
   },
   "105": {
     "Id": 105,
-    "Name": "",
+    "Name": "Rare Material",
     "Package": 1,
     "Classify": 13,
     "SortId": 1301,
@@ -111,7 +111,7 @@
   },
   "106": {
     "Id": 106,
-    "Name": "",
+    "Name": "Valuable Box",
     "Package": 1,
     "Classify": 15,
     "SortId": 1101,
@@ -123,7 +123,7 @@
   },
   "107": {
     "Id": 107,
-    "Name": "",
+    "Name": "Valuable Item",
     "Package": 1,
     "Classify": 15,
     "SortId": 1103,
@@ -135,7 +135,7 @@
   },
   "108": {
     "Id": 108,
-    "Name": "",
+    "Name": "Life Skill",
     "Package": 1,
     "Classify": 13,
     "SortId": 1301,
@@ -147,7 +147,7 @@
   },
   "109": {
     "Id": 109,
-    "Name": "",
+    "Name": "Material",
     "Package": 1,
     "Classify": 13,
     "SortId": 1302,
@@ -159,7 +159,7 @@
   },
   "110": {
     "Id": 110,
-    "Name": "",
+    "Name": "Reading Material",
     "Package": 110,
     "Classify": 0,
     "SortId": 0,
@@ -169,7 +169,7 @@
   },
   "112": {
     "Id": 112,
-    "Name": "",
+    "Name": "Ocean Trash",
     "Package": 1,
     "Classify": 13,
     "SortId": 1303,
@@ -179,7 +179,7 @@
   },
   "113": {
     "Id": 113,
-    "Name": "",
+    "Name": "Aquatic Animal",
     "Package": 1,
     "Classify": 13,
     "SortId": 1303,
@@ -189,7 +189,7 @@
   },
   "114": {
     "Id": 114,
-    "Name": "",
+    "Name": "Bait",
     "Package": 1,
     "Classify": 13,
     "SortId": 1203,
@@ -199,7 +199,7 @@
   },
   "115": {
     "Id": 115,
-    "Name": "",
+    "Name": "Fishing Pole",
     "Package": 1,
     "Classify": 13,
     "SortId": 1203,
@@ -209,7 +209,7 @@
   },
   "116": {
     "Id": 116,
-    "Name": "",
+    "Name": "Coupon",
     "Package": 1,
     "Classify": 13,
     "SortId": 1601,
@@ -219,7 +219,7 @@
   },
   "117": {
     "Id": 117,
-    "Name": "",
+    "Name": "Design",
     "Package": 1,
     "Classify": 13,
     "SortId": 1300,
@@ -229,7 +229,7 @@
   },
   "118": {
     "Id": 118,
-    "Name": "",
+    "Name": "Toy",
     "Package": 1,
     "Classify": 11,
     "SortId": 1502,
@@ -241,7 +241,7 @@
   },
   "119": {
     "Id": 119,
-    "Name": "",
+    "Name": "Valuable Item",
     "Package": 1,
     "Classify": 15,
     "SortId": 1103,
@@ -253,7 +253,7 @@
   },
   "120": {
     "Id": 120,
-    "Name": "",
+    "Name": "Valuable Item",
     "Package": 1,
     "Classify": 15,
     "SortId": 1103,
@@ -265,7 +265,7 @@
   },
   "121": {
     "Id": 121,
-    "Name": "",
+    "Name": "Postcards",
     "Package": 121,
     "Classify": 0,
     "SortId": 0,
@@ -275,7 +275,7 @@
   },
   "122": {
     "Id": 122,
-    "Name": "",
+    "Name": "Season Materials",
     "Package": 1,
     "Classify": 13,
     "SortId": 1301,
@@ -287,7 +287,7 @@
   },
   "123": {
     "Id": 123,
-    "Name": "",
+    "Name": "Emotes",
     "Package": 1,
     "Classify": 15,
     "SortId": 1103,
@@ -299,7 +299,7 @@
   },
   "199": {
     "Id": 199,
-    "Name": "",
+    "Name": "Rewards",
     "Package": 1,
     "Classify": 13,
     "SortId": 1999,
@@ -309,7 +309,7 @@
   },
   "200": {
     "Id": 200,
-    "Name": "",
+    "Name": "Weapon",
     "Package": 2,
     "Classify": 200,
     "SortId": 200,
@@ -321,7 +321,7 @@
   },
   "201": {
     "Id": 201,
-    "Name": "",
+    "Name": "Helmet",
     "Package": 2,
     "Classify": 201,
     "SortId": 201,
@@ -333,7 +333,7 @@
   },
   "202": {
     "Id": 202,
-    "Name": "",
+    "Name": "Armor",
     "Package": 2,
     "Classify": 202,
     "SortId": 202,
@@ -345,7 +345,7 @@
   },
   "203": {
     "Id": 203,
-    "Name": "",
+    "Name": "Gauntlets",
     "Package": 2,
     "Classify": 203,
     "SortId": 203,
@@ -357,7 +357,7 @@
   },
   "204": {
     "Id": 204,
-    "Name": "",
+    "Name": "Boots",
     "Package": 2,
     "Classify": 204,
     "SortId": 204,
@@ -369,7 +369,7 @@
   },
   "205": {
     "Id": 205,
-    "Name": "",
+    "Name": "Earrings",
     "Package": 2,
     "Classify": 205,
     "SortId": 205,
@@ -381,7 +381,7 @@
   },
   "206": {
     "Id": 206,
-    "Name": "",
+    "Name": "Necklace",
     "Package": 2,
     "Classify": 206,
     "SortId": 206,
@@ -393,7 +393,7 @@
   },
   "207": {
     "Id": 207,
-    "Name": "",
+    "Name": "Ring",
     "Package": 2,
     "Classify": 207,
     "SortId": 207,
@@ -405,7 +405,7 @@
   },
   "208": {
     "Id": 208,
-    "Name": "",
+    "Name": "Bracelet (L)",
     "Package": 2,
     "Classify": 208,
     "SortId": 208,
@@ -417,7 +417,7 @@
   },
   "209": {
     "Id": 209,
-    "Name": "",
+    "Name": "Bracelet (R)",
     "Package": 2,
     "Classify": 209,
     "SortId": 209,
@@ -429,7 +429,7 @@
   },
   "210": {
     "Id": 210,
-    "Name": "",
+    "Name": "Charm",
     "Package": 2,
     "Classify": 210,
     "SortId": 210,
@@ -441,7 +441,7 @@
   },
   "300": {
     "Id": 300,
-    "Name": "",
+    "Name": "Battle Imagine",
     "Package": 6,
     "Classify": 300,
     "SortId": 300,
@@ -453,7 +453,7 @@
   },
   "301": {
     "Id": 301,
-    "Name": "",
+    "Name": "Battle Will",
     "Package": 6,
     "Classify": 301,
     "SortId": 301,
@@ -465,7 +465,7 @@
   },
   "440": {
     "Id": 440,
-    "Name": "",
+    "Name": "Gift Box",
     "Package": 1,
     "Classify": 11,
     "SortId": 1100,
@@ -477,7 +477,7 @@
   },
   "401": {
     "Id": 401,
-    "Name": "",
+    "Name": "Materials",
     "Package": 1,
     "Classify": 0,
     "SortId": 0,
@@ -489,7 +489,7 @@
   },
   "701": {
     "Id": 701,
-    "Name": "",
+    "Name": "Set",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -502,7 +502,7 @@
   },
   "702": {
     "Id": 702,
-    "Name": "",
+    "Name": "Top",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -515,7 +515,7 @@
   },
   "703": {
     "Id": 703,
-    "Name": "",
+    "Name": "Bottom",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -528,7 +528,7 @@
   },
   "711": {
     "Id": 711,
-    "Name": "",
+    "Name": "Gauntlets",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -541,7 +541,7 @@
   },
   "712": {
     "Id": 712,
-    "Name": "",
+    "Name": "Boots",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -554,7 +554,7 @@
   },
   "713": {
     "Id": 713,
-    "Name": "",
+    "Name": "Headwear",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -567,7 +567,7 @@
   },
   "714": {
     "Id": 714,
-    "Name": "",
+    "Name": "Facewear",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -580,7 +580,7 @@
   },
   "715": {
     "Id": 715,
-    "Name": "",
+    "Name": "Mouthwear",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -593,7 +593,7 @@
   },
   "716": {
     "Id": 716,
-    "Name": "",
+    "Name": "Tailpiece",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -606,7 +606,7 @@
   },
   "717": {
     "Id": 717,
-    "Name": "",
+    "Name": "Backwear",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -619,7 +619,7 @@
   },
   "721": {
     "Id": 721,
-    "Name": "",
+    "Name": "Earwear",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -632,7 +632,7 @@
   },
   "722": {
     "Id": 722,
-    "Name": "",
+    "Name": "Necklace",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -645,7 +645,7 @@
   },
   "723": {
     "Id": 723,
-    "Name": "",
+    "Name": "Ring",
     "Package": 7,
     "Classify": 0,
     "SortId": 0,
@@ -658,7 +658,7 @@
   },
   "731": {
     "Id": 731,
-    "Name": "",
+    "Name": "Weapon Skin",
     "Package": 8,
     "Classify": 0,
     "SortId": 0,
@@ -668,7 +668,7 @@
   },
   "502": {
     "Id": 502,
-    "Name": "",
+    "Name": "Talent Points",
     "Package": 102,
     "Classify": 0,
     "SortId": 0,
@@ -678,7 +678,7 @@
   },
   "510": {
     "Id": 510,
-    "Name": "",
+    "Name": "Universal Imagine",
     "Package": 5,
     "Classify": 510,
     "SortId": 0,
@@ -688,7 +688,7 @@
   },
   "511": {
     "Id": 511,
-    "Name": "",
+    "Name": "Attack Module",
     "Package": 5,
     "Classify": 511,
     "SortId": 0,
@@ -698,7 +698,7 @@
   },
   "512": {
     "Id": 512,
-    "Name": "",
+    "Name": "Support Module",
     "Package": 5,
     "Classify": 512,
     "SortId": 0,
@@ -708,7 +708,7 @@
   },
   "513": {
     "Id": 513,
-    "Name": "",
+    "Name": "Survival Module",
     "Package": 5,
     "Classify": 513,
     "SortId": 0,
@@ -718,7 +718,7 @@
   },
   "514": {
     "Id": 514,
-    "Name": "",
+    "Name": "Universal Imagine Type I",
     "Package": 5,
     "Classify": 514,
     "SortId": 0,
@@ -728,7 +728,7 @@
   },
   "515": {
     "Id": 515,
-    "Name": "",
+    "Name": "Universal Imagine Type II",
     "Package": 5,
     "Classify": 515,
     "SortId": 0,
@@ -738,7 +738,7 @@
   },
   "516": {
     "Id": 516,
-    "Name": "",
+    "Name": "Unknown Module",
     "Package": 1,
     "Classify": 15,
     "SortId": 1103,
@@ -750,7 +750,7 @@
   },
   "801": {
     "Id": 801,
-    "Name": "",
+    "Name": "Weapon",
     "Package": 8,
     "Classify": 0,
     "SortId": 0,
@@ -760,7 +760,7 @@
   },
   "601": {
     "Id": 601,
-    "Name": "",
+    "Name": "Growth Items",
     "Package": 102,
     "Classify": 0,
     "SortId": 0,
@@ -770,7 +770,7 @@
   },
   "1101": {
     "Id": 1101,
-    "Name": "",
+    "Name": "Furniture",
     "Package": 11,
     "Classify": 0,
     "SortId": 0,
@@ -780,7 +780,7 @@
   },
   "1102": {
     "Id": 1102,
-    "Name": "",
+    "Name": "Bait",
     "Package": 1,
     "Classify": 13,
     "SortId": 1203,
@@ -790,7 +790,7 @@
   },
   "1103": {
     "Id": 1103,
-    "Name": "",
+    "Name": "Fishing Pole",
     "Package": 1,
     "Classify": 13,
     "SortId": 1203,
@@ -800,7 +800,7 @@
   },
   "1201": {
     "Id": 1201,
-    "Name": "",
+    "Name": "Mount Imagine",
     "Package": 12,
     "Classify": 0,
     "SortId": 0,
@@ -810,7 +810,7 @@
   },
   "901": {
     "Id": 901,
-    "Name": "",
+    "Name": "Avatar",
     "Package": 9,
     "Classify": 0,
     "SortId": 0,
@@ -820,7 +820,7 @@
   },
   "902": {
     "Id": 902,
-    "Name": "",
+    "Name": "Avatar Frame",
     "Package": 9,
     "Classify": 0,
     "SortId": 0,
@@ -830,7 +830,7 @@
   },
   "903": {
     "Id": 903,
-    "Name": "",
+    "Name": "Namecard",
     "Package": 9,
     "Classify": 0,
     "SortId": 0,
@@ -840,7 +840,7 @@
   },
   "904": {
     "Id": 904,
-    "Name": "",
+    "Name": "Badge",
     "Package": 9,
     "Classify": 0,
     "SortId": 0,
@@ -850,7 +850,7 @@
   },
   "1001": {
     "Id": 1001,
-    "Name": "",
+    "Name": "Guild Resource Library",
     "Package": 10,
     "Classify": 0,
     "SortId": 0,
@@ -860,7 +860,7 @@
   },
   "905": {
     "Id": 905,
-    "Name": "",
+    "Name": "Space Background",
     "Package": 9,
     "Classify": 0,
     "SortId": 0,
@@ -870,7 +870,7 @@
   },
   "906": {
     "Id": 906,
-    "Name": "",
+    "Name": "Title",
     "Package": 9,
     "Classify": 0,
     "SortId": 0,
@@ -880,7 +880,7 @@
   },
   "907": {
     "Id": 907,
-    "Name": "",
+    "Name": "Collection Cards",
     "Package": 907,
     "Classify": 0,
     "SortId": 0,
@@ -890,7 +890,7 @@
   },
   "1301": {
     "Id": 1301,
-    "Name": "",
+    "Name": "Homestead Foundation",
     "Package": 13,
     "Classify": 0,
     "SortId": 0,
@@ -900,7 +900,7 @@
   },
   "1111": {
     "Id": 1111,
-    "Name": "",
+    "Name": "Flowers",
     "Package": 11,
     "Classify": 0,
     "SortId": 0,
@@ -910,7 +910,7 @@
   },
   "1112": {
     "Id": 1112,
-    "Name": "",
+    "Name": "Seed",
     "Package": 11,
     "Classify": 0,
     "SortId": 0,
@@ -920,7 +920,7 @@
   },
   "1113": {
     "Id": 1113,
-    "Name": "",
+    "Name": "Pollen",
     "Package": 11,
     "Classify": 0,
     "SortId": 0,

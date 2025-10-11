@@ -34,6 +34,7 @@ function Warehouse_mainView:initBinders()
   self.tipsLeftParent_ = self.uiBinder.node_tips_left
   self.tipsRightParent_ = self.uiBinder.node_tips_right
   self.node_eff = self.uiBinder.node_loop_eff
+  self.anim_do_ = self.uiBinder.anim_do
 end
 
 function Warehouse_mainView:initBtns()
@@ -87,12 +88,14 @@ function Warehouse_mainView:initUi()
     else
       self:OnSecondClassSelected(data[index])
     end
-  end, "c_com_tab_item_1_tpl")
+  end)
 end
 
 function Warehouse_mainView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
+  self.isFirstOpen_ = true
   self:initBinders()
+  self:onStartAnimShow()
   self:initBtns()
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.node_eff)
   self.node_eff:SetEffectGoVisible(true)
@@ -109,6 +112,7 @@ function Warehouse_mainView:OnDeActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.node_eff)
   self.node_eff:SetEffectGoVisible(false)
+  self.isFirstOpen_ = false
   if self.bagLoopGrid_ then
     self.bagLoopGrid_:UnInit()
     self.bagLoopGrid_ = nil
@@ -146,6 +150,10 @@ end
 function Warehouse_mainView:OnSecondClassSelected(type)
   self.uiBinder.Ref:SetVisible(self.takeLab_, type ~= -1)
   self.uiBinder.Ref:SetVisible(self.depositLab_, type ~= -1)
+  if not self.isFirstOpen_ then
+    self.anim_do_:Restart(Z.DOTweenAnimType.Tween_0)
+  end
+  self.isFirstOpen_ = false
   self.type_ = type
   self:refreshLab()
   self:refreshWarehouseLoopGrid()
@@ -246,6 +254,10 @@ function Warehouse_mainView:setpackageCountUi()
 end
 
 function Warehouse_mainView:OnRefresh()
+end
+
+function Warehouse_mainView:onStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Warehouse_mainView

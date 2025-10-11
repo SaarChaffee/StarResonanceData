@@ -24,5 +24,6 @@ message LoginRequest {
   string area_id_token = 19;
   bool is_cloud_game = 20;
   string distinct_id = 21;
+  repeated string bound_providers = 22;
 }
 

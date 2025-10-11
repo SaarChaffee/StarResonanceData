@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Name": "",
+    "Name": "Volume",
     "SystemId": 100203,
     "TypesId": 10021,
     "OperateType": 4,
@@ -13,7 +13,7 @@
   },
   "2": {
     "Id": 2,
-    "Name": "",
+    "Name": "Background music",
     "SystemId": 100203,
     "TypesId": 10021,
     "OperateType": 4,
@@ -25,7 +25,7 @@
   },
   "3": {
     "Id": 3,
-    "Name": "",
+    "Name": "Sound effects",
     "SystemId": 100203,
     "TypesId": 10021,
     "OperateType": 4,
@@ -37,7 +37,7 @@
   },
   "4": {
     "Id": 4,
-    "Name": "",
+    "Name": "Game voice",
     "SystemId": 100203,
     "TypesId": 10021,
     "OperateType": 4,
@@ -49,7 +49,7 @@
   },
   "5": {
     "Id": 5,
-    "Name": "",
+    "Name": "Interface effects",
     "SystemId": 100203,
     "TypesId": 10021,
     "OperateType": 4,
@@ -61,7 +61,7 @@
   },
   "6": {
     "Id": 6,
-    "Name": "",
+    "Name": "Exit",
     "SystemId": 100210,
     "TypesId": 10041,
     "OperateType": 1,
@@ -73,7 +73,7 @@
   },
   "7": {
     "Id": 7,
-    "Name": "",
+    "Name": "Display in Party Hub",
     "SystemId": 101002,
     "TypesId": 0,
     "OperateType": 5,
@@ -85,7 +85,7 @@
   },
   "8": {
     "Id": 8,
-    "Name": "",
+    "Name": "Enable auto-matching",
     "SystemId": 101002,
     "TypesId": 0,
     "OperateType": 5,
@@ -97,7 +97,7 @@
   },
   "9": {
     "Id": 9,
-    "Name": "",
+    "Name": "Enable auto-matching",
     "SystemId": 101002,
     "TypesId": 0,
     "OperateType": 5,
@@ -109,7 +109,7 @@
   },
   "10": {
     "Id": 10,
-    "Name": "",
+    "Name": "Willing to be the captain",
     "SystemId": 101002,
     "TypesId": 0,
     "OperateType": 5,
@@ -121,7 +121,7 @@
   },
   "11": {
     "Id": 11,
-    "Name": "",
+    "Name": "Accept team invitations when in a team",
     "SystemId": 101002,
     "TypesId": 0,
     "OperateType": 5,
@@ -133,7 +133,7 @@
   },
   "12": {
     "Id": 12,
-    "Name": "",
+    "Name": "Other players' sound effects",
     "SystemId": 100203,
     "TypesId": 10021,
     "OperateType": 4,
@@ -145,7 +145,7 @@
   },
   "13": {
     "Id": 13,
-    "Name": "",
+    "Name": "Player voice receive volume",
     "SystemId": 100203,
     "TypesId": 10021,
     "OperateType": 4,
@@ -157,7 +157,7 @@
   },
   "14": {
     "Id": 14,
-    "Name": "",
+    "Name": "Player voice send volume",
     "SystemId": 100203,
     "TypesId": 10021,
     "OperateType": 4,
@@ -169,19 +169,19 @@
   },
   "101": {
     "Id": 101,
-    "Name": "",
+    "Name": "Chat channel - General settings",
     "SystemId": 102101,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "",
     "Des": "主界面显示=语音默认显示=弹幕默认显示=综合频道默认选中频道|（0不勾选，1勾选，-1不显示选项，默认选中频道填写频道ID）",
-    "Value": "-1=0=0=1,2,3,4",
+    "Value": "-1=0=0=1,2,3,4,99",
     "DataStorage": 99,
     "Link": ""
   },
   "102": {
     "Id": 102,
-    "Name": "",
+    "Name": "Chat channel - World settings",
     "SystemId": 102102,
     "TypesId": 0,
     "OperateType": 0,
@@ -193,7 +193,7 @@
   },
   "103": {
     "Id": 103,
-    "Name": "",
+    "Name": "Chat channel - Current settings",
     "SystemId": 102103,
     "TypesId": 0,
     "OperateType": 0,
@@ -205,7 +205,7 @@
   },
   "104": {
     "Id": 104,
-    "Name": "",
+    "Name": "Chat channel - Team settings",
     "SystemId": 102104,
     "TypesId": 0,
     "OperateType": 0,
@@ -217,7 +217,7 @@
   },
   "105": {
     "Id": 105,
-    "Name": "",
+    "Name": "Chat channel - Guild settings",
     "SystemId": 102105,
     "TypesId": 0,
     "OperateType": 0,
@@ -229,7 +229,7 @@
   },
   "106": {
     "Id": 106,
-    "Name": "",
+    "Name": "Chat channel - System settings",
     "SystemId": 102199,
     "TypesId": 0,
     "OperateType": 0,
@@ -241,7 +241,7 @@
   },
   "107": {
     "Id": 107,
-    "Name": "",
+    "Name": "Chat channel - Bullet screen display",
     "SystemId": 102197,
     "TypesId": 0,
     "OperateType": 0,
@@ -253,7 +253,7 @@
   },
   "108": {
     "Id": 108,
-    "Name": "",
+    "Name": "Chat channel - Information filtering general settings",
     "SystemId": 102198,
     "TypesId": 0,
     "OperateType": 0,
@@ -265,7 +265,7 @@
   },
   "201": {
     "Id": 201,
-    "Name": "",
+    "Name": "Appearance settings",
     "SystemId": 101102,
     "TypesId": 0,
     "OperateType": 0,
@@ -277,7 +277,7 @@
   },
   "1001": {
     "Id": 1001,
-    "Name": "",
+    "Name": "Target lock settings",
     "SystemId": 100202,
     "TypesId": 20011,
     "OperateType": 5,
@@ -289,7 +289,7 @@
   },
   "1003": {
     "Id": 1003,
-    "Name": "",
+    "Name": "Direction",
     "SystemId": 333333,
     "TypesId": 0,
     "OperateType": 0,
@@ -301,7 +301,7 @@
   },
   "1004": {
     "Id": 1004,
-    "Name": "",
+    "Name": "Dive control",
     "SystemId": 333333,
     "TypesId": 0,
     "OperateType": 0,
@@ -313,7 +313,7 @@
   },
   "1005": {
     "Id": 1005,
-    "Name": "",
+    "Name": "Camera horizontal sensitivity",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
@@ -325,7 +325,7 @@
   },
   "1006": {
     "Id": 1006,
-    "Name": "",
+    "Name": "Camera vertical sensitivity",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
@@ -337,55 +337,55 @@
   },
   "1007": {
     "Id": 1007,
-    "Name": "",
+    "Name": "Distance correction during combat",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "BattleZoomCorrection",
-    "Des": "进战时视距补正",
-    "Value": "0",
+    "Des": "进战时视距补正（pc=手柄=移动）",
+    "Value": "0=0=1",
     "DataStorage": 3,
     "Link": ""
   },
   "1008": {
     "Id": 1008,
-    "Name": "",
+    "Name": "Pitch Angle Correction in Combat",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "BattlePitchAngleCorrection",
-    "Des": "进战时俯仰角补正",
-    "Value": "0",
+    "Des": "进战时俯仰角补正（pc=手柄=移动）",
+    "Value": "0=0=1",
     "DataStorage": 3,
     "Link": ""
   },
   "1009": {
     "Id": 1009,
-    "Name": "",
+    "Name": "View Distance Correction while Moving",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "ZoomCorrection",
-    "Des": "移动时视距补正",
-    "Value": "0",
+    "Des": "移动时视距补正（pc=手柄=移动）",
+    "Value": "0=0=1",
     "DataStorage": 3,
     "Link": ""
   },
   "1010": {
     "Id": 1010,
-    "Name": "",
+    "Name": "Pitch Angle Correction while Moving",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "PitchAngleCorrection",
-    "Des": "移动时俯仰角补正",
-    "Value": "0",
+    "Des": "移动时俯仰角补正（pc=手柄=移动）",
+    "Value": "0=0=1",
     "DataStorage": 3,
     "Link": ""
   },
   "1011": {
     "Id": 1011,
-    "Name": "",
+    "Name": "Display Skill Brief Description",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
@@ -397,7 +397,7 @@
   },
   "1012": {
     "Id": 1012,
-    "Name": "",
+    "Name": "Auto Battle Switch",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
@@ -409,7 +409,7 @@
   },
   "1013": {
     "Id": 1013,
-    "Name": "",
+    "Name": "Prioritize Target Selection by Camera Orientation",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
@@ -421,7 +421,7 @@
   },
   "1014": {
     "Id": 1014,
-    "Name": "",
+    "Name": "Camera Shake",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -433,7 +433,7 @@
   },
   "1015": {
     "Id": 1015,
-    "Name": "",
+    "Name": "Pulse Shake",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -445,7 +445,7 @@
   },
   "1016": {
     "Id": 1016,
-    "Name": "",
+    "Name": "Free Cast Mode",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -457,55 +457,55 @@
   },
   "1017": {
     "Id": 1017,
-    "Name": "",
+    "Name": "Auto Camera Follow While Moving",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "",
-    "Des": "移动时触发转角补正（PC:0默认关，1默认开 = 移动:0默认关，1默认开）",
-    "Value": "0=1",
+    "Des": "移动时触发转角补正（pc=手柄=移动）",
+    "Value": "0=1=1",
     "DataStorage": 3,
     "Link": ""
   },
   "1018": {
     "Id": 1018,
-    "Name": "",
+    "Name": "Camera Zoom Adjustment on Skill Cast",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "",
-    "Des": "释放技能时Zoom补正（PC:0默认关，1默认开 = 移动:0默认关，1默认开）",
-    "Value": "0=0",
+    "Des": "释放技能时Zoom补正（pc=手柄=移动）",
+    "Value": "0=0=1",
     "DataStorage": 3,
     "Link": ""
   },
   "1019": {
     "Id": 1019,
-    "Name": "",
+    "Name": "Camera Facing Adjustment on Skill Cast",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "",
-    "Des": "释放技能时转角补正（PC:0默认关，1默认开 = 移动:0默认关，1默认开）",
-    "Value": "0=1",
+    "Des": "释放技能时转角补正（pc=手柄=移动）",
+    "Value": "0=1=1",
     "DataStorage": 3,
     "Link": ""
   },
   "1020": {
     "Id": 1020,
-    "Name": "",
+    "Name": "Camera Zoom Adjustment on Target Lock",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "",
-    "Des": "索敌Zoom补正（PC:0默认关，1默认开 = 移动:0默认关，1默认开）",
-    "Value": "0=0",
+    "Des": "索敌Zoom补正（pc=手柄=移动）",
+    "Value": "0=0=1",
     "DataStorage": 3,
     "Link": ""
   },
   "1021": {
     "Id": 1021,
-    "Name": "",
+    "Name": "Skill Camera Movement",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
@@ -517,19 +517,19 @@
   },
   "1022": {
     "Id": 1022,
-    "Name": "",
+    "Name": "Extended Max Camera Distance During Combat",
     "SystemId": 100202,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "",
-    "Des": "进入/退出战斗状态Zoom补正（PC:0默认关，1默认开 = 移动:0默认关，1默认开）",
-    "Value": "1=1",
+    "Des": "进入/退出战斗状态Zoom补正（pc=手柄=移动）",
+    "Value": "1=1=1",
     "DataStorage": 3,
     "Link": ""
   },
   "1023": {
     "Id": 1023,
-    "Name": "",
+    "Name": "Allow mouse to move outside window",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 5,
@@ -541,19 +541,79 @@
   },
   "1024": {
     "Id": 1024,
-    "Name": "",
+    "Name": "Free casting operation mode",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
     "DescribeKey": "SkillControllerPcUp",
     "Des": "自由施法方式（1为点击释放，2为松手释放）",
+    "Value": "2",
+    "DataStorage": 3,
+    "Link": ""
+  },
+  "1025": {
+    "Id": 1025,
+    "Name": "Glide Effect",
+    "SystemId": 0,
+    "TypesId": 0,
+    "OperateType": 0,
+    "DescribeKey": "SetCameraInertia",
+    "Des": "相机滑屏缓动",
+    "Value": "1",
+    "DataStorage": 3,
+    "Link": ""
+  },
+  "1026": {
+    "Id": 1026,
+    "Name": "Horizontal Sensitivity",
+    "SystemId": 100202,
+    "TypesId": 0,
+    "OperateType": 0,
+    "DescribeKey": "CameraHorizontalSensitivityRangeHandle",
+    "Des": "手柄镜头水平灵敏度（默认档位）",
+    "Value": "10",
+    "DataStorage": 3,
+    "Link": ""
+  },
+  "1027": {
+    "Id": 1027,
+    "Name": "Vertical Sensitivity",
+    "SystemId": 100202,
+    "TypesId": 0,
+    "OperateType": 0,
+    "DescribeKey": "CameraVerticalSensitivityRangeHandle",
+    "Des": "手柄镜头垂直灵敏度（默认档位）",
+    "Value": "10",
+    "DataStorage": 3,
+    "Link": ""
+  },
+  "1028": {
+    "Id": 1028,
+    "Name": "Cursor Speed",
+    "SystemId": 0,
+    "TypesId": 0,
+    "OperateType": 0,
+    "DescribeKey": "MouseSpeedHandle",
+    "Des": "手柄光标速度手柄",
+    "Value": "4",
+    "DataStorage": 3,
+    "Link": ""
+  },
+  "1029": {
+    "Id": 1029,
+    "Name": "Camera Panning Smoothness Buffer",
+    "SystemId": 100202,
+    "TypesId": 0,
+    "OperateType": 0,
+    "DescribeKey": "SetCameraInertiaCache",
+    "Des": "相机滑屏缓动缓存",
     "Value": "1",
     "DataStorage": 3,
     "Link": ""
   },
   "2001": {
     "Id": 2001,
-    "Name": "",
+    "Name": "Key Display Prompt on PC",
     "SystemId": 100208,
     "TypesId": 0,
     "OperateType": 5,
@@ -565,7 +625,7 @@
   },
   "2002": {
     "Id": 2002,
-    "Name": "",
+    "Name": "Display Mode",
     "SystemId": 100208,
     "TypesId": 0,
     "OperateType": 0,
@@ -577,7 +637,7 @@
   },
   "3001": {
     "Id": 3001,
-    "Name": "",
+    "Name": "Self Special Effects Visibility",
     "SystemId": 100203,
     "TypesId": 10022,
     "OperateType": 6,
@@ -589,7 +649,7 @@
   },
   "3002": {
     "Id": 3002,
-    "Name": "",
+    "Name": "Enemy Special Effects Visibility",
     "SystemId": 100203,
     "TypesId": 10022,
     "OperateType": 6,
@@ -601,7 +661,7 @@
   },
   "3003": {
     "Id": 3003,
-    "Name": "",
+    "Name": "Ally Special Effects Visibility",
     "SystemId": 100203,
     "TypesId": 10022,
     "OperateType": 6,
@@ -613,7 +673,7 @@
   },
   "3004": {
     "Id": 3004,
-    "Name": "",
+    "Name": "Other Friendly Special Effects Visibility",
     "SystemId": 100203,
     "TypesId": 10022,
     "OperateType": 6,
@@ -625,7 +685,7 @@
   },
   "3005": {
     "Id": 3005,
-    "Name": "",
+    "Name": "Visibility of Other Effects",
     "SystemId": 100203,
     "TypesId": 10022,
     "OperateType": 6,
@@ -637,7 +697,7 @@
   },
   "3010": {
     "Id": 3010,
-    "Name": "",
+    "Name": "HUD Floating Text Off",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -649,7 +709,7 @@
   },
   "3011": {
     "Id": 3011,
-    "Name": "",
+    "Name": "HUD Floating Text Minimal",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -661,7 +721,7 @@
   },
   "4001": {
     "Id": 4001,
-    "Name": "",
+    "Name": "Display Weapons Only in Combat State",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -673,7 +733,7 @@
   },
   "4002": {
     "Id": 4002,
-    "Name": "",
+    "Name": "My overhead info",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -685,7 +745,7 @@
   },
   "4003": {
     "Id": 4003,
-    "Name": "",
+    "Name": "Other players' overhead info",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -697,7 +757,7 @@
   },
   "4004": {
     "Id": 4004,
-    "Name": "",
+    "Name": "Non-players' overhead info",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -709,7 +769,7 @@
   },
   "4005": {
     "Id": 4005,
-    "Name": "",
+    "Name": "Quest assist connection",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -721,7 +781,7 @@
   },
   "5000": {
     "Id": 5000,
-    "Name": "",
+    "Name": "Toy Visible",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -733,7 +793,7 @@
   },
   "6000": {
     "Id": 6000,
-    "Name": "",
+    "Name": "Graphics Quality",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -745,7 +805,7 @@
   },
   "6001": {
     "Id": 6001,
-    "Name": "",
+    "Name": "Graphics Custom Settings",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,
@@ -757,7 +817,7 @@
   },
   "6002": {
     "Id": 6002,
-    "Name": "",
+    "Name": "Graphics Settings Version",
     "SystemId": 0,
     "TypesId": 0,
     "OperateType": 0,

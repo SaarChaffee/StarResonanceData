@@ -52,6 +52,9 @@ function SysDialogView:OnActive()
   self.uiBinder.scenemask:SetSceneMaskByKey(self.SceneMaskKey)
   self:AddAsyncClick(self.uiBinder.uibinder_confirm.btn, self.onConfirmFunc_)
   self:AddAsyncClick(self.uiBinder.uibinder_cancel.btn, self.onCancelFunc_)
+  self.uiBinder.lab_content:AddListener(function(linkName)
+    self:onLinkClick(linkName)
+  end)
 end
 
 function SysDialogView:OnRefresh()
@@ -84,6 +87,15 @@ function SysDialogView:OnRefresh()
 end
 
 function SysDialogView:OnDeActive()
+end
+
+function SysDialogView:onLinkClick(linkName)
+  if linkName ~= nil and linkName ~= "" then
+    local url = string.match(linkName, "^url%s*=%s*([^%s]+)")
+    if url ~= nil and url ~= "" then
+      Z.SDKWebView.OpenWebView(url, false)
+    end
+  end
 end
 
 return SysDialogView

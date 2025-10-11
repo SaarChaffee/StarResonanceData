@@ -40,10 +40,11 @@ function FashionCustomLoopItem:refreshFashionData()
     local color = imgLineBgColor[row.Quality] or E.FashionCustomsizedLineColor.Green
     self.uiBinder.img_line:SetColorByHex(color)
   else
+    local itemVm = Z.VMMgr.GetVM("items")
     local fashionId = self.parent.UIView:GetOriginalFashionId()
     local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(fashionId, true)
     if itemRow then
-      self.uiBinder.rimg_icon:SetImage(itemRow.Icon)
+      self.uiBinder.rimg_icon:SetImage(itemVm.GetItemIcon(fashionId))
       self.uiBinder.lab_name.text = itemRow.Name
     end
     self.uiBinder.rimg_bg:SetImage(string.zconcat(rimgBgRoot, defaultImage))

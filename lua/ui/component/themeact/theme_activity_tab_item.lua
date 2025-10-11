@@ -73,6 +73,7 @@ function ThemeActivityTabItem:OnSelected()
       Z.RedPointMgr.UpdateNodeCount(redDotId, 0)
       Z.RedPointMgr.OnClickRedDot(redDotId)
     end
+    self.uiBinder.comp_dotween:Restart(Z.DOTweenAnimType.Open)
   end
 end
 

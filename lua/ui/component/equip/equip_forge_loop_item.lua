@@ -27,7 +27,8 @@ function EquipForgeLoopItem:OnRefresh(data)
       isUse = equipInfo and equipInfo.itemUuid == data.Item.uuid
     end
     self.uiBinder.lab_name.text = itemRow.Name
-    self.uiBinder.rimg_icon:SetImage(itemRow.Icon)
+    local itemVm = Z.VMMgr.GetVM("items")
+    self.uiBinder.rimg_icon:SetImage(itemVm.GetItemIcon(itemRow.Id))
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_use, isUse)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.IsSelected)

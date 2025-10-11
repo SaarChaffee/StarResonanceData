@@ -14,6 +14,8 @@ function SDKData:Init()
   self.SDKURL = {}
   self.DefaultAvator = ""
   self.LegalSchemePrefix = {}
+  self.HttpNoticeUrl = nil
+  self.HttpNoticePreviewUrl = nil
 end
 
 function SDKData:UnInit()
@@ -61,6 +63,11 @@ function SDKData:initData()
   self.LegalSchemePrefix = {}
   self.SDKBlackList = {}
   self.SDKURL = {}
+end
+
+function SDKData:SetHttpNoticeUrl(url, previewUrl)
+  self.HttpNoticeUrl = url
+  self.HttpNoticePreviewUrl = previewUrl
 end
 
 return SDKData

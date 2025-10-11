@@ -11,7 +11,7 @@ local timeFormatTypeTable = {
   [E.TimeFormatType.HMS] = {"T", "T"},
   [E.TimeFormatType.MD] = {"MD", "MD"}
 }
-local ticksFormatTime = function(tick, timeFormatType, isFull, isHideUTC)
+local ticksFormatTime = function(tick, timeFormatType, isFull, isHideUTC, isClientTimeZone)
   local curLangIdx = Z.LocalizationMgr:GetCurrentLanguage()
   local culture = language2CultureMap[curLangIdx + 1]
   if Z.SDKLogin.GetPlatform() == E.LoginPlatformType.TencentPlatform or Z.SDKLogin.GetPlatform() == E.LoginPlatformType.InnerPlatform then
@@ -25,11 +25,14 @@ local ticksFormatTime = function(tick, timeFormatType, isFull, isHideUTC)
   if not isFull then
     formatType = timeFormatTypeTable[timeFormatType][2]
   end
-  if isHideUTC then
-    return Panda.Util.ZTimeUtils.FormatTimestamp(tick, formatType, culture)
+  if isClientTimeZone == nil then
+    isClientTimeZone = false
   end
-  local utc = Panda.Util.ZTimeUtils.GetUTCByStamp(tick)
-  return Panda.Util.ZTimeUtils.FormatTimestamp(tick, formatType, culture) .. utc
+  if isHideUTC then
+    return Panda.Util.ZTimeUtils.FormatTimestamp(tick, formatType, culture, isClientTimeZone)
+  end
+  local utc = Panda.Util.ZTimeUtils.GetUTCByStamp(tick, isClientTimeZone)
+  return Panda.Util.ZTimeUtils.FormatTimestamp(tick, formatType, culture, isClientTimeZone) .. utc
 end
 local tp2YMDHMS = function(timePoint)
   local timeTbl = os.date("*t", timePoint)

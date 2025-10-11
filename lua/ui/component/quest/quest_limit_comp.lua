@@ -247,7 +247,7 @@ function QuestLimitComp:refreshQuestStepUI()
       local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(params[1])
       if questRow and self.uiBinder_ and self.uiBinder_.lab_special_explain then
         self.uiBinder_.lab_special_explain.text = Lang("NeedAdvanceTaskStart", {
-          str = questRow.QuestName
+          str = self.questVM_.GetQuestName(questRow.id)
         })
       end
     end

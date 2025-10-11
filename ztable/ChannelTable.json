@@ -2,7 +2,7 @@
   "100": {
     "Id": 100,
     "Type": 0,
-    "ChannelName": "",
+    "ChannelName": "General",
     "ChannelStyle": "",
     "ChannelStylePC": "",
     "NoticeStyle": "",
@@ -17,7 +17,7 @@
   "1": {
     "Id": 1,
     "Type": 1,
-    "ChannelName": "",
+    "ChannelName": "World",
     "ChannelStyle": "ChannelWorld",
     "ChannelStylePC": "ChannelWorldPC",
     "NoticeStyle": "EADDFE",
@@ -32,7 +32,7 @@
   "2": {
     "Id": 2,
     "Type": 1,
-    "ChannelName": "",
+    "ChannelName": "Current",
     "ChannelStyle": "ChannelCurrent",
     "ChannelStylePC": "ChannelCurrentPC",
     "NoticeStyle": "EDEDED",
@@ -47,7 +47,7 @@
   "3": {
     "Id": 3,
     "Type": 1,
-    "ChannelName": "",
+    "ChannelName": "Team",
     "ChannelStyle": "ChannelTeam",
     "ChannelStylePC": "ChannelTeamPC",
     "NoticeStyle": "DFEDFE",
@@ -64,7 +64,7 @@
   "4": {
     "Id": 4,
     "Type": 1,
-    "ChannelName": "",
+    "ChannelName": "Guild",
     "ChannelStyle": "ChannelGuild",
     "ChannelStylePC": "ChannelGuildPC",
     "NoticeStyle": "E0F6E0",
@@ -81,7 +81,7 @@
   "99": {
     "Id": 99,
     "Type": 1,
-    "ChannelName": "",
+    "ChannelName": "System",
     "ChannelStyle": "ChannelSystem",
     "ChannelStylePC": "ChannelSystemPC",
     "NoticeStyle": "F8CDB8",

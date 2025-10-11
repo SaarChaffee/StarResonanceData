@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Name": "",
+    "Name": "Little Wolf",
     "ModelID": 80000002,
     "FollowType": 0,
     "IsFlying": false,
@@ -29,7 +29,7 @@
   },
   "2": {
     "Id": 2,
-    "Name": "",
+    "Name": "Little Eagle",
     "ModelID": 80000001,
     "FollowType": 1,
     "IsFlying": true,
@@ -60,7 +60,7 @@
   },
   "3": {
     "Id": 3,
-    "Name": "",
+    "Name": "Big Wolf",
     "ModelID": 80000003,
     "FollowType": 0,
     "IsFlying": false,
@@ -88,7 +88,7 @@
   },
   "4": {
     "Id": 4,
-    "Name": "",
+    "Name": "Summon Wolf",
     "ModelID": 80000005,
     "FollowType": 0,
     "IsFlying": false,
@@ -122,7 +122,7 @@
   },
   "5": {
     "Id": 5,
-    "Name": "",
+    "Name": "Summon Eagle",
     "ModelID": 80000004,
     "FollowType": 1,
     "IsFlying": true,
@@ -155,7 +155,7 @@
   },
   "6": {
     "Id": 6,
-    "Name": "",
+    "Name": "Resonance Skill Summon Wolf",
     "ModelID": 80000006,
     "FollowType": 0,
     "IsFlying": false,
@@ -189,7 +189,7 @@
   },
   "7": {
     "Id": 7,
-    "Name": "",
+    "Name": "Little Wolf - Talent",
     "ModelID": 80000002,
     "FollowType": 0,
     "IsFlying": false,
@@ -218,7 +218,7 @@
   },
   "8": {
     "Id": 8,
-    "Name": "",
+    "Name": "Big Wolf - Talent",
     "ModelID": 80000003,
     "FollowType": 0,
     "IsFlying": false,

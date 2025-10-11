@@ -1,14 +1,14 @@
 local worldProxy_ = require("zproxy.world_proxy")
 local expressionRed = require("rednode.expression_red")
 local INPUT_EXPRESSION_SOLT_MAP = {
-  [Z.RewiredActionsConst.ExpressionUse1] = 1,
-  [Z.RewiredActionsConst.ExpressionUse2] = 2,
-  [Z.RewiredActionsConst.ExpressionUse3] = 3,
-  [Z.RewiredActionsConst.ExpressionUse4] = 4,
-  [Z.RewiredActionsConst.ExpressionUse5] = 5,
-  [Z.RewiredActionsConst.ExpressionUse6] = 6,
-  [Z.RewiredActionsConst.ExpressionUse7] = 7,
-  [Z.RewiredActionsConst.ExpressionUse8] = 8
+  [Z.InputActionIds.ExpressionUse1] = 1,
+  [Z.InputActionIds.ExpressionUse2] = 2,
+  [Z.InputActionIds.ExpressionUse3] = 3,
+  [Z.InputActionIds.ExpressionUse4] = 4,
+  [Z.InputActionIds.ExpressionUse5] = 5,
+  [Z.InputActionIds.ExpressionUse6] = 6,
+  [Z.InputActionIds.ExpressionUse7] = 7,
+  [Z.InputActionIds.ExpressionUse8] = 8
 }
 local setItemSelected = function(data)
   local expressionData_ = Z.DataMgr.Get("expression_data")
@@ -437,7 +437,7 @@ local openExpressionFastWindow = function()
   if not funcVM.CheckFuncCanUse(E.FunctionID.ChatExpressionFast, true) then
     return
   end
-  if not Z.UIMgr:CheckMainUIActionLimit(Z.RewiredActionsConst.ExpressionFast) then
+  if not Z.UIMgr:CheckMainUIActionLimit(Z.InputActionIds.ExpressionFast) then
     return
   end
   if Z.IsPCUI then
@@ -474,9 +474,8 @@ local closeExpressionWheelSettingView = function()
 end
 local quickUseExpressionEmoji = function(slotData)
   local wheelData = Z.DataMgr.Get("wheel_data")
-  local msg = string.zconcat("emojiPic=%s=%s", slotData.Res, slotData.Id)
   local chatMainVm = Z.VMMgr.GetVM("chat_main")
-  chatMainVm.AsyncSendMessage(E.ChatChannelType.EChannelScene, nil, msg, E.ChitChatMsgType.EChatMsgPictureEmoji, slotData.Id, wheelData.CancelSource:CreateToken())
+  chatMainVm.AsyncSendMessage(E.ChatChannelType.EChannelScene, nil, "", E.ChitChatMsgType.EChatMsgPictureEmoji, slotData.Id, wheelData.CancelSource:CreateToken())
 end
 local quickUseExpressionAction = function(slotData)
   local wheelData = Z.DataMgr.Get("wheel_data")
@@ -491,7 +490,7 @@ end
 local quickUseExpressionMessage = function(slotData)
   local wheelData = Z.DataMgr.Get("wheel_data")
   local chatMainVm = Z.VMMgr.GetVM("chat_main")
-  chatMainVm.AsyncSendMessage(E.ChatChannelType.EChannelScene, nil, slotData.Text, E.ChitChatMsgType.EChatMsgPictureEmoji, slotData.Id, wheelData.CancelSource:CreateToken())
+  chatMainVm.AsyncSendMessage(E.ChatChannelType.EChannelScene, nil, "", E.ChitChatMsgType.EChatMsgPictureEmoji, slotData.Id, wheelData.CancelSource:CreateToken())
 end
 local quickUseExpressionTransporter = function(slotData)
   local sceneId = Z.StageMgr.GetCurrentSceneId()

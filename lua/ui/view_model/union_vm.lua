@@ -205,6 +205,37 @@ function UnionVM:GetOnlineMemberList()
   return onlineMemberList
 end
 
+function UnionVM:UpdateOnlineMemberList(memberIdList, memberTimeList)
+  local tempMemberDict = {}
+  for i, charId in ipairs(memberIdList) do
+    if memberTimeList[i] then
+      tempMemberDict[charId] = memberTimeList[i]
+    end
+  end
+  local unionData = Z.DataMgr.Get("union_data")
+  if unionData.MemberDict ~= nil then
+    for id, data in pairs(unionData.MemberDict) do
+      local time = tempMemberDict[data.socialData.basicData.charID]
+      if time ~= nil then
+        unionData.MemberDict[id].socialData.basicData.offlineTime = time
+      end
+    end
+  end
+end
+
+function UnionVM:GetOnlineMemberCount()
+  local unionData = Z.DataMgr.Get("union_data")
+  local onlineMemberCount = 0
+  if unionData.MemberDict ~= nil then
+    for id, data in pairs(unionData.MemberDict) do
+      if data.socialData.basicData.offlineTime == 0 then
+        onlineMemberCount = onlineMemberCount + 1
+      end
+    end
+  end
+  return onlineMemberCount
+end
+
 function UnionVM:GetLogoData(ids)
   if #ids < 5 then
     return nil
@@ -687,6 +718,7 @@ function UnionVM:OnNotifyUnionInfo(vRequest)
     local goalVM = Z.VMMgr.GetVM("goal")
     goalVM.SetGoalFinish(E.GoalType.UnionJoin)
     Z.EventMgr:Dispatch(Z.ConstValue.UnionActionEvt.JoinUnion)
+    Z.SDKReport.Report(Z.SDKReportEvent.JoinAliance)
   elseif vRequest.type == E.UnionMemberNotifyType.Leave then
     self:CloseAllUnionView()
     self:CachePlayerUnionInfo(nil)
@@ -1830,7 +1862,7 @@ local playCallFunc = function(cutId, tab, teamMembers)
       local indexType = SettlementNodeIndex.IntToEnum(0)
       data.posi = Z.SettlementCutMgr:GetSettlementMondelNodePosi(indexType, 0)
       data.quaternion = Z.SettlementCutMgr:GetSettlementMondelNodeEulerAngle(indexType, 0)
-      teamEntData[Z.EntityMgr.PlayerEnt.EntId] = data
+      teamEntData[Z.EntityMgr.PlayerEnt.CharId] = data
       local uuid = entityVM.EntIdToUuid(Z.ContainerMgr.CharSerialize.charId, entChar)
       local entity = Z.EntityMgr:GetEntity(uuid)
       if entity then

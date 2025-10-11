@@ -38,7 +38,8 @@ UIEnum.EFocusLayer = {
   [UIEnum.ELayer.UILayerTop] = true,
   [UIEnum.ELayer.UILayerTipTop] = true,
   [UIEnum.ELayer.UILayerSystem] = true,
-  [UIEnum.ELayer.UILayerSystemTip] = true
+  [UIEnum.ELayer.UILayerSystemTip] = true,
+  [UIEnum.ELayer.UILayerSDK] = true
 }
 UIEnum.ESceneMaskType = {
   None = 0,

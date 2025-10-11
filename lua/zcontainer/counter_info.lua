@@ -9,6 +9,11 @@ local mergeDataFuncs = {
     local last = container.__data__.counter
     container.__data__.counter = br.ReadInt64(buffer)
     container.Watcher:MarkDirty("counter", last)
+  end,
+  [3] = function(container, buffer, watcherList)
+    local last = container.__data__.accumulateLimit
+    container.__data__.accumulateLimit = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("accumulateLimit", last)
   end
 }
 local setForbidenMt = function(t)
@@ -43,6 +48,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.counter then
     container.__data__.counter = 0
+  end
+  if not pbData.accumulateLimit then
+    container.__data__.accumulateLimit = 0
   end
   setForbidenMt(container)
 end
@@ -92,6 +100,11 @@ local getContainerElem = function(container)
     fieldId = 2,
     dataType = 0,
     data = container.counter
+  }
+  ret.accumulateLimit = {
+    fieldId = 3,
+    dataType = 0,
+    data = container.accumulateLimit
   }
   return ret
 end

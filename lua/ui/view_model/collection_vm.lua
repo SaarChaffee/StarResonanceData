@@ -23,14 +23,16 @@ end
 function ret.GetFashionCollectionPoints(socialData)
   if socialData then
     local fashionCollectPoint = 0
-    if socialData.personalZone.fashionCollectPoint ~= nil then
-      fashionCollectPoint = fashionCollectPoint + socialData.personalZone.fashionCollectPoint
-    end
-    if socialData.personalZone.rideCollectPoint ~= nil then
-      fashionCollectPoint = fashionCollectPoint + socialData.personalZone.rideCollectPoint
-    end
-    if socialData.personalZone.weaponSkinCollectPoint ~= nil then
-      fashionCollectPoint = fashionCollectPoint + socialData.personalZone.weaponSkinCollectPoint
+    if socialData.personalZone then
+      if socialData.personalZone.fashionCollectPoint ~= nil then
+        fashionCollectPoint = fashionCollectPoint + socialData.personalZone.fashionCollectPoint
+      end
+      if socialData.personalZone.rideCollectPoint ~= nil then
+        fashionCollectPoint = fashionCollectPoint + socialData.personalZone.rideCollectPoint
+      end
+      if socialData.personalZone.weaponSkinCollectPoint ~= nil then
+        fashionCollectPoint = fashionCollectPoint + socialData.personalZone.weaponSkinCollectPoint
+      end
     end
     return fashionCollectPoint
   else

@@ -1005,12 +1005,6 @@ function ShopFashionBaseView:getMallItemRegionList(row)
         end
       end
     end
-    for i = 1, #showRegionData do
-      if table.zcontains(hideRegionData, showRegionData[i]) then
-        logError("shop_fashion_base_view MallItemTable fashionlist Error mallItemId:" .. row.Id)
-        return
-      end
-    end
   end
   return showRegionData, hideRegionData, fashionId
 end

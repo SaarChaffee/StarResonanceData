@@ -37,7 +37,10 @@ function Story_fade_message_windowView:OnRefresh()
 end
 
 function Story_fade_message_windowView:refreshUI(messageRow)
-  self.contentText_ = messageRow.Content
+  local placeholderParam = Z.Placeholder.SetNpcPlaceholder()
+  Z.Placeholder.SetPlayerSelfPronoun(placeholderParam)
+  local content = Z.Placeholder.Placeholder(messageRow.Content, placeholderParam)
+  self.contentText_ = content
   self.fadeInTime_ = messageRow.FadeInTime
   self.durationTime_ = messageRow.DurationTime
   self.uiBinder.lab_content:SetText("")

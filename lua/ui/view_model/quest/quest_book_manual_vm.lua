@@ -73,6 +73,7 @@ function QuestBookManualVM.GetChapterEpisodeAndPhases(unlockedPhaseIds)
   local questInfoMgr = Z.TableMgr.GetTable("QuestInfoTableMgr")
   local ret = {}
   local indexMap = {}
+  local placeholderParam = Z.Placeholder.SetPlayerSelfPronoun()
   for _, phaseId in ipairs(unlockedPhaseIds) do
     local questInfo = questInfoMgr.GetRow(phaseId)
     if questInfo ~= nil then
@@ -80,9 +81,10 @@ function QuestBookManualVM.GetChapterEpisodeAndPhases(unlockedPhaseIds)
       if index == nil then
         index = #ret + 1
         indexMap[questInfo.TitleOrder] = index
+        local titleName = Z.Placeholder.Placeholder(questInfo.TitleName, placeholderParam)
         table.insert(ret, {
           episodeId = questInfo.TitleOrder,
-          episodeName = questInfo.TitleName,
+          episodeName = titleName,
           phases = {}
         })
       end

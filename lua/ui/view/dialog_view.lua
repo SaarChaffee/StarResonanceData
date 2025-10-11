@@ -66,7 +66,9 @@ function DialogView:initUiBinders()
   self.lab_notice_ = self.uiBinder.lab_notice
   self.toggleNode_ = self.uiBinder.com_toggle
   self.nodeLoop_ = self.uiBinder.node_loop
+  self.animDo_ = self.uiBinder.anim_do
   self.SceneMask_:SetSceneMaskByKey(self.SceneMaskKey)
+  self.animDo_:Restart(Z.DOTweenAnimType.Open)
 end
 
 function DialogView:OnActive()
@@ -253,13 +255,10 @@ function DialogView:OnInputBack()
 end
 
 function DialogView:OnTriggerInputAction(inputActionEventData)
-  if not Z.PlayerInputController:IsGamepadComboValidForAction(inputActionEventData) then
-    return
-  end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.Cancel then
+  if inputActionEventData.ActionId == Z.InputActionIds.Cancel then
     self:OnInputBack()
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.Confirm then
+  if inputActionEventData.ActionId == Z.InputActionIds.Confirm then
     Z.CoroUtil.create_coro_xpcall(function()
       self.onConfirmFunc_()
     end)()

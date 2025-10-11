@@ -14,16 +14,19 @@ function Union_wardance_windowView:ctor()
   self.unionWarDanceVM_ = Z.VMMgr.GetVM("union_wardance")
   
   function self.onInputAction_(inputActionEventData)
-    Z.CoroUtil.create_coro_xpcall(function()
-      self.unionWarDanceVM_.RequestBeginDance()
-    end)()
+    local unionWarDanceData = Z.DataMgr.Get("union_wardance_data")
+    if (not self.unionWarDanceVM_:isinWillOpenWarDanceActivity() or self.activityStart) and not unionWarDanceData:IsDancing() then
+      Z.CoroUtil.create_coro_xpcall(function()
+        self.unionWarDanceVM_.RequestBeginDance()
+      end)()
+    end
   end
   
   self.iputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function Union_wardance_windowView:OnActive()
-  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Interact)
+  Z.InputMgr:AddInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.InputActionIds.Interact)
   self:initUi()
   Z.EventMgr:Add(Z.ConstValue.UnionWarDanceEvt.UnionWarDanceSelfIsDancing, self.changeSelfIsDancing, self)
   Z.EventMgr:Add(Z.ConstValue.UnionWarDanceEvt.UnionWarDanceSelfActivityStart, self.refreshStart, self)
@@ -45,7 +48,7 @@ function Union_wardance_windowView:initUi()
 end
 
 function Union_wardance_windowView:OnDeActive()
-  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.RewiredActionsConst.Interact)
+  Z.InputMgr:RemoveInputEventDelegate(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed, Z.InputActionIds.Interact)
   if self.countDownBinder then
     self.countDownBinder:UnInit()
     self.countDownBinder = nil

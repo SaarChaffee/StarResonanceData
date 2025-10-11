@@ -3,9 +3,10 @@ local uidToUuidOfEntFlag = function(type, uid, isClient)
   local entityVM = Z.VMMgr.GetVM("entity")
   return entityVM.EntIdToUuid(uid, type, false, isClient)
 end
-local uidToUuidOfNoneEntFlag = function(id, type, uid, isQuest)
+local uidToUuidOfNoneEntFlag = function(id, type, uid, isQuest, isPosition)
   local intQuest = isQuest and 1 or 0
-  return id + (intQuest << 28 | type:ToInt() << 29 | uid << 32)
+  local intPosition = isPosition and 1 or 0
+  return id + (intQuest << 28 | type:ToInt() << 29 | intPosition << 30 | uid << 32)
 end
 local getGlobalInfo = function(sceneId, posType, uid)
   if sceneId <= 0 then
@@ -13,7 +14,7 @@ local getGlobalInfo = function(sceneId, posType, uid)
   end
   local flagDataId, levelTableType
   if posType == Z.GoalPosType.Point then
-    flagDataId = uidToUuidOfNoneEntFlag(uid, posType, uid, false)
+    flagDataId = uidToUuidOfNoneEntFlag(uid, posType, uid, false, false)
     levelTableType = E.LevelTableType.Point
   elseif posType == Z.GoalPosType.Npc then
     levelTableType = E.LevelTableType.Npc
@@ -23,6 +24,9 @@ local getGlobalInfo = function(sceneId, posType, uid)
     levelTableType = E.LevelTableType.Zone
   elseif posType == Z.GoalPosType.SceneObject then
     levelTableType = E.LevelTableType.SceneObject
+  elseif posType == Z.GoalPosType.Position then
+    flagDataId = uidToUuidOfNoneEntFlag(uid, posType, uid, false, true)
+    return nil, flagDataId
   end
   if not levelTableType then
     return
@@ -338,6 +342,24 @@ local getSelectCollectionFlagData = function(collectionId, curSceneId)
   end
   return resultFlagData
 end
+local getMonsterHuntFlagDataBySceneId = function(sceneId)
+  local flagDataList = {}
+  local entMonsterType = Z.PbEnum("EEntityType", "EntMonster")
+  local configList = Z.TableMgr.GetTable("MonsterHuntListTableMgr").GetDatas()
+  for id, config in pairs(configList) do
+    if config.Scene == sceneId and config.SceneTag ~= 0 and #config.QuickJumpParam >= 3 and config.QuickJumpParam[2] == E.TrackType.Monster then
+      local uid = config.QuickJumpParam[3]
+      local monsterGlobalConfig = Z.TableMgr.GetLevelTableRow(E.LevelTableType.Monster, sceneId, uid)
+      if monsterGlobalConfig ~= nil then
+        local flagData = createEntityMapFlagData(uid, entMonsterType, false, config.SceneTag, monsterGlobalConfig.Position, E.SceneObjType.MonsterHunt)
+        if flagData ~= nil then
+          table.insert(flagDataList, flagData)
+        end
+      end
+    end
+  end
+  return flagDataList
+end
 local getTeamFlagDataBySceneId = function(sceneId)
   local dataList = {}
   local teamData = Z.DataMgr.Get("team_data")
@@ -604,13 +626,14 @@ local checkTeleport = function(callback)
 end
 local asyncUserTp = function(sceneId, transferId)
   local questData = Z.DataMgr.Get("quest_data")
+  local questVm = Z.VMMgr.GetVM("quest")
   local questSet = questData:GetTpLimitQuestSetBySceneId(Z.StageMgr.GetCurrentSceneId())
   local questId = next(questSet)
   if questId then
     local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(questId)
     if questRow then
       local param = {
-        str = questRow.QuestName
+        str = questVm.GetQuestName(questId)
       }
       Z.TipsVM.ShowTipsLang(1001601, param)
       return
@@ -641,10 +664,8 @@ end
 local findAroundFlagName = function(flagData)
   local name = ""
   if flagData.QuestId then
-    local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(tonumber(flagData.QuestId))
-    if questRow then
-      name = questRow.QuestName
-    end
+    local questVm = Z.VMMgr.GetVM("quest")
+    name = questVm.GetQuestName(tonumber(flagData.QuestId))
   elseif flagData.Name then
     name = flagData.Name
   elseif flagData.MarkInfo then
@@ -673,7 +694,7 @@ local getCollectionEnrichmentInfo = function(collectionId, sceneId)
     end
   end
 end
-local setTraceEntity = function(src, sceneId, uid, posType, autoSelectTraceItem)
+local setTraceEntity = function(src, sceneId, uid, posType, autoSelectTraceItem, position)
   local mapData = Z.DataMgr.Get("map_data")
   if autoSelectTraceItem then
     mapData.AutoSelectTrackSrc = src
@@ -686,6 +707,8 @@ local setTraceEntity = function(src, sceneId, uid, posType, autoSelectTraceItem)
     end
     info = Panda.ZGame.GoalPosInfo.New(src, sceneId, uid, posType, enrichmentInfo.Id)
     mapData:SetTargetCollectionId(uid)
+  elseif posType == Z.GoalPosType.Position then
+    info = Panda.ZGame.GoalPosInfo.New(src, sceneId, uid, posType, position)
   else
     info = Panda.ZGame.GoalPosInfo.New(src, sceneId, uid, posType)
   end
@@ -726,6 +749,8 @@ local getPosTypeByFlagData = function(flagData)
     posType = Z.GoalPosType.Point
   elseif flagType == E.MapFlagType.Custom then
     posType = Z.GoalPosType.Point
+  elseif flagType == E.MapFlagType.Position then
+    posType = Z.GoalPosType.Position
   end
   return posType
 end
@@ -802,6 +827,10 @@ local clearFlagDataTrackSource = function(sceneId, flagData)
   end
   local mapData = Z.DataMgr.Get("map_data")
   mapData.TracingFlagData = nil
+  if flagData.TypeId == E.SceneTagId.DynamicTrace then
+    local posType = Z.GoalGuideMgr.EntTypeToPosType(flagData.Type)
+    mapData:ClearDynamicTraceParam()
+  end
 end
 local asyncSendSetMapMark = function(sceneId, markInfo, cancelToken)
   local ret = worldProxy.SetMapMark(sceneId, markInfo, cancelToken)
@@ -883,15 +912,15 @@ local sortAroundList = function(aroundList, selectId)
     return false
   end)
 end
-local createDynamicTraceMapFlagData = function(sourceType, goalPosInfo)
-  local globalCfg, flagDataId = getGlobalInfo(goalPosInfo.SceneId, goalPosInfo.PosType, goalPosInfo.Uid)
-  if globalCfg == nil or flagDataId == nil then
+local createDynamicTraceMapFlagData = function(sceneId, sourceType, posType, uid, position)
+  local globalCfg, flagDataId = getGlobalInfo(sceneId, posType, uid)
+  if posType ~= Z.GoalPosType.Position and (globalCfg == nil or flagDataId == nil) then
     return
   end
   local flagData = {
     Id = flagDataId,
-    Uid = goalPosInfo.Uid,
-    Type = Z.GoalGuideMgr.PosTypeToEntType(goalPosInfo.PosType),
+    Uid = uid,
+    Type = Z.GoalGuideMgr.PosTypeToEntType(posType),
     TypeId = E.SceneTagId.DynamicTrace
   }
   local sceneTagTbl = Z.TableMgr.GetTable("SceneTagTableMgr")
@@ -899,18 +928,25 @@ local createDynamicTraceMapFlagData = function(sourceType, goalPosInfo)
   if sceneData then
     flagData.IconPath = sceneData.Icon1
   end
-  if goalPosInfo.PosType == Z.GoalPosType.Point then
+  if posType == Z.GoalPosType.Point then
     flagData.FlagType = E.MapFlagType.NotEntity
-  elseif goalPosInfo.PosType == Z.GoalPosType.Zone then
+  elseif posType == Z.GoalPosType.Zone then
     flagData.FlagType = E.MapFlagType.Entity
     flagData.RangeDiameter = globalCfg.ZoneParam[1]
+  elseif posType == Z.GoalPosType.Position then
+    flagData.FlagType = E.MapFlagType.Position
+    flagData.TypeId = E.MapFlagTypeId.PositionShare
   else
     flagData.FlagType = E.MapFlagType.Entity
   end
-  local posArray = globalCfg.Position
-  flagData.Pos = Vector3.New(posArray[1], posArray[2], posArray[3])
+  if posType == Z.GoalPosType.Position then
+    flagData.Pos = position
+  else
+    local posArray = globalCfg.Position
+    flagData.Pos = Vector3.New(posArray[1], posArray[2], posArray[3])
+  end
   local mapData = Z.DataMgr.Get("map_data")
-  local dynamicTraceParam = mapData:GetDynamicTraceParam(sourceType, goalPosInfo.PosType, goalPosInfo.Uid)
+  local dynamicTraceParam = mapData:GetDynamicTraceParam(sourceType, posType, uid)
   if dynamicTraceParam and dynamicTraceParam.Name then
     flagData.Name = dynamicTraceParam.Name
   end
@@ -1035,6 +1071,7 @@ local ret = {
   GetQuestGoalFlagDataBySceneId = getQuestGoalFlagDataBySceneId,
   CreateQuestNpcMapFlagDataList = createQuestNpcMapFlagDataList,
   GetSelectCollectionFlagData = getSelectCollectionFlagData,
+  GetMonsterHuntFlagDataBySceneId = getMonsterHuntFlagDataBySceneId,
   GetTeamFlagDataBySceneId = getTeamFlagDataBySceneId,
   LoadEntityTableData = loadEntityTableData,
   LoadWorldQuestEntityFlagData = loadWorldQuestEntityFlagData,
@@ -1060,6 +1097,7 @@ local ret = {
   GetCurSceneGroupList = getCurSceneGroupList,
   LoadSceneEntityTableData = loadSceneEntityTableData,
   IsCanSwitchWorldMap = isCanSwitchWorldMap,
-  CollectWorldMapQuestGoalInfos = collectWorldMapQuestGoalInfos
+  CollectWorldMapQuestGoalInfos = collectWorldMapQuestGoalInfos,
+  UidToUuidOfNoneEntFlag = uidToUuidOfNoneEntFlag
 }
 return ret

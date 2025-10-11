@@ -3,6 +3,7 @@ local super = require("ui.ui_view_base")
 local Team_enterView = class("Team_enterView", super)
 local playerPortraitHgr = require("ui.component.role_info.common_player_portrait_item_mgr")
 local PERSONALZONEDEFINE = require("ui.model.personalzone_define")
+local MasterChallenDungeonTableMap = require("table.MasterChallenDungeonTableMap")
 
 function Team_enterView:ctor()
   self.uiBinder = nil
@@ -18,6 +19,7 @@ function Team_enterView:ctor()
   self.matchTeamData_ = Z.DataMgr.Get("match_team_data")
   self.matchActivityData_ = Z.DataMgr.Get("match_activity_data")
   self.matchData_ = Z.DataMgr.Get("match_data")
+  self.switchVm_ = Z.VMMgr.GetVM("switch")
 end
 
 function Team_enterView:initBinder()
@@ -36,10 +38,12 @@ function Team_enterView:initBinder()
 end
 
 function Team_enterView:OnActive()
+  self.readyMap = {}
   self:initBinder()
   self.sceneMask_:SetSceneMaskByKey(self.SceneMaskKey)
   self.uiBinder.Ref:SetVisible(self.btn_node_, true)
   self.teamVM_ = Z.VMMgr.GetVM("team")
+  self.downloadVm_ = Z.VMMgr.GetVM("download")
   if self.viewData and self.viewData.assignSceneParams then
     self:setViewInfo()
     Z.CoroUtil.create_coro_xpcall(function()
@@ -58,10 +62,12 @@ end
 function Team_enterView:OnDeActive()
   Z.EventMgr:RemoveObjAll(self)
   self.timerMgr:Clear()
+  self.readyMap = {}
 end
 
 function Team_enterView:setMatchTeamViewInfo()
   local dungeonId = self.matchTeamData_:GetCurMatchingDungeonId()
+  local difficulty = self.matchTeamData_:GetCurMatchingMasterDifficulty()
   local dungeonCfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
   if not dungeonCfg then
     return
@@ -71,8 +77,22 @@ function Team_enterView:setMatchTeamViewInfo()
   local teamTargetTableRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetId)
   if teamTargetTableRow then
     self.uiBinder.rimg_bg:SetImage(teamTargetTableRow.MatchPic)
+    self.TeamMaxMemberType_ = teamTargetTableRow.MemberCountStopMatch > 5 and E.ETeamMemberType.Twenty or E.ETeamMemberType.Five
   end
-  self.lab_title_.text = dungeonCfg.Name .. "  " .. dungeonCfg.DungeonTypeName
+  local targetName = ""
+  if difficulty and 0 < difficulty then
+    local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[dungeonId][difficulty]
+    local masterChallengeDungeonTableRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+    if masterChallengeDungeonTableRow then
+      targetName = Lang("DungeonMasterName", {
+        dungeonName = dungeonCfg.Name,
+        masterName = masterChallengeDungeonTableRow.DungeonTypeName
+      })
+    end
+  else
+    targetName = dungeonCfg.Name .. "  " .. dungeonCfg.DungeonTypeName
+  end
+  self.lab_title_.text = targetName
   self.uiBinder.Ref:SetVisible(self.node_worldquest, self.worldquestVM_.CheckIsWorldDungeonAndFinish(dungeonId))
   local affixList
   local hasAffix = false
@@ -80,7 +100,7 @@ function Team_enterView:setMatchTeamViewInfo()
   local dungeonAffix = dungeon_data:GetDungeonAffixDic(dungeonId)
   if dungeonAffix and dungeonAffix.affixes then
     affixList = dungeonAffix.affixes
-    hasAffix = table.zcount(affixList) > 0
+    hasAffix = 0 < table.zcount(affixList)
   end
   self:AddClick(self.affixBtn_, function()
     self.vm.OpenAffixInfoView(dungeonAffix.affixes)
@@ -89,15 +109,11 @@ function Team_enterView:setMatchTeamViewInfo()
   local matchTableRow = Z.TableMgr.GetTable("MatchTableMgr").GetRow(teamTargetTableRow.MatchID)
   local lastTime = matchTableRow.ConfirmTime
   local sliderValue = lastTime
+  self.lab_time_.text = lastTime .. Lang("EquipSecondsText")
   self.timerMgr:StartFrameTimer(function()
     sliderValue = sliderValue - Time.deltaTime
-    self.imgSlider_.fillAmount = 1 / lastTime * sliderValue
-  end, 1, -1)
-  self.lab_time_.text = lastTime .. Lang("EquipSecondsText")
-  local time = 0
-  self.timerMgr:StartTimer(function()
-    time = time + 1
-    self.lab_time_.text = (lastTime - time < 0 and 0 or lastTime - time) .. Lang("EquipSecondsText")
+    self.lab_time_.text = sliderValue < 0 and 0 .. Lang("EquipSecondsText") or math.floor(sliderValue) .. Lang("EquipSecondsText")
+    self.imgSlider_.fillAmount = sliderValue / lastTime
   end, 1, -1)
 end
 
@@ -202,16 +218,12 @@ function Team_enterView:setViewInfo()
   end)
   local lastTime = Z.Global.TeamApplyActivityLastTime
   local sliderValue = lastTime
+  self.lab_time_.text = lastTime .. Lang("EquipSecondsText")
   self.timerMgr:StartFrameTimer(function()
     sliderValue = sliderValue - Time.deltaTime
-    self.imgSlider_.fillAmount = 1 / lastTime * sliderValue
-  end, 1, -1)
-  self.lab_time_.text = lastTime .. Lang("EquipSecondsText")
-  local time = 0
-  self.timerMgr:StartTimer(function()
-    time = time + 1
-    self.lab_time_.text = lastTime - time .. Lang("EquipSecondsText")
-    if time >= lastTime then
+    self.imgSlider_.fillAmount = sliderValue / lastTime
+    self.lab_time_.text = sliderValue < 0 and 0 .. Lang("EquipSecondsText") or math.floor(sliderValue) .. Lang("EquipSecondsText")
+    if sliderValue < 0 then
       self.timerMgr:Clear()
       self.vm.CloseEnterView()
     end
@@ -221,12 +233,20 @@ end
 function Team_enterView:setMatchMemberInfo()
   self:ClearAllUnits()
   local memberList = self.matchData_:GetMatchPlayerInfo()
+  local parent = self.TeamMaxMemberType_ == E.ETeamMemberType.Five and self.layout_gruop_ or self.memberNode20_
+  self.uiBinder.Ref:SetVisible(self.layout_gruop_, self.TeamMaxMemberType_ == E.ETeamMemberType.Five)
+  self.uiBinder.Ref:SetVisible(self.memberNode20_, self.TeamMaxMemberType_ == E.ETeamMemberType.Twenty)
+  local path = self.TeamMaxMemberType_ == E.ETeamMemberType.Five and GetLoadAssetPath(Z.ConstValue.Team.EnterPlayTpl) or GetLoadAssetPath(Z.ConstValue.Team.EnterPlayTpl20)
   for k, v in pairs(memberList) do
     local memberInfo = v
     local charId = memberInfo.charId
-    local memberItem = self:AsyncLoadUiUnit(GetLoadAssetPath(Z.ConstValue.Team.EnterPlayTpl), "member" .. charId, self.layout_gruop_.transform)
-    memberItem.Ref:SetVisible(memberItem.img_select, memberInfo.readyStatus == E.RedayType.Ready)
-    memberItem.Ref:SetVisible(memberItem.cont_login, memberInfo.readyStatus ~= E.RedayType.Ready)
+    local memberItem = self:AsyncLoadUiUnit(path, "member" .. charId, parent)
+    local isReady = memberInfo.readyStatus == E.RedayType.Ready
+    if table.zcontainsKey(self.readyMap, memberInfo.charId) then
+      isReady = true
+    end
+    memberItem.Ref:SetVisible(memberItem.img_select, isReady)
+    memberItem.Ref:SetVisible(memberItem.cont_login, not isReady)
     memberItem.Ref:SetVisible(memberItem.lab_tips, false)
     local isAssistFight = false
     if not memberInfo.isAi then
@@ -236,13 +256,40 @@ function Team_enterView:setMatchMemberInfo()
     self:setMatchHalfPortraitPImg(memberInfo, memberItem)
     memberItem.Ref:SetVisible(memberItem.lab_master, false)
     local idcard = Z.DataMgr.Get("personal_zone_data"):GetDefaultProfileImageConfigByType(PERSONALZONEDEFINE.ProfileImageType.Card)
+    if memberInfo.matchShowInfo and memberInfo.matchShowInfo.avatarInfo and memberInfo.matchShowInfo.avatarInfo.businessCardStyleId ~= 0 then
+      idcard = memberInfo.matchShowInfo.avatarInfo.businessCardStyleId
+    end
     local config = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(idcard)
-    if config then
+    if config and memberItem.rimg_bg then
       memberItem.rimg_bg:SetImage(Z.ConstValue.PersonalZone.PersonalTeamBg .. config.Image)
     end
-    for i = 1, Z.Global.TeamCardShowMedalCount do
-      local img = memberItem.node_badge["rimg_badge_" .. i]
-      memberItem.node_badge.Ref:SetVisible(img, false)
+    local medals = {}
+    local medalCount = 0
+    if memberInfo.matchShowInfo and memberInfo.matchShowInfo.personalZone and memberInfo.matchShowInfo.personalZone.medals then
+      for i = 1, Z.Global.PersonalMedalLimit * Z.Global.PersonalzoneMedalRow[1] * Z.Global.PersonalzoneMedalRow[2] do
+        if memberInfo.matchShowInfo.personalZone.medals[i] ~= nil and memberInfo.matchShowInfo.personalZone.medals[i] ~= 0 then
+          medalCount = medalCount + 1
+          medals[medalCount] = memberInfo.matchShowInfo.personalZone.medals[i]
+          if medalCount == Z.Global.IdCardShowMedalCount then
+            break
+          end
+        end
+      end
+    end
+    if self.TeamMaxMemberType_ == E.ETeamMemberType.Five then
+      local mgr = Z.TableMgr.GetTable("MedalTableMgr")
+      for i = 1, Z.Global.TeamCardShowMedalCount do
+        local img = memberItem.node_badge["rimg_badge_" .. i]
+        if medals[i] ~= nil and medals[i] ~= 0 then
+          memberItem.node_badge.Ref:SetVisible(img, true)
+          local config = mgr.GetRow(medals[i])
+          if config then
+            img:SetImage(config.Image)
+          end
+        else
+          memberItem.node_badge.Ref:SetVisible(img, false)
+        end
+      end
     end
   end
 end
@@ -264,6 +311,8 @@ function Team_enterView:setMemberInfo()
     showScore = dungeonCfg.PlayType == E.DungeonType.MasterChallengeDungeon
   end
   local parent = self.TeamMaxMemberType_ == E.ETeamMemberType.Five and self.layout_gruop_ or self.memberNode20_
+  self.uiBinder.Ref:SetVisible(self.layout_gruop_, self.TeamMaxMemberType_ == E.ETeamMemberType.Five)
+  self.uiBinder.Ref:SetVisible(self.memberNode20_, self.TeamMaxMemberType_ == E.ETeamMemberType.Twenty)
   local path = self.TeamMaxMemberType_ == E.ETeamMemberType.Five and GetLoadAssetPath(Z.ConstValue.Team.EnterPlayTpl) or GetLoadAssetPath(Z.ConstValue.Team.EnterPlayTpl20)
   for i = 1, memberListCount do
     local memberInfo = memberList[i]
@@ -390,21 +439,27 @@ function Team_enterView:setHalfPortraitPImg(memberInfo, memberItem)
         memberItem.img_idcard:SetImage(path)
       end
     end
-    local headId, charId = self.snapShotVM_.AsyncGetHttpHalfPortraitId(memberInfo.charId)
-    if not self.uiBinder then
-      return
-    end
-    if charId == memberInfo.charId and headId ~= nil and headId ~= 0 then
-      memberItem.Ref:SetVisible(memberItem.img_idcard, false)
-      memberItem.Ref:SetVisible(memberItem.rimg_idcard, true)
-      memberItem.rimg_idcard:SetNativeTexture(headId)
+    if self.switchVm_.CheckFuncSwitch(E.FunctionID.DisplayCustomHalfBody) then
+      self.snapShotVM_.AsyncGetHttpHalfPortraitId(memberInfo.charId, function(nativeTextureId)
+        if not self.uiBinder then
+          return
+        end
+        if nativeTextureId ~= nil and nativeTextureId ~= 0 then
+          memberItem.Ref:SetVisible(memberItem.img_idcard, false)
+          memberItem.Ref:SetVisible(memberItem.rimg_idcard, true)
+          memberItem.rimg_idcard:SetNativeTexture(nativeTextureId)
+        end
+      end)
     end
   end
   if professionId ~= 0 then
     local professionSystemTableRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
     if professionSystemTableRow then
       memberItem.img_profession:SetImage(professionSystemTableRow.Icon)
-      memberItem.lab_salutation.text = Lang("Grade", {val = level}) .. professionSystemTableRow.Name
+      memberItem.lab_salutation.text = Lang("LevelWithProfession", {
+        level = level,
+        professionName = professionSystemTableRow.Name
+      })
     end
   end
 end
@@ -431,18 +486,11 @@ function Team_enterView:setMatchHalfPortraitPImg(memberInfo, memberItem)
     end
   else
     memberItem.lab_name.text = memberInfo.matchShowInfo.name
-    if memberInfo.matchShowInfo.avatarInfo and memberInfo.matchShowInfo.avatarInfo.halfBody and not string.zisEmpty(memberInfo.matchShowInfo.avatarInfo.halfBody.url) and memberInfo.matchShowInfo.avatarInfo.halfBody.verify.ReviewStartTime == E.EPictureReviewType.EPictureReviewed then
-      local snapshotVm = Z.VMMgr.GetVM("snapshot")
-      local nativeTextureId = snapshotVm.AsyncDownLoadPictureByUrl(memberInfo.matchShowInfo.avatarInfo.halfBody.url)
-      if self.uiBinder == nil then
-        return
-      end
-      if nativeTextureId then
-        memberItem.Ref:SetVisible(memberItem.rimg_idcard, true)
-        memberItem.rimg_idcard:SetNativeTexture(nativeTextureId)
-      else
-        self:setDefaultModelHalf(memberInfo, memberItem)
-      end
+    if self.switchVm_.CheckFuncSwitch(E.FunctionID.DisplayCustomHalfBody) and memberInfo.matchShowInfo.avatarInfo and memberInfo.matchShowInfo.avatarInfo.halfBody and not string.zisEmpty(memberInfo.matchShowInfo.avatarInfo.halfBody.url) and memberInfo.matchShowInfo.avatarInfo.halfBody.verify.ReviewStartTime == E.EPictureReviewType.EPictureReviewed then
+      local name = self.downloadVm_:GetFileName(memberInfo.charId, memberInfo.matchShowInfo.avatarInfo.halfBody.verify.version, E.HttpPictureDownFoldType.HalfBody)
+      self.downloadVm_:GetPicture(name, memberInfo.matchShowInfo.avatarInfo.halfBody.url, self.cancelSource:CreateToken(), function(nativeTextureId)
+        self:getHalfBodyTextureCallBack(memberInfo, memberItem, nativeTextureId)
+      end, E.HttpPictureDownFoldType.HalfBody)
     else
       self:setDefaultModelHalf(memberInfo, memberItem)
     end
@@ -451,10 +499,23 @@ function Team_enterView:setMatchHalfPortraitPImg(memberInfo, memberItem)
     local professionSystemTableRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
     if professionSystemTableRow then
       memberItem.img_profession:SetImage(professionSystemTableRow.Icon)
-      memberItem.lab_salutation.text = Lang("Grade", {
-        val = memberInfo.matchShowInfo.level
-      }) .. professionSystemTableRow.Name
+      memberItem.lab_salutation.text = Lang("LevelWithProfession", {
+        level = memberInfo.matchShowInfo.level,
+        professionName = professionSystemTableRow.Name
+      })
     end
+  end
+end
+
+function Team_enterView:getHalfBodyTextureCallBack(memberInfo, memberItem, nativeTextureId)
+  if self.uiBinder == nil then
+    return
+  end
+  if nativeTextureId then
+    memberItem.Ref:SetVisible(memberItem.rimg_idcard, true)
+    memberItem.rimg_idcard:SetNativeTexture(nativeTextureId)
+  else
+    self:setDefaultModelHalf(memberInfo, memberItem)
   end
 end
 
@@ -470,15 +531,16 @@ function Team_enterView:setDefaultModelHalf(memberInfo, memberItem)
       memberItem.img_idcard:SetImage(path)
     end
   end
-  local headId, charId = self.snapShotVM_.AsyncGetHttpHalfPortraitId(memberInfo.charId)
-  if not self.uiBinder then
-    return
-  end
-  if charId == memberInfo.charId and headId ~= nil and headId ~= 0 then
-    memberItem.Ref:SetVisible(memberItem.img_idcard, false)
-    memberItem.Ref:SetVisible(memberItem.rimg_idcard, true)
-    memberItem.rimg_idcard:SetNativeTexture(headId)
-  end
+  self.snapShotVM_.AsyncGetHttpHalfPortraitId(memberInfo.charId, function(nativeTextureId)
+    if not self.uiBinder then
+      return
+    end
+    if nativeTextureId ~= nil and nativeTextureId ~= 0 then
+      memberItem.Ref:SetVisible(memberItem.img_idcard, false)
+      memberItem.Ref:SetVisible(memberItem.rimg_idcard, true)
+      memberItem.rimg_idcard:SetNativeTexture(nativeTextureId)
+    end
+  end)
 end
 
 function Team_enterView:teamRefreshActivityVoteResult(resultData)
@@ -512,6 +574,13 @@ function Team_enterView:teamMatchRefreshActivityVoteResult()
     if memberItem then
       memberItem.Ref:SetVisible(memberItem.img_select, memberInfo.readyStatus == E.RedayType.Ready)
       memberItem.Ref:SetVisible(memberItem.cont_login, memberInfo.readyStatus ~= E.RedayType.Ready)
+    else
+      if self.readyMap == nil then
+        self.readyMap = {}
+      end
+      if memberInfo.readyStatus == E.RedayType.Ready then
+        table.insert(self.readyMap, memberInfo.charId)
+      end
     end
   end
 end

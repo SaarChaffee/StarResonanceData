@@ -3,7 +3,7 @@
     "Id": 101,
     "Week": [],
     "Type": 1,
-    "Name": "",
+    "Name": "Chaotic Realm",
     "Target": [
       110001,
       110002,
@@ -25,7 +25,7 @@
       2
     ],
     "Type": 1,
-    "Name": "",
+    "Name": "Chaotic Realm",
     "Target": [
       110001,
       110002,
@@ -47,7 +47,7 @@
       3
     ],
     "Type": 1,
-    "Name": "",
+    "Name": "Chaotic Realm",
     "Target": [
       110001,
       110002,
@@ -71,10 +71,10 @@
     "Id": 104,
     "Week": [
       4,
-      5
+      6
     ],
     "Type": 1,
-    "Name": "",
+    "Name": "Chaotic Realm",
     "Target": [
       110001,
       110002,
@@ -97,10 +97,10 @@
   "105": {
     "Id": 105,
     "Week": [
-      6
+      7
     ],
     "Type": 1,
-    "Name": "",
+    "Name": "Chaotic Realm",
     "Target": [
       110001,
       110002,
@@ -123,11 +123,11 @@
   "106": {
     "Id": 106,
     "Week": [
-      7,
+      8,
       14
     ],
     "Type": 1,
-    "Name": "",
+    "Name": "Chaotic Realm",
     "Target": [
       110001,
       110002,
@@ -155,7 +155,7 @@
     "Id": 201,
     "Week": [],
     "Type": 2,
-    "Name": "",
+    "Name": "World Wilderness",
     "Target": [
       120001,
       120002,
@@ -177,7 +177,7 @@
       2
     ],
     "Type": 2,
-    "Name": "",
+    "Name": "World Wilderness",
     "Target": [
       120001,
       120002,
@@ -199,7 +199,7 @@
       3
     ],
     "Type": 2,
-    "Name": "",
+    "Name": "World Wilderness",
     "Target": [
       120001,
       120002,
@@ -219,10 +219,10 @@
     "Id": 204,
     "Week": [
       4,
-      5
+      6
     ],
     "Type": 2,
-    "Name": "",
+    "Name": "World Wilderness",
     "Target": [
       120001,
       120002,
@@ -241,10 +241,10 @@
   "205": {
     "Id": 205,
     "Week": [
-      6
+      7
     ],
     "Type": 2,
-    "Name": "",
+    "Name": "World Wilderness",
     "Target": [
       120001,
       120002,
@@ -263,11 +263,11 @@
   "206": {
     "Id": 206,
     "Week": [
-      7,
+      8,
       14
     ],
     "Type": 2,
-    "Name": "",
+    "Name": "World Wilderness",
     "Target": [
       120001,
       120002,
@@ -287,7 +287,7 @@
     "Id": 301,
     "Week": [],
     "Type": 3,
-    "Name": "",
+    "Name": "Life Skill",
     "Target": [
       130001,
       130002,
@@ -304,7 +304,7 @@
       2
     ],
     "Type": 3,
-    "Name": "",
+    "Name": "Life Skill",
     "Target": [
       130001,
       130002,
@@ -321,7 +321,7 @@
       3
     ],
     "Type": 3,
-    "Name": "",
+    "Name": "Life Skill",
     "Target": [
       130001,
       130002,
@@ -336,10 +336,10 @@
     "Id": 304,
     "Week": [
       4,
-      5
+      6
     ],
     "Type": 3,
-    "Name": "",
+    "Name": "Life Skill",
     "Target": [
       130001,
       130002,
@@ -353,10 +353,10 @@
   "305": {
     "Id": 305,
     "Week": [
-      6
+      7
     ],
     "Type": 3,
-    "Name": "",
+    "Name": "Life Skill",
     "Target": [
       130001,
       130002,
@@ -370,11 +370,11 @@
   "306": {
     "Id": 306,
     "Week": [
-      7,
+      8,
       14
     ],
     "Type": 3,
-    "Name": "",
+    "Name": "Life Skill",
     "Target": [
       130001,
       130002,

@@ -2,7 +2,7 @@
   "1": {
     "Id": 1,
     "FunctionId": "2001",
-    "Name": "",
+    "Name": "Apply",
     "System": "1",
     "Show": "1",
     "Sort": "20",
@@ -12,7 +12,7 @@
   "2": {
     "Id": 2,
     "FunctionId": "2002",
-    "Name": "",
+    "Name": "Invite",
     "System": "",
     "Show": "",
     "Sort": "21",
@@ -22,7 +22,7 @@
   "3": {
     "Id": 3,
     "FunctionId": "2003",
-    "Name": "",
+    "Name": "Apply for captain",
     "System": "",
     "Show": "",
     "Sort": "22",
@@ -32,7 +32,7 @@
   "4": {
     "Id": 4,
     "FunctionId": "2004",
-    "Name": "",
+    "Name": "Transfer captain",
     "System": "",
     "Show": "",
     "Sort": "23",
@@ -42,7 +42,7 @@
   "5": {
     "Id": 5,
     "FunctionId": "2005",
-    "Name": "",
+    "Name": "Remove",
     "System": "",
     "Show": "",
     "Sort": "24",
@@ -52,7 +52,7 @@
   "6": {
     "Id": 6,
     "FunctionId": "2006",
-    "Name": "",
+    "Name": "Interact",
     "System": "",
     "Show": "",
     "Sort": "29",
@@ -62,7 +62,7 @@
   "7": {
     "Id": 7,
     "FunctionId": "2007",
-    "Name": "",
+    "Name": "Add",
     "System": "",
     "Show": "",
     "Sort": "27",
@@ -72,7 +72,7 @@
   "8": {
     "Id": 8,
     "FunctionId": "2008",
-    "Name": "",
+    "Name": "Message",
     "System": "",
     "Show": "",
     "Sort": "28",
@@ -82,7 +82,7 @@
   "9": {
     "Id": 9,
     "FunctionId": "2009",
-    "Name": "",
+    "Name": "Block",
     "System": "",
     "Show": "",
     "Sort": "30",
@@ -92,7 +92,7 @@
   "10": {
     "Id": 10,
     "FunctionId": "2010",
-    "Name": "",
+    "Name": "Unblock",
     "System": "",
     "Show": "",
     "Sort": "31",
@@ -102,7 +102,7 @@
   "11": {
     "Id": 11,
     "FunctionId": "3001",
-    "Name": "",
+    "Name": "Invite",
     "System": "",
     "Show": "1",
     "Sort": "25",
@@ -112,7 +112,7 @@
   "12": {
     "Id": 12,
     "FunctionId": "3002",
-    "Name": "",
+    "Name": "Apply",
     "System": "",
     "Show": "1",
     "Sort": "26",
@@ -122,7 +122,7 @@
   "13": {
     "Id": 13,
     "FunctionId": "3003",
-    "Name": "",
+    "Name": "Role",
     "System": "2",
     "Show": "1",
     "Sort": "32",
@@ -132,7 +132,7 @@
   "14": {
     "Id": 14,
     "FunctionId": "3004",
-    "Name": "",
+    "Name": "Remove",
     "System": "2",
     "Show": "1",
     "Sort": "33",
@@ -142,7 +142,7 @@
   "15": {
     "Id": 15,
     "FunctionId": "4001",
-    "Name": "",
+    "Name": "Go to Sub-line",
     "System": "",
     "Show": "",
     "Sort": "34",
@@ -152,7 +152,7 @@
   "16": {
     "Id": 16,
     "FunctionId": "100106",
-    "Name": "",
+    "Name": "Warehouse Invitation",
     "System": "",
     "Show": "",
     "Sort": "35",
@@ -162,7 +162,7 @@
   "17": {
     "Id": 17,
     "FunctionId": "102801",
-    "Name": "",
+    "Name": "Share Mount",
     "System": "",
     "Show": "1",
     "Sort": "36",
@@ -172,7 +172,7 @@
   "18": {
     "Id": 18,
     "FunctionId": "102802",
-    "Name": "",
+    "Name": "Share Mount",
     "System": "",
     "Show": "1",
     "Sort": "37",
@@ -182,7 +182,7 @@
   "19": {
     "Id": 19,
     "FunctionId": "500400",
-    "Name": "",
+    "Name": "Report",
     "System": "",
     "Show": "",
     "Sort": "38",

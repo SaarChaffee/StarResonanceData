@@ -59,7 +59,7 @@ function ShopGiftLoopItem:OnRefresh(data)
         if tonumber(lab[1]) == rechargeActivityDefine.DiscountType.Discount then
           self.uiBinder.Ref:SetVisible(self.uiBinder.node_discount, true)
           if data.payRechargeConfig and data.paymentConfig then
-            local discount = math.floor(data.paymentConfig.Price / data.payRechargeConfig.ShowOriginalPrice * 100)
+            local discount = -math.floor((1 - 1 / data.payRechargeConfig.ShowOriginalPrice) * 100)
             self.uiBinder.lab_discount.text = discount .. "%"
           else
             self.uiBinder.lab_discount.text = ""

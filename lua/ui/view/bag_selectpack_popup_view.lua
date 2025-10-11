@@ -93,6 +93,7 @@ function Bag_selectpack_popupView:refreshInfo()
   self:refreshTitle(itemName)
   self:refreshBtnState()
   self:refreshItemUseCount()
+  self:refreshLimitLab()
 end
 
 function Bag_selectpack_popupView:initSelectData()
@@ -173,6 +174,24 @@ function Bag_selectpack_popupView:refreshTitle(itemName)
       item = {name = itemName}
     }
     self.uiBinder.lab_title.text = Lang("selectPackItemTitle", param)
+  end
+end
+
+function Bag_selectpack_popupView:refreshLimitLab()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_box_limit, false)
+  if self.viewData.itemId then
+    local itemFunctionTableRow = Z.TableMgr.GetRow("ItemFunctionTableMgr", self.viewData.itemId, true)
+    if itemFunctionTableRow and itemFunctionTableRow.CounterId ~= 0 then
+      local counterRow = Z.TableMgr.GetRow("CounterTableMgr", itemFunctionTableRow.CounterId)
+      if counterRow then
+        local timerConfigItem = Z.DIServiceMgr.ZCfgTimerService:GetZCfgTimerItem(counterRow.TimeTableId)
+        local timeType = timerConfigItem and timerConfigItem.TimerType or 0
+        self.uiBinder.Ref:SetVisible(self.uiBinder.lab_box_limit, true)
+        local limit = Z.CounterHelper.GetCounterLimitCount(itemFunctionTableRow.CounterId)
+        local residueCount = Z.CounterHelper.GetCounterResidueLimitCount(itemFunctionTableRow.CounterId, limit)
+        self.uiBinder.lab_box_limit.text = Lang("RestrictedUseOfItemsThe" .. timeType, {val1 = residueCount, val2 = limit})
+      end
+    end
   end
 end
 

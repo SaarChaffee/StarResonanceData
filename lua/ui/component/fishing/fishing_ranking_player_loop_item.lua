@@ -93,7 +93,7 @@ function FishingRankingPlayerLoopItem:OnUnInit()
 end
 
 function FishingRankingPlayerLoopItem:isSelf()
-  return self.data.rankData.playerData.basicData.charID == Z.EntityMgr.PlayerEnt.EntId
+  return self.data.rankData.playerData.basicData.charID == Z.EntityMgr.PlayerEnt.CharId
 end
 
 return FishingRankingPlayerLoopItem

@@ -14,6 +14,7 @@ function MinimapView:ctor(parent)
   self.mapData_ = Z.DataMgr.Get("map_data")
   self.trialroadData = Z.DataMgr.Get("trialroad_data")
   self.weeklyHuntData_ = Z.DataMgr.Get("weekly_hunt_data")
+  self.weeklyHuntVm_ = Z.VMMgr.GetVM("weekly_hunt")
   self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
@@ -38,6 +39,8 @@ function MinimapView:OnDeActive()
   if self.dungeonRedpointID_ and self.dungeonRedpointID_ > 0 then
     Z.RedPointMgr.RemoveNodeItem(self.dungeonRedpointID_)
   end
+  Z.RedPointMgr.RemoveNodeItem(E.RedType.WeeklyHuntTarget, self)
+  Z.ContainerMgr.CharSerialize.weeklyTower.Watcher:UnregWatcher(self.weeklyTowerChange_)
 end
 
 function MinimapView:initMaskData()
@@ -70,6 +73,9 @@ function MinimapView:initComp()
   end)
   self:AddAsyncClick(self.uiBinder.btn_pionner, function()
     self.miniMapVM_.OpenDungeonMainWindow()
+  end)
+  self:AddClick(self.uiBinder.btn_reward, function()
+    self.weeklyHuntVm_.OpenTargetView()
   end)
   self.inputKeyDescComp_:Init(101, self.uiBinder.com_icon_key_map)
   self.mapFlagsComp_:Init()
@@ -124,6 +130,12 @@ function MinimapView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Pivot.OnPivotUnlock, self.setMapAreaMask, self)
   Z.EventMgr:Add(Z.ConstValue.UIClose, self.onUIClose, self)
   Z.EventMgr:Add(Z.ConstValue.Screen.UIResolutionChange, self.onScreenResolutionChange, self)
+  
+  function self.weeklyTowerChange_(...)
+    self:weeklyHunt()
+  end
+  
+  Z.ContainerMgr.CharSerialize.weeklyTower.Watcher:RegWatcher(self.weeklyTowerChange_)
 end
 
 function MinimapView:onMapResLoaded(isMiniMap)
@@ -337,6 +349,7 @@ end
 
 function MinimapView:weeklyHunt()
   self.uiBinder.Ref:SetVisible(self.uiBinder.cont_weekly_hunt, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_reward, false)
   local dungeonId = Z.StageMgr.GetCurrentDungeonId()
   if dungeonId == 0 then
     return
@@ -344,7 +357,20 @@ function MinimapView:weeklyHunt()
   local cfgData = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
   if cfgData and cfgData.PlayType == E.DungeonType.WeeklyTower and self.weeklyHuntData_.DungeonLayers[dungeonId] then
     self.uiBinder.Ref:SetVisible(self.uiBinder.cont_weekly_hunt, true)
-    self.uiBinder.lab_hunt_layer.text = string.zconcat(self.weeklyHuntData_.DungeonLayers[dungeonId], "/", self.weeklyHuntData_.MaxLaler, Lang("Layer"))
+    local huntData = {
+      val1 = self.weeklyHuntData_.DungeonLayers[dungeonId],
+      val2 = self.weeklyHuntData_.MaxLaler
+    }
+    self.uiBinder.lab_hunt_layer.text = Lang("MapLayerValue", huntData)
+  end
+  local curDungeonId = Z.StageMgr.GetCurrentDungeonId()
+  if curDungeonId and curDungeonId ~= 0 then
+    local dungeonRow = Z.TableMgr.GetRow("DungeonsTableMgr", curDungeonId)
+    if dungeonRow and E.DungeonType.WeeklyTower == dungeonRow.PlayType then
+      self.uiBinder.Ref:SetVisible(self.uiBinder.btn_reward, true)
+      self.uiBinder.lab_number.text = Z.ContainerMgr.CharSerialize.weeklyTower.maxClimbUpId
+      Z.RedPointMgr.LoadRedDotItem(E.RedType.WeeklyHuntTarget, self, self.uiBinder.btn_reward.transform)
+    end
   end
 end
 

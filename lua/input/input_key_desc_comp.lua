@@ -8,12 +8,24 @@ function InputKeyDescComp:Init(keyId, keyUIBinder, labDesc, hideWhenNoKeyDesc, o
   self.keyId_ = keyId
   self.keyUIBinder_ = keyUIBinder
   self.labDesc_ = labDesc
-  self.hideWhenNoKeyDesc_ = hideWhenNoKeyDesc or false
+  if hideWhenNoKeyDesc == nil then
+    self.hideWhenNoKeyDesc_ = false
+  else
+    self.hideWhenNoKeyDesc_ = hideWhenNoKeyDesc
+  end
   self.canVisible_ = true
   self.hasKeyDesc_ = false
-  self.onlyShowFirstDesc_ = onlyShowFirstDesc or true
+  if onlyShowFirstDesc == nil then
+    self.onlyShowFirstDesc_ = false
+  else
+    self.onlyShowFirstDesc_ = onlyShowFirstDesc
+  end
   self:bindEvent()
   self:Refresh()
+end
+
+function InputKeyDescComp:SetOnRefreshCb(onRefreshCb)
+  self.onRefreshCb = onRefreshCb
 end
 
 function InputKeyDescComp:bindEvent()
@@ -38,7 +50,7 @@ function InputKeyDescComp:SetVisible(visible)
   if not self.keyUIBinder_ then
     return
   end
-  if not self.keyUIBinder_.Ref or not self.keyUIBinder_.Ref.UIComp then
+  if Z.ObjectIsNullOrEmpty(self.keyUIBinder_.Ref) or Z.ObjectIsNullOrEmpty(self.keyUIBinder_.Ref.UIComp) then
     logError("InputKeyDescComp: keyUIBinder_ Ref or UIComp is nil  keyId: " .. tostring(self.keyId_))
     return
   end
@@ -83,6 +95,9 @@ function InputKeyDescComp:Refresh()
     self.keyUIBinder_.lab_key.text = string.zconcat(keyCodeDescs, self.labDesc_)
   else
     self.keyUIBinder_.lab_key.text = self.labDesc_
+  end
+  if self.onRefreshCb then
+    self.onRefreshCb()
   end
 end
 

@@ -1,9 +1,9 @@
 {
   "50001": {
     "Id": 50001,
-    "Name": "",
+    "Name": "Cliff Ruins",
     "MapID": 7,
-    "AreaName": "",
+    "AreaName": "Cliff Ruins",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -16,9 +16,9 @@
   },
   "50002": {
     "Id": 50002,
-    "Name": "",
+    "Name": "Statue of the Hero",
     "MapID": 7,
-    "AreaName": "",
+    "AreaName": "Statue of the Hero",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -31,9 +31,9 @@
   },
   "50003": {
     "Id": 50003,
-    "Name": "",
+    "Name": "Outskirts of Ruins of Andra City",
     "MapID": 7,
-    "AreaName": "",
+    "AreaName": "Silent City",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -46,9 +46,9 @@
   },
   "50004": {
     "Id": 50004,
-    "Name": "",
+    "Name": "Minsterhorn",
     "MapID": 7,
-    "AreaName": "",
+    "AreaName": "Minsterhorn",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -61,9 +61,9 @@
   },
   "50005": {
     "Id": 50005,
-    "Name": "",
+    "Name": "Kanamia Tribe",
     "MapID": 7,
-    "AreaName": "",
+    "AreaName": "Kanamia Tribe",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -76,9 +76,9 @@
   },
   "50006": {
     "Id": 50006,
-    "Name": "",
+    "Name": "Duskdye Woods",
     "MapID": 71,
-    "AreaName": "",
+    "AreaName": "Duskdye Woods",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -91,9 +91,9 @@
   },
   "50007": {
     "Id": 50007,
-    "Name": "",
+    "Name": "Everfall Forest",
     "MapID": 72,
-    "AreaName": "",
+    "AreaName": "Everfall Forest",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -106,9 +106,9 @@
   },
   "50008": {
     "Id": 50008,
-    "Name": "",
+    "Name": "Windhowl Canyon",
     "MapID": 73,
-    "AreaName": "",
+    "AreaName": "Windhowl Canyon",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -121,9 +121,9 @@
   },
   "50009": {
     "Id": 50009,
-    "Name": "",
+    "Name": "Underground District",
     "MapID": 74,
-    "AreaName": "",
+    "AreaName": "Underground District",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -136,9 +136,9 @@
   },
   "50010": {
     "Id": 50010,
-    "Name": "",
+    "Name": "Skimmer's Lair",
     "MapID": 75,
-    "AreaName": "",
+    "AreaName": "Skimmer's Lair",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -151,9 +151,9 @@
   },
   "50011": {
     "Id": 50011,
-    "Name": "",
+    "Name": "Fallen Valley",
     "MapID": 9,
-    "AreaName": "",
+    "AreaName": "Fallen Valley",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -166,9 +166,9 @@
   },
   "50012": {
     "Id": 50012,
-    "Name": "",
+    "Name": "Pillar of Divinity",
     "MapID": 9,
-    "AreaName": "",
+    "AreaName": "Pillar of Divinity",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -181,9 +181,9 @@
   },
   "50013": {
     "Id": 50013,
-    "Name": "",
+    "Name": "Lallipar",
     "MapID": 9,
-    "AreaName": "",
+    "AreaName": "Lallipar",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -196,9 +196,9 @@
   },
   "50014": {
     "Id": 50014,
-    "Name": "",
+    "Name": "Bekmar Transport Station",
     "MapID": 9,
-    "AreaName": "",
+    "AreaName": "Bekmar Transport Station",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,
@@ -211,9 +211,9 @@
   },
   "50015": {
     "Id": 50015,
-    "Name": "",
+    "Name": "Underground Sislesa Mine",
     "MapID": 9,
-    "AreaName": "",
+    "AreaName": "Sislesa Mine",
     "SettingOffNum": [],
     "CirculateAward": [
       10002010,

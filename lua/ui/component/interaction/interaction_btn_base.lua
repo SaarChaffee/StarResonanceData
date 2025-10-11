@@ -67,6 +67,15 @@ function InteractionBtnBase:AsyncSetData()
   self.conditionMet = interactMgr:CheckCondition(self.uuid_, self.interactionCfgId_, false)
 end
 
+function InteractionBtnBase:AsyncRefreshContentStr()
+  local defaultName = ""
+  local entity = Z.EntityMgr:GetEntity(self.uuid_)
+  if entity ~= nil then
+    defaultName = entity:GetLuaAttr(Z.PbAttrEnum("AttrName")).Value
+  end
+  self.unitContentStr_ = self.vm_.AsyncGetInteractiveName(self.uuid_, self.replaceBtnId_, defaultName, self.interactionCfgId_)
+end
+
 function InteractionBtnBase:CheckBtnShow()
   return true
 end

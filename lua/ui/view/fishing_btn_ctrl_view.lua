@@ -60,10 +60,10 @@ function Fishing_btn_ctrlView:OnActive()
 end
 
 function Fishing_btn_ctrlView:OnTriggerInputAction(inputActionEventData)
-  if Z.IsPCUI and inputActionEventData.actionId == Z.RewiredActionsConst.FishingClick then
-    if inputActionEventData.eventType == Z.InputActionEventType.ButtonJustPressed then
+  if Z.IsPCUI and inputActionEventData.ActionId == Z.InputActionIds.FishingClick then
+    if inputActionEventData.EventType == Z.InputActionEventType.ButtonJustPressed then
       self.onDownEvent(inputActionEventData)
-    elseif inputActionEventData.eventType == Z.InputActionEventType.ButtonJustReleased then
+    elseif inputActionEventData.EventType == Z.InputActionEventType.ButtonJustReleased then
       self.onUpEvent(inputActionEventData)
     end
   end

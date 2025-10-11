@@ -33,7 +33,7 @@ function MapData:ResetMapData()
   self.showProportion_ = nil
   self.focus_ = nil
   self.targetCollectionId_ = nil
-  self.dynamicTraceParams_ = {}
+  self.dynamicTraceParams_ = nil
   self.collectionPosInfoDict_ = nil
 end
 
@@ -91,20 +91,50 @@ function MapData:GetTargetCollectionId()
   return self.targetCollectionId_
 end
 
-function MapData:SaveDynamicTraceParam(sourceType, posType, uid, param)
-  if self.dynamicTraceParams_[sourceType] == nil then
-    self.dynamicTraceParams_[sourceType] = {}
+function MapData:SaveDynamicTraceParam(sceneId, sourceType, posType, uid, param, position)
+  self:RemoveGoalDynamicTrace()
+  self.dynamicTraceParams_ = {
+    SceneId = sceneId,
+    SourceType = sourceType,
+    PosType = posType,
+    Uid = uid,
+    Param = param,
+    Position = position
+  }
+  Z.EventMgr:Dispatch(Z.ConstValue.MapDynamicFlagChange)
+end
+
+function MapData:ClearDynamicTraceParam()
+  self:RemoveGoalDynamicTrace()
+  self.dynamicTraceParams_ = nil
+  Z.EventMgr:Dispatch(Z.ConstValue.MapDynamicFlagChange)
+end
+
+function MapData:RemoveGoalDynamicTrace()
+  if self.dynamicTraceParams_ ~= nil then
+    local sceneId = self.dynamicTraceParams_.SceneId
+    local sourceType = self.dynamicTraceParams_.SourceType
+    local posType = self.dynamicTraceParams_.PosType
+    local uid = self.dynamicTraceParams_.Uid
+    local guideVM = Z.VMMgr.GetVM("goal_guide")
+    local guideData = Z.DataMgr.Get("goal_guide_data")
+    local goalInfoList = guideData:GetGuideGoalsBySource(sourceType)
+    if goalInfoList ~= nil then
+      for i, info in ipairs(goalInfoList) do
+        if info.SceneId == sceneId and info.Uid == uid and info.PosType == posType then
+          guideVM.SetGuideGoals(sourceType, nil)
+          break
+        end
+      end
+    end
   end
-  if self.dynamicTraceParams_[sourceType][posType] == nil then
-    self.dynamicTraceParams_[sourceType][posType] = {}
-  end
-  self.dynamicTraceParams_[sourceType][posType][uid] = param
 end
 
 function MapData:GetDynamicTraceParam(sourceType, posType, uid)
-  if self.dynamicTraceParams_[sourceType] and self.dynamicTraceParams_[sourceType][posType] then
-    return self.dynamicTraceParams_[sourceType][posType][uid]
+  if self.dynamicTraceParams_ ~= nil and self.dynamicTraceParams_.SourceType == sourceType and self.dynamicTraceParams_.PosType == posType and self.dynamicTraceParams_.Uid == uid then
+    return self.dynamicTraceParams_.Param
   end
+  return nil
 end
 
 function MapData:GetCollectionPosInfo(collectionId, sceneId)

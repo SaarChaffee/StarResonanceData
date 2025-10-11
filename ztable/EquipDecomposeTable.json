@@ -145,6 +145,63 @@
       ]
     ]
   },
+  "5001": {
+    "Id": 5001,
+    "DecomposeId": 5001,
+    "RecastNum": [],
+    "DecomposeAwardPackID": 20001290,
+    "RecastAddAwardPackID": 0,
+    "EnchantAddAwardPackID": [
+      [
+        1,
+        3,
+        20002010
+      ],
+      [
+        4,
+        99,
+        20002020
+      ]
+    ]
+  },
+  "5002": {
+    "Id": 5002,
+    "DecomposeId": 5002,
+    "RecastNum": [],
+    "DecomposeAwardPackID": 20001300,
+    "RecastAddAwardPackID": 0,
+    "EnchantAddAwardPackID": [
+      [
+        1,
+        3,
+        20002010
+      ],
+      [
+        4,
+        99,
+        20002020
+      ]
+    ]
+  },
+  "5003": {
+    "Id": 5003,
+    "DecomposeId": 5003,
+    "RecastNum": [],
+    "DecomposeAwardPackID": 20001310,
+    "RecastAddAwardPackID": 0,
+    "EnchantAddAwardPackID": [
+      [
+        1,
+        3,
+        20002010
+      ],
+      [
+        4,
+        99,
+        20002020
+      ]
+    ]
+  },
   "6001": {
     "Id": 6001,
     "DecomposeId": 6001,

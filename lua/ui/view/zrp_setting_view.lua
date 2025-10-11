@@ -155,7 +155,7 @@ function Zrp_settingView:BindEvents()
     QualityGradeSetting.EnableOutline = r
   end)
   self.uiBinder.tog_ecsmodel:AddListener(function(isOn)
-    Panda.Core.GameContext.UseECSModel = isOn
+    Z.GameContext.UseECSModel = isOn
   end)
   self.uiBinder.tog_scene:AddListener(function(isOn)
     QualityGradeSetting.IsSceneVisible = isOn
@@ -233,7 +233,7 @@ function Zrp_settingView:OnRefresh()
   self.uiBinder.tog_motionblur.isOn = QualityGradeSetting.EnableMotionBlur
   self.uiBinder.tog_subpass.isOn = QualityGradeSetting.EnableSubpass
   self.uiBinder.tog_vsync.isOn = QualityGradeSetting.EnableVSync
-  self.uiBinder.tog_ecsmodel.isOn = Panda.Core.GameContext.UseECSModel
+  self.uiBinder.tog_ecsmodel.isOn = Z.GameContext.UseECSModel
   self.uiBinder.tog_scene.isOn = QualityGradeSetting.IsSceneVisible
   self.uiBinder.tog_char.isOn = QualityGradeSetting.IsCharVisible
   self.uiBinder.tog_op_worker.isOn = QualityGradeSetting.IsLimitWorkerCount

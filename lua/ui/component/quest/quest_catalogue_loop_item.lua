@@ -1,6 +1,7 @@
 local super = require("ui.component.loopscrollrectitem")
 local QuestCatalogueLoopItem = class("QuestCatalogueLoopItem", super)
 local questTbl = Z.TableMgr.GetTable("QuestTableMgr")
+local questVm = Z.VMMgr.GetVM("quest")
 
 function QuestCatalogueLoopItem:OnInit()
   self:initComp()
@@ -50,8 +51,9 @@ function QuestCatalogueLoopItem:initQuestTpl(questId)
   end
   local questDetailView = self.parent.uiView
   local questData = Z.DataMgr.Get("quest_data")
-  self.lab_name_1_.text = questRow.QuestName
-  self.lab_name_2_.text = questRow.QuestName
+  local questName = questVm.GetQuestName(questRow.id)
+  self.lab_name_1_.text = questName
+  self.lab_name_2_.text = questName
   self:refreshQuestStateIcon(questId)
   local quest = questData:GetQuestByQuestId(questId)
   if not quest then

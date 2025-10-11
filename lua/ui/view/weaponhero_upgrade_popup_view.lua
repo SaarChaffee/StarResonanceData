@@ -151,7 +151,7 @@ function Weaponhero_upgrade_popupView:RefreshSkillInfo()
     if not unit then
       return
     end
-    unit.lab_across.text = value.Dec .. Lang(":") .. value.Num
+    unit.lab_across.text = value.Dec .. Lang("colon") .. value.Num
   end
   self.uiBinder.node_content_rebuild:ForceRebuildLayoutImmediate()
   self.uiBinder.node_content:SetAnchorPosition(0, 0)
@@ -210,7 +210,7 @@ function Weaponhero_upgrade_popupView:RefreshSkillUnlock()
   local skillAttrDescList = self.skillVm_.GetSkillDecs(skillFightData[1].Id, 0)
   skillAttrDescList = self.skillVm_.GetSkillDecsWithColor(skillAttrDescList)
   for _, value in ipairs(skillAttrDescList) do
-    content = content .. "\n" .. value.Dec .. Lang(":") .. Z.RichTextHelper.ApplyStyleTag(value.Num, E.TextStyleTag.SkillNum)
+    content = content .. "\n" .. value.Dec .. Lang("colon") .. Z.RichTextHelper.ApplyStyleTag(value.Num, E.TextStyleTag.SkillNum)
   end
   Z.RichTextHelper.SetTmpLabTextWithCommonLinkNew(self.uiBinder.lab_unlock_content, content)
   self.uiBinder.skill_unlock_node_content:SetAnchorPosition(0, 0)

@@ -49,6 +49,11 @@ local mergeDataFuncs = {
     local last = container.__data__.outLookType
     container.__data__.outLookType = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("outLookType", last)
+  end,
+  [11] = function(container, buffer, watcherList)
+    local last = container.__data__.curPauseTimestamp
+    container.__data__.curPauseTimestamp = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("curPauseTimestamp", last)
   end
 }
 local setForbidenMt = function(t)
@@ -107,6 +112,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.outLookType then
     container.__data__.outLookType = 0
+  end
+  if not pbData.curPauseTimestamp then
+    container.__data__.curPauseTimestamp = 0
   end
   setForbidenMt(container)
 end
@@ -196,6 +204,11 @@ local getContainerElem = function(container)
     fieldId = 10,
     dataType = 0,
     data = container.outLookType
+  }
+  ret.curPauseTimestamp = {
+    fieldId = 11,
+    dataType = 0,
+    data = container.curPauseTimestamp
   }
   return ret
 end

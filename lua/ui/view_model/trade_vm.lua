@@ -281,6 +281,7 @@ function TradeVM:AsyncExchangeSale(num, rate, cancelToken)
     return false
   end
   Z.EventMgr:Dispatch(Z.ConstValue.Trade.ConsignmentPutItemSuccess)
+  Z.SDKReport.Report(Z.SDKReportEvent.Consignment)
   return true
 end
 

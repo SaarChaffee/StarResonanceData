@@ -10,7 +10,6 @@ local chat_backpack_item = require("ui.component.emoji.chat_backpack_item")
 local chat_rich_item = require("ui.component.emoji.chat_rich_item")
 local chat_record_item = require("ui.component.emoji.chat_record_item")
 local chat_quick_message_item = require("ui.component.emoji.chat_quick_message_item")
-local emojiPath = "ui/atlas/chat_emoji/"
 
 function Chat_emoji_container_popupView:ctor()
   self.uiBinder = nil
@@ -201,6 +200,20 @@ function Chat_emoji_container_popupView:OnSelectFuncTab(funcType, funcId)
       self.tabList_:RefreshListView(list, false)
       self.tabList_:ClearAllSelect()
       self.tabList_:SetSelected(1)
+    end
+  elseif funcType == E.ChatFuncType.LocalPosition then
+    self.viewData.parentView:InputLocalPosition()
+    if self.chat_input_boxView_ then
+      self.chat_input_boxView_:RefreshChatDraft()
+    end
+  end
+end
+
+function Chat_emoji_container_popupView:OnPointerClickSelectFuncTab(funcType, funcId)
+  if funcType == E.ChatFuncType.LocalPosition then
+    self.viewData.parentView:InputLocalPosition()
+    if self.chat_input_boxView_ then
+      self.chat_input_boxView_:RefreshChatDraft()
     end
   end
 end

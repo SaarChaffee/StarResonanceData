@@ -84,10 +84,8 @@ function Cook_rejuvenation_popupView:OnActive()
       isSquareItem = true,
       lab = self.consumeItemCount_
     })
-    local itemRow = Z.TableMgr.GetRow("ItemTableMgr", self.recoverConfigId_)
-    if itemRow then
-      self.icon_:SetImage(itemRow.Icon)
-    end
+    local itemVm = Z.VMMgr.GetVM("items")
+    self.icon_:SetImage(itemVm.GetItemIcon(self.recoverConfigId_))
     self.needConsumeCount_ = math.max(0, math.floor((self.upLimit_ - self.curCount_) / self.recoverCount_))
     self.maxCount_ = self.needConsumeCount_
     if self.consumeItemCount_ < self.maxCount_ then

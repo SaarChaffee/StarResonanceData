@@ -158,7 +158,8 @@ function GashaBannerTpl:RefreshBattleSkillBanner(gashaPoolTableRow)
     if itemRow == nil then
       return
     end
-    banner.rimg_icon:SetImage(itemRow.Icon)
+    local itemVm = Z.VMMgr.GetVM("items")
+    banner.rimg_icon:SetImage(itemVm.GetItemIcon(wishId))
   end
 end
 

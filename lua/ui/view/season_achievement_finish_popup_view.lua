@@ -21,6 +21,8 @@ function Season_achievement_finish_popupView:OnActive()
   if self.viewData.isRecipeUnlock then
     if Z.IsPCUI then
       self.uiBinder.lab_title.text = Lang("RecipeUnlocked")
+      self.uiBinder.img_line_1:SetColor(normalColor)
+      self.uiBinder.img_line_2:SetColor(normalColor)
     else
       self.uiBinder.img_bg:SetImage(normalBg)
       self.uiBinder.img_bg_02:SetImage(normalBg2)
@@ -29,10 +31,10 @@ function Season_achievement_finish_popupView:OnActive()
     self.uiBinder.lab_title.text = Lang("AchievementAchieved")
     if self.viewData.special then
       self.uiBinder.img_line_1:SetColor(specialColor)
-      self.uiBinder.img_line_1:SetColor(specialColor)
+      self.uiBinder.img_line_2:SetColor(specialColor)
     else
       self.uiBinder.img_line_1:SetColor(normalColor)
-      self.uiBinder.img_line_1:SetColor(normalColor)
+      self.uiBinder.img_line_2:SetColor(normalColor)
     end
   elseif self.viewData.special then
     self.uiBinder.img_bg:SetImage(specialBg)

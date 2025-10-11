@@ -188,7 +188,11 @@ function RecommendedPlayData:GetThirdTagsById(id)
         local aState = recommendedPlayVM.GetActivityState(a.Id)
         local bState = recommendedPlayVM.GetActivityState(b.Id)
         if aState == bState then
-          return a.Sort < b.Sort
+          if a.Sort == b.Sort then
+            return a.Id < b.Id
+          else
+            return a.Sort < b.Sort
+          end
         else
           return aState < bState
         end

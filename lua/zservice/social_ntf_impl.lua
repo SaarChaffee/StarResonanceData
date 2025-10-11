@@ -33,4 +33,12 @@ function SocialNtfStubImpl:NotifySocialData(call, vRequest)
   end
 end
 
+function SocialNtfStubImpl:NotifyShowTips(call, vTips)
+  if vTips.tipsType == E.ETipsType.ETipsTypeNormal then
+    Z.TipsVM.ShowTips(vTips.errCode)
+  else
+    logError("Unknown tipsType: " .. tostring(vTips.tipsType))
+  end
+end
+
 return SocialNtfStubImpl

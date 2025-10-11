@@ -19,5 +19,6 @@ message DungeonTimerInfo {
   int32 pause_time = 8;
   int32 pause_total_time = 9;
   zproto.EDungeonTimerTimerLookType out_look_type = 10;
+  int32 cur_pause_timestamp = 11;
 }
 

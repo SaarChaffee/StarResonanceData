@@ -28,15 +28,15 @@ local checkScreenWord = function(string, sceneType, cancelToken, successCallBack
   request.sceneType = sceneType
   local ret = httpPlatformProxy.TextCheck(request, cancelToken)
   if ret.errCode == 0 then
-    if ret.checkDataResult.itemResults[1].errCode == 0 then
+    if ret.checkDataResult.errCode == 0 then
       Z.EventMgr:Dispatch(Z.ConstValue.ScreenWordPass)
       if successCallBack then
         successCallBack()
       end
     else
-      Z.TipsVM.ShowTips(ret.checkDataResult.itemResults[1].errCode)
+      Z.TipsVM.ShowTips(ret.checkDataResult.errCode)
       if failCallBack then
-        failCallBack(ret.checkDataResult.itemResults[1].errCode)
+        failCallBack(ret.checkDataResult.errCode)
       end
     end
   else

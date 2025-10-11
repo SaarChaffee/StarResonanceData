@@ -1,11 +1,14 @@
 {
   "1001": {
     "Id": 1001,
-    "Name": "维尔古城巡逻",
+    "Name": "Ancient City Patrol",
     "BubbleType": 1,
     "TargetScore": 500,
     "ScoreCycle": [],
-    "AdditionalTargetName": [],
+    "AdditionalTargetName": [
+      "1. Stay near soldiers to obtain score",
+      "2. Defeat monsters to gain bonus score"
+    ],
     "AdditionalTarget": [
       [
         272,
@@ -21,11 +24,14 @@
   },
   "1002": {
     "Id": 1002,
-    "Name": "山贼营地巡逻",
+    "Name": "Brigand Camp Patrol",
     "BubbleType": 1,
     "TargetScore": 500,
     "ScoreCycle": [],
-    "AdditionalTargetName": [],
+    "AdditionalTargetName": [
+      "1. Stay near soldiers to obtain score",
+      "2. Defeat monsters to gain bonus score"
+    ],
     "AdditionalTarget": [
       [
         272,
@@ -41,11 +47,14 @@
   },
   "1003": {
     "Id": 1003,
-    "Name": "姆克营地巡逻",
+    "Name": "Muku Camp Patrol",
     "BubbleType": 1,
     "TargetScore": 500,
     "ScoreCycle": [],
-    "AdditionalTargetName": [],
+    "AdditionalTargetName": [
+      "1. Stay near soldiers to obtain score",
+      "2. Defeat monsters to gain bonus score"
+    ],
     "AdditionalTarget": [
       [
         272,
@@ -61,14 +70,16 @@
   },
   "2001": {
     "Id": 2001,
-    "Name": "舞蹈练习生",
+    "Name": "Dance Novice",
     "BubbleType": 1,
     "TargetScore": 500,
     "ScoreCycle": [
       3,
       5
     ],
-    "AdditionalTargetName": [],
+    "AdditionalTargetName": [
+      "Stay in target area to obtain score"
+    ],
     "AdditionalTarget": [
       [
         24,
@@ -84,14 +95,20 @@
   },
   "2002": {
     "Id": 2002,
-    "Name": "路演小剧场",
+    "Name": "Street Theater",
     "BubbleType": 1,
     "TargetScore": 500,
     "ScoreCycle": [
       3,
       5
     ],
-    "AdditionalTargetName": [],
+    "AdditionalTargetName": [
+      "1. Stay in target area to obtain score",
+      "2. Receive 1 vote ticket every 150s",
+      "3. Recipients gain 1 Popularity per vote. Both the voter and the recipient gain extra score.",
+      "4. Your character will ​grow larger​ upon reaching ​5, 10, 15, and 20 Popularity.",
+      "5. Popularity ​clears after 10min. Gaining new Popularity ​resets this timer."
+    ],
     "AdditionalTarget": [
       [
         24,
@@ -114,42 +131,49 @@
   },
   "2003": {
     "Id": 2003,
-    "Name": "星光花火夜",
+    "Name": "Starlight Fireworks",
     "BubbleType": 1,
     "TargetScore": 500,
     "ScoreCycle": [
       1,
       5
     ],
-    "AdditionalTargetName": [],
+    "AdditionalTargetName": [
+      "1. Stay near Gold Nappo and Silver Nappo to obtain score. Each session lasts 10 minutes.",
+      "2. Receive a large amount of Friendship Points, Silver Star Badges, and gear materials for your first participation each day."
+    ],
     "AdditionalTarget": [],
     "AdditionalTargetIdleScore": [],
     "TargetCompleteClientBuff": []
   },
   "3001": {
     "Id": 3001,
-    "Name": "魅力鱼获巡游",
+    "Name": "Charming Fish Parade",
     "BubbleType": 1,
     "TargetScore": 500,
     "ScoreCycle": [
       3,
       5
     ],
-    "AdditionalTargetName": [],
+    "AdditionalTargetName": [
+      "Follow the Parade Leader to obtain score"
+    ],
     "AdditionalTarget": [],
     "AdditionalTargetIdleScore": [],
     "TargetCompleteClientBuff": []
   },
   "3002": {
     "Id": 3002,
-    "Name": "小猪骑士巡游",
+    "Name": "Boarlet Knight Parade",
     "BubbleType": 1,
     "TargetScore": 500,
     "ScoreCycle": [
       3,
       5
     ],
-    "AdditionalTargetName": [],
+    "AdditionalTargetName": [
+      "Follow the Parade Leader to obtain score"
+    ],
     "AdditionalTarget": [],
     "AdditionalTargetIdleScore": [],
     "TargetCompleteClientBuff": []

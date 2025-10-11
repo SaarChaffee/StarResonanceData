@@ -66,12 +66,26 @@ function Album_photo_showView:initWaterMark()
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_bottom_tog, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_game_info, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_player_info, false)
-  local isUnlockFunc = self.gotoFuncVM_.FuncIsOn(E.FunctionID.SDKShareLocalPhoto, true)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, isUnlockFunc and not Z.IsPCUI)
+  self:initShareNode()
   self.photoReductionOriSize_ = {width = 0, height = 0}
   self.photoReductionOriSize_.width, self.photoReductionOriSize_.height = self.uiBinder.node_photo_reduction:GetSize(self.photoReductionOriSize_.width, self.photoReductionOriSize_.height)
   self:initPlayerInfo()
   self:setHead()
+end
+
+function Album_photo_showView:initShareNode()
+  local isUnlockFunc = self.gotoFuncVM_.FuncIsOn(E.FunctionID.SDKShareLocalPhoto, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, isUnlockFunc and not Z.IsPCUI)
+  local currentPlatform = Z.SDKLogin.GetPlatform()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, false)
+  if currentPlatform == E.LoginPlatformType.TencentPlatform then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, true)
+  elseif currentPlatform == E.LoginPlatformType.APJPlatform then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, false)
+  end
 end
 
 function Album_photo_showView:setPlayerInfo(isOn)
@@ -177,6 +191,9 @@ function Album_photo_showView:initBtnClick()
   end)
   self:AddAsyncClick(self.uiBinder.btn_moments, function()
     self:shareImage(Bokura.Plugins.Share.SharePlatform.WeChatMoment)
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_apj, function()
+    self:shareImage(Bokura.Plugins.Share.SharePlatform.System)
   end)
   self.uiBinder.scene_mask:SetSceneMaskByKey(self.SceneMaskKey)
 end

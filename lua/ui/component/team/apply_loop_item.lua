@@ -44,6 +44,7 @@ function ApplyItem:Refresh()
   local professionSystemTableRow = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(self.data_.userSummaryData.professionData.professionId)
   if professionSystemTableRow then
     self.uiBinder.img_icon:SetImage(professionSystemTableRow.Icon)
+    self.uiBinder.img_icon:SetColorByHex(professionSystemTableRow.TalentColor)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon, true)
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon, false)

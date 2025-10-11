@@ -29,6 +29,10 @@ function Season_achievement_detail_windowView:OnActive()
     Z.UIMgr:OpenView("season_window")
   end)
   self:AddAsyncClick(self.uiBinder.btn_search, function()
+    if self.searchStr_ == nil or self.searchStr_ == "" then
+      Z.TipsVM.ShowTips(100004)
+      return
+    end
     self.IsInSearch = true
     self:refreshSearchBtn()
     self.searchAchievements_ = self.achievementVM_.GetSearchAchievements(Z.DataMgr.Get("season_data").CurSeasonId, self.searchStr_)
@@ -43,6 +47,16 @@ function Season_achievement_detail_windowView:OnActive()
   end)
   self.uiBinder.input_search:AddListener(function(str)
     self.searchStr_ = str
+  end)
+  self.uiBinder.input_search:AddSubmitListener(function()
+    if self.searchStr_ == nil or self.searchStr_ == "" then
+      Z.TipsVM.ShowTips(100004)
+      return
+    end
+    self.IsInSearch = true
+    self:refreshSearchBtn()
+    self.searchAchievements_ = self.achievementVM_.GetSearchAchievements(Z.DataMgr.Get("season_data").CurSeasonId, self.searchStr_)
+    self:refreshUI()
   end)
   self.leftLoopListView_ = LoopScrollRect_.new(self, self.uiBinder.loop_left_item)
   self.leftLoopListView_:SetGetItemClassFunc(function(data)

@@ -223,6 +223,7 @@ function Dungeon_timer_windowView:initRightCommonCountdownUI(timerInfo)
   data.changeTimeType = timerInfo.effectType
   data.lookType = timerInfo.outLookType
   data.pauseTime = timerInfo.pauseTime
+  data.curPauseTimestamp = timerInfo.curPauseTimestamp
   self.componentArray_.rightCommonPrefab = heroTimeView.new()
   self.componentArray_.rightCommonPrefab:Init(self, uiUnit_, data)
   Z.AudioMgr:Play("UI_Event_Countdown_Short")

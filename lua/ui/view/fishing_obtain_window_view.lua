@@ -35,10 +35,6 @@ function Fishing_obtain_windowView:refreshUI()
   self.uiBinder.rimg_fish:SetImage(self.fishingData_.TargetFish.FishInfo.FishingIcon)
   self.uiBinder.Ref.UIComp:SetVisible(true)
   self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
-  if self.fishingData_.ShowLevelUp then
-    self.fishingVM_.OpenFishingLevelUpTip()
-    self.fishingData_.ShowLevelUp = false
-  end
   local newRecord_ = typeCfg_.Infoshow == 1 and self.fishingData_.TargetFish.Size > 0 and self.fishingData_.TargetFish.Size > self.fishingData_.TargetFish.OldSizeRecord
   self.uiBinder.img_newrecord:SetImage("ui/textures/fishing/fishing_lab_record")
   self.uiBinder.img_new:SetImage("ui/textures/fishing/fishing_lab_new")

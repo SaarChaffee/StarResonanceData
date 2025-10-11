@@ -453,6 +453,8 @@ function Trading_ring_putaway_subView:OnDeActive()
   for index, value in ipairs(self.itemBinders_) do
     value:UnInit()
   end
+  self.uiBinder.binder_num_module_tpl_1.slider_temp:RemoveAllListeners()
+  self.uiBinder.binder_num_module_tpl_2.slider_temp:RemoveAllListeners()
 end
 
 function Trading_ring_putaway_subView:OnRefresh()
@@ -478,7 +480,8 @@ function Trading_ring_putaway_subView:refreshShelfMonthlyCardTips()
   local labPrivilegeTitle = hasMonthlyCard and Lang("MonthlyCardPrivilegesIsOn") or Lang("MonthlyCardPrivileges")
   self.uiBinder.lab_privilege_title.text = labPrivilegeTitle
   if monthlyCardData then
-    self.uiBinder.rimg_privilege_card:SetImage(monthlyCardData.ItemConfig.Icon)
+    local itemVm = Z.VMMgr.GetVM("items")
+    self.uiBinder.rimg_privilege_card:SetImage(itemVm.GetItemIcon(monthlyCardData.ItemConfig.Id))
   else
     hasMonthlyCard = false
   end

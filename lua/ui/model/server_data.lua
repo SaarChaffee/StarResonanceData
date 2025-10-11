@@ -22,7 +22,6 @@ function ServerData:SetServerData(serverList)
     self.LoginNameToIp[value.description] = value.serverUrl .. ":" .. math.floor(value.host)
     table.insert(self.LoginOptions, value.description)
   end
-  local loginVM = Z.VMMgr.GetVM("login")
   self.LoginNameToIp[Lang("CustomServer")] = ""
   table.insert(self.LoginOptions, Lang("CustomServer"))
 end
@@ -47,6 +46,10 @@ function ServerData:SetNowSelectServerId(id)
   self.NowSelectServerId = id
 end
 
+function ServerData:GetNowSelectServerId()
+  return self.NowSelectServerId or 0
+end
+
 function ServerData:GetSelectServerInfo()
   return self.ServerList[self.NowSelectServerId]
 end
@@ -57,6 +60,10 @@ end
 
 function ServerData:GetCurrentZoneId()
   return self.NowSelectData.zoneId or 9999
+end
+
+function ServerData:GetCurrentServerUrl()
+  return self.NowSelectData.serverUrl
 end
 
 function ServerData:GetDescriptionByAddr(addr)

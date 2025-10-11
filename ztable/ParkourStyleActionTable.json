@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Name": "",
+    "Name": "Front Flip",
     "Level": 1,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -9,7 +9,7 @@
   },
   "2": {
     "Id": 2,
-    "Name": "",
+    "Name": "Front Flip",
     "Level": 2,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -17,7 +17,7 @@
   },
   "3": {
     "Id": 3,
-    "Name": "",
+    "Name": "Front Flip",
     "Level": 3,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -25,7 +25,7 @@
   },
   "4": {
     "Id": 4,
-    "Name": "",
+    "Name": "Fish Dive Spiral",
     "Level": 1,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -33,7 +33,7 @@
   },
   "5": {
     "Id": 5,
-    "Name": "",
+    "Name": "Fish Dive Spiral",
     "Level": 2,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -41,7 +41,7 @@
   },
   "6": {
     "Id": 6,
-    "Name": "",
+    "Name": "Fish Dive Spiral",
     "Level": 3,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -49,7 +49,7 @@
   },
   "7": {
     "Id": 7,
-    "Name": "",
+    "Name": "Back Flip",
     "Level": 1,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -57,7 +57,7 @@
   },
   "8": {
     "Id": 8,
-    "Name": "",
+    "Name": "Back Flip",
     "Level": 2,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -65,7 +65,7 @@
   },
   "9": {
     "Id": 9,
-    "Name": "",
+    "Name": "Back Flip",
     "Level": 3,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -73,7 +73,7 @@
   },
   "10": {
     "Id": 10,
-    "Name": "",
+    "Name": "Side Jump",
     "Level": 0,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -81,7 +81,7 @@
   },
   "11": {
     "Id": 11,
-    "Name": "",
+    "Name": "Wall Jump",
     "Level": 0,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -89,7 +89,7 @@
   },
   "12": {
     "Id": 12,
-    "Name": "",
+    "Name": "Leap - Zero",
     "Level": 0,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -97,7 +97,7 @@
   },
   "13": {
     "Id": 13,
-    "Name": "",
+    "Name": "Leap - One",
     "Level": 0,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -105,7 +105,7 @@
   },
   "14": {
     "Id": 14,
-    "Name": "",
+    "Name": "Leap - Two",
     "Level": 0,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -113,7 +113,7 @@
   },
   "15": {
     "Id": 15,
-    "Name": "",
+    "Name": "Leap - Three",
     "Level": 0,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -121,7 +121,7 @@
   },
   "16": {
     "Id": 16,
-    "Name": "",
+    "Name": "Leap - Four",
     "Level": 0,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -129,7 +129,7 @@
   },
   "17": {
     "Id": 17,
-    "Name": "",
+    "Name": "Elastic Jump",
     "Level": 0,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -137,7 +137,7 @@
   },
   "18": {
     "Id": 18,
-    "Name": "",
+    "Name": "Phantom Dash - One",
     "Level": 0,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -145,7 +145,7 @@
   },
   "19": {
     "Id": 19,
-    "Name": "",
+    "Name": "Phantom Dash - Two",
     "Level": 1,
     "EnergyValue": 0,
     "WaitTime": 0.5,
@@ -153,7 +153,7 @@
   },
   "20": {
     "Id": 20,
-    "Name": "",
+    "Name": "Phantom Dash - Two",
     "Level": 2,
     "EnergyValue": 1,
     "WaitTime": 0.5,
@@ -161,7 +161,7 @@
   },
   "21": {
     "Id": 21,
-    "Name": "",
+    "Name": "Phantom Dash - Two",
     "Level": 3,
     "EnergyValue": 1,
     "WaitTime": 0.5,

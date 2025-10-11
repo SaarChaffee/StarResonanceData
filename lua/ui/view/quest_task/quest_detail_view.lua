@@ -345,8 +345,9 @@ function Quest_detailView:refreshDetailById(id)
     return
   end
   local quest = self.questData_:GetQuestByQuestId(id)
-  self.lab_quest_name_.text = questRow.QuestName
-  self.lab_quest_desc_.text = questRow.QuestDetail
+  self.lab_quest_name_.text = self.questVM_.GetQuestName(quest.id)
+  local param = Z.Placeholder.SetPlayerSelfPronoun()
+  self.lab_quest_desc_.text = Z.Placeholder.Placeholder(questRow.QuestDetail, param)
   self.uiBinder.Ref:SetVisible(self.btn_give_up_, questRow.GiveUp)
   self:refreshQuestSeriesAwards(id)
   self:refreshQuestAwards(id)

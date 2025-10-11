@@ -90,6 +90,7 @@ function Cutscene_subtitle_windowView:init()
     labContentBinder.Ref:SetVisible(self.labContent_, true, true)
   end
   local param = Z.Placeholder.SetMePlaceholder()
+  param = Z.Placeholder.SetPlayerSelfPronoun(param)
   self.content_ = Z.Placeholder.Placeholder(content, param)
   self.labContent_.text = ""
 end

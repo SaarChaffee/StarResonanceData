@@ -112,7 +112,8 @@ function Union_detail_popupView:refreshUnionInfo()
     val = self.curUnionInfo_.baseInfo.level
   })
   self.uiBinder.lab_person.text = self.curUnionInfo_.baseInfo.num .. "/" .. self.curUnionInfo_.baseInfo.maxNum
-  self.uiBinder.lab_rolelevel.text = Lang("MinimumRolelevel") .. (self.curUnionRecruitInfo_.joinLevel or self.limitLvMin_)
+  local grade = self.curUnionRecruitInfo_.joinLevel or self.limitLvMin_
+  self.uiBinder.lab_rolelevel.text = Lang("MinimumRolelevel", {val = grade})
   if self.curUnionRecruitInfo_.slogan == nil or self.curUnionRecruitInfo_.slogan == "" then
     self.uiBinder.lab_bulletin.text = Lang("Notset")
   else

@@ -136,4 +136,11 @@ function UnionNtfStubImpl:NotifyUnionOfficialChange(call, vRequest)
   end
 end
 
+function UnionNtfStubImpl:NotifyMemberOnline(call, vRequest)
+  local unionVM = Z.VMMgr.GetVM("union")
+  if vRequest.memberIdList and vRequest.offlineTimer then
+    unionVM:UpdateOnlineMemberList(vRequest.memberIdList, vRequest.offlineTimer)
+  end
+end
+
 return UnionNtfStubImpl

@@ -113,16 +113,20 @@ local targetSort = function(targetList)
   end)
   return targetList
 end
-local getTargetIdByDungeonId = function(dungeonid)
+local getTargetIdByDungeonId = function(dungeonid, masterDifficultyLevel)
   local teamData = Z.DataMgr.Get("team_data")
   for id, cfgData in pairs(teamData.TeamTargetTableDatas) do
-    if cfgData.RelativeDungeonId == dungeonid then
+    if masterDifficultyLevel ~= nil and 0 < masterDifficultyLevel then
+      if cfgData.RelativeDungeonId == dungeonid and cfgData.Difficulty == masterDifficultyLevel then
+        return id
+      end
+    elseif cfgData.RelativeDungeonId == dungeonid then
       return id
     end
   end
 end
-local enterTeamTargetByDungeonId = function(dungeonid)
-  openTeamMainView(getTargetIdByDungeonId(dungeonid))
+local enterTeamTargetByDungeonId = function(dungeonid, difficulty)
+  openTeamMainView(getTargetIdByDungeonId(dungeonid, difficulty))
 end
 local ret = {
   OpenTeamMainView = openTeamMainView,

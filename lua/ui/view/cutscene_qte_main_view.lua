@@ -253,11 +253,11 @@ function Cutscene_qte_mainView:onCutsceneQteFail(qteId)
 end
 
 function Cutscene_qte_mainView:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.CutsceneQTE then
-    if inputActionEventData.eventType == Z.InputActionEventType.ButtonJustPressed and self.qteKeyOnPress_ then
+  if inputActionEventData.ActionId == Z.InputActionIds.CutsceneQTE then
+    if inputActionEventData.EventType == Z.InputActionEventType.ButtonJustPressed and self.qteKeyOnPress_ then
       self.qteKeyOnPress_(inputActionEventData)
     end
-    if inputActionEventData.eventType == Z.InputActionEventType.ButtonJustReleased and self.qteKeyOnRelese_ then
+    if inputActionEventData.EventType == Z.InputActionEventType.ButtonJustReleased and self.qteKeyOnRelese_ then
       self.qteKeyOnRelese_(inputActionEventData)
     end
   end

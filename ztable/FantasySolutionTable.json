@@ -1,15 +1,15 @@
 {
   "101": {
     "Id": 101,
-    "Name": "",
-    "Des": "",
+    "Name": "Steady Boost (Low)",
+    "Des": "Damage Universal - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": []
   },
   "102": {
     "Id": 102,
-    "Name": "",
-    "Des": "",
+    "Name": "Steady Boost (High)",
+    "Des": "Damage Universal - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140103,
@@ -22,8 +22,8 @@
   },
   "103": {
     "Id": 103,
-    "Name": "",
-    "Des": "",
+    "Name": "Efficient Trigger (Low)",
+    "Des": "Arcane! Starfall - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140005,
@@ -36,8 +36,8 @@
   },
   "104": {
     "Id": 104,
-    "Name": "",
-    "Des": "",
+    "Name": "Efficient Trigger (High)",
+    "Des": "Arcane! Starfall - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140105,
@@ -50,8 +50,8 @@
   },
   "105": {
     "Id": 105,
-    "Name": "",
-    "Des": "",
+    "Name": "Critical Boost (Low)",
+    "Des": "Arcane! True Sight - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140003,
@@ -64,8 +64,8 @@
   },
   "106": {
     "Id": 106,
-    "Name": "",
-    "Des": "",
+    "Name": "Critical Boost (High)",
+    "Des": "Arcane! True Sight - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140103,
@@ -78,8 +78,8 @@
   },
   "107": {
     "Id": 107,
-    "Name": "",
-    "Des": "",
+    "Name": "Combo Boost (Low)",
+    "Des": "Arcane! Power Release - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140002,
@@ -92,8 +92,8 @@
   },
   "108": {
     "Id": 108,
-    "Name": "",
-    "Des": "",
+    "Name": "Combo Boost (High)",
+    "Des": "Arcane! Power Release - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140102,
@@ -106,8 +106,8 @@
   },
   "109": {
     "Id": 109,
-    "Name": "",
-    "Des": "",
+    "Name": "Desperation Boost (Low)",
+    "Des": "Arcane! Battle Inspiration - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140004,
@@ -120,8 +120,8 @@
   },
   "110": {
     "Id": 110,
-    "Name": "",
-    "Des": "",
+    "Name": "Desperation Boost(High)",
+    "Des": "Arcane! Battle Inspiration - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140104,
@@ -134,8 +134,8 @@
   },
   "201": {
     "Id": 201,
-    "Name": "",
-    "Des": "",
+    "Name": "Versatile Support (Low)",
+    "Des": "Support Universal - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140009,
@@ -148,8 +148,8 @@
   },
   "202": {
     "Id": 202,
-    "Name": "",
-    "Des": "",
+    "Name": "Versatile Support (High)",
+    "Des": "Support Universal - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140109,
@@ -162,8 +162,8 @@
   },
   "203": {
     "Id": 203,
-    "Name": "",
-    "Des": "",
+    "Name": "Healing Boost (Low)",
+    "Des": "Arcane! Healing Pulse - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140009,
@@ -176,8 +176,8 @@
   },
   "204": {
     "Id": 204,
-    "Name": "",
-    "Des": "",
+    "Name": "Healing Boost (High)",
+    "Des": "Arcane! Healing Pulse - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140109,
@@ -190,8 +190,8 @@
   },
   "205": {
     "Id": 205,
-    "Name": "",
-    "Des": "",
+    "Name": "Control Boost (Low)",
+    "Des": "Arcane! Gravity Singularity - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140009,
@@ -204,8 +204,8 @@
   },
   "206": {
     "Id": 206,
-    "Name": "",
-    "Des": "",
+    "Name": "Control Boost (High)",
+    "Des": "Arcane! Gravity Singularity - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140109,
@@ -218,8 +218,8 @@
   },
   "207": {
     "Id": 207,
-    "Name": "",
-    "Des": "",
+    "Name": "Combo Healing (Low)",
+    "Des": "Arcane! Battle Aura - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140009,
@@ -232,8 +232,8 @@
   },
   "208": {
     "Id": 208,
-    "Name": "",
-    "Des": "",
+    "Name": "Combo Healing (High)",
+    "Des": "Arcane! Battle Aura - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140109,
@@ -246,8 +246,8 @@
   },
   "301": {
     "Id": 301,
-    "Name": "",
-    "Des": "",
+    "Name": "Survival Universal (Low)",
+    "Des": "Endurance Universal - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140008,
@@ -260,8 +260,8 @@
   },
   "302": {
     "Id": 302,
-    "Name": "",
-    "Des": "",
+    "Name": "Survival Universal (High)",
+    "Des": "Endurance Universal- Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140108,
@@ -274,8 +274,8 @@
   },
   "303": {
     "Id": 303,
-    "Name": "",
-    "Des": "",
+    "Name": "Self Empowerment (Low)",
+    "Des": "Arcane! Survival Instinct - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140008,
@@ -288,8 +288,8 @@
   },
   "304": {
     "Id": 304,
-    "Name": "",
-    "Des": "",
+    "Name": "Self Empowerment (High)",
+    "Des": "Arcane! Survival Instinct - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140108,
@@ -302,8 +302,8 @@
   },
   "305": {
     "Id": 305,
-    "Name": "",
-    "Des": "",
+    "Name": "Efficient Break (Low)",
+    "Des": "Arcane! Super Impact - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140008,
@@ -316,8 +316,8 @@
   },
   "306": {
     "Id": 306,
-    "Name": "",
-    "Des": "",
+    "Name": "Efficient Break (High)",
+    "Des": "Arcane! Super Impact - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140108,
@@ -330,8 +330,8 @@
   },
   "307": {
     "Id": 307,
-    "Name": "",
-    "Des": "",
+    "Name": "Hit Fortify (Low)",
+    "Des": "Arcane! Powerful Grip - Epic",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140008,
@@ -344,8 +344,8 @@
   },
   "308": {
     "Id": 308,
-    "Name": "",
-    "Des": "",
+    "Name": "Hit Fortify (High)",
+    "Des": "Arcane! Powerful Grip - Legendary",
     "RecommendedType": 1,
     "RecommendFantasyList": [
       5140108,

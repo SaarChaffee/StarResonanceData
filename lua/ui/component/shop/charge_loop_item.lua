@@ -23,10 +23,8 @@ function ChargeLoopItem:OnRefresh(data)
     if firstAwards and firstAwards[1] then
       self.uiBinder.Ref:SetVisible(self.uiBinder.layout_ast_topup, true)
       self.uiBinder.lab_lock_first.text = Lang("firstChargeAwards") .. firstAwards[1].awardNum
-      local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(firstAwards[1].awardId)
-      if itemRow then
-        self.uiBinder.rimg_icon_first:SetImage(itemRow.Icon)
-      end
+      local itemVm = Z.VMMgr.GetVM("items")
+      self.uiBinder.rimg_icon_first:SetImage(itemVm.GetItemIcon(firstAwards[1].awardId))
     else
       self.uiBinder.Ref:SetVisible(self.uiBinder.layout_ast_topup, false)
     end
@@ -39,10 +37,8 @@ function ChargeLoopItem:OnRefresh(data)
     if award then
       self.uiBinder.Ref:SetVisible(self.uiBinder.layout_presented, true)
       self.uiBinder.lab_lock_add.text = Lang("chargeAddAwards") .. award.awardNum
-      local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(award.awardId)
-      if itemRow then
-        self.uiBinder.rimg_icon_add:SetImage(itemRow.Icon)
-      end
+      local itemVm = Z.VMMgr.GetVM("items")
+      self.uiBinder.rimg_icon_add:SetImage(itemVm.GetItemIcon(award.awardId))
     else
       self.uiBinder.Ref:SetVisible(self.uiBinder.layout_presented, false)
     end

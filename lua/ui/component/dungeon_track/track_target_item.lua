@@ -53,36 +53,36 @@ end
 
 function TrackTargetItem:SetIcon(isComplete, customIcon, targetCfg)
   if customIcon then
-    self.unit_.img_bar.Img:SetImage(customIcon)
+    self.unit_.img_bar:SetImage(customIcon)
   end
   if targetCfg.TargetDes and targetCfg.TargetDes ~= "" then
-    self.unit_.group_dot.Go:SetActive(true)
+    self.unit_.group_dot.gameObject:SetActive(true)
   else
-    self.unit_.group_dot.Go:SetActive(false)
+    self.unit_.group_dot.gameObject:SetActive(false)
   end
   self:RefreshIcon(isComplete)
 end
 
 function TrackTargetItem:RefreshIcon(isComplete)
   if isComplete then
-    self.unit_.img_on:SetVisible(true)
+    self.unit_.Ref:SetVisible(self.unit_.img_on, true)
   elseif self.customIcon_ then
-    self.unit_.img_bar:SetVisible(true)
+    self.unit_.Ref:SetVisible(self.unit_.img_bar, true)
   else
-    self.unit_.img_off:SetVisible(true)
+    self.unit_.Ref:SetVisible(self.unit_.img_off, true)
   end
 end
 
 function TrackTargetItem:efreshEffect(isComplete)
-  self.unit_.ui_effect.ZEff:SetEffectGoVisible(isComplete)
+  self.unit_.ui_effect:SetEffectGoVisible(isComplete)
 end
 
 function TrackTargetItem:RefreshContent(isComplete, targetCfg, targetData)
   if not targetCfg.TargetDes or targetCfg.TargetDes == "" then
-    self.unit_.lab_task_content.Go:SetActive(false)
+    self.unit_.lab_task_content.gameObject:SetActive(false)
     return
   end
-  self.unit_.lab_task_content.Go:SetActive(true)
+  self.unit_.lab_task_content.gameObject:SetActive(true)
   local contentNum = Lang("dungeonTargetValue", {
     val1 = targetData.nums,
     val2 = targetCfg.Num
@@ -91,18 +91,18 @@ function TrackTargetItem:RefreshContent(isComplete, targetCfg, targetData)
   if isComplete then
     content = Z.RichTextHelper.ApplyStyleTag(content, E.TextStyleTag.JobNotActive)
   end
-  self.unit_.lab_task_content.TMPLab.text = content
+  self.unit_.lab_task_content.text = content
 end
 
 function TrackTargetItem:SetProgress(targetCfg, targetData)
-  self.unit_.slider_task:SetVisible(targetCfg.IsShowProgress)
-  self.unit_.group_slider:SetVisible(targetCfg.IsShowProgress)
-  self.unit_.slider_task.Slider.maxValue = targetCfg.Num
+  self.unit_.Ref:SetVisible(self.unit_.slider_task, targetCfg.IsShowProgress)
+  self.unit_.Ref:SetVisible(self.unit_.group_slider, targetCfg.IsShowProgress)
+  self.unit_.slider_task.maxValue = targetCfg.Num
   self:RefreshProgress(targetData)
 end
 
 function TrackTargetItem:RefreshProgress(targetData)
-  self.unit_.slider_task.Slider.value = targetData.nums
+  self.unit_.slider_task.value = targetData.nums
 end
 
 function TrackTargetItem:SetDungeonVar(targetId)
@@ -115,7 +115,7 @@ function TrackTargetItem:SetDungeonVar(targetId)
     self.subUnitToken_[name] = token
     self.subUnitDic_[info.varName] = name
     local path = Z.IsPCUI and SubUnitPath[1] or SubUnitPath[2]
-    local subUnit = self.parentView_:AsyncLoadUiUnit(path, name, self.unit_.layout_sub.Trans, token)
+    local subUnit = self.parentView_:AsyncLoadUiUnit(path, name, self.unit_.layout_sub.transform, token)
     self:RefreshSubUnit(subUnit, info)
   end
 end
@@ -141,10 +141,10 @@ function TrackTargetItem:RefreshSubUnit(subUnit, info)
 end
 
 function TrackTargetItem:ResetUnit()
-  self.unit_.img_on:SetVisible(false)
-  self.unit_.img_off:SetVisible(false)
-  self.unit_.img_bar:SetVisible(false)
-  self.unit_.lab_task_content.TMPLab.text = ""
+  self.unit_.Ref:SetVisible(self.unit_.img_on, false)
+  self.unit_.Ref:SetVisible(self.unit_.img_off, false)
+  self.unit_.Ref:SetVisible(self.unit_.img_bar, false)
+  self.unit_.lab_task_content.text = ""
 end
 
 function TrackTargetItem:ClearUiUnit()

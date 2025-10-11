@@ -38,11 +38,17 @@ function Shop_mysterious_subView:OnActive()
     self:asyncGetShopData()
   end)()
   self:startTimer()
+  self:bindEvent()
+end
+
+function Shop_mysterious_subView:bindEvent()
+  Z.EventMgr:Add(Z.ConstValue.PrivilegesDataChanged, self.refreshCost, self)
 end
 
 function Shop_mysterious_subView:OnDeActive()
   self.timerMgr:Clear()
   self.itemLoopGridView_:UnInit()
+  Z.EventMgr:Remove(Z.ConstValue.PrivilegesDataChanged, self.refreshCost, self)
 end
 
 function Shop_mysterious_subView:OnRefresh()

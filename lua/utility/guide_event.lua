@@ -15,17 +15,11 @@ function GuideEventSystem:Init()
     weaponList.Watcher:RegWatcher(self.onChangeWeaponWatcher_)
   end
   
-  function self.onInputAction_(inputActionData)
-    Z.GuideMgr:onRemoveEvent(E.SteerType.OnInputKey, inputActionData.actionId)
-    Z.GuideMgr:onRemoveEvent(E.SteerType.AtWillOperation)
-  end
-  
   function self.equipListChangeFunc_(container, dirtys)
     self:changeEquipEvent(container, dirtys)
   end
   
   Z.ContainerMgr.CharSerialize.equip.Watcher:RegWatcher(self.equipListChangeFunc_)
-  Z.InputLuaBridge:AddInputEventDelegateWithoutActionId(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed)
   Z.EventMgr:Add(Z.ConstValue.UIShow, self.onOpenViewEvent, self)
   Z.EventMgr:Add(Z.ConstValue.UIHide, self.onCloseViewEvent, self)
   Z.EventMgr:Add(Z.ConstValue.UILoadFinish, self.onOpenViewEvent, self)
@@ -53,6 +47,7 @@ function GuideEventSystem:Init()
   Z.EventMgr:Add(Z.ConstValue.RoleLevelUp, self.onRoleLevelUpEvent, self)
   Z.EventMgr:Add(Z.ConstValue.Backpack.ItemCountChange, self.onItemChange, self)
   Z.EventMgr:Add(Z.ConstValue.Backpack.DelItem, self.onItemChange, self)
+  Z.EventMgr:Add(Z.ConstValue.Device.DeviceTypeChange, self.onDeviceTypeChange, self)
   self.onItemChange()
   isInit = true
 end
@@ -77,7 +72,6 @@ function GuideEventSystem:UnInit()
     end
     self.onItemPackageChangedWatcher_ = nil
   end
-  Z.InputLuaBridge:RemoveInputEventDelegateWithoutActionId(self.onInputAction_, Z.InputActionEventType.ButtonJustPressed)
   Z.EventMgr:RemoveObjAll(self)
   isInit = false
 end
@@ -239,44 +233,48 @@ function GuideEventSystem:OnResonancEnvironmentEvent(isShowRed)
 end
 
 function GuideEventSystem:AddInputEvent(data)
-  for _, guideData in ipairs(data.finishParms) do
+  for _, guideData in ipairs(data.finishParams) do
     if guideData.tp == E.SteerType.InputEvent then
-      local parmType = type(guideData.parm)
-      if parmType == "string" then
-        local parmTab = string.split(guideData.parm, "=")
-        Z.SteerMgr:OnRegEventByTypeId(tonumber(parmTab[1]))
+      local paramType = type(guideData.param)
+      if paramType == "string" then
+        local paramTab = string.split(guideData.param, "=")
+        Z.SteerMgr:OnRegEventByTypeId(tonumber(paramTab[1]))
       else
-        Z.SteerMgr:OnRegEventByTypeId(tonumber(guideData.parm))
+        Z.SteerMgr:OnRegEventByTypeId(tonumber(guideData.param))
       end
     end
   end
 end
 
 function GuideEventSystem:RemoveInputEvent(data)
-  for _, guideData in ipairs(data.finishParms) do
+  for _, guideData in ipairs(data.finishParams) do
     if guideData.tp == E.SteerType.InputEvent then
-      local parmType = type(guideData.parm)
-      if parmType == "string" then
-        local parmTab = string.split(guideData.parm, "=")
-        Z.SteerMgr:OnUnregEventByTypeId(tonumber(parmTab[1]))
+      local paramType = type(guideData.param)
+      if paramType == "string" then
+        local paramTab = string.split(guideData.param, "=")
+        Z.SteerMgr:OnUnregEventByTypeId(tonumber(paramTab[1]))
       else
-        Z.SteerMgr:OnUnregEventByTypeId(tonumber(guideData.parm))
+        Z.SteerMgr:OnUnregEventByTypeId(tonumber(guideData.param))
       end
       Z.GuideMgr:CheckIsAddInputEvent()
     end
   end
-  for _, guideData in ipairs(data.triggerParms) do
-    if guideData.tp == E.SteerType.InputEvent and self.inputEventTab_[guideData.parm] then
-      local parmType = type(guideData.parm)
-      if parmType == "string" then
-        local parmTab = string.split(guideData.parm, "=")
-        Z.SteerMgr:OnUnregEventByTypeId(tonumber(parmTab[1]))
+  for _, guideData in ipairs(data.triggerParams) do
+    if guideData.tp == E.SteerType.InputEvent and self.inputEventTab_[guideData.param] then
+      local paramType = type(guideData.param)
+      if paramType == "string" then
+        local paramTab = string.split(guideData.param, "=")
+        Z.SteerMgr:OnUnregEventByTypeId(tonumber(paramTab[1]))
       else
-        Z.SteerMgr:OnUnregEventByTypeId(tonumber(guideData.parm))
+        Z.SteerMgr:OnUnregEventByTypeId(tonumber(guideData.param))
       end
       Z.GuideMgr:CheckIsAddInputEvent()
     end
   end
+end
+
+function GuideEventSystem:onDeviceTypeChange(deviceType)
+  Z.GuideMgr:OnDeviceTypeChange()
 end
 
 return GuideEventSystem

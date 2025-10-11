@@ -76,6 +76,7 @@ enum EErrorCode {
   ErrCancelDeleteChar = 1046;
   ErrCancelDeleteCharIsDelete = 1047;
   ErrIntoSceneOwnerFail = 1048;
+  ErrLoginNoEnoughToken = 1049;
   ErrSceneQueueUp = 1050;
   ErrProtocolVersionErr = 1051;
   ErrConfigVersionErr = 1052;
@@ -149,6 +150,8 @@ enum EErrorCode {
   ErrItemToySceneUseExceeded = 2330;
   ErrItemToyUseInDisableArea = 2331;
   ErrItemToySingleCellUseExceeded = 2332;
+  ErrItemToyCantUse = 2333;
+  ErrItemLifeProfessionExceeded = 2334;
   ErrMonthlyCardNotExists = 2380;
   ErrMonthlyCardDataError = 2381;
   ErrMonthlyCardDayAwardReceived = 2382;
@@ -250,6 +253,7 @@ enum EErrorCode {
   ErrHomeLandGainNotOwner = 2500;
   ErrHomeLandItemFullGrid = 2501;
   ErrHomeLandFurnitureFull = 2502;
+  ErrCommunityWarehouseNotBindOrCooldown = 2503;
   ErrComposeItemNotEnough = 2571;
   ErrComposeFailed = 2572;
   ErrRedemptionItemNotExist = 2573;
@@ -285,6 +289,7 @@ enum EErrorCode {
   ErrAwardRandomTypeNone = 2626;
   ErrAwardRandomTypeNoMatch = 2627;
   ErrAwardActorIsNull = 2628;
+  ErrCounterUpToLimit = 2629;
   ErrEquipWashAttrNotExist = 2700;
   ErrNotEquipInCombat = 2701;
   ErrEquipPart = 2702;
@@ -355,6 +360,7 @@ enum EErrorCode {
   ErrTeamEditGroupNotAllowed = 2961;
   ErrTeamGroupNotExist = 2962;
   ErrTeamTargetNoMatchMemberType = 2963;
+  ErrTeamMemberInDungeon = 2964;
   ErrDecomposeItemNotExist = 3000;
   ErrDecomposeItemNotEnough = 3001;
   ErrRefineEnergyNotEnough = 3002;
@@ -778,6 +784,7 @@ enum EErrorCode {
   ErrInteractionConfig = 4950;
   ErrInteractionNotOneself = 4951;
   ErrInteractionDistance = 4952;
+  ErrInteractionNotDoing = 4953;
   ErrShowPieceIllegalPieceType = 4961;
   ErrShowPieceIllegalPieceId = 4962;
   ErrShowPieceNoInOftenUseList = 4963;
@@ -807,6 +814,7 @@ enum EErrorCode {
   ErrProfessionEquipInCombat = 5018;
   ErrProfessionSwitchInCombat = 5019;
   ErrProfessionDungeonNotAllowSwitch = 5020;
+  ErrAoYiDecomposeOverflow = 5021;
   ErrTalentIllegalTalentPoolId = 5101;
   ErrTalentBeyondCurTalentMaxPlanNum = 5102;
   ErrTalentPoolNoActive = 5108;
@@ -828,6 +836,7 @@ enum EErrorCode {
   ErrTalentTotalTalentPointNotEnough = 5125;
   ErrTalentPreTalentNodeNotActivated = 5126;
   ErrTalentResetTalentInCombat = 5127;
+  ErrTalentActiveTalentInCombat = 5128;
   ErrCookBookNotExist = 5151;
   ErrCookFoodNotEnough = 5152;
   ErrCookTypeMore = 5153;
@@ -1026,6 +1035,7 @@ enum EErrorCode {
   ErrModInitConfigNotExist = 6509;
   ErrModPartOverflow = 6510;
   ErrModCanNotLink = 6511;
+  ErrModDecomposeOverflow = 6512;
   ErrFishingNotUseBait = 6551;
   ErrFishingRandomFailed = 6552;
   ErrFishingAlreadyGetFishItem = 6553;
@@ -1127,6 +1137,7 @@ enum EErrorCode {
   ErrEquipPerfectionNoMatch = 7062;
   ErrEquipNotBreak = 7063;
   ErrEquipPutOnIng = 7064;
+  ErrEquipDecomposeOverflow = 7065;
   ErrUserIsMatching = 7101;
   ErrUserNotInMatching = 7102;
   ErrUseNotWaitReady = 7103;
@@ -1148,6 +1159,7 @@ enum EErrorCode {
   ErrWeeklyTowerNoBox = 7259;
   ErrWeeklyTowerNoStageAward = 7260;
   ErrWeeklyTowerNoTowerDungeon = 7261;
+  ErrWeeklyTowerLayerNotSatisfy = 7262;
   ErrFunctionNoAward = 7271;
   ErrFunctionHasDrawn = 7272;
   ErrTLogIllegalExportArea = 7281;
@@ -1178,6 +1190,14 @@ enum EErrorCode {
   ErrSignNotSigned = 7422;
   ErrSignAlreadySigned = 7423;
   ErrSignTimeError = 7424;
+  CdKeyInvalid = 7501;
+  CdKeyDuplicate = 7502;
+  CdKeyExpired = 7503;
+  CdKeyNotFound = 7504;
+  CdKeyNotActivated = 7505;
+  CdKeyPlayerLevelTooLow = 7506;
+  CdKeyTakeLimitReached = 7507;
+  CdKeyGroupNotFound = 7508;
   ErrTokenBucketLimit = 9998;
   ErrUnknown = 9999;
 }

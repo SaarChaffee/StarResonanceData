@@ -97,6 +97,7 @@ function TipsItemInfoPopupView:initUi()
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_TimeLimit, false)
   self.uiBinder.Ref:SetVisible(self.itemEnchantNode_, false)
   self.equipInfoNode_.Ref:SetVisible(self.equipInfoNode_.lab_lv, false)
+  self.equipInfoNode_.Ref:SetVisible(self.equipInfoNode_.lab_box_limit, false)
 end
 
 function TipsItemInfoPopupView:initBtns()
@@ -150,6 +151,12 @@ function TipsItemInfoPopupView:OnActive()
   self:SetAsLastSibling()
   self:initBinders()
   self:initBtns()
+  
+  function self.counterListWatcherFunc_(package, dirtyKeys)
+    self:refreshLimitLab()
+  end
+  
+  Z.ContainerMgr.CharSerialize.counterList.Watcher:RegWatcher(self.counterListWatcherFunc_)
   self.isGetBtnDotShow_ = false
   self.isShowUseMaterial_ = false
   self.equipUnits_ = {}
@@ -210,6 +217,7 @@ function TipsItemInfoPopupView:OnDeActive()
     self.viewData.closeCallBack()
     self.viewData.closeCallBack = nil
   end
+  Z.ContainerMgr.CharSerialize.counterList.Watcher:UnregWatcher(self.counterListWatcherFunc_)
   Z.EventMgr:Remove(Z.ConstValue.Backpack.ItemCountChange, self.onCountChange, self)
 end
 
@@ -336,7 +344,7 @@ function TipsItemInfoPopupView:rebuildLayout()
 end
 
 function TipsItemInfoPopupView:setContMaxHigh(isShowBg, isShowFixBg)
-  local maxHigh = 400
+  local maxHigh = 390
   if not isShowBg then
     maxHigh = 410
   end
@@ -382,6 +390,21 @@ function TipsItemInfoPopupView:setPanelPos(isUseOriginalPos)
       posResult.y = posSourceY - self.viewData.posOffset.y
     end
     transBg:SetAnchorPosition(posResult.x, posResult.y)
+  end
+end
+
+function TipsItemInfoPopupView:refreshLimitLab()
+  local itemFunctionTableRow = Z.TableMgr.GetRow("ItemFunctionTableMgr", self.viewData.configId, true)
+  if itemFunctionTableRow and itemFunctionTableRow.CounterId ~= 0 then
+    local counterRow = Z.TableMgr.GetRow("CounterTableMgr", itemFunctionTableRow.CounterId)
+    if counterRow then
+      local timerConfigItem = Z.DIServiceMgr.ZCfgTimerService:GetZCfgTimerItem(counterRow.TimeTableId)
+      local timeType = timerConfigItem and timerConfigItem.TimerType or 0
+      local limit = Z.CounterHelper.GetCounterLimitCount(itemFunctionTableRow.CounterId)
+      local residueCount = Z.CounterHelper.GetCounterResidueLimitCount(itemFunctionTableRow.CounterId, limit)
+      self.equipInfoNode_.Ref:SetVisible(self.equipInfoNode_.lab_box_limit, true)
+      self.equipInfoNode_.lab_box_limit.text = Lang("RestrictedUseOfItemsThe" .. timeType, {val1 = residueCount, val2 = limit})
+    end
   end
 end
 
@@ -523,7 +546,22 @@ function TipsItemInfoPopupView:refreshBaseInfo()
       timerDes = Z.CounterHelper.GetCounterTimerDes(activeCounterId)
       self.uiBinder.cont_tips_activitycounter.lab_refresh_time.text = Lang("FriendshipActivityRefreshTime", {val = timerDes})
     end
+  elseif self.viewData.configId == Z.SystemItem.LifeProfessionPointItem then
+    self.honourNode_.Ref.UIComp:SetVisible(true)
+    local showSurpluseText, limitCount, currentNum = self:checkIsShowLifeProfessionPoint()
+    local color
+    if showSurpluseText then
+      color = "#86FFCB"
+    else
+      color = "#FF9B5B"
+    end
+    self.honourNode_.lab_current_get.text = Lang("LifeProfessionPointCounterTitle", {
+      val1 = Z.RichTextHelper.ApplyColorTag(currentNum, color),
+      val2 = limitCount
+    })
+    self.honourNode_.lab_refresh_time.text = ""
   end
+  self:refreshLimitLab()
   self:SetUIVisible(self.uiBinder.cont_boss_rank, bossData ~= nil)
   self:SetUIVisible(self.uiBinder.cont_boss_time, bossData ~= nil and 0 < itemInfo.expireTime)
 end
@@ -1225,7 +1263,8 @@ function TipsItemInfoPopupView:setEnchantInfo()
       local itemRow = Z.TableMgr.GetRow("ItemTableMgr", curEnchantRow.Id)
       if itemRow then
         self.uiBinder.Ref:SetVisible(self.uiBinder.gem_title_root, true)
-        self.uiBinder.gem_rimg_icon:SetImage(itemRow.Icon)
+        local itemVm = Z.VMMgr.GetVM("items")
+        self.uiBinder.gem_rimg_icon:SetImage(itemVm.GetItemIcon(curEnchantRow.Id))
         self.uiBinder.lab_enchant_use.text = itemRow.Name
       end
     end
@@ -1665,14 +1704,33 @@ function TipsItemInfoPopupView:craftEnergy()
   end
   self.uiBinder.Ref:SetVisible(self.contDesc3, false)
   if self.viewData.configId == Z.SystemItem.LifeProfessionPointItem then
+    local showSurpluseText, _, _ = self:checkIsShowLifeProfessionPoint()
     local lifeProfessionVM = Z.VMMgr.GetVM("life_profession")
-    self.uiBinder.Ref:SetVisible(self.contDesc3, true)
+    self.uiBinder.Ref:SetVisible(self.contDesc3, showSurpluseText)
     local remainVitality, cnt = lifeProfessionVM.GetNextGainVitalityConsume()
     self.uiBinder.lab_desc3.text = Lang("LifeProfessionSpeGet", {
       val = math.floor(remainVitality),
       cnt = cnt
     })
   end
+end
+
+function TipsItemInfoPopupView:checkIsShowLifeProfessionPoint()
+  local showSurpluseText = false
+  local limitCount = 0
+  local currentNum = 0
+  local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+  if seasonId and Z.SeasonGlobalConfig.SeasonLifePointMaxLimit[seasonId] then
+    local counterId = Z.SeasonGlobalConfig.SeasonLifePointMaxLimit[seasonId][2]
+    if counterId then
+      limitCount = Z.CounterHelper.GetCounterLimitCount(counterId)
+      currentNum = Z.CounterHelper.GetOwnCount(counterId)
+      if limitCount > currentNum then
+        showSurpluseText = true
+      end
+    end
+  end
+  return showSurpluseText, limitCount, currentNum
 end
 
 return TipsItemInfoPopupView

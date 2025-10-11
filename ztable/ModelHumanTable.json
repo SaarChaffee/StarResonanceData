@@ -22718,38 +22718,38 @@
     "EmoPrefix": "as_m_emo_m200-00_",
     "Sex": 1,
     "Model": 2,
-    "HeightParm": 10.0,
-    "ArmParm": -10.0,
-    "ChestParm": 0.1,
-    "WaistParm": -3.0,
-    "CrotchParm": -10.0,
-    "ThighParm": 3.0,
+    "HeightParm": -0.563,
+    "ArmParm": -8.706,
+    "ChestParm": -0.6292,
+    "WaistParm": -1.912,
+    "CrotchParm": 6.696,
+    "ThighParm": 9.708,
     "CalfParm": 0.0,
-    "FemaleParm": 0.0,
+    "FemaleParm": -3.974,
     "Skin": {
-      "x": 18.0,
-      "y": 41.0,
+      "x": 15.0,
+      "y": 52.0,
       "z": 90.0
     },
     "Face": [],
-    "Chin": 0.3,
+    "Chin": 0.25,
     "Eyebrow": [],
-    "EyebrowAngle": 0.25,
+    "EyebrowAngle": 0.4745,
     "EyebrowColor": {
       "x": 0.0,
       "y": 0.0,
-      "z": 13.54
+      "z": 14.8037
     },
     "Eye": [],
-    "EyeUpDown": 0.1,
-    "EyeAngle": 0.5,
+    "EyeUpDown": 0.14,
+    "EyeAngle": 0.7,
     "EyeTex": [],
     "EyeLong": 0.0,
     "EyeShort": 0.0,
     "LashTex": [],
     "LashColor": {
-      "x": 27.72,
-      "y": 22.43,
+      "x": 0.0,
+      "y": 0.0,
       "z": 10.0
     },
     "EyeColorDiff": 0,
@@ -22766,57 +22766,57 @@
     "ColorZone": 0,
     "LEyeColorArr": [
       {
-        "x": 235.584,
+        "x": 266.2436,
+        "y": 85.0,
+        "z": 18.7296
+      },
+      {
+        "x": 39.5847,
+        "y": 54.1633,
+        "z": 43.2445
+      },
+      {
+        "x": 303.4562,
+        "y": 13.8553,
+        "z": 85.0
+      },
+      {
+        "x": 262.8606,
         "y": 85.0,
         "z": 10.0
-      },
-      {
-        "x": 1.26,
-        "y": 85.0,
-        "z": 27.24
-      },
-      {
-        "x": 288.072,
-        "y": 62.21,
-        "z": 40.94
-      },
-      {
-        "x": 179.712,
-        "y": 70.5,
-        "z": 21.05
       }
     ],
     "REyeColorArr": [
       {
-        "x": 235.584,
+        "x": 266.2436,
+        "y": 85.0,
+        "z": 18.7296
+      },
+      {
+        "x": 39.5847,
+        "y": 54.1633,
+        "z": 43.2445
+      },
+      {
+        "x": 303.4562,
+        "y": 13.8553,
+        "z": 85.0
+      },
+      {
+        "x": 262.8606,
         "y": 85.0,
         "z": 10.0
-      },
-      {
-        "x": 1.26,
-        "y": 85.0,
-        "z": 27.24
-      },
-      {
-        "x": 288.072,
-        "y": 62.21,
-        "z": 40.94
-      },
-      {
-        "x": 179.712,
-        "y": 70.5,
-        "z": 21.05
       }
     ],
     "Nose": [],
-    "NoseUpDown": 0.0,
+    "NoseUpDown": 0.18,
     "Mouth": [],
     "Tooth": [],
     "EyeShadow": [],
     "EyeShadowColor": {
-      "x": 20.196,
-      "y": 41.38,
-      "z": 24.14
+      "x": 19.4042,
+      "y": 55.0794,
+      "z": 55.35
     },
     "Lip": [],
     "LipColor": {
@@ -22826,9 +22826,9 @@
     },
     "Feature": [],
     "FeatureColor": {
-      "x": 0.0,
-      "y": 0.0,
-      "z": 0.0
+      "x": 356.0,
+      "y": 54.0,
+      "z": 30.0
     },
     "DecalTex": [],
     "DecalColor": {
@@ -22850,19 +22850,19 @@
     "HairHighlight2": 0,
     "HairColor": [
       {
-        "x": 179.712,
-        "y": 25.03,
-        "z": 70.71
+        "x": 39.353,
+        "y": 48.6993,
+        "z": 43.6675
       },
       {
-        "x": 334.8,
-        "y": 30.17,
-        "z": 73.2
+        "x": 217.008,
+        "y": 53.31,
+        "z": 48.95
       },
       {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 85.0
+        "x": 165.204,
+        "y": 40.14,
+        "z": 21.06
       }
     ],
     "HairGradient": [
@@ -22901,7 +22901,28 @@
     "MouthMask": [],
     "MouthMaskColor": [],
     "Earrings": [],
-    "EarringsColor": [],
+    "EarringsColor": [
+      {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 100.0
+      },
+      {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 100.0
+      },
+      {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    ],
     "Necklace": [],
     "NecklaceColor": [],
     "Ring": [],
@@ -22918,43 +22939,43 @@
     "Skeleton": "prefabs/ch_f_skeleton",
     "AnimTemplate": "animtpl/ch_f_skeleton",
     "RotateCurves": [],
-    "Head": "ch_f_head_child_f100_00",
-    "EmoPrefix": "as_f_emo_f100-00_",
+    "Head": "ch_f_head_youth_f200_02",
+    "EmoPrefix": "as_f_emo_f200-02_",
     "Sex": 2,
-    "Model": 1,
-    "HeightParm": 10.0,
+    "Model": 2,
+    "HeightParm": 0.0,
     "ArmParm": -10.0,
     "ChestParm": 0.0,
-    "WaistParm": -10.0,
-    "CrotchParm": 10.0,
-    "ThighParm": 10.0,
-    "CalfParm": 0.0,
-    "FemaleParm": 3.0,
+    "WaistParm": -5.0,
+    "CrotchParm": 5.0,
+    "ThighParm": 0.0,
+    "CalfParm": -0.0001,
+    "FemaleParm": -8.0,
     "Skin": {
-      "x": 18.0,
-      "y": 41.0,
-      "z": 90.0
+      "x": 11.3682,
+      "y": 45.7547,
+      "z": 100.0
     },
     "Face": [],
-    "Chin": 0.1,
+    "Chin": 0.0,
     "Eyebrow": [],
-    "EyebrowAngle": 0.0,
+    "EyebrowAngle": 0.3,
     "EyebrowColor": {
-      "x": 265.968,
-      "y": 25.91,
-      "z": 29.45
+      "x": 36.131,
+      "y": 49.1393,
+      "z": 12.5862
     },
     "Eye": [],
-    "EyeUpDown": 0.1,
-    "EyeAngle": 0.35,
+    "EyeUpDown": 0.18,
+    "EyeAngle": 0.9,
     "EyeTex": [],
     "EyeLong": 0.0,
     "EyeShort": 0.0,
     "LashTex": [],
     "LashColor": {
-      "x": 268.668,
-      "y": 33.26,
-      "z": 23.7
+      "x": 20.8158,
+      "y": 44.7392,
+      "z": 14.8063
     },
     "EyeColorDiff": 0,
     "LEyeColor": {
@@ -22970,46 +22991,46 @@
     "ColorZone": 0,
     "LEyeColorArr": [
       {
-        "x": 245.592,
-        "y": 58.07,
-        "z": 57.29
+        "x": 287.9176,
+        "y": 84.5711,
+        "z": 14.3029
       },
       {
-        "x": 330.228,
-        "y": 27.4,
+        "x": 45.4715,
+        "y": 65.9493,
+        "z": 72.997
+      },
+      {
+        "x": 308.2154,
+        "y": 39.5487,
         "z": 85.0
       },
       {
-        "x": 3.996,
-        "y": 85.0,
-        "z": 85.0
-      },
-      {
-        "x": 175.932,
-        "y": 85.0,
-        "z": 49.34
+        "x": 257.4709,
+        "y": 84.3354,
+        "z": 14.3029
       }
     ],
     "REyeColorArr": [
       {
-        "x": 245.592,
-        "y": 58.07,
-        "z": 57.29
+        "x": 287.9176,
+        "y": 84.5711,
+        "z": 14.3029
       },
       {
-        "x": 330.228,
-        "y": 27.4,
+        "x": 45.4715,
+        "y": 65.9493,
+        "z": 72.997
+      },
+      {
+        "x": 308.2154,
+        "y": 39.5487,
         "z": 85.0
       },
       {
-        "x": 3.996,
-        "y": 85.0,
-        "z": 85.0
-      },
-      {
-        "x": 175.932,
-        "y": 85.0,
-        "z": 49.34
+        "x": 257.4709,
+        "y": 84.3354,
+        "z": 14.3029
       }
     ],
     "Nose": [],
@@ -23030,15 +23051,15 @@
     },
     "Feature": [],
     "FeatureColor": {
-      "x": 0.0,
-      "y": 0.0,
-      "z": 0.0
+      "x": 350.0,
+      "y": 70.0,
+      "z": 80.0
     },
     "DecalTex": [],
     "DecalColor": {
-      "x": 0.0,
-      "y": 70.0,
-      "z": 85.0
+      "x": 350.0,
+      "y": 68.7,
+      "z": 40.0
     },
     "Beard": [],
     "BeardColor": {
@@ -23054,19 +23075,19 @@
     "HairHighlight2": 0,
     "HairColor": [
       {
-        "x": 35.784,
-        "y": 54.92,
-        "z": 69.23
+        "x": 38.1818,
+        "y": 40.7407,
+        "z": 21.1765
       },
       {
-        "x": 35.784,
-        "y": 54.92,
-        "z": 69.23
+        "x": 0.0,
+        "y": 0.0,
+        "z": 15.0
       },
       {
-        "x": 35.784,
-        "y": 54.92,
-        "z": 69.23
+        "x": 0.0,
+        "y": 0.0,
+        "z": 15.0
       }
     ],
     "HairGradient": [
@@ -23112,7 +23133,7 @@
     "RingColor": [],
     "PreviewAction": [],
     "PreviewIcon": "",
-    "PinchConfig": "pinch/pinchvalue/ch_f_skeleton_s",
+    "PinchConfig": "pinch/pinchvalue/ch_f_skeleton_m",
     "WeaponIdleAnim": "",
     "AnimFadeTemplate": ""
   },

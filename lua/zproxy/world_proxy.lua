@@ -9434,6 +9434,129 @@ function WorldProxy.UseProfessionSkillSkin(vRequest, cancelToken)
   return pbRet.ret
 end
 
+function WorldProxy.ResetProfessionTalentBySingleNode(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.ResetProfessionTalentBySingleNode", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 200726, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 200726, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200726, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200726, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200726, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200726, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200726, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ResetProfessionTalentBySingleNode_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 200726, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ProfessionSkillResetSpecial(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.ProfessionSkillResetSpecial", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 200727, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 200727, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200727, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200727, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200727, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200727, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200727, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ProfessionSkillResetSpecial_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 200727, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
+function WorldProxy.ProfessionSkillReset(vRequest, cancelToken)
+  local pbMsg = {}
+  pbMsg.vRequest = vRequest
+  local pbData = pb.encode("zproto.World.ProfessionSkillReset", pbMsg)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleSendMessage(103198054, 200728, cJson.encode(pbMsg), pbData, true)
+  end
+  local pxyCallFunc = coro_util.async_to_sync(zrpcCtrl.LuaProxyCall, 6)
+  local pxyRet = pxyCallFunc(pxy, 200728, pbData, true, true, cancelToken)
+  local errorId = pxyRet:GetErrorId()
+  if 0 < errorId then
+    if errorId == zrpcError.ProxyCallCanceled:ToInt() then
+      error(ZUtil.ZCancelSource.CancelException)
+    elseif errorId == zrpcError.MethodNotFound:ToInt() then
+      logError("[RpcError][MethodNotFound][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200728, errorId)
+      error(errorId)
+    elseif errorId == zrpcError.Timeout:ToInt() then
+      logError("[RpcError][Timeout][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200728, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("NoEnterScene") then
+      logError("[RpcError][NoEnterScene][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200728, errorId)
+      error(errorId)
+    elseif errorId == Z.PbErrCode("ModIDNotOpen") then
+      logError("[RpcError][ModIDNotOpen][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200728, errorId)
+      error(errorId)
+    else
+      logError("[RpcError][serviceId={0}][methodId={1}][errorId={2}]", 103198054, 200728, errorId)
+      if errorId < 1000 then
+        zrpcCtrl.Disconnect(channelType)
+      end
+      error(errorId)
+    end
+  end
+  local retData = pxyRet:GetRetData()
+  local pbRet = pb.decode("zproto.World.ProfessionSkillReset_Ret", retData)
+  if MessageInspectBridge.InInspectState == true then
+    MessageInspectBridge.HandleReceiveMessage(103198054, 200728, cJson.encode(pbRet), retData, true)
+  end
+  return pbRet.ret
+end
+
 function WorldProxy.FastCook(vInfo, cancelToken)
   local pbMsg = {}
   pbMsg.vInfo = vInfo

@@ -12,7 +12,7 @@ function Union_unlockscene_mainView:OnActive()
   self:initBaseData()
   self:initBinders()
   Z.CoroUtil.create_coro_xpcall(function()
-    self.socialData_ = self.socialVm_.AsyncGetSocialData(0, Z.EntityMgr.PlayerEnt.EntId, self.cancelSource:CreateToken())
+    self.socialData_ = self.socialVm_.AsyncGetSocialData(0, Z.EntityMgr.PlayerEnt.CharId, self.cancelSource:CreateToken())
     if self.socialData_ and self.lastSelectItem_ then
       self:refreshSelectItem(self.lastSelectItem_)
     end

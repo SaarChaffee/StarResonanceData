@@ -5,7 +5,9 @@
     "TimeTableId": 203,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "2": {
     "Id": 2,
@@ -13,7 +15,9 @@
     "TimeTableId": 303,
     "RefreshNum": 0,
     "Limit": 3,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "3": {
     "Id": 3,
@@ -21,7 +25,9 @@
     "TimeTableId": 303,
     "RefreshNum": 0,
     "Limit": 9,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "4": {
     "Id": 4,
@@ -29,7 +35,9 @@
     "TimeTableId": 252,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "5": {
     "Id": 5,
@@ -37,7 +45,9 @@
     "TimeTableId": 252,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "6": {
     "Id": 6,
@@ -45,7 +55,9 @@
     "TimeTableId": 252,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "7": {
     "Id": 7,
@@ -53,7 +65,9 @@
     "TimeTableId": 252,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "8": {
     "Id": 8,
@@ -61,7 +75,9 @@
     "TimeTableId": 12,
     "RefreshNum": 0,
     "Limit": 0,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "9": {
     "Id": 9,
@@ -69,7 +85,9 @@
     "TimeTableId": 10102,
     "RefreshNum": 0,
     "Limit": 0,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "10": {
     "Id": 10,
@@ -77,7 +95,9 @@
     "TimeTableId": 10102,
     "RefreshNum": 0,
     "Limit": 3,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "11": {
     "Id": 11,
@@ -85,7 +105,9 @@
     "TimeTableId": 211,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "12": {
     "Id": 12,
@@ -93,7 +115,9 @@
     "TimeTableId": 212,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "13": {
     "Id": 13,
@@ -101,7 +125,9 @@
     "TimeTableId": 401,
     "RefreshNum": 0,
     "Limit": 250,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "14": {
     "Id": 14,
@@ -109,7 +135,9 @@
     "TimeTableId": 401,
     "RefreshNum": 0,
     "Limit": 50,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "15": {
     "Id": 15,
@@ -117,7 +145,9 @@
     "TimeTableId": 402,
     "RefreshNum": 0,
     "Limit": 100,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "16": {
     "Id": 16,
@@ -125,7 +155,9 @@
     "TimeTableId": 402,
     "RefreshNum": 0,
     "Limit": 15,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "17": {
     "Id": 17,
@@ -133,7 +165,9 @@
     "TimeTableId": 15,
     "RefreshNum": 0,
     "Limit": 3,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "18": {
     "Id": 18,
@@ -141,7 +175,9 @@
     "TimeTableId": 15,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "19": {
     "Id": 19,
@@ -149,7 +185,9 @@
     "TimeTableId": 15,
     "RefreshNum": 0,
     "Limit": 3,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "20": {
     "Id": 20,
@@ -157,7 +195,9 @@
     "TimeTableId": 304,
     "RefreshNum": 0,
     "Limit": 1000,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "21": {
     "Id": 21,
@@ -165,7 +205,9 @@
     "TimeTableId": 222,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "22": {
     "Id": 22,
@@ -173,7 +215,9 @@
     "TimeTableId": 17,
     "RefreshNum": 0,
     "Limit": 10000,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "23": {
     "Id": 23,
@@ -181,7 +225,9 @@
     "TimeTableId": 213,
     "RefreshNum": 0,
     "Limit": 50,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "24": {
     "Id": 24,
@@ -189,7 +235,9 @@
     "TimeTableId": 303,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "27": {
     "Id": 27,
@@ -197,7 +245,9 @@
     "TimeTableId": 10103,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "28": {
     "Id": 28,
@@ -205,7 +255,9 @@
     "TimeTableId": 350,
     "RefreshNum": 0,
     "Limit": 1000,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "29": {
     "Id": 29,
@@ -213,7 +265,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "30": {
     "Id": 30,
@@ -221,7 +275,9 @@
     "TimeTableId": 305,
     "RefreshNum": 0,
     "Limit": 5,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "31": {
     "Id": 31,
@@ -229,7 +285,9 @@
     "TimeTableId": 403,
     "RefreshNum": 0,
     "Limit": 250,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "32": {
     "Id": 32,
@@ -237,7 +295,9 @@
     "TimeTableId": 403,
     "RefreshNum": 0,
     "Limit": 50,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "33": {
     "Id": 33,
@@ -245,7 +305,9 @@
     "TimeTableId": 404,
     "RefreshNum": 0,
     "Limit": 100,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "34": {
     "Id": 34,
@@ -253,7 +315,9 @@
     "TimeTableId": 404,
     "RefreshNum": 0,
     "Limit": 15,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "35": {
     "Id": 35,
@@ -261,7 +325,9 @@
     "TimeTableId": 350,
     "RefreshNum": 0,
     "Limit": 1000,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "41": {
     "Id": 41,
@@ -269,7 +335,9 @@
     "TimeTableId": 403,
     "RefreshNum": 0,
     "Limit": 250,
-    "MonthCardLimit": 250
+    "MonthCardLimit": 250,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "42": {
     "Id": 42,
@@ -277,7 +345,9 @@
     "TimeTableId": 403,
     "RefreshNum": 0,
     "Limit": 50,
-    "MonthCardLimit": 50
+    "MonthCardLimit": 50,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "43": {
     "Id": 43,
@@ -285,7 +355,9 @@
     "TimeTableId": 404,
     "RefreshNum": 0,
     "Limit": 100,
-    "MonthCardLimit": 100
+    "MonthCardLimit": 100,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "44": {
     "Id": 44,
@@ -293,7 +365,9 @@
     "TimeTableId": 404,
     "RefreshNum": 0,
     "Limit": 15,
-    "MonthCardLimit": 15
+    "MonthCardLimit": 15,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "51": {
     "Id": 51,
@@ -301,7 +375,9 @@
     "TimeTableId": 306,
     "RefreshNum": 0,
     "Limit": 5,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "52": {
     "Id": 52,
@@ -309,7 +385,9 @@
     "TimeTableId": 306,
     "RefreshNum": 0,
     "Limit": 5,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "53": {
     "Id": 53,
@@ -317,7 +395,9 @@
     "TimeTableId": 306,
     "RefreshNum": 0,
     "Limit": 5,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "54": {
     "Id": 54,
@@ -325,7 +405,9 @@
     "TimeTableId": 306,
     "RefreshNum": 0,
     "Limit": 5,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "55": {
     "Id": 55,
@@ -333,7 +415,9 @@
     "TimeTableId": 1103,
     "RefreshNum": 0,
     "Limit": 20,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "56": {
     "Id": 56,
@@ -341,7 +425,19 @@
     "TimeTableId": 1103,
     "RefreshNum": 0,
     "Limit": 20,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
+  },
+  "57": {
+    "Id": 57,
+    "Name": "大师本单双人模式每周上限次数",
+    "TimeTableId": 1103,
+    "RefreshNum": 0,
+    "Limit": 50,
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "61": {
     "Id": 61,
@@ -349,7 +445,9 @@
     "TimeTableId": 271,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "201": {
     "Id": 201,
@@ -357,7 +455,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "62": {
     "Id": 62,
@@ -365,7 +465,9 @@
     "TimeTableId": 271,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "202": {
     "Id": 202,
@@ -373,7 +475,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "63": {
     "Id": 63,
@@ -381,7 +485,9 @@
     "TimeTableId": 271,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "203": {
     "Id": 203,
@@ -389,7 +495,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "64": {
     "Id": 64,
@@ -397,7 +505,9 @@
     "TimeTableId": 271,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "204": {
     "Id": 204,
@@ -405,7 +515,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "65": {
     "Id": 65,
@@ -413,7 +525,9 @@
     "TimeTableId": 271,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "205": {
     "Id": 205,
@@ -421,7 +535,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "66": {
     "Id": 66,
@@ -429,7 +545,9 @@
     "TimeTableId": 271,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "206": {
     "Id": 206,
@@ -437,7 +555,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "67": {
     "Id": 67,
@@ -445,7 +565,9 @@
     "TimeTableId": 272,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "207": {
     "Id": 207,
@@ -453,7 +575,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "68": {
     "Id": 68,
@@ -461,7 +585,9 @@
     "TimeTableId": 272,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "208": {
     "Id": 208,
@@ -469,7 +595,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "69": {
     "Id": 69,
@@ -477,7 +605,9 @@
     "TimeTableId": 272,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "209": {
     "Id": 209,
@@ -485,7 +615,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "70": {
     "Id": 70,
@@ -493,7 +625,9 @@
     "TimeTableId": 272,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "210": {
     "Id": 210,
@@ -501,7 +635,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "71": {
     "Id": 71,
@@ -509,7 +645,9 @@
     "TimeTableId": 272,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "401": {
     "Id": 401,
@@ -517,7 +655,9 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "72": {
     "Id": 72,
@@ -525,7 +665,9 @@
     "TimeTableId": 272,
     "RefreshNum": 0,
     "Limit": 2,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "402": {
     "Id": 402,
@@ -533,30 +675,88 @@
     "TimeTableId": 100,
     "RefreshNum": 0,
     "Limit": 1,
-    "MonthCardLimit": 0
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "73": {
     "Id": 73,
     "Name": "raid本噩梦模式开启后的奖励次数-噩梦1",
     "TimeTableId": 272,
     "RefreshNum": 0,
-    "Limit": 2,
-    "MonthCardLimit": 0
+    "Limit": 1,
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "74": {
     "Id": 74,
     "Name": "raid本噩梦模式开启后的奖励次数-噩梦2",
     "TimeTableId": 272,
     "RefreshNum": 0,
-    "Limit": 2,
-    "MonthCardLimit": 0
+    "Limit": 1,
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
   },
   "75": {
     "Id": 75,
     "Name": "raid本噩梦模式开启后的奖励次数-噩梦3",
     "TimeTableId": 272,
     "RefreshNum": 0,
-    "Limit": 2,
-    "MonthCardLimit": 0
+    "Limit": 1,
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
+  },
+  "501": {
+    "Id": 501,
+    "Name": "限时技能重置返还进阶之书任选箱的次数（timeID变了，次数会被刷新）",
+    "TimeTableId": 100010,
+    "RefreshNum": 0,
+    "Limit": 1,
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
+  },
+  "1001": {
+    "Id": 1001,
+    "Name": "1赛季专精点上限",
+    "TimeTableId": 10101,
+    "RefreshNum": 0,
+    "Limit": 158,
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
+  },
+  "1002": {
+    "Id": 1002,
+    "Name": "2赛季专精点上限",
+    "TimeTableId": 10201,
+    "RefreshNum": 0,
+    "Limit": 270,
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 0,
+    "AccumulateRefreshNum": 0
+  },
+  "1040078": {
+    "Id": 1040078,
+    "Name": "海神纯金礼盒周限制",
+    "TimeTableId": 290,
+    "RefreshNum": 0,
+    "Limit": 100,
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 20,
+    "AccumulateRefreshNum": 20
+  },
+  "1040079": {
+    "Id": 1040079,
+    "Name": "御座纯金礼盒周限制",
+    "TimeTableId": 290,
+    "RefreshNum": 0,
+    "Limit": 240,
+    "MonthCardLimit": 0,
+    "AccumulateLimit": 20,
+    "AccumulateRefreshNum": 20
   }
 }

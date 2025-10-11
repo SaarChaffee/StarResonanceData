@@ -504,50 +504,52 @@ function Equip_forge_mainView:OnSelectedCreateItem(selectedData)
 end
 
 function Equip_forge_mainView:refreshWeaponModel(equipId)
-  self:clearWeaponModel()
   local equipWeaponRow = Z.TableMgr.GetRow("EquipWeaponTableMgr", equipId)
   if equipWeaponRow == nil then
-    return
-  end
-  local weaponSkinRow = Z.TableMgr.GetRow("WeaponSkinTableMgr", equipWeaponRow.WeaponSkinId)
-  if weaponSkinRow == nil then
-    return
-  end
-  local weaponModelIdelAnim = {}
-  local professionRow = Z.TableMgr.GetRow("ProfessionTableMgr", equipWeaponRow.ProfessionId)
-  if professionRow == nil then
     return
   end
   local equipCreatRow = Z.TableMgr.GetRow("EquipCreateTableMgr", equipId)
   if equipCreatRow == nil then
     return
   end
+  local weaponSkinRow = Z.TableMgr.GetRow("WeaponSkinTableMgr", equipWeaponRow.WeaponSkinId)
+  if weaponSkinRow == nil then
+    return
+  end
+  for _, value in pairs(self.weaponModel_) do
+    Z.UnrealSceneMgr:ClearModel(value)
+  end
+  self.weaponModel_ = {}
+  Z.UITimelineDisplay:Stop()
+  Z.UITimelineDisplay:ClearTimeLine()
   Z.UnrealSceneMgr:ChangeWaterSSprHeight(equipCreatRow.ssprHeight)
-  weaponModelIdelAnim = professionRow.WeaponIdle
   for index, modelId in ipairs(weaponSkinRow.WeaponModelId) do
     if modelId ~= 0 then
-      self.weaponModel_[index] = Z.UnrealSceneMgr:GenModelByLua(nil, modelId, function(model)
-        local posOffset = Vector3.zero
-        if equipCreatRow.ModelPos and #equipCreatRow.ModelPos > 0 then
-          posOffset = Vector3.New(equipCreatRow.ModelPos[index][1], equipCreatRow.ModelPos[index][2], equipCreatRow.ModelPos[index][3])
-        end
-        model:SetAttrGoPosition(Z.UnrealSceneMgr:GetTransPos("pos") + posOffset)
-        local modelRot = Vector3.New(0, 180, 0)
-        if equipCreatRow.ModelRot and 0 < #equipCreatRow.ModelRot then
-          modelRot = Vector3.New(equipCreatRow.ModelRot[index][1], equipCreatRow.ModelRot[index][2], equipCreatRow.ModelRot[index][3])
-        end
-        model:SetAttrGoRotation(Quaternion.Euler(modelRot))
-        if equipCreatRow.ModelScale and 0 < #equipCreatRow.ModelScale then
+      local model = Z.UnrealSceneMgr:GenModelByLua(self.weaponModel_[index], modelId, function(model)
+        if equipCreatRow.ModelScale and equipCreatRow.ModelScale[index] ~= nil and equipCreatRow.ModelScale[index] ~= 0 then
           model:SetLuaAttrGoScale(equipCreatRow.ModelScale[index])
-        end
-        local modeIdleAnim = weaponModelIdelAnim[index]
-        if modeIdleAnim ~= nil then
-          model:SetLuaAttrModelPreloadClip(modeIdleAnim[1])
-          model:SetLuaAnimBase(Z.AnimBaseData.Rent(modeIdleAnim[1]))
+          model:SetLuaIntAttr(Z.ModelAttr.EModelWeaponSkinId, equipWeaponRow.WeaponSkinId)
+          model:SetLuaIsMainWeapon(index == 1)
         end
       end)
+      table.insert(self.weaponModel_, model)
     end
   end
+  Z.UITimelineDisplay:AsyncPreLoadTimeline(equipCreatRow.TimelineId, self.cancelSource:CreateToken(), function()
+    self.curTimelineId_ = equipCreatRow.TimelineId
+    for index, model in ipairs(self.weaponModel_) do
+      Z.UITimelineDisplay:BindModel(index - 1, model)
+    end
+    Z.UITimelineDisplay:Play(equipCreatRow.TimelineId)
+    local offset = Vector3.New(equipCreatRow.ModelPos[1], equipCreatRow.ModelPos[2], equipCreatRow.ModelPos[3])
+    Z.UITimelineDisplay:SetGoPosByCutsceneId(equipCreatRow.TimelineId, Z.UnrealSceneMgr:GetTransPos("pos") + offset)
+    if equipCreatRow.TimelineScale > 0 then
+      Z.UITimelineDisplay:SetGoScleByCutsceneId(equipCreatRow.TimelineId, equipCreatRow.TimelineScale)
+    end
+    self.curRotation_ = 0
+    local quaternion = Quaternion.Euler(Vector3.New(0, self.curRotation_, 0))
+    Z.UITimelineDisplay:SetGoQuaternionByCutsceneId(self.curTimelineId_, quaternion.x, quaternion.y, quaternion.z, quaternion.w)
+  end)
 end
 
 function Equip_forge_mainView:clearWeaponModel()
@@ -561,16 +563,9 @@ function Equip_forge_mainView:clearWeaponModel()
 end
 
 function Equip_forge_mainView:onModelDrag(model, eventData)
-  if not model then
-    return
-  end
-  local rotation = model:GetAttrGoRotation()
-  if not rotation then
-    return
-  end
-  local curShowModelRotation = rotation.eulerAngles
-  curShowModelRotation.y = curShowModelRotation.y - eventData.delta.x * Z.ConstValue.ModelRotationScaleValue
-  model:SetAttrGoRotation(Quaternion.Euler(curShowModelRotation))
+  self.curRotation_ = self.curRotation_ - eventData.delta.x * Z.ConstValue.ModelRotationScaleValue
+  local quaternion = Quaternion.Euler(Vector3.New(0, self.curRotation_, 0))
+  Z.UITimelineDisplay:SetGoQuaternionByCutsceneId(self.curTimelineId_, quaternion.x, quaternion.y, quaternion.z, quaternion.w)
 end
 
 function Equip_forge_mainView:refreshTalentDpd(attrIds)
@@ -878,6 +873,8 @@ function Equip_forge_mainView:OnDeActive()
   self.equip_forge_left_sub_view_:DeActive()
   self:clearWeaponModel()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
+  Z.UITimelineDisplay:Stop()
+  Z.UITimelineDisplay:ClearTimeLine()
 end
 
 function Equip_forge_mainView:OnRefresh()

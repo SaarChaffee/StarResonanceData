@@ -38,6 +38,7 @@ end
 function ret.AsyncGetHeadAndHeadFrameInfo(charId, cancelToken)
   local mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeBase, 0)
   mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeAvatar, mask)
+  mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypeWeapon, mask)
   mask = ret.GetSocialDataTypeMask(Z.ConstValue.SocialDataType.SocialDataTypePersonalZone, mask)
   return ret.AsyncGetSocialData(mask, charId, cancelToken)
 end

@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Name": "",
+    "Name": "Revive at nearest point",
     "Type": 1,
     "CountDown": 5,
     "Consume": [],
@@ -16,7 +16,7 @@
   },
   "2": {
     "Id": 2,
-    "Name": "",
+    "Name": "Revive",
     "Type": 4,
     "CountDown": 0,
     "Consume": [],
@@ -31,7 +31,7 @@
   },
   "3": {
     "Id": 3,
-    "Name": "",
+    "Name": "Return to capital",
     "Type": 3,
     "CountDown": 0,
     "Consume": [],
@@ -46,7 +46,7 @@
   },
   "4": {
     "Id": 4,
-    "Name": "",
+    "Name": "Revivable",
     "Type": 5,
     "CountDown": 8,
     "Consume": [],
@@ -61,7 +61,7 @@
   },
   "5": {
     "Id": 5,
-    "Name": "",
+    "Name": "Revive at nearest point",
     "Type": 2,
     "CountDown": 0,
     "Consume": [],
@@ -76,7 +76,7 @@
   },
   "6": {
     "Id": 6,
-    "Name": "",
+    "Name": "Revive at spawn point",
     "Type": 2,
     "CountDown": 1,
     "Consume": [],
@@ -91,7 +91,7 @@
   },
   "7": {
     "Id": 7,
-    "Name": "",
+    "Name": "Revive at nearest point",
     "Type": 2,
     "CountDown": 5,
     "Consume": [],
@@ -104,7 +104,7 @@
   },
   "8": {
     "Id": 8,
-    "Name": "",
+    "Name": "Revivable",
     "Type": 5,
     "CountDown": 10,
     "Consume": [],
@@ -119,7 +119,7 @@
   },
   "9": {
     "Id": 9,
-    "Name": "",
+    "Name": "Revive",
     "Type": 4,
     "CountDown": 30,
     "Consume": [],
@@ -134,7 +134,7 @@
   },
   "10": {
     "Id": 10,
-    "Name": "",
+    "Name": "Revive",
     "Type": 4,
     "CountDown": 0,
     "Consume": [],
@@ -147,7 +147,7 @@
   },
   "11": {
     "Id": 11,
-    "Name": "",
+    "Name": "Revive at nearest point",
     "Type": 2,
     "CountDown": 0,
     "Consume": [],
@@ -162,7 +162,7 @@
   },
   "12": {
     "Id": 12,
-    "Name": "",
+    "Name": "Revive at nearest point",
     "Type": 1,
     "CountDown": 0,
     "Consume": [],
@@ -177,7 +177,7 @@
   },
   "13": {
     "Id": 13,
-    "Name": "",
+    "Name": "Revive",
     "Type": 4,
     "CountDown": 5,
     "Consume": [],
@@ -192,7 +192,7 @@
   },
   "20": {
     "Id": 20,
-    "Name": "",
+    "Name": "Revive",
     "Type": 4,
     "CountDown": 5,
     "Consume": [],
@@ -207,7 +207,7 @@
   },
   "21": {
     "Id": 21,
-    "Name": "",
+    "Name": "Revive skill",
     "Type": 4,
     "CountDown": 0,
     "Consume": [],
@@ -222,7 +222,7 @@
   },
   "22": {
     "Id": 22,
-    "Name": "",
+    "Name": "Revive skill",
     "Type": 4,
     "CountDown": 0,
     "Consume": [],
@@ -237,7 +237,7 @@
   },
   "23": {
     "Id": 23,
-    "Name": "",
+    "Name": "Revive skill",
     "Type": 4,
     "CountDown": 0,
     "Consume": [],
@@ -252,7 +252,7 @@
   },
   "24": {
     "Id": 24,
-    "Name": "",
+    "Name": "Revive skill",
     "Type": 4,
     "CountDown": 0,
     "Consume": [],
@@ -267,7 +267,7 @@
   },
   "25": {
     "Id": 25,
-    "Name": "",
+    "Name": "Revive skill",
     "Type": 4,
     "CountDown": 0,
     "Consume": [],
@@ -282,7 +282,7 @@
   },
   "26": {
     "Id": 26,
-    "Name": "",
+    "Name": "Revive skill",
     "Type": 4,
     "CountDown": 0,
     "Consume": [],
@@ -297,7 +297,7 @@
   },
   "27": {
     "Id": 27,
-    "Name": "",
+    "Name": "Revive skill",
     "Type": 4,
     "CountDown": 0,
     "Consume": [],
@@ -312,7 +312,7 @@
   },
   "101": {
     "Id": 101,
-    "Name": "",
+    "Name": "Revive at nearest point",
     "Type": 1,
     "CountDown": 3,
     "Consume": [],
@@ -327,7 +327,7 @@
   },
   "102": {
     "Id": 102,
-    "Name": "",
+    "Name": "Revive",
     "Type": 4,
     "CountDown": 3,
     "Consume": [],
@@ -342,7 +342,7 @@
   },
   "103": {
     "Id": 103,
-    "Name": "",
+    "Name": "Revive at nearest point",
     "Type": 2,
     "CountDown": 3,
     "Consume": [],
@@ -357,7 +357,7 @@
   },
   "104": {
     "Id": 104,
-    "Name": "",
+    "Name": "Revive",
     "Type": 4,
     "CountDown": 10,
     "Consume": [],
@@ -372,7 +372,7 @@
   },
   "105": {
     "Id": 105,
-    "Name": "",
+    "Name": "Revive at nearest point",
     "Type": 2,
     "CountDown": 10,
     "Consume": [],
@@ -387,7 +387,7 @@
   },
   "106": {
     "Id": 106,
-    "Name": "",
+    "Name": "Revive",
     "Type": 4,
     "CountDown": 30,
     "Consume": [],
@@ -402,7 +402,7 @@
   },
   "107": {
     "Id": 107,
-    "Name": "",
+    "Name": "Revive at nearest point",
     "Type": 2,
     "CountDown": 30,
     "Consume": [],
@@ -417,7 +417,7 @@
   },
   "108": {
     "Id": 108,
-    "Name": "",
+    "Name": "\"Revive\" Candy",
     "Type": 4,
     "CountDown": 0,
     "Consume": [
@@ -436,7 +436,7 @@
   },
   "109": {
     "Id": 109,
-    "Name": "",
+    "Name": "Revive",
     "Type": 4,
     "CountDown": 10,
     "Consume": [],
@@ -451,7 +451,7 @@
   },
   "110": {
     "Id": 110,
-    "Name": "",
+    "Name": "Revive at nearest point",
     "Type": 2,
     "CountDown": 10,
     "Consume": [],
@@ -466,7 +466,7 @@
   },
   "111": {
     "Id": 111,
-    "Name": "",
+    "Name": "\"Revive\" Candy",
     "Type": 4,
     "CountDown": 0,
     "Consume": [
@@ -490,7 +490,7 @@
   },
   "112": {
     "Id": 112,
-    "Name": "",
+    "Name": "\"Revive\" Candy",
     "Type": 4,
     "CountDown": 0,
     "Consume": [
@@ -514,7 +514,7 @@
   },
   "113": {
     "Id": 113,
-    "Name": "",
+    "Name": "\"Revive\" Candy",
     "Type": 4,
     "CountDown": 0,
     "Consume": [
@@ -538,7 +538,7 @@
   },
   "200": {
     "Id": 200,
-    "Name": "",
+    "Name": "Revivable",
     "Type": 5,
     "CountDown": 0,
     "Consume": [],
@@ -553,7 +553,7 @@
   },
   "201": {
     "Id": 201,
-    "Name": "",
+    "Name": "Revivable",
     "Type": 5,
     "CountDown": 0,
     "Consume": [],

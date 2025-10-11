@@ -60,7 +60,7 @@ function Friends_add_subView:onInitData()
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_play_friends, false)
   end
   if Z.EntityMgr.PlayerEnt then
-    self.uiBinder.lab_uid_num.text = string.format("%s:%s", Lang("friendUid"), Z.EntityMgr.PlayerEnt.EntId)
+    self.uiBinder.lab_uid_num.text = string.format("%s:%s", Lang("friendUid"), Z.EntityMgr.PlayerEnt.CharId)
   else
     self.uiBinder.lab_uid_num.text = ""
     logError("PlayerEnt is nil")

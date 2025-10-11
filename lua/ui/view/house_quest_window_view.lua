@@ -14,6 +14,7 @@ end
 function House_quest_windowView:OnActive()
   self:bindBtnClick()
   self:bindEvent()
+  self:onStartAnimShow()
   self.currencyItemList_ = currency_item_list.new()
   self.currencyItemList_:Init(self.uiBinder.currency_info, Z.SystemItem.HomeShopCurrencyDisplay)
   local row = Z.TableMgr.GetTable("FunctionTableMgr").GetRow(E.FunctionID.HouseQuest, true)
@@ -121,6 +122,10 @@ function House_quest_windowView:setRemianTime()
   self.uiBinder.lab_time.text = Lang("HouseQuestRefreshTime", {
     val = Z.TimeFormatTools.FormatToDHMS(math.max(remainSeconds, 0))
   })
+end
+
+function House_quest_windowView:onStartAnimShow()
+  self.uiBinder.anim_do:Restart(Z.DOTweenAnimType.Open)
 end
 
 return House_quest_windowView

@@ -1,7 +1,7 @@
 {
   "12010001": {
     "Id": 12010001,
-    "Name": "",
+    "Name": "Boarlet",
     "Quality": 2,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -72,6 +72,7 @@
     "Score": 20,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_pig.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -84,7 +85,7 @@
   },
   "12010002": {
     "Id": 12010002,
-    "Name": "",
+    "Name": "Eaglefeather Steed",
     "Quality": 3,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -159,6 +160,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_horse.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -171,7 +173,7 @@
   },
   "12010003": {
     "Id": 12010003,
-    "Name": "",
+    "Name": "Recon Oculoid",
     "Quality": 3,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -250,6 +252,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_floatingeye.bytes",
     "MagneticType": 2,
     "MagneticShowBuff": [
@@ -266,7 +269,7 @@
   },
   "12010004": {
     "Id": 12010004,
-    "Name": "",
+    "Name": "Royal Horse: Platinum",
     "Quality": 4,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -345,6 +348,7 @@
     "Score": 200,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_horse.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -357,7 +361,7 @@
   },
   "12010005": {
     "Id": 12010005,
-    "Name": "",
+    "Name": "Byrnhald Golem",
     "Quality": 4,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -386,15 +390,15 @@
     "SeatInfo": [
       [
         0.0,
-        -1.0,
-        2.1,
-        -0.3
+        -0.5,
+        1.6,
+        0.0
       ],
       [
         1.0,
-        1.0,
-        2.1,
-        -0.3
+        0.5,
+        1.6,
+        0.0
       ]
     ],
     "SeatIKConfig": [
@@ -443,6 +447,7 @@
     "Score": 400,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_dng001robot.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -455,7 +460,7 @@
   },
   "12010006": {
     "Id": 12010006,
-    "Name": "",
+    "Name": "Loyal Boarlet",
     "Quality": 4,
     "ParentId": 12010001,
     "UnlockCondition": [
@@ -538,6 +543,7 @@
     "Score": 100,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_pig.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -550,7 +556,7 @@
   },
   "12010007": {
     "Id": 12010007,
-    "Name": "",
+    "Name": "Lovely Boarlet",
     "Quality": 3,
     "ParentId": 12010001,
     "UnlockCondition": [
@@ -633,6 +639,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_pig.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -645,7 +652,7 @@
   },
   "12010008": {
     "Id": 12010008,
-    "Name": "",
+    "Name": "Breezy Boarlet",
     "Quality": 3,
     "ParentId": 12010001,
     "UnlockCondition": [
@@ -728,6 +735,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_pig.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -740,7 +748,7 @@
   },
   "12010009": {
     "Id": 12010009,
-    "Name": "",
+    "Name": "Golem Foxen",
     "Quality": 4,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -780,7 +788,11 @@
     "VehSkillIds": [
       [
         2,
-        4511
+        4512
+      ],
+      [
+        3,
+        4513
       ]
     ],
     "PassiveSkillId": [
@@ -801,7 +813,7 @@
     "MoveShowBuffId": [
       0,
       683122,
-      683129
+      683172
     ],
     "JumpEffectBuffs": [
       683121,
@@ -811,10 +823,16 @@
     "Icon": "item_icons_vehicle_dihu_01",
     "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_01",
     "UnrealSceneBg": "",
-    "SortId": 71,
+    "SortId": 61,
     "Score": 200,
     "IsHide": 0,
-    "HideWhenNotHave": true,
+    "HideWhenNotHave": false,
+    "ShowLimitType": [
+      [
+        9,
+        80202
+      ]
+    ],
     "MoveCurve": "curve/vehicle/ch_vehicle_dihu.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -827,7 +845,7 @@
   },
   "12010010": {
     "Id": 12010010,
-    "Name": "",
+    "Name": "Voyager",
     "Quality": 3,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -881,6 +899,7 @@
     "Score": 40,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/common.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -893,7 +912,7 @@
   },
   "12010011": {
     "Id": 12010011,
-    "Name": "",
+    "Name": "Cuddly Ranger Rabbit",
     "Quality": 3,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -972,6 +991,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_rabbit.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -984,7 +1004,7 @@
   },
   "12010012": {
     "Id": 12010012,
-    "Name": "",
+    "Name": "Twilight Stage",
     "Quality": 4,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -1021,7 +1041,16 @@
     "SeatIKConfig": [
       100901
     ],
-    "VehSkillIds": [],
+    "VehSkillIds": [
+      [
+        2,
+        4613
+      ],
+      [
+        3,
+        4612
+      ]
+    ],
     "PassiveSkillId": [
       4599
     ],
@@ -1033,8 +1062,8 @@
     "RunSpeedRate": 20000,
     "DashSpeedRate": 22500,
     "High": 2.5,
-    "ForceStopInWaterDepth": 0.6,
-    "HudOffset": -0.6,
+    "ForceStopInWaterDepth": 0.4,
+    "HudOffset": 0.0,
     "MaxStepHeight": 1.0,
     "JumpId": 101,
     "MoveShowBuffId": [
@@ -1050,23 +1079,29 @@
     "Icon": "item_icons_vehicle_dancestage_01",
     "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_01",
     "UnrealSceneBg": "",
-    "SortId": 51,
+    "SortId": 71,
     "Score": 200,
     "IsHide": 0,
-    "HideWhenNotHave": true,
+    "HideWhenNotHave": false,
+    "ShowLimitType": [
+      [
+        9,
+        80203
+      ]
+    ],
     "MoveCurve": "curve/vehicle/ch_vehicle_airdrop.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
     "MagneticInterval": 0.0,
     "MagneticInterruptHeight": 0.0,
     "AudioSwitch": [],
-    "JumpEndMoveCurve": "curve/as_vehicle_floatingeye_jumpendf.bytes",
+    "JumpEndMoveCurve": "curve/as_vehicle_skateboard_jumpendf.bytes",
     "RideAnimFadeTemplate": [],
     "IsPathfinding": true
   },
   "12010013": {
     "Id": 12010013,
-    "Name": "",
+    "Name": "Air Rider Type α",
     "Quality": 3,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -1141,6 +1176,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_skateboard.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -1153,7 +1189,7 @@
   },
   "12010014": {
     "Id": 12010014,
-    "Name": "",
+    "Name": "Swift Sweeper",
     "Quality": 2,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -1223,6 +1259,7 @@
     "Score": 20,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/common.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -1235,7 +1272,7 @@
   },
   "12010015": {
     "Id": 12010015,
-    "Name": "",
+    "Name": "Inferno Doombane",
     "Quality": 4,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -1314,6 +1351,7 @@
     "Score": 100,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_horse.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -1326,7 +1364,7 @@
   },
   "12010016": {
     "Id": 12010016,
-    "Name": "",
+    "Name": "Loyal Pickup Pup",
     "Quality": 3,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -1401,6 +1439,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_dihu.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -1413,7 +1452,7 @@
   },
   "12010017": {
     "Id": 12010017,
-    "Name": "",
+    "Name": "Lionmane Steed",
     "Quality": 3,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -1483,6 +1522,7 @@
     "Score": 40,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_horse.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -1495,7 +1535,7 @@
   },
   "12010018": {
     "Id": 12010018,
-    "Name": "",
+    "Name": "Hyper Impulse",
     "Quality": 4,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -1532,7 +1572,16 @@
     "SeatIKConfig": [
       101001
     ],
-    "VehSkillIds": [],
+    "VehSkillIds": [
+      [
+        2,
+        4601
+      ],
+      [
+        3,
+        4602
+      ]
+    ],
     "PassiveSkillId": [
       4599
     ],
@@ -1561,10 +1610,16 @@
     "Icon": "item_icons_vehicle_yacht_01",
     "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_01",
     "UnrealSceneBg": "",
-    "SortId": 61,
+    "SortId": 51,
     "Score": 200,
     "IsHide": 0,
-    "HideWhenNotHave": true,
+    "HideWhenNotHave": false,
+    "ShowLimitType": [
+      [
+        9,
+        80202
+      ]
+    ],
     "MoveCurve": "curve/vehicle/ch_vehicle_skateboard.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -1577,7 +1632,7 @@
   },
   "12010019": {
     "Id": 12010019,
-    "Name": "",
+    "Name": "Anti-Gravity Bubble",
     "Quality": 3,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -1656,6 +1711,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_floatingeye.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -1668,7 +1724,7 @@
   },
   "12010020": {
     "Id": 12010020,
-    "Name": "",
+    "Name": "Mini Golem",
     "Quality": 4,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -1743,6 +1799,7 @@
     "Score": 200,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_robot.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -1755,7 +1812,7 @@
   },
   "12010021": {
     "Id": 12010021,
-    "Name": "",
+    "Name": "Melon Oculoid",
     "Quality": 3,
     "ParentId": 12010003,
     "UnlockCondition": [
@@ -1841,6 +1898,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_floatingeye.bytes",
     "MagneticType": 2,
     "MagneticShowBuff": [
@@ -1857,7 +1915,7 @@
   },
   "12010022": {
     "Id": 12010022,
-    "Name": "",
+    "Name": "Tropical Oculoid",
     "Quality": 3,
     "ParentId": 12010003,
     "UnlockCondition": [
@@ -1943,6 +2001,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_floatingeye.bytes",
     "MagneticType": 2,
     "MagneticShowBuff": [
@@ -1959,7 +2018,7 @@
   },
   "12010023": {
     "Id": 12010023,
-    "Name": "",
+    "Name": "Midnight Sweeper",
     "Quality": 2,
     "ParentId": 12010014,
     "UnlockCondition": [
@@ -2033,6 +2092,7 @@
     "Score": 20,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/common.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -2045,7 +2105,7 @@
   },
   "12010024": {
     "Id": 12010024,
-    "Name": "",
+    "Name": "Cosmic Sweeper",
     "Quality": 2,
     "ParentId": 12010014,
     "UnlockCondition": [
@@ -2119,6 +2179,7 @@
     "Score": 20,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/common.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -2131,7 +2192,7 @@
   },
   "12010025": {
     "Id": 12010025,
-    "Name": "",
+    "Name": "Wave Steed",
     "Quality": 3,
     "ParentId": 12010002,
     "UnlockCondition": [
@@ -2213,6 +2274,7 @@
     "Score": 40,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_horse.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -2225,7 +2287,7 @@
   },
   "12010026": {
     "Id": 12010026,
-    "Name": "",
+    "Name": "Shiny Steed",
     "Quality": 4,
     "ParentId": 12010002,
     "UnlockCondition": [
@@ -2307,6 +2369,7 @@
     "Score": 100,
     "IsHide": 0,
     "HideWhenNotHave": true,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_horse.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -2319,7 +2382,7 @@
   },
   "12010027": {
     "Id": 12010027,
-    "Name": "",
+    "Name": "Air Rider Type β",
     "Quality": 3,
     "ParentId": 12010013,
     "UnlockCondition": [
@@ -2401,6 +2464,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_skateboard.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -2413,7 +2477,7 @@
   },
   "12010028": {
     "Id": 12010028,
-    "Name": "",
+    "Name": "Air Rider Type γ",
     "Quality": 3,
     "ParentId": 12010013,
     "UnlockCondition": [
@@ -2495,6 +2559,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_skateboard.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -2507,7 +2572,7 @@
   },
   "12010029": {
     "Id": 12010029,
-    "Name": "",
+    "Name": "Shadow Doombane",
     "Quality": 4,
     "ParentId": 12010015,
     "UnlockCondition": [
@@ -2593,6 +2658,7 @@
     "Score": 100,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_horse.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -2605,7 +2671,7 @@
   },
   "12010030": {
     "Id": 12010030,
-    "Name": "",
+    "Name": "Joyous Doombane",
     "Quality": 4,
     "ParentId": 12010015,
     "UnlockCondition": [
@@ -2691,6 +2757,7 @@
     "Score": 100,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_horse.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -2703,7 +2770,7 @@
   },
   "12010031": {
     "Id": 12010031,
-    "Name": "",
+    "Name": "Pearl Golem",
     "Quality": 4,
     "ParentId": 12010005,
     "UnlockCondition": [
@@ -2796,6 +2863,7 @@
     "Score": 400,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_dng001robot.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -2808,7 +2876,7 @@
   },
   "12010032": {
     "Id": 12010032,
-    "Name": "",
+    "Name": "Cyan Golem",
     "Quality": 4,
     "ParentId": 12010005,
     "UnlockCondition": [
@@ -2901,6 +2969,7 @@
     "Score": 400,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_dng001robot.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -2913,7 +2982,7 @@
   },
   "12010033": {
     "Id": 12010033,
-    "Name": "",
+    "Name": "Scarlet Golem",
     "Quality": 4,
     "ParentId": 12010020,
     "UnlockCondition": [
@@ -2995,6 +3064,7 @@
     "Score": 400,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_robot.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -3007,7 +3077,7 @@
   },
   "12010034": {
     "Id": 12010034,
-    "Name": "",
+    "Name": "Blade Oculoid",
     "Quality": 3,
     "ParentId": 12010003,
     "UnlockCondition": [
@@ -3093,6 +3163,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_floatingeye.bytes",
     "MagneticType": 2,
     "MagneticShowBuff": [
@@ -3109,7 +3180,7 @@
   },
   "12010035": {
     "Id": 12010035,
-    "Name": "",
+    "Name": "Fuzzy Ranger Rabbit",
     "Quality": 3,
     "ParentId": 12010011,
     "UnlockCondition": [
@@ -3192,6 +3263,7 @@
     "Score": 40,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_rabbit.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -3204,7 +3276,7 @@
   },
   "12010036": {
     "Id": 12010036,
-    "Name": "",
+    "Name": "Fluffy Ranger Rabbit",
     "Quality": 3,
     "ParentId": 12010011,
     "UnlockCondition": [
@@ -3290,6 +3362,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_rabbit.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -3302,7 +3375,7 @@
   },
   "12010037": {
     "Id": 12010037,
-    "Name": "",
+    "Name": "Royal Horse - Golden Black",
     "Quality": 4,
     "ParentId": 12010004,
     "UnlockCondition": [
@@ -3388,6 +3461,7 @@
     "Score": 400,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_horse.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -3400,7 +3474,7 @@
   },
   "12010038": {
     "Id": 12010038,
-    "Name": "",
+    "Name": "Astral Delivery",
     "Quality": 3,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -3475,6 +3549,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": true,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_airdrop.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -3487,7 +3562,7 @@
   },
   "12010039": {
     "Id": 12010039,
-    "Name": "",
+    "Name": "Shimmering Beautifish",
     "Quality": 4,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -3566,6 +3641,7 @@
     "Score": 200,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_koi.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -3578,7 +3654,7 @@
   },
   "12010040": {
     "Id": 12010040,
-    "Name": "",
+    "Name": "Lustrous Beautifish",
     "Quality": 4,
     "ParentId": 12010039,
     "UnlockCondition": [
@@ -3664,6 +3740,7 @@
     "Score": 200,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_koi.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -3676,7 +3753,7 @@
   },
   "12010041": {
     "Id": 12010041,
-    "Name": "",
+    "Name": "Radiant Beautifish",
     "Quality": 4,
     "ParentId": 12010039,
     "UnlockCondition": [
@@ -3762,6 +3839,7 @@
     "Score": 200,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_koi.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -3774,7 +3852,7 @@
   },
   "12010042": {
     "Id": 12010042,
-    "Name": "",
+    "Name": "Turtle",
     "Quality": 3,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -3849,6 +3927,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_seaturtle.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -3861,7 +3940,7 @@
   },
   "12010043": {
     "Id": 12010043,
-    "Name": "",
+    "Name": "Dawnlight Stage",
     "Quality": 4,
     "ParentId": 12010012,
     "UnlockCondition": [
@@ -3905,7 +3984,16 @@
     "SeatIKConfig": [
       100901
     ],
-    "VehSkillIds": [],
+    "VehSkillIds": [
+      [
+        2,
+        4613
+      ],
+      [
+        3,
+        4612
+      ]
+    ],
     "PassiveSkillId": [
       4599
     ],
@@ -3917,8 +4005,8 @@
     "RunSpeedRate": 20000,
     "DashSpeedRate": 22500,
     "High": 2.5,
-    "ForceStopInWaterDepth": 0.6,
-    "HudOffset": -0.6,
+    "ForceStopInWaterDepth": 0.4,
+    "HudOffset": 0.0,
     "MaxStepHeight": 1.0,
     "JumpId": 101,
     "MoveShowBuffId": [
@@ -3932,25 +4020,31 @@
       683121
     ],
     "Icon": "item_icons_vehicle_dancestage02_01",
-    "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_01",
-    "UnrealSceneBg": "",
-    "SortId": 54,
+    "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_29",
+    "UnrealSceneBg": "ui/textures/virtual_scene/bg_vehicle_skin_12",
+    "SortId": 74,
     "Score": 400,
     "IsHide": 0,
-    "HideWhenNotHave": true,
+    "HideWhenNotHave": false,
+    "ShowLimitType": [
+      [
+        9,
+        80203
+      ]
+    ],
     "MoveCurve": "curve/vehicle/ch_vehicle_airdrop.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
     "MagneticInterval": 0.0,
     "MagneticInterruptHeight": 0.0,
     "AudioSwitch": [],
-    "JumpEndMoveCurve": "curve/as_vehicle_floatingeye_jumpendf.bytes",
+    "JumpEndMoveCurve": "curve/as_vehicle_skateboard_jumpendf.bytes",
     "RideAnimFadeTemplate": [],
     "IsPathfinding": true
   },
   "12010044": {
     "Id": 12010044,
-    "Name": "",
+    "Name": "Solstic Beautifish",
     "Quality": 4,
     "ParentId": 12010039,
     "UnlockCondition": [
@@ -4036,6 +4130,7 @@
     "Score": 400,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_koi.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -4048,7 +4143,7 @@
   },
   "12010045": {
     "Id": 12010045,
-    "Name": "",
+    "Name": "Mirage Beautifish",
     "Quality": 4,
     "ParentId": 12010039,
     "UnlockCondition": [
@@ -4134,6 +4229,7 @@
     "Score": 400,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_koi.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -4146,7 +4242,7 @@
   },
   "12010046": {
     "Id": 12010046,
-    "Name": "",
+    "Name": "Lovely Pickup Pup",
     "Quality": 3,
     "ParentId": 12010016,
     "UnlockCondition": [
@@ -4228,6 +4324,7 @@
     "Score": 40,
     "IsHide": 0,
     "HideWhenNotHave": true,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_dihu.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -4240,7 +4337,7 @@
   },
   "12010047": {
     "Id": 12010047,
-    "Name": "",
+    "Name": "Wild Pickup Pup",
     "Quality": 3,
     "ParentId": 12010016,
     "UnlockCondition": [
@@ -4322,6 +4419,7 @@
     "Score": 40,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_dihu.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -4334,7 +4432,7 @@
   },
   "12010048": {
     "Id": 12010048,
-    "Name": "",
+    "Name": "Electro Golem",
     "Quality": 4,
     "ParentId": 12010020,
     "UnlockCondition": [
@@ -4416,6 +4514,7 @@
     "Score": 400,
     "IsHide": 0,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_robot.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -4428,7 +4527,7 @@
   },
   "12010049": {
     "Id": 12010049,
-    "Name": "",
+    "Name": "Starlight Stage",
     "Quality": 4,
     "ParentId": 12010012,
     "UnlockCondition": [
@@ -4472,7 +4571,16 @@
     "SeatIKConfig": [
       100901
     ],
-    "VehSkillIds": [],
+    "VehSkillIds": [
+      [
+        2,
+        4613
+      ],
+      [
+        3,
+        4612
+      ]
+    ],
     "PassiveSkillId": [
       4599
     ],
@@ -4484,8 +4592,8 @@
     "RunSpeedRate": 20000,
     "DashSpeedRate": 22500,
     "High": 2.5,
-    "ForceStopInWaterDepth": 0.6,
-    "HudOffset": -0.6,
+    "ForceStopInWaterDepth": 0.4,
+    "HudOffset": 0.0,
     "MaxStepHeight": 1.0,
     "JumpId": 101,
     "MoveShowBuffId": [
@@ -4501,23 +4609,24 @@
     "Icon": "item_icons_vehicle_dancestage_02",
     "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_01",
     "UnrealSceneBg": "",
-    "SortId": 52,
+    "SortId": 72,
     "Score": 200,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_airdrop.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
     "MagneticInterval": 0.0,
     "MagneticInterruptHeight": 0.0,
     "AudioSwitch": [],
-    "JumpEndMoveCurve": "curve/as_vehicle_floatingeye_jumpendf.bytes",
+    "JumpEndMoveCurve": "curve/as_vehicle_skateboard_jumpendf.bytes",
     "RideAnimFadeTemplate": [],
     "IsPathfinding": true
   },
   "12010050": {
     "Id": 12010050,
-    "Name": "",
+    "Name": "Moonlight Stage",
     "Quality": 4,
     "ParentId": 12010012,
     "UnlockCondition": [
@@ -4561,7 +4670,16 @@
     "SeatIKConfig": [
       100901
     ],
-    "VehSkillIds": [],
+    "VehSkillIds": [
+      [
+        2,
+        4613
+      ],
+      [
+        3,
+        4612
+      ]
+    ],
     "PassiveSkillId": [
       4599
     ],
@@ -4573,8 +4691,8 @@
     "RunSpeedRate": 20000,
     "DashSpeedRate": 22500,
     "High": 2.5,
-    "ForceStopInWaterDepth": 0.6,
-    "HudOffset": -0.6,
+    "ForceStopInWaterDepth": 0.4,
+    "HudOffset": 0.0,
     "MaxStepHeight": 1.0,
     "JumpId": 101,
     "MoveShowBuffId": [
@@ -4590,23 +4708,24 @@
     "Icon": "item_icons_vehicle_dancestage_03",
     "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_01",
     "UnrealSceneBg": "",
-    "SortId": 53,
+    "SortId": 73,
     "Score": 200,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_airdrop.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
     "MagneticInterval": 0.0,
     "MagneticInterruptHeight": 0.0,
     "AudioSwitch": [],
-    "JumpEndMoveCurve": "curve/as_vehicle_floatingeye_jumpendf.bytes",
+    "JumpEndMoveCurve": "curve/as_vehicle_skateboard_jumpendf.bytes",
     "RideAnimFadeTemplate": [],
     "IsPathfinding": true
   },
   "12010051": {
     "Id": 12010051,
-    "Name": "",
+    "Name": "Crimson Foxen",
     "Quality": 4,
     "ParentId": 12010009,
     "UnlockCondition": [
@@ -4653,7 +4772,11 @@
     "VehSkillIds": [
       [
         2,
-        4511
+        4512
+      ],
+      [
+        3,
+        4513
       ]
     ],
     "PassiveSkillId": [
@@ -4674,7 +4797,7 @@
     "MoveShowBuffId": [
       0,
       683122,
-      683129
+      683172
     ],
     "JumpEffectBuffs": [
       683121,
@@ -4684,10 +4807,11 @@
     "Icon": "item_icons_vehicle_dihu_02",
     "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_01",
     "UnrealSceneBg": "",
-    "SortId": 72,
+    "SortId": 62,
     "Score": 200,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_dihu.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -4700,7 +4824,7 @@
   },
   "12010052": {
     "Id": 12010052,
-    "Name": "",
+    "Name": "Night Foxen",
     "Quality": 4,
     "ParentId": 12010009,
     "UnlockCondition": [
@@ -4747,7 +4871,11 @@
     "VehSkillIds": [
       [
         2,
-        4511
+        4512
+      ],
+      [
+        3,
+        4513
       ]
     ],
     "PassiveSkillId": [
@@ -4768,7 +4896,7 @@
     "MoveShowBuffId": [
       0,
       683122,
-      683129
+      683172
     ],
     "JumpEffectBuffs": [
       683121,
@@ -4778,10 +4906,11 @@
     "Icon": "item_icons_vehicle_dihu_03",
     "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_01",
     "UnrealSceneBg": "",
-    "SortId": 73,
+    "SortId": 63,
     "Score": 200,
     "IsHide": 1,
     "HideWhenNotHave": false,
+    "ShowLimitType": [],
     "MoveCurve": "curve/vehicle/ch_vehicle_dihu.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -4794,7 +4923,7 @@
   },
   "12010053": {
     "Id": 12010053,
-    "Name": "",
+    "Name": "Abyss Foxen",
     "Quality": 4,
     "ParentId": 12010009,
     "UnlockCondition": [
@@ -4841,7 +4970,11 @@
     "VehSkillIds": [
       [
         2,
-        4511
+        4512
+      ],
+      [
+        3,
+        4514
       ]
     ],
     "PassiveSkillId": [
@@ -4862,7 +4995,7 @@
     "MoveShowBuffId": [
       0,
       683122,
-      683129
+      683172
     ],
     "JumpEffectBuffs": [
       683121,
@@ -4872,10 +5005,16 @@
     "Icon": "item_icons_vehicle_dihu_04",
     "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_25",
     "UnrealSceneBg": "ui/textures/virtual_scene/bg_vehicle_skin_10",
-    "SortId": 74,
+    "SortId": 64,
     "Score": 400,
     "IsHide": 0,
-    "HideWhenNotHave": true,
+    "HideWhenNotHave": false,
+    "ShowLimitType": [
+      [
+        9,
+        80202
+      ]
+    ],
     "MoveCurve": "curve/vehicle/ch_vehicle_dihu.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -4888,7 +5027,7 @@
   },
   "12010054": {
     "Id": 12010054,
-    "Name": "",
+    "Name": "Firestorm Impulse",
     "Quality": 4,
     "ParentId": 12010018,
     "UnlockCondition": [
@@ -4932,7 +5071,16 @@
     "SeatIKConfig": [
       101001
     ],
-    "VehSkillIds": [],
+    "VehSkillIds": [
+      [
+        2,
+        4601
+      ],
+      [
+        3,
+        4603
+      ]
+    ],
     "PassiveSkillId": [
       4599
     ],
@@ -4961,10 +5109,16 @@
     "Icon": "item_icons_vehicle_yacht02_01",
     "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_26",
     "UnrealSceneBg": "ui/textures/virtual_scene/bg_vehicle_skin_11",
-    "SortId": 62,
+    "SortId": 52,
     "Score": 400,
     "IsHide": 0,
-    "HideWhenNotHave": true,
+    "HideWhenNotHave": false,
+    "ShowLimitType": [
+      [
+        9,
+        80202
+      ]
+    ],
     "MoveCurve": "curve/vehicle/ch_vehicle_skateboard.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
@@ -4977,7 +5131,7 @@
   },
   "12010055": {
     "Id": 12010055,
-    "Name": "",
+    "Name": "Devilray",
     "Quality": 4,
     "ParentId": 0,
     "UnlockCondition": [],
@@ -5001,7 +5155,7 @@
       }
     ],
     "RideUpJumpType": 0,
-    "RideUpJumpHeight": 1.2,
+    "RideUpJumpHeight": 2.0,
     "RideUpMountDelay": 0.0,
     "SeatInfo": [
       [
@@ -5012,9 +5166,18 @@
       ]
     ],
     "SeatIKConfig": [
-      101401
+      101501
     ],
-    "VehSkillIds": [],
+    "VehSkillIds": [
+      [
+        2,
+        4621
+      ],
+      [
+        3,
+        4622
+      ]
+    ],
     "PassiveSkillId": [
       4599
     ],
@@ -5025,35 +5188,233 @@
     "WalkSpeedRate": 15000,
     "RunSpeedRate": 20000,
     "DashSpeedRate": 22500,
-    "High": 1.0,
+    "High": 1.5,
     "ForceStopInWaterDepth": 0.8,
-    "HudOffset": -0.6,
-    "MaxStepHeight": 0.8,
-    "JumpId": 101,
+    "HudOffset": 0.0,
+    "MaxStepHeight": 1.0,
+    "JumpId": 106,
     "MoveShowBuffId": [
       0,
-      683122,
-      683129
+      0,
+      683132
     ],
     "JumpEffectBuffs": [
       683121,
       0,
       683121
     ],
-    "Icon": "item_icons_vehicle_seaturtle01_01",
+    "Icon": "item_icons_vehicle_monsterfish01_01",
     "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_01",
     "UnrealSceneBg": "",
-    "SortId": 100000,
+    "SortId": 81,
     "Score": 200,
-    "IsHide": 1,
+    "IsHide": 0,
     "HideWhenNotHave": false,
-    "MoveCurve": "curve/vehicle/ch_vehicle_seaturtle.bytes",
+    "ShowLimitType": [
+      [
+        9,
+        80203
+      ]
+    ],
+    "MoveCurve": "curve/vehicle/ch_vehicle_monsterfish.bytes",
     "MagneticType": 0,
     "MagneticShowBuff": [],
     "MagneticInterval": 0.0,
     "MagneticInterruptHeight": 0.0,
     "AudioSwitch": [],
-    "JumpEndMoveCurve": "curve/as_vehicle_horse_jumpendf.bytes",
+    "JumpEndMoveCurve": "curve/as_vehicle_monsterfish_jumpendf.bytes",
+    "RideAnimFadeTemplate": [],
+    "IsPathfinding": true
+  },
+  "12010056": {
+    "Id": 12010056,
+    "Name": "Fleeting Devilray",
+    "Quality": 4,
+    "ParentId": 12010055,
+    "UnlockCondition": [
+      5,
+      12010055,
+      1
+    ],
+    "UnlockCostItem": [
+      1075032,
+      1
+    ],
+    "Type": 1,
+    "ModelID": 75056,
+    "RideAnimTemplate": [],
+    "RideUpDownBuff": [
+      7000121,
+      7000122
+    ],
+    "RideUpShowTimes": 0.7,
+    "DissolutionCfg": [
+      {
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "x": 0.0,
+        "y": 1.2
+      }
+    ],
+    "RideUpJumpType": 0,
+    "RideUpJumpHeight": 2.0,
+    "RideUpMountDelay": 0.0,
+    "SeatInfo": [
+      [
+        0.0,
+        0.0,
+        0.8,
+        0.0
+      ]
+    ],
+    "SeatIKConfig": [
+      101501
+    ],
+    "VehSkillIds": [
+      [
+        2,
+        4621
+      ],
+      [
+        3,
+        4622
+      ]
+    ],
+    "PassiveSkillId": [
+      4599
+    ],
+    "PropertyId": [
+      1,
+      11
+    ],
+    "WalkSpeedRate": 15000,
+    "RunSpeedRate": 20000,
+    "DashSpeedRate": 22500,
+    "High": 1.5,
+    "ForceStopInWaterDepth": 0.8,
+    "HudOffset": 0.0,
+    "MaxStepHeight": 1.0,
+    "JumpId": 106,
+    "MoveShowBuffId": [
+      0,
+      0,
+      683132
+    ],
+    "JumpEffectBuffs": [
+      683121,
+      0,
+      683121
+    ],
+    "Icon": "item_icons_vehicle_monsterfish02_01",
+    "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_30",
+    "UnrealSceneBg": "ui/textures/virtual_scene/bg_vehicle_skin_13",
+    "SortId": 82,
+    "Score": 400,
+    "IsHide": 0,
+    "HideWhenNotHave": false,
+    "ShowLimitType": [
+      [
+        9,
+        80203
+      ]
+    ],
+    "MoveCurve": "curve/vehicle/ch_vehicle_monsterfish.bytes",
+    "MagneticType": 0,
+    "MagneticShowBuff": [],
+    "MagneticInterval": 0.0,
+    "MagneticInterruptHeight": 0.0,
+    "AudioSwitch": [],
+    "JumpEndMoveCurve": "curve/as_vehicle_monsterfish_jumpendf.bytes",
+    "RideAnimFadeTemplate": [],
+    "IsPathfinding": true
+  },
+  "12010058": {
+    "Id": 12010058,
+    "Name": "Zephyr Delivery",
+    "Quality": 3,
+    "ParentId": 0,
+    "UnlockCondition": [],
+    "UnlockCostItem": [],
+    "Type": 1,
+    "ModelID": 75058,
+    "RideAnimTemplate": [],
+    "RideUpDownBuff": [
+      7000121,
+      7000122
+    ],
+    "RideUpShowTimes": 0.7,
+    "DissolutionCfg": [
+      {
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "x": 0.0,
+        "y": 1.2
+      }
+    ],
+    "RideUpJumpType": 0,
+    "RideUpJumpHeight": 1.9,
+    "RideUpMountDelay": 0.0,
+    "SeatInfo": [
+      [
+        0.0,
+        0.0,
+        0.83,
+        0.0
+      ]
+    ],
+    "SeatIKConfig": [
+      101201
+    ],
+    "VehSkillIds": [
+      [
+        2,
+        4581
+      ]
+    ],
+    "PassiveSkillId": [
+      4599
+    ],
+    "PropertyId": [
+      1,
+      11
+    ],
+    "WalkSpeedRate": 12500,
+    "RunSpeedRate": 17500,
+    "DashSpeedRate": 17500,
+    "High": 1.5,
+    "ForceStopInWaterDepth": 0.1,
+    "HudOffset": -1.0,
+    "MaxStepHeight": 1.1,
+    "JumpId": 101,
+    "MoveShowBuffId": [
+      0,
+      0,
+      683132
+    ],
+    "JumpEffectBuffs": [
+      683121,
+      0,
+      683121
+    ],
+    "Icon": "item_icons_vehicle_airdrop01_02",
+    "SkinBottomPicture": "ui/textures/vehicle/vehicle_skin_01",
+    "UnrealSceneBg": "",
+    "SortId": 10062,
+    "Score": 40,
+    "IsHide": 0,
+    "HideWhenNotHave": true,
+    "ShowLimitType": [],
+    "MoveCurve": "curve/vehicle/ch_vehicle_airdrop.bytes",
+    "MagneticType": 0,
+    "MagneticShowBuff": [],
+    "MagneticInterval": 0.0,
+    "MagneticInterruptHeight": 0.0,
+    "AudioSwitch": [],
+    "JumpEndMoveCurve": "curve/as_vehicle_floatingeye_jumpendf.bytes",
     "RideAnimFadeTemplate": [],
     "IsPathfinding": true
   }

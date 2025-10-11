@@ -1,12 +1,20 @@
 {
-  "2031104": {
-    "Id": 2031104,
-    "RecountName": "",
+  "1417": {
+    "Id": 1417,
+    "RecountName": "Red light counter",
     "DamageId": []
+  },
+  "22031104": {
+    "Id": 22031104,
+    "RecountName": "Lucky Strike",
+    "DamageId": [
+      2203110403,
+      2203110404
+    ]
   },
   "1401": {
     "Id": 1401,
-    "RecountName": "",
+    "RecountName": "Windborne Grace",
     "DamageId": [
       114010101,
       114010104,
@@ -16,13 +24,12 @@
       114030101,
       114030102,
       114030103,
-      114040101,
-      114170102
+      114040101
     ]
   },
   "1418": {
     "Id": 1418,
-    "RecountName": "",
+    "RecountName": "Gale Thrust",
     "DamageId": [
       114180101,
       114180102,
@@ -35,14 +42,14 @@
   },
   "1419": {
     "Id": 1419,
-    "RecountName": "",
+    "RecountName": "Skyfall",
     "DamageId": [
       114190102
     ]
   },
   "1426": {
     "Id": 1426,
-    "RecountName": "",
+    "RecountName": "Typhoon Cleave",
     "DamageId": [
       114260104,
       114090104
@@ -50,7 +57,7 @@
   },
   "1420": {
     "Id": 1420,
-    "RecountName": "",
+    "RecountName": "Galeform",
     "DamageId": [
       114200103,
       114200106
@@ -58,7 +65,7 @@
   },
   "1421": {
     "Id": 1421,
-    "RecountName": "",
+    "RecountName": "Spiral Thrust",
     "DamageId": [
       114210102,
       114210103
@@ -66,7 +73,7 @@
   },
   "1422": {
     "Id": 1422,
-    "RecountName": "",
+    "RecountName": "Breach Pursuit",
     "DamageId": [
       114220103,
       114270104
@@ -74,49 +81,50 @@
   },
   "1425": {
     "Id": 1425,
-    "RecountName": "",
+    "RecountName": "Falcon Toss",
     "DamageId": [
       114250107,
-      0
+      11499050101
     ]
   },
   "1424": {
     "Id": 1424,
-    "RecountName": "",
+    "RecountName": "Instant Edge",
     "DamageId": [
       114240101,
       114240102,
-      0
+      11499040101
     ]
   },
   "1430": {
     "Id": 1430,
-    "RecountName": "",
+    "RecountName": "Valor Cyclone",
     "DamageId": [
       114320101,
       23190103,
-      0
+      23190105,
+      2220545004
     ]
   },
   "1431": {
     "Id": 1431,
-    "RecountName": "",
+    "RecountName": "Sharp Impact",
     "DamageId": [
       114310106,
       114310108,
-      0
+      11499070101
     ]
   },
   "1423": {
     "Id": 1423,
-    "RecountName": "",
+    "RecountName": "Aegis Gale",
     "DamageId": [
       114230101
     ]
   },
   "1435": {
     "Id": 1435,
-    "RecountName": "",
+    "RecountName": "Drake Cannon",
     "DamageId": [
       114350101,
       314040100
@@ -124,7 +132,7 @@
   },
   "1434": {
     "Id": 1434,
-    "RecountName": "",
+    "RecountName": "Vortex Strike",
     "DamageId": [
       114340102,
       314030100
@@ -132,83 +140,92 @@
   },
   "1433": {
     "Id": 1433,
-    "RecountName": "",
+    "RecountName": "Azure Sever",
     "DamageId": [
       114330107,
-      0
+      11499060101
     ]
   },
   "1411": {
     "Id": 1411,
-    "RecountName": "",
+    "RecountName": "Swift Blade",
     "DamageId": [
       114110101,
       114110102
     ]
   },
-  "22205071": {
-    "Id": 22205071,
-    "RecountName": "",
-    "DamageId": [
-      0
-    ]
-  },
   "1428": {
     "Id": 1428,
-    "RecountName": "",
+    "RecountName": "Spear Thrust",
     "DamageId": [
-      0
+      11499020101
     ]
   },
   "1429": {
     "Id": 1429,
-    "RecountName": "",
+    "RecountName": "Tornado",
     "DamageId": [
-      0,
+      11499030102,
       314050100
     ]
   },
   "149901": {
     "Id": 149901,
-    "RecountName": "",
+    "RecountName": "Wind Spiral",
     "DamageId": [
-      0
+      11499010101
+    ]
+  },
+  "22205071": {
+    "Id": 22205071,
+    "RecountName": "Rend",
+    "DamageId": [
+      2220507103
+    ]
+  },
+  "1294": {
+    "Id": 1294,
+    "RecountName": "Red light counter",
+    "DamageId": [
+      112940102
     ]
   },
   "22031102": {
     "Id": 22031102,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Lucky Strike",
+    "DamageId": [
+      2203110203,
+      2203110204
+    ]
   },
   "1201": {
     "Id": 1201,
-    "RecountName": "",
+    "RecountName": "Raincall Surge",
     "DamageId": [
       312040100,
       112030101,
       312050100,
       312020100,
-      312030100,
-      112940102
+      312030100
     ]
   },
   "1242": {
     "Id": 1242,
-    "RecountName": "",
+    "RecountName": "Frost Lance",
     "DamageId": [
       312090200
     ]
   },
   "1241": {
     "Id": 1241,
-    "RecountName": "",
+    "RecountName": "Frostbeam",
     "DamageId": [
       112410104
     ]
   },
   "1248": {
     "Id": 1248,
-    "RecountName": "",
+    "RecountName": "Glacier Hymn",
     "DamageId": [
       112480102,
       112630101
@@ -216,14 +233,14 @@
   },
   "1239": {
     "Id": 1239,
-    "RecountName": "",
+    "RecountName": "Meteor Storm",
     "DamageId": [
       112620101
     ]
   },
   "1211": {
     "Id": 1211,
-    "RecountName": "",
+    "RecountName": "Crystal Veil",
     "DamageId": [
       312150100,
       112160101
@@ -231,7 +248,7 @@
   },
   "1244": {
     "Id": 1244,
-    "RecountName": "",
+    "RecountName": "Blizzard",
     "DamageId": [
       112570101,
       112610101
@@ -239,7 +256,7 @@
   },
   "1210": {
     "Id": 1210,
-    "RecountName": "",
+    "RecountName": "Maelstrom",
     "DamageId": [
       112500101,
       112500104
@@ -247,7 +264,7 @@
   },
   "1240": {
     "Id": 1240,
-    "RecountName": "",
+    "RecountName": "Frozen Gale",
     "DamageId": [
       112400101,
       112400102
@@ -255,12 +272,12 @@
   },
   "1243": {
     "Id": 1243,
-    "RecountName": "",
+    "RecountName": "Permafrost",
     "DamageId": []
   },
   "1246": {
     "Id": 1246,
-    "RecountName": "",
+    "RecountName": "Tidepool",
     "DamageId": [
       112560101,
       112560102
@@ -268,71 +285,81 @@
   },
   "1245": {
     "Id": 1245,
-    "RecountName": "",
+    "RecountName": "Frost Shelter",
     "DamageId": [
       112450105,
       22700903
     ]
   },
-  "3121301": {
-    "Id": 3121301,
-    "RecountName": "",
-    "DamageId": [
-      312130100,
-      312130200
-    ]
-  },
-  "22204081": {
-    "Id": 22204081,
-    "RecountName": "",
-    "DamageId": [
-      0
-    ]
-  },
   "1258": {
     "Id": 1258,
-    "RecountName": "",
+    "RecountName": "Icy Bolt",
     "DamageId": [
       112580101
     ]
   },
   "1247": {
     "Id": 1247,
-    "RecountName": "",
+    "RecountName": "Frost Comet",
     "DamageId": [
       112590101
     ]
   },
+  "22204081": {
+    "Id": 22204081,
+    "RecountName": "Frost Explosion",
+    "DamageId": [
+      2220408101
+    ]
+  },
   "22204241": {
     "Id": 22204241,
-    "RecountName": "",
+    "RecountName": "Frost Impact",
     "DamageId": [
-      0
+      2220424101
     ]
   },
   "22204320": {
     "Id": 22204320,
-    "RecountName": "",
+    "RecountName": "Cold Pulse",
     "DamageId": [
-      0
+      2220432004
+    ]
+  },
+  "3121301": {
+    "Id": 3121301,
+    "RecountName": "Ice Arrow",
+    "DamageId": [
+      312130100,
+      312130200
     ]
   },
   "3120901": {
     "Id": 3120901,
-    "RecountName": "",
+    "RecountName": "Glacial Spear",
     "DamageId": [
       312090100,
       312090103
     ]
   },
+  "1795": {
+    "Id": 1795,
+    "RecountName": "Red light counter",
+    "DamageId": [
+      117950102
+    ]
+  },
   "22031101": {
     "Id": 22031101,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Lucky Strike",
+    "DamageId": [
+      2203110103,
+      2203110104
+    ]
   },
   "1701": {
     "Id": 1701,
-    "RecountName": "",
+    "RecountName": "Judgment Cut",
     "DamageId": [
       117010101,
       117020101,
@@ -340,13 +367,12 @@
       117030101,
       117030103,
       117030104,
-      117040102,
-      117950102
+      117040102
     ]
   },
   "1714": {
     "Id": 1714,
-    "RecountName": "",
+    "RecountName": "Iaido Slash",
     "DamageId": [
       117140101,
       117140102,
@@ -358,7 +384,7 @@
   },
   "1715": {
     "Id": 1715,
-    "RecountName": "",
+    "RecountName": "Moonstrike",
     "DamageId": [
       117150102,
       117150103,
@@ -369,7 +395,7 @@
   },
   "1713": {
     "Id": 1713,
-    "RecountName": "",
+    "RecountName": "Oblivion Combo",
     "DamageId": [
       117130102,
       117130108,
@@ -379,7 +405,7 @@
   },
   "1705": {
     "Id": 1705,
-    "RecountName": "",
+    "RecountName": "Overdrive",
     "DamageId": [
       117050101,
       117050103,
@@ -391,22 +417,22 @@
   },
   "1717": {
     "Id": 1717,
-    "RecountName": "",
+    "RecountName": "Flash strike",
     "DamageId": [
       117170101
     ]
   },
   "1718": {
     "Id": 1718,
-    "RecountName": "",
+    "RecountName": "Raijin Dash",
     "DamageId": [
       117180102,
-      0
+      11799040101
     ]
   },
   "1719": {
     "Id": 1719,
-    "RecountName": "",
+    "RecountName": "Scythe Wheel",
     "DamageId": [
       117190104,
       117190105
@@ -414,40 +440,65 @@
   },
   "179903": {
     "Id": 179903,
-    "RecountName": "",
+    "RecountName": "Moonblade",
     "DamageId": [
-      0,
-      0,
-      24460103
+      24460103,
+      24470103
+    ]
+  },
+  "179906": {
+    "Id": 179906,
+    "RecountName": "Moonstrike Whirl",
+    "DamageId": [
+      11799060101
     ]
   },
   "1724": {
     "Id": 1724,
-    "RecountName": "",
+    "RecountName": "Thundercut",
     "DamageId": [
       117240103,
       117240104,
       117240106,
       117240107,
       117240108,
-      117240120
+      117240120,
+      117240121,
+      117240126,
+      117240127,
+      117240128,
+      117240129,
+      117240130,
+      117240131,
+      117240132,
+      117240133,
+      117240134,
+      117240135,
+      117240136,
+      117240137,
+      117240138,
+      117240139,
+      117240140,
+      117240141,
+      117240142,
+      117240143
     ]
   },
   "1730": {
     "Id": 1730,
-    "RecountName": "",
+    "RecountName": "Volt Surge",
     "DamageId": []
   },
   "1731": {
     "Id": 1731,
-    "RecountName": "",
+    "RecountName": "Stormflash",
     "DamageId": [
       117320101
     ]
   },
   "1720": {
     "Id": 1720,
-    "RecountName": "",
+    "RecountName": "True Sight",
     "DamageId": [
       117200103,
       117200105
@@ -455,7 +506,7 @@
   },
   "1734": {
     "Id": 1734,
-    "RecountName": "",
+    "RecountName": "Thunder Cut",
     "DamageId": [
       315510100,
       315510200
@@ -463,7 +514,7 @@
   },
   "1735": {
     "Id": 1735,
-    "RecountName": "",
+    "RecountName": "Dracoflash",
     "DamageId": [
       117350103,
       117350105,
@@ -472,14 +523,15 @@
   },
   "1736": {
     "Id": 1736,
-    "RecountName": "",
+    "RecountName": "Phantom Slash",
     "DamageId": [
-      117360102
+      117360102,
+      11799040101
     ]
   },
   "1737": {
     "Id": 1737,
-    "RecountName": "",
+    "RecountName": "Divine Sickle",
     "DamageId": [
       117370101,
       117370112
@@ -487,7 +539,7 @@
   },
   "1733": {
     "Id": 1733,
-    "RecountName": "",
+    "RecountName": "Storm Scythe",
     "DamageId": [
       117330104,
       117330106,
@@ -497,14 +549,17 @@
   },
   "1742": {
     "Id": 1742,
-    "RecountName": "",
+    "RecountName": "Thundercleave",
     "DamageId": [
+      117420101,
+      117420102,
+      117420103,
       117420108
     ]
   },
   "1738": {
     "Id": 1738,
-    "RecountName": "",
+    "RecountName": "Chaos Breaker",
     "DamageId": [
       117380101,
       117380105
@@ -512,53 +567,62 @@
   },
   "1727": {
     "Id": 1727,
-    "RecountName": "",
+    "RecountName": "Piercing Slash",
     "DamageId": [
-      0,
+      11799020101,
       117390101
     ]
   },
   "179907": {
     "Id": 179907,
-    "RecountName": "",
+    "RecountName": "Bladewind Domain",
     "DamageId": [
-      0,
-      0,
-      0,
-      0
+      11799070101,
+      11799070102,
+      11799070103,
+      11799070104
     ]
   },
   "179908": {
     "Id": 179908,
-    "RecountName": "",
+    "RecountName": "Thunderstrike",
     "DamageId": [
-      0
+      11799080101
     ]
   },
   "179910": {
     "Id": 179910,
-    "RecountName": "",
+    "RecountName": "Thunderburst",
     "DamageId": [
-      0
+      11799100101
+    ]
+  },
+  "2211": {
+    "Id": 2211,
+    "RecountName": "Red light counter",
+    "DamageId": [
+      122110102
     ]
   },
   "22031109": {
     "Id": 22031109,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Lucky Strike",
+    "DamageId": [
+      2203110903,
+      2203110904
+    ]
   },
   "2201": {
     "Id": 2201,
-    "RecountName": "",
+    "RecountName": "Bullseye",
     "DamageId": [
       322010100,
-      322010300,
-      122110102
+      322010300
     ]
   },
   "2220": {
     "Id": 2220,
-    "RecountName": "",
+    "RecountName": "Storm Arrow",
     "DamageId": [
       322010400,
       322010500
@@ -566,9 +630,15 @@
   },
   "2222": {
     "Id": 2222,
-    "RecountName": "",
+    "RecountName": "Double Arrow",
     "DamageId": [
-      322010600,
+      322010600
+    ]
+  },
+  "2224": {
+    "Id": 2224,
+    "RecountName": "Quadraflare",
+    "DamageId": [
       322011100,
       322020300,
       122940101,
@@ -577,59 +647,64 @@
   },
   "2209": {
     "Id": 2209,
-    "RecountName": "",
+    "RecountName": "Luminary Bolt",
     "DamageId": [
       322030100,
       322030200,
-      122910101,
-      122950102,
+      122950102
+    ]
+  },
+  "2291": {
+    "Id": 2291,
+    "RecountName": "Photon Explosion",
+    "DamageId": [
       122910101
     ]
   },
   "2230": {
     "Id": 2230,
-    "RecountName": "",
+    "RecountName": "Torrent Volley",
     "DamageId": [
       322010200
     ]
   },
+  "2240": {
+    "Id": 2240,
+    "RecountName": "Lumi Torrent",
+    "DamageId": [
+      122400103
+    ]
+  },
   "2232": {
     "Id": 2232,
-    "RecountName": "",
+    "RecountName": "Arrow Rain",
     "DamageId": [
       122890101
     ]
   },
-  "2237": {
-    "Id": 2237,
-    "RecountName": "",
-    "DamageId": []
-  },
   "2233": {
     "Id": 2233,
-    "RecountName": "",
+    "RecountName": "Powerdraw",
     "DamageId": [
       122330103
     ]
   },
   "2234": {
     "Id": 2234,
-    "RecountName": "",
+    "RecountName": "Radiance Barrage",
     "DamageId": [
-      122880101,
-      122880103
+      25524003,
+      25524004
     ]
   },
   "2231": {
     "Id": 2231,
-    "RecountName": "",
-    "DamageId": [
-      25522303
-    ]
+    "RecountName": "Focus",
+    "DamageId": []
   },
   "2238": {
     "Id": 2238,
-    "RecountName": "",
+    "RecountName": "Blast Shot",
     "DamageId": [
       322011000,
       25523102
@@ -637,162 +712,185 @@
   },
   "2235": {
     "Id": 2235,
-    "RecountName": "",
+    "RecountName": "Deter Shot",
     "DamageId": [
       322010900
     ]
   },
-  "1700824": {
-    "Id": 1700824,
-    "RecountName": "",
-    "DamageId": [
-      0
-    ]
-  },
   "1700827": {
     "Id": 1700827,
-    "RecountName": "",
+    "RecountName": "Wild Wolf - Basic Attack",
     "DamageId": [
-      0
+      117008270101
     ]
   },
   "1700820": {
     "Id": 1700820,
-    "RecountName": "",
+    "RecountName": "Wild Wolf - Assist",
     "DamageId": [
-      0
+      117008200102
+    ]
+  },
+  "1700824": {
+    "Id": 1700824,
+    "RecountName": "Wild Wolf - Tail Sweep",
+    "DamageId": [
+      117008240102
+    ]
+  },
+  "1700826": {
+    "Id": 1700826,
+    "RecountName": "Wild Wolf Pounce",
+    "DamageId": [
+      117008250102,
+      117008260102
+    ]
+  },
+  "101112": {
+    "Id": 101112,
+    "RecountName": "Falcon Dive",
+    "DamageId": [
+      11011120101
     ]
   },
   "22203291": {
     "Id": 22203291,
-    "RecountName": "",
+    "RecountName": "Falcon Strike",
     "DamageId": [
-      0
+      2220329107
     ]
   },
   "22203181": {
     "Id": 22203181,
-    "RecountName": "",
+    "RecountName": "Falcon Lightning Strike",
     "DamageId": [
-      0
+      2220318101
     ]
   },
-  "2240": {
-    "Id": 2240,
-    "RecountName": "",
+  "2296": {
+    "Id": 2296,
+    "RecountName": "Phantom Falcon",
     "DamageId": [
-      122400103
+      122960102,
+      322011300
+    ]
+  },
+  "2241": {
+    "Id": 2241,
+    "RecountName": "Celestial Eagle",
+    "DamageId": [
+      123520101,
+      123520103
     ]
   },
   "22203091": {
     "Id": 22203091,
-    "RecountName": "",
+    "RecountName": "Bleed",
     "DamageId": [
-      0,
-      0,
-      0,
-      0,
-      0
+      2220309102,
+      2220310102,
+      2220310202,
+      2220314102,
+      2220330202
+    ]
+  },
+  "22203512": {
+    "Id": 22203512,
+    "RecountName": "Stomp",
+    "DamageId": [
+      2220351201
+    ]
+  },
+  "22203521": {
+    "Id": 22203521,
+    "RecountName": "Implosion",
+    "DamageId": [
+      2220352105
+    ]
+  },
+  "22203621": {
+    "Id": 22203621,
+    "RecountName": "Light Prism",
+    "DamageId": [
+      2220362101,
+      2220362105,
+      2220362204,
+      2220362207
     ]
   },
   "3220105": {
     "Id": 3220105,
-    "RecountName": "",
+    "RecountName": "Lightseeker Arrow",
     "DamageId": [
       322010500
     ]
   },
   "3220112": {
     "Id": 3220112,
-    "RecountName": "",
+    "RecountName": "Photon Arrow",
     "DamageId": [
       322011200
     ]
   },
   "3220107": {
     "Id": 3220107,
-    "RecountName": "",
+    "RecountName": "Magic Arrow",
     "DamageId": [
       322010700
     ]
   },
   "3220108": {
     "Id": 3220108,
-    "RecountName": "",
+    "RecountName": "Explosive Arrow",
     "DamageId": [
       322010800,
-      0
+      2220331101
     ]
   },
-  "22203512": {
-    "Id": 22203512,
-    "RecountName": "",
+  "1912": {
+    "Id": 1912,
+    "RecountName": "Red light counter",
     "DamageId": [
-      0
-    ]
-  },
-  "22203521": {
-    "Id": 22203521,
-    "RecountName": "",
-    "DamageId": [
-      0
-    ]
-  },
-  "2296": {
-    "Id": 2296,
-    "RecountName": "",
-    "DamageId": [
-      122960102
-    ]
-  },
-  "2241": {
-    "Id": 2241,
-    "RecountName": "",
-    "DamageId": [
-      123520101,
-      123520103
-    ]
-  },
-  "22203621": {
-    "Id": 22203621,
-    "RecountName": "",
-    "DamageId": [
-      0,
-      0,
-      0,
-      0
+      119120102
     ]
   },
   "22031107": {
     "Id": 22031107,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Lucky Strike",
+    "DamageId": [
+      2203110703,
+      2203110704
+    ]
   },
   "1901": {
     "Id": 1901,
-    "RecountName": "",
+    "RecountName": "Halberd's Edge",
     "DamageId": [
       119010102,
       119020102,
       119030102,
       119030103,
-      119040102,
-      119120102,
-      119330102
+      119040102
     ]
   },
   "1922": {
     "Id": 1922,
-    "RecountName": "",
+    "RecountName": "Shield Bash",
     "DamageId": [
-      119220102,
+      119220102
+    ]
+  },
+  "1932": {
+    "Id": 1932,
+    "RecountName": "Shield Combo",
+    "DamageId": [
       119320102,
       119320103
     ]
   },
   "1930": {
     "Id": 1930,
-    "RecountName": "",
+    "RecountName": "Countercrush",
     "DamageId": [
       119300101,
       119300104,
@@ -804,21 +902,21 @@
   },
   "1907": {
     "Id": 1907,
-    "RecountName": "",
+    "RecountName": "Tectonic Ring",
     "DamageId": [
       119070103
     ]
   },
   "1924": {
     "Id": 1924,
-    "RecountName": "",
+    "RecountName": "Star Shatter",
     "DamageId": [
       119240102
     ]
   },
   "1927": {
     "Id": 1927,
-    "RecountName": "",
+    "RecountName": "Sandshroud",
     "DamageId": [
       119270102,
       25004904
@@ -826,19 +924,19 @@
   },
   "1936": {
     "Id": 1936,
-    "RecountName": "",
+    "RecountName": "Stoneform",
     "DamageId": []
   },
   "1926": {
     "Id": 1926,
-    "RecountName": "",
+    "RecountName": "Sandgrip",
     "DamageId": [
       25003301
     ]
   },
   "1937": {
     "Id": 1937,
-    "RecountName": "",
+    "RecountName": "Granite Fury",
     "DamageId": [
       119370102,
       119390102
@@ -846,7 +944,7 @@
   },
   "1925": {
     "Id": 1925,
-    "RecountName": "",
+    "RecountName": "Rage Burst",
     "DamageId": [
       119250101,
       119400101
@@ -854,12 +952,12 @@
   },
   "1938": {
     "Id": 1938,
-    "RecountName": "",
+    "RecountName": "Brave Bastion",
     "DamageId": []
   },
   "1923": {
     "Id": 1923,
-    "RecountName": "",
+    "RecountName": "Sandward",
     "DamageId": [
       119230112,
       119230113
@@ -867,58 +965,58 @@
   },
   "1935": {
     "Id": 1935,
-    "RecountName": "",
+    "RecountName": "Rageblow",
     "DamageId": [
       119350101
     ]
   },
   "1941": {
     "Id": 1941,
-    "RecountName": "",
+    "RecountName": "Starfall",
     "DamageId": [
       119410102
     ]
   },
   "1942": {
     "Id": 1942,
-    "RecountName": "",
+    "RecountName": "Rupture",
     "DamageId": [
       119420102
     ]
   },
   "199902": {
     "Id": 199902,
-    "RecountName": "",
+    "RecountName": "Terra Sunder",
     "DamageId": [
-      0,
-      0,
-      0
+      11999020101,
+      11999020102,
+      2220157003
     ]
   },
   "1943": {
     "Id": 1943,
-    "RecountName": "",
+    "RecountName": "Stone Fist",
     "DamageId": [
-      0
+      11999030101
     ]
   },
   "250036": {
     "Id": 250036,
-    "RecountName": "",
+    "RecountName": "Weakness Strike",
     "DamageId": [
       25003601
     ]
   },
   "22201080": {
     "Id": 22201080,
-    "RecountName": "",
+    "RecountName": "Block Recovery",
     "DamageId": [
-      0
+      2220108003
     ]
   },
   "250037": {
     "Id": 250037,
-    "RecountName": "",
+    "RecountName": "Countercrush",
     "DamageId": [
       25003703,
       25006703,
@@ -930,66 +1028,78 @@
   },
   "22201240": {
     "Id": 22201240,
-    "RecountName": "",
+    "RecountName": "Shield Echo",
     "DamageId": [
-      0,
-      0,
-      0
+      2220124003,
+      2220124004,
+      2220124005
     ]
   },
   "22201410": {
     "Id": 22201410,
-    "RecountName": "",
+    "RecountName": "Sandstone Revival",
     "DamageId": [
-      0
+      2220141005
     ]
   },
   "22201491": {
     "Id": 22201491,
-    "RecountName": "",
+    "RecountName": "Recovery",
     "DamageId": [
-      0
+      2220149103
+    ]
+  },
+  "22201641": {
+    "Id": 22201641,
+    "RecountName": "Rock Heal",
+    "DamageId": [
+      2220164103,
+      2220164104
+    ]
+  },
+  "22201362": {
+    "Id": 22201362,
+    "RecountName": "Sand Crystal Shock",
+    "DamageId": [
+      2220136203
     ]
   },
   "31901": {
     "Id": 31901,
-    "RecountName": "",
+    "RecountName": "Rock Projectile",
     "DamageId": [
       3190100,
       3190200
     ]
   },
-  "22201641": {
-    "Id": 22201641,
-    "RecountName": "",
-    "DamageId": []
-  },
-  "22201362": {
-    "Id": 22201362,
-    "RecountName": "",
+  "2424": {
+    "Id": 2424,
+    "RecountName": "Red light counter",
     "DamageId": [
-      0
+      124240102
     ]
   },
   "22031110": {
     "Id": 22031110,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Lucky Strike",
+    "DamageId": [
+      2203111003,
+      2203111004
+    ]
   },
   "2401": {
     "Id": 2401,
-    "RecountName": "",
+    "RecountName": "Blade of Justice",
     "DamageId": [
       124010102,
       124020102,
       124030102,
-      124040102,
-      124240102
+      124040102
     ]
   },
   "2405": {
     "Id": 2405,
-    "RecountName": "",
+    "RecountName": "Valor Bash",
     "DamageId": [
       124050104,
       124050107,
@@ -998,105 +1108,41 @@
   },
   "2406": {
     "Id": 2406,
-    "RecountName": "",
+    "RecountName": "Vanguard Strike",
     "DamageId": [
-      124060101,
+      124060101
+    ]
+  },
+  "24060": {
+    "Id": 24060,
+    "RecountName": "Vanguard Hunt",
+    "DamageId": [
       124060104,
       124060105,
-      124060108
+      124060108,
+      2220654103,
+      2220656103
     ]
   },
   "2407": {
     "Id": 2407,
-    "RecountName": "",
+    "RecountName": "Radiant Infusion",
     "DamageId": [
       124070103
     ]
   },
   "2410": {
     "Id": 2410,
-    "RecountName": "",
+    "RecountName": "Judgment",
     "DamageId": [
       124100101,
       124100104,
       25542103
     ]
   },
-  "2412": {
-    "Id": 2412,
-    "RecountName": "",
-    "DamageId": [
-      124120102,
-      124120103,
-      124120104
-    ]
-  },
-  "2408": {
-    "Id": 2408,
-    "RecountName": "",
-    "DamageId": [
-      324010100
-    ]
-  },
-  "2421": {
-    "Id": 2421,
-    "RecountName": "",
-    "DamageId": [
-      124210101
-    ]
-  },
-  "2420": {
-    "Id": 2420,
-    "RecountName": "",
-    "DamageId": [
-      324010200
-    ]
-  },
-  "2415": {
-    "Id": 2415,
-    "RecountName": "",
-    "DamageId": [
-      25540502,
-      25540504
-    ]
-  },
-  "2419": {
-    "Id": 2419,
-    "RecountName": "",
-    "DamageId": [
-      25541203,
-      25541205,
-      25541206,
-      25541703,
-      25541705,
-      25541706
-    ]
-  },
-  "2409": {
-    "Id": 2409,
-    "RecountName": "",
-    "DamageId": [
-      25540404,
-      25540403
-    ]
-  },
-  "2416": {
-    "Id": 2416,
-    "RecountName": "",
-    "DamageId": [
-      124160102
-    ]
-  },
-  "2417": {
-    "Id": 2417,
-    "RecountName": "",
-    "DamageId": [
-      124170102
-    ]
-  },
   "2411": {
     "Id": 2411,
-    "RecountName": "",
+    "RecountName": "Scorching Judgment",
     "DamageId": [
       124520101,
       124520102,
@@ -1105,14 +1151,88 @@
   },
   "2451": {
     "Id": 2451,
-    "RecountName": "",
+    "RecountName": "Auto Judgment",
     "DamageId": [
       124510101
     ]
   },
+  "2412": {
+    "Id": 2412,
+    "RecountName": "Reckoning",
+    "DamageId": [
+      124120102,
+      124120103,
+      124120104
+    ]
+  },
+  "2408": {
+    "Id": 2408,
+    "RecountName": "Shield Toss",
+    "DamageId": [
+      324010100
+    ]
+  },
+  "2421": {
+    "Id": 2421,
+    "RecountName": "Sacred Blade",
+    "DamageId": [
+      124210101
+    ]
+  },
+  "2420": {
+    "Id": 2420,
+    "RecountName": "Radiance",
+    "DamageId": [
+      324010200
+    ]
+  },
+  "2415": {
+    "Id": 2415,
+    "RecountName": "Aegis Ward",
+    "DamageId": [
+      25540502,
+      25540504
+    ]
+  },
+  "2419": {
+    "Id": 2419,
+    "RecountName": "Zeal Crusade",
+    "DamageId": [
+      25541203,
+      25541205,
+      25541206,
+      25541703,
+      25541705,
+      25541706,
+      25541209,
+      25541709
+    ]
+  },
+  "2409": {
+    "Id": 2409,
+    "RecountName": "Divine Circle",
+    "DamageId": [
+      25540404,
+      25540403
+    ]
+  },
+  "2416": {
+    "Id": 2416,
+    "RecountName": "Condemn",
+    "DamageId": [
+      124160102
+    ]
+  },
+  "2417": {
+    "Id": 2417,
+    "RecountName": "Enhanced Condemn",
+    "DamageId": [
+      124170102
+    ]
+  },
   "2413": {
     "Id": 2413,
-    "RecountName": "",
+    "RecountName": "Inferno Reckon",
     "DamageId": [
       124130102,
       124130103,
@@ -1120,54 +1240,63 @@
       124130105
     ]
   },
-  "22206241": {
-    "Id": 22206241,
-    "RecountName": "",
-    "DamageId": [
-      0,
-      0,
-      0
-    ]
-  },
-  "22206401": {
-    "Id": 22206401,
-    "RecountName": "",
-    "DamageId": [
-      0
-    ]
-  },
-  "22206460": {
-    "Id": 22206460,
-    "RecountName": "",
-    "DamageId": [
-      0
-    ]
-  },
-  "22206541": {
-    "Id": 22206541,
-    "RecountName": "",
-    "DamageId": []
-  },
-  "22206552": {
-    "Id": 22206552,
-    "RecountName": "",
-    "DamageId": []
-  },
   "2450": {
     "Id": 2450,
-    "RecountName": "",
+    "RecountName": "Radiant Impact",
     "DamageId": [
       124500101
     ]
   },
+  "22206241": {
+    "Id": 22206241,
+    "RecountName": "Holy Mark",
+    "DamageId": [
+      2220624103,
+      2220624105,
+      2220625006,
+      2220624301
+    ]
+  },
+  "22206401": {
+    "Id": 22206401,
+    "RecountName": "Divine Strike",
+    "DamageId": [
+      2220640103
+    ]
+  },
+  "22206460": {
+    "Id": 22206460,
+    "RecountName": "Shield Guard",
+    "DamageId": [
+      2220646003
+    ]
+  },
+  "22206552": {
+    "Id": 22206552,
+    "RecountName": "Radiant Core",
+    "DamageId": [
+      2220655203,
+      2220655204
+    ]
+  },
+  "1517": {
+    "Id": 1517,
+    "RecountName": "Red light counter",
+    "DamageId": [
+      115170102
+    ]
+  },
   "22031105": {
     "Id": 22031105,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Lucky Strike",
+    "DamageId": [
+      2203110503,
+      2203110504
+    ]
   },
   "1501": {
     "Id": 1501,
-    "RecountName": "",
+    "RecountName": "Vines' Embrace",
     "DamageId": [
       115010102,
       115020102,
@@ -1176,27 +1305,23 @@
       115030103,
       115030104,
       115040102,
-      115040104,
-      115170102,
-      22142701,
-      22142801,
-      22142901,
-      22143001
+      115040104
     ]
   },
   "1518": {
     "Id": 1518,
-    "RecountName": "",
+    "RecountName": "Wild Bloom",
     "DamageId": [
       115180102,
       115410102,
+      115300102,
       22140201,
       22140203
     ]
   },
   "1507": {
     "Id": 1507,
-    "RecountName": "",
+    "RecountName": "Life Bloom",
     "DamageId": [
       22030104,
       22110101
@@ -1204,7 +1329,7 @@
   },
   "1509": {
     "Id": 1509,
-    "RecountName": "",
+    "RecountName": "Divine Circle Bloom",
     "DamageId": [
       115090101,
       22141404,
@@ -1213,7 +1338,7 @@
   },
   "1527": {
     "Id": 1527,
-    "RecountName": "",
+    "RecountName": "Bloomheal",
     "DamageId": [
       115270106,
       115270108,
@@ -1222,12 +1347,12 @@
   },
   "1528": {
     "Id": 1528,
-    "RecountName": "",
+    "RecountName": "Vital Surge",
     "DamageId": []
   },
   "1519": {
     "Id": 1519,
-    "RecountName": "",
+    "RecountName": "Feral Seed",
     "DamageId": [
       315010300,
       315010400,
@@ -1236,14 +1361,14 @@
   },
   "1522": {
     "Id": 1522,
-    "RecountName": "",
+    "RecountName": "Nourish",
     "DamageId": [
       22140403
     ]
   },
   "1523": {
     "Id": 1523,
-    "RecountName": "",
+    "RecountName": "Regen Pulse",
     "DamageId": [
       22142501,
       115600101,
@@ -1261,15 +1386,12 @@
       115610111,
       115610112,
       115610113,
-      315011200,
-      115620101,
-      115620102,
-      115620103
+      315011200
     ]
   },
   "1520": {
     "Id": 1520,
-    "RecountName": "",
+    "RecountName": "Infusion",
     "DamageId": [
       315010500,
       315010600,
@@ -1279,93 +1401,94 @@
   },
   "1521": {
     "Id": 1521,
-    "RecountName": "",
+    "RecountName": "Grove Wish",
     "DamageId": [
       22140601
     ]
   },
   "1531": {
     "Id": 1531,
-    "RecountName": "",
-    "DamageId": [
-      22142201
-    ]
+    "RecountName": "Nature Ward",
+    "DamageId": []
   },
   "1529": {
     "Id": 1529,
-    "RecountName": "",
+    "RecountName": "Blossom Charge",
     "DamageId": [
       115290101,
       115290102,
-      0,
-      0,
-      0,
-      0
+      2220258103,
+      2220258104,
+      2220258203,
+      2220258204
     ]
   },
   "1524": {
     "Id": 1524,
-    "RecountName": "",
+    "RecountName": "Fast Growth",
     "DamageId": []
   },
   "1525": {
     "Id": 1525,
-    "RecountName": "",
+    "RecountName": "Stag Charge",
     "DamageId": [
       315010100,
       22141804
     ]
   },
-  "22202311": {
-    "Id": 22202311,
-    "RecountName": "",
-    "DamageId": []
-  },
   "1540": {
     "Id": 1540,
-    "RecountName": "",
+    "RecountName": "Wild Seed",
     "DamageId": [
       115510101
     ]
   },
-  "22202120": {
-    "Id": 22202120,
-    "RecountName": "",
-    "DamageId": [
-      0
-    ]
-  },
-  "22202091": {
-    "Id": 22202091,
-    "RecountName": "",
-    "DamageId": [
-      0
-    ]
-  },
   "221423": {
     "Id": 221423,
-    "RecountName": "",
+    "RecountName": "Symbiotic Mark",
     "DamageId": [
       22142303
     ]
   },
+  "22202311": {
+    "Id": 22202311,
+    "RecountName": "Nourishing Seed",
+    "DamageId": [
+      2220231103,
+      2220231104
+    ]
+  },
+  "22202120": {
+    "Id": 22202120,
+    "RecountName": "Nature Shield",
+    "DamageId": [
+      2220212004
+    ]
+  },
+  "22202091": {
+    "Id": 22202091,
+    "RecountName": "Healing Chain",
+    "DamageId": [
+      2220209101
+    ]
+  },
   "22202262": {
     "Id": 22202262,
-    "RecountName": "",
+    "RecountName": "Resurrect",
     "DamageId": [
-      0
+      2220226203
     ]
   },
   "22202271": {
     "Id": 22202271,
-    "RecountName": "",
+    "RecountName": "Natural Bloom",
     "DamageId": [
-      0
+      2220227101
     ]
   },
   "1553": {
     "Id": 1553,
-    "RecountName": "",
+    "RecountName": "Healing Pulse",
     "DamageId": [
       315010200,
       315010201
@@ -1373,26 +1496,46 @@
   },
   "1554": {
     "Id": 1554,
-    "RecountName": "",
+    "RecountName": "Healing Orb",
     "DamageId": [
-      0
+      2220229101
     ]
   },
   "221424": {
     "Id": 221424,
-    "RecountName": "",
+    "RecountName": "Thorn",
     "DamageId": [
       22142403
     ]
   },
+  "255355": {
+    "Id": 255355,
+    "RecountName": "Healing of Stillness",
+    "DamageId": [
+      25535501,
+      25535601,
+      25535701
+    ]
+  },
+  "1624": {
+    "Id": 1624,
+    "RecountName": "Red light counter",
+    "DamageId": [
+      116240101,
+      123370101
+    ]
+  },
   "22031111": {
     "Id": 22031111,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Lucky Strike",
+    "DamageId": [
+      2203111103,
+      2203111104
+    ]
   },
   "2321": {
     "Id": 2321,
-    "RecountName": "",
+    "RecountName": "String Strike",
     "DamageId": [
       123210102,
       123210103,
@@ -1401,25 +1544,22 @@
       123230102,
       123230103,
       123240102,
-      123240103,
-      123370101,
-      25535501
+      123240103
     ]
   },
   "2301": {
     "Id": 2301,
-    "RecountName": "",
+    "RecountName": "Resonant Strings",
     "DamageId": [
       123010102,
       123020102,
       123030102,
-      123040102,
-      123370101
+      123040102
     ]
   },
   "2306": {
     "Id": 2306,
-    "RecountName": "",
+    "RecountName": "Amplified Beat",
     "DamageId": [
       123060101,
       123060103
@@ -1427,7 +1567,7 @@
   },
   "2307": {
     "Id": 2307,
-    "RecountName": "",
+    "RecountName": "Healing Beat",
     "DamageId": [
       25530201,
       25530203,
@@ -1436,31 +1576,23 @@
   },
   "2314": {
     "Id": 2314,
-    "RecountName": "",
+    "RecountName": "Rock the Stage/Infinite Rhapsody",
     "DamageId": [
       123140106,
       123140107,
       123140108,
+      123350102,
       25534401,
       25534601,
       123640104,
       123640105,
-      123640106
-    ]
-  },
-  "2335": {
-    "Id": 2335,
-    "RecountName": "",
-    "DamageId": [
-      123350102,
-      25534401,
-      25534601,
+      123640106,
       123650102
     ]
   },
   "2336": {
     "Id": 2336,
-    "RecountName": "",
+    "RecountName": "Concert Circuit",
     "DamageId": [
       123360101,
       25533901,
@@ -1469,52 +1601,72 @@
   },
   "2308": {
     "Id": 2308,
-    "RecountName": "",
+    "RecountName": "Harmonic Anthem",
     "DamageId": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
+      12301010101,
+      12301020101,
+      12301020102,
+      12301030101,
+      12301030102,
+      12301030103,
+      12301040101,
+      12301040102,
+      12301040103,
+      12301040104,
       323010100
     ]
   },
   "2309": {
     "Id": 2309,
-    "RecountName": "",
+    "RecountName": "Rhapsody of Flame",
     "DamageId": [
       323080100,
       323090100,
       323100100,
       25530101,
-      123200101,
-      0,
-      0
+      25530103,
+      123200101
+    ]
+  },
+  "230105": {
+    "Id": 230105,
+    "RecountName": "Flame's Rampage",
+    "DamageId": [
+      12301050101,
+      2220743103
+    ]
+  },
+  "230106": {
+    "Id": 230106,
+    "RecountName": "Flame Note",
+    "DamageId": [
+      12301060101
     ]
   },
   "2310": {
     "Id": 2310,
-    "RecountName": "",
+    "RecountName": "Heroic Melody",
     "DamageId": [
-      25534101,
+      25534101
+    ]
+  },
+  "2317": {
+    "Id": 2317,
+    "RecountName": "Fierce Strike",
+    "DamageId": [
       123170104
     ]
   },
   "2311": {
     "Id": 2311,
-    "RecountName": "",
+    "RecountName": "Healing Melody",
     "DamageId": [
       25534201
     ]
   },
   "2312": {
     "Id": 2312,
-    "RecountName": "",
+    "RecountName": "Fivefold Crescendo",
     "DamageId": [
       123120123,
       123120124,
@@ -1532,16 +1684,24 @@
   },
   "2313": {
     "Id": 2313,
-    "RecountName": "",
+    "RecountName": "Passion Burst",
     "DamageId": [
       123130106,
       123130107,
       123130108
     ]
   },
+  "2332": {
+    "Id": 2332,
+    "RecountName": "Passion Fury",
+    "DamageId": [
+      123320102,
+      123320103
+    ]
+  },
   "2315": {
     "Id": 2315,
-    "RecountName": "",
+    "RecountName": "Encore",
     "DamageId": [
       323040100,
       323050100,
@@ -1551,190 +1711,195 @@
   },
   "2316": {
     "Id": 2316,
-    "RecountName": "",
+    "RecountName": "Center Stage",
     "DamageId": []
   },
-  "55311": {
-    "Id": 55311,
-    "RecountName": "",
+  "255311": {
+    "Id": 255311,
+    "RecountName": "Peaceful Tune",
     "DamageId": [
       25531105
     ]
   },
   "2207620": {
     "Id": 2207620,
-    "RecountName": "",
+    "RecountName": "Rhythm",
     "DamageId": [
-      0
+      2220762008
     ]
   },
   "2207151": {
     "Id": 2207151,
-    "RecountName": "",
+    "RecountName": "Blazing Heal",
     "DamageId": [
-      0
-    ]
-  },
-  "2207431": {
-    "Id": 2207431,
-    "RecountName": "",
-    "DamageId": [
-      0
+      2220715103
     ]
   },
   "2329": {
     "Id": 2329,
-    "RecountName": "",
+    "RecountName": "Pillar of Flame",
     "DamageId": [
       123290101,
       123300101,
       123300102
     ]
   },
-  "2332": {
-    "Id": 2332,
-    "RecountName": "",
-    "DamageId": [
-      123320102,
-      123320103
-    ]
-  },
   "2331": {
     "Id": 2331,
-    "RecountName": "",
+    "RecountName": "Scorching Impact",
     "DamageId": [
       123310102
     ]
   },
   "22207411": {
     "Id": 22207411,
-    "RecountName": "",
+    "RecountName": "Note",
     "DamageId": [
-      0,
-      0,
-      0
+      2220741101,
+      2220714102,
+      2220714103
     ]
   },
   "2320": {
     "Id": 2320,
-    "RecountName": "",
+    "RecountName": "Flame Shock",
     "DamageId": [
       123200101
     ]
   },
   "22207681": {
     "Id": 22207681,
-    "RecountName": "",
+    "RecountName": "Sonic Surge",
     "DamageId": [
-      0
+      2220768103
+    ]
+  },
+  "221427": {
+    "Id": 221427,
+    "RecountName": "Healing of Stillness",
+    "DamageId": [
+      22142701,
+      22142801,
+      22142901,
+      22143001
     ]
   },
   "3927": {
     "Id": 3927,
-    "RecountName": "",
+    "RecountName": "Stunt! Commanding Roar",
     "DamageId": [
-      0
+      2211006203
     ]
   },
   "3907": {
     "Id": 3907,
-    "RecountName": "",
+    "RecountName": "Stunt! Falling Star",
     "DamageId": [
-      0
+      120028530101
     ]
   },
   "3934": {
     "Id": 3934,
-    "RecountName": "",
+    "RecountName": "Stunt! Blink Ambush",
     "DamageId": [
-      0,
-      0,
-      0
+      120017400103,
+      120017400104,
+      120017400105
     ]
   },
   "3928": {
     "Id": 3928,
-    "RecountName": "",
+    "RecountName": "Stunt! Predator Slash",
     "DamageId": [
-      0,
-      0,
-      0,
-      0
+      110052400101,
+      110052400102,
+      110052400105,
+      110052400106
     ]
   },
   "3903": {
     "Id": 3903,
-    "RecountName": "",
+    "RecountName": "Arcane! Blazing Axe",
     "DamageId": [
-      0
+      2321005102
     ]
   },
   "3942": {
     "Id": 3942,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Arcane! Poison Explosion",
+    "DamageId": [
+      110077410101,
+      2211009903
+    ]
   },
   "3904": {
     "Id": 3904,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Stunt! Super Critical",
+    "DamageId": [
+      110024400103,
+      2321006101
+    ]
   },
   "3915": {
     "Id": 3915,
-    "RecountName": "",
+    "RecountName": "Stunt! Frenzied Shot",
     "DamageId": [
-      0,
-      0,
-      0,
+      11007300102,
+      11007300104,
+      31007080100,
       339100700
     ]
   },
   "3937": {
     "Id": 3937,
-    "RecountName": "",
+    "RecountName": "Stunt! Thunder Suppress",
     "DamageId": [
-      0,
-      0,
-      0
+      110104400101,
+      110104400102,
+      2321008101
     ]
   },
   "3923": {
     "Id": 3923,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Arcane! Furious Hammer",
+    "DamageId": [
+      117004400103,
+      117004400105
+    ]
   },
   "3926": {
     "Id": 3926,
-    "RecountName": "",
+    "RecountName": "Arcane! Meteor Shower",
     "DamageId": [
       136990101,
-      136980101
+      136980101,
+      2321002103
     ]
   },
   "3944": {
     "Id": 3944,
-    "RecountName": "",
+    "RecountName": "Arcane! Azure Tempest",
     "DamageId": [
-      0
+      110084400101
     ]
   },
   "3938": {
     "Id": 3938,
-    "RecountName": "",
+    "RecountName": "Arcane! Cocoon Technique",
     "DamageId": [
-      0
+      110069400101
     ]
   },
   "3936": {
     "Id": 3936,
-    "RecountName": "",
+    "RecountName": "Stunt! Water of Silence",
     "DamageId": [
-      0
+      139360010101
     ]
   },
   "3939": {
     "Id": 3939,
-    "RecountName": "",
+    "RecountName": "Stunt! Lightning Orb",
     "DamageId": [
       31000200,
       31000201
@@ -1742,33 +1907,36 @@
   },
   "3940": {
     "Id": 3940,
-    "RecountName": "",
+    "RecountName": "Stunt! Whirlwind Strike",
     "DamageId": [
-      0
+      110086410103
     ]
   },
   "3947": {
     "Id": 3947,
-    "RecountName": "",
+    "RecountName": "Stunt! Spiral Fracture",
     "DamageId": [
-      0
+      110059400101
     ]
   },
   "3905": {
     "Id": 3905,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Stunt! Boarrier Rush",
+    "DamageId": [
+      11026400101,
+      11026400108
+    ]
   },
   "3913": {
     "Id": 3913,
-    "RecountName": "",
+    "RecountName": "Stunt! Electro Bomb",
     "DamageId": [
-      0
+      139130010101
     ]
   },
   "3910": {
     "Id": 3910,
-    "RecountName": "",
+    "RecountName": "Stunt! Chaotic Barrage",
     "DamageId": [
       339100100,
       339100200,
@@ -1776,133 +1944,192 @@
       339100400,
       339100500,
       339100600,
-      0,
-      0
+      2211009003,
+      2211009103
     ]
   },
   "3914": {
     "Id": 3914,
-    "RecountName": "",
+    "RecountName": "Stunt! Blade Sweep",
     "DamageId": [
       139140102,
       139140103,
-      0
+      31004010200
     ]
   },
   "3929": {
     "Id": 3929,
-    "RecountName": "",
+    "RecountName": "Stunt! Shell Defense",
     "DamageId": []
   },
   "3930": {
     "Id": 3930,
-    "RecountName": "",
+    "RecountName": "Stunt! Earth Shield",
     "DamageId": [
-      0
+      2211006603
     ]
   },
   "3935": {
     "Id": 3935,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Arcane! Thunder Roar",
+    "DamageId": [
+      2211009601,
+      2211009604
+    ]
   },
   "3908": {
     "Id": 3908,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Arcane! Pulse Benediction",
+    "DamageId": [
+      2211001203,
+      2321010102
+    ]
   },
   "3902": {
     "Id": 3902,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Arcane! Thunderfall Grasp",
+    "DamageId": [
+      120024400102,
+      2321003101
+    ]
   },
   "3943": {
     "Id": 3943,
-    "RecountName": "",
+    "RecountName": "Arcane! Infernal Thrust",
     "DamageId": [
-      0
+      110081400101
     ]
   },
   "3901": {
     "Id": 3901,
-    "RecountName": "",
+    "RecountName": "Arcane! Flame Roar",
     "DamageId": [
       139010101,
-      0
+      2211008304
     ]
   },
   "3917": {
     "Id": 3917,
-    "RecountName": "",
+    "RecountName": "Stunt! Heavy Slash",
     "DamageId": [
-      0,
-      0,
-      0
+      130810230101,
+      130810230102,
+      130810230103
     ]
   },
   "3925": {
     "Id": 3925,
-    "RecountName": "",
+    "RecountName": "Stunt! Invisible Impact",
     "DamageId": [
       139250102
     ]
   },
   "3941": {
     "Id": 3941,
-    "RecountName": "",
+    "RecountName": "Stunt! Transform into Bee",
     "DamageId": [
-      0,
+      11411040101,
       339100800
     ]
   },
   "3945": {
     "Id": 3945,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Arcane! Silent Tide",
+    "DamageId": [
+      110085400101,
+      2321009201
+    ]
   },
   "3906": {
     "Id": 3906,
-    "RecountName": "",
-    "DamageId": []
+    "RecountName": "Arcane! Frostquake",
+    "DamageId": [
+      110028300103,
+      110028300104
+    ]
   },
   "3946": {
     "Id": 3946,
-    "RecountName": "",
+    "RecountName": "Arcane! Goblin Grand March",
     "DamageId": [
-      0,
-      0,
-      0,
-      0,
-      0,
+      31004010200,
+      11007300102,
+      11007300104,
+      110086410103,
+      120028530101,
       136990101
     ]
   },
   "3922": {
     "Id": 3922,
-    "RecountName": "",
+    "RecountName": "Arcane! Flash Execution",
     "DamageId": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
+      129005400101,
+      129005400102,
+      129005400103,
+      129005400104,
+      129005400105,
+      129005400106,
+      2211008503
     ]
   },
   "3911": {
     "Id": 3911,
-    "RecountName": "",
+    "RecountName": "Arcane! Heart of Flame",
     "DamageId": []
   },
   "3920": {
     "Id": 3920,
-    "RecountName": "",
+    "RecountName": "Arcane! Blessing of Life",
     "DamageId": []
   },
   "3921": {
     "Id": 3921,
-    "RecountName": "",
+    "RecountName": "Arcane! Time Decree",
     "DamageId": []
+  },
+  "2302320": {
+    "Id": 2302320,
+    "RecountName": "First Aid",
+    "DamageId": [
+      2230232103
+    ]
+  },
+  "2300080": {
+    "Id": 2300080,
+    "RecountName": "Life Steal",
+    "DamageId": [
+      2230008003
+    ]
+  },
+  "23001150": {
+    "Id": 23001150,
+    "RecountName": "Void Corruption Arcane",
+    "DamageId": [
+      17010010101
+    ]
+  },
+  "23001040": {
+    "Id": 23001040,
+    "RecountName": "Void Corruption Pulse",
+    "DamageId": [
+      339140100
+    ]
+  },
+  "23001170": {
+    "Id": 23001170,
+    "RecountName": "Void Corruption Fluctuation",
+    "DamageId": [
+      17010020101,
+      2300117006
+    ]
+  },
+  "23001031": {
+    "Id": 23001031,
+    "RecountName": "Void Aura",
+    "DamageId": [
+      2300103103,
+      2300103104
+    ]
   }
 }

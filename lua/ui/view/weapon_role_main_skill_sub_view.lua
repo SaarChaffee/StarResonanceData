@@ -228,7 +228,7 @@ function Weapon_role_main_skill_subView:unLoadRedDotItem()
 end
 
 function Weapon_role_main_skill_subView:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.RoleViewDetail then
+  if inputActionEventData.ActionId == Z.InputActionIds.RoleViewDetail then
     self.weaponSkillVm_.OpenWeaponSkillView()
   end
 end

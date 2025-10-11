@@ -9,7 +9,6 @@ function SettingView:ctor()
   self.baseModuleView = require("ui/view/basemodule_view").new()
   self.accountModuleView = require("ui/view/accountmodule_view").new()
   self.qualityView_ = require("ui/view/set_definition_sub_view").new()
-  self.gamepadView_ = require("ui/view/set_handle_key_sub_view").new()
   self.viewDict_ = {
     [E.SetFuncId.SettingControl] = self.controlView_,
     [E.SetFuncId.SettingBasic] = self.baseModuleView,
@@ -19,7 +18,6 @@ function SettingView:ctor()
   if Z.IsPCUI then
     self.keyView_ = require("ui/view/set_key_sub_view").new(self)
     self.viewDict_[E.SetFuncId.SettingKey] = self.keyView_
-    self.viewDict_[E.SetFuncId.GamepadKeyDisplay] = self.gamepadView_
   end
   self.vm = Z.VMMgr.GetVM("setting")
   self.commonVM_ = Z.VMMgr.GetVM("common")
@@ -92,8 +90,7 @@ function SettingView:initTab()
     [E.SetFuncId.SettingFrame] = self.uiBinder.cont_tab.binder_tab_frame,
     [E.SetFuncId.SettingBasic] = self.uiBinder.cont_tab.binder_tab_basic,
     [E.SetFuncId.SettingAccount] = self.uiBinder.cont_tab.binder_tab_account,
-    [E.SetFuncId.SettingKey] = self.uiBinder.cont_tab.binder_tab_key,
-    [E.SetFuncId.GamepadKeyDisplay] = self.uiBinder.cont_tab.binder_tab_handle_key
+    [E.SetFuncId.SettingKey] = self.uiBinder.cont_tab.binder_tab_key
   }
   for funcId, _ in pairs(self.togDict_) do
     if self.viewDict_[funcId] == nil then

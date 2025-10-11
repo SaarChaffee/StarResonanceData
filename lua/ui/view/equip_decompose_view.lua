@@ -39,11 +39,15 @@ function Equip_decomposeView:OnActive()
   self.selectedItems_ = {}
   self.filterFuncs_ = {}
   self.unitTokenDict_ = {}
+  self.selectedCount_ = 0
   table.insert(self.filterFuncs_, self.equipVm_.CheckEquipDecomonece)
   self:AddClick(self.cancelBtn_, function()
     self:onCancelBtnClick()
   end)
   self:AddClick(self.oneAddBtn_, function()
+    if self.selectedCount_ >= Z.Global.EquipDecomposeLimit then
+      return
+    end
     if self.equip_list_view_.curPartId_ then
       self.allEquipInfos_ = self.itemsVm_.GetItemIds(E.BackPackItemPackageType.Equip, self.filterFuncs_, nil)
       local data = {}
@@ -55,7 +59,7 @@ function Equip_decomposeView:OnActive()
         local equipTableData = equipTabMgr.GetRow(value.configId)
         local itemTabMgrData = itemTabMgr.GetRow(value.configId)
         local itemInfo = self.itemsVm_.GetItemInfo(value.itemUuid, E.BackPackItemPackageType.Equip)
-        if itemInfo and itemTabMgrData and equipTableData and itemTabMgrData.Quality <= E.ItemQuality.Blue then
+        if itemInfo and itemTabMgrData and equipTableData and itemTabMgrData.Quality <= E.ItemQuality.Blue and self.selectedItems_[value.itemUuid] == nil then
           data[dataIndex] = {
             itemUuid = value.itemUuid,
             configId = value.configId
@@ -63,6 +67,9 @@ function Equip_decomposeView:OnActive()
           dataIndex = dataIndex + 1
           if self.equipVm_.CheckCanRecast(nil, value.configId) and itemInfo.equipAttr.perfectionValue > Z.Global.EquipPerfectvalDecomTips then
             isShowTips = true
+          end
+          if self.selectedCount_ + dataIndex - 1 >= Z.Global.EquipDecomposeLimit then
+            break
           end
         end
       end
@@ -158,6 +165,11 @@ function Equip_decomposeView:GetCacheData()
 end
 
 function Equip_decomposeView:onItemSelected(itemUuid, configId, isSelected)
+  if isSelected and self.selectedCount_ >= Z.Global.EquipDecomposeLimit then
+    self.equip_list_view_:UnSetSelectItem(itemUuid)
+    Z.TipsVM.ShowTips(150044)
+    return
+  end
   local materialInfo = self:getMaterialView(itemUuid, configId)
   if not materialInfo then
     return
@@ -193,6 +205,7 @@ function Equip_decomposeView:addSelectedUnit(itemUuid, configId)
   if self.selectedItems_[itemUuid] ~= nil then
     return
   end
+  self.selectedCount_ = self.selectedCount_ + 1
   local parent = self.selectitemScrollview_.Content
   self.selectedItems_[itemUuid] = {
     configId = configId,
@@ -220,6 +233,7 @@ function Equip_decomposeView:removeSelectedUnit(itemUuid)
   if self.selectedItems_[itemUuid] == nil then
     return
   end
+  self.selectedCount_ = self.selectedCount_ - 1
   self:RemoveUiUnit("unit" .. itemUuid)
   self.selectedItems_[itemUuid] = nil
 end
@@ -359,6 +373,7 @@ function Equip_decomposeView:clearAll()
   self.viewData = nil
   self.materialUnitInfo_ = {}
   self.selectedItems_ = {}
+  self.selectedCount_ = 0
   self.equip_list_view_:ClearAllSelect()
   self:refreshBtns()
 end

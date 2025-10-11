@@ -15,12 +15,14 @@ function Fishing_archives_subView:ctor(parent)
   self.fishingVM_ = Z.VMMgr.GetVM("fishing")
   self.gotoFuncVM_ = Z.VMMgr.GetVM("gotofunc")
   self.sdkVM_ = Z.VMMgr.GetVM("sdk")
+  self.downloadVm_ = Z.VMMgr.GetVM("download")
 end
 
 function Fishing_archives_subView:OnActive()
   local showData = self.viewData
   self.charId = showData.CharId
   self:onStartAnimShow()
+  self:initShareNode()
   local isUnlock = self.gotoFuncVM_.FuncIsOn(E.FunctionID.TencentWechatOriginalShare, true)
   self:AddClick(self.uiBinder.btn_share, function()
     if Z.GameContext.IsPC or Z.SDKDevices.IsCloudGame or not isUnlock then
@@ -76,6 +78,22 @@ function Fishing_archives_subView:OnActive()
         true
       })
     end)
+  end
+end
+
+function Fishing_archives_subView:initShareNode()
+  if Z.IsPCUI then
+    return
+  end
+  local currentPlatform = Z.SDKLogin.GetPlatform()
+  self.uiBinder.node_share.Ref:SetVisible(self.uiBinder.node_share.btn_wechat, currentPlatform == E.LoginPlatformType.TencentPlatform)
+  self.uiBinder.node_share.Ref:SetVisible(self.uiBinder.node_share.btn_moments, currentPlatform == E.LoginPlatformType.TencentPlatform)
+  if currentPlatform ~= E.LoginPlatformType.TencentPlatform then
+    local width = self.uiBinder.node_share.share_frame.rect.width / 3
+    self.uiBinder.node_share.share_frame:SetWidth(width)
+    self.uiBinder.node_share.share_bg:SetWidth(width)
+    local pos = self.uiBinder.node_share.node_chat.localPosition
+    self.uiBinder.node_share.node_chat:SetLocalPos(0, pos.y)
   end
 end
 
@@ -152,19 +170,25 @@ function Fishing_archives_subView:refreshLeftHeadImg()
 end
 
 function Fishing_archives_subView:refreshFigureImg(socialData)
-  if socialData.avatarInfo and socialData.avatarInfo.halfBody and not string.zisEmpty(socialData.avatarInfo.halfBody.url) and socialData.avatarInfo.halfBody.verify.ReviewStartTime == E.EPictureReviewType.EPictureReviewed then
-    local snapshotVm = Z.VMMgr.GetVM("snapshot")
-    local nativeTextureId = snapshotVm.AsyncDownLoadPictureByUrl(socialData.avatarInfo.halfBody.url)
-    if self.uiBinder == nil then
-      return
-    end
-    if nativeTextureId then
-      self.uiBinder.Ref:SetVisible(self.uiBinder.img_idcard_figure, false)
-      self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_idcard_figure, true)
-      self.uiBinder.rimg_idcard_figure:SetNativeTexture(nativeTextureId)
-    else
-      self:setDefaultModelHalf(socialData)
-    end
+  local switchVm = Z.VMMgr.GetVM("switch")
+  if switchVm.CheckFuncSwitch(E.FunctionID.DisplayCustomHalfBody) and socialData.avatarInfo and socialData.avatarInfo.halfBody and not string.zisEmpty(socialData.avatarInfo.halfBody.url) and socialData.avatarInfo.halfBody.verify.ReviewStartTime == E.EPictureReviewType.EPictureReviewed then
+    local name = self.downloadVm_:GetFileName(socialData.charId, socialData.avatarInfo.halfBody.verify.version, E.HttpPictureDownFoldType.HalfBody)
+    self.downloadVm_:GetPicture(name, socialData.avatarInfo.halfBody.url, self.cancelSource:CreateToken(), function(nativeTextureId)
+      self:getHalfBodyTextureCallBack(socialData, nativeTextureId)
+    end, E.HttpPictureDownFoldType.HalfBody)
+  else
+    self:setDefaultModelHalf(socialData)
+  end
+end
+
+function Fishing_archives_subView:getHalfBodyTextureCallBack(socialData, nativeTextureId)
+  if self.uiBinder == nil then
+    return
+  end
+  if nativeTextureId and nativeTextureId ~= -1 then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.img_idcard_figure, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_idcard_figure, true)
+    self.uiBinder.rimg_idcard_figure:SetNativeTexture(nativeTextureId)
   else
     self:setDefaultModelHalf(socialData)
   end

@@ -317,6 +317,7 @@ enum EAttrType {
   AttrCantMoveInput = 730;
   AttrCantJumpInput = 731;
   AttrCantRushInput = 732;
+  AttrCantUseToy = 733;
   AttrTopSummonerSkillSkin = 750;
   AttrSummonSkillId = 751;
   AttrSceneServStateObjData = 800;

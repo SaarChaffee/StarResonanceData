@@ -167,35 +167,20 @@ function Cook_mainView:initBtns()
           self.recipeSlotData_[foodMaterialsSlotType.aMaterials1],
           self.recipeSlotData_[foodMaterialsSlotType.aMaterials2]
         }
-        if isFinish then
-          self.uiBinder.effect_cook:SetEffectGoVisible(true)
-          self.uiBinder.effect_cook:Play()
-          local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayForLua)
-          coro(0.1, self.cancelSource:CreateToken())
-          self.uiBinder.effect_cook_pre:SetEffectGoVisible(false)
-          self.uiBinder.effect_cook_end:SetEffectGoVisible(false)
-          coro(2.4, self.cancelSource:CreateToken())
-          self.uiBinder.effect_cook:SetEffectGoVisible(false)
-          self.uiBinder.effect_cook_end:SetEffectGoVisible(true)
-          self.uiBinder.effect_cook_end:Play()
-        else
-          self.uiBinder.effect_cook:SetEffectGoVisible(true)
-          self.uiBinder.effect_cook:Play()
-          local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayForLua)
-          coro(0.1, self.cancelSource:CreateToken())
-          self.uiBinder.effect_cook_pre:SetEffectGoVisible(false)
-          self.uiBinder.effect_cook_end:SetEffectGoVisible(false)
-          local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayForLua)
-          coro(2.4, self.cancelSource:CreateToken())
-          self.uiBinder.effect_cook:SetEffectGoVisible(false)
-          self.uiBinder.effect_cook_pre:SetEffectGoVisible(true)
-          self.uiBinder.effect_cook_pre:Play()
-        end
         local errId = self.vm_.AsyncFastCook(self.curSelectConfig_.Id, 1, mainMaterials, cookMethods, self.cancelSource:CreateToken())
         if errId ~= 0 then
           self.scheduleSubView_:StopTime()
         else
           self:refreshMiddleInfo()
+        end
+        Z.AudioMgr:Play("UI_Event_LifeProfession_Success")
+        if isFinish then
+          self.uiBinder.effect_cook_pre:SetEffectGoVisible(false)
+          self.uiBinder.effect_cook:SetEffectGoVisible(false)
+          self.uiBinder.effect_cook_end:SetEffectGoVisible(true)
+          self.uiBinder.effect_cook_end:Play()
+        else
+          Z.AudioMgr:Play("UI_Event_LifeProfession_Success")
         end
       end)()
     end
@@ -371,12 +356,15 @@ end
 function Cook_mainView:setCookState(isCooking)
   self.isCooking_ = isCooking
   if self.isCooking_ then
+    Z.AudioMgr:Play("UI_Event_LifeProfession_Cook_Start")
     self.uiBinder.effect_cook_end:SetEffectGoVisible(false)
-    self.uiBinder.effect_cook:SetEffectGoVisible(false)
-    self.uiBinder.effect_cook_pre:SetEffectGoVisible(true)
-    self.uiBinder.effect_cook_pre:Play()
+    self.uiBinder.effect_cook_pre:SetEffectGoVisible(false)
+    self.uiBinder.effect_cook:SetEffectGoVisible(true)
+    self.uiBinder.effect_cook:Play()
   else
     self.uiBinder.effect_cook_pre:SetEffectGoVisible(false)
+    self.uiBinder.effect_cook_end:SetEffectGoVisible(false)
+    self.uiBinder.effect_cook:SetEffectGoVisible(false)
   end
   self.uiBinder.Ref:SetVisible(self.maskNode_, isCooking)
   self.uiBinder.Ref:SetVisible(self.scheduleNode_, isCooking)
@@ -1036,7 +1024,6 @@ function Cook_mainView:OnDeActive()
   self.currencyItemList_ = nil
   self:SetUIVisible(self.uiBinder.img_input_bg, false)
   self:SetUIVisible(self.uiBinder.btn_search, true)
-  self.uiBinder.input_search.text = ""
   if self.screeningRightSubView_ then
     self.screeningRightSubView_:DeActive()
     self.uiBinder.tog_screening:SetIsOnWithoutCallBack(false)
@@ -1046,7 +1033,7 @@ function Cook_mainView:OnDeActive()
   self.lifeProfessionData_:ClearFilterDatas()
   self.uiBinder.uidepth:RemoveChildDepth(self.uiBinder.effect_cook)
   self.uiBinder.uidepth:RemoveChildDepth(self.uiBinder.effect_cook_end)
-  self.uiBinder.uidepth:RemoveChildDepth(self.uiBinder.effect_cast_pre)
+  self.uiBinder.uidepth:RemoveChildDepth(self.uiBinder.effect_cook_pre)
 end
 
 return Cook_mainView

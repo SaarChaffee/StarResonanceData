@@ -34,6 +34,7 @@ function House_production_mainView:initBinders()
   self.dpdNode_ = self.uiBinder.node_dpd
   self.filterBtn_ = self.uiBinder.btn_filter
   self.sortBtn_ = self.uiBinder.btn_refresh
+  self.anim_do_ = self.uiBinder.anim_do
   self.rightBinder_ = self.uiBinder.node_right
   self.productionIngNode_ = self.rightBinder_.node_right_bottom_1
   self.productionReadyNode_ = self.rightBinder_.node_right_bottom
@@ -155,6 +156,7 @@ function House_production_mainView:initBtns()
   self:AddClick(self.productionTog_, function(isOn)
     if isOn then
       self.isProduction_ = isOn
+      self:onTogStartAnimShow()
       self.uiBinder.Ref:SetVisible(self.dpdNode_, false)
       self:selectedTog()
     end
@@ -162,6 +164,7 @@ function House_production_mainView:initBtns()
   self:AddClick(self.furnitureTog_, function(isOn)
     if isOn then
       self.isProduction_ = false
+      self:onTogStartAnimShow()
       self.uiBinder.Ref:SetVisible(self.dpdNode_, true)
       self:selectedTog()
     end
@@ -171,6 +174,7 @@ end
 function House_production_mainView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:initBinders()
+  self:onStartAnimShow()
   self:initData()
   self:initBtns()
   self.uiBinder.node_right.Ref.UIComp:SetVisible(false)
@@ -246,7 +250,9 @@ function House_production_mainView:refreshSelectedItemTips(selectedConfigId)
   local itemRow = Z.TableMgr.GetRow("ItemTableMgr", selectedConfigId)
   if itemRow then
     self.nameLab_.text = itemRow.Name
-    self.icon_:SetImage(itemRow.Icon)
+    local itemVm = Z.VMMgr.GetVM("items")
+    local itemIcon = itemVm.GetItemIcon(selectedConfigId)
+    self.icon_:SetImage(itemIcon)
     self.contentLab_.text = itemRow.Description
   end
 end
@@ -262,6 +268,7 @@ end
 function House_production_mainView:OnSelectedProductionItem(data)
   self.selectedBuildInfo_ = data
   if data.furnitureId then
+    self:onItemStartAnimShow()
     self.rightBinder_.Ref.UIComp:SetVisible(true)
     local isFinish = data.endTime <= Z.ServerTime:GetServerTime() / 1000
     local configID = data.furnitureId
@@ -292,6 +299,7 @@ end
 
 function House_production_mainView:OnSelectedFurnitureItem(data)
   self.rightBinder_.Ref.UIComp:SetVisible(true)
+  self:onItemStartAnimShow()
   self.selectedHousingItem_ = data
   local configID = data.Id
   self:refreshSelectedItemTips(configID)
@@ -302,7 +310,9 @@ function House_production_mainView:OnSelectedFurnitureItem(data)
   })
   local consumeItemRow = Z.TableMgr.GetRow("ItemTableMgr", consumeId)
   if consumeItemRow then
-    self.costRImg_:SetImage(consumeItemRow.Icon)
+    local itemVm = Z.VMMgr.GetVM("items")
+    local itemIcon = itemVm.GetItemIcon(consumeId)
+    self.costRImg_:SetImage(itemIcon)
     self.costCountLab_.text = consumeNum
   end
   local canBuyCount = -1
@@ -363,6 +373,18 @@ function House_production_mainView:OnDeActive()
 end
 
 function House_production_mainView:OnRefresh()
+end
+
+function House_production_mainView:onStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Open)
+end
+
+function House_production_mainView:onTogStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Tween_0)
+end
+
+function House_production_mainView:onItemStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Tween_1)
 end
 
 function House_production_mainView:GetCurrentType()

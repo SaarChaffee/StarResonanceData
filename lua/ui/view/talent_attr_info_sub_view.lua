@@ -32,21 +32,18 @@ function Talent_attr_info_subView:OnActive()
     if self.viewData.type == TalentSkillDefine.TalentAttrInfoSubViewType.Weapon then
       self:upgradeWeapon()
     elseif self.viewData.type == TalentSkillDefine.TalentAttrInfoSubViewType.Talent or self.viewData.type == TalentSkillDefine.TalentAttrInfoSubViewType.TalentBD then
-      self:unlockTalentBtn()
+      self:talentLevelUpBtnClick()
     end
-  end)
-  self:AddAsyncClick(self.uiBinder.btn_talentup.btn, function()
-    self.parentView_:clearPreviewStage()
-    self:unlockTalent()
   end)
   self:AddAsyncClick(self.uiBinder.btn_preview.btn, function()
-    local talentTreeTableConfig = Z.TableMgr.GetTable("TalentTreeTableMgr").GetRow(self.viewData.id)
-    if self.parentView_.talentTreeIsInPreview_[talentTreeTableConfig.TalentStage + 1] == -1 then
-      self.parentView_:previewTalentTree(self.viewData.id)
+    self:talentPreviewBtnClick()
+  end)
+  self:AddAsyncClick(self.uiBinder.btn_explain, function()
+    if self.talentSkillVm_.CheckTalentIsActive(self.viewData.professionId, self.viewData.id) then
+      Z.CommonTipsVM.ShowTipsTitleContent(self.uiBinder.node_tips_pos, Lang("TalentBackDesTitle"), Lang("TalentBackDes"))
     else
-      self.parentView_:resetPreviewTalentTree(talentTreeTableConfig.TalentStage)
+      Z.CommonTipsVM.ShowTipsTitleContent(self.uiBinder.node_tips_pos, Lang("TalentActivationDesTitle"), Lang("TalentActivationDes"))
     end
-    self:refreshNodeInfo()
   end)
   self:AddClick(self.uiBinder.btn_clear, function()
     self:clearRecordItem()
@@ -120,6 +117,7 @@ function Talent_attr_info_subView:OnDeActive()
   for _, value in ipairs(self.attrUnits_) do
     self:RemoveUiUnit(value)
   end
+  Z.CommonTipsVM.CloseTipsTitleContent()
   self:closeSourceTip()
   self:UnBindLuaAttrWatchers()
   if self.currencyItemList_ then
@@ -978,14 +976,12 @@ function Talent_attr_info_subView:refreshNodeInfo(isShow)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_talentskill_icon, true)
   self.uiBinder.Ref:SetVisible(self.uiBinder.rimg_icon_weapon, false)
   self.uiBinder.Ref:SetVisible(self.uiBinder.lab_content_down, false)
-  self.uiBinder.btn_level_up.btn.IsDisabled = false
   self.uiBinder.layout_info_1:SetAnchorPosition(0, 0)
   self.uiBinder.layout_info_2:SetAnchorPosition(0, 0)
+  self.uiBinder.btn_level_up.btn.IsDisabled = false
   self.itemNotCountEnoughId_ = nil
   self.conditionAllFinish_ = true
-  self.talentCanPreview_ = false
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot_1, false)
   if self.viewData.type == TalentSkillDefine.TalentAttrInfoSubViewType.Talent or self.viewData.type == TalentSkillDefine.TalentAttrInfoSubViewType.TalentBD then
     local showVideo = self.talentSkillData_:GetTalentShowVideo(self.viewData.id)
     if showVideo then
@@ -1015,116 +1011,158 @@ function Talent_attr_info_subView:refreshNodeInfo(isShow)
       self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
       if self.talentSkillVm_.CheckOtherSchoolIsChoose(self.viewData.professionId, self.viewData.id) then
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_unlock_condition_down, true)
-        self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
-        self.uiBinder.btn_talentup.Ref.UIComp:SetVisible(false)
-        self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(true)
-        self.talentCanPreview_ = true
+        self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
+        self.uiBinder.btn_preview.Ref.UIComp:SetVisible(true)
+        self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, false)
         if self.parentView_.talentTreeIsInPreview_[talentTreeTableConfig.TalentStage + 1] == -1 then
-          self.uiBinder.btn_level_up.lab_normal.text = Lang("PreviewTalentTree")
+          self.uiBinder.btn_preview.lab_normal.text = Lang("PreviewTalentTree")
         else
-          self.uiBinder.btn_level_up.lab_normal.text = Lang("ReturnTalentSchoolChoose")
+          self.uiBinder.btn_preview.lab_normal.text = Lang("ReturnTalentSchoolChoose")
         end
         if self.weaponVm_.GetCurWeapon() ~= self.viewData.professionId then
           self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
           self.uiBinder.lab_weapon_no_build.text = Lang("TalentPreviewHaveNotTips")
         elseif tempTalentStageTips ~= nil then
           self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
-          self.uiBinder.lab_weapon_no_build.text = tempTalentStageTips
+          self.uiBinder.lab_weapon_no_build.text = tempTalentStageTips.lang
         else
           self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
           self.uiBinder.lab_weapon_no_build.text = Lang("TalentIsChoosOtherSchoolResetPlease")
         end
       elseif isActive then
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_unlock_condition_down, false)
-        self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(true)
-        self.talentCanPreview_ = true
         if self.parentView_.isInPreview_ then
-          self.uiBinder.btn_level_up.lab_normal.text = Lang("PreviewTalentTree")
+          self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
         else
-          self.uiBinder.btn_level_up.lab_normal.text = Lang("ReturnTalentSchoolChoose")
+          self.uiBinder.btn_preview.Ref.UIComp:SetVisible(true)
+          self.uiBinder.btn_preview.lab_normal.text = Lang("ReturnTalentSchoolChoose")
         end
-        self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
-        self.uiBinder.btn_talentup.Ref.UIComp:SetVisible(false)
         if self.weaponVm_.GetCurWeapon() ~= self.viewData.professionId then
           self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
           self.uiBinder.lab_weapon_no_build.text = Lang("TalentPreviewHaveNotTips")
+          self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
+          self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, false)
         else
+          self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(true)
+          self.uiBinder.btn_level_up.lab_normal.text = Lang("ResetCurTalentNode")
+          self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, true)
           self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
         end
       else
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_unlock_condition_down, true)
         if tempTalentStageTips == nil then
-          self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
           self.uiBinder.btn_preview.Ref.UIComp:SetVisible(true)
-          self.uiBinder.btn_talentup.Ref.UIComp:SetVisible(true)
           if self.parentView_.talentTreeIsInPreview_[talentTreeTableConfig.TalentStage + 1] == -1 then
             self.uiBinder.btn_preview.lab_normal.text = Lang("PreviewTalentTree")
           else
             self.uiBinder.btn_preview.lab_normal.text = Lang("ReturnTalentSchoolChoose")
           end
+          if self.weaponVm_.GetCurWeapon() ~= self.viewData.professionId then
+            self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
+            self.uiBinder.lab_weapon_no_build.text = Lang("TalentPreviewHaveNotTips")
+            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
+            self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, false)
+          else
+            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(true)
+            self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, true)
+            self.uiBinder.btn_level_up.lab_normal.text = Lang("TalentOperateDes")
+          end
         else
           self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
-          self.uiBinder.lab_weapon_no_build.text = tempTalentStageTips
-          self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(true)
-          self.talentCanPreview_ = true
+          self.uiBinder.lab_weapon_no_build.text = tempTalentStageTips.lang
+          self.uiBinder.btn_preview.Ref.UIComp:SetVisible(true)
           if self.parentView_.talentTreeIsInPreview_[talentTreeTableConfig.TalentStage + 1] == -1 then
-            self.uiBinder.btn_level_up.lab_normal.text = Lang("PreviewTalentTree")
+            self.uiBinder.btn_preview.lab_normal.text = Lang("PreviewTalentTree")
           else
-            self.uiBinder.btn_level_up.lab_normal.text = Lang("ReturnTalentSchoolChoose")
+            self.uiBinder.btn_preview.lab_normal.text = Lang("ReturnTalentSchoolChoose")
           end
-          self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
-          self.uiBinder.btn_talentup.Ref.UIComp:SetVisible(false)
-        end
-        if self.weaponVm_.GetCurWeapon() ~= self.viewData.professionId then
-          self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
-          self.uiBinder.lab_weapon_no_build.text = Lang("TalentPreviewHaveNotTips")
+          if self.weaponVm_.GetCurWeapon() ~= self.viewData.professionId then
+            self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
+            self.uiBinder.lab_weapon_no_build.text = Lang("TalentPreviewHaveNotTips")
+            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
+            self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, false)
+          elseif tempTalentStageTips.isTimeConditionUnlock then
+            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(true)
+            self.uiBinder.btn_level_up.lab_normal.text = Lang("QuicklyTalentOperateDes")
+            self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, true)
+          else
+            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
+            self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, false)
+          end
         end
       end
-    else
+    elseif self.weaponVm_.GetCurWeapon() ~= self.viewData.professionId then
+      self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
+      self.uiBinder.lab_weapon_no_build.text = Lang("TalentPreviewHaveNotTips")
+      self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
       self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
-      self.uiBinder.btn_talentup.Ref.UIComp:SetVisible(false)
-      self.uiBinder.btn_level_up.lab_normal.text = Lang("TalentOperateDes")
-      self.talentCanPreview_ = false
-      if self.weaponVm_.GetCurWeapon() ~= self.viewData.professionId then
-        self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
-        self.uiBinder.lab_weapon_no_build.text = Lang("TalentPreviewHaveNotTips")
-        self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
-        if isActive then
-          self.uiBinder.Ref:SetVisible(self.uiBinder.node_unlock_condition_down, false)
-        else
-          self.uiBinder.Ref:SetVisible(self.uiBinder.node_unlock_condition_down, true)
-        end
-        self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
-      elseif isActive then
-        self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
-        self.uiBinder.lab_weapon_no_build.text = Lang("Unlocked")
+      self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, false)
+      if isActive then
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_unlock_condition_down, false)
-        self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
       else
         self.uiBinder.Ref:SetVisible(self.uiBinder.node_unlock_condition_down, true)
-        if tempTalentStageTips == nil then
-          local talentTreeTableConfig = Z.TableMgr.GetTable("TalentTreeTableMgr").GetRow(self.viewData.id)
-          local talentStage, isRoot = self.talentSkillVm_.GetProfessionTalentStageBdType(self.viewData.professionId, talentTreeTableConfig.TalentStage, self.viewData.id)
-          if isRoot then
-            self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
-            local curWeaponIsUnlock = self.weaponVm_.CheckWeaponUnlock(self.viewData.professionId) and self.weaponVm_.GetCurWeapon() == self.viewData.professionId
-            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(curWeaponIsUnlock and tempTalentStageTips == nil)
-          elseif talentStage == -1 then
-            self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
-            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
-          elseif talentTreeTableConfig and talentStage == talentTreeTableConfig.BdType then
-            self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
-            local curWeaponIsUnlock = self.weaponVm_.CheckWeaponUnlock(self.viewData.professionId) and self.weaponVm_.GetCurWeapon() == self.viewData.professionId
-            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(curWeaponIsUnlock and tempTalentStageTips == nil)
+      end
+    elseif isActive then
+      self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
+      self.uiBinder.lab_weapon_no_build.text = Lang("Unlocked")
+      self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(true)
+      self.uiBinder.btn_level_up.lab_normal.text = Lang("ResetCurTalentNode")
+      self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
+      self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, true)
+      self.uiBinder.Ref:SetVisible(self.uiBinder.node_unlock_condition_down, false)
+    else
+      self.uiBinder.Ref:SetVisible(self.uiBinder.node_unlock_condition_down, true)
+      self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, true)
+      if tempTalentStageTips == nil then
+        local talentTreeTableConfig = Z.TableMgr.GetTable("TalentTreeTableMgr").GetRow(self.viewData.id)
+        local talentStage, isRoot = self.talentSkillVm_.GetProfessionTalentStageBdType(self.viewData.professionId, talentTreeTableConfig.TalentStage, self.viewData.id)
+        if isRoot then
+          self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
+          local curWeaponIsUnlock = self.weaponVm_.CheckWeaponUnlock(self.viewData.professionId)
+          self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(curWeaponIsUnlock)
+          self.uiBinder.btn_level_up.lab_normal.text = Lang("TalentOperateDes")
+          self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
+          self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, curWeaponIsUnlock)
+        elseif talentStage == -1 then
+          self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
+          local curWeaponIsUnlock = self.weaponVm_.CheckWeaponUnlock(self.viewData.professionId)
+          self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(curWeaponIsUnlock)
+          self.uiBinder.btn_level_up.lab_normal.text = Lang("QuicklyTalentOperateDes")
+          self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
+          self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, curWeaponIsUnlock)
+        elseif talentTreeTableConfig and talentStage == talentTreeTableConfig.BdType then
+          self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, false)
+          local curWeaponIsUnlock = self.weaponVm_.CheckWeaponUnlock(self.viewData.professionId)
+          self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(curWeaponIsUnlock)
+          if self.talentSkillVm_.CheckTalentIsUnlock(self.viewData.professionId, self.viewData.id) then
+            self.uiBinder.btn_level_up.lab_normal.text = Lang("TalentOperateDes")
           else
-            self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
-            self.uiBinder.lab_weapon_no_build.text = Lang("TalentIsChoosOtherSchoolResetPlease")
-            self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
+            self.uiBinder.btn_level_up.lab_normal.text = Lang("QuicklyTalentOperateDes")
           end
+          self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
+          self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, true)
         else
           self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
-          self.uiBinder.lab_weapon_no_build.text = tempTalentStageTips
+          self.uiBinder.lab_weapon_no_build.text = Lang("TalentIsChoosOtherSchoolResetPlease")
           self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
+          self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
+          self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, false)
+        end
+      else
+        self.uiBinder.Ref:SetVisible(self.uiBinder.lab_weapon_no_build, true)
+        self.uiBinder.lab_weapon_no_build.text = tempTalentStageTips.lang
+        self.uiBinder.btn_preview.Ref.UIComp:SetVisible(false)
+        if self.talentSkillVm_.CheckTalentIsUnlock(self.viewData.professionId, self.viewData.id) then
+          self.uiBinder.btn_level_up.lab_normal.text = Lang("TalentOperateDes")
+        else
+          self.uiBinder.btn_level_up.lab_normal.text = Lang("QuicklyTalentOperateDes")
+        end
+        if tempTalentStageTips.isTimeConditionUnlock then
+          self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(true)
+          self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, true)
+        else
+          self.uiBinder.btn_level_up.Ref.UIComp:SetVisible(false)
+          self.uiBinder.Ref:SetVisible(self.uiBinder.btn_explain, false)
         end
       end
     end
@@ -1158,7 +1196,6 @@ function Talent_attr_info_subView:refreshNodeInfo(isShow)
       end
     end
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot, reddot)
-    self.uiBinder.Ref:SetVisible(self.uiBinder.img_reddot_1, reddot)
     self.uiBinder.lab_talentpoint_num.text = self.talentSkillVm_.GetSurpluseTalentPointCount(self.viewData.professionId) .. "/" .. self.talentSkillVm_.GetAllTalentPointCount()
   end
 end
@@ -1218,11 +1255,6 @@ function Talent_attr_info_subView:refreshLockCondition()
     value.unit.tog_condition.isOn = bResult
     self.conditionAllFinish_ = self.conditionAllFinish_ and bResult
   end
-  if self.talentCanPreview_ then
-    self.uiBinder.btn_level_up.btn.IsDisabled = false
-  else
-    self.uiBinder.btn_level_up.btn.IsDisabled = self.itemNotCountEnoughId_ ~= nil and not self.conditionAllFinish_
-  end
 end
 
 function Talent_attr_info_subView:loalLockItems()
@@ -1269,11 +1301,6 @@ function Talent_attr_info_subView:loalLockItems()
       Id = self.talentSkillData_:GetTalentPointConfigId(),
       count = talentTableConfig.TalentPointsConsume
     }
-  end
-  if self.talentCanPreview_ then
-    self.uiBinder.btn_level_up.btn.IsDisabled = false
-  else
-    self.uiBinder.btn_level_up.btn.IsDisabled = self.itemNotCountEnoughId_ ~= nil and not self.conditionAllFinish_
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.lab_unlock_item, #self.lockItems_ > 0)
   Z.CoroUtil.create_coro_xpcall(function()
@@ -1348,6 +1375,159 @@ function Talent_attr_info_subView:unlockTalent()
       end
     }
     Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
+  end
+end
+
+function Talent_attr_info_subView:quicklyUnlockTalent()
+  local res, talentPoint, useItems, isUseRecommendTalent, itemId = self.talentSkillVm_.GetMinUnlockRoute(self.viewData.id, true)
+  if res == nil then
+    if itemId ~= nil then
+      self:openNotEnoughItemTips(itemId)
+    end
+    return
+  end
+  if isUseRecommendTalent then
+    Z.DialogViewDataMgr:OpenNormalDialog(Lang("TalentActivationCrossingStagesTipe"), function()
+      self.parentView_:clearPreviewStage()
+      self:certainQuicklyUnlockTalent(res, talentPoint, useItems)
+    end)
+  else
+    self:certainQuicklyUnlockTalent(res, talentPoint, useItems)
+  end
+end
+
+function Talent_attr_info_subView:certainQuicklyUnlockTalent(res, talentPoint, useItems)
+  local itemList = {}
+  local tempIndex = 0
+  for id, count in pairs(useItems) do
+    tempIndex = tempIndex + 1
+    itemList[tempIndex] = {
+      ItemId = id,
+      ItemNum = count,
+      LabType = E.ItemLabType.Expend
+    }
+  end
+  tempIndex = tempIndex + 1
+  itemList[tempIndex] = {
+    ItemId = self.talentSkillData_:GetTalentPointConfigId(),
+    ItemNum = talentPoint,
+    LabType = E.ItemLabType.Expend,
+    OverrideItemNum = self.talentSkillVm_.GetSurpluseTalentPointCount(self.viewData.professionId)
+  }
+  local dialogViewData = {
+    dlgType = E.DlgType.YesNo,
+    labDesc = Lang("TalentActivationCrossingStagesConsumeTips"),
+    onConfirm = function()
+      self.talentSkillVm_.UnlockTalentTreeNode(self.viewData.professionId, res, self.cancelSource:CreateToken(), true)
+    end,
+    itemList = itemList
+  }
+  Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
+end
+
+function Talent_attr_info_subView:resetTalentNode()
+  local talentStage = self.talentSkillVm_.GetCurProfessionTalentStage()
+  local curTalentStageConfig = Z.TableMgr.GetTable("TalentStageTableMgr").GetRow(talentStage)
+  local talentTreeConfig = Z.TableMgr.GetTable("TalentTreeTableMgr").GetRow(self.viewData.id)
+  if talentTreeConfig and curTalentStageConfig and talentTreeConfig.TalentStage ~= curTalentStageConfig.TalentStage then
+    Z.DialogViewDataMgr:OpenNormalDialog(Lang("ResetTalentStageCertain"), function()
+      self.talentSkillVm_.ResetTalentNode(self.viewData.professionId, self.viewData.id, self.parentView_.cancelSource:CreateToken())
+    end)
+  else
+    self.talentSkillVm_.ResetTalentNode(self.viewData.professionId, self.viewData.id, self.parentView_.cancelSource:CreateToken())
+  end
+end
+
+function Talent_attr_info_subView:talentLevelUpBtnClick()
+  local talentTreeTableConfig = Z.TableMgr.GetTable("TalentTreeTableMgr").GetRow(self.viewData.id)
+  if talentTreeTableConfig == nil then
+    return
+  end
+  local isActive = self.talentSkillVm_.CheckTalentIsActive(self.viewData.professionId, self.viewData.id)
+  local tempTalentStageTips = self.parentView_.talentTreeUnlockTipsLang_[talentTreeTableConfig.TalentStage]
+  local isSpecialNode = self.talentSkillVm_.CheckTalentNodeIsSpecialNode(self.viewData.professionId, self.viewData.id)
+  if isSpecialNode then
+    if self.talentSkillVm_.CheckOtherSchoolIsChoose(self.viewData.professionId, self.viewData.id) then
+      if self.parentView_.talentTreeIsInPreview_[talentTreeTableConfig.TalentStage + 1] == -1 then
+        self.parentView_:previewTalentTree(self.viewData.id)
+      else
+        self.parentView_:resetPreviewTalentTree(talentTreeTableConfig.TalentStage)
+      end
+      self:refreshNodeInfo()
+    elseif isActive then
+      if self.weaponVm_.GetCurWeapon() == self.viewData.professionId then
+        self:resetTalentNode()
+        self:refreshNodeInfo()
+      end
+    elseif tempTalentStageTips == nil then
+      if self.weaponVm_.GetCurWeapon() == self.viewData.professionId then
+        self.parentView_:clearPreviewStage()
+        self:unlockTalent()
+      end
+    elseif self.weaponVm_.GetCurWeapon() == self.viewData.professionId and tempTalentStageTips.isTimeConditionUnlock then
+      self:quicklyUnlockTalent()
+    end
+  elseif self.weaponVm_.GetCurWeapon() == self.viewData.professionId then
+    if isActive then
+      self:resetTalentNode()
+      self:refreshNodeInfo()
+    elseif tempTalentStageTips == nil then
+      local talentTreeTableConfig = Z.TableMgr.GetTable("TalentTreeTableMgr").GetRow(self.viewData.id)
+      local talentStage, isRoot = self.talentSkillVm_.GetProfessionTalentStageBdType(self.viewData.professionId, talentTreeTableConfig.TalentStage, self.viewData.id)
+      if isRoot then
+        self:unlockTalent()
+      elseif talentStage == -1 then
+        self:quicklyUnlockTalent()
+      else
+        if talentTreeTableConfig and talentStage == talentTreeTableConfig.BdType then
+          if self.talentSkillVm_.CheckTalentIsUnlock(self.viewData.professionId, self.viewData.id) then
+            self:unlockTalent()
+          else
+            self:quicklyUnlockTalent()
+          end
+        else
+        end
+      end
+    elseif tempTalentStageTips.isTimeConditionUnlock then
+      if self.talentSkillVm_.CheckTalentIsUnlock(self.viewData.professionId, self.viewData.id) then
+        self:unlockTalent()
+      else
+        self:quicklyUnlockTalent()
+      end
+    end
+  end
+end
+
+function Talent_attr_info_subView:talentPreviewBtnClick()
+  local talentTreeTableConfig = Z.TableMgr.GetTable("TalentTreeTableMgr").GetRow(self.viewData.id)
+  if talentTreeTableConfig == nil then
+    return
+  end
+  local isActive = self.talentSkillVm_.CheckTalentIsActive(self.viewData.professionId, self.viewData.id)
+  local isSpecialNode = self.talentSkillVm_.CheckTalentNodeIsSpecialNode(self.viewData.professionId, self.viewData.id)
+  if isSpecialNode then
+    if self.talentSkillVm_.CheckOtherSchoolIsChoose(self.viewData.professionId, self.viewData.id) then
+      if self.parentView_.talentTreeIsInPreview_[talentTreeTableConfig.TalentStage + 1] == -1 then
+        self.parentView_:previewTalentTree(self.viewData.id)
+      else
+        self.parentView_:resetPreviewTalentTree(talentTreeTableConfig.TalentStage)
+      end
+      self:refreshNodeInfo()
+    elseif isActive then
+      if self.parentView_.isInPreview_ then
+        self.parentView_:previewTalentTree(self.viewData.id)
+      else
+        self.parentView_:resetPreviewTalentTree(talentTreeTableConfig.TalentStage)
+      end
+      self:refreshNodeInfo()
+    else
+      if self.parentView_.talentTreeIsInPreview_[talentTreeTableConfig.TalentStage + 1] == -1 then
+        self.parentView_:previewTalentTree(self.viewData.id)
+      else
+        self.parentView_:resetPreviewTalentTree(talentTreeTableConfig.TalentStage)
+      end
+      self:refreshNodeInfo()
+    end
   end
 end
 

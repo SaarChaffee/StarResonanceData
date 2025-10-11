@@ -24,6 +24,7 @@ import "stru_reconnect_request.proto";
 import "stru_report_m_sdk_request.proto";
 import "stru_select_char_reply.proto";
 import "stru_select_char_request.proto";
+import "stru_take_award_by_cd_key_request.proto";
 import "stru_upload_face_success_request.proto";
 
 message GrpcCharactor {
@@ -122,6 +123,14 @@ message GrpcCharactor {
 
   message PrivilegeActivate {
     zproto.PrivilegeActivateRequest v_request = 1;
+  }
+
+  message TakeAwardByCdKey_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TakeAwardByCdKey {
+    zproto.TakeAwardByCdKeyRequest v_request = 1;
   }
 }
 

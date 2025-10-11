@@ -19,6 +19,7 @@ function MapFlagsComp:Init()
   self.collectionDataList_ = {}
   self.teamDataList_ = {}
   self.customDataList_ = {}
+  self.monsterHuntList_ = {}
   self.dynamicTraceList_ = {}
   self.labDataList_ = {}
   self.redpointList_ = {}
@@ -34,6 +35,7 @@ function MapFlagsComp:UnInit()
   self.collectionDataList_ = nil
   self.teamDataList_ = nil
   self.customDataList_ = nil
+  self.monsterHuntList_ = nil
   self.dynamicTraceList_ = nil
   self.labDataList_ = nil
   self:clearNoticeUpdateTimer()
@@ -60,7 +62,7 @@ function MapFlagsComp:BindEventsAndWatcher()
   Z.EventMgr:Add(Z.ConstValue.WorldQuestListChange, self.onWorldQuestListChange, self)
   Z.EventMgr:Add(Z.ConstValue.MapOutRangeChange, self.onMapOutRangeChange, self)
   Z.EventMgr:Add(Z.ConstValue.GoalGuideChange, self.onGoalGuideChange, self)
-  Z.EventMgr:Add(Z.ConstValue.AllGoalGuideChange, self.onDynamicTraceChange, self)
+  Z.EventMgr:Add(Z.ConstValue.MapDynamicFlagChange, self.onDynamicTraceChange, self)
   Z.EventMgr:Add(Z.ConstValue.Pivot.OnPivotUnlock, self.onTransferPointChange, self)
   Z.EventMgr:Add(Z.ConstValue.PlayerEnterOrExitZone, self.onPlayerEnterOrExitZone, self)
   Z.EventMgr:Add(Z.ConstValue.VisualLayerChange, self.onVisualLayerChange, self)
@@ -110,7 +112,8 @@ function MapFlagsComp:RefreshMap()
     self.collectionDataList_ = self.mapVM_.GetSelectCollectionFlagData(self.mapData_:GetTargetCollectionId(), sceneId)
     self.teamDataList_ = self.mapVM_.GetTeamFlagDataBySceneId(sceneId)
     self.labDataList_ = self.mapVM_.GetAreaNamePosBySceneId(sceneId)
-    self.dynamicTraceList_ = self:GetDynamicTraceList(sceneId)
+    self.monsterHuntList_ = self.mapVM_.GetMonsterHuntFlagDataBySceneId(sceneId)
+    self.dynamicTraceList_ = self:GetDynamicTraceList(sceneId, true)
     self:createAllMapFlag()
     if self.isBigMap_ then
       self:createNameText()
@@ -118,20 +121,22 @@ function MapFlagsComp:RefreshMap()
   end
 end
 
-function MapFlagsComp:GetFlagDataByFlagId(flagId, ignoreDynamic)
+function MapFlagsComp:GetFlagDataByFlagId(flagId)
   local list = {}
   self:findFlagDataById(flagId, self.collectionDataList_, list)
   self:findFlagDataById(flagId, self.teamDataList_, list)
   self:findFlagDataById(flagId, self.customDataList_, list)
+  self:findFlagDataById(flagId, self.monsterHuntList_, list)
+  self:findFlagDataById(flagId, self.dynamicTraceList_, list)
   local mergedData = self.levelFlagHelper_:GetMergedFlagDataByFlagId(flagId)
   if mergedData then
     table.insert(list, mergedData)
   end
-  if not ignoreDynamic then
-    self:findFlagDataById(flagId, self.dynamicTraceList_, list)
-  end
   if 1 < #list then
-    logError("[MapFlagsComp] flagId \233\135\141\229\164\141 : " .. flagId)
+    for i, v in ipairs(list) do
+      local flagData = list[i]
+      logError("[MapFlagsComp] flagId \233\135\141\229\164\141 : Count = {0}, Id = {1}, Uid = {2}, Type = {3}", #list, flagData.Id, flagData.Uid, flagData.Type)
+    end
   end
   if 1 <= #list then
     return list[1]
@@ -144,27 +149,30 @@ function MapFlagsComp:GetOriginFlagListByFlagId(flagId)
   self:findFlagDataById(flagId, self.teamDataList_, list)
   self:findFlagDataById(flagId, self.customDataList_, list)
   self:findFlagDataById(flagId, self.levelFlagHelper_:GetOriginFlagListByFlagId(flagId), list)
+  self:findFlagDataById(flagId, self.monsterHuntList_, list)
   self:findFlagDataById(flagId, self.dynamicTraceList_, list)
   return list
 end
 
-function MapFlagsComp:GetDynamicTraceList(sceneId)
+function MapFlagsComp:GetDynamicTraceList(targetSceneId, resetList)
+  if resetList then
+    self.dynamicTraceList_ = {}
+  end
   local list = {}
-  local guideData = Z.DataMgr.Get("goal_guide_data")
-  for sourceType, goalDict in pairs(self.mapData_.dynamicTraceParams_) do
-    if next(goalDict) ~= nil then
-      local goalPosInfoList = guideData:GetGuideGoalsBySource(sourceType) or {}
-      for i, goalPosInfo in ipairs(goalPosInfoList) do
-        if goalPosInfo.SceneId == sceneId then
-          local trackRow = Z.TableMgr.GetTable("TargetTrackTableMgr").GetRow(sourceType)
-          if trackRow and trackRow.MapTrack == 1 then
-            local flagData = self.mapVM_.CreateDynamicTraceMapFlagData(sourceType, goalPosInfo)
-            if flagData then
-              local createdFlagData = self:GetFlagDataByFlagId(flagData.Id, true)
-              if not createdFlagData then
-                table.insert(list, flagData)
-              end
-            end
+  if self.mapData_.dynamicTraceParams_ ~= nil and next(self.mapData_.dynamicTraceParams_) ~= nil then
+    local sceneId = self.mapData_.dynamicTraceParams_.SceneId
+    local sourceType = self.mapData_.dynamicTraceParams_.SourceType
+    local posType = self.mapData_.dynamicTraceParams_.PosType
+    local uid = self.mapData_.dynamicTraceParams_.Uid
+    local position = self.mapData_.dynamicTraceParams_.Position
+    if sceneId == targetSceneId then
+      local trackRow = Z.TableMgr.GetTable("TargetTrackTableMgr").GetRow(sourceType)
+      if trackRow and trackRow.MapTrack == 1 then
+        local flagData = self.mapVM_.CreateDynamicTraceMapFlagData(targetSceneId, sourceType, posType, uid, position)
+        if flagData then
+          local createdFlagData = self:GetFlagDataByFlagId(flagData.Id)
+          if not createdFlagData then
+            table.insert(list, flagData)
           end
         end
       end
@@ -187,6 +195,7 @@ function MapFlagsComp:createAllMapFlag()
   self:createMapFlagByDataList(self.levelFlagHelper_:GetAllMergedFlagData())
   self:createMapFlagByDataList(self.collectionDataList_)
   self:createMapFlagByDataList(self.teamDataList_)
+  self:createMapFlagByDataList(self.monsterHuntList_)
   self:createMapFlagByDataList(self.dynamicTraceList_)
   self:createCustomFlag()
 end
@@ -268,6 +277,8 @@ function MapFlagsComp:getFlagUnitNameByFlagData(data)
     pre = 1
   elseif flagType == E.MapFlagType.NotEntity then
     pre = 0
+  elseif flagType == E.MapFlagType.Position then
+    pre = Z.ConstValue.MapPositionFlagName
   else
     logError("[MapFlagsComp] MapFlagType = {0} \230\178\161\230\156\137\229\175\185\229\186\148\231\154\132\229\144\141\231\167\176\229\137\141\231\188\128", flagType)
     pre = ""
@@ -538,6 +549,7 @@ function MapFlagsComp:GetAllFlagDataList()
   table.zmerge(list, self.collectionDataList_)
   table.zmerge(list, self.teamDataList_)
   table.zmerge(list, self.customDataList_)
+  table.zmerge(list, self.monsterHuntList_)
   table.zmerge(list, self.dynamicTraceList_)
   return list
 end
@@ -619,7 +631,9 @@ end
 
 function MapFlagsComp:onDynamicTraceChange()
   local curSceneId = self:getCurSceneId()
-  self:flagDataChangeHandler(self.dynamicTraceList_, self:GetDynamicTraceList(curSceneId))
+  local oldList = self.dynamicTraceList_
+  local newList = self:GetDynamicTraceList(curSceneId)
+  self:flagDataChangeHandler(oldList, newList)
 end
 
 function MapFlagsComp:onQuestGoalChange()

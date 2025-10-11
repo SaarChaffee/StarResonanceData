@@ -259,9 +259,9 @@ function Team_tipsView:OnTriggerInputAction(inputActionEventData)
   if not Z.IsPCUI then
     return
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.TipsAgree then
+  if inputActionEventData.ActionId == Z.InputActionIds.TipsAgree then
     self:OnInputAcceptAction()
-  elseif inputActionEventData.actionId == Z.RewiredActionsConst.TipsRefuse then
+  elseif inputActionEventData.ActionId == Z.InputActionIds.TipsRefuse then
     self:OnInputRefuseAction()
   end
 end

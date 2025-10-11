@@ -1,7 +1,7 @@
 {
   "101": {
     "Id": 101,
-    "Name": "",
+    "Name": "Ocean Garbage Recycling",
     "SystemId": 106101,
     "Npc": "",
     "ShowType": 0,
@@ -18,7 +18,7 @@
   },
   "102": {
     "Id": 102,
-    "Name": "",
+    "Name": "Fashion Recycling",
     "SystemId": 106102,
     "Npc": "",
     "ShowType": 0,
@@ -37,7 +37,7 @@
   },
   "103": {
     "Id": 103,
-    "Name": "",
+    "Name": "Battle Will Recovery.",
     "SystemId": 106103,
     "Npc": "",
     "ShowType": 0,
@@ -54,7 +54,7 @@
   },
   "104": {
     "Id": 104,
-    "Name": "",
+    "Name": "Homestead Certificate Recycle",
     "SystemId": 106104,
     "Npc": "",
     "ShowType": 0,
@@ -73,7 +73,7 @@
   },
   "105": {
     "Id": 105,
-    "Name": "",
+    "Name": "Homestead Flower Recycle",
     "SystemId": 106105,
     "Npc": "",
     "ShowType": 0,
@@ -92,7 +92,7 @@
   },
   "199": {
     "Id": 199,
-    "Name": "",
+    "Name": "Wish Recycle",
     "SystemId": 106199,
     "Npc": "",
     "ShowType": 0,
@@ -109,7 +109,7 @@
   },
   "106": {
     "Id": 106,
-    "Name": "",
+    "Name": "General Goods Recycling",
     "SystemId": 106106,
     "Npc": "",
     "ShowType": 0,

@@ -18,7 +18,7 @@ function itemSourceVm.SetPanelItemSource(rootPanel, configId, tipsId, sourceData
   local itemSourceTab = sourceData or itemSourceVm.GetItemSource(configId)
   local itemSourcePackages = {}
   for i = 1, #itemSourceTab do
-    if itemSourceTab[i].functionId == 100103 then
+    if itemSourceTab[i].functionId == E.BackpackFuncId.ItemBp then
       table.insert(itemSourcePackages, itemSourceTab[i])
     end
   end
@@ -298,6 +298,13 @@ function itemSourceVm.GetItemSourceByWayDatas(wayDatas, configId)
               if lifeProfessionTableRow then
                 t.name = string.zconcat(lifeProfessionTableRow.Name, "-", lifeProductionListTableRow.Name)
               end
+            end
+          elseif functionSearchCfgData.Id == E.FunctionID.Gacha or functionSearchCfgData.Id == E.FunctionID.SpecialGacha then
+            t.param = value[2]
+            local gashaPoolTableRow = Z.TableMgr.GetTable("GashaPoolTableMgr").GetRow(value[2])
+            local functionTableRow = Z.TableMgr.GetTable("FunctionTableMgr").GetRow(value[1])
+            if gashaPoolTableRow then
+              t.name = string.zconcat(functionTableRow.Name, "-", gashaPoolTableRow.Name)
             end
           end
         end

@@ -52,6 +52,11 @@ function Backpack_mainView:OnActive()
     self:onPackageChanged(package, dirtyKeys)
   end
   
+  function self.counterListWatcherFunc_(package, dirtyKeys)
+    self:refreshLimitLab()
+  end
+  
+  Z.ContainerMgr.CharSerialize.counterList.Watcher:RegWatcher(self.counterListWatcherFunc_)
   self:AddClick(self.returnBtn_, function()
     self.backpackVm_.CloseBagView()
   end)
@@ -146,7 +151,7 @@ function Backpack_mainView:refresh()
   self.firstClassToggleGroup_:Init(initIndex, function(index)
     self:setLineHeight(154 + 78 * (index - 1))
     self:OnFirstClassSelected(firstClassData[index])
-  end, "c_com_tab_item_1_tpl")
+  end)
   self:OnFirstClassSelected(firstClassData[self.firstClassToggleGroup_:GetSelectedIndex()])
 end
 
@@ -178,6 +183,7 @@ function Backpack_mainView:OnDeActive()
   if self.package_ then
     self.package_.Watcher:UnregWatcher(self.packageWatcherFunc_)
   end
+  Z.ContainerMgr.CharSerialize.counterList.Watcher:UnregWatcher(self.counterListWatcherFunc_)
   self.secondClassListView_:UnInit()
   self.itemsGridView_:UnInit()
   self.bagTakeMedicineSubView_:DeActive()
@@ -374,11 +380,33 @@ end
 function Backpack_mainView:clearTips()
   if Z.IsPCUI then
     self.uiBinder.Ref:SetVisible(self.rimgIcon_, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.lab_box_limit, false)
   end
   Z.TipsVM.CloseItemTipsView(self.itemTipsId_)
   self.itemTipsId_ = nil
   self.item_operation_btns_.Ref.UIComp:SetVisible(false)
   self.btnBinder:OnUnInit()
+end
+
+function Backpack_mainView:refreshLimitLab()
+  if self.selectedId_ == nil then
+    return
+  end
+  local configId = self.package_.items[self.selectedId_].configId
+  local itemFunctionTableRow = Z.TableMgr.GetRow("ItemFunctionTableMgr", configId, true)
+  if itemFunctionTableRow and itemFunctionTableRow.CounterId ~= 0 then
+    local counterRow = Z.TableMgr.GetRow("CounterTableMgr", itemFunctionTableRow.CounterId)
+    if counterRow then
+      local timerConfigItem = Z.DIServiceMgr.ZCfgTimerService:GetZCfgTimerItem(counterRow.TimeTableId)
+      local timeType = timerConfigItem and timerConfigItem.TimerType or 0
+      local limit = Z.CounterHelper.GetCounterLimitCount(itemFunctionTableRow.CounterId)
+      local residueCount = Z.CounterHelper.GetCounterResidueLimitCount(itemFunctionTableRow.CounterId, limit)
+      if Z.IsPCUI then
+        self.uiBinder.Ref:SetVisible(self.uiBinder.lab_box_limit, true)
+        self.uiBinder.lab_box_limit.text = Lang("RestrictedUseOfItemsThe" .. timeType, {val1 = residueCount, val2 = limit})
+      end
+    end
+  end
 end
 
 function Backpack_mainView:OnItemSelected(itemUuId)
@@ -401,6 +429,7 @@ function Backpack_mainView:OnItemSelected(itemUuId)
     self.backpackData_.NewItems[itemUuId] = nil
     bagRed.RemoveRed(itemUuId)
     local configId = self.package_.items[itemUuId].configId
+    self:refreshLimitLab()
     local itemTipsViewData = {}
     itemTipsViewData.configId = configId
     itemTipsViewData.itemUuid = itemUuId

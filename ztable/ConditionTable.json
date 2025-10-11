@@ -42,7 +42,7 @@
     "Example": "5=1001=2",
     "RefreshNum": "玩家需要持有2个1001道具才能满足条件",
     "FailureMessage": 0,
-    "ShowPurview": ""
+    "ShowPurview": "Item not owned"
   },
   "6": {
     "Type": 6,
@@ -222,7 +222,7 @@
     "Example": "30=5=2",
     "RefreshNum": "30为类型，5为协会建筑ID（协会建筑表），2为对应建筑等级",
     "FailureMessage": 0,
-    "ShowPurview": ""
+    "ShowPurview": "{*val1*} Lv.{*val2*}"
   },
   "35": {
     "Type": 35,
@@ -294,7 +294,7 @@
     "Example": "42=1",
     "RefreshNum": "限制玩家性别，1为男，2为女",
     "FailureMessage": 0,
-    "ShowPurview": ""
+    "ShowPurview": "For {*name*}"
   },
   "43": {
     "Type": 43,
@@ -303,7 +303,7 @@
     "Example": "43=1=2",
     "RefreshNum": "43为类型，格式为43=职业ID=职业ID=……ID是ProfessionSystemTable中的ID",
     "FailureMessage": 0,
-    "ShowPurview": ""
+    "ShowPurview": "For {*name*}"
   },
   "44": {
     "Type": 44,
@@ -321,7 +321,7 @@
     "Example": "45=2",
     "RefreshNum": "开服满N天，第一天开服算0，到第二天算1……比如开服地7天，要配成45=6",
     "FailureMessage": 0,
-    "ShowPurview": ""
+    "ShowPurview": "Server open for {*val*} days"
   },
   "46": {
     "Type": 46,
@@ -402,7 +402,7 @@
     "Example": "54=10",
     "RefreshNum": "满足配置的钓鱼等级",
     "FailureMessage": 0,
-    "ShowPurview": ""
+    "ShowPurview": "Fishing Lv.{*val*}"
   },
   "55": {
     "Type": 55,
@@ -438,7 +438,7 @@
     "Example": "58=1=10",
     "RefreshNum": "要求植物学等级最少10级  58=LifeProfessionTable中的ProId=最低等级",
     "FailureMessage": 1500010,
-    "ShowPurview": ""
+    "ShowPurview": "{*val1*} - Lv.{*val2*}"
   },
   "59": {
     "Type": 59,
@@ -447,7 +447,7 @@
     "Example": "59=1=2",
     "RefreshNum": "要求紫阳花一专精等级达到2级  59=LifeFormulaTable中的GruopId=最低等级",
     "FailureMessage": 1500012,
-    "ShowPurview": ""
+    "ShowPurview": "Mastery: {*val*}"
   },
   "60": {
     "Type": 60,
@@ -456,7 +456,7 @@
     "Example": "60=1",
     "RefreshNum": "生活配方是否已解锁，60=LifeProductionListTable中的Id",
     "FailureMessage": 0,
-    "ShowPurview": ""
+    "ShowPurview": "Locked"
   },
   "63": {
     "Type": 63,
@@ -465,7 +465,7 @@
     "Example": "63=10",
     "RefreshNum": "消耗10点精力",
     "FailureMessage": 1001907,
-    "ShowPurview": ""
+    "ShowPurview": "Life Skill"
   },
   "64": {
     "Type": 64,
@@ -474,7 +474,7 @@
     "Example": "64=1",
     "RefreshNum": "会员等级n级",
     "FailureMessage": 0,
-    "ShowPurview": ""
+    "ShowPurview": "Arrive at {*val*}"
   },
   "65": {
     "Type": 65,
@@ -528,7 +528,7 @@
     "Example": "71",
     "RefreshNum": "无需参数",
     "FailureMessage": 1044004,
-    "ShowPurview": ""
+    "ShowPurview": "No house or shared house currently available"
   },
   "72": {
     "Type": 72,
@@ -537,7 +537,7 @@
     "Example": "72=3",
     "RefreshNum": "家园等级3",
     "FailureMessage": 1044018,
-    "ShowPurview": ""
+    "ShowPurview": "Homestead Lv.3"
   },
   "73": {
     "Type": 73,
@@ -546,7 +546,7 @@
     "Example": "73=800",
     "RefreshNum": "要求清洁度达到800",
     "FailureMessage": 0,
-    "ShowPurview": ""
+    "ShowPurview": "Cleanliness {*val*}"
   },
   "74": {
     "Type": 74,
@@ -690,7 +690,7 @@
     "Example": "89=102",
     "RefreshNum": "配置配方ID",
     "FailureMessage": 2505,
-    "ShowPurview": ""
+    "ShowPurview": "Unlock Recipe {*val*}"
   },
   "90": {
     "Type": 90,
@@ -752,6 +752,24 @@
     "ImplStatus": 0,
     "Example": "103=1",
     "RefreshNum": "当前副本有N个同协会的玩家",
+    "FailureMessage": 0,
+    "ShowPurview": "等级"
+  },
+  "104": {
+    "Type": 104,
+    "Param": "当前副本中检测是否队长",
+    "ImplStatus": 0,
+    "Example": "",
+    "RefreshNum": "场地标记检测当前是否是队长，只有队长可以摆放场景标记",
+    "FailureMessage": 0,
+    "ShowPurview": "等级"
+  },
+  "106": {
+    "Type": 106,
+    "Param": "爬塔最高层数是否小于当前给定层数",
+    "ImplStatus": 0,
+    "Example": "106=5",
+    "RefreshNum": "玩家当前爬塔最大层数是否大于等于5层，大于等于则返回正确",
     "FailureMessage": 0,
     "ShowPurview": "等级"
   }

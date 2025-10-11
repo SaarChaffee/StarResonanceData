@@ -26,7 +26,7 @@ function cls.GetProfileImageList(type)
   local tempItemsCount = {}
   if configs then
     for _, config in pairs(configs) do
-      if config.IsHide == nil or config.IsHide == 0 then
+      if (config.IsHide == nil or config.IsHide == 0) and Z.ConditionHelper.CheckCondition(config.Condition, false) then
         if config.Unlock == DEFINE.ProfileImageUnlockType.DefaultUnlock then
           table.insert(datas, config)
         elseif config.Unlock == DEFINE.ProfileImageUnlockType.GetUnlock then

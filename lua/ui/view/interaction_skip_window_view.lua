@@ -72,18 +72,18 @@ function Interaction_skip_windowView:bindEvent()
 end
 
 function Interaction_skip_windowView:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.Interact then
-    if inputActionEventData.eventType == Z.InputActionEventType.ButtonJustPressed then
+  if inputActionEventData.ActionId == Z.InputActionIds.Interact then
+    if inputActionEventData.EventType == Z.InputActionEventType.ButtonJustPressed then
       self.onPressF_()
     end
-    if inputActionEventData.eventType == Z.InputActionEventType.ButtonPressed then
+    if inputActionEventData.EventType == Z.InputActionEventType.ButtonPressed then
       self.whenPressF_()
     end
-    if inputActionEventData.eventType == Z.InputActionEventType.ButtonJustReleased then
+    if inputActionEventData.EventType == Z.InputActionEventType.ButtonJustReleased then
       self.onReleseF_()
     end
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.ExitUI and inputActionEventData.eventType == Z.InputActionEventType.ButtonJustPressed then
+  if inputActionEventData.ActionId == Z.InputActionIds.ExitUI and inputActionEventData.EventType == Z.InputActionEventType.ButtonJustPressed then
     self.excKeyPress_()
   end
 end

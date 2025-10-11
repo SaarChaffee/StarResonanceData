@@ -146,7 +146,7 @@ function Trading_ring_buy_subView:OnActive()
   end)
   self:AddAsyncClick(self.uiBinder.node_purchase_sub.btn_return, function()
     self:closeShopSellItem()
-    if self.isFoces_ then
+    if self.isFocus_ then
       self:refreshFocusItem()
     else
       self:refreshSellItemLoop()
@@ -158,11 +158,11 @@ function Trading_ring_buy_subView:OnActive()
   self:AddAsyncClick(self.uiBinder.node_buy_sub.btn_refresh, function()
     local data
     if self.isNotice_ then
-      if self.isFoces_ then
+      if self.isFocus_ then
       else
         data = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeNoticeRefreshClickCD)
       end
-    elseif self.isFoces_ then
+    elseif self.isFocus_ then
     else
       data = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeRefreshClickCD)
     end
@@ -173,8 +173,8 @@ function Trading_ring_buy_subView:OnActive()
       self.filterTags_ = {}
       self.itemFilter_:DeActive()
     end
-    self.tradeData_:SetClickRefreshCD(self.isNotice_, false, self.isFoces_)
-    if self.isFoces_ then
+    self.tradeData_:SetClickRefreshCD(self.isNotice_, false, self.isFocus_)
+    if self.isFocus_ then
       self:refreshFocusItem()
     else
       self:refreshSellItemLoop()
@@ -223,7 +223,7 @@ function Trading_ring_buy_subView:OnActive()
   end)
   self.uiBinder.node_buy_sub.tog_show_has:AddListener(function()
     self.onlyInStock_ = self.uiBinder.node_buy_sub.tog_show_has.isOn
-    if self.isFoces_ then
+    if self.isFocus_ then
       self:refreshFocusItem()
     else
       self:refreshSellItemLoop(self.filterFuncs_, self.filterParams_)
@@ -287,7 +287,7 @@ function Trading_ring_buy_subView:initSearchItem()
     else
       showInserach = true
     end
-    if showInserach then
+    if showInserach and not value.HideItem then
       local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(value.ItemID)
       if itemRow then
         local itemName = itemRow.Name
@@ -353,8 +353,8 @@ function Trading_ring_buy_subView:OnSearchItem(configId)
 end
 
 function Trading_ring_buy_subView:refreshUI()
-  self.isFoces_ = self.viewData.isFocus
-  if self.isFoces_ then
+  self.isFocus_ = self.viewData.isFocus
+  if self.isFocus_ then
     self:refreshFocusItem()
     return
   end
@@ -505,15 +505,15 @@ function Trading_ring_buy_subView:OnShopAttentionItem(itemData)
       success = self.tradeVm_:AsyncExchangeCare(type, itemData.config.ItemID, self.cancelSource:CreateToken())
     end
     if success then
-      if self.isFoces_ then
+      if serverData[itemData.config.ItemID] then
+        serverData[itemData.config.ItemID].isCare = not serverData[itemData.config.ItemID].isCare
+      else
+        serverData[itemData.config.ItemID] = {}
+        serverData[itemData.config.ItemID].isCare = true
+      end
+      if self.isFocus_ then
         self:refreshFocusItem()
       else
-        if serverData[itemData.config.ItemID] then
-          serverData[itemData.config.ItemID].isCare = not serverData[itemData.config.ItemID].isCare
-        else
-          serverData[itemData.config.ItemID] = {}
-          serverData[itemData.config.ItemID].isCare = true
-        end
         Z.EventMgr:Dispatch(Z.ConstValue.Trade.TradeItemFocusChange, itemData.config.ItemID, serverData[itemData.config.ItemID].isCare)
       end
     end
@@ -601,12 +601,12 @@ function Trading_ring_buy_subView:refreshSellItemLoop(filterFuncs, filterParam)
 end
 
 function Trading_ring_buy_subView:trySelectShopItem(configId)
-  if self.tradeData_.ExchangeItemDict[configId] == nil or self.tradeData_.ExchangeItemDict[configId].num == 0 then
-    Z.TipsVM.ShowTips(1000802)
-    return
-  end
   local stallDetailRow = Z.TableMgr.GetTable("StallDetailTableMgr").GetRow(configId)
   if stallDetailRow == nil then
+    return
+  end
+  if self.tradeData_.ExchangeItemDict[configId] == nil or self.tradeData_.ExchangeItemDict[configId].num == 0 or stallDetailRow.HideItem then
+    Z.TipsVM.ShowTips(1000802)
     return
   end
   local data = {
@@ -938,12 +938,12 @@ end
 function Trading_ring_buy_subView:refreshExchangeItemCd()
   local nowcd = 0
   if self.isNotice_ then
-    if self.isFoces_ then
+    if self.isFocus_ then
       nowcd = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeFocusNoticeRefreshClickCD)
     else
       nowcd = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeNoticeRefreshClickCD)
     end
-  elseif self.isFoces_ then
+  elseif self.isFocus_ then
     nowcd = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeFocusRefreshClickCD)
   else
     nowcd = self.tradeData_.RefreshCD - math.floor(Z.TimeTools.Now() / 1000 - self.tradeData_.ExchangeRefreshClickCD)

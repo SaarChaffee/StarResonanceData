@@ -8,6 +8,7 @@ function PaymentVm:GetProductionInfos(productIds, callback)
   end
   local paymentData = Z.DataMgr.Get("payment_data")
   local currentPlatform = Z.SDKLogin.GetPlatform()
+  local sdkType = Z.SDKLogin.GetSDKType()
   if currentPlatform == E.LoginPlatformType.InnerPlatform or not self:CheckPaymentEnable() then
     local shopVm = Z.VMMgr.GetVM("shop")
     local currencySymbol = shopVm.GetShopItemCurrencySymbol()
@@ -27,19 +28,42 @@ function PaymentVm:GetProductionInfos(productIds, callback)
       callback(products)
     end
   else
+    productIds = self:trySwitchQueryId(productIds)
     Z.SDKPay.QueryProducts(productIds, function(data)
       if callback then
         local products = {}
         if data then
           for i = 0, data.Length - 1 do
-            table.insert(products, data[i])
-            paymentData:SetProdctsInfo(data[i])
+            products[i + 1] = {
+              ID = data[i].ID,
+              Price = data[i].Price,
+              CurrencySymbol = data[i].CurrencySymbol,
+              DisplayPrice = data[i].DisplayPrice
+            }
+            if Z.GameContext.IsPC and currentPlatform == E.LoginPlatformType.APJPlatform and sdkType ~= E.LoginSDKType.APJEpic then
+              products[i + 1].ID = paymentData:GetProdctsName(tonumber(data[i].ID))
+            end
+            paymentData:SetProdctsInfo(products[i + 1])
           end
         end
         callback(products)
       end
     end)
   end
+end
+
+function PaymentVm:trySwitchQueryId(productNames)
+  local currentPlatform = Z.SDKLogin.GetPlatform()
+  local paymentData = Z.DataMgr.Get("payment_data")
+  if Z.GameContext.IsPC and currentPlatform == E.LoginPlatformType.APJPlatform then
+    local productIds = {}
+    for index, value in pairs(productNames) do
+      local productId = paymentData:GetProdctsIdByProductName(value)
+      table.insert(productIds, tostring(productId))
+    end
+    return productIds
+  end
+  return productNames
 end
 
 function PaymentVm:Pay(productId, cpOrderId, serverId, extJson)
@@ -74,6 +98,7 @@ function PaymentVm:Pay(productId, cpOrderId, serverId, extJson)
       local paymentData = Z.DataMgr.Get("payment_data")
       worldProxy.PaySuccess(vRequest, paymentData.CancelSource:CreateToken())
     end)()
+    Z.SDKReport.ReportPurchase(tostring(productId))
   end)
 end
 
@@ -92,9 +117,14 @@ function PaymentVm:TrySetAPJExtJson(productId, extJson)
   if productInfo == nil then
     return extJson
   end
+  local paymentRow = Z.TableMgr.GetTable("PaymentTableMgr").GetRow(productId)
+  if paymentRow == nil then
+    return extJson
+  end
   local extJsonInfo = cjson.decode(extJson)
   extJsonInfo.priceAmount = math.floor(productInfo.Price * 100)
   extJsonInfo.priceCurrency = productInfo.CurrencyCode
+  extJsonInfo.description = paymentRow.Description
   local extData = cjson.encode(extJsonInfo)
   return extData
 end
@@ -104,9 +134,10 @@ function PaymentVm:CheckIsNotPayOrder()
   return 0 < count, count
 end
 
-function PaymentVm:ProcessPendingPaymentTransation()
-  local serverId = Z.DataMgr.Get("server_data"):GetServerId()
-  Z.SDKPay.ProcessPendingPaymentTransation(serverId)
+function PaymentVm:ProcessPendingPaymentTransaction()
+  local serverData = Z.DataMgr.Get("server_data")
+  local serverId = serverData:GetCurrentZoneId()
+  Z.SDKPay.ProcessPendingPaymentTransaction(serverId)
 end
 
 function PaymentVm:AsyncPayment(payType, productId)
@@ -143,7 +174,7 @@ function PaymentVm:AsyncPayment(payType, productId)
     if extJson == "" then
       extJson = ret.extraData
     end
-    self:Pay(productId, ret.extraData, ret.serverId, extJson, serverProductId)
+    self:Pay(productId, ret.extraData, ret.serverId, extJson)
   end, function(err)
     logError("payment error:{0}", err)
     Z.NetWaitHelper.RemoveSyncMsgId(Z.ConstValue.WaitMsgMainKey.Pay, Wait_Msg_Id.payment_order)
@@ -185,7 +216,7 @@ function PaymentVm:AsyncActivityAction(uuid, rewardId, productId)
     if extJson == "" then
       extJson = payReply.extraData
     end
-    self:Pay(productId, payReply.extraData, payReply.serverId, extJson, serverProductId)
+    self:Pay(productId, payReply.extraData, payReply.serverId, extJson)
   end, function(err)
     logError("payment error:{0}", err)
     Z.NetWaitHelper.RemoveSyncMsgId(Z.ConstValue.WaitMsgMainKey.Pay, Wait_Msg_Id.payment_order)
@@ -338,9 +369,9 @@ function PaymentVm:GetBeforeDiscountPrice(price, discount, symbol, symbolCode)
   local beforeDiscountPrice = ""
   local currentPlatform = Z.SDKLogin.GetPlatform()
   if currentPlatform == E.LoginPlatformType.TencentPlatform or currentPlatform == E.LoginPlatformType.InnerPlatform then
-    beforeDiscountPrice = symbol .. string.format("%.2f", price * discount):gsub("0+$", ""):gsub("%%.$", "")
+    beforeDiscountPrice = symbol .. string.format("%.2f", price * discount):gsub("0+$", ""):gsub("%.$", "")
   else
-    beforeDiscountPrice = string.format("%.2f", price * discount):gsub("0+$", ""):gsub("%%.$", "")
+    beforeDiscountPrice = string.format("%.2f", price * discount):gsub("0+$", ""):gsub("%.$", "")
     if symbolCode == "EUR" then
       beforeDiscountPrice = beforeDiscountPrice:gsub("%.", ",")
     end

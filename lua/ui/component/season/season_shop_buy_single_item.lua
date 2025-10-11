@@ -66,13 +66,6 @@ function SeasonShopBuySingleItem:refreshItemInfo(data, item)
   self.itemClass_:Init(itemData)
   local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(data.mallItemRow.ItemId)
   item.lab_name.text = itemRow.Name
-  if regionTab[itemRow.Type] then
-    item.lab_type.text = Lang(regionTab[itemRow.Type])
-    item.Ref:SetVisible(item.img_single, true)
-  else
-    item.lab_type.text = ""
-    item.Ref:SetVisible(item.img_single, false)
-  end
   item.lab_have.text = ""
   local costItemId
   for id, _ in pairs(data.mallItemRow.Cost) do

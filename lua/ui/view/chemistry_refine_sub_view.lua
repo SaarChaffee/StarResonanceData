@@ -17,6 +17,7 @@ function Chemistry_refine_subView:ctor(parent)
   else
     super.ctor(self, "chemistry_refine_sub", "chemistry/chemistry_refine_sub", UI.ECacheLv.None)
   end
+  self.parentView_ = parent
   self.itemVm_ = Z.VMMgr.GetVM("items")
   self.chemistryVm_ = Z.VMMgr.GetVM("chemistry")
   self.lifeProfessionVM_ = Z.VMMgr.GetVM("life_profession")
@@ -38,11 +39,11 @@ function Chemistry_refine_subView:OnActive()
   self.uiBinder.input_search.text = ""
   self.isRefining_ = false
   self.isRefreshSelected_ = true
-  self.uiBinder.uidepth:AddChildDepth(self.uiBinder.effect_cast)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.effect_cast)
   self.uiBinder.effect_cast:Stop()
-  self.uiBinder.uidepth:AddChildDepth(self.uiBinder.effect_cast_pre)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.effect_cast_pre)
   self.uiBinder.effect_cast_pre:Stop()
-  self.uiBinder.uidepth:AddChildDepth(self.uiBinder.effect_cast_end)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.effect_cast_end)
   self.uiBinder.effect_cast_end:Stop()
   self:AddAsyncClick(self.uiBinder.node_right.btn_confirm_cook, function()
     local lifeProductionListConfig = Z.TableMgr.GetTable("LifeProductionListTableMgr").GetRow(self.selectProductId_)
@@ -62,35 +63,19 @@ function Chemistry_refine_subView:OnActive()
     if 0 >= self.refineCount_ then
       return
     end
-    local refineCount = self.refineCount_
     local func = function(isFinish)
       Z.CoroUtil.create_coro_xpcall(function()
         self.lifeProfessionVM_.AsyncRequestLifeProfessionAlchemy(self.selectProductId_, 1, self.cancelSource:CreateToken())
         if isFinish then
           self:OnSelectItem(self.curProductData_)
-          self.uiBinder.effect_cast:SetEffectGoVisible(true)
-          self.uiBinder.effect_cast:Play()
-          local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayForLua)
-          coro(0.1, self.cancelSource:CreateToken())
-          self.uiBinder.effect_cast_pre:SetEffectGoVisible(false)
-          self.uiBinder.effect_cast_end:SetEffectGoVisible(false)
-          coro(2.5, self.cancelSource:CreateToken())
-          self.uiBinder.effect_cast:SetEffectGoVisible(false)
+          Z.AudioMgr:Play("UI_Event_LifeProfession_Success")
           self.uiBinder.effect_cast_end:SetEffectGoVisible(true)
           self.uiBinder.effect_cast_end:Play()
         else
-          local coro = Z.CoroUtil.async_to_sync(Z.ZTaskUtils.DelayForLua)
-          self.uiBinder.effect_cast:SetEffectGoVisible(true)
-          self.uiBinder.effect_cast:Play()
-          coro(0.1, self.cancelSource:CreateToken())
-          self.uiBinder.effect_cast_pre:SetEffectGoVisible(false)
-          self.uiBinder.effect_cast_end:SetEffectGoVisible(false)
-          coro(2.5, self.cancelSource:CreateToken())
-          self.uiBinder.effect_cast:SetEffectGoVisible(false)
-          self.uiBinder.effect_cast_pre:SetEffectGoVisible(true)
-          self.uiBinder.effect_cast_pre:Play()
+          Z.AudioMgr:Play("UI_Event_LifeProfession_Success")
           self.refineCount_ = self.refineCount_ - 1
           self:refreshMidUI()
+          self:refreshCostUI()
         end
       end)()
     end
@@ -103,6 +88,7 @@ function Chemistry_refine_subView:OnActive()
     end
     local stopFunc = function()
       self:setRefineState(false)
+      self:refreshCostUI()
     end
     self.scheduleSubView_:Active({
       num = self.refineCount_,
@@ -203,14 +189,16 @@ function Chemistry_refine_subView:lifeProfessionSubFormulaChanged()
 end
 
 function Chemistry_refine_subView:ItemCountChange()
-  self:OnSelectItem(self.curProductData_)
+  self.curData = Z.TableMgr.GetTable("LifeProductionListTableMgr").GetRow(self.selectProductId_)
+  self.maxRefineCount = self:calMaxRefineCount()
+  self:refreshRightInfo()
 end
 
 function Chemistry_refine_subView:OnDeActive()
   self.scheduleSubView_:DeActive()
   Z.EventMgr:Remove(Z.ConstValue.LifeProfession.LifeProfessionBuildRefresh, self.refineRefresh, self)
   Z.EventMgr:Remove(Z.ConstValue.Backpack.ItemCountChange, self.ItemCountChange, self)
-  Z.ItemEventMgr.RemoveObjAllByEvent(E.ItemAddEventType.ItemId, Z.SystemItem.VigourItemId, self.refineRefresh, self)
+  Z.ItemEventMgr.RemoveObjAllByEvent(E.ItemChangeType.AllChange, E.ItemAddEventType.ItemId, Z.SystemItem.VigourItemId, self.refineRefresh, self)
   if self.tipsId_ then
     Z.TipsVM.CloseItemTipsView(self.tipsId_)
     self.tipsId_ = nil
@@ -236,18 +224,19 @@ function Chemistry_refine_subView:OnDeActive()
     self.previewList = nil
   end
   self.lifeProfessionVM_.CloseSwicthFormulaPopUp()
-  self.uiBinder.uidepth:RemoveChildDepth(self.uiBinder.effect_cast)
-  self.uiBinder.uidepth:RemoveChildDepth(self.uiBinder.effect_cast_end)
-  self.uiBinder.uidepth:RemoveChildDepth(self.uiBinder.effect_cast_pre)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.effect_cast)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.effect_cast_end)
+  self.parentView_.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.effect_cast_pre)
 end
 
 function Chemistry_refine_subView:setRefineState(isRefine)
   self.isRefining_ = isRefine
   if self.isRefining_ then
+    Z.AudioMgr:Play("UI_Event_LifeProfession_Cast_Start")
     self.uiBinder.effect_cast_end:SetEffectGoVisible(false)
-    self.uiBinder.effect_cast:SetEffectGoVisible(false)
-    self.uiBinder.effect_cast_pre:SetEffectGoVisible(true)
-    self.uiBinder.effect_cast_pre:Play()
+    self.uiBinder.effect_cast:SetEffectGoVisible(true)
+    self.uiBinder.effect_cast_pre:SetEffectGoVisible(false)
+    self.uiBinder.effect_cast:Play()
   else
     self.uiBinder.effect_cast_end:SetEffectGoVisible(false)
     self.uiBinder.effect_cast:SetEffectGoVisible(false)

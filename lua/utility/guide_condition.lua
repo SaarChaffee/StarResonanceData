@@ -1,8 +1,8 @@
 local GuideCondition = {}
 local fashionData = Z.DataMgr.Get("fashion_data")
 
-function GuideCondition.GuideCondition1(parm)
-  for index, fashionid in ipairs(parm.parms) do
+function GuideCondition.GuideCondition1(param)
+  for index, fashionid in ipairs(param.params) do
     local tab = Z.TableMgr.GetTable("ItemTableMgr").GetRow(tonumber(fashionid))
     if tab then
       local styleData = fashionData:GetWear(tab.Type)
@@ -14,8 +14,8 @@ function GuideCondition.GuideCondition1(parm)
   return false
 end
 
-function GuideCondition.GuideCondition2(parm)
-  for index, viewConfigKey in ipairs(parm.parms) do
+function GuideCondition.GuideCondition2(param)
+  for index, viewConfigKey in ipairs(param.params) do
     local focusViewConfigKey = Z.UIMgr:GetFocusViewConfigKey()
     focusViewConfigKey = focusViewConfigKey or Z.ConstValue.MainViewName
     if focusViewConfigKey == viewConfigKey then

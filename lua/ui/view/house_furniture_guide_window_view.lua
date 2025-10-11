@@ -40,6 +40,7 @@ function House_furniture_guide_windowView:initBinders()
   self.middleNode_ = self.uiBinder.node_middle
   self.titleLab_ = self.uiBinder.lab_title
   self.askBtn_ = self.uiBinder.btn_ask
+  self.anim_do_ = self.uiBinder.anim_do
 end
 
 function House_furniture_guide_windowView:initData()
@@ -172,13 +173,16 @@ function House_furniture_guide_windowView:initUi()
   self.firstClassToggleGroup_ = toggleGroup_.new(self.firstClassTogGroup_, firstclass_item, self.houseData_.HousingItemGroupTypes, self)
   self.firstClassToggleGroup_:Init(1, function(index)
     self:getFurnitureItemList(self.houseData_.HousingItemGroupTypes[index])
-  end, "com_tab_item_1_new_tpl")
+  end, function()
+    self:onTogStartAnimShow()
+  end)
   self:getFurnitureItemList(self.houseData_.HousingItemGroupTypes[1])
 end
 
 function House_furniture_guide_windowView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:initBinders()
+  self:onStartAnimShow()
   self:initData()
   self:initBtns()
   self:initUi()
@@ -297,7 +301,19 @@ function House_furniture_guide_windowView:OnSelected(data)
   end
 end
 
+function House_furniture_guide_windowView:onStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Open)
+end
+
 function House_furniture_guide_windowView:OnRefresh()
+end
+
+function House_furniture_guide_windowView:onTogStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Tween_0)
+end
+
+function House_furniture_guide_windowView:OnItemStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Tween_1)
 end
 
 return House_furniture_guide_windowView

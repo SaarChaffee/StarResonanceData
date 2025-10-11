@@ -7,7 +7,7 @@ function CameraMemberVM:GetPeopleNearby(type)
   local unionData = Z.DataMgr.Get("union_data")
   local teamData = Z.DataMgr.Get("team_data")
   local cameraMemberData = Z.DataMgr.Get("camerasys_member_data")
-  local nearbyData = Z.EntityMgr.CharEntIdList
+  local nearbyData = Z.EntityMgr.CharIdList
   if not nearbyData then
     return {}
   end

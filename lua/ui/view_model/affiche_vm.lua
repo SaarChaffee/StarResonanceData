@@ -60,7 +60,7 @@ function AfficheVM.ReceiveHttpNoticeData(noticeList, cacheIdStr)
     end
     afficheData:AddAfficheData(noticeData.NoticeType, noticeData.Title, noticeData.Title, noticeData.Content, imagePath)
     local strId = tostring(noticeData.ID)
-    newIdList[i + 1] = strId
+    table.insert(newIdList, strId)
     if not cacheIdDict[strId] then
       isShow = true
     end

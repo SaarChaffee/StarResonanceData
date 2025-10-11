@@ -35,7 +35,7 @@ function Personalzone_mainView:OnActive()
   end
   local collectionVM = Z.VMMgr.GetVM("collection")
   local viewData
-  if self.viewData and self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+  if self.viewData and self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
     local seasonData = Z.DataMgr.Get("season_data")
     viewData = {
       editorType = PersonalZoneDefine.IdCardEditorType.None,
@@ -101,6 +101,7 @@ function Personalzone_mainView:OnActive()
       Z.UnrealSceneMgr:ChangeBinderGOTexture("sky", 0, "_MainTex", config.Image2, self.cancelSource:CreateToken())
     end
   end)()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Personalzone_mainView:OnDeActive()

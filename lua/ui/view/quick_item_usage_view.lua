@@ -107,10 +107,7 @@ function Quick_item_usageView:refreshKeyBoard()
 end
 
 function Quick_item_usageView:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.QuickItemUsage then
-    if not Z.PlayerInputController:IsGamepadComboValidForAction(inputActionEventData) then
-      return
-    end
+  if inputActionEventData.ActionId == Z.InputActionIds.QuickItemUsage then
     Z.CoroUtil.create_coro_xpcall(function()
       self:useItem()
     end)()

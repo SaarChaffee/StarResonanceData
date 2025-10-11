@@ -257,13 +257,13 @@ function Main_take_medicine_subView:onGropCdChanged(container, dirtyKeys)
 end
 
 function Main_take_medicine_subView:OnTriggerInputAction(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.QuickUse1 then
+  if inputActionEventData.ActionId == Z.InputActionIds.QuickUse1 then
     self.quickUse_()
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.TakeMedicineLeft then
+  if inputActionEventData.ActionId == Z.InputActionIds.TakeMedicineLeft then
     self.moveLeft_()
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.TakeMedicineRight then
+  if inputActionEventData.ActionId == Z.InputActionIds.TakeMedicineRight then
     self.moveRight_()
   end
 end

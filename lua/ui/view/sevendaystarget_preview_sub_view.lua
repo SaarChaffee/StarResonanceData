@@ -32,6 +32,7 @@ function Sevendaystarget_preview_subView:OnActive()
   Z.EventMgr:Add(Z.ConstValue.SwitchFunctionChange, self.onFuncDataChange_)
   Z.ContainerMgr.CharSerialize.FunctionData.Watcher:RegWatcher(self.onFuncDataChange_)
   self.parent_.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Sevendaystarget_preview_subView:OnDeActive()
@@ -50,9 +51,12 @@ function Sevendaystarget_preview_subView:refreshUI()
   self:refreshLoopListView()
 end
 
-function Sevendaystarget_preview_subView:OnClickTab(func)
+function Sevendaystarget_preview_subView:OnClickTab(func, isClick)
   self.showFunc = func
   self:refreshRightUI()
+  if isClick then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+  end
 end
 
 function Sevendaystarget_preview_subView:refreshRightUI()

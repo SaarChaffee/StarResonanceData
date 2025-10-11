@@ -53,13 +53,18 @@ function MailItem:OnRefresh(data)
   self:mailState()
   self:SetVisible(self.uiBinder.img_redpoint, false)
   self.uiBinder.tog_collect.isOn = self.mailData.isCollect
-  local npcTab = Z.TableMgr.GetTable("NpcTableMgr").GetRow(self.mailData.sendId)
+  self.uiBinder.c_com_player_portrait_item.Ref:SetVisible(self.uiBinder.c_com_player_portrait_item.img_portrait, true)
+  self.uiBinder.c_com_player_portrait_item.Ref:SetVisible(self.uiBinder.c_com_player_portrait_item.rimg_portrait, false)
+  local npcTab
+  if self.mailData.sendId and 0 < self.mailData.sendId then
+    npcTab = Z.TableMgr.GetTable("NpcTableMgr").GetRow(self.mailData.sendId, true)
+  end
   if npcTab then
     local imageName = npcTab.NpcIcon
     local path = string.zconcat("ui/atlas/avatar/", imageName)
     self.uiBinder.c_com_player_portrait_item.img_portrait:SetImage(path)
-    self.uiBinder.c_com_player_portrait_item.Ref:SetVisible(self.uiBinder.c_com_player_portrait_item.img_portrait, true)
-    self.uiBinder.c_com_player_portrait_item.Ref:SetVisible(self.uiBinder.c_com_player_portrait_item.rimg_portrait, false)
+  else
+    self.uiBinder.c_com_player_portrait_item.img_portrait:SetImage(Z.ConstValue.Mail.MailItemDefaultHeadIcon)
   end
 end
 

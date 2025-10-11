@@ -14528,7 +14528,7 @@
     "ResPath": "bin/bkrepflow/guide_homesystem/17100206",
     "FlowName": "",
     "FlowType": "",
-    "GetOption": true,
+    "GetOption": false,
     "IsSavePlayState": false,
     "CheckPlayKeyIndex": 0,
     "CheckPlayType": 0,
@@ -16026,7 +16026,7 @@
     "ResPath": "bin/bkrepflow/30001021",
     "FlowName": "家园管家对话",
     "FlowType": "对话",
-    "GetOption": true,
+    "GetOption": false,
     "IsSavePlayState": false,
     "CheckPlayKeyIndex": 0,
     "CheckPlayType": 0,
@@ -19671,7 +19671,7 @@
     "IgnoreHidingNPC": [],
     "IsModelDialogue": true,
     "BlackMask": [
-      0
+      1
     ],
     "IgnoreInput": []
   },
@@ -19725,7 +19725,7 @@
     "IgnoreHidingNPC": [],
     "IsModelDialogue": true,
     "BlackMask": [
-      0
+      1
     ],
     "IgnoreInput": []
   },
@@ -19743,7 +19743,7 @@
     "IgnoreHidingNPC": [],
     "IsModelDialogue": true,
     "BlackMask": [
-      0
+      1
     ],
     "IgnoreInput": []
   },
@@ -19761,7 +19761,7 @@
     "IgnoreHidingNPC": [],
     "IsModelDialogue": true,
     "BlackMask": [
-      0
+      1
     ],
     "IgnoreInput": []
   },
@@ -19779,7 +19779,7 @@
     "IgnoreHidingNPC": [],
     "IsModelDialogue": true,
     "BlackMask": [
-      0
+      1
     ],
     "IgnoreInput": []
   },
@@ -40655,6 +40655,24 @@
     "CheckPlayKeyIndex": 0,
     "CheckPlayType": 0,
     "IsDefaultCameraDisabled": false,
+    "ContentHiding": 0,
+    "IgnoreHidingNPC": [],
+    "IsModelDialogue": false,
+    "BlackMask": [
+      0
+    ],
+    "IgnoreInput": []
+  },
+  "50008001": {
+    "Id": 50008001,
+    "ResPath": "bin/bkrepflow/50008001",
+    "FlowName": "重置技能活动任务",
+    "FlowType": "重置技能活动任务",
+    "GetOption": false,
+    "IsSavePlayState": false,
+    "CheckPlayKeyIndex": 0,
+    "CheckPlayType": 0,
+    "IsDefaultCameraDisabled": true,
     "ContentHiding": 0,
     "IgnoreHidingNPC": [],
     "IsModelDialogue": false,

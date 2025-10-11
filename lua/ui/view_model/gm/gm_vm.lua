@@ -337,19 +337,16 @@ local refreshInputField = function(cmdInfo)
   Z.EventMgr:Dispatch("RefreshInputField", cmdInfo)
 end
 local onInputActions = function(inputActionEventData)
-  if inputActionEventData.actionId == Z.RewiredActionsConst.GmVisible then
+  if inputActionEventData.ActionId == Z.InputActionIds.GmVisible then
     openGmView()
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.Disconnect then
+  if inputActionEventData.ActionId == Z.InputActionIds.Disconnect then
     Z.ConnectMgr:Disconnect()
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.LowMemory then
+  if inputActionEventData.ActionId == Z.InputActionIds.LowMemory then
     Z.LuaBridge.OnLowMemory()
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.HideUI then
-    if not Z.PlayerInputController:IsGamepadComboValidForAction(inputActionEventData) then
-      return
-    end
+  if inputActionEventData.ActionId == Z.InputActionIds.HideUI then
     local rootGo = Z.UIRoot.Instance.RootCanvas.gameObject
     rootGo:SetActive(not rootGo.activeInHierarchy)
   end

@@ -318,7 +318,7 @@ function Weapon_develop_skill_subView:refreshSkillDesc()
   skillAttrDescList = self.skillVm_.GetSkillDecsWithColor(skillAttrDescList)
   if skillAttrDescList then
     for _, value in ipairs(skillAttrDescList) do
-      content = content .. "\n" .. value.Dec .. Lang(":") .. value.Num
+      content = content .. "\n" .. value.Dec .. Lang("colon") .. value.Num
     end
   end
   content = content .. "\n"

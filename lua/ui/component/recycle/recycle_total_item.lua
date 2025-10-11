@@ -45,6 +45,7 @@ function RecycleLoopTotalItem:OnSelected(isSelected, isClick)
     end
     self:RefreshRecycleCount()
     if isClick then
+      self.parent.UIView:onClickStartAnimShow()
       self.parent.UIView:OnTotalItemClick(self.Index, self.uiBinder.rimg_icon.transform, curData)
       Z.AudioMgr:Play("sys_general_frame")
     end

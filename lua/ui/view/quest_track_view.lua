@@ -86,11 +86,7 @@ function Quest_trackView:refreshTipState()
   self.stateData_ = stateData
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_quest_tip, true)
   self.uiBinder.effect:SetEffectGoVisible(true)
-  local name = ""
-  local questRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(stateData.questId)
-  if questRow then
-    name = questRow.QuestName
-  end
+  local name = self.questVM_.GetQuestName(stateData.questId)
   self.uiBinder.lab_quest_name.text = name
   if stateData.viewState == E.QuestTrackViewState.Accept then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_icon_new, true)
@@ -211,7 +207,7 @@ function Quest_trackView:onQuestFinish(questId)
 end
 
 function Quest_trackView:onClickQuestTip()
-  if not Z.UIMgr:CheckMainUIActionLimit(Z.RewiredActionsConst.TrackQuest) then
+  if not Z.UIMgr:CheckMainUIActionLimit(Z.InputActionIds.TrackQuest) then
     return
   end
   if self.stateData_ then

@@ -90,6 +90,10 @@ local removeGuideGoalBySrcId = function(id)
   local guideData = Z.DataMgr.Get("goal_guide_data")
   local oldGoalList_ = guideData:GetGuideGoalsBySource(src) or {}
   guideData:RemoveGuideGoal(src, goalIndex)
+  if src == E.MapFlagType.Position then
+    local mapData = Z.DataMgr.Get("map_data")
+    mapData:ClearDynamicTraceParam()
+  end
   Z.EventMgr:Dispatch(Z.ConstValue.GoalGuideChange, src, oldGoalList_)
 end
 local ret = {

@@ -81,6 +81,11 @@ local mergeDataFuncs = {
       last:MergeData(buffer, watcherList)
       container.Watcher:MarkMapDirty("teamMemberData", dk, {})
     end
+  end,
+  [9] = function(container, buffer, watcherList)
+    local last = container.__data__.teamMemberType
+    container.__data__.teamMemberType = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("teamMemberType", last)
   end
 }
 local setForbidenMt = function(t)
@@ -133,6 +138,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.teamMemberData then
     container.__data__.teamMemberData = {}
+  end
+  if not pbData.teamMemberType then
+    container.__data__.teamMemberType = 0
   end
   setForbidenMt(container)
   container.teamMemberData.__data__ = {}
@@ -260,6 +268,11 @@ local getContainerElem = function(container)
       data = {}
     }
   end
+  ret.teamMemberType = {
+    fieldId = 9,
+    dataType = 0,
+    data = container.teamMemberType
+  }
   return ret
 end
 local new = function()

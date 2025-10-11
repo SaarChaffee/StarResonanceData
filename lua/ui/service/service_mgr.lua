@@ -9,6 +9,7 @@ function ServiceMgr.GetService(serviceName)
 end
 
 function ServiceMgr.RegisterAll()
+  ServiceMgr.Register("sdk_report")
   ServiceMgr.Register("friend")
   ServiceMgr.Register("team")
   ServiceMgr.Register("union")
@@ -70,6 +71,7 @@ function ServiceMgr.RegisterAll()
   ServiceMgr.Register("match")
   ServiceMgr.Register("bubble")
   ServiceMgr.Register("dps")
+  ServiceMgr.Register("log_report")
 end
 
 function ServiceMgr.UnRegisterAll()

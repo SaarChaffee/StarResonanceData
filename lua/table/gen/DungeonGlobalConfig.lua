@@ -27,12 +27,13 @@ local DungeonGlobalConfig = {
     {3000, 6}
   },
   MasterScoreLevelColor = {
-    {"1", "#dedede"},
+    {"1", "#89bd92"},
     {"2", "#89bd92"},
     {"3", "#9cb9ef"},
     {"4", "#ab85f6"},
     {"5", "#eed335"},
     {"6", "#ef8e60"}
-  }
+  },
+  MasterDungeonUnlockLevel = {6, 11}
 }
 return read_onlyHelper.Read_only(DungeonGlobalConfig)

@@ -138,6 +138,7 @@ function Set_definition_subView:initOutDisplayOptions()
       self.displayUtil_.ChangeGameMainWindow(index)
       self.uiBinder.cont_definition_setting.cont_resolution.cont_dropdown.dpd.dpd.value = self.resolutionManager_.IsFullScreen and 0 or 1
       self.isShowDisplayDialog_ = false
+      self:initResolutionOptions()
     end, function()
       dpdNode.value = self.displayUtil_.GetCurWindowOnScreenIndex()
       self.isShowDisplayDialog_ = false
@@ -210,7 +211,6 @@ function Set_definition_subView:initBinder()
   self.hBloomSwitch_ = self.uiBinder.cont_set_show.cont_halo.cont_switch.switch
   self.reflectSwitch_ = self.uiBinder.cont_set_show.cont_reflect.cont_switch.switch
   self.fogCont_ = self.uiBinder.cont_set_show.cont_volume_fog
-  self.fogSwitch_ = self.uiBinder.cont_set_show.cont_volume_fog.cont_switch.switch
   self.lightscatteringCont_ = self.uiBinder.cont_set_show.cont_volume_fog
   self.charOutLine_ = self.uiBinder.cont_set_show.cont_character_outline.cont_switch
   self.charOutLineTogGroup_ = self.uiBinder.cont_set_show.cont_character_outline.node_list
@@ -512,10 +512,6 @@ function Set_definition_subView:initComp()
   self.reflectSwitch_.IsOn = QualityGradeSetting.EnableSsr
   self.reflectSwitch_:AddListener(function(isOn)
     QualityGradeSetting.EnableSsr = isOn
-  end)
-  self.fogSwitch_.IsOn = QualityGradeSetting.EnableVolumeFog
-  self.fogSwitch_:AddListener(function(isOn)
-    QualityGradeSetting.EnableVolumeFog = isOn
   end)
   self.charOutLine_.switch.IsOn = QualityGradeSetting.EnableOutline
   self.charOutLine_.switch:AddListener(function(isOn)

@@ -149,14 +149,31 @@ function Camera_photo_detailsView:OnActive()
   self:AddAsyncClick(self.uiBinder.btn_moments, function()
     self:shareImage(Bokura.Plugins.Share.SharePlatform.WeChatMoment)
   end)
-  local isUnlockFunc = self.gotoFuncVM_.FuncIsOn(E.FunctionID.SDKShareCloudPhoto, true)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, isUnlockFunc and not Z.IsPCUI)
+  self:AddAsyncClick(self.uiBinder.btn_apj, function()
+    self:shareImage(Bokura.Plugins.Share.SharePlatform.System)
+  end)
+  self:initShareNode()
   self.uiBinder.scenemask:SetSceneMaskByKey(self.SceneMaskKey)
   self.uiBinder.Ref:SetVisible(self.rimg_frame_layer_big_, false)
   self.uiBinder.Ref:SetVisible(self.rimg_frame_fill_big_, false)
   self.isShowPlayerInfo_ = false
   self.isShowGameInfo_ = false
   self:initWaterMark()
+end
+
+function Camera_photo_detailsView:initShareNode()
+  local isUnlockFunc = self.gotoFuncVM_.FuncIsOn(E.FunctionID.SDKShareCloudPhoto, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, isUnlockFunc and not Z.IsPCUI)
+  local currentPlatform = Z.SDKLogin.GetPlatform()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, false)
+  if currentPlatform == E.LoginPlatformType.TencentPlatform then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, true)
+  elseif currentPlatform == E.LoginPlatformType.APJPlatform then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, false)
+  end
 end
 
 function Camera_photo_detailsView:deletePhoto()

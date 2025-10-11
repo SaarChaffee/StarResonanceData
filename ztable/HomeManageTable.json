@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Position": "",
+    "Position": "Homeowner",
     "Manage": [
       {
         "x": 500201.0,
@@ -37,7 +37,7 @@
   },
   "2": {
     "Id": 2,
-    "Position": "",
+    "Position": "Housemate",
     "Manage": [
       {
         "x": 500201.0,
@@ -73,7 +73,7 @@
   },
   "3": {
     "Id": 3,
-    "Position": "",
+    "Position": "Friends",
     "Manage": [
       {
         "x": 500201.0,
@@ -109,7 +109,7 @@
   },
   "4": {
     "Id": 4,
-    "Position": "",
+    "Position": "Guildmate",
     "Manage": [
       {
         "x": 500201.0,
@@ -145,7 +145,7 @@
   },
   "5": {
     "Id": 5,
-    "Position": "",
+    "Position": "Stranger",
     "Manage": [
       {
         "x": 500201.0,

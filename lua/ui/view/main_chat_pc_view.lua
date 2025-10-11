@@ -2,7 +2,8 @@ local UI = Z.UI
 local super = require("ui.ui_view_base")
 local Main_chat_pcView = class("Main_chat_pcView", super)
 local loop_list_view = require("ui.component.loop_list_view")
-local main_chat_channel_item = require("ui.component.chat.mainchat_channel_item")
+local main_chat_channel_input_item = require("ui.component.chat.mainchat_channel_item")
+local main_chat_channel_show_item = require("ui.component.chat.mainchat_channel_show_item")
 local main_chat_bubble_content_item = require("ui.component.chat.mainchat_bubble_content_item")
 local main_chat_bubble_picture_item = require("ui.component.chat.mainchat_bubble_picture_item")
 local main_chat_bubble_tips_item = require("ui.component.chat.mainchat_bubble_tips_item")
@@ -22,8 +23,8 @@ function Main_chat_pcView:OnActive()
   self.mailData_ = Z.DataMgr.Get("mail_data")
   self.mainUIData_ = Z.DataMgr.Get("mainui_data")
   self.socialVM_ = Z.VMMgr.GetVM("socialcontact_main")
-  self.channelList_ = loop_list_view.new(self, self.uiBinder.loop_list, main_chat_channel_item, "main_channel_tpl")
-  self.channelList_:Init({})
+  self.inputChannelList_ = loop_list_view.new(self, self.uiBinder.loop_list, main_chat_channel_input_item, "main_channel_tpl")
+  self.inputChannelList_:Init({})
   self.chatList_ = loop_list_view.new(self, self.uiBinder.loop_chat_list)
   self.chatList_:Init({})
   self.chatList_:SetGetItemClassFunc(function(data)
@@ -55,6 +56,8 @@ function Main_chat_pcView:OnActive()
       return "main_bubble_other_content"
     end
   end)
+  self.showChannelList_ = loop_list_view.new(self, self.uiBinder.loop_channel_list, main_chat_channel_show_item, "main_chat_channel_tpl_pc")
+  self.showChannelList_:Init({})
   self:AddClick(self.uiBinder.btn_channel, function()
     self:changeChannelListState()
   end)
@@ -91,7 +94,8 @@ function Main_chat_pcView:OnActive()
     self.socialVM_.OpenMailView()
   end)
   if not Z.IsPCUI then
-    self.chatMainData_:SetChatDataFlg(E.ChatChannelType.EMain, E.ChatWindow.Main, true, false)
+    local channelId = self.chatMainData_:GetChannelId()
+    self.chatMainData_:SetChatDataFlg(channelId, E.ChatWindow.Main, true, false)
   end
   self.checkDataListTimer_ = self.timerMgr:StartTimer(function()
     self:checkMainChatList()
@@ -120,6 +124,7 @@ function Main_chat_pcView:OnActive()
   self:refreshMainChatInputChannel(config)
   self:refreshInputState()
   self:hideChannelList()
+  self:refreshChannelList()
   self:refreshMessageState()
   self:refreshMessageNum()
   self:updateMainUIMainChat()
@@ -138,6 +143,7 @@ function Main_chat_pcView:OnActive()
   Z.EventMgr:Add(Z.ConstValue.MainUI.UpdateMainUIMainChat, self.updateMainUIMainChat, self)
   Z.EventMgr:Add(Z.ConstValue.Chat.ChatInputState, self.refreshInputState, self)
   Z.EventMgr:Add(Z.ConstValue.Device.DeviceTypeChange, self.refreshKeyCodeDesc, self)
+  Z.EventMgr:Add(Z.ConstValue.Chat.RefreshChatChannel, self.refreshChannelList, self)
 end
 
 function Main_chat_pcView:OnDeActive()
@@ -149,8 +155,10 @@ function Main_chat_pcView:OnDeActive()
   Z.EventMgr:Remove(Z.ConstValue.MainUI.UpdateMainUIMainChat, self.updateMainUIMainChat, self)
   Z.EventMgr:Remove(Z.ConstValue.Chat.ChatInputState, self.refreshInputState, self)
   Z.EventMgr:Remove(Z.ConstValue.Device.DeviceTypeChange, self.refreshKeyCodeDesc, self)
+  Z.EventMgr:Remove(Z.ConstValue.Chat.RefreshChatChannel, self.refreshChannelList, self)
   self:changeActiveState(false)
-  self.channelList_:UnInit()
+  self.inputChannelList_:UnInit()
+  self.showChannelList_:UnInit()
   self.chatList_:UnInit()
   self.uiBinder.press_check:StopCheck()
   self:stopCheckMainUIHide()
@@ -162,25 +170,20 @@ function Main_chat_pcView:OnTriggerInputAction(inputActionEventData)
   if Z.IgnoreMgr:IsInputIgnore(Panda.ZGame.EInputMask.UIInteract) then
     return
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.Chat and Z.PlayerInputController:CheckChatAndMapAction(inputActionEventData) then
+  if inputActionEventData.ActionId == Z.InputActionIds.Chat and Z.PlayerInputController:CheckChatAndMapAction(inputActionEventData) then
     self.chatMainVM_.OpenChatMainPCView()
-  elseif inputActionEventData.actionId == Z.RewiredActionsConst.OpenChat then
-    if self.isShowList_ then
-      self:chooseChatChannel()
-    else
-      self:activeChatInput()
-    end
-  elseif inputActionEventData.actionId == Z.RewiredActionsConst.UpChatChannel then
-    self:moveChatChannelIndex(1)
-  elseif inputActionEventData.actionId == Z.RewiredActionsConst.DownChatChannel then
-    self:moveChatChannelIndex(-1)
-  elseif inputActionEventData.actionId == Z.RewiredActionsConst.ExitUI then
+  elseif inputActionEventData.ActionId == Z.InputActionIds.OpenChat then
+    self:activeChatInput()
+  elseif inputActionEventData.ActionId == Z.InputActionIds.ExitUI then
     self:changeActiveState(false)
-  elseif inputActionEventData.actionId == Z.RewiredActionsConst.ChangeChatChannel then
-    if self.chatMainData_.ActiveMainChatInput then
-      return
-    end
-    self:changeChannelListState()
+  elseif inputActionEventData.ActionId == Z.InputActionIds.InputChannelUp then
+    self:moveChatChannelIndex(-1)
+  elseif inputActionEventData.ActionId == Z.InputActionIds.InputChannelDown then
+    self:moveChatChannelIndex(1)
+  elseif inputActionEventData.ActionId == Z.InputActionIds.ChatChannelUp then
+    self:changeChannelId(-1)
+  elseif inputActionEventData.ActionId == Z.InputActionIds.ChatChannelDown then
+    self:changeChannelId(1)
   end
 end
 
@@ -248,26 +251,36 @@ function Main_chat_pcView:changeChannelListState()
   if not self.isShowList_ then
     return
   end
-  local channelId = self.chatMainData_:GetMainChatInputChannel()
-  local channelList = self.chatMainData_:GetExceptCurChannel(channelId)
-  self.chatChannelList_ = {}
-  local channelCount = 0
-  for _, v in pairs(channelList) do
-    if v.Id ~= E.ChatChannelType.ESystem then
-      local isShowInList = self.chatSettingData_:GetSynthesis(v.Id)
-      if isShowInList then
-        self.chatChannelList_[#self.chatChannelList_ + 1] = v
-        channelCount = channelCount + 1
-      end
-    end
-  end
-  if channelCount == 0 then
+  self:refreshChatChannelList()
+  if #self.chatChannelList_ == 0 then
     return
   end
-  self.selectChannelIndex_ = 0
-  self.uiBinder.loop_list_ref:SetHeight(channelCount * mainChatChannelItemHeight)
-  self.channelList_:ClearAllSelect()
-  self.channelList_:RefreshListView(self.chatChannelList_, false)
+  self.selectChannelIndex_ = 1
+  self.uiBinder.loop_list_ref:SetHeight(#self.chatChannelList_ * mainChatChannelItemHeight)
+  self.inputChannelList_:ClearAllSelect()
+  self.inputChannelList_:RefreshListView(self.chatChannelList_, false)
+end
+
+function Main_chat_pcView:refreshChatChannelList()
+  self.chatChannelList_ = {}
+  local channelId = self.chatMainData_:GetMainChatInputChannel()
+  local channelList = self.chatMainData_:GetChannelList()
+  self.chatMainData_:GetExceptCurChannel(channelId)
+  for i = 1, #channelList do
+    if channelList[i].Id == E.ChatChannelType.EChannelTeam then
+      local teamVM = Z.VMMgr.GetVM("team")
+      if teamVM.CheckIsInTeam() then
+        table.insert(self.chatChannelList_, channelList[i])
+      end
+    elseif channelList[i].Id == E.ChatChannelType.EChannelUnion then
+      local unionVM = Z.VMMgr.GetVM("union")
+      if unionVM:GetPlayerUnionId() > 0 then
+        table.insert(self.chatChannelList_, channelList[i])
+      end
+    elseif channelList[i].Id == E.ChatChannelType.EChannelWorld or channelList[i].Id == E.ChatChannelType.EChannelScene then
+      table.insert(self.chatChannelList_, channelList[i])
+    end
+  end
 end
 
 function Main_chat_pcView:chooseChatChannel()
@@ -279,16 +292,18 @@ function Main_chat_pcView:chooseChatChannel()
 end
 
 function Main_chat_pcView:moveChatChannelIndex(index)
-  if not self.selectChannelIndex_ or not self.isShowList_ then
-    return
+  self:refreshChatChannelList()
+  if not self.selectChannelIndex_ then
+    self.selectChannelIndex_ = 1
   end
   self.selectChannelIndex_ = self.selectChannelIndex_ + index
-  if self.selectChannelIndex_ < 1 then
-    self.selectChannelIndex_ = 1
-  elseif self.selectChannelIndex_ > #self.chatChannelList_ then
+  if self.selectChannelIndex_ <= 0 then
     self.selectChannelIndex_ = #self.chatChannelList_
   end
-  self.channelList_:SetSelected(self.selectChannelIndex_)
+  if self.selectChannelIndex_ > #self.chatChannelList_ then
+    self.selectChannelIndex_ = 1
+  end
+  self:OnSelectChannel(self.chatChannelList_[self.selectChannelIndex_])
 end
 
 function Main_chat_pcView:OnSelectChannel(channelChatRow)
@@ -296,6 +311,46 @@ function Main_chat_pcView:OnSelectChannel(channelChatRow)
   self:refreshMainChatInputChannel(channelChatRow)
   self:hideChannelList()
   self:refreshInputState()
+end
+
+function Main_chat_pcView:refreshChannelList()
+  local list = self.chatMainData_:GetChannelList()
+  self.showChannelList_:RefreshListView(list, false)
+  local channelId = self.chatMainData_:GetChannelId()
+  local index = 1
+  for i = 1, #list do
+    if channelId == list[i].Id then
+      index = i
+      break
+    end
+  end
+  self.showChannelList_:SetSelected(index)
+end
+
+function Main_chat_pcView:OnSelectShowChannel(channelTableRow)
+  self.chatMainData_:SetChannelId(channelTableRow.Id)
+  self:refreshMainChatList()
+end
+
+function Main_chat_pcView:changeChannelId(changeIndex)
+  local list = self.chatMainData_:GetChannelList()
+  local channelId = self.chatMainData_:GetChannelId()
+  local index = 1
+  for i = 1, #list do
+    if channelId == list[i].Id then
+      index = i
+      break
+    end
+  end
+  index = index + changeIndex
+  if index > #list then
+    index = 1
+  end
+  if index <= 0 then
+    index = #list
+  end
+  self.showChannelList_:SetSelected(index)
+  self:OnSelectShowChannel(list[index])
 end
 
 function Main_chat_pcView:refreshMessageState()
@@ -327,9 +382,10 @@ function Main_chat_pcView:checkMainChatList()
   if self.startDrag_ or not self:getIsEnd() then
     return
   end
-  local dataFlg = self.chatMainData_:GetChatDataFlg(E.ChatChannelType.EMain, E.ChatWindow.Main)
+  local channelId = self.chatMainData_:GetChannelId()
+  local dataFlg = self.chatMainData_:GetChatDataFlg(channelId, E.ChatWindow.Main)
   if dataFlg.flg then
-    self.chatMainData_:SetChatDataFlg(E.ChatChannelType.EMain, E.ChatWindow.Main, false, false)
+    self.chatMainData_:SetChatDataFlg(channelId, E.ChatWindow.Main, false, false)
   else
     return
   end
@@ -339,14 +395,13 @@ function Main_chat_pcView:checkMainChatList()
 end
 
 function Main_chat_pcView:refreshMainChatList()
-  local msgList = self.chatMainData_:GetChannelQueueByChannelId(E.ChatChannelType.EMain, nil, true)
+  local channelId = self.chatMainData_:GetChannelId()
+  local msgList = self.chatMainData_:GetChannelQueueByChannelId(channelId, nil, true)
   self.chatList_:RefreshListView(msgList, false)
   self.chatList_:MovePanelToItemIndex(#msgList)
 end
 
 function Main_chat_pcView:onEditorChatData(text)
-  text = string.gsub(text, "\n", "")
-  text = string.gsub(text, "\r", "")
   local channelId = self.chatMainData_:GetMainChatInputChannel()
   self.chatMainData_:SetChatDraft({msg = text}, channelId, E.ChatWindow.Main)
 end
@@ -491,7 +546,7 @@ end
 function Main_chat_pcView:refreshCDState()
   local channelId = self.chatMainData_:GetMainChatInputChannel()
   local cdTime = self.chatMainData_:GetChatCD(channelId)
-  if cdTime <= 0 then
+  if not cdTime or cdTime <= 0 then
     return
   end
   if self.timer_ then

@@ -7,7 +7,7 @@ function ChatQuickMessageItem:OnRefresh(data)
 end
 
 function ChatQuickMessageItem:OnPointerClick(go, eventData)
-  self.parent.UIView:SendMessage(self.data_.Text, E.ChitChatMsgType.EChatMsgPictureEmoji, self.data_.Id)
+  self.parent.UIView:SendMessage("", E.ChitChatMsgType.EChatMsgPictureEmoji, self.data_.Id)
 end
 
 return ChatQuickMessageItem

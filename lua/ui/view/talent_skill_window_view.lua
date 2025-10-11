@@ -290,15 +290,22 @@ end
 function Talent_skill_windowView:talentChangeRefresh(talents)
   local posX, posY = self.uiBinder.content:GetAnchorPosition(nil, nil)
   self.treeY_ = posY
+  local talentStage
   if talents then
     local mgr = Z.TableMgr.GetTable("TalentTreeTableMgr")
     for _, talentId in ipairs(talents) do
       local config = mgr.GetRow(talentId)
       if config.PreTalent and config.PreTalent[1] == nil then
-        self:JumpTalentStage(config.TalentStage)
-        break
+        if talentStage == nil then
+          talentStage = config.TalentStage
+        else
+          talentStage = math.max(talentStage, config.TalentStage)
+        end
       end
     end
+  end
+  if talentStage then
+    self:JumpTalentStage(talentStage)
   end
   self:refreshTalentPoints()
   self:loadTalentTree()
@@ -470,20 +477,26 @@ function Talent_skill_windowView:loadTalentTree(isFirst)
                 val2 = needPoint,
                 val3 = allStageConfigs[i][0].Name[1]
               })
-              self.talentTreeUnlockTipsLang_[i] = Lang("TalentNextStationConditionSubTip", {
-                val1 = allStageConfigs[i - 1][0].Name[1],
-                val2 = needPoint,
-                val3 = allStageConfigs[i][0].Name[1]
-              })
+              self.talentTreeUnlockTipsLang_[i] = {
+                lang = Lang("TalentNextStationConditionSubTip", {
+                  val1 = allStageConfigs[i - 1][0].Name[1],
+                  val2 = needPoint,
+                  val3 = allStageConfigs[i][0].Name[1]
+                }),
+                isTimeConditionUnlock = true
+              }
             else
               unitTalentNextStageUnit.lab_nextstation_condition.text = Lang("TalentNextStationOpenServiceCondition", {
                 val1 = allStageConfigs[i][0].Name[1],
                 val2 = tipsParam.val
               })
-              self.talentTreeUnlockTipsLang_[i] = Lang("TalentNextStationOpenServiceConditionSubTip", {
-                val1 = allStageConfigs[i][0].Name[1],
-                val2 = tipsParam.val
-              })
+              self.talentTreeUnlockTipsLang_[i] = {
+                lang = Lang("TalentNextStationOpenServiceConditionSubTip", {
+                  val1 = allStageConfigs[i][0].Name[1],
+                  val2 = tipsParam.val
+                }),
+                isTimeConditionUnlock = false
+              }
             end
           end
           if count == 1 or not self.isInPreview_ and unlockBDType ~= -1 or self.isInPreview_ and self.talentTreeIsInPreview_[i + 1] ~= -1 then

@@ -265,7 +265,7 @@
     "LowerLimit": 0,
     "UpperLimit": 9999999,
     "IsSyncClient": true,
-    "AttrDesc": ""
+    "AttrDesc": "Trigger Lucky Block, the Defense effect of this block +{*tempAttr.up*}.<br>Lucky Block: When attacked, both block and luck take effect."
   },
   "90022": {
     "Id": 90022,
@@ -2941,6 +2941,32 @@
     "IsSyncClient": true,
     "AttrDesc": "全子弹大小"
   },
+  "90217": {
+    "Id": 90217,
+    "Name": "霹雳连斩资源管理",
+    "Desc": "霹雳连斩资源管理",
+    "AttrType": 0,
+    "LogicType": 0,
+    "AttrParams": [],
+    "LowerLimit": 0,
+    "UpperLimit": 5,
+    "IsSyncClient": true,
+    "AttrDesc": "全子弹大小"
+  },
+  "90218": {
+    "Id": 90218,
+    "Name": "二连矢冷却",
+    "Desc": "二连矢冷却",
+    "AttrType": 103,
+    "LogicType": 1,
+    "AttrParams": [
+      2222
+    ],
+    "LowerLimit": -99999,
+    "UpperLimit": 99999,
+    "IsSyncClient": true,
+    "AttrDesc": "全子弹大小"
+  },
   "92000": {
     "Id": 92000,
     "Name": "全移动速度加值",
@@ -3011,6 +3037,21 @@
     "LogicType": 1,
     "AttrParams": [
       4531
+    ],
+    "LowerLimit": -99999,
+    "UpperLimit": 99999,
+    "IsSyncClient": true,
+    "AttrDesc": "全子弹大小"
+  },
+  "92104": {
+    "Id": 92104,
+    "Name": "【载具】机械系加速冷却",
+    "Desc": "【载具】机械系加速冷却",
+    "AttrType": 103,
+    "LogicType": 1,
+    "AttrParams": [
+      4601,
+      4512
     ],
     "LowerLimit": -99999,
     "UpperLimit": 99999,
@@ -3493,7 +3534,7 @@
     "LowerLimit": 0,
     "UpperLimit": 99999,
     "IsSyncClient": true,
-    "AttrDesc": ""
+    "AttrDesc": "Adaptive Strength/Intellect/Agility +{*tempAttr.un*}"
   },
   "99006": {
     "Id": 99006,
@@ -3505,7 +3546,7 @@
     "LowerLimit": 0,
     "UpperLimit": 99999,
     "IsSyncClient": true,
-    "AttrDesc": ""
+    "AttrDesc": "Adaptive ATK/MATK +{*tempAttr.un*}"
   },
   "99010": {
     "Id": 99010,

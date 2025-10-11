@@ -30,9 +30,9 @@ local nearPlayerSort = function(nearList)
 end
 local getNearPlayerList = function()
   local nearList = {}
-  if Z.EntityMgr.CharEntIdList then
-    for i = 0, Z.EntityMgr.CharEntIdList.Count - 1 do
-      local entId = Z.EntityMgr.CharEntIdList[i]
+  if Z.EntityMgr.CharIdList then
+    for i = 0, Z.EntityMgr.CharIdList.Count - 1 do
+      local entId = Z.EntityMgr.CharIdList[i]
       if entId ~= Z.ContainerMgr.CharSerialize.charBase.charId then
         table.insert(nearList, entId)
       end

@@ -1,8 +1,8 @@
 {
   "7050": {
     "EventId": 7050,
-    "Name": "",
-    "Desc": "",
+    "Name": "Purify the Void",
+    "Desc": "Void Corruption Rifts appeared on the plains, and local monsters were corrupted. The Bureau commissioned adventurers to investigate and clear out the Void Monsters.",
     "Target": [],
     "Scene": 7,
     "Entity": [
@@ -17,8 +17,8 @@
   },
   "7051": {
     "EventId": 7051,
-    "Name": "",
-    "Desc": "",
+    "Name": "Purify the Void",
+    "Desc": "Void Corruption Rifts appeared on the plains, and local monsters were corrupted. The Bureau Commissioned adventurers to investigate and clear out the Void Monsters.",
     "Target": [
       1,
       1,
@@ -38,8 +38,8 @@
   },
   "7052": {
     "EventId": 7052,
-    "Name": "",
-    "Desc": "",
+    "Name": "Purify the Void",
+    "Desc": "Void Corruption Rifts appeared on the plains, and local monsters were corrupted. The Bureau Commissioned adventurers to investigate and clear out the Void Monsters.",
     "Target": [
       1,
       1,
@@ -59,8 +59,8 @@
   },
   "7053": {
     "EventId": 7053,
-    "Name": "",
-    "Desc": "",
+    "Name": "Purify the Void",
+    "Desc": "Void Corruption Rifts appeared on the plains, and local monsters were corrupted. The Bureau Commissioned adventurers to investigate and clear out the Void Monsters.",
     "Target": [
       1,
       1,
@@ -80,8 +80,8 @@
   },
   "7055": {
     "EventId": 7055,
-    "Name": "",
-    "Desc": "",
+    "Name": "Void Mage Hunt",
+    "Desc": "Void Corruption Rift appeared on the plains, and Goblin Magees were corrupted. The Pioneering Bureau commissioned adventurers to eliminate the eroded goblin liches.",
     "Target": [
       1,
       1,
@@ -101,8 +101,8 @@
   },
   "7065": {
     "EventId": 7065,
-    "Name": "",
-    "Desc": "",
+    "Name": "Urgent Delivery",
+    "Desc": "A courier heading to Andra Resting Post encountered some trouble on the way. The Pioneer Bureau has commissioned adventurers to assist the courier in delivering the goods to the Andra Resting Post.",
     "Target": [
       1,
       1,
@@ -122,8 +122,8 @@
   },
   "7070": {
     "EventId": 7070,
-    "Name": "",
-    "Desc": "",
+    "Name": "Light Bridge",
+    "Desc": "Ancient ruin platforms have appeared near Minsterhorn. The Pioneer Bureau has commissioned adventurers to investigate the platforms.",
     "Target": [
       1,
       1,
@@ -143,8 +143,8 @@
   },
   "7072": {
     "EventId": 7072,
-    "Name": "",
-    "Desc": "",
+    "Name": "Light Bridge",
+    "Desc": "Ancient ruin platforms have appeared near Minsterhorn. The Pioneer Bureau has commissioned adventurers to investigate the platforms.",
     "Target": [
       1,
       1,
@@ -164,8 +164,8 @@
   },
   "7075": {
     "EventId": 7075,
-    "Name": "",
-    "Desc": "",
+    "Name": "Demi-Human Q&A",
+    "Desc": "A demi-human ecology researcher has commissioned adventurers to travel to a southern island on Asteria Plains to complete a Q&A challenge with the demi-human leader.",
     "Target": [
       1,
       1,
@@ -185,8 +185,8 @@
   },
   "7076": {
     "EventId": 7076,
-    "Name": "",
-    "Desc": "",
+    "Name": "Demi-Human Q&A",
+    "Desc": "A demi-human ecology researcher has commissioned adventurers to travel to a southern island on Asteria Plains to complete a Q&A challenge with the demi-human leader.",
     "Target": [
       1,
       1,
@@ -206,8 +206,8 @@
   },
   "7077": {
     "EventId": 7077,
-    "Name": "",
-    "Desc": "",
+    "Name": "Demi-Human Q&A",
+    "Desc": "A demi-human ecology researcher has commissioned adventurers to travel to a southern island on Asteria Plains to complete a Q&A challenge with the demi-human leader.",
     "Target": [
       1,
       1,
@@ -227,8 +227,8 @@
   },
   "7085": {
     "EventId": 7085,
-    "Name": "",
-    "Desc": "",
+    "Name": "Boars Run",
+    "Desc": "At the cult's base, a Boarlet owner has commissioned adventurers to help catch Boarlets in the pen.",
     "Target": [
       1,
       1,
@@ -248,8 +248,8 @@
   },
   "7090": {
     "EventId": 7090,
-    "Name": "",
-    "Desc": "",
+    "Name": "Suppress the Eruption",
+    "Desc": "Assist in suppressing the robots to contain the erupting Void Corruption Rifts in the Andra Passage.",
     "Target": [
       1,
       1,
@@ -269,8 +269,8 @@
   },
   "7095": {
     "EventId": 7095,
-    "Name": "",
-    "Desc": "",
+    "Name": "Spider Dodge",
+    "Desc": "An Guild Artisan has created explosive mini-robots and issued a challenge to adventurers: they must avoid the robots in the rift and survive until the end.",
     "Target": [
       1,
       1,

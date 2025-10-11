@@ -184,8 +184,7 @@ function Union_hunt_subView:RefreshGetRewardNum()
     end
   end
   normalAwardCount = maxLimitNum - nowAwardCount
-  local langString = Lang("UnionHuntAwardTotalCount")
-  self.labAwardNum_.text = langString .. normalAwardCount .. "/" .. maxLimitNum
+  self.labAwardNum_.text = Lang("UnionHuntAwardTotalCount", {cur = normalAwardCount, max = maxLimitNum})
 end
 
 function Union_hunt_subView:RefreshRewardList(rewardID)

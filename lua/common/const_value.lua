@@ -108,6 +108,7 @@ local ret = {
   DropdownUnSelectBg = "DropdownUnSelectBg",
   MapScalePercent = 100000,
   MapCustomFlagName = "customFlag",
+  MapPositionFlagName = "positionFlagName",
   MapSettingChange = "MapSettingChange",
   MiniMapSettingChange = "MiniMapSettingChange",
   MapOutRangeChange = "MapOutRangeChange",
@@ -116,6 +117,7 @@ local ret = {
   MapAreaChange = "MapAreaChange",
   MapOpenSubView = "MapOpenSubView",
   MapTargetCollectionChange = "MapTargetCollectionChange",
+  MapDynamicFlagChange = "MapDynamicFlagChange",
   OnAttrIsCantRideChange = "OnAttrIsCantRideChange",
   WorldQuestListChange = "WorldQuestListChange",
   NpcQuestIconChange = "NpcQuestIconChange",
@@ -166,6 +168,7 @@ local ret = {
   BossSkillProgress = "BossSkillProgress",
   BossSkillEnd = "BossSkillEnd",
   PlayerSkillPanelChange = "PlayerSkillPanelChange",
+  CancelSwitchNormalSkillPanel = "CancelSwitchNormalSkillPanel",
   Dead = "Dead",
   Revive = "Revive",
   RefreshItemTrace = "RefreshItemTrace",
@@ -222,7 +225,8 @@ local ret = {
     InitMailList = "InitMailList",
     RefreshMailLoopData = "refreshMailLoopData",
     RefreshMailBtn = "RefreshMailBtn",
-    ReceiveNewMal = "ReceiveNewMal"
+    ReceiveNewMal = "ReceiveNewMal",
+    MailItemDefaultHeadIcon = "ui/atlas/avatar/head_photo_000"
   },
   OnPorfessionChange = "OnPorfessionChange",
   OnBattleResChange = "OnBattleResChange",
@@ -321,7 +325,9 @@ local ret = {
     FriendAddApply = "FriendAddApply",
     FriendNewMessage = "FriendNewMessage",
     FriendMainChatNum = "FriendMainChatNum",
-    RefreshFriendBaseDataCache = "RefreshFriendBaseDataCache"
+    RefreshFriendBaseDataCache = "RefreshFriendBaseDataCache",
+    ChatSelfSendNewMessage = "ChatSelfSendNewMessage",
+    ChatPrivateNewMessage = "ChatPrivateNewMessage"
   },
   PersonalZone = {
     OnSelectItem = "OnSelectItem",
@@ -476,7 +482,8 @@ local ret = {
     RefreshTeamSpeakState = "RefreshTeamSpeakState",
     RefreshPrepareState = "RefreshPrepareState",
     RefreshPrepareMemberInfo = "RefreshPrepareMemberInfo",
-    EndDungeonPrepare = "EndDungeonPrepare"
+    EndDungeonPrepare = "EndDungeonPrepare",
+    CreateEntity = "CreateEntity"
   },
   Backpack = {
     SortOver = "BackpackSortOver",
@@ -897,7 +904,8 @@ local ret = {
     HomeEntityStructureUpdate = "HomeEntityStructureUpdate",
     HomeDragControllerUpdate = "HomeDragControllerUpdate",
     ExitEditState = "ExitEditState",
-    CancelSelectedItem = "CancelSelectedItem"
+    CancelSelectedItem = "CancelSelectedItem",
+    CancelSelectedUids = "CancelSelectedUids"
   },
   SceneLine = {
     RefreshSceneLineList = "RefreshSceneLineList",
@@ -1191,6 +1199,7 @@ local ret = {
   PhotoShareCodeFolder = "ShareCode",
   ThemePlay = {
     SignActivityRefresh = "SignActivityRefresh"
-  }
+  },
+  PrivilegesDataChanged = "PrivilegesDataChanged"
 }
 return ret

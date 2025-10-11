@@ -10,6 +10,7 @@ local ClimbRushCtrlBtn = require("ui.player_ctrl_btns.climb_rush_ctrl_btn")
 local swimCtrlBtn = require("ui.player_ctrl_btns.swim_ctrl_btn")
 local lockTarget = require("ui.player_ctrl_btns.lock_target_btn")
 local parkourDrop = require("ui.player_ctrl_btns.parkour_drop_ctrl_btn")
+local rideCtrlBtn = require("ui.player_ctrl_btns.ride_ctrl_btn")
 
 function PlayerCtrlTmpMgr:ctor(view)
   self.view_ = view
@@ -51,20 +52,23 @@ function PlayerCtrlTmpMgr:InitTemplates()
       [E.SlotName.ExtraSlot_1] = dashBtn,
       [E.SlotName.ExtraSlot_2] = jumpCtrlBtn,
       [E.SlotName.ResonanceSkillSlot_left] = skillSlot,
-      [E.SlotName.ResonanceSkillSlot_right] = skillSlot
+      [E.SlotName.ResonanceSkillSlot_right] = skillSlot,
+      [E.SlotName.VehicleSkillsSlot_1] = rideCtrlBtn
     },
     [E.PlayerCtrlBtnTmpType.Climb] = {
       [E.SlotName.SkillSlot_1] = ClimbRushCtrlBtn,
       [E.SlotName.ExtraSlot_1] = jumpCtrlBtn,
       [E.SlotName.ResonanceSkillSlot_left] = skillSlot,
-      [E.SlotName.ResonanceSkillSlot_right] = skillSlot
+      [E.SlotName.ResonanceSkillSlot_right] = skillSlot,
+      [E.SlotName.VehicleSkillsSlot_1] = rideCtrlBtn
     },
     [E.PlayerCtrlBtnTmpType.FlowGlide] = {
       [E.SlotName.ExtraSlot_1] = dashBtn,
       [E.SlotName.ExtraSlot_2] = jumpCtrlBtn,
       [E.SlotName.ExtraSlot_3] = flowSwitchBtn,
       [E.SlotName.ResonanceSkillSlot_left] = skillSlot,
-      [E.SlotName.ResonanceSkillSlot_right] = skillSlot
+      [E.SlotName.ResonanceSkillSlot_right] = skillSlot,
+      [E.SlotName.VehicleSkillsSlot_1] = rideCtrlBtn
     },
     [E.PlayerCtrlBtnTmpType.MulAction] = {
       [E.SlotName.CancelMulAction] = multActionBtn
@@ -74,7 +78,8 @@ function PlayerCtrlTmpMgr:InitTemplates()
       [E.SlotName.ExtraSlot_2] = jumpCtrlBtn,
       [E.SlotName.SkillSlot_1] = skillSlot,
       [E.SlotName.ResonanceSkillSlot_left] = skillSlot,
-      [E.SlotName.ResonanceSkillSlot_right] = skillSlot
+      [E.SlotName.ResonanceSkillSlot_right] = skillSlot,
+      [E.SlotName.VehicleSkillsSlot_1] = rideCtrlBtn
     },
     [E.PlayerCtrlBtnTmpType.Interactive] = {
       [E.SlotName.Interactive] = staticObjBtn
@@ -88,14 +93,15 @@ function PlayerCtrlTmpMgr:InitTemplates()
       [E.SlotName.ExtraSlot_1] = parkourDrop,
       [E.SlotName.ExtraSlot_2] = jumpCtrlBtn,
       [E.SlotName.ResonanceSkillSlot_left] = skillSlot,
-      [E.SlotName.ResonanceSkillSlot_right] = skillSlot
+      [E.SlotName.ResonanceSkillSlot_right] = skillSlot,
+      [E.SlotName.VehicleSkillsSlot_1] = rideCtrlBtn
     },
     [E.PlayerCtrlBtnTmpType.Vehicles] = {
       [E.SlotName.SkillSlot_1] = skillSlot,
       [E.SlotName.SkillSlot_2] = skillSlot,
       [E.SlotName.SkillSlot_3] = skillSlot,
       [E.SlotName.SkillSlot_4] = skillSlot,
-      [E.SlotName.SkillSlot_5] = skillSlot,
+      [E.SlotName.SkillSlot_5] = rideCtrlBtn,
       [E.SlotName.SkillSlot_6] = skillSlot,
       [E.SlotName.SkillSlot_7] = skillSlot,
       [E.SlotName.SkillSlot_8] = skillSlot,
@@ -104,13 +110,16 @@ function PlayerCtrlTmpMgr:InitTemplates()
       [E.SlotName.ExtraSlot_4] = lockTarget,
       [E.SlotName.ExtraSlot_1] = dashBtn,
       [E.SlotName.ExtraSlot_2] = jumpCtrlBtn,
-      [E.SlotName.VehicleSkillsSlot_1] = skillSlot
+      [E.SlotName.ResonanceSkillSlot_left] = skillSlot,
+      [E.SlotName.ResonanceSkillSlot_right] = skillSlot,
+      [E.SlotName.VehicleSkillsSlot_1] = rideCtrlBtn
     },
     [E.PlayerCtrlBtnTmpType.VehiclePassenger] = {},
     [E.PlayerCtrlBtnTmpType.TunnelFly] = {
       [E.SlotName.SkillSlot_1] = skillSlot,
       [E.SlotName.ResonanceSkillSlot_left] = flowCtrlBtn,
-      [E.SlotName.ResonanceSkillSlot_right] = flowCtrlBtn
+      [E.SlotName.ResonanceSkillSlot_right] = flowCtrlBtn,
+      [E.SlotName.VehicleSkillsSlot_1] = rideCtrlBtn
     }
   }
   if Z.IsPCUI then

@@ -5,7 +5,7 @@
     "Num": 1,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Log in to the game"
   },
   "1002": {
     "Id": 1002,
@@ -28,7 +28,7 @@
       1015,
       1016
     ],
-    "Describe": ""
+    "Describe": "Complete {*val*} objectives on this page"
   },
   "1003": {
     "Id": 1003,
@@ -39,7 +39,7 @@
       -1,
       10202
     ],
-    "Describe": ""
+    "Describe": "Complete the main quest \"Sin and Deception, A Witch\""
   },
   "1004": {
     "Id": 1004,
@@ -47,7 +47,7 @@
     "Num": 200,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Obtain {*val*} Activity Merits"
   },
   "1005": {
     "Id": 1005,
@@ -59,7 +59,7 @@
       2,
       0
     ],
-    "Describe": ""
+    "Describe": "Equip 4 pieces of Rare gear"
   },
   "1006": {
     "Id": 1006,
@@ -70,7 +70,7 @@
       1,
       5
     ],
-    "Describe": ""
+    "Describe": "Level up any skill to Lv.5"
   },
   "1007": {
     "Id": 1007,
@@ -78,7 +78,7 @@
     "Num": 6,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Activate {*val*} talents"
   },
   "1008": {
     "Id": 1008,
@@ -88,7 +88,7 @@
     "Param": [
       20003
     ],
-    "Describe": ""
+    "Describe": "Consume {*val*} Focus"
   },
   "1009": {
     "Id": 1009,
@@ -98,7 +98,7 @@
     "Param": [
       8
     ],
-    "Describe": ""
+    "Describe": "Complete \"Unstable Space\" challenge {*val*} time"
   },
   "1010": {
     "Id": 1010,
@@ -110,7 +110,7 @@
       23101,
       24101
     ],
-    "Describe": ""
+    "Describe": "Clear the 3rd level trial of any Class"
   },
   "1011": {
     "Id": 1011,
@@ -133,7 +133,7 @@
       10077,
       10029
     ],
-    "Describe": ""
+    "Describe": "Defeat {*val*} Boss"
   },
   "1012": {
     "Id": 1012,
@@ -143,7 +143,7 @@
     "Param": [
       1015001
     ],
-    "Describe": ""
+    "Describe": "Consume {*val*} Healing Aromatic Lv.1"
   },
   "1013": {
     "Id": 1013,
@@ -153,7 +153,7 @@
     "Param": [
       1
     ],
-    "Describe": ""
+    "Describe": "Join {*val*} Guild"
   },
   "1014": {
     "Id": 1014,
@@ -163,7 +163,7 @@
     "Param": [
       3
     ],
-    "Describe": ""
+    "Describe": "Take a photo in selfie mode once"
   },
   "1015": {
     "Id": 1015,
@@ -171,7 +171,7 @@
     "Num": 1,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Complete the setup of the quick wheel once"
   },
   "1016": {
     "Id": 1016,
@@ -182,7 +182,7 @@
       0,
       8
     ],
-    "Describe": ""
+    "Describe": "Purchase {*val*} item in the Honor Store"
   },
   "2001": {
     "Id": 2001,
@@ -190,7 +190,7 @@
     "Num": 2,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Log in to the game"
   },
   "2002": {
     "Id": 2002,
@@ -213,7 +213,7 @@
       2015,
       2016
     ],
-    "Describe": ""
+    "Describe": "Complete {*val*} objectives on this page"
   },
   "2003": {
     "Id": 2003,
@@ -224,7 +224,7 @@
       -1,
       10211
     ],
-    "Describe": ""
+    "Describe": "Complete the main quest \"Seeking in the Past\""
   },
   "2004": {
     "Id": 2004,
@@ -232,7 +232,7 @@
     "Num": 400,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Obtain {*val*} Activity Merits"
   },
   "2005": {
     "Id": 2005,
@@ -242,7 +242,7 @@
     "Param": [
       1010102001
     ],
-    "Describe": ""
+    "Describe": "Obtain Season Title \"Apprentice Investigator II\""
   },
   "2006": {
     "Id": 2006,
@@ -250,7 +250,7 @@
     "Num": 2600,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Ability Score: {*val*}"
   },
   "2007": {
     "Id": 2007,
@@ -261,7 +261,7 @@
       -1,
       18
     ],
-    "Describe": ""
+    "Describe": "Reach Adventurer Lv.18"
   },
   "2008": {
     "Id": 2008,
@@ -273,7 +273,7 @@
       3,
       0
     ],
-    "Describe": ""
+    "Describe": "Equip 2 pieces of Epic gear"
   },
   "2009": {
     "Id": 2009,
@@ -285,7 +285,7 @@
       22501,
       24102
     ],
-    "Describe": ""
+    "Describe": "Clear the 6th level trial of any Class"
   },
   "2010": {
     "Id": 2010,
@@ -295,7 +295,7 @@
     "Param": [
       0
     ],
-    "Describe": ""
+    "Describe": "Clear {*val*} times in a party"
   },
   "2011": {
     "Id": 2011,
@@ -305,7 +305,7 @@
     "Param": [
       3
     ],
-    "Describe": ""
+    "Describe": "Clear Stimen Vaults Floor 3"
   },
   "2012": {
     "Id": 2012,
@@ -328,7 +328,7 @@
       10077,
       10029
     ],
-    "Describe": ""
+    "Describe": "Defeat {*val*} Boss(es)"
   },
   "2013": {
     "Id": 2013,
@@ -339,7 +339,7 @@
       -1,
       39003
     ],
-    "Describe": ""
+    "Describe": "Complete the Guild Center guide quest"
   },
   "2014": {
     "Id": 2014,
@@ -349,7 +349,7 @@
     "Param": [
       2
     ],
-    "Describe": ""
+    "Describe": "Participate in a multiplayer photo session once"
   },
   "2015": {
     "Id": 2015,
@@ -360,7 +360,7 @@
       1040102,
       1040140
     ],
-    "Describe": ""
+    "Describe": "Open the \"Basic Star Chest\" {*val*} times"
   },
   "2016": {
     "Id": 2016,
@@ -368,7 +368,7 @@
     "Num": 1,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Purchase {*val*} items in the Season Store"
   },
   "3001": {
     "Id": 3001,
@@ -376,7 +376,7 @@
     "Num": 3,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Log in to the game"
   },
   "3002": {
     "Id": 3002,
@@ -399,7 +399,7 @@
       3015,
       3016
     ],
-    "Describe": ""
+    "Describe": "Complete {*val*} objectives on this page"
   },
   "3003": {
     "Id": 3003,
@@ -410,7 +410,7 @@
       -1,
       10215
     ],
-    "Describe": ""
+    "Describe": "Complete the main quest \"Reaching the New Storm\""
   },
   "3004": {
     "Id": 3004,
@@ -421,7 +421,7 @@
       -1,
       30401
     ],
-    "Describe": ""
+    "Describe": "Complete the side quest \"The Secret World Underground\""
   },
   "3005": {
     "Id": 3005,
@@ -433,7 +433,7 @@
       3,
       10
     ],
-    "Describe": ""
+    "Describe": "Equip 2 Epic gears with a perfection level of 10"
   },
   "3006": {
     "Id": 3006,
@@ -443,7 +443,7 @@
     "Param": [
       0
     ],
-    "Describe": ""
+    "Describe": "Activate any {*val*} Select skills"
   },
   "3007": {
     "Id": 3007,
@@ -451,7 +451,7 @@
     "Num": 15,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Activate {*val*} talents"
   },
   "3008": {
     "Id": 3008,
@@ -461,7 +461,7 @@
     "Param": [
       20003
     ],
-    "Describe": ""
+    "Describe": "Consume {*val*} Focus"
   },
   "3009": {
     "Id": 3009,
@@ -471,7 +471,7 @@
     "Param": [
       8
     ],
-    "Describe": ""
+    "Describe": "Clear the \"Unstable Space\" {*val*} times"
   },
   "3010": {
     "Id": 3010,
@@ -483,7 +483,7 @@
       23102,
       24103
     ],
-    "Describe": ""
+    "Describe": "Clear the 9th level trial of any Class"
   },
   "3011": {
     "Id": 3011,
@@ -499,17 +499,17 @@
       6021,
       6043
     ],
-    "Describe": ""
+    "Describe": "Clear the normal mode of any \"Chaotic Realm\" 1 time."
   },
   "3012": {
     "Id": 3012,
-    "TargetType": 1,
+    "TargetType": 265,
     "Num": 1,
     "SceneId": 0,
     "Param": [
-      7150
+      15
     ],
-    "Describe": ""
+    "Describe": "Defeat World Boss {*val*} times"
   },
   "3013": {
     "Id": 3013,
@@ -517,7 +517,7 @@
     "Num": 1,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Complete {*val*} Guild Cargos"
   },
   "3014": {
     "Id": 3014,
@@ -525,7 +525,7 @@
     "Num": 1,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "List {*val*} items in the trading center"
   },
   "3015": {
     "Id": 3015,
@@ -533,7 +533,7 @@
     "Num": 3,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Have {*val*} friends"
   },
   "4001": {
     "Id": 4001,
@@ -541,7 +541,7 @@
     "Num": 4,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Log in to the game"
   },
   "4002": {
     "Id": 4002,
@@ -563,7 +563,7 @@
       4014,
       4015
     ],
-    "Describe": ""
+    "Describe": "Complete {*val*} objectives on this page"
   },
   "4003": {
     "Id": 4003,
@@ -571,7 +571,7 @@
     "Num": 4300,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Ability Score: {*val*}"
   },
   "4004": {
     "Id": 4004,
@@ -582,7 +582,7 @@
       -1,
       29
     ],
-    "Describe": ""
+    "Describe": "Reach Adventurer Lv.29"
   },
   "4005": {
     "Id": 4005,
@@ -590,7 +590,7 @@
     "Num": 5,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Refine gear {*val*} times"
   },
   "4006": {
     "Id": 4006,
@@ -601,7 +601,7 @@
       1,
       12
     ],
-    "Describe": ""
+    "Describe": "Raise any 1 skill to Lv.12"
   },
   "4007": {
     "Id": 4007,
@@ -611,7 +611,7 @@
     "Param": [
       0
     ],
-    "Describe": ""
+    "Describe": "Upgrade Life Skills {*val*} times"
   },
   "4008": {
     "Id": 4008,
@@ -626,7 +626,7 @@
       6022,
       6044
     ],
-    "Describe": ""
+    "Describe": "Clear \"Chaotic Realm\" on Hard Mode 1 time."
   },
   "4009": {
     "Id": 4009,
@@ -638,7 +638,7 @@
       22301,
       24402
     ],
-    "Describe": ""
+    "Describe": "Clear the 11th trial of any Class"
   },
   "4010": {
     "Id": 4010,
@@ -666,7 +666,7 @@
       10076,
       10052
     ],
-    "Describe": ""
+    "Describe": "Defeat {*val*} elite monsters"
   },
   "4011": {
     "Id": 4011,
@@ -676,7 +676,7 @@
     "Param": [
       233
     ],
-    "Describe": ""
+    "Describe": "Purchase items {*val*} times at the Guild's general store"
   },
   "4012": {
     "Id": 4012,
@@ -686,7 +686,7 @@
     "Param": [
       13
     ],
-    "Describe": ""
+    "Describe": "Clear difficulty of the Guild's hunting event once"
   },
   "4013": {
     "Id": 4013,
@@ -697,7 +697,7 @@
       1040102,
       1040140
     ],
-    "Describe": ""
+    "Describe": "Open the \"Basic Star Chest\" {*val*} times"
   },
   "4014": {
     "Id": 4014,
@@ -705,7 +705,7 @@
     "Num": 2,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Go fishing {*val*} times"
   },
   "4015": {
     "Id": 4015,
@@ -716,7 +716,7 @@
       0,
       9
     ],
-    "Describe": ""
+    "Describe": "Purchase {*val*} items at the Reputation store"
   },
   "5001": {
     "Id": 5001,
@@ -724,7 +724,7 @@
     "Num": 5,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Log in to the game"
   },
   "5002": {
     "Id": 5002,
@@ -747,7 +747,7 @@
       5015,
       5016
     ],
-    "Describe": ""
+    "Describe": "Complete {*val*} objectives on this page"
   },
   "5003": {
     "Id": 5003,
@@ -758,7 +758,7 @@
       -1,
       10308
     ],
-    "Describe": ""
+    "Describe": "Complete the main quest \"Spectacular View\""
   },
   "5004": {
     "Id": 5004,
@@ -768,7 +768,7 @@
     "Param": [
       1010103001
     ],
-    "Describe": ""
+    "Describe": "Obtain Season Title \"Apprentice Investigator III\""
   },
   "5005": {
     "Id": 5005,
@@ -778,7 +778,7 @@
     "Param": [
       0
     ],
-    "Describe": ""
+    "Describe": "Activate any {*val*} Select skills"
   },
   "5006": {
     "Id": 5006,
@@ -788,7 +788,7 @@
     "Param": [
       2
     ],
-    "Describe": ""
+    "Describe": "Equip any 2 Battle Imagines"
   },
   "5007": {
     "Id": 5007,
@@ -798,7 +798,7 @@
     "Param": [
       2
     ],
-    "Describe": ""
+    "Describe": "Advance any 1 skill to level 2"
   },
   "5008": {
     "Id": 5008,
@@ -806,7 +806,7 @@
     "Num": 31,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Choose a talent stream, with a total allocation of {*val*} Talent Points"
   },
   "5009": {
     "Id": 5009,
@@ -816,7 +816,7 @@
     "Param": [
       20003
     ],
-    "Describe": ""
+    "Describe": "Consume {*val*} Focus"
   },
   "5010": {
     "Id": 5010,
@@ -828,7 +828,7 @@
       24104,
       21302
     ],
-    "Describe": ""
+    "Describe": "Clear Tier 12 of any Class Trial"
   },
   "5011": {
     "Id": 5011,
@@ -844,7 +844,7 @@
       6021,
       6043
     ],
-    "Describe": ""
+    "Describe": "Clear \"Chaotic Realm\" on Normal Mode {*val*} times"
   },
   "5012": {
     "Id": 5012,
@@ -852,7 +852,7 @@
     "Num": 2,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Assist in {*val*} Battles."
   },
   "5013": {
     "Id": 5013,
@@ -875,7 +875,7 @@
       10077,
       10029
     ],
-    "Describe": ""
+    "Describe": "Defeat {*val*} Bosses"
   },
   "5014": {
     "Id": 5014,
@@ -885,7 +885,7 @@
     "Param": [
       2
     ],
-    "Describe": ""
+    "Describe": "Monster Hunt manual reaches Lv.2"
   },
   "5015": {
     "Id": 5015,
@@ -895,7 +895,7 @@
     "Param": [
       5
     ],
-    "Describe": ""
+    "Describe": "Take 1 battle mode photo"
   },
   "5016": {
     "Id": 5016,
@@ -906,7 +906,7 @@
       0,
       3
     ],
-    "Describe": ""
+    "Describe": "Purchase {*val*} item(s) from the Friendship Store"
   },
   "6001": {
     "Id": 6001,
@@ -914,7 +914,7 @@
     "Num": 6,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Log in to the game"
   },
   "6002": {
     "Id": 6002,
@@ -935,7 +935,7 @@
       6013,
       6014
     ],
-    "Describe": ""
+    "Describe": "Complete {*val*} objectives on this page"
   },
   "6003": {
     "Id": 6003,
@@ -946,7 +946,7 @@
       -1,
       34
     ],
-    "Describe": ""
+    "Describe": "Reach Adventurer Lv.34"
   },
   "6004": {
     "Id": 6004,
@@ -958,7 +958,7 @@
       3,
       10
     ],
-    "Describe": ""
+    "Describe": "Equip 6 Epic pieces of gears with a perfection level of 10"
   },
   "6005": {
     "Id": 6005,
@@ -969,7 +969,7 @@
       4,
       3
     ],
-    "Describe": ""
+    "Describe": "Raise the refinement level of any 4 gear parts to Lv.3"
   },
   "6006": {
     "Id": 6006,
@@ -985,7 +985,7 @@
       6021,
       6043
     ],
-    "Describe": ""
+    "Describe": "Clear \"Chaotic Realm\" on Normal Mode {*val*} times"
   },
   "6007": {
     "Id": 6007,
@@ -995,7 +995,7 @@
     "Param": [
       0
     ],
-    "Describe": ""
+    "Describe": "Clear {*val*} times in a party"
   },
   "6008": {
     "Id": 6008,
@@ -1003,7 +1003,7 @@
     "Num": 2,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Complete {*val*} scenic spot check-ins"
   },
   "6009": {
     "Id": 6009,
@@ -1031,7 +1031,7 @@
       10076,
       10052
     ],
-    "Describe": ""
+    "Describe": "Defeat {*val*} elite monsters"
   },
   "6010": {
     "Id": 6010,
@@ -1041,7 +1041,7 @@
     "Param": [
       20010
     ],
-    "Describe": ""
+    "Describe": "Achieve {*val*} Points in World Boss Crusade"
   },
   "6011": {
     "Id": 6011,
@@ -1052,7 +1052,7 @@
       1040102,
       1040140
     ],
-    "Describe": ""
+    "Describe": "Open the \"Basic Star Chest\" {*val*} times"
   },
   "6012": {
     "Id": 6012,
@@ -1060,7 +1060,7 @@
     "Num": 100,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Wardrobe collection: {*val*}"
   },
   "6013": {
     "Id": 6013,
@@ -1068,7 +1068,7 @@
     "Num": 3,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Have {*val*} friends"
   },
   "7001": {
     "Id": 7001,
@@ -1076,7 +1076,7 @@
     "Num": 7,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Log in to the game"
   },
   "7002": {
     "Id": 7002,
@@ -1185,7 +1185,7 @@
       6013,
       6014
     ],
-    "Describe": ""
+    "Describe": "Complete the {*val*} objectives of this manual"
   },
   "7003": {
     "Id": 7003,
@@ -1196,7 +1196,7 @@
       -1,
       10313
     ],
-    "Describe": ""
+    "Describe": "Complete the main quest \"Vanishing Objects\""
   },
   "7004": {
     "Id": 7004,
@@ -1207,7 +1207,7 @@
       -1,
       30313
     ],
-    "Describe": ""
+    "Describe": "Complete the side quest \"Set off! Scholar group's exploration of the Dragon Claw Ruins!\""
   },
   "7005": {
     "Id": 7005,
@@ -1217,7 +1217,7 @@
     "Param": [
       1010201001
     ],
-    "Describe": ""
+    "Describe": "Achieve the season title \"Novice Tracker I\""
   },
   "7006": {
     "Id": 7006,
@@ -1225,7 +1225,7 @@
     "Num": 6500,
     "SceneId": 0,
     "Param": [],
-    "Describe": ""
+    "Describe": "Ability Score: {*val*}"
   },
   "7007": {
     "Id": 7007,
@@ -1236,7 +1236,7 @@
       -1,
       37
     ],
-    "Describe": ""
+    "Describe": "Reach Adventurer Lv.37"
   },
   "7008": {
     "Id": 7008,
@@ -1246,7 +1246,7 @@
     "Param": [
       0
     ],
-    "Describe": ""
+    "Describe": "Embed {*val*} times"
   },
   "7009": {
     "Id": 7009,
@@ -1256,7 +1256,7 @@
     "Param": [
       3
     ],
-    "Describe": ""
+    "Describe": "Reach Lv.3 in the core effect of the Emblem"
   },
   "7010": {
     "Id": 7010,
@@ -1266,7 +1266,7 @@
     "Param": [
       0
     ],
-    "Describe": ""
+    "Describe": "Upgrade Life Skills {*val*} times"
   },
   "7011": {
     "Id": 7011,
@@ -1281,7 +1281,7 @@
       6022,
       6044
     ],
-    "Describe": ""
+    "Describe": "Clear \"Chaotic Realm\" on Hard Mode {*val*} times"
   },
   "7012": {
     "Id": 7012,
@@ -1293,7 +1293,7 @@
       24105,
       21308
     ],
-    "Describe": ""
+    "Describe": "Clear Tier 15 of any Class Trial"
   },
   "7013": {
     "Id": 7013,
@@ -1303,7 +1303,7 @@
     "Param": [
       20
     ],
-    "Describe": ""
+    "Describe": "Clear Stimen Vaults Lv.20"
   },
   "7014": {
     "Id": 7014,
@@ -1326,7 +1326,7 @@
       10077,
       10029
     ],
-    "Describe": ""
+    "Describe": "Defeat {*val*} Bosses"
   },
   "7015": {
     "Id": 7015,
@@ -1336,6 +1336,6 @@
     "Param": [
       3
     ],
-    "Describe": ""
+    "Describe": "Monster Hunt manual reaches Lv.3"
   }
 }

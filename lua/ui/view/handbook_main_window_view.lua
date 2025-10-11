@@ -55,10 +55,15 @@ function Handbook_main_windowView:OnActive()
       end
     end
   end
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_info)
 end
 
 function Handbook_main_windowView:OnDeActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_info)
   for _, red in pairs(self.redDot_) do
     Z.RedPointMgr.RemoveNodeItem(red)
   end

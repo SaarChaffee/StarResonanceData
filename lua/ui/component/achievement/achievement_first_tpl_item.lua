@@ -23,9 +23,11 @@ function AchievementFirstTplItem:OnRefresh(data)
   if selectClass and selectClass == self.data_.Id then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, true)
     self.uiBinder.img_arrow:SetScale(1, 1, 1)
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
   else
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, false)
     self.uiBinder.img_arrow:SetScale(-1, 1, 1)
+    self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
   end
   if self.parent.UIView.IsInSearch then
     self.uiBinder.Ref:SetVisible(self.uiBinder.lab_result, true)
@@ -37,7 +39,7 @@ function AchievementFirstTplItem:OnRefresh(data)
   end
 end
 
-function AchievementFirstTplItem:OnSelected(isSelected)
+function AchievementFirstTplItem:OnSelected(isSelected, isClick)
   local selectClass = self.parent.UIView:GetSelectAchievementClass()
   if selectClass and selectClass == self.data_.Id then
     self.parent.UIView:ResetAchievementId()
@@ -46,8 +48,10 @@ function AchievementFirstTplItem:OnSelected(isSelected)
   if isSelected then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, true)
     self.uiBinder.img_arrow:SetScale(1, 1, 1)
-    self.parent.UIView:SelectAchievementClass(self.data_.Id)
+    self.parent.UIView:SelectAchievementClass(self.data_.Id, isClick)
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
   else
+    self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, false)
     self.uiBinder.img_arrow:SetScale(-1, 1, 1)
   end

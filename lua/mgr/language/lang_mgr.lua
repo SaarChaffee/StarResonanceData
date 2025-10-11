@@ -46,4 +46,11 @@ function LangMgr:Lang(key, param)
   return Z.Placeholder.Placeholder(content, param)
 end
 
+function LangMgr:IsContainKey(key)
+  key = tostring(key)
+  local content = self.cache_[key]
+  content = content or langFunc(key)
+  return not string.zisEmpty(content)
+end
+
 return LangMgr

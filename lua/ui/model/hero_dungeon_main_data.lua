@@ -152,6 +152,8 @@ function HeroDungeonData:GetMasterDungeonScore(seasonId)
             if dungeonInfo and dungeonInfo.score > self.masterDungeonScore[seasonId][value.DungeonId].score then
               self.masterDungeonScore[seasonId][value.DungeonId].score = dungeonInfo.score
               self.masterDungeonScore[seasonId][value.DungeonId].time = dungeonInfo.passTime
+              self.masterDungeonScore[seasonId][value.DungeonId].diff = value.Difficulty
+              self.masterDungeonScore[seasonId][value.DungeonId].masterChallengeDungeonId = value.DungeonId * 100 + value.Difficulty
             end
           end
         end

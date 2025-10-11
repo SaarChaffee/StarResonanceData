@@ -22,7 +22,6 @@ function Noticetip_popView:OnActive()
   self.itemInShowQueue_ = {}
   self.ShowMsgItem_ = {}
   self.normalShowQueue_ = {}
-  self.animator_ = self.uiBinder.anim
   self.node_pop_tip_ = self.uiBinder.node_pop_tip
   self.item_1_ = self.uiBinder.node_pop_tip.item_1
   self.item_2_ = self.uiBinder.node_pop_tip.item_2

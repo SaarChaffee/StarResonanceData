@@ -93,6 +93,7 @@ function Sevendaystarget_mainView:bindClickEvent()
   self.uiBinder.tab_page_tog:AddListener(function()
     if self.uiBinder.tab_page_tog.isOn then
       self.showType_ = E.SevenDayFuncType.TitlePage
+      self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
       self:refreshUI()
     end
   end)
@@ -291,6 +292,7 @@ function Sevendaystarget_mainView:loadManualTab()
       pageBinder_.tog_item.group = self.uiBinder.tab_handbook_content_Toggroup
       pageBinder_.tog_item:AddListener(function()
         if pageBinder_.tog_item.isOn then
+          pageBinder_.anim:Restart(Z.DOTweenAnimType.Open)
           self:changeDay(day_)
         end
       end)
@@ -682,6 +684,7 @@ function Sevendaystarget_mainView:changeDay(day)
   self.selectManualCfg = nil
   self.curSelectDay_ = day
   self:refreshManualUI()
+  self.uiBinder.node_handbook.anim:Restart(Z.DOTweenAnimType.Tween_0)
 end
 
 function Sevendaystarget_mainView:GetCacheData()
@@ -703,14 +706,8 @@ end
 function Sevendaystarget_mainView:onAnimCardShow(isget, showV, isClick)
   if isClick then
     self.uiBinder.node_handbook.anim:Pause()
+    self.uiBinder.node_handbook.anim:Restart(Z.DOTweenAnimType.Tween_1)
   end
-  local animationType
-  if isget then
-    animationType = not showV and Z.DOTweenAnimType.Tween_0 or Z.DOTweenAnimType.Tween_2
-  else
-    animationType = not showV and Z.DOTweenAnimType.Tween_1 or Z.DOTweenAnimType.Tween_3
-  end
-  self.uiBinder.node_handbook.anim:Restart(animationType)
 end
 
 return Sevendaystarget_mainView

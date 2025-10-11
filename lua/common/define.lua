@@ -6,7 +6,7 @@ require("utility.pb_helper")
 require("common.ui_load_path")
 
 function logError(...)
-  local report = Panda.SDK.ZReport
+  local report = Panda.SDK.Wrap.ZReport
   local zlog = ZUtil.ZDebug
   zlog.LogError("[lua] " .. _formatStr(...) .. [[
 
@@ -27,12 +27,12 @@ Z.LuaBridge = Panda.LuaAsyncBridge
 Z.ShareCodeUtils = Panda.Util.ZShareCodeUtils
 Z.QrCodeUtil = QrCodeUtil
 Z.UIRoot = Panda.ZUi.ZUiRoot.Instance
-Z.GameContext = Panda.Core.GameContext
+Z.GameContext = Panda.Core.Wrap.GameContext
 Z.Rpc = ZCode.ZRpc.ZRpcCtrl
 Z.RpcCallRegister = ZCode.ZRpc.ZRpcCallRegister
 Z.InputMgr = Panda.ZInput.ZInputManager.Instance
 Z.PlayerInputController = Panda.ZInput.PlayerInputController.Instance
-Z.RewiredActionsConst = Panda.ZInput.RewiredActionsConst
+Z.InputActionIds = require("input.input_const").InputActionIds
 Z.PGame = Panda.ZGame
 Z.MiniMapManager = Panda.ZGame.MiniMapManager.Instance
 Z.HeroDungeonMgr = Panda.ZGame.HeroDungeonManager.Instance
@@ -83,21 +83,22 @@ Z.WorldUIMgr = Panda.ZUi.ZWorldUIMgr.Instance
 Z.SceneMaskMgr = Panda.ZUi.ZSceneMaskMgr.Instance
 Z.UITimelineDisplay = Panda.ZUi.ZUiTimelineDisplay.Instance
 Z.SettlementCutMgr = Panda.ZGame.SettlementCutMgr.Instance
-Z.Voice = Panda.SDK.ZVoice
+Z.Voice = Panda.SDK.Wrap.ZVoice
 Z.SDKDevices = Panda.SDK.ZDevices
 Z.PermissionUtils = Panda.Util.ZPermissionUtils
 Z.ZDeepLinkUtil = Panda.SDK.ZDeepLinkUtil
 Z.SDKLogin = Panda.SDK.ZLogin
-Z.SDKReport = Panda.SDK.ZReport
+Z.SDKReport = Panda.SDK.Wrap.ZReport
 Z.SDKAPJ = Panda.SDK.APJ.ZAPJ
-Z.SDKReportEvent = Bokura.Plugins.Report.Event
+Z.SDKReportEvent = Panda.SDK.Wrap.ReportEvent
 Z.SDKWebView = Panda.SDK.ZWebView
 Z.SDKNotice = Panda.SDK.ZNotice
 Z.SDKTencent = Panda.SDK.Tencent.ZTencent
+Z.SDKReview = Panda.SDK.ZReview
 Z.SDKAntiCheating = Panda.SDK.ZAntiCheating
 Z.SDKHotUpdate = Panda.SDK.ZHotUpdate
 Z.SDKShare = Panda.SDK.ZShare
-Z.SDKPay = Panda.SDK.ZPayment
+Z.SDKPay = Panda.SDK.Wrap.ZPayment
 Z.CosMgr = Panda.ZGame.CosMgr.Instance
 Z.UploadMgr = Panda.ZGame.UploadMgr.Instance
 Z.UploadParm = Panda.ZGame.UploadParm
@@ -112,7 +113,7 @@ Z.EHomeAdsorbType = Panda.ZGame.Home.EAdsorbSurfaceType
 if not Z.GameContext.StarterRun then
   Z.ZPathFindingMgr = Panda.ZGame.ZPathFindingMgr.Instance
 end
-Z.InputActionEventType = Rewired.InputActionEventType
+Z.InputActionEventType = Panda.ZInput.EInputActionEventType
 Z.EStatusSwitch = require("table.gen.enum_status_switch")
 Z.ViewStatusSwitchMgr = require("common.status_switch_mgr")
 Z.CoroUtil = require("zutil.coro_util")
@@ -137,6 +138,7 @@ Z.ConnectMgr = require("utility.connect_manager").new()
 Z.UnrealSceneMgr = require("utility.unreal_scene_manager").new()
 Z.PhotoQuestMgr = require("utility.photo_quest_manager").new()
 Z.Game = require("game")
+Z.DownloadManager = Panda.Scripts.ZDownloadManager.Instance
 local cjson = require("cjson")
 local configVersionJsonStr = Z.GameContext.GetConfigVersionJsonStr()
 local protocolVersionJsonStr = Z.GameContext.GetProtocolVersionJsonStr()
@@ -154,6 +156,7 @@ Z.GlobalDungeon = require("table.gen.DungeonGlobalConfig")
 Z.UnionActivityConfig = require("table.gen.UnionActivityConfig")
 Z.StallRuleConfig = require("table.gen.StallRule")
 Z.SystemItem = require("table.gen.SystemItem")
+Z.SeasonGlobalConfig = require("table.gen.SeasonGlobalConfig")
 Z.EntityTabManager = require("common.entitytablemgr")
 Z.ServerTime = Panda.Utility.ZServerTime.Instance
 Z.UIUtil = require("ui.ui_util")
@@ -194,12 +197,12 @@ Z.IgnoreMgr = Panda.ZGame.ZIgnoreMgr.Instance
 Z.InteractionMgr = Panda.ZGame.ZInteractionMgr.Instance
 Z.MouseMgr = Panda.ZInput.ZMouseManager.Instance
 Z.SteerMgr = Panda.ZUi.SteerMgr.Instance
-Z.IsOfficalVersion = Panda.Core.GameContext.IsOfficalVersion
-Z.ScreenMark = Panda.Core.GameContext.ScreenMark
-Z.IsBlockGM = Panda.Core.GameContext.IsBlockGM
-Z.IsBlockBUGReport = Panda.Core.GameContext.IsBlockBUGReport
-Z.IsHideGM = Panda.Core.GameContext.IsHideGM
-Z.IsHideBUGReport = Panda.Core.GameContext.IsHideBUGReport
+Z.IsOfficalVersion = Panda.Core.Wrap.GameContext.IsOfficalVersion
+Z.ScreenMark = Panda.Core.Wrap.GameContext.ScreenMark
+Z.IsBlockGM = Panda.Core.Wrap.GameContext.IsBlockGM
+Z.IsBlockBUGReport = Panda.Core.Wrap.GameContext.IsBlockBUGReport
+Z.IsHideGM = Panda.Core.Wrap.GameContext.IsHideGM
+Z.IsHideBUGReport = Panda.Core.Wrap.GameContext.IsHideBUGReport
 Z.BuffMgr = require("mgr.buff.buff_mgr").new()
 Z.UICameraHelper = require("common.ui_camera_helper")
 Z.ECameraState = Z.PGame.CameraDefine.ECameraState
@@ -212,7 +215,7 @@ Z.ZInputMapModeMgr = Panda.ZInput.ZInputMapModeMgr.Instance
 Z.WaitFadeManager = Panda.ZGame.WaitFadeManager.Instance
 Z.InputLuaBridge = require("input.input_manager_lua_bridge").new()
 Z.FuncInputActionComp = require("input/input_action_comp").new()
-Z.IsPreFaceMode = Panda.Core.GameContext.IsPreFaceMode
+Z.IsPreFaceMode = Panda.Core.Wrap.GameContext.IsPreFaceMode
 Z.ECheckEnterResult = Panda.ZGame.ECheckEnterResult
 
 function Lang(key, param)

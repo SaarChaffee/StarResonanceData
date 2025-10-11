@@ -207,8 +207,9 @@ function RichTextHelper.RemoveStyleTag(content)
 end
 
 function RichTextHelper.RemoveTagsOtherThanEmojis(content)
+  local content = string.gsub(content, "[\r\n\\\r\\\n]", "")
   local text = string.gsub(content, "(<[^>]+>)", function(tag)
-    if tag:match("^<sprite=%d+>$") then
+    if tag and tag:match("<sprite=%d+>") then
       return tag
     else
       return ""

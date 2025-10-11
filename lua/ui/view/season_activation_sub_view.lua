@@ -399,6 +399,7 @@ function Season_activation_subView:initReferBattlePassLevelInfo()
   self.top_slider_temp_.value = curSliderVal
   self.top_progress_lab_.text = string.format("%s/%s", curSliderVal, seasonExp)
   self.top_week_lab_manage_.text = string.format("%s/%s", curBattlePassData.weekExp, bpCardGlobalInfo.WeeklyExpLimit)
+  self.uiBinder.img_bpcard:SetImage(bpCardGlobalInfo.PassPicture[3])
 end
 
 function Season_activation_subView:startAnimatedShow()

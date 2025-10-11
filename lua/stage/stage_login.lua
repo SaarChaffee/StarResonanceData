@@ -18,7 +18,7 @@ end
 function StageLogin:OnEnterStage(sceneId)
   super.OnEnterStage(self, sceneId)
   if QualityGradeSetting.CurrentPlatform == EQualityPlatform.Standalone then
-    Panda.Core.GameContext.UseECSModel = true
+    Z.GameContext.UseECSModel = true
   end
 end
 

@@ -17,13 +17,15 @@ function Chat_mini_subView:OnActive()
   self:onInitData()
   self:onInitProp()
   Z.UIMgr:AddShowMouseView("chat_mini_sub")
-  Z.EventMgr:Add(Z.ConstValue.Friend.FriendNewMessage, self.refreshFriendNewMessage, self)
+  Z.EventMgr:Add(Z.ConstValue.Friend.ChatPrivateNewMessage, self.refreshFriendNewMessage, self)
+  Z.EventMgr:Add(Z.ConstValue.Friend.ChatSelfSendNewMessage, self.refreshFriendNewMessage, self)
 end
 
 function Chat_mini_subView:OnDeActive()
   self:setInputBox(false)
   self:setMsg(false)
-  Z.EventMgr:Remove(Z.ConstValue.Friend.FriendNewMessage, self.refreshFriendNewMessage, self)
+  Z.EventMgr:Remove(Z.ConstValue.Friend.ChatPrivateNewMessage, self.refreshFriendNewMessage, self)
+  Z.EventMgr:Remove(Z.ConstValue.Friend.ChatSelfSendNewMessage, self.refreshFriendNewMessage, self)
   Z.UIMgr:RemoveShowMouseView("chat_mini_sub")
 end
 
@@ -113,17 +115,10 @@ function Chat_mini_subView:refreshFriendNewMessage(sendCharId)
   if not chatItem then
     return
   end
-  local maxRead = chatItem.maxReadMsgId or 0
-  if chatItem.latestMsg and chatItem.latestMsg.msgId and maxRead < chatItem.latestMsg.msgId then
-    Z.CoroUtil.create_coro_xpcall(function()
-      local isSuccess = self.chatMainVM_.AsyncSetPrivateChatHasRead(sendCharId, chatItem.latestMsg.msgId, self.viewData.parentView.cancelSource:CreateToken())
-      if isSuccess then
-        Z.RedPointMgr.UpdateNodeCount(E.RedType.FriendChatTab, self.chatMainData_:GetPrivateChatUnReadCount(), true)
-      end
-    end)()
-  else
-    Z.RedPointMgr.UpdateNodeCount(E.RedType.FriendChatTab, self.chatMainData_:GetPrivateChatUnReadCount(), true)
-  end
+  chatItem.maxReadMsgId = chatItem.latestMsg.msgId
+  Z.CoroUtil.create_coro_xpcall(function()
+    self.chatMainVM_.AsyncSetPrivateChatHasRead(sendCharId, chatItem.latestMsg.msgId, self.viewData.parentView.cancelSource:CreateToken())
+  end)()
 end
 
 return Chat_mini_subView

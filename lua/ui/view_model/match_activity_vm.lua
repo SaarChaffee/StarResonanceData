@@ -84,8 +84,21 @@ local CheckCanMatchTeam = function(activityId)
     if not CheckTeamMemberProfession(members, matchTableRow.MatchMaxNum, matchTableRow.MatchProfessionLimitNum) then
       return false
     end
-  elseif not CheckTeamMemberProfession(members, Z.WorldBoss.WorldBossMatchMaxNum, Z.WorldBoss.WorldBossMatchProfessionLimitNum) then
-    return false
+  else
+    local worldBossData = Z.DataMgr.Get("world_boss_data")
+    local worldBossInfo = worldBossData:GetWorldBossInfoData()
+    local bossSwitchID = worldBossInfo.bossCfgId
+    local worldBossSwitchTableRow = Z.TableMgr.GetTable("WorldBossSwitchTableMgr").GetRow(bossSwitchID)
+    if not worldBossSwitchTableRow then
+      return false
+    end
+    local matchTableRow = Z.TableMgr.GetTable("MatchTableMgr").GetRow(worldBossSwitchTableRow.MatchId)
+    if not matchTableRow then
+      return false
+    end
+    if not CheckTeamMemberProfession(members, matchTableRow.MatchMaxNum, matchTableRow.MatchProfessionLimitNum) then
+      return false
+    end
   end
   return true
 end

@@ -20,6 +20,7 @@ function House_play_farm_tipsView:initBinders()
   self.collectNumLab_ = self.uiBinder.lab_info_num
   self.collectInfoLab_ = self.uiBinder.lab_info
   self.imgIcon_ = self.uiBinder.img_icon
+  self.anim_do_ = self.uiBinder.anim_do
 end
 
 function House_play_farm_tipsView:initData()
@@ -66,7 +67,12 @@ function House_play_farm_tipsView:refreshUi()
   end
   local endTime = 0
   local needTime = 0
-  self.itemNameLab_.text = plantRuleRow.Name
+  local itemTableRow = Z.TableMgr.GetRow("ItemTableMgr", self.farmlandInfo_.seedInstance.configId)
+  if itemTableRow then
+    self.itemNameLab_.text = itemTableRow.Name
+  else
+    self.itemNameLab_.text = plantRuleRow.Name
+  end
   if self.curGrowType == E.HomeEFarmlandState.EFarmlandStateGrow then
     endTime = self.farmlandInfo_.growEndTime
     local cutDownTime = 0
@@ -94,7 +100,6 @@ function House_play_farm_tipsView:refreshUi()
     self.collectInfoLab_.text = Lang("ManureSurplusCount")
     self.collectNumLab_.text = plantRuleRow.FertilizeCount - self.farmlandInfo_.fertilizes.count
     self.stateLab_.text = Lang("FarmlandStateGrow")
-    self.itemNameLab_.text = homeSeedTableRow.Name
     self.imgIcon_:SetImage(Z.GlobalHome.HomeStateGrowIcon)
   elseif self.curGrowType == E.HomeEFarmlandState.EFarmlandStatePollen then
     endTime = self.farmlandInfo_.pollinateEndTime
@@ -142,10 +147,15 @@ end
 
 function House_play_farm_tipsView:OnActive()
   self:initBinders()
+  self:onStartAnimShow()
   self:initBtns()
   self:initData()
   self:initUi()
   self:bindEvent()
+end
+
+function House_play_farm_tipsView:onStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Open)
 end
 
 function House_play_farm_tipsView:OnDeActive()

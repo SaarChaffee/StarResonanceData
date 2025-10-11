@@ -405,7 +405,7 @@ end
 
 function UnrealSceneMgr:GetTransPos(transName)
   if not self.isExist_ then
-    return
+    return Vector3.zero
   end
   return unrealScene:GetTransPos(transName)
 end

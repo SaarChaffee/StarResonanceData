@@ -15,12 +15,14 @@ function LoadingData:Init()
 end
 
 function LoadingData:Clear()
+  self.loadingRandomDirty_ = {}
 end
 
 function LoadingData:UnInit()
 end
 
 function LoadingData:InitLoadingRandomData()
+  self.loadingRandomDirty_ = {}
   self.loadingBgList_ = {}
   self.loadingLabelData_ = {
     [E.LoadingLabelType.Default] = {},
@@ -37,14 +39,18 @@ function LoadingData:InitLoadingRandomData()
       if config.LoadingType == E.LoadingLabelType.Default then
         for type, list in pairs(self.loadingLabelData_) do
           table.insert(list, {
+            id = config.Id,
             title = config.TextTitle,
-            content = config.TextGeneral
+            content = config.TextGeneral,
+            levelRange = config.LevelRange
           })
         end
       else
         table.insert(self.loadingLabelData_[config.LoadingType], {
+          id = config.Id,
           title = config.TextTitle,
-          content = config.TextGeneral
+          content = config.TextGeneral,
+          levelRange = config.LevelRange
         })
       end
     end
@@ -79,15 +85,25 @@ function LoadingData:GetRandomLabel()
   if list == nil or #list == 0 then
     return "", ""
   end
-  local randomIndex = math.random(1, #list)
+  local weightList = {}
+  local roleLevel = self:getRoleLevel()
+  for i, v in ipairs(list) do
+    weightList[i] = 1
+    if 0 < roleLevel and not self.loadingRandomDirty_[v.id] and v.levelRange ~= nil and #v.levelRange >= 2 and roleLevel >= v.levelRange[1] and roleLevel <= v.levelRange[2] then
+      weightList[i] = Z.Global.LoadingLevelWeight
+    end
+  end
+  local randomIndex = self:getRandomIndexByWeight(weightList)
   local maxCount = 10
   while 0 < maxCount and self.lastLabelIndex_ and randomIndex == self.lastLabelIndex_ do
-    randomIndex = math.random(1, #list)
+    randomIndex = self:getRandomIndexByWeight(weightList)
     maxCount = maxCount - 1
   end
   self.lastLabelIndex_ = randomIndex
-  local title = list[randomIndex].title
-  local content = list[randomIndex].content
+  local info = list[randomIndex]
+  self.loadingRandomDirty_[info.id] = true
+  local title = info.title
+  local content = info.content
   return title, self:ParseLabelParam(content)
 end
 
@@ -108,6 +124,29 @@ end
 
 function LoadingData:OnLanguageChange()
   self:InitLoadingRandomData()
+end
+
+function LoadingData:getRandomIndexByWeight(weightList)
+  local total = 0
+  for _, weight in ipairs(weightList) do
+    total = total + weight
+  end
+  local randomValue = math.random() * total
+  local cumulative = 0
+  for i, weight in ipairs(weightList) do
+    cumulative = cumulative + weight
+    if randomValue <= cumulative then
+      return i
+    end
+  end
+  return #weightList
+end
+
+function LoadingData:getRoleLevel()
+  if Z.ContainerMgr.CharSerialize.roleLevel ~= nil then
+    return Z.ContainerMgr.CharSerialize.roleLevel.level or 0
+  end
+  return 0
 end
 
 return LoadingData

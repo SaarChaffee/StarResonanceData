@@ -43,12 +43,13 @@ function Shop_exchange_popupView:refreshItemData()
     return
   end
   local targetCount = self.mallItemRow_.Quantity
-  self.uiBinder.rimg_original:SetImage(originalItemRow.Icon)
+  local itemVm = Z.VMMgr.GetVM("items")
+  self.uiBinder.rimg_original:SetImage(itemVm.GetItemIcon(self.originalItemId_))
   self.uiBinder.lab_original.text = string.zconcat("x", self.originalItemCount_)
-  self.uiBinder.rimg_target:SetImage(targetCountItemRow.Icon)
+  self.uiBinder.rimg_target:SetImage(itemVm.GetItemIcon(self.targetItemId_))
   self.uiBinder.lab_target.text = string.zconcat("x", targetCount)
-  self.uiBinder.rimg_original_have:SetImage(originalItemRow.Icon)
-  self.uiBinder.rimg_target_exchange:SetImage(targetCountItemRow.Icon)
+  self.uiBinder.rimg_original_have:SetImage(itemVm.GetItemIcon(self.originalItemId_))
+  self.uiBinder.rimg_target_exchange:SetImage(itemVm.GetItemIcon(self.targetItemId_))
   self.exchangeMax_ = -1
   for i = 1, #Z.Global.ShopBuyDoodSingleNumMax do
     if Z.Global.ShopBuyDoodSingleNumMax[i][1] == self.targetItemId_ then

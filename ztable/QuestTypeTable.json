@@ -690,7 +690,7 @@
       1
     ],
     "ForcedTracking": false,
-    "AutoTracking": 2,
+    "AutoTracking": 0,
     "QuestListHide": false,
     "Order": 200
   },
@@ -706,6 +706,22 @@
     "AutoTracking": 2,
     "QuestListHide": false,
     "Order": 80
+  },
+  "85": {
+    "QuestTypeId": 85,
+    "QuestTypeName": "龙岛周常任务-每周可完成1次",
+    "QuestTypeGroupID": 5,
+    "QuestTypeUI": "",
+    "ShowQuestUI": true,
+    "ResetType": 902,
+    "Counts": [
+      2,
+      1
+    ],
+    "ForcedTracking": false,
+    "AutoTracking": 0,
+    "QuestListHide": false,
+    "Order": 200
   },
   "100": {
     "QuestTypeId": 100,

@@ -86,8 +86,13 @@ end
 
 function cls.achievementWatcher(container, dirtyKeys)
   if dirtyKeys.seasonAchievement then
+    local mgr = Z.TableMgr.GetTable("AchievementDateTableMgr")
     for key, _ in pairs(dirtyKeys.seasonAchievement) do
       cls.CheckRed(key)
+      local config = mgr.GetRow(key)
+      if config and config.Platform then
+        Z.SDKAPJ.UnlockAchievement(tostring(key))
+      end
     end
     Z.EventMgr:Dispatch(Z.ConstValue.Achievement.OnAchievementDataChange)
   end
@@ -246,6 +251,13 @@ local search = function(config, searchStr)
     })
     local content = Z.Placeholder.Placeholder(config.Des, {val = progress})
     if string.find(content, searchStr) ~= nil then
+      return true
+    end
+  end
+  local achievementId = AchievementDataTableMap.Dates[config.AchievementId]
+  if achievementId and achievementId[1] then
+    local classConfig = Z.TableMgr.GetTable("AchievementDateTableMgr").GetRow(achievementId[1])
+    if classConfig and string.find(classConfig.Sma11ClassName, searchStr) ~= nil then
       return true
     end
   end

@@ -11,7 +11,7 @@
     "OpenTimerId": 273,
     "RecommendFightValue": 12710,
     "AssessId": 102101,
-    "Content": "",
+    "Content": "The Winter Dragon on the Floating Island. It is the embodiment of extreme frost, with power that can dim daylight and freeze all things. Now, the wind on the island begins to reverse, and ancient frost seeps from the rift. This is a sign of its impending revival.",
     "BossIcon": "ui/atlas/monster_avatar/head_mon_raid01_01",
     "Background": "ui/textures/raid/raid_01_01",
     "HelpID": 4501
@@ -28,7 +28,7 @@
     "OpenTimerId": 274,
     "RecommendFightValue": 15210,
     "AssessId": 102401,
-    "Content": "",
+    "Content": "The Void Remnant Dragon on the Floating Island. Formed from pure Void Engram, it seems innately capable of devouring order and existence. Its very presence may be an unknown force eroding reality...",
     "BossIcon": "ui/atlas/monster_avatar/head_mon_raid01_02",
     "Background": "ui/textures/raid/raid_01_02",
     "HelpID": 4502
@@ -45,7 +45,7 @@
     "OpenTimerId": 275,
     "RecommendFightValue": 16140,
     "AssessId": 102701,
-    "Content": "",
+    "Content": "The Daylight Dragon on the Floating Island. It is not a creature of the sky, yet it burns hotter than the sun. It is not a herald of doom, yet all things instinctively flee before it. As long as it soars beneath the sky, no shadow can find shelter.",
     "BossIcon": "ui/atlas/monster_avatar/head_mon_raid01_03",
     "Background": "ui/textures/raid/raid_01_03",
     "HelpID": 4503
@@ -62,7 +62,7 @@
     "OpenTimerId": 273,
     "RecommendFightValue": 16140,
     "AssessId": 102104,
-    "Content": "",
+    "Content": "The Winter Dragon on the Floating Island. It is the embodiment of extreme frost, with power that can dim daylight and freeze all things. Now, the wind on the island begins to reverse, and ancient frost seeps from the rift. This is a sign of its impending revival.",
     "BossIcon": "ui/atlas/monster_avatar/head_mon_raid01_01",
     "Background": "ui/textures/raid/raid_01_01",
     "HelpID": 4501
@@ -79,7 +79,7 @@
     "OpenTimerId": 274,
     "RecommendFightValue": 19040,
     "AssessId": 102450,
-    "Content": "",
+    "Content": "The Void Remnant Dragon on the Floating Island. Formed from pure Void Engram, it seems innately capable of devouring order and existence. Its very presence may be an unknown force eroding reality...",
     "BossIcon": "ui/atlas/monster_avatar/head_mon_raid01_02",
     "Background": "ui/textures/raid/raid_01_02",
     "HelpID": 4502
@@ -96,7 +96,7 @@
     "OpenTimerId": 275,
     "RecommendFightValue": 20670,
     "AssessId": 102720,
-    "Content": "",
+    "Content": "The Daylight Dragon on the Floating Island. It is not a creature of the sky, yet it burns hotter than the sun. It is not a herald of doom, yet all things instinctively flee before it. As long as it soars beneath the sky, no shadow can find shelter.",
     "BossIcon": "ui/atlas/monster_avatar/head_mon_raid01_03",
     "Background": "ui/textures/raid/raid_01_03",
     "HelpID": 4503
@@ -113,7 +113,7 @@
     "OpenTimerId": 276,
     "RecommendFightValue": 22300,
     "AssessId": 102105,
-    "Content": "",
+    "Content": "The Winter Dragon on the Floating Island. It is the embodiment of extreme frost, with power that can dim daylight and freeze all things. Now, the wind on the island begins to reverse, and ancient frost seeps from the rift. This is a sign of its impending revival.",
     "BossIcon": "ui/atlas/monster_avatar/head_mon_raid01_01",
     "Background": "ui/textures/raid/raid_01_01",
     "HelpID": 4501
@@ -127,10 +127,10 @@
     "AwardCount": 74,
     "UPAwardCount": 74,
     "TimerId": 276,
-    "OpenTimerId": 276,
+    "OpenTimerId": 277,
     "RecommendFightValue": 24180,
     "AssessId": 102451,
-    "Content": "",
+    "Content": "The Void Remnant Dragon on the Floating Island. Formed from pure Void Engram, it seems innately capable of devouring order and existence. Its very presence may be an unknown force eroding reality...",
     "BossIcon": "ui/atlas/monster_avatar/head_mon_raid01_02",
     "Background": "ui/textures/raid/raid_01_02",
     "HelpID": 4502
@@ -144,10 +144,10 @@
     "AwardCount": 75,
     "UPAwardCount": 75,
     "TimerId": 276,
-    "OpenTimerId": 276,
+    "OpenTimerId": 278,
     "RecommendFightValue": 27790,
     "AssessId": 102721,
-    "Content": "",
+    "Content": "The Daylight Dragon on the Floating Island. It is not a creature of the sky, yet it burns hotter than the sun. It is not a herald of doom, yet all things instinctively flee before it. As long as it soars beneath the sky, no shadow can find shelter.",
     "BossIcon": "ui/atlas/monster_avatar/head_mon_raid01_03",
     "Background": "ui/textures/raid/raid_01_03",
     "HelpID": 4503

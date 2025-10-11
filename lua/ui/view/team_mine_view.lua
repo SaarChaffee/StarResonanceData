@@ -166,7 +166,10 @@ function Team_mineView:initBtns()
     if not teamTargetRow then
       return
     end
-    self.matchVm_.RequestBeginMatch(E.MatchType.Team, teamTargetRow.RelativeDungeonId, self.cancelSource:CreateToken())
+    self.matchVm_.RequestBeginMatch(E.MatchType.Team, {
+      dungeonId = teamTargetRow.RelativeDungeonId,
+      difficulty = teamTargetRow.Difficulty
+    }, self.cancelSource:CreateToken())
   end)
   self:AddAsyncClick(self.btn_leave_, function()
     self.matchVm_.AsyncCancelMatch()
@@ -377,7 +380,7 @@ function Team_mineView:setCompActive()
   local selfIsLeader = teamInfo.leaderId == self.chariId_
   local matchType = self.matchData_:GetMatchType()
   local matching = matchType == E.MatchType.Team and self.teamTargetCfg_.RelativeDungeonId == self.matchTeamData_:GetCurMatchingDungeonId()
-  local canMatch = self.matchTeamVm_.IsShowMatchBtn(self.teamTargetCfg_.RelativeDungeonId)
+  local canMatch = self.matchTeamVm_.IsShowMatchBtn(self.teamTargetCfg_.RelativeDungeonId, self.teamTargetCfg_.Difficulty)
   self.uiBinder.Ref:SetVisible(self.match_lab_tips_, matching)
   self.uiBinder.Ref:SetVisible(self.btn_leave_, selfIsLeader and matching and canMatch)
   self.uiBinder.Ref:SetVisible(self.btn_match_, selfIsLeader and not matching and canMatch)
@@ -506,7 +509,7 @@ function Team_mineView:loadMode(unit, member, index)
     local newScreenPos = Vector3.New(screenPosition.x, screenPosition.y, Z.NumTools.Distance(Z.CameraMgr.MainCamera.transform.position, createPos))
     local worldPosition = Z.CameraMgr.MainCamera:ScreenToWorldPoint(newScreenPos)
     worldPosition.y = createPos.y
-    if member.charId == Z.EntityMgr.PlayerEnt.EntId then
+    if member.charId == Z.EntityMgr.PlayerEnt.CharId then
       Z.UnrealSceneMgr:ClearEffect(self.teamPosEffect_)
       self.teamPosEffect_ = Z.UnrealSceneMgr:CreatEffect("common_new/env/p_fx_juese_zhanwei_tishi", "team_pos" .. index)
       y = playerRotateY[selfIndex]

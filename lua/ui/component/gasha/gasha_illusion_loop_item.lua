@@ -9,11 +9,8 @@ end
 
 function GashaIllusionLoopItem:OnRefresh(data)
   self.data = data
-  local itemRow = Z.TableMgr.GetTable("ItemTableMgr").GetRow(data)
-  if itemRow == nil then
-    return
-  end
-  self.uiBinder.rimg_icon:SetImage(itemRow.Icon)
+  local itemVm = Z.VMMgr.GetVM("items")
+  self.uiBinder.rimg_icon:SetImage(itemVm.GetItemIcon(data))
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, false)
 end
 

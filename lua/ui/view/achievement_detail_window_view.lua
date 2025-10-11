@@ -25,6 +25,10 @@ function Achievement_detail_windowView:OnActive()
     Z.UIMgr:CloseView(self.ViewConfigKey)
   end)
   self:AddAsyncClick(self.uiBinder.btn_search, function()
+    if self.searchStr_ == nil or self.searchStr_ == "" then
+      Z.TipsVM.ShowTips(100004)
+      return
+    end
     self.IsInSearch = true
     self:refreshSearchBtn()
     self.searchAchievements_ = self.achievementVM_.GetSearchAchievements(AchievementDefine.PermanentAchievementType, self.searchStr_)
@@ -39,6 +43,16 @@ function Achievement_detail_windowView:OnActive()
   end)
   self.uiBinder.input_search:AddListener(function(str)
     self.searchStr_ = str
+  end)
+  self.uiBinder.input_search:AddSubmitListener(function()
+    if self.searchStr_ == nil or self.searchStr_ == "" then
+      Z.TipsVM.ShowTips(100004)
+      return
+    end
+    self.IsInSearch = true
+    self:refreshSearchBtn()
+    self.searchAchievements_ = self.achievementVM_.GetSearchAchievements(AchievementDefine.PermanentAchievementType, self.searchStr_)
+    self:refreshUI()
   end)
   self.leftLoopListView_ = LoopScrollRect_.new(self, self.uiBinder.loop_left_item)
   self.leftLoopListView_:SetGetItemClassFunc(function(data)
@@ -79,11 +93,16 @@ function Achievement_detail_windowView:OnActive()
   else
     self:refreshUI()
   end
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_info)
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
   Z.EventMgr:Add(Z.ConstValue.Achievement.OnAchievementDataChange, self.refreshList, self)
 end
 
 function Achievement_detail_windowView:OnDeActive()
   Z.EventMgr:Remove(Z.ConstValue.Achievement.OnAchievementDataChange, self.refreshList, self)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_info)
   self.selectAchievementClass_ = nil
   self.selectAchievementId_ = nil
   self.leftLoopListView_:UnInit()
@@ -181,7 +200,7 @@ function Achievement_detail_windowView:ResetAchievementId()
   end
 end
 
-function Achievement_detail_windowView:SelectAchievementClass(id)
+function Achievement_detail_windowView:SelectAchievementClass(id, isClick)
   if self.selectAchievementClass_ and self.selectAchievementClass_ == id then
     return
   end
@@ -203,6 +222,9 @@ function Achievement_detail_windowView:SelectAchievementClass(id)
         local redDot = self.achievementVM_.GetRedNodeId(entry)
         if Z.RedPointMgr.GetRedState(redDot) then
           self:SelectAchievementId(entry, true)
+          if isClick then
+            self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+          end
           return
         end
       end
@@ -211,9 +233,12 @@ function Achievement_detail_windowView:SelectAchievementClass(id)
       self:SelectAchievementId(tempAchievementId, true)
     end
   end
+  if isClick then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+  end
 end
 
-function Achievement_detail_windowView:SelectAchievementId(id, needRefreshLoop)
+function Achievement_detail_windowView:SelectAchievementId(id, needRefreshLoop, isClick)
   if self.selectAchievementId_ and self.selectAchievementId_ == id then
     return
   end
@@ -222,6 +247,9 @@ function Achievement_detail_windowView:SelectAchievementId(id, needRefreshLoop)
     self:refreshLoopList()
   end
   self:refreshRightLoopList()
+  if isClick then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
+  end
 end
 
 function Achievement_detail_windowView:refreshList()

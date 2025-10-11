@@ -241,7 +241,7 @@ end
 
 function UIBase:checkTriggerOnInputBack(inputActionEventData)
   for _, value in ipairs(self.inputActionDatas) do
-    if value.ActionId == inputActionEventData.actionId and value.TriggerType == E.InputTriggerViewActionType.CloseView then
+    if value.ActionId == inputActionEventData.ActionId and value.TriggerType == E.InputTriggerViewActionType.CloseView then
       return true
     end
   end

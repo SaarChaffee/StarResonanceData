@@ -1,6 +1,7 @@
 local CommonPlayerPortraitItem = class("CommonPlayerPortraitItem")
 local HeroHelper = require("ui.component.hero_helper")
 local DEFINE = require("ui.model.personalzone_define")
+local switch_vm = Z.VMMgr.GetVM("switch")
 
 function CommonPlayerPortraitItem:ctor()
   self.snapshotVm_ = Z.VMMgr.GetVM("snapshot")
@@ -112,7 +113,7 @@ end
 
 function CommonPlayerPortraitItem:GetLocalHeadPortrait(charId, modelId)
   local path = self.snapshotVm_.GetInternalHeadPortrait(charId, modelId)
-  if type(path) == "number" then
+  if switch_vm.CheckFuncSwitch(E.FunctionID.DisplayCustomHeadPhoto) and type(path) == "number" then
     self:SetRimgPortrait(path)
   else
     self:SetModelPortrait(modelId)
@@ -120,6 +121,9 @@ function CommonPlayerPortraitItem:GetLocalHeadPortrait(charId, modelId)
 end
 
 function CommonPlayerPortraitItem:SetRimgPortrait(headId)
+  if not switch_vm.CheckFuncSwitch(E.FunctionID.DisplayCustomHeadPhoto) then
+    return
+  end
   if self.unit == nil then
     return
   end

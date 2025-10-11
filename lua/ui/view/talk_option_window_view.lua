@@ -8,10 +8,10 @@ function Talk_option_windowView:ctor()
   self.uiBinder = nil
   super.ctor(self, "talk_option_window")
   self.optionVM_ = Z.VMMgr.GetVM("talk_option")
-  self.inputKeyDescComp_ = inputKeyDescComp.new()
 end
 
 function Talk_option_windowView:OnActive()
+  self.inputKeyDescCompMap = {}
   self.optionNum_ = 0
   self.selectOption_ = 1
   Z.CoroUtil.create_coro_xpcall(function()
@@ -31,7 +31,10 @@ function Talk_option_windowView:OnActive()
 end
 
 function Talk_option_windowView:OnDeActive()
-  self.inputKeyDescComp_:UnInit()
+  for k, v in pairs(self.inputKeyDescCompMap) do
+    v:UnInit()
+  end
+  self.inputKeyDescCompMap = {}
   Z.EventMgr:Dispatch("HideTalkArrowUI")
   self.IsResponseInput = true
 end
@@ -43,9 +46,16 @@ function Talk_option_windowView:initOption(unit, optionData, index)
   itemHelper.InitInteractionItem(unit, content, optionData.iconPath)
   itemHelper.AddCommonListener(unit)
   if Z.IsPCUI then
-    self.inputKeyDescComp_:Init(1, unit.cont_key_icon)
+    local inputKeyDescComp = inputKeyDescComp.new()
+    inputKeyDescComp:Init(1, unit.cont_key_icon)
+    inputKeyDescComp:SetVisible(index == 1)
     itemHelper.SetSelectState(unit, index == 1)
-    itemHelper.IsShowContKyeIcon(unit, index == 1)
+    table.insert(self.inputKeyDescCompMap, inputKeyDescComp)
+  else
+    local inputKeyDescComp = inputKeyDescComp.new()
+    inputKeyDescComp:Init(1, unit.cont_key_icon)
+    inputKeyDescComp:SetVisible(false)
+    table.insert(self.inputKeyDescCompMap, inputKeyDescComp)
   end
   self:AddAsyncClick(unit.btn_interaction, function()
     Z.AudioMgr:Play("sys_general_interact")
@@ -65,10 +75,10 @@ function Talk_option_windowView:OnTriggerInputAction(inputActionEventData)
   if not Z.IsPCUI then
     return
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.NavigateInteraction and Z.PlayerInputController:IsGamepadComboValidForAction(inputActionEventData) then
+  if inputActionEventData.ActionId == Z.InputActionIds.NavigateInteraction then
     self:handleNavigateInteraction(inputActionEventData)
   end
-  if inputActionEventData.actionId == Z.RewiredActionsConst.Interact then
+  if inputActionEventData.ActionId == Z.InputActionIds.Interact then
     self:handleUISubmit(inputActionEventData)
   end
 end
@@ -78,9 +88,9 @@ function Talk_option_windowView:handleNavigateInteraction(inputActionEventData)
     return
   end
   local axis = 0
-  if inputActionEventData.eventType == Z.InputActionEventType.ButtonJustPressed and Z.InputMgr.InputDeviceType == Panda.ZInput.EInputDeviceType.Joystick then
+  if inputActionEventData.EventType == Z.InputActionEventType.ButtonJustPressed and Z.InputMgr.InputDeviceType == Panda.ZInput.EInputDeviceType.Joystick then
     axis = -1
-  elseif inputActionEventData.eventType == Z.InputActionEventType.AxisActiveOrJustInactive then
+  elseif inputActionEventData.EventType == Z.InputActionEventType.AxisActiveOrJustInactive then
     axis = inputActionEventData:GetAxis()
   end
   local absAxis = math.abs(axis)
@@ -102,7 +112,7 @@ function Talk_option_windowView:handleNavigateInteraction(inputActionEventData)
     local unit = self.units[name]
     if unit then
       itemHelper.SetSelectState(unit, i == self.selectOption_)
-      itemHelper.IsShowContKyeIcon(unit, i == self.selectOption_)
+      self.inputKeyDescCompMap[i]:SetVisible(i == self.selectOption_)
     end
   end
 end

@@ -6,7 +6,7 @@ function PersonalzoneTitileTplItem:ctor()
   self.personalZoneVM_ = Z.VMMgr.GetVM("personal_zone")
   self.colors_ = {
     [1] = Color.New(1, 1, 1, 1),
-    [2] = Color.New(1, 1, 1, 0.05)
+    [2] = Color.New(1, 1, 1, 0.39215686274509803)
   }
 end
 
@@ -44,6 +44,11 @@ function PersonalzoneTitileTplItem:OnRefresh(data)
   local isUse = self.data_.config.Id == self.personalZoneVM_.GetCurProfileImageId(DEFINE.ProfileImageType.Title)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_me, isUse)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, self.data_.select)
+  if self.data_.select then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+  else
+    self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
+  end
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_reddot, self.personalZoneVM_.CheckSingleRedDot(self.data_.config.Id))
 end
 

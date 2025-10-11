@@ -40,7 +40,8 @@
     ],
     "Award": 10500330,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "On Asteria Plains, common Boarlets appear on the Skyquake Fields.",
+    "SceneTag": 0
   },
   "10011": {
     "MonsterId": 10011,
@@ -83,7 +84,8 @@
     ],
     "Award": 10500260,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ordinary Caprahorns appear on the Skyquake Fields.",
+    "SceneTag": 0
   },
   "10025": {
     "MonsterId": 10025,
@@ -126,7 +128,8 @@
     ],
     "Award": 10500320,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ordinary Boarrierriers appear at the abandoned campsite to the right of the Scout Lookout Post.",
+    "SceneTag": 0
   },
   "10031": {
     "MonsterId": 10031,
@@ -169,7 +172,8 @@
     ],
     "Award": 10500040,
     "TreasureBoxId": 40018,
-    "Condition": ""
+    "Condition": "The Boarrierrier mini-boss appears at the abandoned campsite to the right of the Scout Lookout Post. It will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10032": {
     "MonsterId": 10032,
@@ -212,7 +216,8 @@
     ],
     "Award": 10700060,
     "TreasureBoxId": 40006,
-    "Condition": ""
+    "Condition": "Every hour on the hour, a Boarrierrier leader appears at the abandoned campsite to the right of the Scout Lookout Post in Asteria Plains, handle with care!",
+    "SceneTag": 733
   },
   "10001": {
     "MonsterId": 10001,
@@ -251,7 +256,8 @@
     ],
     "Award": 10500210,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ordinary goblins with melee attacks appear in Ancient City of Vill.",
+    "SceneTag": 0
   },
   "10000": {
     "MonsterId": 10000,
@@ -290,7 +296,8 @@
     ],
     "Award": 10500200,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ordinary goblins appear in Ancient City of Vill.",
+    "SceneTag": 0
   },
   "10006": {
     "MonsterId": 10006,
@@ -329,7 +336,8 @@
     ],
     "Award": 10500250,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ordinary goblins with high defense appear in Ancient City of Vill.",
+    "SceneTag": 0
   },
   "10005": {
     "MonsterId": 10005,
@@ -368,7 +376,8 @@
     ],
     "Award": 10500240,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ranged-attacking ordinary goblins appear in Ancient City of Vill.",
+    "SceneTag": 0
   },
   "10035": {
     "MonsterId": 10035,
@@ -407,7 +416,8 @@
     ],
     "Award": 10500060,
     "TreasureBoxId": 40020,
-    "Condition": ""
+    "Condition": "The melee-attacking Goblin King appears in Ancient City of Vill. It will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10019": {
     "MonsterId": 10019,
@@ -446,7 +456,8 @@
     ],
     "Award": 10500030,
     "TreasureBoxId": 40017,
-    "Condition": ""
+    "Condition": "The ranged-attacking Goblin King appears in Ancient City of Vill. It will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10009": {
     "MonsterId": 10009,
@@ -485,7 +496,8 @@
     ],
     "Award": 10700020,
     "TreasureBoxId": 40002,
-    "Condition": ""
+    "Condition": "Every half-hour, the ice ogre leading the goblins appears in Ancient City of Vill in Asteria Plains, handle with care!",
+    "SceneTag": 733
   },
   "10072": {
     "MonsterId": 10072,
@@ -524,7 +536,8 @@
     ],
     "Award": 10500470,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Melee fire goblins, tainted with fire aura due to the influence of Inferno Ogres, appear at Landing Battle Site.",
+    "SceneTag": 0
   },
   "10073": {
     "MonsterId": 10073,
@@ -563,7 +576,8 @@
     ],
     "Award": 10500480,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Melee fire goblins, tainted with fire aura due to the influence of Inferno Ogres, appear at Landing Battle Site.",
+    "SceneTag": 0
   },
   "10004": {
     "MonsterId": 10004,
@@ -606,7 +620,8 @@
     ],
     "Award": 10500230,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Goblin Mage tainted with fire aura due to the influence of Inferno Ogres appear at the Landing Battle Site of Asteria Plains.",
+    "SceneTag": 0
   },
   "10047": {
     "MonsterId": 10047,
@@ -652,7 +667,8 @@
     ],
     "Award": 10500390,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Mountain spirits fond of fire appear at Landing Battle Site.",
+    "SceneTag": 0
   },
   "10012": {
     "MonsterId": 10012,
@@ -691,7 +707,8 @@
     ],
     "Award": 10500020,
     "TreasureBoxId": 40016,
-    "Condition": ""
+    "Condition": "The goblin mini-boss with long-range fire attacks appears at the Landing Battle Site of Asteria Plains. Will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10042": {
     "MonsterId": 10042,
@@ -730,7 +747,8 @@
     ],
     "Award": 10500080,
     "TreasureBoxId": 40022,
-    "Condition": ""
+    "Condition": "Mountain spirit mini-bosses with melee attacks appear at Landing Battle Site. They will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10018": {
     "MonsterId": 10018,
@@ -769,7 +787,8 @@
     ],
     "Award": 10700040,
     "TreasureBoxId": 40004,
-    "Condition": ""
+    "Condition": "Every hour on the hour, a giant orc emitting a fiery aura will appear at Landing Battle Site, handle with care!",
+    "SceneTag": 733
   },
   "10099": {
     "MonsterId": 10099,
@@ -812,7 +831,8 @@
     ],
     "Award": 10500560,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Small Arachnocrabs appear in the Underground District, often emerging in groups.",
+    "SceneTag": 0
   },
   "10014": {
     "MonsterId": 10014,
@@ -855,7 +875,8 @@
     ],
     "Award": 10500270,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Common adult Arachnocrabs appear at Underground District.",
+    "SceneTag": 0
   },
   "10034": {
     "MonsterId": 10034,
@@ -898,7 +919,8 @@
     ],
     "Award": 10500050,
     "TreasureBoxId": 40019,
-    "Condition": ""
+    "Condition": "Elite Arachnocrabs, tainted by the polluted environment of the underground district, appear at Underground District. They will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10069": {
     "MonsterId": 10069,
@@ -941,7 +963,8 @@
     ],
     "Award": 10700090,
     "TreasureBoxId": 40009,
-    "Condition": ""
+    "Condition": "Every half-hour, special Arachnocrabs with formidable strength appear at Underground District, handle with care!",
+    "SceneTag": 733
   },
   "10027": {
     "MonsterId": 10027,
@@ -984,7 +1007,8 @@
     ],
     "Award": 10500340,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Axe-wielding melee Brigands appear in the eastern and northern areas of Minsterhorn City, located in Asteria Plains.",
+    "SceneTag": 0
   },
   "10037": {
     "MonsterId": 10037,
@@ -1027,7 +1051,8 @@
     ],
     "Award": 10500370,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Dagger-wielding melee Brigands appear in the eastern and northern areas of Minsterhorn City, located in Asteria Plains.",
+    "SceneTag": 0
   },
   "10028": {
     "MonsterId": 10028,
@@ -1070,7 +1095,8 @@
     ],
     "Award": 10500350,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ranged-attacking Brigands appear at the Brigand camp in the western part of Minsterhorn City.",
+    "SceneTag": 0
   },
   "10039": {
     "MonsterId": 10039,
@@ -1113,7 +1139,8 @@
     ],
     "Award": 10500380,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Melee-attacking Brigands appear at the Brigand camp in the western part of Minsterhorn City.",
+    "SceneTag": 0
   },
   "10038": {
     "MonsterId": 10038,
@@ -1156,7 +1183,8 @@
     ],
     "Award": 10500070,
     "TreasureBoxId": 40021,
-    "Condition": ""
+    "Condition": "The dagger-wielding melee Brigand leader appears in the eastern and northern areas of Minsterhorn City. Will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10055": {
     "MonsterId": 10055,
@@ -1199,7 +1227,8 @@
     ],
     "Award": 10500100,
     "TreasureBoxId": 40024,
-    "Condition": ""
+    "Condition": "The melee-attacking Brigand leader appears at the Brigand camp in the western part of Minsterhorn City. Will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10056": {
     "MonsterId": 10056,
@@ -1242,7 +1271,8 @@
     ],
     "Award": 10700070,
     "TreasureBoxId": 40007,
-    "Condition": ""
+    "Condition": "Every hour on the hour, the Brigand leader appears at the Brigand camp in the western part of Minsterhorn city. Be cautious!",
+    "SceneTag": 733
   },
   "10074": {
     "MonsterId": 10074,
@@ -1285,7 +1315,8 @@
     ],
     "Award": 10500490,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Highly aggressive Bzzars appear in the underground district of Asterleeds.",
+    "SceneTag": 0
   },
   "10075": {
     "MonsterId": 10075,
@@ -1328,7 +1359,8 @@
     ],
     "Award": 10500500,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Poisonous Bzzars appear in the underground district of Asterleeds.",
+    "SceneTag": 0
   },
   "10076": {
     "MonsterId": 10076,
@@ -1371,7 +1403,8 @@
     ],
     "Award": 10500160,
     "TreasureBoxId": 40030,
-    "Condition": ""
+    "Condition": "Void Bzzars, influenced by the environment of the underground district, appear in the underground district of Asterleeds. They will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10077": {
     "MonsterId": 10077,
@@ -1414,7 +1447,8 @@
     ],
     "Award": 10700100,
     "TreasureBoxId": 40010,
-    "Condition": ""
+    "Condition": "Every half-hour, the Bzzar nest appears in the underground district of Asterleeds. Be cautious!",
+    "SceneTag": 733
   },
   "10021": {
     "MonsterId": 10021,
@@ -1457,7 +1491,8 @@
     ],
     "Award": 10500280,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "The Melee Muku King appears at Monster Camp in the southern region of the Kanamia Tribe.",
+    "SceneTag": 0
   },
   "10022": {
     "MonsterId": 10022,
@@ -1500,7 +1535,8 @@
     ],
     "Award": 10500290,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "The melee Muku King appears at Monster Camp in the southern region of the Kanamia Tribe.",
+    "SceneTag": 0
   },
   "10024": {
     "MonsterId": 10024,
@@ -1543,7 +1579,8 @@
     ],
     "Award": 10500310,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "The melee Muku King appears at Monster Camp in the southern region of the Kanamia Tribe.",
+    "SceneTag": 0
   },
   "10023": {
     "MonsterId": 10023,
@@ -1582,7 +1619,8 @@
     ],
     "Award": 10500300,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "The melee Muku King appears at Monster Camp in the southern region of the Kanamia Tribe.",
+    "SceneTag": 0
   },
   "10057": {
     "MonsterId": 10057,
@@ -1621,7 +1659,8 @@
     ],
     "Award": 10500110,
     "TreasureBoxId": 40025,
-    "Condition": ""
+    "Condition": "The hammer-wielding melee Muku leader appears at Monster Camp in the southern region of the Kanamia Tribe. Will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10058": {
     "MonsterId": 10058,
@@ -1660,7 +1699,8 @@
     ],
     "Award": 10500120,
     "TreasureBoxId": 40026,
-    "Condition": ""
+    "Condition": "The Muku Boss using dual axes for melee combat appears at Monster Camp in the southern region of the Kanamia Tribe. Will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10059": {
     "MonsterId": 10059,
@@ -1703,7 +1743,8 @@
     ],
     "Award": 10700080,
     "TreasureBoxId": 40008,
-    "Condition": ""
+    "Condition": "Every hour on the hour, a Muku leader will appear at Monster Camp in the Southern Kanamia Tribe, handle with care!",
+    "SceneTag": 733
   },
   "10030": {
     "MonsterId": 10030,
@@ -1746,7 +1787,8 @@
     ],
     "Award": 10500360,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Aggressive boars appear in the Windhowl Canyon.",
+    "SceneTag": 0
   },
   "10079": {
     "MonsterId": 10079,
@@ -1789,7 +1831,8 @@
     ],
     "Award": 10500520,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Boars mutated by wind attributes appear in the Windhowl Canyon.",
+    "SceneTag": 0
   },
   "10080": {
     "MonsterId": 10080,
@@ -1832,7 +1875,8 @@
     ],
     "Award": 10500170,
     "TreasureBoxId": 40031,
-    "Condition": ""
+    "Condition": "Boar mini-bosses appear in the Windhowl Canyon. They will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10081": {
     "MonsterId": 10081,
@@ -1875,7 +1919,8 @@
     ],
     "Award": 10700110,
     "TreasureBoxId": 40011,
-    "Condition": ""
+    "Condition": "Every half-hour, the Boarrier leader appears in the Windhowl Canyon. Be cautious!",
+    "SceneTag": 733
   },
   "10078": {
     "MonsterId": 10078,
@@ -1914,7 +1959,8 @@
     ],
     "Award": 10500510,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ordinary goblins with wind attribute melee attacks appear in the Windhowl Canyon.",
+    "SceneTag": 0
   },
   "10003": {
     "MonsterId": 10003,
@@ -1953,7 +1999,8 @@
     ],
     "Award": 10500220,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ordinary goblins with wind attribute ranged attacks appear in the Windhowl Canyon.",
+    "SceneTag": 0
   },
   "10066": {
     "MonsterId": 10066,
@@ -1992,7 +2039,8 @@
     ],
     "Award": 10500150,
     "TreasureBoxId": 40029,
-    "Condition": ""
+    "Condition": "Goblin mini-bosses wielding giant axes for melee attacks appear in the Windhowl Canyon. They will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10007": {
     "MonsterId": 10007,
@@ -2038,7 +2086,8 @@
     ],
     "Award": 10700010,
     "TreasureBoxId": 40001,
-    "Condition": ""
+    "Condition": "Every hour on the hour, on the hour, the leader of the storm goblins appears in the Windhowl Canyon. Be cautious!",
+    "SceneTag": 733
   },
   "10060": {
     "MonsterId": 10060,
@@ -2081,7 +2130,8 @@
     ],
     "Award": 10500430,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "The melee-attacking Dark Mist Legion Scout appears in Dark Mist Fortress area, Asteria Plains.",
+    "SceneTag": 0
   },
   "10062": {
     "MonsterId": 10062,
@@ -2124,7 +2174,8 @@
     ],
     "Award": 10500450,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "The ranged-attacking Dark Mist Legion Gunner appears in the Dark Mist Fortress area of Asteria Plains.",
+    "SceneTag": 0
   },
   "10061": {
     "MonsterId": 10061,
@@ -2167,7 +2218,8 @@
     ],
     "Award": 10500440,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "The melee-attacking Dark Mist Legion Guard appears in the Dark Mist Fortress area of Asteria Plains.",
+    "SceneTag": 0
   },
   "10063": {
     "MonsterId": 10063,
@@ -2210,7 +2262,8 @@
     ],
     "Award": 10500460,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "The melee-attacking Dark Mist Swordsman appears in the Dark Mist Fortress area of Asteria Plains.",
+    "SceneTag": 0
   },
   "10064": {
     "MonsterId": 10064,
@@ -2253,7 +2306,8 @@
     ],
     "Award": 10500130,
     "TreasureBoxId": 40027,
-    "Condition": ""
+    "Condition": "The ranged-attacking Dark Mist Legion Gunner Mini-Boss appears in the Dark Mist Fortress area of Asteria Plains. Will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10065": {
     "MonsterId": 10065,
@@ -2296,7 +2350,8 @@
     ],
     "Award": 10500140,
     "TreasureBoxId": 40028,
-    "Condition": ""
+    "Condition": "The melee-attacking Dark Mist Swordsman Mini-Boss appears in the Dark Mist Fortress area of Asteria Plains. Will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10010": {
     "MonsterId": 10010,
@@ -2335,7 +2390,8 @@
     ],
     "Award": 10700030,
     "TreasureBoxId": 40003,
-    "Condition": ""
+    "Condition": "Every half-hour, the Ogre Boss surrounded by lightning will appear in the Dark Mist Fortress area of Asteria Plains. Handle with care!",
+    "SceneTag": 733
   },
   "10082": {
     "MonsterId": 10082,
@@ -2378,7 +2434,8 @@
     ],
     "Award": 10500530,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ordinary Skyfish appears in the Skimmer's Lair.",
+    "SceneTag": 0
   },
   "10083": {
     "MonsterId": 10083,
@@ -2421,7 +2478,8 @@
     ],
     "Award": 10500540,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Aggressive Jade Skyfish appears in the Skimmer's Lair.",
+    "SceneTag": 0
   },
   "10100": {
     "MonsterId": 10100,
@@ -2460,7 +2518,8 @@
     ],
     "Award": 10500570,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ordinary melee-attacking Murlocs appear in the Skimmer's Lair.",
+    "SceneTag": 0
   },
   "10101": {
     "MonsterId": 10101,
@@ -2499,7 +2558,8 @@
     ],
     "Award": 10500580,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "Ordinary ranged-attacking Murloc appears in the Skimmer's Lair.",
+    "SceneTag": 0
   },
   "10104": {
     "MonsterId": 10104,
@@ -2538,7 +2598,8 @@
     ],
     "Award": 10500180,
     "TreasureBoxId": 40032,
-    "Condition": ""
+    "Condition": "Can be found in the Skimmer's Lair. Murloc hunters and mages cooperate seamlessly, handle with care! Will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10105": {
     "MonsterId": 10105,
@@ -2577,7 +2638,8 @@
     ],
     "Award": 10500190,
     "TreasureBoxId": 40033,
-    "Condition": ""
+    "Condition": "Can be found in the Skimmer's Lair. Murloc hunters and mages cooperate seamlessly, handle with care! Will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10084": {
     "MonsterId": 10084,
@@ -2620,7 +2682,8 @@
     ],
     "Award": 10700120,
     "TreasureBoxId": 40012,
-    "Condition": ""
+    "Condition": "Every hour on the hour, the leader of the Skyfish group appears in the Skimmer's Lair. Extremely aggressive Shrine Skyfish, handle with care!",
+    "SceneTag": 733
   },
   "10085": {
     "MonsterId": 10085,
@@ -2659,7 +2722,8 @@
     ],
     "Award": 10700130,
     "TreasureBoxId": 40013,
-    "Condition": ""
+    "Condition": "Every half-hour, the leader of the underwater lizardmen appears in the Skimmer's Lair, handle with care!",
+    "SceneTag": 733
   },
   "10053": {
     "MonsterId": 10053,
@@ -2698,7 +2762,8 @@
     ],
     "Award": 10500420,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "In the northern plains, one may encounter a common Goblin from the Duskdye Woods , a creature wielding a stick and known for its potent short-range attacks.",
+    "SceneTag": 0
   },
   "10051": {
     "MonsterId": 10051,
@@ -2737,7 +2802,8 @@
     ],
     "Award": 10500410,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "In the northern plains, one may encounter a common Goblin from the Duskdye Woods , a creature with potent short-range attacks.",
+    "SceneTag": 0
   },
   "10008": {
     "MonsterId": 10008,
@@ -2776,7 +2842,8 @@
     ],
     "Award": 10500010,
     "TreasureBoxId": 40015,
-    "Condition": ""
+    "Condition": "The Goblin Mini-Boss wielding a giant axe for melee combat appears in the Duskdye Woods. Will reappear 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10086": {
     "MonsterId": 10086,
@@ -2822,7 +2889,8 @@
     ],
     "Award": 10700140,
     "TreasureBoxId": 40014,
-    "Condition": ""
+    "Condition": "Every hour on the hour, the goblin leader appears in the Duskdye Woods in the Northern Plains, handle with care!",
+    "SceneTag": 733
   },
   "10049": {
     "MonsterId": 10049,
@@ -2861,7 +2929,8 @@
     ],
     "Award": 10500400,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "In the northern plains, one may encounter a common Muku from the Everfall Forest, a creature with potent long-range attacks.",
+    "SceneTag": 0
   },
   "10087": {
     "MonsterId": 10087,
@@ -2900,7 +2969,8 @@
     ],
     "Award": 10500550,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "In the northern plains, one may encounter a common Muku from the Everfall Forest, a creature with potent short-range attacks.",
+    "SceneTag": 0
   },
   "10052": {
     "MonsterId": 10052,
@@ -2939,7 +3009,8 @@
     ],
     "Award": 10500090,
     "TreasureBoxId": 40023,
-    "Condition": ""
+    "Condition": "In the northern plains, one may encounter a Muku Boss wielding a giant hammer for melee combat from the Everfall Forest, who reappears 3 minutes after being defeated.",
+    "SceneTag": 0
   },
   "10029": {
     "MonsterId": 10029,
@@ -2989,7 +3060,8 @@
     ],
     "Award": 10700050,
     "TreasureBoxId": 40005,
-    "Condition": ""
+    "Condition": "Every half-hour, Muku boss emerges in the Everfall Forest-a formidable foe demanding utmost caution.",
+    "SceneTag": 733
   },
   "10902": {
     "MonsterId": 10902,
@@ -3032,7 +3104,8 @@
     ],
     "Award": 10500620,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "A magical creature, appears daily at 10:00, 14:00, and 18:00(UTC-2) on the Skyquake Fields.",
+    "SceneTag": 0
   },
   "10903": {
     "MonsterId": 10903,
@@ -3075,7 +3148,8 @@
     ],
     "Award": 10500630,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "A magical creature, appears daily at 10:00, 14:00, and 18:00(UTC-2) on the Skyquake Fields.",
+    "SceneTag": 0
   },
   "10904": {
     "MonsterId": 10904,
@@ -3116,7 +3190,8 @@
     ],
     "Award": 10500610,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "It is said that Loyal Boarlet is more likely to appear in areas where monsters gathered.",
+    "SceneTag": 0
   },
   "10900": {
     "MonsterId": 10900,
@@ -3157,7 +3232,8 @@
     ],
     "Award": 10500600,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "It is said that Loyal Golen Nappo is more likely to appear in areas where monsters gathered.",
+    "SceneTag": 0
   },
   "10901": {
     "MonsterId": 10901,
@@ -3198,6 +3274,7 @@
     ],
     "Award": 10500590,
     "TreasureBoxId": 0,
-    "Condition": ""
+    "Condition": "A magical creature, appears every 2 hours at random locations. It is said that Silver Nappo is more likely to appear in areas where monsters gathered.",
+    "SceneTag": 0
   }
 }

@@ -20,7 +20,7 @@ function Personalzone_photo_show_windowView:OnActive()
       isUnion = false
     })
   end)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_report, self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_report, self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId)
   self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_loop_eff)
   self.photoNativeTextureId_ = nil
   Z.CoroUtil.create_coro_xpcall(function()

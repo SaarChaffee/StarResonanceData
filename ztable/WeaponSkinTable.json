@@ -1,8 +1,8 @@
 {
   "7310001": {
     "Id": 7310001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Oboro Blade",
+    "Intro": "Oboro Blade",
     "Model": [],
     "WeaponModelId": [
       1100001
@@ -20,8 +20,8 @@
   },
   "7310002": {
     "Id": 7310002,
-    "Name": "",
-    "Intro": "",
+    "Name": "Mirrorlight Blade",
+    "Intro": "Mirrorlight Blade",
     "Model": [],
     "WeaponModelId": [
       1310020
@@ -39,8 +39,8 @@
   },
   "7310003": {
     "Id": 7310003,
-    "Name": "",
-    "Intro": "",
+    "Name": "Lotus Blade",
+    "Intro": "Lotus Blade",
     "Model": [],
     "WeaponModelId": [
       1310030
@@ -49,7 +49,7 @@
     "DefaultEffect": [],
     "ProfessionId": 1,
     "Original": 0,
-    "SortID": 3,
+    "SortID": 4,
     "Score": 0,
     "LongIcon": "ch_wp_olvera_02_01_t",
     "IsOpen": false,
@@ -58,8 +58,8 @@
   },
   "7310004": {
     "Id": 7310004,
-    "Name": "",
-    "Intro": "",
+    "Name": "Sakura Blade",
+    "Intro": "Sakura Blade",
     "Model": [],
     "WeaponModelId": [
       1310040
@@ -68,7 +68,7 @@
     "DefaultEffect": [],
     "ProfessionId": 1,
     "Original": 0,
-    "SortID": 4,
+    "SortID": 5,
     "Score": 160,
     "LongIcon": "ch_wp_olvera_02_01_t",
     "IsOpen": true,
@@ -77,8 +77,8 @@
   },
   "7310005": {
     "Id": 7310005,
-    "Name": "",
-    "Intro": "",
+    "Name": "Doomlord Blade",
+    "Intro": "Doomlord Blade",
     "Model": [],
     "WeaponModelId": [
       1310050
@@ -87,7 +87,7 @@
     "DefaultEffect": [],
     "ProfessionId": 1,
     "Original": 0,
-    "SortID": 5,
+    "SortID": 6,
     "Score": 30,
     "LongIcon": "ch_wp_olvera_02_01_t",
     "IsOpen": true,
@@ -96,27 +96,62 @@
   },
   "7310006": {
     "Id": 7310006,
-    "Name": "",
-    "Intro": "",
+    "Name": "Poseidon's Blade",
+    "Intro": "Poseidon's Blade",
     "Model": [],
     "WeaponModelId": [
       1310060
+    ],
+    "EffectSwitch": [
+      [
+        1
+      ]
+    ],
+    "DefaultEffect": [
+      [
+        "0",
+        "ep_weapon_effect01_point",
+        "effect/skill/skin_sea/p_fx_weapon_olvera_vfx_01",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 1,
+    "Original": 1,
+    "SortID": 7,
+    "Score": 320,
+    "LongIcon": "ch_wp_olvera_06_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7310007": {
+    "Id": 7310007,
+    "Name": "Emberglow Blade",
+    "Intro": "Emberglow Blade",
+    "Model": [],
+    "WeaponModelId": [
+      1310070
     ],
     "EffectSwitch": [],
     "DefaultEffect": [],
     "ProfessionId": 1,
     "Original": 0,
-    "SortID": 5,
-    "Score": 320,
+    "SortID": 3,
+    "Score": 30,
     "LongIcon": "ch_wp_olvera_02_01_t",
-    "IsOpen": false,
+    "IsOpen": true,
     "EffectScale": [],
     "EquipToPlay": 0
   },
   "7320001": {
     "Id": 7320001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Oboro Staff",
+    "Intro": "Oboro Staff",
     "Model": [],
     "WeaponModelId": [
       1100004
@@ -134,8 +169,8 @@
   },
   "7320002": {
     "Id": 7320002,
-    "Name": "",
-    "Intro": "",
+    "Name": "Mirrorlight Staff",
+    "Intro": "Mirrorlight Staff",
     "Model": [],
     "WeaponModelId": [
       1320020
@@ -153,8 +188,8 @@
   },
   "7320003": {
     "Id": 7320003,
-    "Name": "",
-    "Intro": "",
+    "Name": "Lotus Staff",
+    "Intro": "Lotus Staff",
     "Model": [],
     "WeaponModelId": [
       1320030
@@ -163,7 +198,7 @@
     "DefaultEffect": [],
     "ProfessionId": 2,
     "Original": 0,
-    "SortID": 3,
+    "SortID": 4,
     "Score": 0,
     "LongIcon": "ch_wp_boyce_02_01_t",
     "IsOpen": false,
@@ -172,8 +207,8 @@
   },
   "7320004": {
     "Id": 7320004,
-    "Name": "",
-    "Intro": "",
+    "Name": "Sakura Staff",
+    "Intro": "Sakura Staff",
     "Model": [],
     "WeaponModelId": [
       1320040
@@ -182,7 +217,7 @@
     "DefaultEffect": [],
     "ProfessionId": 2,
     "Original": 0,
-    "SortID": 4,
+    "SortID": 5,
     "Score": 160,
     "LongIcon": "ch_wp_boyce_02_01_t",
     "IsOpen": true,
@@ -191,8 +226,8 @@
   },
   "7320005": {
     "Id": 7320005,
-    "Name": "",
-    "Intro": "",
+    "Name": "Doomlord Staff",
+    "Intro": "Doomlord Staff",
     "Model": [],
     "WeaponModelId": [
       1320050
@@ -201,7 +236,7 @@
     "DefaultEffect": [],
     "ProfessionId": 2,
     "Original": 0,
-    "SortID": 5,
+    "SortID": 6,
     "Score": 30,
     "LongIcon": "ch_wp_boyce_02_01_t",
     "IsOpen": true,
@@ -210,27 +245,62 @@
   },
   "7320006": {
     "Id": 7320006,
-    "Name": "",
-    "Intro": "",
+    "Name": "Poseidon's Staff",
+    "Intro": "Poseidon's Staff",
     "Model": [],
     "WeaponModelId": [
       1320060
+    ],
+    "EffectSwitch": [
+      [
+        1
+      ]
+    ],
+    "DefaultEffect": [
+      [
+        "0",
+        "ep_weapon_effect01_point",
+        "effect/skill/skin_sea/p_fx_weapon_boyce_vfx_01",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 2,
+    "Original": 1,
+    "SortID": 7,
+    "Score": 320,
+    "LongIcon": "ch_wp_boyce_06_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7320007": {
+    "Id": 7320007,
+    "Name": "Emberglow Staff",
+    "Intro": "Emberglow Staff",
+    "Model": [],
+    "WeaponModelId": [
+      1320070
     ],
     "EffectSwitch": [],
     "DefaultEffect": [],
     "ProfessionId": 2,
     "Original": 0,
-    "SortID": 5,
-    "Score": 320,
+    "SortID": 3,
+    "Score": 30,
     "LongIcon": "ch_wp_boyce_02_01_t",
-    "IsOpen": false,
+    "IsOpen": true,
     "EffectScale": [],
     "EquipToPlay": 0
   },
   "7330001": {
     "Id": 7330001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Battleaxe",
+    "Intro": "Battleaxe",
     "Model": [],
     "WeaponModelId": [
       1100002,
@@ -249,8 +319,8 @@
   },
   "7340001": {
     "Id": 7340001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Oboro Lance",
+    "Intro": "Oboro Lance",
     "Model": [],
     "WeaponModelId": [
       1100005
@@ -268,8 +338,8 @@
   },
   "7340002": {
     "Id": 7340002,
-    "Name": "",
-    "Intro": "",
+    "Name": "Mirrorlight Lance",
+    "Intro": "Mirrorlight Lance",
     "Model": [],
     "WeaponModelId": [
       1340020
@@ -287,8 +357,8 @@
   },
   "7340003": {
     "Id": 7340003,
-    "Name": "",
-    "Intro": "",
+    "Name": "Lotus Lance",
+    "Intro": "Lotus Lance",
     "Model": [],
     "WeaponModelId": [
       1340030
@@ -297,7 +367,7 @@
     "DefaultEffect": [],
     "ProfessionId": 4,
     "Original": 0,
-    "SortID": 3,
+    "SortID": 4,
     "Score": 0,
     "LongIcon": "ch_wp_tina_02_01_t",
     "IsOpen": false,
@@ -306,8 +376,8 @@
   },
   "7340004": {
     "Id": 7340004,
-    "Name": "",
-    "Intro": "",
+    "Name": "Sakura Lance",
+    "Intro": "Sakura Lance",
     "Model": [],
     "WeaponModelId": [
       1340040
@@ -316,7 +386,7 @@
     "DefaultEffect": [],
     "ProfessionId": 4,
     "Original": 0,
-    "SortID": 4,
+    "SortID": 5,
     "Score": 160,
     "LongIcon": "ch_wp_tina_02_01_t",
     "IsOpen": true,
@@ -325,8 +395,8 @@
   },
   "7340005": {
     "Id": 7340005,
-    "Name": "",
-    "Intro": "",
+    "Name": "Doomlord Lance",
+    "Intro": "Doomlord Lance",
     "Model": [],
     "WeaponModelId": [
       1340050
@@ -335,7 +405,7 @@
     "DefaultEffect": [],
     "ProfessionId": 4,
     "Original": 0,
-    "SortID": 5,
+    "SortID": 6,
     "Score": 30,
     "LongIcon": "ch_wp_tina_02_01_t",
     "IsOpen": true,
@@ -344,27 +414,62 @@
   },
   "7340006": {
     "Id": 7340006,
-    "Name": "",
-    "Intro": "",
+    "Name": "Poseidon's Spear",
+    "Intro": "Poseidon's Spear",
     "Model": [],
     "WeaponModelId": [
       1340060
+    ],
+    "EffectSwitch": [
+      [
+        1
+      ]
+    ],
+    "DefaultEffect": [
+      [
+        "0",
+        "ep_weapon_effect01_point",
+        "effect/skill/skin_sea/p_fx_weapon_tina_vfx_01",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 4,
+    "Original": 1,
+    "SortID": 7,
+    "Score": 320,
+    "LongIcon": "ch_wp_tina_06_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7340007": {
+    "Id": 7340007,
+    "Name": "Emberglow Lance",
+    "Intro": "Emberglow Lance",
+    "Model": [],
+    "WeaponModelId": [
+      1340070
     ],
     "EffectSwitch": [],
     "DefaultEffect": [],
     "ProfessionId": 4,
     "Original": 0,
-    "SortID": 5,
-    "Score": 320,
+    "SortID": 3,
+    "Score": 30,
     "LongIcon": "ch_wp_tina_02_01_t",
-    "IsOpen": false,
+    "IsOpen": true,
     "EffectScale": [],
     "EquipToPlay": 0
   },
   "7350001": {
     "Id": 7350001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Oboro Ring",
+    "Intro": "Oboro Ring",
     "Model": [],
     "WeaponModelId": [
       1100006,
@@ -383,8 +488,8 @@
   },
   "7350002": {
     "Id": 7350002,
-    "Name": "",
-    "Intro": "",
+    "Name": "Mirrorlight Ring",
+    "Intro": "Mirrorlight Ring",
     "Model": [],
     "WeaponModelId": [
       1350020,
@@ -403,8 +508,8 @@
   },
   "7350003": {
     "Id": 7350003,
-    "Name": "",
-    "Intro": "",
+    "Name": "Lotus Ring",
+    "Intro": "Lotus Ring",
     "Model": [],
     "WeaponModelId": [
       1350030,
@@ -414,7 +519,7 @@
     "DefaultEffect": [],
     "ProfessionId": 5,
     "Original": 0,
-    "SortID": 3,
+    "SortID": 4,
     "Score": 0,
     "LongIcon": "ch_wp_iruna_02_01_t",
     "IsOpen": false,
@@ -423,8 +528,8 @@
   },
   "7350004": {
     "Id": 7350004,
-    "Name": "",
-    "Intro": "",
+    "Name": "Sakura Ring",
+    "Intro": "Sakura Ring",
     "Model": [],
     "WeaponModelId": [
       1350040,
@@ -434,7 +539,7 @@
     "DefaultEffect": [],
     "ProfessionId": 5,
     "Original": 0,
-    "SortID": 4,
+    "SortID": 5,
     "Score": 160,
     "LongIcon": "ch_wp_iruna_02_01_t",
     "IsOpen": true,
@@ -443,8 +548,8 @@
   },
   "7350005": {
     "Id": 7350005,
-    "Name": "",
-    "Intro": "",
+    "Name": "Doomlord Ring",
+    "Intro": "Doomlord Ring",
     "Model": [],
     "WeaponModelId": [
       1350050,
@@ -454,7 +559,7 @@
     "DefaultEffect": [],
     "ProfessionId": 5,
     "Original": 0,
-    "SortID": 5,
+    "SortID": 6,
     "Score": 30,
     "LongIcon": "ch_wp_iruna_02_01_t",
     "IsOpen": true,
@@ -463,28 +568,78 @@
   },
   "7350006": {
     "Id": 7350006,
-    "Name": "",
-    "Intro": "",
+    "Name": "Poseidon's Ring",
+    "Intro": "Poseidon's Ring",
     "Model": [],
     "WeaponModelId": [
       1350060,
       1350060
     ],
+    "EffectSwitch": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "DefaultEffect": [
+      [
+        "0",
+        "ep_weapon_effect01_point",
+        "effect/skill/skin_sea/p_fx_weapon_iruna_vfx_01",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "1",
+        "ep_weapon_effect01_point",
+        "effect/skill/skin_sea/p_fx_weapon_iruna_vfx_01",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 5,
+    "Original": 1,
+    "SortID": 7,
+    "Score": 320,
+    "LongIcon": "ch_wp_iruna_06_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7350007": {
+    "Id": 7350007,
+    "Name": "Emberglow Ring",
+    "Intro": "Emberglow Ring",
+    "Model": [],
+    "WeaponModelId": [
+      1350070,
+      1350070
+    ],
     "EffectSwitch": [],
     "DefaultEffect": [],
     "ProfessionId": 5,
     "Original": 0,
-    "SortID": 5,
-    "Score": 320,
+    "SortID": 3,
+    "Score": 30,
     "LongIcon": "ch_wp_iruna_02_01_t",
-    "IsOpen": false,
+    "IsOpen": true,
     "EffectScale": [],
     "EquipToPlay": 0
   },
   "7360001": {
     "Id": 7360001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Hand Cannon",
+    "Intro": "Hand Cannon",
     "Model": [],
     "WeaponModelId": [
       1100008
@@ -514,8 +669,8 @@
   },
   "7370001": {
     "Id": 7370001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Oboro Edge",
+    "Intro": "Oboro Edge",
     "Model": [],
     "WeaponModelId": [
       1100007
@@ -533,8 +688,8 @@
   },
   "7370002": {
     "Id": 7370002,
-    "Name": "",
-    "Intro": "",
+    "Name": "Mirrorlight Edge",
+    "Intro": "Mirrorlight Edge",
     "Model": [],
     "WeaponModelId": [
       1370020
@@ -552,8 +707,8 @@
   },
   "7370003": {
     "Id": 7370003,
-    "Name": "",
-    "Intro": "",
+    "Name": "Lotus Edge",
+    "Intro": "Lotus Edge",
     "Model": [],
     "WeaponModelId": [
       1370030
@@ -562,7 +717,7 @@
     "DefaultEffect": [],
     "ProfessionId": 9,
     "Original": 0,
-    "SortID": 3,
+    "SortID": 4,
     "Score": 0,
     "LongIcon": "ch_wp_comeau_02_01_t",
     "IsOpen": false,
@@ -571,8 +726,8 @@
   },
   "7370004": {
     "Id": 7370004,
-    "Name": "",
-    "Intro": "",
+    "Name": "Sakura Edge",
+    "Intro": "Sakura Edge",
     "Model": [],
     "WeaponModelId": [
       1370040
@@ -581,7 +736,7 @@
     "DefaultEffect": [],
     "ProfessionId": 9,
     "Original": 0,
-    "SortID": 4,
+    "SortID": 5,
     "Score": 160,
     "LongIcon": "ch_wp_comeau_02_01_t",
     "IsOpen": true,
@@ -590,8 +745,8 @@
   },
   "7370005": {
     "Id": 7370005,
-    "Name": "",
-    "Intro": "",
+    "Name": "Doomlord Edge",
+    "Intro": "Doomlord Edge",
     "Model": [],
     "WeaponModelId": [
       1370050
@@ -600,7 +755,7 @@
     "DefaultEffect": [],
     "ProfessionId": 9,
     "Original": 0,
-    "SortID": 5,
+    "SortID": 6,
     "Score": 30,
     "LongIcon": "ch_wp_comeau_02_01_t",
     "IsOpen": true,
@@ -609,27 +764,62 @@
   },
   "7370006": {
     "Id": 7370006,
-    "Name": "",
-    "Intro": "",
+    "Name": "Poseidon's Edge",
+    "Intro": "Poseidon's Edge",
     "Model": [],
     "WeaponModelId": [
       1370060
+    ],
+    "EffectSwitch": [
+      [
+        1
+      ]
+    ],
+    "DefaultEffect": [
+      [
+        "0",
+        "ep_weapon_effect01_point",
+        "effect/skill/skin_sea/p_fx_weapon_comeau_vfx_01",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 9,
+    "Original": 1,
+    "SortID": 7,
+    "Score": 320,
+    "LongIcon": "ch_wp_comeau_06_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7370007": {
+    "Id": 7370007,
+    "Name": "Emberglow Edge",
+    "Intro": "Emberglow Edge",
+    "Model": [],
+    "WeaponModelId": [
+      1370070
     ],
     "EffectSwitch": [],
     "DefaultEffect": [],
     "ProfessionId": 9,
     "Original": 0,
-    "SortID": 5,
-    "Score": 320,
+    "SortID": 3,
+    "Score": 30,
     "LongIcon": "ch_wp_comeau_02_01_t",
-    "IsOpen": false,
+    "IsOpen": true,
     "EffectScale": [],
     "EquipToPlay": 0
   },
   "7380001": {
     "Id": 7380001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Common Ceremonial Staff",
+    "Intro": "Common Ceremonial Staff",
     "Model": [],
     "WeaponModelId": [
       1100007
@@ -647,8 +837,8 @@
   },
   "7390001": {
     "Id": 7390001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Oboro Bow",
+    "Intro": "Oboro Bow",
     "Model": [],
     "WeaponModelId": [
       0,
@@ -686,8 +876,8 @@
   },
   "7390002": {
     "Id": 7390002,
-    "Name": "",
-    "Intro": "",
+    "Name": "Bow - Mirrorlight",
+    "Intro": "Bow - Mirrorlight",
     "Model": [],
     "WeaponModelId": [
       0,
@@ -709,7 +899,7 @@
     ],
     "ProfessionId": 11,
     "Original": 1,
-    "SortID": 3,
+    "SortID": 2,
     "Score": 30,
     "LongIcon": "ch_wp_rodri_02_01_t",
     "IsOpen": true,
@@ -718,8 +908,8 @@
   },
   "7390003": {
     "Id": 7390003,
-    "Name": "",
-    "Intro": "",
+    "Name": "Lotus Bow",
+    "Intro": "Lotus Bow",
     "Model": [],
     "WeaponModelId": [
       0,
@@ -741,7 +931,7 @@
     ],
     "ProfessionId": 11,
     "Original": 0,
-    "SortID": 3,
+    "SortID": 4,
     "Score": 0,
     "LongIcon": "ch_wp_rodri_02_01_t",
     "IsOpen": false,
@@ -750,8 +940,8 @@
   },
   "7390004": {
     "Id": 7390004,
-    "Name": "",
-    "Intro": "",
+    "Name": "Sakura Bow",
+    "Intro": "Sakura Bow",
     "Model": [],
     "WeaponModelId": [
       0,
@@ -773,7 +963,7 @@
     ],
     "ProfessionId": 11,
     "Original": 0,
-    "SortID": 4,
+    "SortID": 5,
     "Score": 160,
     "LongIcon": "ch_wp_rodri_02_01_t",
     "IsOpen": true,
@@ -789,8 +979,8 @@
   },
   "7390005": {
     "Id": 7390005,
-    "Name": "",
-    "Intro": "",
+    "Name": "Doomlord Bow",
+    "Intro": "Doomlord Bow",
     "Model": [],
     "WeaponModelId": [
       0,
@@ -812,7 +1002,7 @@
     ],
     "ProfessionId": 11,
     "Original": 0,
-    "SortID": 5,
+    "SortID": 6,
     "Score": 30,
     "LongIcon": "ch_wp_rodri_02_01_t",
     "IsOpen": true,
@@ -821,14 +1011,21 @@
   },
   "7390006": {
     "Id": 7390006,
-    "Name": "",
-    "Intro": "",
+    "Name": "Poseidon's Bow",
+    "Intro": "Poseidon's Bow",
     "Model": [],
     "WeaponModelId": [
       0,
       1390060
     ],
-    "EffectSwitch": [],
+    "EffectSwitch": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
     "DefaultEffect": [
       [
         "1",
@@ -840,14 +1037,64 @@
         "90",
         "0",
         "0"
+      ],
+      [
+        "1",
+        "ep_weapon_effect01_point",
+        "effect/skill/skin_sea/p_fx_weapon_rodri_vfx_01",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 11,
+    "Original": 1,
+    "SortID": 7,
+    "Score": 320,
+    "LongIcon": "ch_wp_rodri_06_01_t",
+    "IsOpen": true,
+    "EffectScale": [
+      [
+        "ep_weapon_effect02_point",
+        "1",
+        "1.1",
+        "1"
+      ]
+    ],
+    "EquipToPlay": 0
+  },
+  "7390007": {
+    "Id": 7390007,
+    "Name": "Emberglow Bow",
+    "Intro": "Emberglow Bow",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1390070
+    ],
+    "EffectSwitch": [],
+    "DefaultEffect": [
+      [
+        "1",
+        "ep_weapon_effect02_point",
+        "effect/skill/rodri/p_fx_skill_rodri-01_bowstring",
+        "0.071",
+        "0.015",
+        "0.018",
+        "90",
+        "0",
+        "0"
       ]
     ],
     "ProfessionId": 11,
     "Original": 0,
-    "SortID": 5,
-    "Score": 320,
+    "SortID": 3,
+    "Score": 30,
     "LongIcon": "ch_wp_rodri_02_01_t",
-    "IsOpen": false,
+    "IsOpen": true,
     "EffectScale": [
       [
         "ep_weapon_effect02_point",
@@ -860,8 +1107,8 @@
   },
   "7400001": {
     "Id": 7400001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Oboro Aegis",
+    "Intro": "Oboro Aegis",
     "Model": [],
     "WeaponModelId": [
       1100011,
@@ -880,8 +1127,8 @@
   },
   "7400002": {
     "Id": 7400002,
-    "Name": "",
-    "Intro": "",
+    "Name": "Mirrorlight Aegis",
+    "Intro": "Mirrorlight Aegis",
     "Model": [],
     "WeaponModelId": [
       1400020,
@@ -900,8 +1147,8 @@
   },
   "7400003": {
     "Id": 7400003,
-    "Name": "",
-    "Intro": "",
+    "Name": "Lotus Aegis",
+    "Intro": "Lotus Aegis",
     "Model": [],
     "WeaponModelId": [
       1400030,
@@ -911,7 +1158,7 @@
     "DefaultEffect": [],
     "ProfessionId": 12,
     "Original": 0,
-    "SortID": 3,
+    "SortID": 4,
     "Score": 0,
     "LongIcon": "ch_wp_farfara_02_01_t",
     "IsOpen": false,
@@ -920,8 +1167,8 @@
   },
   "7400004": {
     "Id": 7400004,
-    "Name": "",
-    "Intro": "",
+    "Name": "Sakura Aegis",
+    "Intro": "Sakura Aegis",
     "Model": [],
     "WeaponModelId": [
       1400040,
@@ -931,7 +1178,7 @@
     "DefaultEffect": [],
     "ProfessionId": 12,
     "Original": 0,
-    "SortID": 4,
+    "SortID": 5,
     "Score": 160,
     "LongIcon": "ch_wp_farfara_02_01_t",
     "IsOpen": true,
@@ -940,8 +1187,8 @@
   },
   "7400005": {
     "Id": 7400005,
-    "Name": "",
-    "Intro": "",
+    "Name": "Doomlord Aegis",
+    "Intro": "Doomlord Aegis",
     "Model": [],
     "WeaponModelId": [
       1400050,
@@ -951,7 +1198,7 @@
     "DefaultEffect": [],
     "ProfessionId": 12,
     "Original": 0,
-    "SortID": 5,
+    "SortID": 6,
     "Score": 30,
     "LongIcon": "ch_wp_farfara_02_01_t",
     "IsOpen": true,
@@ -960,28 +1207,78 @@
   },
   "7400006": {
     "Id": 7400006,
-    "Name": "",
-    "Intro": "",
+    "Name": "Poseidon's Shield",
+    "Intro": "Poseidon's Shield",
     "Model": [],
     "WeaponModelId": [
       1400060,
       1400061
     ],
+    "EffectSwitch": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "DefaultEffect": [
+      [
+        "0",
+        "ep_weapon_effect01_point",
+        "effect/skill/skin_sea/p_fx_weapon_farfara_vfx_01",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "1",
+        "ep_weapon_effect01_point",
+        "effect/skill/skin_sea/p_fx_weapon_farfara_vfx_02",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 12,
+    "Original": 1,
+    "SortID": 7,
+    "Score": 320,
+    "LongIcon": "ch_wp_farfara_06_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7400007": {
+    "Id": 7400007,
+    "Name": "Emberglow Aegis",
+    "Intro": "Emberglow Aegis",
+    "Model": [],
+    "WeaponModelId": [
+      1400070,
+      1400071
+    ],
     "EffectSwitch": [],
     "DefaultEffect": [],
     "ProfessionId": 12,
     "Original": 0,
-    "SortID": 5,
-    "Score": 320,
+    "SortID": 3,
+    "Score": 30,
     "LongIcon": "ch_wp_farfara_02_01_t",
-    "IsOpen": false,
+    "IsOpen": true,
     "EffectScale": [],
     "EquipToPlay": 0
   },
   "7410001": {
     "Id": 7410001,
-    "Name": "",
-    "Intro": "",
+    "Name": "Oboro Guitar",
+    "Intro": "Oboro Guitar",
     "Model": [],
     "WeaponModelId": [
       0,
@@ -1000,8 +1297,8 @@
   },
   "7410002": {
     "Id": 7410002,
-    "Name": "",
-    "Intro": "",
+    "Name": "Mirrorlight Guitar",
+    "Intro": "Mirrorlight Guitar",
     "Model": [],
     "WeaponModelId": [
       0,
@@ -1020,8 +1317,8 @@
   },
   "7410003": {
     "Id": 7410003,
-    "Name": "",
-    "Intro": "",
+    "Name": "Lotus Guitar",
+    "Intro": "Lotus Guitar",
     "Model": [],
     "WeaponModelId": [
       0,
@@ -1031,7 +1328,7 @@
     "DefaultEffect": [],
     "ProfessionId": 13,
     "Original": 0,
-    "SortID": 3,
+    "SortID": 4,
     "Score": 0,
     "LongIcon": "ch_wp_guitar_02_01_t",
     "IsOpen": false,
@@ -1040,8 +1337,8 @@
   },
   "7410004": {
     "Id": 7410004,
-    "Name": "",
-    "Intro": "",
+    "Name": "Sakura Guitar",
+    "Intro": "Sakura Guitar",
     "Model": [],
     "WeaponModelId": [
       0,
@@ -1051,7 +1348,7 @@
     "DefaultEffect": [],
     "ProfessionId": 13,
     "Original": 0,
-    "SortID": 4,
+    "SortID": 5,
     "Score": 160,
     "LongIcon": "ch_wp_guitar_02_01_t",
     "IsOpen": true,
@@ -1060,8 +1357,8 @@
   },
   "7410005": {
     "Id": 7410005,
-    "Name": "",
-    "Intro": "",
+    "Name": "Doomlord Guitar",
+    "Intro": "Doomlord Guitar",
     "Model": [],
     "WeaponModelId": [
       0,
@@ -1071,7 +1368,7 @@
     "DefaultEffect": [],
     "ProfessionId": 13,
     "Original": 0,
-    "SortID": 5,
+    "SortID": 6,
     "Score": 30,
     "LongIcon": "ch_wp_guitar_02_01_t",
     "IsOpen": true,
@@ -1080,21 +1377,60 @@
   },
   "7410006": {
     "Id": 7410006,
-    "Name": "",
-    "Intro": "",
+    "Name": "Poseidon's Guitar",
+    "Intro": "Poseidon's Guitar",
     "Model": [],
     "WeaponModelId": [
       0,
       1410060
     ],
+    "EffectSwitch": [
+      [
+        1
+      ],
+      [
+        1
+      ]
+    ],
+    "DefaultEffect": [
+      [
+        "1",
+        "ep_weapon_effect01_point",
+        "effect/skill/skin_sea/p_fx_weapon_guitar_vfx_01",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "ProfessionId": 13,
+    "Original": 1,
+    "SortID": 7,
+    "Score": 320,
+    "LongIcon": "ch_wp_guitar_06_01_t",
+    "IsOpen": true,
+    "EffectScale": [],
+    "EquipToPlay": 0
+  },
+  "7410007": {
+    "Id": 7410007,
+    "Name": "Emberglow Guitar",
+    "Intro": "Emberglow Guitar",
+    "Model": [],
+    "WeaponModelId": [
+      0,
+      1410070
+    ],
     "EffectSwitch": [],
     "DefaultEffect": [],
     "ProfessionId": 13,
     "Original": 0,
-    "SortID": 5,
-    "Score": 320,
+    "SortID": 3,
+    "Score": 30,
     "LongIcon": "ch_wp_guitar_02_01_t",
-    "IsOpen": false,
+    "IsOpen": true,
     "EffectScale": [],
     "EquipToPlay": 0
   }

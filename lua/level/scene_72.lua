@@ -40,7 +40,7 @@ function Scene:InitEvents()
     eventId = 138,
     count = -1,
     action = function(localSelf)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0, true)
     end
   }
 end

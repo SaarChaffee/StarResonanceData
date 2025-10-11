@@ -138,7 +138,8 @@ function Gasha_detail_windowView:refreshAwardIds(awardIds, uiBinder, index)
       if itemRow then
         local name = "hight_item_" .. i
         local hightItem = self:AsyncLoadUiUnit(path, name, root)
-        hightItem.rimg_icon:SetImage(itemRow.Icon)
+        local itemVm = Z.VMMgr.GetVM("items")
+        hightItem.rimg_icon:SetImage(itemVm.GetItemIcon(award.awardId))
         self:AddAsyncClick(hightItem.btn_show, function()
           if self.tipsId_ then
             Z.TipsVM.CloseItemTipsView(self.tipsId_)

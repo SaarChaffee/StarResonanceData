@@ -6,6 +6,7 @@ function DungeonTimerData:ctor()
   self.MainViewHideTag = false
   self.DungeonHideTag = false
   self.DungeonTimerViewData = {}
+  self.IsPausing = false
 end
 
 function DungeonTimerData:SetMainViewHideTag(isShow)
@@ -32,6 +33,7 @@ function DungeonTimerData:Clear()
   self.MainViewHideTag = false
   self.DungeonHideTag = false
   self.DungeonTimerViewData = {}
+  self.IsPausing = false
 end
 
 return DungeonTimerData

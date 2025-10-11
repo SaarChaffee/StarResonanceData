@@ -102,6 +102,7 @@ function Hero_dungeon_master_popupView:refreshScoreReward()
       unit.Ref:SetVisible(unit.reddot, canReceive and not isReceive)
       
       function itemData.clickCallFunc()
+        local isReceive = self.heroDungeonMainVm_.CheckGetSeasonScoreAwrard(index)
         if not isReceive and canReceive then
           local isSuccess = self.heroDungeonMainVm_.AsyncGetMasterModeAward(index - 1, self.cancelSource:CreateToken())
           if not isSuccess then

@@ -82,6 +82,13 @@ function TalentSkillData:GetTalentTreeByWeapon(weaponId)
   return self.talentStageConfigs_[weaponId]
 end
 
+function TalentSkillData:GetTalentStageConfigByTalentTreeConfig(config)
+  if config == nil then
+    return
+  end
+  return self.talentStageConfigs_[config.WeaponType][config.TalentStage][config.BdType]
+end
+
 function TalentSkillData:GetTalentShowVideo(talentId)
   local showVideo = self.talentShowVideo_[talentId]
   if showVideo and showVideo[1] then

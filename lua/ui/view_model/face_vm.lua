@@ -282,6 +282,14 @@ local setPupilOffsetV = function(attrType, offset)
     }, i, true)
   end
 end
+local getPupilOffsetV = function(attrType, area)
+  local templateVM = Z.VMMgr.GetVM("face_template")
+  local attrData = faceData.FaceDef.ATTR_TABLE[attrType]
+  local areaOption = attrData.OptionList[area]
+  local initHSV = templateVM.GetFaceOptionInitValueByModelId(faceData.ModelId, areaOption)
+  local value = faceData:GetFaceOptionValue(areaOption)
+  return value.v - initHSV.v
+end
 local resetToServerData = function(attrType, paramIndex)
   paramIndex = paramIndex or 1
   local attrData = faceData.FaceDef.ATTR_TABLE[attrType]
@@ -958,6 +966,7 @@ local ret = {
   SetAssociatedFaceOption = setAssociatedFaceOption,
   GetFaceOptionByAttrType = getFaceOptionByAttrType,
   SetPupilOffsetV = setPupilOffsetV,
+  GetPupilOffsetV = getPupilOffsetV,
   ResetToServerData = resetToServerData,
   CheckLocalFaceData = checkLocalFaceData,
   GetFeatureDataByFeatureId = getFeatureDataByFeatureId,

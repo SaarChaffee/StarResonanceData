@@ -36,12 +36,16 @@ function HandbookReadingWorksLoopGridItem:OnRefresh(data)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_new, isNew)
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, self.IsSelected)
+  self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
 end
 
-function HandbookReadingWorksLoopGridItem:OnSelected(isSelected)
+function HandbookReadingWorksLoopGridItem:OnSelected(isSelected, isClick)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, isSelected)
   if isSelected then
-    self.parent.UIView:SelectId(self.data)
+    self.parent.UIView:SelectId(self.data, isClick)
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+  else
+    self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
   end
 end
 

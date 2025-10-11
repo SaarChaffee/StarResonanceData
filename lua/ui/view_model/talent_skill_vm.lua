@@ -165,6 +165,14 @@ function TalentSkillVM.GetAllTalentPointCount()
   return Z.ContainerMgr.CharSerialize.professionList.totalTalentPoints
 end
 
+function TalentSkillVM.GetUseTalentPointCount(professionId)
+  local talentList = Z.ContainerMgr.CharSerialize.professionList.talentList[professionId]
+  if talentList then
+    return talentList.usedTalentPoints
+  end
+  return 0
+end
+
 function TalentSkillVM.ParseTalentEffectDesc(id)
   local fightAttrParseVm = Z.VMMgr.GetVM("fight_attr_parse")
   local buffAttrParseVM = Z.VMMgr.GetVM("buff_attr_parse")
@@ -322,6 +330,182 @@ function TalentSkillVM.GetProfressionTalentStage(professionId)
   end
 end
 
+local function recursionFindRoute(talentNodeId, talentTreeTableMgr, routes, activeTalentTreeNodes, routesIndex)
+  if activeTalentTreeNodes[talentNodeId] ~= nil then
+    return
+  end
+  table.insert(routes[routesIndex], talentNodeId)
+  local talentTreeConfig = talentTreeTableMgr.GetRow(talentNodeId)
+  if talentTreeConfig then
+    local copyRoute = table.zclone(routes[routesIndex])
+    local lockNodes = {}
+    for _, preTalentNode in ipairs(talentTreeConfig.PreTalent) do
+      if activeTalentTreeNodes[preTalentNode] == nil then
+        table.insert(lockNodes, preTalentNode)
+      end
+    end
+    local lockNodesCount = #lockNodes
+    if lockNodesCount == 0 then
+      return
+    else
+      if lockNodesCount ~= #talentTreeConfig.PreTalent then
+        local route = table.zclone(copyRoute)
+        table.insert(routes, route)
+      end
+      for index, nodeId in ipairs(lockNodes) do
+        if index == 1 then
+          recursionFindRoute(nodeId, talentTreeTableMgr, routes, activeTalentTreeNodes, routesIndex)
+        else
+          local route = table.zclone(copyRoute)
+          table.insert(routes, route)
+          recursionFindRoute(nodeId, talentTreeTableMgr, routes, activeTalentTreeNodes, #routes)
+        end
+      end
+    end
+  end
+end
+
+function TalentSkillVM.GetMinUnlockRoute(talentNodeId, showTips)
+  local weaponVm = Z.VMMgr.GetVM("weapon")
+  local professionId = weaponVm.GetCurWeapon()
+  local activeTalentTreeNodes = TalentSkillVM.GetWeaponActiveTalentTreeNode(professionId)
+  local tempActiveTalentTreeNodes = {}
+  if activeTalentTreeNodes and activeTalentTreeNodes.talentNodeIds then
+    for _, nodes in ipairs(activeTalentTreeNodes.talentNodeIds) do
+      tempActiveTalentTreeNodes[nodes] = nodes
+    end
+  end
+  local talentTreeTableMgr = Z.TableMgr.GetTable("TalentTreeTableMgr")
+  local routes = {
+    [1] = {}
+  }
+  recursionFindRoute(talentNodeId, talentTreeTableMgr, routes, tempActiveTalentTreeNodes, 1)
+  local minLength, minRouteIndex
+  table.sort(routes, function(a, b)
+    return #a < #b
+  end)
+  for index, route in ipairs(routes) do
+    local routeLength = #route
+    if minLength == nil then
+      minLength = routeLength
+      minRouteIndex = index
+    elseif minLength == routeLength then
+      if showTips then
+        Z.TipsVM.ShowTipsLang(1042032)
+      end
+      return
+    elseif routeLength < minLength then
+      minLength = routeLength
+      minRouteIndex = index
+    end
+  end
+  local res = {}
+  local isUseRecommendTalent = false
+  if minRouteIndex ~= nil then
+    local talentTableMgr = Z.TableMgr.GetTable("TalentTableMgr")
+    local itemsVM = Z.VMMgr.GetVM("items")
+    local useTalentPoint = TalentSkillVM.GetUseTalentPointCount(professionId)
+    local allTalentPoint = TalentSkillVM.GetAllTalentPointCount()
+    local tempUseItem = {}
+    local tempUseTalentPoints = 0
+    local minRoute = {}
+    local quickUnlockTalentTreeConfig = talentTreeTableMgr.GetRow(talentNodeId)
+    local talentSkillData = Z.DataMgr.Get("talent_skill_data")
+    local talentStageConfig = talentSkillData:GetTalentStageConfigByTalentTreeConfig(quickUnlockTalentTreeConfig)
+    if talentStageConfig == nil then
+      return
+    end
+    if tempActiveTalentTreeNodes[talentStageConfig.RootId] == nil then
+      for i = 0, talentStageConfig.TalentStage - 1 do
+        local tempTalentStageConfig = talentSkillData:GetTalentStageConfigs(quickUnlockTalentTreeConfig.WeaponType, i)
+        if tempTalentStageConfig and tempTalentStageConfig[0] then
+          for _, id in ipairs(tempTalentStageConfig[0].RecommendTalent) do
+            if tempActiveTalentTreeNodes[id] == nil then
+              table.insert(minRoute, id)
+            end
+          end
+          isUseRecommendTalent = true
+        end
+      end
+    end
+    for i = #routes[minRouteIndex], 1, -1 do
+      table.insert(minRoute, routes[minRouteIndex][i])
+    end
+    for i = 1, #minRoute do
+      local talentTreeConfig = talentTreeTableMgr.GetRow(minRoute[i])
+      if talentTreeConfig then
+        local isCanUnlock = true
+        for _, nodeCondition in ipairs(talentTreeConfig.Unlock) do
+          if nodeCondition[1] == E.ConditionType.UseTalentPoints then
+            if useTalentPoint + tempUseTalentPoints < nodeCondition[2] then
+              isCanUnlock = false
+              break
+            end
+          else
+            local params = {}
+            if nodeCondition[2] then
+              table.insert(params, nodeCondition[2])
+            end
+            if nodeCondition[3] then
+              table.insert(params, nodeCondition[3])
+            end
+            if not Z.ConditionHelper.CheckSingleCondition(nodeCondition[1], true, table.unpack(params)) then
+              isCanUnlock = false
+              break
+            end
+          end
+        end
+        if isCanUnlock then
+          local talentConfig = talentTableMgr.GetRow(talentTreeConfig.TalentId)
+          if talentConfig then
+            for _, consume in ipairs(talentConfig.UnlockConsume) do
+              if tempUseItem[consume[1]] == nil then
+                tempUseItem[consume[1]] = consume[2]
+              else
+                tempUseItem[consume[1]] = tempUseItem[consume[1]] + consume[2]
+              end
+            end
+            tempUseTalentPoints = tempUseTalentPoints + talentConfig.TalentPointsConsume
+            for itemId, needCount in pairs(tempUseItem) do
+              if needCount > itemsVM.GetItemTotalCount(itemId) then
+                local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(itemId)
+                if showTips and itemConfig then
+                  Z.TipsVM.ShowTipsLang(1042034, {
+                    val = itemConfig.Name
+                  })
+                end
+                return nil, nil, nil, nil, itemId
+              end
+            end
+            if allTalentPoint < useTalentPoint + tempUseTalentPoints then
+              local talentPointConfigId = Z.DataMgr.Get("talent_skill_data"):GetTalentPointConfigId()
+              local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(talentPointConfigId)
+              if showTips and itemConfig then
+                Z.TipsVM.ShowTipsLang(1042034, {
+                  val = itemConfig.Name
+                })
+              end
+              return nil, nil, nil, nil, talentPointConfigId
+            end
+            table.insert(res, minRoute[i])
+          end
+        else
+          local talentConfig = talentTableMgr.GetRow(talentTreeConfig.TalentId)
+          if showTips and talentConfig then
+            Z.TipsVM.ShowTipsLang(1042033, {
+              val = talentConfig.TalentName
+            })
+          end
+          return
+        end
+      end
+    end
+    return res, tempUseTalentPoints, tempUseItem, isUseRecommendTalent
+  else
+    return
+  end
+end
+
 function TalentSkillVM.GetRecommendFightValue()
   local fightValue = 0
   local weaponVm = Z.VMMgr.GetVM("weapon")
@@ -413,9 +597,15 @@ function TalentSkillVM.UnlockTalentTreeNode(professionId, treeNodeIds, cancelTok
 end
 
 function TalentSkillVM.ResetTalentTree(professionId, cancelToken)
-  local request = {}
-  request.professionId = professionId
+  local request = {professionId = professionId}
   local reply = worldProxy.ResetProfessionTalent(request, cancelToken)
+  return TalentSkillVM.CheckReply(reply)
+end
+
+function TalentSkillVM.ResetTalentNode(professionId, nodeId, cancelToken)
+  local request = {professionId = professionId, talentNodeId = nodeId}
+  local reply = worldProxy.ResetProfessionTalentBySingleNode(request, cancelToken)
+  Z.EventMgr:Dispatch(Z.ConstValue.TalentSkill.UnLockTalent)
   return TalentSkillVM.CheckReply(reply)
 end
 

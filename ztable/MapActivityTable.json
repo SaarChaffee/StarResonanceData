@@ -1,7 +1,7 @@
 {
   "1": {
     "Id": 1,
-    "Name": "",
+    "Name": "Engram Hub",
     "Scene": [],
     "Icon": "ui/atlas/explore_monster/explore_monster_btn_icon_1",
     "FunctionId": 801001,
@@ -9,7 +9,7 @@
   },
   "2": {
     "Id": 2,
-    "Name": "",
+    "Name": "Monster Hunt",
     "Scene": [
       7,
       71,
@@ -24,7 +24,7 @@
   },
   "3": {
     "Id": 3,
-    "Name": "",
+    "Name": "Journey",
     "Scene": [],
     "Icon": "ui/atlas/explore_monster/explore_monster_btn_icon_2",
     "FunctionId": 100802,
@@ -32,7 +32,7 @@
   },
   "4": {
     "Id": 4,
-    "Name": "",
+    "Name": "Reputation",
     "Scene": [
       7,
       71,

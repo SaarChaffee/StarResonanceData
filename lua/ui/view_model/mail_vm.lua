@@ -70,7 +70,7 @@ end
 local deleteMail = function(vMailIds, cancelToken)
   local request = {}
   request.mailIds = vMailIds
-  local ret = MailProxy.DeleteMail(request, cancelToken)
+  local ret = WorldProxy.DeleteMail(request, cancelToken)
   return ret
 end
 local deleteAllReadMail = function(cancelToken)

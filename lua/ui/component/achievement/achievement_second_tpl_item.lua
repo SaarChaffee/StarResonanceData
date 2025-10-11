@@ -38,13 +38,16 @@ function AchievementSecondTplItem:OnRefresh(data)
     self.uiBinder.Ref:SetVisible(self.uiBinder.lab_num, true)
     self.uiBinder.Ref:SetVisible(self.uiBinder.lab_result, false)
   end
+  self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
 end
 
-function AchievementSecondTplItem:OnSelected(isSelected)
+function AchievementSecondTplItem:OnSelected(isSelected, isClick)
   if isSelected then
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, true)
-    self.parent.UIView:SelectAchievementId(self.data_.Id, false)
+    self.parent.UIView:SelectAchievementId(self.data_.Id, false, isClick)
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
   else
+    self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
     self.uiBinder.Ref:SetVisible(self.uiBinder.img_select, false)
   end
 end

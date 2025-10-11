@@ -127,4 +127,8 @@ function GrpcCommunityNtfStubImpl:NotifyCommunityFurnitureItemUpdate(call, reque
   end
 end
 
+function GrpcCommunityNtfStubImpl:NotifyCommunityApply(call, request)
+  Z.RedPointMgr.UpdateNodeCount(E.RedType.HouseInviteRed, 1)
+end
+
 return GrpcCommunityNtfStubImpl

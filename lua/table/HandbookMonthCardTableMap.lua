@@ -5,9 +5,6 @@ HandbookMonthCardTableMap.MonthCard = {
   9070003,
   9070004,
   9070005,
-  9070006,
-  9070007,
-  9070008,
-  9070009
+  9070006
 }
 return HandbookMonthCardTableMap

@@ -63,6 +63,7 @@ function Personalzone_title_subView:OnActive()
   end
   self.titleLoopScroll_:Init(self.datas_)
   self:refreshInfo()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
 end
 
 function Personalzone_title_subView:OnDeActive()
@@ -84,6 +85,7 @@ function Personalzone_title_subView:SetSelect(id)
   end
   self.titleLoopScroll_:RefreshListView(self.datas_, false)
   self:refreshInfo()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
 end
 
 function Personalzone_title_subView:refreshInfo()

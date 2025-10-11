@@ -2,8 +2,8 @@
   "7010101": {
     "Id": 7010101,
     "TargetId": [],
-    "Title": "",
-    "Des": "",
+    "Title": "Commemorating Heroes",
+    "Des": "Take a photo of Hero's Herb under the moonlight",
     "TargetNum": 0
   },
   "7010301": {
@@ -11,8 +11,8 @@
     "TargetId": [
       5
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Mourning Heroes",
+    "Des": "Take a photo at Statue of the Hero",
     "TargetNum": 0
   },
   "7010201": {
@@ -20,8 +20,8 @@
     "TargetId": [
       6
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Take a photo at Towering Ruin",
+    "Des": "Take a photo at Towering Ruin",
     "TargetNum": 0
   },
   "7010401": {
@@ -29,8 +29,8 @@
     "TargetId": [
       7
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Take a photo at Andra Resting Post",
+    "Des": "Take a photo at Andra Resting Post",
     "TargetNum": 0
   },
   "7010501": {
@@ -38,8 +38,8 @@
     "TargetId": [
       8
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Take a photo at Andra Landing Battlefield",
+    "Des": "Take a photo at Andra Landing Battlefield",
     "TargetNum": 0
   },
   "7010601": {
@@ -47,8 +47,8 @@
     "TargetId": [
       9
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Take a photo at Deep Memorial",
+    "Des": "Take a photo at Deep Memorial",
     "TargetNum": 0
   },
   "7010701": {
@@ -56,8 +56,8 @@
     "TargetId": [
       10
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Take a photo at Minsterhorn",
+    "Des": "Take a photo at Minsterhorn",
     "TargetNum": 0
   },
   "7010801": {
@@ -65,8 +65,8 @@
     "TargetId": [
       11
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Take a photo at Kanamia Tribe Entrance",
+    "Des": "Take a photo at Kanamia Tribe Entrance",
     "TargetNum": 0
   },
   "7010901": {
@@ -74,8 +74,8 @@
     "TargetId": [
       12
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Take a photo at the Elder Council Hall",
+    "Des": "Take a photo at the Elder Council Hall",
     "TargetNum": 0
   },
   "7011001": {
@@ -83,8 +83,8 @@
     "TargetId": [
       13
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Take a photo at Ruins of Andra City",
+    "Des": "Take a photo at Ruins of Andra City",
     "TargetNum": 0
   },
   "7011101": {
@@ -92,8 +92,8 @@
     "TargetId": [
       14
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Take a photo at Dark Mist Fortress",
+    "Des": "Take a photo at Dark Mist Fortress",
     "TargetNum": 0
   },
   "7011201": {
@@ -101,8 +101,8 @@
     "TargetId": [
       15
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Take a photo with Caprahorns",
+    "Des": "Take a photo with Caprahorns",
     "TargetNum": 0
   },
   "7010202": {
@@ -110,8 +110,8 @@
     "TargetId": [
       16
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Towering Ruin Recollections",
+    "Des": "Talk to the Scholar in Front of the Towering Ruin",
     "TargetNum": 0
   },
   "7010102": {
@@ -119,8 +119,8 @@
     "TargetId": [
       17
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Asterleeds Independence War",
+    "Des": "Talk to the Historian Tabari at the Statue of the Hero to learn about the Asterleeds Independence War",
     "TargetNum": 0
   },
   "7010302": {
@@ -128,8 +128,8 @@
     "TargetId": [
       18
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Forest Ranger's Cabin - Beacon of Dawn",
+    "Des": "Talk to the old male Near the Forest Ranger's Cabin",
     "TargetNum": 0
   },
   "7010303": {
@@ -137,8 +137,8 @@
     "TargetId": [
       19
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Forest Ranger's Cabin - Message Flower",
+    "Des": "Talk to the old female Near the Forest Ranger's Cabin",
     "TargetNum": 0
   },
   "7010402": {
@@ -146,8 +146,8 @@
     "TargetId": [
       20
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Scavengers",
+    "Des": "Talk to the tavern owner Cove to learn about the landing battle, the inn, and the scavengers.",
     "TargetNum": 0
   },
   "7010602": {
@@ -155,8 +155,8 @@
     "TargetId": [
       21
     ],
-    "Title": "",
-    "Des": "",
+    "Title": "Anomalous Ecology",
+    "Des": "Talk to the scholar researching the anomalous ecology of the tunnels.",
     "TargetNum": 0
   }
 }

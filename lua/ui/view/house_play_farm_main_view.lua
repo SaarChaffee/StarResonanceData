@@ -25,6 +25,7 @@ function House_play_farm_mainView:initBinders()
   self.itemList_ = self.uiBinder.scrollview
   self.emptyImg_ = self.uiBinder.img_empty
   self.emptyLab_ = self.uiBinder.lab_empty
+  self.anim_do_ = self.uiBinder.anim_do
   self.loopListView_ = loopList.new(self, self.itemList_, seedLoopItem, "house_play_farm_item_tpl1")
   self.loopListView_:Init({})
 end
@@ -117,6 +118,7 @@ end
 
 function House_play_farm_mainView:OnActive()
   self:initBinders()
+  self:onStartAnimShow()
   self:initBtns()
   self:bindEvent()
   self.mainUiVm_.HideMainViewArea(E.MainViewHideStyle.LowRight, self.viewConfigKey, true)
@@ -211,6 +213,10 @@ function House_play_farm_mainView:onClockEvent()
       self.houseVm_.AsyncFertilizerUpdateStructure(request, self.cancelSource:CreateToken())
     end
   end)()
+end
+
+function House_play_farm_mainView:onStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Open)
 end
 
 function House_play_farm_mainView:OnRefresh()

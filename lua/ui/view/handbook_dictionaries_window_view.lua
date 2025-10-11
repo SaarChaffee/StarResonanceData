@@ -19,6 +19,7 @@ function Handbook_dictionaries_windowView:OnActive()
   self.selectType_ = nil
   self.selectId_ = nil
   self.tabs_ = {}
+  self.isStart_ = true
   self.dictionaryLoop_ = loop_list_view.new(self, self.uiBinder.subview.loop_left, handbookDictionariesLoopListItem, "handbook_dictionaries_list_item_tpl")
   self.dictionaryLoop_:Init({})
   self:AddClick(self.uiBinder.btn_close, function()
@@ -54,9 +55,14 @@ function Handbook_dictionaries_windowView:OnActive()
   if functionConfig then
     self.uiBinder.lab_title.text = functionConfig.Name
   end
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_info)
 end
 
 function Handbook_dictionaries_windowView:OnDeActive()
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_info)
   self.uiBinder.togs_group:ClearAll()
   self.tabs_ = {}
   self.dictionaryLoop_:UnInit()
@@ -96,14 +102,22 @@ function Handbook_dictionaries_windowView:selectType(type)
     self.dictionaryLoop_:ClearAllSelect()
     self.dictionaryLoop_:RefreshListView({})
   end
+  if self.isStart_ then
+    self.isStart_ = false
+  else
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_0)
+  end
 end
 
-function Handbook_dictionaries_windowView:SelectId(id)
+function Handbook_dictionaries_windowView:SelectId(id, isClick)
   if id == self.selectId_ then
     return
   end
   self.selectId_ = id
   self:refreshSubView()
+  if isClick then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
+  end
 end
 
 function Handbook_dictionaries_windowView:refreshSubView()

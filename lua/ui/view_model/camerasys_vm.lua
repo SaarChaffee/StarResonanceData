@@ -660,7 +660,7 @@ local getHeadOrBodyPhotoToken = function(textureId, snapType)
   req.verifyInfo = {}
   req.verifyInfo.size = textureSize
   req.pictureId = textureId
-  req.pictureName = string.zconcat(Z.EntityMgr.PlayerEnt.EntId, snapTypeName, textureSize, ".png")
+  req.pictureName = string.zconcat(Z.EntityMgr.PlayerEnt.CharId, snapTypeName, textureSize, ".png")
   req.pictureType = snapType
   worldProxy.GetAvatarToken(req)
 end
@@ -921,6 +921,22 @@ local getUnionSelectBoxSize = function(imgSize, rate, isBody)
   end
   return width, height
 end
+local getKeyIdAndDescByFuncId = function(funcId)
+  local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
+  for keyId, row in pairs(keyTbl.GetDatas()) do
+    if row.KeyboardDes == 2 and row.FunctionId == funcId then
+      return keyId, row.SetDes
+    end
+  end
+end
+local getKeyDescByKeyId = function(keyId)
+  local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
+  local row = keyTbl.GetRow(keyId)
+  if not row then
+    return ""
+  end
+  return row.SetDes
+end
 local checkMobileUiShowState = function(id, isControlByOther)
   local photographUiTableRow = Z.TableMgr.GetTable("PhotographUiTableMgr").GetRow(id)
   if isControlByOther and photographUiTableRow.OthersModel ~= 2 then
@@ -1038,6 +1054,8 @@ local ret = {
   SendCloudFaceData = sendCloudFaceData,
   GetUnionSelectBoxSize = getUnionSelectBoxSize,
   SendCloudFaceCopyData = sendCloudFaceCopyData,
-  AsyncSetPhotoSchemeName = asyncSetPhotoSchemeName
+  AsyncSetPhotoSchemeName = asyncSetPhotoSchemeName,
+  GetKeyIdAndDescByFuncId = getKeyIdAndDescByFuncId,
+  GetKeyDescByKeyId = getKeyDescByKeyId
 }
 return ret

@@ -73,9 +73,6 @@ function Helpsys_popup_entrance_tplView:OnRefresh()
 end
 
 function Helpsys_popup_entrance_tplView:OnTriggerInputAction(inputActionEventData)
-  if not Z.PlayerInputController:IsGamepadComboValidForAction(inputActionEventData) then
-    return
-  end
   self:gotoFunc()
 end
 

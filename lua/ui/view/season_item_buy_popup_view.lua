@@ -85,6 +85,17 @@ function Season_item_buy_popupView:OnActive()
   end)
   self.canBuyCount_ = 9999999
   self:show()
+  self:showNumMod()
+  Z.EventMgr:Add(Z.ConstValue.Backpack.AllChange, self.onItemChange, self)
+  self:setPreview()
+end
+
+function Season_item_buy_popupView:onItemChange()
+  self:show()
+  self:showNumMod()
+end
+
+function Season_item_buy_popupView:showNumMod()
   if self.numMod_ then
     self.numMod_:Active({
       itemId = self.viewData.data.cfg.ItemId,
@@ -110,7 +121,6 @@ function Season_item_buy_popupView:OnActive()
       self.curNum_ = num
     end)
   end
-  self:setPreview()
 end
 
 function Season_item_buy_popupView:OnRefresh()
@@ -261,9 +271,10 @@ function Season_item_buy_popupView:calculateNum(prop)
     end
     local itemcfg = Z.TableMgr.GetTable("ItemTableMgr").GetRow(id)
     if itemcfg then
-      local itemsVM = Z.VMMgr.GetVM("items")
-      self.currency_icon1_:SetImage(itemcfg.Icon)
-      self.currency_icon2_:SetImage(itemcfg.Icon)
+      local itemVm = Z.VMMgr.GetVM("items")
+      local itemIcon = itemVm.GetItemIcon(id)
+      self.currency_icon1_:SetImage(itemIcon)
+      self.currency_icon2_:SetImage(itemIcon)
     end
   end
   for id, count in pairs(prop.buyCount) do
@@ -313,6 +324,7 @@ function Season_item_buy_popupView:OnDeActive()
     self.currencyItemList_:UnInit()
     self.currencyItemList_ = nil
   end
+  Z.EventMgr:Remove(Z.ConstValue.Backpack.AllChange, self.onItemChange, self)
 end
 
 function Season_item_buy_popupView:GetPrefabCacheData(key)

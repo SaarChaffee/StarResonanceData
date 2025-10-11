@@ -416,6 +416,55 @@ function ItemsVM.CheckItemIsLimited(itemConfigId, itemNum)
   return false
 end
 
+function ItemsVM.CheckAndUseItem(uuid, token, params)
+  Z.CoroUtil.create_coro_xpcall(function()
+    local itemConfigId = tonumber(params[3])
+    local needNum = params[4] == nil and 1 or tonumber(params[4])
+    if itemConfigId == nil then
+      Z.TipsVM.ShowTipsLang(1000751)
+      return
+    end
+    local itemConfig = Z.TableMgr.GetTable("ItemTableMgr").GetRow(itemConfigId)
+    if itemConfig == nil then
+      return
+    end
+    local itemsVM = Z.VMMgr.GetVM("items")
+    local ownNum = itemsVM.GetItemTotalCount(itemConfigId)
+    if needNum > ownNum then
+      Z.TipsVM.ShowTips(100010, {
+        item = {
+          name = itemConfig.Name
+        }
+      })
+      return
+    end
+    local cdTime = 0
+    local package = itemsVM.GetPackageInfobyItemId(itemConfigId)
+    if package and next(package) then
+      local cdTime, useCd = itemsVM.GetItemCd(package, itemConfigId)
+      if cdTime and useCd then
+        local serverTime = Z.ServerTime:GetServerTime()
+        local diffTime = (cdTime - serverTime) / 1000
+        if 0 < diffTime then
+          cdTime = diffTime
+        end
+      end
+    end
+    if 0 < cdTime then
+      local param = {
+        item = {
+          name = itemConfig.Name
+        }
+      }
+      Z.TipsVM.ShowTipsLang(100103, param)
+    else
+      local cancelSource = Z.CancelSource.Rent()
+      itemsVM.AsyncUseItemByConfigId(itemConfigId, cancelSource:CreateToken(), needNum)
+      cancelSource:Recycle()
+    end
+  end)()
+end
+
 function ItemsVM.AssembleUseItemParam(configId, itemUuid, useNum, bindFlag)
   local param = {}
   if itemUuid == nil then
@@ -468,7 +517,7 @@ function ItemsVM.AsyncUseItemByUuid(useItemParam, token)
       labDesc = Lang("ItemIsPackageWithLimit", {
         val = ItemsVM.ApplyItemNameWithQualityTag(limitItemId)
       }),
-      labYes = Lang("Confirm")
+      labYes = Lang("confirm")
     }
     Z.DialogViewDataMgr:OpenDialogView(dialogViewData)
     return
@@ -557,7 +606,16 @@ function ItemsVM.OpenSelectGiftPackageView(configId, itemUuid, itemCount)
   viewData.itemUuid = itemUuid
   viewData.itemId = configId
   viewData.awardId = awardId
-  viewData.ItemBatchCount = funcData.ItemBatch or 1
+  local batchCount = funcData.ItemBatch
+  if funcData.CounterId ~= 0 then
+    local limitCount = Z.CounterHelper.GetResidueLimitCountByCounterId(funcData.CounterId)
+    if limitCount == 0 and batchCount ~= 0 then
+      Z.TipsVM.ShowTips(1000655)
+      return true
+    end
+    batchCount = math.min(batchCount, limitCount)
+  end
+  viewData.ItemBatchCount = batchCount or 1
   viewData.awardNum = itemCount
   if bagPackType == Z.PbEnum("EAwardType", "EAwardTypeSelect") then
     if funcData.Parameter[2] == "1" then

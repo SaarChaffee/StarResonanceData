@@ -2,7 +2,7 @@
   "1": {
     "Id": 1,
     "PaymentId": [],
-    "Name": "",
+    "Name": "60 Rose Orbs",
     "Desc": "蔷薇宝石礼包1（60）",
     "ShowType": 1,
     "Icon": "shop_currency_1",
@@ -14,7 +14,7 @@
     "PaymentId": [
       10002
     ],
-    "Name": "",
+    "Name": "300 Rose Orbs",
     "Desc": "蔷薇宝石礼包2（300）",
     "ShowType": 1,
     "Icon": "shop_currency_2",
@@ -26,7 +26,7 @@
     "PaymentId": [
       10003
     ],
-    "Name": "",
+    "Name": "980 Rose Orbs",
     "Desc": "蔷薇宝石礼包3（980）",
     "ShowType": 1,
     "Icon": "shop_currency_3",
@@ -38,7 +38,7 @@
     "PaymentId": [
       10004
     ],
-    "Name": "",
+    "Name": "1980 Rose Orbs",
     "Desc": "蔷薇宝石礼包4（1980）",
     "ShowType": 1,
     "Icon": "shop_currency_4",
@@ -50,7 +50,7 @@
     "PaymentId": [
       10005
     ],
-    "Name": "",
+    "Name": "3280 Rose Orbs",
     "Desc": "蔷薇宝石礼包5（3280）",
     "ShowType": 1,
     "Icon": "shop_currency_5",
@@ -62,7 +62,7 @@
     "PaymentId": [
       10006
     ],
-    "Name": "",
+    "Name": "6480 Rose Orbs",
     "Desc": "蔷薇宝石礼包6（6480）",
     "ShowType": 1,
     "Icon": "shop_currency_6",
@@ -74,7 +74,7 @@
     "PaymentId": [
       10010001
     ],
-    "Name": "",
+    "Name": "60 Rose Orbs",
     "Desc": "蔷薇宝石礼包1（60）",
     "ShowType": 1,
     "Icon": "shop_currency_1",
@@ -86,7 +86,7 @@
     "PaymentId": [
       10010002
     ],
-    "Name": "",
+    "Name": "300 Rose Orbs",
     "Desc": "蔷薇宝石礼包2（300）",
     "ShowType": 1,
     "Icon": "shop_currency_2",
@@ -98,7 +98,7 @@
     "PaymentId": [
       10010003
     ],
-    "Name": "",
+    "Name": "980 Rose Orbs",
     "Desc": "蔷薇宝石礼包3（980）",
     "ShowType": 1,
     "Icon": "shop_currency_3",
@@ -110,7 +110,7 @@
     "PaymentId": [
       10010004
     ],
-    "Name": "",
+    "Name": "1980 Rose Orbs",
     "Desc": "蔷薇宝石礼包4（1980）",
     "ShowType": 1,
     "Icon": "shop_currency_4",
@@ -122,7 +122,7 @@
     "PaymentId": [
       10010005
     ],
-    "Name": "",
+    "Name": "3280 Rose Orbs",
     "Desc": "蔷薇宝石礼包5（3280）",
     "ShowType": 1,
     "Icon": "shop_currency_5",
@@ -134,7 +134,7 @@
     "PaymentId": [
       10010006
     ],
-    "Name": "",
+    "Name": "6480 Rose Orbs",
     "Desc": "蔷薇宝石礼包6（6480）",
     "ShowType": 1,
     "Icon": "shop_currency_6",
@@ -146,7 +146,7 @@
     "PaymentId": [
       20010011
     ],
-    "Name": "",
+    "Name": "60 Rose Orbs",
     "Desc": "蔷薇宝石礼包1（60）",
     "ShowType": 1,
     "Icon": "shop_currency_1",
@@ -158,7 +158,7 @@
     "PaymentId": [
       20010012
     ],
-    "Name": "",
+    "Name": "300 Rose Orbs",
     "Desc": "蔷薇宝石礼包2（300）",
     "ShowType": 1,
     "Icon": "shop_currency_2",
@@ -170,7 +170,7 @@
     "PaymentId": [
       20010013
     ],
-    "Name": "",
+    "Name": "980 Rose Orbs",
     "Desc": "蔷薇宝石礼包3（980）",
     "ShowType": 1,
     "Icon": "shop_currency_3",
@@ -182,7 +182,7 @@
     "PaymentId": [
       20010014
     ],
-    "Name": "",
+    "Name": "1980 Rose Orbs",
     "Desc": "蔷薇宝石礼包4（1980）",
     "ShowType": 1,
     "Icon": "shop_currency_4",
@@ -194,7 +194,7 @@
     "PaymentId": [
       20010015
     ],
-    "Name": "",
+    "Name": "3280 Rose Orbs",
     "Desc": "蔷薇宝石礼包5（3280）",
     "ShowType": 1,
     "Icon": "shop_currency_5",
@@ -206,7 +206,7 @@
     "PaymentId": [
       20010016
     ],
-    "Name": "",
+    "Name": "6480 Rose Orbs",
     "Desc": "蔷薇宝石礼包6（6480）",
     "ShowType": 1,
     "Icon": "shop_currency_6",
@@ -218,7 +218,7 @@
     "PaymentId": [
       30010011
     ],
-    "Name": "",
+    "Name": "60 Rose Orbs",
     "Desc": "蔷薇宝石礼包1（60）",
     "ShowType": 1,
     "Icon": "shop_currency_1",
@@ -230,7 +230,7 @@
     "PaymentId": [
       30010012
     ],
-    "Name": "",
+    "Name": "300 Rose Orbs",
     "Desc": "蔷薇宝石礼包2（300）",
     "ShowType": 1,
     "Icon": "shop_currency_2",
@@ -242,7 +242,7 @@
     "PaymentId": [
       30010013
     ],
-    "Name": "",
+    "Name": "980 Rose Orbs",
     "Desc": "蔷薇宝石礼包3（980）",
     "ShowType": 1,
     "Icon": "shop_currency_3",
@@ -254,7 +254,7 @@
     "PaymentId": [
       30010014
     ],
-    "Name": "",
+    "Name": "1980 Rose Orbs",
     "Desc": "蔷薇宝石礼包4（1980）",
     "ShowType": 1,
     "Icon": "shop_currency_4",
@@ -266,7 +266,7 @@
     "PaymentId": [
       30010015
     ],
-    "Name": "",
+    "Name": "3280 Rose Orbs",
     "Desc": "蔷薇宝石礼包5（3280）",
     "ShowType": 1,
     "Icon": "shop_currency_5",
@@ -278,7 +278,7 @@
     "PaymentId": [
       30010016
     ],
-    "Name": "",
+    "Name": "6480 Rose Orbs",
     "Desc": "蔷薇宝石礼包6（6480）",
     "ShowType": 1,
     "Icon": "shop_currency_6",
@@ -290,7 +290,7 @@
     "PaymentId": [
       40010011
     ],
-    "Name": "",
+    "Name": "60 Rose Orbs",
     "Desc": "蔷薇宝石礼包1（60）",
     "ShowType": 1,
     "Icon": "shop_currency_1",
@@ -302,7 +302,7 @@
     "PaymentId": [
       40010012
     ],
-    "Name": "",
+    "Name": "300 Rose Orbs",
     "Desc": "蔷薇宝石礼包2（300）",
     "ShowType": 1,
     "Icon": "shop_currency_2",
@@ -314,7 +314,7 @@
     "PaymentId": [
       40010013
     ],
-    "Name": "",
+    "Name": "980 Rose Orbs",
     "Desc": "蔷薇宝石礼包3（980）",
     "ShowType": 1,
     "Icon": "shop_currency_3",
@@ -326,7 +326,7 @@
     "PaymentId": [
       40010014
     ],
-    "Name": "",
+    "Name": "1980 Rose Orbs",
     "Desc": "蔷薇宝石礼包4（1980）",
     "ShowType": 1,
     "Icon": "shop_currency_4",
@@ -338,7 +338,7 @@
     "PaymentId": [
       40010015
     ],
-    "Name": "",
+    "Name": "3280 Rose Orbs",
     "Desc": "蔷薇宝石礼包5（3280）",
     "ShowType": 1,
     "Icon": "shop_currency_5",
@@ -350,7 +350,7 @@
     "PaymentId": [
       40010016
     ],
-    "Name": "",
+    "Name": "6480 Rose Orbs",
     "Desc": "蔷薇宝石礼包6（6480）",
     "ShowType": 1,
     "Icon": "shop_currency_6",

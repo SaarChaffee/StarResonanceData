@@ -165,7 +165,7 @@ local getGoodsIdListByShopId = function(shopId, professionId)
     local exchangeItemConfig = exchangeItemMgr.GetRow(goodsId)
     if exchangeItemConfig then
       if professionId == nil then
-        if exchangeItemConfig.SexLimit == 0 or exchangeItemConfig.SexLimit == sex then
+        if exchangeItemConfig.CheckDisplay and (exchangeItemConfig.SexLimit == 0 or exchangeItemConfig.SexLimit == sex) then
           local conditionData, isUnlock = getExchangeItemConditionDataAndState(goodsId)
           table.insert(idList, {
             goodsId = goodsId,
@@ -187,7 +187,7 @@ local getGoodsIdListByShopId = function(shopId, professionId)
         else
           isProfessionEquipItem = true
         end
-        if (exchangeItemConfig.SexLimit == 0 or exchangeItemConfig.SexLimit == sex) and isProfessionEquipItem then
+        if (exchangeItemConfig.SexLimit == 0 or exchangeItemConfig.SexLimit == sex) and isProfessionEquipItem and exchangeItemConfig.CheckDisplay then
           local conditionData, isUnlock = getExchangeItemConditionDataAndState(goodsId)
           table.insert(idList, {
             goodsId = goodsId,

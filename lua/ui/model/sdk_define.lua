@@ -12,8 +12,13 @@ E.LoginType = {
   WeChat = 1,
   QQ = 2,
   Apple = 15,
+  Steam = 21,
+  Epic = 24,
   LevelInfinite = 131,
-  HaoPlay = 1001
+  HaoPlay = 1001,
+  CR = 2001,
+  APJ = 2002,
+  Error = 9999
 }
 E.OS = {
   Unknown = 0,
@@ -41,12 +46,16 @@ E.LoginSDKType = {
   WeGame = Z.PbEnum("LoginSdkType", "LoginSdkTypeWeGame"),
   GLauncher = Z.PbEnum("LoginSdkType", "LoginSdkTypeGLauncher"),
   HaoPlay = Z.PbEnum("LoginSdkType", "LoginSdkTypeHaoPlay"),
-  APJ = Z.PbEnum("LoginSdkType", "LoginSdkTypeApj")
+  APJ = Z.PbEnum("LoginSdkType", "LoginSdkTypeApj"),
+  APJSteam = Z.PbEnum("LoginSdkType", "LoginSdkTypeAPJSteam"),
+  APJEpic = Z.PbEnum("LoginSdkType", "LoginSdkTypeAPJEpic")
 }
 E.PlatformToPayType = {
   [E.LoginSDKType.MSDK] = Z.PbEnum("EPayType", "PayTypeMPay"),
   [E.LoginSDKType.WeGame] = Z.PbEnum("EPayType", "PayTypeMPay"),
-  [E.LoginSDKType.HaoPlay] = Z.PbEnum("EPayType", "PayTypeHaoPlay")
+  [E.LoginSDKType.HaoPlay] = Z.PbEnum("EPayType", "PayTypeHaoPlay"),
+  [E.LoginSDKType.APJSteam] = Z.PbEnum("EPayType", "PayTypeApjStream"),
+  [E.LoginSDKType.APJEpic] = Z.PbEnum("EPayType", "PayTypeApjEpic")
 }
 DEF.CONFIG = {
   [E.LoginPlatformType.InnerPlatform] = {
@@ -124,8 +133,7 @@ DEF.SDK_TYPE_CONFIG = {
     UserCenterUrlPathDict = {
       [E.UserSupportType.Setting] = "Open"
     },
-    UserCenterFunctionId = 900117,
-    HttpNoticeUrlPath = "https://bpm.17996cdn.net/notice/notice.txt"
+    UserCenterFunctionId = 900117
   },
   [E.LoginSDKType.APJ] = {
     UserSupportUrlPathDict = {
@@ -143,10 +151,11 @@ DEF.SDK_TYPE_CONFIG = {
       [E.UserSupportType.Login] = "Open",
       [E.UserSupportType.Setting] = "Open"
     },
-    UserCenterFunctionId = 900119,
-    HttpNoticeUrlPath = "https://notice.playbpsr.com/notice/notice.txt"
+    UserCenterFunctionId = 900119
   }
 }
+DEF.SDK_TYPE_CONFIG[E.LoginSDKType.APJSteam] = DEF.SDK_TYPE_CONFIG[E.LoginSDKType.APJ]
+DEF.SDK_TYPE_CONFIG[E.LoginSDKType.APJEpic] = DEF.SDK_TYPE_CONFIG[E.LoginSDKType.APJ]
 DEF.SDK_CHANNEL_ID = {
   Huawei = 10018084,
   Honor = 10484106,

@@ -4,8 +4,8 @@
     "Episode": 1001,
     "WorksType": 101,
     "TargetType": [],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Sea Lyrics Collection",
+    "ReadingBookDes": "A photocopied document recording some folk songs passed down in Asterleeds.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -17,8 +17,8 @@
     "TargetType": [
       1031002
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Thoughts of the Long-Lived - Some Ramblings About Life\"",
+    "ReadingBookDes": "A thick tome that is almost heavy enough to be used as a blunt weapon, luxuriously bound.<br>Judging by the varying degrees of wear on the pages, most borrowers gave up within the first five percent of the book.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -30,8 +30,8 @@
     "TargetType": [
       1031003
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "The Mission of Humans",
+    "ReadingBookDes": "A plainly printed book with paper so thin that the ink on the other side is faintly visible.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -45,8 +45,8 @@
       1031005,
       1031006
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Asterleeds Travel Guide\"",
+    "ReadingBookDes": "A full-color printed guidebook set that documents the author's in-depth travels through Asterleeds. With rich text and beautiful images, it introduces local customs, traditional festivals, historic ruins, and iconic attractions, both practical and collectible for travelers.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -58,8 +58,8 @@
     "TargetType": [
       1031007
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Gourmet Adventures at the Port",
+    "ReadingBookDes": "A neatly printed fold-out pamphlet reviewing street food in Asterleeds.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -71,8 +71,8 @@
     "TargetType": [
       1031008
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Street Speech Collection",
+    "ReadingBookDes": "A file box filled with various street speech manuscripts.",
     "Icon": "item_icons_wenjiandai2",
     "Quality": 2,
     "IsHide": false
@@ -84,8 +84,8 @@
     "TargetType": [
       1031009
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "When in Doubt, Test It Out!",
+    "ReadingBookDes": "A flyer filled with suspicious information.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -97,8 +97,8 @@
     "TargetType": [
       1031010
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Bapharian Legacy Expense Receipt No. 30.472",
+    "ReadingBookDes": "A piece of paper splashed with ink, casually tucked into a book.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -110,8 +110,8 @@
     "TargetType": [
       1031011
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Annual Quest Report",
+    "ReadingBookDes": "Some old and ancient documents.",
     "Icon": "item_icons_wenjiandai2",
     "Quality": 2,
     "IsHide": false
@@ -123,8 +123,8 @@
     "TargetType": [
       1031012
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Airona's Legend: Deluxe Illustrated Edition",
+    "ReadingBookDes": "A thick novel with a cover wrap that reads, \"From Orphan to Legend: Airona's Fate-Defying Journey!\"",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -141,8 +141,8 @@
       1031017,
       1031018
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Mind-Blowing Little Thoughts",
+    "ReadingBookDes": "A tear-off memo pad with the watermark, \"Tear one a day, be smart every day! \" <br>It is believed to be impossible to collect the full set.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -154,8 +154,8 @@
     "TargetType": [
       1031019
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Diary of Anger",
+    "ReadingBookDes": "A diary page with handwriting.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -167,8 +167,8 @@
     "TargetType": [
       1031020
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Atlas of Demi-Humans: Goblin Edition",
+    "ReadingBookDes": "A thick, plain, and ink-scented popular science book.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -180,8 +180,8 @@
     "TargetType": [
       1031021
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Trend Guide: Spring/Summer Combined",
+    "ReadingBookDes": "A half-year bound volume of a fashion magazine.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -193,8 +193,8 @@
     "TargetType": [
       1031022
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Asterleeds Culinary Journey\"",
+    "ReadingBookDes": "Part of a region-based food guide series. This volume is about Asterleeds, written by renowned food critic and essayist Ms. Mallory, who resides long-term in Asterleeds.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -206,8 +206,8 @@
     "TargetType": [
       1031023
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Today's To-Do List",
+    "ReadingBookDes": "A neatly written but hastily prepared note, listing someone's to-dos.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -219,8 +219,8 @@
     "TargetType": [
       1031024
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "A Stack of Love Letters",
+    "ReadingBookDes": "A stack of unopened love letters, tied with delicate ribbons.",
     "Icon": "item_icons_item_icons_citizen_envelope",
     "Quality": 2,
     "IsHide": false
@@ -232,8 +232,8 @@
     "TargetType": [
       1031025
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Unfinished Letter",
+    "ReadingBookDes": "A letter scrawled with only a few broken lines, starting with \"My dear\" and ending with \"I love you.\" The middle is disjointed as if the writer kept picking up the pen and putting it down.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -245,8 +245,8 @@
     "TargetType": [
       1031026
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Snowball Cookie Recipe by René and Amado",
+    "ReadingBookDes": "A top-secret recipe written seriously by two kids.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -258,8 +258,8 @@
     "TargetType": [
       1031027
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Letter from Mom",
+    "ReadingBookDes": "A cheerful letter, tidy and radiating sunshine.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -271,8 +271,8 @@
     "TargetType": [
       1031028
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Letter from Sister",
+    "ReadingBookDes": "A letter with slightly messy writing, showing the cheerful personality of the writer.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -284,8 +284,8 @@
     "TargetType": [
       1031029
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Draft of a Reply to Mom",
+    "ReadingBookDes": "A rough draft of a reply from a young Adventurer to their family, backed with many discarded versions.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -297,8 +297,8 @@
     "TargetType": [
       1031030
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Draft of a Reply to Anna",
+    "ReadingBookDes": "A rough draft of a reply from a young Adventurer to their family, backed with many discarded versions.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -310,8 +310,8 @@
     "TargetType": [
       1031031
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Tricky Problem",
+    "ReadingBookDes": "A ledger sheet, bearing the logo of The Double-Faced Coin in the corner.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -323,8 +323,8 @@
     "TargetType": [
       1031056
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"White Wolf\"",
+    "ReadingBookDes": "A Kanamia poetry collection compiled and published by Asterians. The cover features an ancient silhouette of a giant wolf, likely a rubbing of a mural.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -340,8 +340,8 @@
       1031061,
       1031066
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Kanamia Customs Study\"",
+    "ReadingBookDes": "A book series exploring the customs and culture of the Kanamia Tribe. It analyzes how their ancestral spirit beliefs shaped a unique identity and how this led to cultural gaps with the outside world.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -353,8 +353,8 @@
     "TargetType": [
       1031058
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Time of Forming an Alliance",
+    "ReadingBookDes": "A stained piece of animal hide, recording a pivotal turning point in Kanamia history.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -366,8 +366,8 @@
     "TargetType": [
       1031062
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Jabba's Letters",
+    "ReadingBookDes": "A lost letter page, the paper exudes a strong animal scent.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -379,8 +379,8 @@
     "TargetType": [
       1031063
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "White Wolf's Departure",
+    "ReadingBookDes": "A piece of animal hide, seemingly someone's personal item.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -392,8 +392,8 @@
     "TargetType": [
       1031064
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Oh, Chieftain",
+    "ReadingBookDes": "A crumpled piece of paper, appears to record someone's lyrics.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -405,8 +405,8 @@
     "TargetType": [
       1031067
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Origin of the Mask\"",
+    "ReadingBookDes": "A book analyzing the varied forms of Kanamia masks.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -418,8 +418,8 @@
     "TargetType": [
       1031068
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Something's Hiding in the Wheat Field!",
+    "ReadingBookDes": "A violently torn-out diary page, ink furiously slashed across the paper.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -431,8 +431,8 @@
     "TargetType": [
       1031069
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Election Campaign Investigation",
+    "ReadingBookDes": "A lost document page, containing a background inquiry on a council candidate.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -444,8 +444,8 @@
     "TargetType": [
       1031071
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Minsterhorn Travel Guide (Draft 3)",
+    "ReadingBookDes": "A crumpled piece of paper with large sections of red pen annotations.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -457,8 +457,8 @@
     "TargetType": [
       1031072
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Kanamia Resistance",
+    "ReadingBookDes": "Looks like part of an investigation report. Who might have lost it?",
     "Icon": "item_icons_wenjiandai2",
     "Quality": 2,
     "IsHide": false
@@ -470,8 +470,8 @@
     "TargetType": [
       1031073
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Minsterhorn: Land of Sorrows",
+    "ReadingBookDes": "A diary page with strokes full of weary resignation.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -483,8 +483,8 @@
     "TargetType": [
       1031074
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Survivors of the Andra\"",
+    "ReadingBookDes": "A special issue of a nautical magazine, its authenticity is a mystery.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -496,8 +496,8 @@
     "TargetType": [
       1031075
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Pale Azure Lake\"",
+    "ReadingBookDes": "A pastoral novel set by the Pale Azure Lake, chronicling a hermit's seasons and reflections.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -510,8 +510,8 @@
       1031077,
       1031078
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Patrol Duty Log",
+    "ReadingBookDes": "A duty log from the Plains Patrol. The writer seems to have a shorthand technique, because every word flows in connected cursive.",
     "Icon": "item_icons_wenjiandai2",
     "Quality": 2,
     "IsHide": false
@@ -523,8 +523,8 @@
     "TargetType": [
       1031079
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"After the Fall\"",
+    "ReadingBookDes": "An underground publication, with questionable print quality.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -536,8 +536,8 @@
     "TargetType": [
       1031080
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Mystery of Golem",
+    "ReadingBookDes": "A stack of investigation reports about the Bapharian Golems.",
     "Icon": "item_icons_wenjiandai2",
     "Quality": 2,
     "IsHide": false
@@ -549,8 +549,8 @@
     "TargetType": [
       1031082
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "An Investigation into Hero's Herb",
+    "ReadingBookDes": "A scattered record page, the paper has the scent of Whispering Orchid.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -562,8 +562,8 @@
     "TargetType": [
       1031083
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Lost Letters",
+    "ReadingBookDes": "A lost letter, the paper is edged with gold.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -575,8 +575,8 @@
     "TargetType": [
       1031084
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Maintenance Record",
+    "ReadingBookDes": "A record sheet posted in the Statue of the Hero.",
     "Icon": "item_icons_wenjiandai2",
     "Quality": 2,
     "IsHide": false
@@ -588,8 +588,8 @@
     "TargetType": [
       1031085
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "The Letter with a Heart Drawing",
+    "ReadingBookDes": "A letter with childish handwriting.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -601,8 +601,8 @@
     "TargetType": [
       1031086
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Facing the Enemy",
+    "ReadingBookDes": "A mottled nameplate.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -614,8 +614,8 @@
     "TargetType": [
       1031087
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Conspiracy Behind the Peace Treaty\"",
+    "ReadingBookDes": "A finely bound academic work. <br>Presents systematic deductions on various issues left vague in the Peace Treaty, based on publicly available information.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -627,8 +627,8 @@
     "TargetType": [
       1031088
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Waterlogged Record Book",
+    "ReadingBookDes": "A battlefield record book, with traces of seawater corrosion on its yellowed pages.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -640,8 +640,8 @@
     "TargetType": [
       1031089
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Wild Dragon Witness Report",
+    "ReadingBookDes": "A news report on wild dragon sightings.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -653,8 +653,8 @@
     "TargetType": [
       1031090
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Hartson's Letter to Home",
+    "ReadingBookDes": "A letter that was crumpled into a ball and then smoothed out.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -666,8 +666,8 @@
     "TargetType": [
       1031091
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Procurement List",
+    "ReadingBookDes": "A crumpled list.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -679,8 +679,8 @@
     "TargetType": [
       1031092
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Dragon Hunter of Regnus\"",
+    "ReadingBookDes": "Dragon hunter's fantasia! An adventure story from a light novel series.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -692,8 +692,8 @@
     "TargetType": [
       1031094
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Diary of the Nameless One",
+    "ReadingBookDes": "A lost diary page with childish and neat handwriting.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -705,8 +705,8 @@
     "TargetType": [
       1031095
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Elders of Kanamia",
+    "ReadingBookDes": "A torn piece of beast hide scroll about the forgotten Kanamia Elders.",
     "Icon": "item_icons_wenjiandai2",
     "Quality": 2,
     "IsHide": false
@@ -718,8 +718,8 @@
     "TargetType": [
       1031096
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Heart of the Ocean Liner\"",
+    "ReadingBookDes": "A book about ocean liners.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -731,8 +731,8 @@
     "TargetType": [
       1031097
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Paper Covered in Slime",
+    "ReadingBookDes": "A book page tucked among Muku's spoils.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -744,8 +744,8 @@
     "TargetType": [
       1031098
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Twilight Secrets\" Diamond Appraisal Certificate",
+    "ReadingBookDes": "A beautifully bound appraisal book.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -757,8 +757,8 @@
     "TargetType": [
       1031099
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Sad News: I Found Ancient Treasure\"",
+    "ReadingBookDes": "Amateur Artisan & Divine Legacy: A fantastical adventure of the Bapharian civilization.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -770,8 +770,8 @@
     "TargetType": [
       1031100
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"What to Do When You Can't Beat an Ogre?\"",
+    "ReadingBookDes": "A self-published work authored by Jonathan.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -783,8 +783,8 @@
     "TargetType": [
       1031101
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Crab Fantasia\"",
+    "ReadingBookDes": "A fantasy literary piece themed around crabs, waiting for its soulmate readers.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -796,8 +796,8 @@
     "TargetType": [
       1031102
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "The Founding of Asterleeds",
+    "ReadingBookDes": "A deluxe book documenting the founding of the trading city Asterleeds.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -809,8 +809,8 @@
     "TargetType": [
       1031104
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Former Top Artisan Now Fixing Boilerst\"",
+    "ReadingBookDes": "From genius to outcast, and finally, a legend! The rise of a former guild elite, now reborn from the underground artisan ranks.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -822,8 +822,8 @@
     "TargetType": [
       1031105
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Heiress's Engagement Is Actually About Me?!\"",
+    "ReadingBookDes": "About how I was forced to become the Merchant Guildmaster's son-in-law.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -835,8 +835,8 @@
     "TargetType": [
       1031109
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "A Call to All Citizens",
+    "ReadingBookDes": "A poster with the emblem of the Asterleeds Defense Corps printed on the back.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -848,8 +848,8 @@
     "TargetType": [
       1031110
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Seagull\"",
+    "ReadingBookDes": "One volume from a poetry set, with a Sea Lily on the cover. The collection is a deluxe edition compiled by the famed contemporary author Dandelion.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -863,8 +863,8 @@
       1031151,
       1031153
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"How to Chat with a Cat\"",
+    "ReadingBookDes": "A best-selling title with a soft, colorful cover and a soothing palette.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -876,8 +876,8 @@
     "TargetType": [
       1031112
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Hidden Street Investigation\"",
+    "ReadingBookDes": "A self-printed book about observations, speculation, and unresolved mysteries about a secret street in Asterleeds.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -889,8 +889,8 @@
     "TargetType": [
       1031113
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Fall of the Pirates\"",
+    "ReadingBookDes": "A casual anecdotal book about the past of Asterleeds.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -902,8 +902,8 @@
     "TargetType": [
       1031114
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Land of the Night\"",
+    "ReadingBookDes": "A best-selling book with a band that reads: \"Recommended by Former Councilor Matthew Evans!\"",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -915,8 +915,8 @@
     "TargetType": [
       1031115
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Energy Division: A Different Perspective\"",
+    "ReadingBookDes": "A slim magazine special issue about the Energy Division, a unique group within the Artisan Guild.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -930,8 +930,8 @@
       1031143,
       1031161
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Crabs: The Hideous Sea Bugs\"",
+    "ReadingBookDes": "A one-book crash course: <br>Why is the table here<br>always missing a pair of crab claws?",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -943,8 +943,8 @@
     "TargetType": [
       1031117
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Crime and Redemption Beneath the Street Lamp\" Performance Poster",
+    "ReadingBookDes": "A theatrical poster of exquisite and suspenseful style.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -956,8 +956,8 @@
     "TargetType": [
       1031118
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Laugh! Drink! Party All Night!\" Performance Poster",
+    "ReadingBookDes": "A theatrical poster of bold and vulgar style.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -969,8 +969,8 @@
     "TargetType": [
       1031119
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Nobles of Byrnhald\" Performance Poster",
+    "ReadingBookDes": "A theatrical poster of formal and regal style.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -982,8 +982,8 @@
     "TargetType": [
       1031120
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"A Night with Kleisler\" Performance Poster",
+    "ReadingBookDes": "A theatrical poster of serious and classical style.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -995,8 +995,8 @@
     "TargetType": [
       1031121
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Puppet with Enamel Eyes\" Performance Poster",
+    "ReadingBookDes": "A theatrical poster of refined and creative style",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1008,8 +1008,8 @@
     "TargetType": [
       1031124
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Medical Certificate\"",
+    "ReadingBookDes": "A discarded letter",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1021,8 +1021,8 @@
     "TargetType": [
       1031127
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Shocking! Eerie Sounds from Below!\"",
+    "ReadingBookDes": "Half a torn book page, stained with oil, the paper turning yellow.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1034,8 +1034,8 @@
     "TargetType": [
       1031128
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Burnt IOU Note\"",
+    "ReadingBookDes": "A hasty scrap of paper, with scorched, browned edges and a giant red thumbprint at the bottom.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1047,8 +1047,8 @@
     "TargetType": [
       1031129
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Radiant Stone Enthusiast Guide - Standard Weapons Edition\"",
+    "ReadingBookDes": "A yellowed magazine with weapon sketches of various types on the cover.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1060,8 +1060,8 @@
     "TargetType": [
       1031130
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Universal Combat Potion (Type III)\"",
+    "ReadingBookDes": "It hurts? That means you're weak!",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1073,8 +1073,8 @@
     "TargetType": [
       1031131
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Get-Rich-Quick in Asterleeds\"",
+    "ReadingBookDes": "Money-making loopholes merchants won't tell you about.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1086,8 +1086,8 @@
     "TargetType": [
       1031132
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Candy Wrapper Chronicles\"",
+    "ReadingBookDes": "A report stained and smudged.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1099,8 +1099,8 @@
     "TargetType": [
       1031133
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Water-Resistant Map Lost by Someone",
+    "ReadingBookDes": "A rough leather-made map, densely annotated with markings.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1112,8 +1112,8 @@
     "TargetType": [
       1031134
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Lerom's Ultimate Dignity Package - Death Over Dishonor\"",
+    "ReadingBookDes": "A piece of corrugated cardboard, probably part of a box, turned into a poster.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1125,8 +1125,8 @@
     "TargetType": [
       1031135
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Taste Revolution: Sewer Cuisine Unveiled\"",
+    "ReadingBookDes": "A crumpled magazine, with the bottom right corner reading: \"Published by the Experimental Cuisine Club, Issue No. 266.\"",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1138,8 +1138,8 @@
     "TargetType": [
       1031136
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Rusty Nails in the Bone\"",
+    "ReadingBookDes": "A sheet covered with glowing fungal threads, with a nail hole at the top.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1151,8 +1151,8 @@
     "TargetType": [
       1031137
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Sewage-Stained Letter",
+    "ReadingBookDes": "An unsent letter, covered in stains. A large question mark is drawn on the envelope.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -1164,8 +1164,8 @@
     "TargetType": [
       1031138
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Duel in the Steel Cage\"",
+    "ReadingBookDes": "A colorful flyer, with a rough image drawn by the edges of rainbow-hued minerals.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1177,8 +1177,8 @@
     "TargetType": [
       1031139
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Webber Energy Network Operation Log",
+    "ReadingBookDes": "A crumpled operation log.",
     "Icon": "item_icons_wenjiandai2",
     "Quality": 2,
     "IsHide": false
@@ -1190,8 +1190,8 @@
     "TargetType": [
       1031140
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Unlucky Pirate\"",
+    "ReadingBookDes": "A fun read about the past of Asterleeds.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1203,8 +1203,8 @@
     "TargetType": [
       1031141
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Tales of the Probes\"",
+    "ReadingBookDes": "An educational science book.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1219,8 +1219,8 @@
       1031155,
       1031183
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Iron Mask Incident\"",
+    "ReadingBookDes": "A set of yellowed nonfiction books with pages so brittle they've begun to fall apart.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1233,8 +1233,8 @@
       1031145,
       1031146
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Hypotheses on the Formation of Submarine Voids\"",
+    "ReadingBookDes": "A popular science book intended for general readers.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1246,8 +1246,8 @@
     "TargetType": [
       1031147
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Mystery of the Missing Byrnhald Envoy\"",
+    "ReadingBookDes": "A special edition of an underground tabloid, unveiling the secrets of folk rumors.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1259,8 +1259,8 @@
     "TargetType": [
       1031150
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Shoemaker's Heir Returns After 30 Years Missing\"",
+    "ReadingBookDes": "A yellowed news article.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1272,8 +1272,8 @@
     "TargetType": [
       1031152
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Asterleeds, Land of Freedom\"",
+    "ReadingBookDes": "A thin, hardcover book.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1285,8 +1285,8 @@
     "TargetType": [
       1031154
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Jenny's Mysterious Strength",
+    "ReadingBookDes": "A beautiful pink flyer, with a hand-drawn crystal ball on the back.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1299,8 +1299,8 @@
       1031156,
       1031157
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Dominate the Dance Floor in Half an Hour\"",
+    "ReadingBookDes": "A quick-start guide for Novices to the dance floor. The cover is boldly designed with vibrant, dynamic color contrasts.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1312,8 +1312,8 @@
     "TargetType": [
       1031158
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Awaken! Mighty Fitter!",
+    "ReadingBookDes": "A flyer with suspicious yellow stains along the edges.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1325,8 +1325,8 @@
     "TargetType": [
       1031159
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Hidden Homework",
+    "ReadingBookDes": "A homework page with every answer slashed with exaggerated red X's. There are also cat paw prints on it.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1338,8 +1338,8 @@
     "TargetType": [
       1031160
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Stay or Go: The Byrnhalds\"",
+    "ReadingBookDes": "A nonfiction book, styled with artificially somber colors.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -1351,8 +1351,8 @@
     "TargetType": [
       1031162
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Shield Generator Blueprint\"",
+    "ReadingBookDes": "A hastily scribbled artisan design.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1370,8 +1370,8 @@
       1031170,
       1031177
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Don't Blow Up the Machine! A Guide to Crafting\"",
+    "ReadingBookDes": "A manual for apprentices new to the Artisan Guild. Durable paperback, with a tough, industrial design.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1383,8 +1383,8 @@
     "TargetType": [
       1031164
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Open Day for Artisan\"",
+    "ReadingBookDes": "A newspaper clipping, with creases indicating that it's been passed around quite a bit.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1396,8 +1396,8 @@
     "TargetType": [
       1031169
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Experimental Model Application",
+    "ReadingBookDes": "A simple, blank receipt.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1409,8 +1409,8 @@
     "TargetType": [
       1031171
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Hidden Value of Dragonlight Core\"",
+    "ReadingBookDes": "A book about artisan hobbies.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1422,8 +1422,8 @@
     "TargetType": [
       1031172
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Hermit\"",
+    "ReadingBookDes": "A book about the legendary artisan Mason Stonecutter.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1435,8 +1435,8 @@
     "TargetType": [
       1031173
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Let's Talk About Fantasy\"",
+    "ReadingBookDes": "A very thin booklet, probably a special issue from a newspaper.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1448,8 +1448,8 @@
     "TargetType": [
       1031174
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"7th Artisan Expo: Introduction\"",
+    "ReadingBookDes": "An internal artisan publication. Smells strongly of ink, with simple binding and a tough, industrial design.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1461,8 +1461,8 @@
     "TargetType": [
       1031175
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Technology Advances with Every Discovery\"",
+    "ReadingBookDes": "A journal issued internally by the Artisan Guild.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1474,8 +1474,8 @@
     "TargetType": [
       1031176
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Don't Touch That! It Might Go Crazy!\"",
+    "ReadingBookDes": "A book about Golems.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1488,8 +1488,8 @@
       1031179,
       1031191
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Ocean Hill Immersive Theater: 127s\"",
+    "ReadingBookDes": "A crumpled newspaper that seems to have been balled up and then smoothed out again.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1501,8 +1501,8 @@
     "TargetType": [
       1031180
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Miser\" Performance Poster",
+    "ReadingBookDes": "A hand-drawn flyer for Mini Theater, with absurd illustrations.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1514,8 +1514,8 @@
     "TargetType": [
       1031181
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Spring-Leg Jack\" Performance Poster",
+    "ReadingBookDes": "A hand-drawn flyer for Mini Theater, with a small handmade spring stuck to it.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1527,8 +1527,8 @@
     "TargetType": [
       1031182
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Webber Energy Network Hazard: The Sewer Crisis\"",
+    "ReadingBookDes": "A red-hot article, with curled page corners, covered in numerous fingerprints.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1540,8 +1540,8 @@
     "TargetType": [
       1031184
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Specialty Drinks of the Continent of Regnus\"",
+    "ReadingBookDes": "A scented booklet made of high-quality paper.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1553,8 +1553,8 @@
     "TargetType": [
       1031185
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "A One-Day Tour of Asterleeds",
+    "ReadingBookDes": "A hand-drawn promotional poster with a cheerful style.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1566,8 +1566,8 @@
     "TargetType": [
       1031186
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Ocean Hill Museum: New Exhibit Season\"",
+    "ReadingBookDes": "A hand-drawn color poster.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1579,8 +1579,8 @@
     "TargetType": [
       1031187
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Your Personalized Stress Management Plan\"",
+    "ReadingBookDes": "A flyer themed in deep blue, with a glaring stamp at the top: \"Special Council Edition.\"",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1592,8 +1592,8 @@
     "TargetType": [
       1031189
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Proposal: Add Artist & Sewer-dweller Representative Seats",
+    "ReadingBookDes": "A bill buried under thick dust. Who knows how long it's been forgotten?",
     "Icon": "item_icons_wenjiandai2",
     "Quality": 2,
     "IsHide": false
@@ -1605,8 +1605,8 @@
     "TargetType": [
       1031190
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Merchant Guild's Hidden Dealings\"",
+    "ReadingBookDes": "A deluxe book, with a cover design screaming conspiracy theory.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -1618,8 +1618,8 @@
     "TargetType": [
       1031192
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Wanted: Dr. Flame-Eye",
+    "ReadingBookDes": "A hand-drawn wanted poster. The subject looks scholarly yet crazy.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1631,8 +1631,8 @@
     "TargetType": [
       1031193
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Wanted: Lady Penelope",
+    "ReadingBookDes": "A hand-drawn wanted poster. The subject looks elegant and noble.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1644,8 +1644,8 @@
     "TargetType": [
       1031194
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Wanted: Iron-Lung Jayden",
+    "ReadingBookDes": "A hand-drawn wanted poster. The subject's size is several times larger than a normal person's.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1657,8 +1657,8 @@
     "TargetType": [
       1031195
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"A Civilization Built on Ruins\"",
+    "ReadingBookDes": "A book about Asterleeds.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -1670,8 +1670,8 @@
     "TargetType": [
       1031196
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Plains Hunting Regulations and Poaching Warning",
+    "ReadingBookDes": "A flyer bearing the steel seal of the Ocean Hill Council",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1683,8 +1683,8 @@
     "TargetType": [
       1031197
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"To the Honorable Jon Dandelion\"",
+    "ReadingBookDes": "An opened letter, faintly scented with Whispering Orchid.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -1696,8 +1696,8 @@
     "TargetType": [
       1031198
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Webber Family\"",
+    "ReadingBookDes": "A deluxe book about the legendary artisan Webber.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -1710,8 +1710,8 @@
       1031199,
       1031200
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Tina's File",
+    "ReadingBookDes": "A classified document chronicling Tina's secret past.",
     "Icon": "item_icons_wenjiandai1",
     "Quality": 2,
     "IsHide": false
@@ -1723,8 +1723,8 @@
     "TargetType": [
       1031201
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Opening Ceremony Program List",
+    "ReadingBookDes": "A program list for the Fireworks Festival Opening Ceremony. Elegantly designed, finely printed, brimming with festive flair.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1736,8 +1736,8 @@
     "TargetType": [
       1031202
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Exclusive Menu for Seabreeze Festival",
+    "ReadingBookDes": "An exclusive menu for the Seabreeze Festival from The Spinning Rudder.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1749,8 +1749,8 @@
     "TargetType": [
       1031203
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Poems of the Starfall Night",
+    "ReadingBookDes": "A handwritten poetry collection, author unknown.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1762,8 +1762,8 @@
     "TargetType": [
       1031204
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Shrimp Daily",
+    "ReadingBookDes": "A street tabloid fluttering wildly in the wind.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1775,8 +1775,8 @@
     "TargetType": [
       1031205
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Dark Mist Legion Investigation Record",
+    "ReadingBookDes": "A long-sealed file documenting partial movements of the Dark Mist Legion.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1788,8 +1788,8 @@
     "TargetType": [
       1031206
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Cruise Activity Schedule",
+    "ReadingBookDes": "The official event schedule for the Wavecrest Carnival. Tightly arranged entertainment events promise an exciting sea voyage.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1801,8 +1801,8 @@
     "TargetType": [
       1031207
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Rules of the Surprise Card Game",
+    "ReadingBookDes": "A detailed rules sheet printed on glossy white cardstock. Whether it's fortune or trap, you won't know until you try.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1814,8 +1814,8 @@
     "TargetType": [
       1031208
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Fragment of Garrison Log",
+    "ReadingBookDes": "A torn logbook page. The paper is rough and frayed at the edges, faintly smelling of rust.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1836,8 +1836,8 @@
       1031144,
       1031149
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Mind-Blowing Thoughts",
+    "ReadingBookDes": "A tear-off memo pad with the watermark, \"Tear one a day, be smart every day! \" <br>It is believed to be impossible to collect the full set.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1849,8 +1849,8 @@
     "TargetType": [
       1031209
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Shifting Sands of Kanamia\"",
+    "ReadingBookDes": "A hide scroll recording tribal tales, scarred and weathered by time.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1862,8 +1862,8 @@
     "TargetType": [
       1031210
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Person missing! The Mushroom Elder Trali appears!",
+    "ReadingBookDes": "A hide scroll recording tribal tales, scarred and weathered by time.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1875,8 +1875,8 @@
     "TargetType": [
       1031211
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Way Elders Think\"",
+    "ReadingBookDes": "A book about the Kanamia Tribe, its pages still carrying a fresh scent of ink. By Imogen Fair",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1888,8 +1888,8 @@
     "TargetType": [
       1031212
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Tribal Oral Traditions: Elder Pine Mushroom's Teachings\"",
+    "ReadingBookDes": "A hide scroll recording tribal tales, scarred and weathered by time.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1901,8 +1901,8 @@
     "TargetType": [
       1031213
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Secret of the Longevity Tree\"",
+    "ReadingBookDes": "A hide scroll recording tribal tales, scarred and weathered by time.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1914,8 +1914,8 @@
     "TargetType": [
       1031214
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Mounted Grand Hunt!",
+    "ReadingBookDes": "An aged hide scroll bearing the announcement of a tribal tournament.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1927,8 +1927,8 @@
     "TargetType": [
       1031215
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Kanamia Caprahorn Race",
+    "ReadingBookDes": "An aged hide scroll bearing the announcement of a tribal tournament.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1941,8 +1941,8 @@
       1031216,
       1031217
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Celebration of the Fiery Moon Omens\"",
+    "ReadingBookDes": "A novel series about the growth of a Kanamia Priest, written by Totoni.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1954,8 +1954,8 @@
     "TargetType": [
       1031218
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"A Tribe Without Currency\"",
+    "ReadingBookDes": "A book about Kanamia's internal trade network.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1967,8 +1967,8 @@
     "TargetType": [
       1031219
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Ritual of the Four Seasons\"",
+    "ReadingBookDes": "A hide scroll recording tribal tales, scarred and weathered by time.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -1980,8 +1980,8 @@
     "TargetType": [
       1031220
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Tale of Kanamia's Shrimpshrooms\"",
+    "ReadingBookDes": "A book about Kanamia's livestock practices.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -1993,8 +1993,8 @@
     "TargetType": [
       1031221
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Symbol of the Full Moon\"",
+    "ReadingBookDes": "This draft is filled with revisions-crossed-out lines, messy notes, and colorful ink annotations.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -2006,8 +2006,8 @@
     "TargetType": [
       1031222
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"When the Lunar Harp Meets the Pigskin Drum\"",
+    "ReadingBookDes": "A detailed study of Kanamia Tribe's traditional instruments, showcasing Bone Flutes and Skin Drums, with instructions on their crafting process, playing techniques, and ceremonial use.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -2019,8 +2019,8 @@
     "TargetType": [
       1031223
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Please Send Me Back!",
+    "ReadingBookDes": "An opened letter.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -2032,8 +2032,8 @@
     "TargetType": [
       1031224
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "A Letter to Luca",
+    "ReadingBookDes": "An opened letter.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -2045,8 +2045,8 @@
     "TargetType": [
       1031225
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Song of the Outsider - Kanamia Journal\"",
+    "ReadingBookDes": "A book about Kanamia, with a cover wrap that reads: \"Compiled from the oral accounts of bard Alva.\"",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -2058,8 +2058,8 @@
     "TargetType": [
       1031226
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Hakrei's Five Thousand Hides\"",
+    "ReadingBookDes": "A hide scroll recording tribal tales, scarred and weathered by time.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2071,8 +2071,8 @@
     "TargetType": [
       1031227
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Book of Counsel: New Moon Scroll\"",
+    "ReadingBookDes": "A hide scroll recording tribal tales, scarred and weathered by time.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2084,8 +2084,8 @@
     "TargetType": [
       1031228
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Book of Counsel: Sacred Spirit Scroll\"",
+    "ReadingBookDes": "A hide scroll recording tribal tales, scarred and weathered by time.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2100,8 +2100,8 @@
       1031231,
       1031232
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Book of Sin: The Transgressors\"",
+    "ReadingBookDes": "A bundle of hide scrolls sealed with bone buttons, recording names of those punished by tribal law.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2113,8 +2113,8 @@
     "TargetType": [
       1031233
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The White Wolf Mystery: An Inquiry into the Existence of Kanamia Ancestral Spirits\"",
+    "ReadingBookDes": "A book about Kanamia, with a fresh ink scent. <br>Written by Imogen Fair.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -2126,8 +2126,8 @@
     "TargetType": [
       1031234
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"A Study of Totem Culture in Kanamia\"",
+    "ReadingBookDes": "A book about Kanamia, with a fresh ink scent.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -2145,8 +2145,8 @@
       1031240,
       1031241
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Kanamia's Seven Sacred Laws\"",
+    "ReadingBookDes": "A carefully tanned hide scroll, edges decorated with intricate totems. <br>The text is written in special ink, each law glowing with a golden sheen.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2158,8 +2158,8 @@
     "TargetType": [
       1031242
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Artisan Guild Frontier Market",
+    "ReadingBookDes": "A journal collecting bizarre inventions from the Artisan Guild.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2171,8 +2171,8 @@
     "TargetType": [
       1031243
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Waters of the Forbidden Land",
+    "ReadingBookDes": "A hide scroll recording tribal tales, scarred and weathered by time.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2184,8 +2184,8 @@
     "TargetType": [
       1031244
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Kanamia White Wolf: A Hypothesis\"",
+    "ReadingBookDes": "A book on Kanamia customs and traditions.<br>Written by Dr. Evelyn Hargreaves.",
     "Icon": "item_icons_item_icons_citizen_book_thick",
     "Quality": 2,
     "IsHide": false
@@ -2197,8 +2197,8 @@
     "TargetType": [
       1031245
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "A Letter to Old Friend Lumia",
+    "ReadingBookDes": "An unsent letter, the paper deeply creased as if fiercely contested.",
     "Icon": "item_icons_xin",
     "Quality": 2,
     "IsHide": false
@@ -2210,8 +2210,8 @@
     "TargetType": [
       1031246
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Aged Hide Scroll",
+    "ReadingBookDes": "A hide scroll recording tribal tales, penned by an assistant priest.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2223,8 +2223,8 @@
     "TargetType": [
       1031247
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Lost Hide Scroll",
+    "ReadingBookDes": "A scroll specially made by Kanamians, penned by a Dusk Priest.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2236,8 +2236,8 @@
     "TargetType": [
       1031248
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "Strange Bark Inscription",
+    "ReadingBookDes": "A large piece of bark cleanly peeled off a tree, covered in tiny writing.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2249,8 +2249,8 @@
     "TargetType": [
       1031249
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Light of the Priest's Journey\"",
+    "ReadingBookDes": "A hide scroll recording tribal tales, scarred and weathered by time.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2262,8 +2262,8 @@
     "TargetType": [
       1031250
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Scavengers\"",
+    "ReadingBookDes": "A book on scavengers.<br>Written by someone who lived among scavengers, offering readers a fresh perspective.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -2275,8 +2275,8 @@
     "TargetType": [
       1031251
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "A Letter to the Chief Priest",
+    "ReadingBookDes": "A scroll specially made by Kanamians, penned by a Dusk Priest.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -2288,8 +2288,8 @@
     "TargetType": [
       1031252
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"The Scavengers' Guide to 'Pointless' Survival\"",
+    "ReadingBookDes": "A chronicle that destroys romantic fantasies of scavenging.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -2301,8 +2301,8 @@
     "TargetType": [
       1031253
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "The Flyer for the Spinning Rudder",
+    "ReadingBookDes": "A poster advertising the Spinning Rudder, its bold, curling letters dancing as if caught in the sea breeze.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2314,8 +2314,8 @@
     "TargetType": [
       1031254
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"On the Benefits of Trading with Scavengers\"",
+    "ReadingBookDes": "An autobiographical book by Kevin, who claims to be a \"veteran merchant\"",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false
@@ -2327,8 +2327,8 @@
     "TargetType": [
       1031255
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "To all visitors to the ruins of Andra Landing Battle",
+    "ReadingBookDes": "A warning poster with fierce strokes that slash the paper like blades, each one piercing and sharp.",
     "Icon": "item_icons_item_icons_citizen_note",
     "Quality": 2,
     "IsHide": false
@@ -2340,8 +2340,8 @@
     "TargetType": [
       1031256
     ],
-    "WorksName": "",
-    "ReadingBookDes": "",
+    "WorksName": "\"Peacegrass of a Foreign Land\"",
+    "ReadingBookDes": "A book advocating peace and anti-war ideals.",
     "Icon": "item_icons_item_icons_citizen_book_thin",
     "Quality": 2,
     "IsHide": false

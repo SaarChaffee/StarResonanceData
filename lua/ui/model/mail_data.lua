@@ -79,6 +79,32 @@ function MailData:AddMailUnRead(uuid)
   table.insert(self.unReadUuIdList_, uuid)
 end
 
+function MailData:GetIsShowMailRemindClaimTips()
+  local unReadCount = 0
+  for i = 1, #self.list_ do
+    if (self.list_[i].isHaveAward or self.list_[i].isHaveAppendix) and self.list_[i].mailState ~= mailGetState or not self.list_[i].isHaveAward and not self.list_[i].isHaveAppendix and self.list_[i].mailState ~= mailReadState then
+      unReadCount = unReadCount + 1
+      if unReadCount >= Z.Global.MailRemindClaimNum then
+        return true
+      end
+    end
+  end
+  return false
+end
+
+function MailData:GetIsShowMailRemindDeleteTips()
+  local readCount = 0
+  for i = 1, #self.list_ do
+    if self.list_[i].mailState == mailGetState or not self.list_[i].isHaveAward and not self.list_[i].isHaveAppendix and self.list_[i].mailState == mailReadState then
+      readCount = readCount + 1
+      if readCount >= Z.Global.MailRemindDeleteNum then
+        return true
+      end
+    end
+  end
+  return false
+end
+
 function MailData:RemoveUnRead(mailUuid)
   if #self.unReadUuIdList_ > 0 then
     for i = #self.unReadUuIdList_, 1, -1 do

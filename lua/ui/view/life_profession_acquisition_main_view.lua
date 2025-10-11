@@ -30,6 +30,7 @@ function Life_profession_acquisition_mainView:ctor()
 end
 
 function Life_profession_acquisition_mainView:OnActive()
+  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self.lifeMenufactureData_:ResetSelectProductions(true)
   self.screeningRightSubView_ = LifeProfessionScreeningRightSubView.new(self)
   self.specializationRightSubView_ = LifeProfessionspecializationRightSubView.new(self)
@@ -114,6 +115,7 @@ function Life_profession_acquisition_mainView:RefreshFirstOpen()
 end
 
 function Life_profession_acquisition_mainView:OnDeActive()
+  Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, false)
   if self.curInfoSubView_ then
     self.curInfoSubView_:DeActive()
     self.curInfoSubView_ = nil
@@ -664,6 +666,10 @@ function Life_profession_acquisition_mainView:refreshSpecializationPoint(id, gro
   local maxLevel = self.lifeProfessionData_:GetSpecializationMaxLevel(self.curProID, groupId)
   pointUnit.Ref:SetVisible(pointUnit.img_active, isActive and curLevel == maxLevel)
   pointUnit.Ref:SetVisible(pointUnit.img_bg, isActive and curLevel ~= maxLevel)
+  local ColorInactive = Color.New(0.6274509803921569, 0.6274509803921569, 0.6274509803921569, 1)
+  local ColorActive = Color.New(0.807843137254902, 0.6588235294117647, 0.5058823529411764, 1)
+  pointUnit.img_frame_pc.color = isActive and ColorActive or ColorInactive
+  pointUnit.img_frame_not_pc.color = isActive and ColorActive or ColorInactive
   pointUnit.Ref:SetVisible(pointUnit.img_unlock, not isActive)
   pointUnit.Ref:SetVisible(pointUnit.img_select, self.curSelectSpecializationID ~= nil and id == self.curSelectSpecializationID)
   local curSpeConfig = self.lifeProfessionVM.GetCurSpecialization(self.curProID, id, groupId)

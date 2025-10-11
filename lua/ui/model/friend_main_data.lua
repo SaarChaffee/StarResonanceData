@@ -41,8 +41,6 @@ function FriendMainData:ResetProp()
   self.addressSelectCharId_ = 0
   self.rightShowCharId_ = 0
   self.friendViewType_ = E.FriendViewType.Chat
-  self.friendViewOpen_ = false
-  self.isShowFriendChat_ = false
   self.chatRightSubViewList_ = {}
   self.friendsRightSubViewList_ = {}
   self.FriendlinessLevel_ = 1
@@ -101,22 +99,6 @@ end
 
 function FriendMainData:SetFriendViewType(viewType)
   self.friendViewType_ = viewType
-end
-
-function FriendMainData:GetFriendViewOpen()
-  return self.friendViewOpen_
-end
-
-function FriendMainData:SetFriendViewOpen(isOpen)
-  self.friendViewOpen_ = isOpen
-end
-
-function FriendMainData:GetIsShowFriendChat()
-  return self.isShowFriendChat_
-end
-
-function FriendMainData:SetIsShowFriendChat(isShow)
-  self.isShowFriendChat_ = isShow
 end
 
 function FriendMainData:GetRightSubViewList()

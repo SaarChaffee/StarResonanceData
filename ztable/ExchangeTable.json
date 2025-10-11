@@ -1,19 +1,19 @@
 {
   "233": {
     "Id": 233,
-    "ShopName": "",
+    "ShopName": "Guild Store",
     "SystemId": 100233,
     "Npc": "",
     "ShowType": 0,
     "CurrencyDisplay": [],
     "CameraTemplateId": [],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "234": {
     "Id": 234,
-    "ShopName": "",
+    "ShopName": "Clothing Crafting",
     "SystemId": 100234,
     "Npc": "",
     "ShowType": 0,
@@ -23,13 +23,13 @@
     "CameraTemplateId": [
       4007
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Crafting",
     "Trace": true,
     "Screen": 0
   },
   "235": {
     "Id": 235,
-    "ShopName": "",
+    "ShopName": "Accessory Exchange",
     "SystemId": 100235,
     "Npc": "",
     "ShowType": 0,
@@ -41,7 +41,7 @@
   },
   "237": {
     "Id": 237,
-    "ShopName": "",
+    "ShopName": "Accessory Store",
     "SystemId": 100237,
     "Npc": "",
     "ShowType": 0,
@@ -53,7 +53,7 @@
   },
   "238": {
     "Id": 238,
-    "ShopName": "",
+    "ShopName": "Jewelry Store",
     "SystemId": 100238,
     "Npc": "",
     "ShowType": 0,
@@ -65,7 +65,7 @@
   },
   "239": {
     "Id": 239,
-    "ShopName": "",
+    "ShopName": "Accessory Crafting",
     "SystemId": 100239,
     "Npc": "",
     "ShowType": 0,
@@ -75,13 +75,13 @@
     "CameraTemplateId": [
       4008
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Crafting",
     "Trace": true,
     "Screen": 0
   },
   "240": {
     "Id": 240,
-    "ShopName": "",
+    "ShopName": "Star Chest and Module Exchange",
     "SystemId": 100240,
     "Npc": "",
     "ShowType": 0,
@@ -89,13 +89,13 @@
     "CameraTemplateId": [
       4009
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "244": {
     "Id": 244,
-    "ShopName": "",
+    "ShopName": "Culinary Exchange",
     "SystemId": 100244,
     "Npc": "",
     "ShowType": 0,
@@ -103,13 +103,13 @@
     "CameraTemplateId": [
       4010
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "245": {
     "Id": 245,
-    "ShopName": "",
+    "ShopName": "Gear Exchange",
     "SystemId": 100245,
     "Npc": "",
     "ShowType": 0,
@@ -117,13 +117,13 @@
     "CameraTemplateId": [
       4011
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 1
   },
   "247": {
     "Id": 247,
-    "ShopName": "",
+    "ShopName": "Battle Will Exchange",
     "SystemId": 100247,
     "Npc": "",
     "ShowType": 0,
@@ -131,13 +131,13 @@
     "CameraTemplateId": [
       4015
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "248": {
     "Id": 248,
-    "ShopName": "",
+    "ShopName": "Gear Exchange - Lv.60",
     "SystemId": 100248,
     "Npc": "",
     "ShowType": 0,
@@ -145,13 +145,13 @@
     "CameraTemplateId": [
       4011
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 1
   },
   "249": {
     "Id": 249,
-    "ShopName": "",
+    "ShopName": "Gear Exchange - Lv.80",
     "SystemId": 100249,
     "Npc": "",
     "ShowType": 0,
@@ -159,13 +159,13 @@
     "CameraTemplateId": [
       4011
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 1
   },
   "250": {
     "Id": 250,
-    "ShopName": "",
+    "ShopName": "Smelting Exchange",
     "SystemId": 100250,
     "Npc": "",
     "ShowType": 0,
@@ -173,13 +173,13 @@
     "CameraTemplateId": [
       4016
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "251": {
     "Id": 251,
-    "ShopName": "",
+    "ShopName": "Gemcrafting Exchange",
     "SystemId": 100251,
     "Npc": "",
     "ShowType": 0,
@@ -187,13 +187,13 @@
     "CameraTemplateId": [
       4017
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "252": {
     "Id": 252,
-    "ShopName": "",
+    "ShopName": "Artisanry Exchange",
     "SystemId": 100252,
     "Npc": "",
     "ShowType": 0,
@@ -201,13 +201,13 @@
     "CameraTemplateId": [
       4018
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "253": {
     "Id": 253,
-    "ShopName": "",
+    "ShopName": "Alchemy Exchange",
     "SystemId": 100253,
     "Npc": "",
     "ShowType": 0,
@@ -215,13 +215,13 @@
     "CameraTemplateId": [
       4019
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "254": {
     "Id": 254,
-    "ShopName": "",
+    "ShopName": "Module Exchange Store",
     "SystemId": 100254,
     "Npc": "",
     "ShowType": 0,
@@ -229,13 +229,13 @@
     "CameraTemplateId": [
       4020
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "255": {
     "Id": 255,
-    "ShopName": "",
+    "ShopName": "Fresh Meat Store",
     "SystemId": 100255,
     "Npc": "",
     "ShowType": 0,
@@ -243,13 +243,13 @@
     "CameraTemplateId": [
       4021
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "256": {
     "Id": 256,
-    "ShopName": "",
+    "ShopName": "Seafood Store",
     "SystemId": 100256,
     "Npc": "",
     "ShowType": 0,
@@ -257,13 +257,13 @@
     "CameraTemplateId": [
       4022
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "257": {
     "Id": 257,
-    "ShopName": "",
+    "ShopName": "Shard Store",
     "SystemId": 100257,
     "Npc": "",
     "ShowType": 0,
@@ -271,13 +271,13 @@
     "CameraTemplateId": [
       4023
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "258": {
     "Id": 258,
-    "ShopName": "",
+    "ShopName": "Class Exchange",
     "SystemId": 100258,
     "Npc": "",
     "ShowType": 0,
@@ -285,13 +285,13 @@
     "CameraTemplateId": [
       4024
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "259": {
     "Id": 259,
-    "ShopName": "",
+    "ShopName": "Void Relic Exchange",
     "SystemId": 100259,
     "Npc": "",
     "ShowType": 0,
@@ -299,13 +299,13 @@
     "CameraTemplateId": [
       4032
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 1
   },
   "261": {
     "Id": 261,
-    "ShopName": "",
+    "ShopName": "Artisanry Exchange",
     "SystemId": 100261,
     "Npc": "",
     "ShowType": 0,
@@ -313,13 +313,13 @@
     "CameraTemplateId": [
       4026
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "262": {
     "Id": 262,
-    "ShopName": "",
+    "ShopName": "Weaving Exchange",
     "SystemId": 100262,
     "Npc": "",
     "ShowType": 0,
@@ -327,13 +327,13 @@
     "CameraTemplateId": [
       4025
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "263": {
     "Id": 263,
-    "ShopName": "",
+    "ShopName": "Botany Exchange",
     "SystemId": 100263,
     "Npc": "",
     "ShowType": 0,
@@ -341,13 +341,13 @@
     "CameraTemplateId": [
       4029
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "264": {
     "Id": 264,
-    "ShopName": "",
+    "ShopName": "Mineralogy Exchange",
     "SystemId": 100264,
     "Npc": "",
     "ShowType": 0,
@@ -355,13 +355,13 @@
     "CameraTemplateId": [
       4030
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "265": {
     "Id": 265,
-    "ShopName": "",
+    "ShopName": "Gemology Exchange",
     "SystemId": 100265,
     "Npc": "",
     "ShowType": 0,
@@ -369,13 +369,13 @@
     "CameraTemplateId": [
       4031
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 0
   },
   "266": {
     "Id": 266,
-    "ShopName": "",
+    "ShopName": "Gear Exchange",
     "SystemId": 100266,
     "Npc": "",
     "ShowType": 0,
@@ -383,13 +383,13 @@
     "CameraTemplateId": [
       4011
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 1
   },
   "267": {
     "Id": 267,
-    "ShopName": "",
+    "ShopName": "Gear Exchange - Lv.60",
     "SystemId": 100267,
     "Npc": "",
     "ShowType": 0,
@@ -397,13 +397,13 @@
     "CameraTemplateId": [
       4011
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 1
   },
   "268": {
     "Id": 268,
-    "ShopName": "",
+    "ShopName": "Void Relic Exchange",
     "SystemId": 100268,
     "Npc": "",
     "ShowType": 0,
@@ -411,7 +411,7 @@
     "CameraTemplateId": [
       4032
     ],
-    "ExchangeBtnName": "",
+    "ExchangeBtnName": "Exchange",
     "Trace": false,
     "Screen": 1
   }

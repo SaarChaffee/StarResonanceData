@@ -1038,7 +1038,8 @@ function Tips_item_info_popup_bag_pcView:setEnchantInfo()
       local itemRow = Z.TableMgr.GetRow("ItemTableMgr", curEnchantRow.Id)
       if itemRow then
         self.uiBinder.Ref:SetVisible(self.uiBinder.gem_title_root, true)
-        self.uiBinder.gem_rimg_icon:SetImage(itemRow.Icon)
+        local itemVm = Z.VMMgr.GetVM("items")
+        self.uiBinder.gem_rimg_icon:SetImage(itemVm.GetItemIcon(curEnchantRow.Id))
         self.uiBinder.lab_enchant_use.text = itemRow.Name
       end
     end

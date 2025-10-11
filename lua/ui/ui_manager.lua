@@ -486,7 +486,7 @@ function UIManager:CheckMainUIActionLimit(actionId)
   if self:HasFocusView(actionTriggerIngoreViewConfigKey) then
     return false
   end
-  if actionId == Z.RewiredActionsConst.ExitUI then
+  if actionId == Z.InputActionIds.ExitUI then
     return false
   end
   return true

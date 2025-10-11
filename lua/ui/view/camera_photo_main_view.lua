@@ -69,6 +69,9 @@ function Camera_photo_mainView:initBtnClick()
   self:AddAsyncClick(self.uiBinder.btn_moments, function()
     self:shareImage(Bokura.Plugins.Share.SharePlatform.WeChatMoment)
   end)
+  self:AddAsyncClick(self.uiBinder.btn_apj, function()
+    self:shareImage(Bokura.Plugins.Share.SharePlatform.System)
+  end)
   self.uiBinder.tog_player:SetIsOnWithoutCallBack(false)
   self.uiBinder.tog_player:RemoveAllListeners()
   self.uiBinder.tog_player:AddListener(function(isOn)
@@ -97,14 +100,28 @@ function Camera_photo_mainView:OnActive()
   self:bindWatchers()
   self.scene_mask_:SetSceneMaskByKey(self.SceneMaskKey)
   self:showOrHideBtnAndBottom(true)
-  local isUnlockFunc = self.gotoFuncVM_.FuncIsOn(E.FunctionID.SDKShareLocalPhoto, true)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, isUnlockFunc and not Z.IsPCUI)
+  self:initShareNode()
 end
 
 function Camera_photo_mainView:initParam()
   self.designWidth_ = Z.UIRoot.DESIGNSIZE_WIDTH
   self.designHeight_ = Z.UIRoot.DESIGNSIZE_HEIGHT
   self.curSceenSize_ = Z.UIRoot.CurScreenSize
+end
+
+function Camera_photo_mainView:initShareNode()
+  local isUnlockFunc = self.gotoFuncVM_.FuncIsOn(E.FunctionID.SDKShareLocalPhoto, true)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_share, isUnlockFunc and not Z.IsPCUI)
+  local currentPlatform = Z.SDKLogin.GetPlatform()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, false)
+  self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, false)
+  if currentPlatform == E.LoginPlatformType.TencentPlatform then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, false)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, true)
+  elseif currentPlatform == E.LoginPlatformType.APJPlatform then
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_abroad, true)
+    self.uiBinder.Ref:SetVisible(self.uiBinder.node_domestic, false)
+  end
 end
 
 function Camera_photo_mainView:bindWatchers()

@@ -1,5 +1,6 @@
 local MatchTeamVm = {}
 local worldProxy = require("zproxy.world_proxy")
+local MasterChallenDungeonTableMap = require("table.MasterChallenDungeonTableMap")
 
 function MatchTeamVm.GetIsMatching()
   local matchData_ = Z.DataMgr.Get("match_data")
@@ -14,6 +15,9 @@ local OpenRFDialog = function(dungeonId, suggestRF)
   local cancelFunc = function()
     local teamMainVm = Z.VMMgr.GetVM("team_main")
     local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonId)
+    if not targetId then
+      return
+    end
     local teamTargetTableRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetId)
     if teamTargetTableRow then
       local quickjumpVm = Z.VMMgr.GetVM("quick_jump")
@@ -75,15 +79,29 @@ local CheckTeamMemberProfession = function(members, matchTableRow)
   end
   return true
 end
-local CheckCanMatchTeam = function(dungeonId)
-  local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
+local GetSuggestRF = function(dungeonId, difficulty)
+  if difficulty and 0 < difficulty then
+    local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[dungeonId][difficulty]
+    local tabData = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+    if tabData then
+      return tabData.RecommendFightValue
+    end
+  else
+    local tabData = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
+    if tabData then
+      return tabData.RecommendFightValue
+    end
+  end
+  return 0
+end
+local CheckCanMatchTeam = function(dungeonId, difficulty)
   local teamVm = Z.VMMgr.GetVM("team")
   if not teamVm.GetYouIsLeader() then
     Z.TipsVM.ShowTips(1000643)
     return false
   end
   local teamMainVm = Z.VMMgr.GetVM("team_main")
-  local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonId)
+  local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonId, difficulty)
   if not targetId then
     return false
   end
@@ -97,7 +115,7 @@ local CheckCanMatchTeam = function(dungeonId)
   end
   local teamData = Z.DataMgr.Get("team_data")
   local members = teamData.TeamInfo.members
-  local suggestRF = dungeonsTableRow.RecommendFightValue
+  local suggestRF = GetSuggestRF(dungeonId, difficulty)
   if not CheckTeamMemberRF(members, suggestRF) then
     return false
   end
@@ -106,18 +124,17 @@ local CheckCanMatchTeam = function(dungeonId)
   end
   return true
 end
-local CheckCanMatchSingle = function(dungeonId)
-  local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
+local CheckCanMatchSingle = function(dungeonId, difficulty)
   local recommendFightValueVM = Z.VMMgr.GetVM("recommend_fightvalue")
   local curRF = recommendFightValueVM.GetTotalPoint()
-  local suggestRF = dungeonsTableRow.RecommendFightValue
+  local suggestRF = GetSuggestRF(dungeonId, difficulty)
   if curRF < suggestRF and suggestRF ~= 0 then
     OpenRFDialog(dungeonId, suggestRF)
     return false
   end
   return true
 end
-local CheckCanMatch = function(dungeonId)
+local CheckCanMatch = function(dungeonId, difficulty)
   local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonId)
   if not dungeonsTableRow then
     return false
@@ -127,21 +144,24 @@ local CheckCanMatch = function(dungeonId)
   end
   local teamVm = Z.VMMgr.GetVM("team")
   if teamVm.CheckIsInTeam() then
-    return CheckCanMatchTeam(dungeonId)
+    return CheckCanMatchTeam(dungeonId, difficulty)
   else
-    return CheckCanMatchSingle(dungeonId)
+    return CheckCanMatchSingle(dungeonId, difficulty)
   end
   return true
 end
 
-function MatchTeamVm.IsShowMatchBtn(dungeonId)
+function MatchTeamVm.IsShowMatchBtn(dungeonId, masterDifficultLevel)
   local teamMainVm = Z.VMMgr.GetVM("team_main")
-  local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonId)
+  local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonId, masterDifficultLevel)
+  if not targetId then
+    return false
+  end
   local teamTargetRow = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetId)
   if not teamTargetRow then
-    return
+    return false
   end
-  return teamTargetRow.MatchID and teamTargetRow.MatchID > 0
+  return teamTargetRow.MatchID and teamTargetRow.MatchID > 0 and Z.ConditionHelper.CheckCondition(teamTargetRow.MatchCondition)
 end
 
 function MatchTeamVm.CancelMatchDialog()
@@ -158,10 +178,23 @@ function MatchTeamVm.CancelMatchDialog()
   end
   local matchTeamData = Z.DataMgr.Get("match_team_data")
   local dungeonID = matchTeamData:GetCurMatchingDungeonId()
-  local cfg = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
+  local difficulty = matchTeamData:GetCurMatchingMasterDifficulty()
   local targetName = ""
-  if cfg then
-    targetName = cfg.Name
+  if difficulty and 0 < difficulty then
+    local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[dungeonID][difficulty]
+    local masterChallengeDungeonTableRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+    local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
+    if dungeonsTableRow and masterChallengeDungeonTableRow then
+      targetName = Lang("DungeonMasterName", {
+        dungeonName = dungeonsTableRow.Name,
+        masterName = masterChallengeDungeonTableRow.DungeonTypeName
+      })
+    end
+  else
+    local dungeonsTableRow = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(dungeonID)
+    if dungeonsTableRow then
+      targetName = dungeonsTableRow.Name
+    end
   end
   local now = Z.TimeTools.Now() / 1000
   local matchData_ = Z.DataMgr.Get("match_data")
@@ -217,11 +250,7 @@ function MatchTeamVm.CreateMatchingTimer()
     Z.GlobalTimerMgr:StopTimer(E.GlobalTimerTag.TeamMatch)
     return
   end
-  local matchTeamData = Z.DataMgr.Get("match_team_data")
-  local targetID = matchTeamData:GetCurMatchingTargetId()
-  local targetInfo = Z.TableMgr.GetTable("TeamTargetTableMgr").GetRow(targetID)
-  local matchTableRow = Z.TableMgr.GetTable("MatchTableMgr").GetRow(targetInfo.MatchID)
-  local timeDialog = matchTableRow.MatchMaxTime
+  local timeDialog = Z.Global.MatchWaitingTime
   local now = Z.TimeTools.Now() / 1000
   local matchData_ = Z.DataMgr.Get("match_data")
   local matchBeginTime = matchData_:GetMatchStartTime()
@@ -242,17 +271,22 @@ function MatchTeamVm.CancelMatchingTimer()
   Z.GlobalTimerMgr:StopTimer(E.GlobalTimerTag.TeamMatch)
 end
 
-function MatchTeamVm.TryBeginMatch(dungeonId)
-  if not CheckCanMatch(dungeonId) then
+function MatchTeamVm.TryBeginMatch(teamMatchParams)
+  local dungeonId = teamMatchParams.dungeonId
+  local difficulty = teamMatchParams.difficulty
+  if not CheckCanMatch(dungeonId, difficulty) then
     return
   end
   local matchVm = Z.VMMgr.GetVM("match")
   if matchVm.IsMatching() then
-    matchVm.TryChangeMatch(E.MatchType.Team, dungeonId)
+    matchVm.TryChangeMatch(E.MatchType.Team, teamMatchParams)
     return
   end
   local teamMainVm = Z.VMMgr.GetVM("team_main")
-  local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonId)
+  local targetId = teamMainVm.GetTargetIdByDungeonId(dungeonId, difficulty)
+  if not targetId then
+    return
+  end
   local settingVm_ = Z.VMMgr.GetVM("setting")
   local requestParam = {}
   requestParam.targetId = targetId

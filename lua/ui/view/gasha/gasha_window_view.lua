@@ -239,8 +239,9 @@ function Gasha_windowView:refreshTimer()
   self.uiBinder.Ref:SetVisible(self.uiBinder.layout_time, true)
   if time <= 0 then
     self.lab_time.text = Lang("ActivityHasEnd")
+  else
+    self.lab_time.text = Lang("RemainingTime:") .. Z.TimeFormatTools.FormatToDHMS(time)
   end
-  self.lab_time.text = Lang("RemainingTime:") .. Z.TimeFormatTools.FormatToDHMS(time)
   if self.timer == nil then
     self.timer = self.timerMgr:StartTimer(function()
       time = time - 1
@@ -395,6 +396,7 @@ function Gasha_windowView:realDraw(count)
           end
         end
         self:showDrawResult(ret.items, ret.replaceItems, quality, #ret.items == 1)
+        Z.DataMgr.Get("sdk_report_data"):AddGashaData(self.gashaPoolTableRow_.GashaType, count)
       end
     end
   end)()

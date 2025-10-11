@@ -4,6 +4,8 @@ local Hero_dungeon_copy_windowView = class("Hero_dungeon_copy_windowView", super
 local itemClass = require("common.item_binder")
 local settlementPost = require("ui.component.dungeon_settlement_pos_comp")
 local itemSortFactoryVm = Z.VMMgr.GetVM("item_sort_factory")
+local MasterChallenDungeonTableMap = require("table.MasterChallenDungeonTableMap")
+local rimgName = "ui/textures/dungeon_textures/hero_dungeon_masterdungeon_new"
 local ColorWhite = Color.New(1, 1, 1, 1)
 local ColorGreen = Color.New(0.4588235294117647, 0.5215686274509804, 0.2196078431372549, 1)
 
@@ -251,6 +253,7 @@ function Hero_dungeon_copy_windowView:setMasterScore()
         local nowScore = self.heroDungeonMainVM_.GetDungeonDiffScore(self.dungeonId_, diff)
         local nowScoreText = self.heroDungeonMainVM_.GetPlayerSeasonMasterDungeonScoreWithColor(nowScore)
         if isNewRecordScore then
+          unit.new_record:SetImage(rimgName)
           unit.lab_process.text = "(+" .. addScore .. ")" .. nowScoreText .. "/" .. totalScoreText
           unit.Ref:SetVisible(unit.new_record, true)
         else
@@ -413,16 +416,50 @@ function Hero_dungeon_copy_windowView:getAward()
   end
   local isHaveAward = 0 < #self.awards_
   self.node_content02_.Ref:SetVisible(self.awardNode_, isHaveAward)
-  self.uiBinder.Ref:SetVisible(self.lab_tips_, not isHaveAward)
   self.uiBinder.Ref:SetVisible(self.lab_more_, isMultiaAward)
   self.uiBinder.Ref:SetVisible(self.node_more_, isMultiaAward)
-  self:isHaveAward(isHaveAward)
+  local isLimit = self:isHasLimit()
+  if not isHaveAward then
+    isLimit = true
+  end
+  self.uiBinder.Ref:SetVisible(self.lab_tips_, isLimit)
+  self:isHaveAward(isHaveAward, isLimit)
 end
 
-function Hero_dungeon_copy_windowView:isHaveAward(isflag)
-  if isflag then
+function Hero_dungeon_copy_windowView:isHasLimit()
+  if self.dungeonTableRow_ then
+    if self.dungeonTableRow_.CountLimit ~= 0 then
+      local residueLimitCount = Z.CounterHelper.GetResidueLimitCountByCounterId(self.dungeonTableRow_.CountLimit)
+      if residueLimitCount <= 0 then
+        return true
+      end
+    end
+    local isMaster = self.heroDungeonMainVM_.IsMasterChallengeDungeonScene()
+    local singleCountId = 0
+    if isMaster then
+      local diff = Z.ContainerMgr.DungeonSyncData.dungeonSceneInfo.difficulty
+      local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[self.dungeonId_][diff]
+      local masterChallengeDungeonRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+      singleCountId = masterChallengeDungeonRow.SingleAwardCounterId
+    else
+      singleCountId = self.dungeonTableRow_.SingleAwardCounterId
+    end
+    if singleCountId ~= 0 then
+      local residueLimitCount = Z.CounterHelper.GetResidueLimitCountByCounterId(singleCountId)
+      if residueLimitCount <= 0 then
+        return true
+      end
+    end
+  end
+  return false
+end
+
+function Hero_dungeon_copy_windowView:isHaveAward(isHaveAward, isflag)
+  if isHaveAward then
     self:createAwardItem()
-  else
+  end
+  if isflag then
+    self.uiBinder.Ref:SetVisible(self.lab_assist_fight_tips_, false)
     local str = Lang("CompleteCopyRepeatNoReward")
     if self.dungeonTableRow_ then
       if self.dungeonTableRow_.PlayType == E.DungeonType.HeroKeyDungeon then
@@ -445,7 +482,8 @@ function Hero_dungeon_copy_windowView:isHaveAward(isflag)
         end
       elseif self.dungeonTableRow_.PlayType == E.DungeonType.UnionHunt then
         str = Lang("UnionHuntRepeatNoReward")
-        self.uiBinder.Ref:SetVisible(self.lab_assist_fight_tips_, false)
+      elseif self.dungeonTableRow_.PlayType == E.DungeonType.HeroChallengeDungeon then
+        str = Lang("HeroDungeonNoReward")
       elseif self.dungeonTableRow_.FunctionID == Z.PbEnum("EFunctionType", "FunctionTypeHeroDungeonChallenge") then
         self.isChallenge = true
         str = Lang("CompleteCopyRepeatNoReward")
@@ -453,6 +491,10 @@ function Hero_dungeon_copy_windowView:isHaveAward(isflag)
         self.isChallenge = false
         str = Lang("HeroNormalTips")
       end
+    end
+    local isMaster = self.heroDungeonMainVM_.IsMasterChallengeDungeonScene()
+    if isMaster then
+      str = Lang("HeroDungeonNoReward")
     end
     self.lab_tips_.text = str
   end

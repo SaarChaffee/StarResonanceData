@@ -2,7 +2,7 @@
   "1": {
     "Id": 1,
     "Comment": "测试数据1",
-    "Name": "",
+    "Name": "Test Data 1",
     "BasicAvatar": [],
     "FashionItemId": [
       [
@@ -17,7 +17,7 @@
   "2": {
     "Id": 2,
     "Comment": "测试数据2",
-    "Name": "",
+    "Name": "Test Data 2",
     "BasicAvatar": [],
     "FashionItemId": [
       [
@@ -32,7 +32,7 @@
   "101001": {
     "Id": 101001,
     "Comment": "第一赛季展示时装",
-    "Name": "",
+    "Name": "Type Zero - Set",
     "BasicAvatar": [],
     "FashionItemId": [
       [

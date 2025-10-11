@@ -19,6 +19,7 @@ function Personalzone_head_subView:OnActive()
   self.uiBinder.Trans:SetOffsetMax(0, 0)
   self.charId_ = Z.ContainerMgr.CharSerialize.charId
   self.modelId_ = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
+  self.headLoopScroll_ = loopGridView.new(self, self.uiBinder.loopscroll, PersonalZoneHead, "personalzone_head_item")
   self:AddAsyncClick(self.uiBinder.btn_use.btn, function()
     if self.curId_ == self.useId_ then
       return
@@ -58,7 +59,6 @@ function Personalzone_head_subView:OnActive()
     self:refreshInfo()
     self.headLoopScroll_:RefreshListView(self.datas_, false)
   end)
-  self.headLoopScroll_ = loopGridView.new(self, self.uiBinder.loopscroll, PersonalZoneHead, "personalzone_head_item")
   self.useId_ = 0
   self.curId_ = 0
   local profileImageConfigs = {}
@@ -71,9 +71,12 @@ function Personalzone_head_subView:OnActive()
     self.useId_ = self.personalZoneVM_.GetCurProfileImageId(DEFINE.ProfileImageType.HeadFrame)
     self.curId_ = self.useId_
   end
+  self.headLoopScroll_:Init({})
   Z.CoroUtil.create_coro_xpcall(function()
     self.datas_ = {}
     local index = 0
+    local pendingRequests = 0
+    local completedRequests = 0
     if profileImageConfigs then
       for _, config in ipairs(profileImageConfigs) do
         local data = {
@@ -81,25 +84,35 @@ function Personalzone_head_subView:OnActive()
           select = self.curId_ == config.Id,
           isAuditing = false
         }
-        if config.Id == 0 or config.Id == 1 then
-          local auditData = snapshotVm.AsyncGetAvatarAuditData(self.charId_, self.cancelSource:CreateToken())
-          if auditData then
-            data.isAuditing = auditData.auditing >= E.EPictureReviewType.EPictureReviewing
-            data.textureId = auditData.textureId
-          end
-        end
         index = index + 1
         self.datas_[index] = data
+        if config.Id == 0 or config.Id == 1 then
+          pendingRequests = pendingRequests + 1
+          snapshotVm.AsyncGetAvatarAuditData(self.charId_, self.cancelSource:CreateToken(), function(auditData)
+            if auditData then
+              data.isAuditing = auditData.auditing >= E.EPictureReviewType.EPictureReviewing
+              data.textureId = auditData.textureId
+            end
+            completedRequests = completedRequests + 1
+            if completedRequests == pendingRequests then
+              self.headLoopScroll_:RefreshListView(self.datas_)
+              self:refreshInfo()
+            end
+          end)
+        end
       end
     end
-    self.headLoopScroll_:Init(self.datas_)
+    self.headLoopScroll_:RefreshListView(self.datas_)
     self:refreshInfo()
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
   end)()
 end
 
 function Personalzone_head_subView:OnDeActive()
-  self.headLoopScroll_:UnInit()
-  self.headLoopScroll_ = nil
+  if self.headLoopScroll_ then
+    self.headLoopScroll_:UnInit()
+    self.headLoopScroll_ = nil
+  end
   local type
   if self.viewData == E.FunctionID.PersonalzoneHead then
     type = DEFINE.ProfileImageType.Head
@@ -124,6 +137,7 @@ function Personalzone_head_subView:SetSelect(id)
   end
   self.headLoopScroll_:RefreshListView(self.datas_, false)
   self:refreshInfo()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Tween_1)
 end
 
 function Personalzone_head_subView:refreshInfo()

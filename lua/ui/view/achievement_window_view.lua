@@ -20,11 +20,14 @@ function Achievement_windowView:OnActive()
   if functionConfig then
     self.uiBinder.lab_title.text = functionConfig.Name
   end
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_effect)
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
   self.subView_ = require("ui/view/achievement_badge_sub_view").new(self)
   self.subView_:Active(nil, self.uiBinder.node_sub)
 end
 
 function Achievement_windowView:OnDeActive()
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_effect)
   self.subView_:DeActive()
 end
 

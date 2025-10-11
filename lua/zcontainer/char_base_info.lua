@@ -199,6 +199,11 @@ local mergeDataFuncs = {
     local last = container.__data__.saveSerial
     container.__data__.saveSerial = br.ReadInt64(buffer)
     container.Watcher:MarkDirty("saveSerial", last)
+  end,
+  [42] = function(container, buffer, watcherList)
+    local last = container.__data__.lastOnlineTime
+    container.__data__.lastOnlineTime = br.ReadInt64(buffer)
+    container.Watcher:MarkDirty("lastOnlineTime", last)
   end
 }
 local setForbidenMt = function(t)
@@ -347,6 +352,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.saveSerial then
     container.__data__.saveSerial = 0
+  end
+  if not pbData.lastOnlineTime then
+    container.__data__.lastOnlineTime = 0
   end
   setForbidenMt(container)
   container.faceData:ResetData(pbData.faceData)
@@ -652,6 +660,11 @@ local getContainerElem = function(container)
     fieldId = 41,
     dataType = 0,
     data = container.saveSerial
+  }
+  ret.lastOnlineTime = {
+    fieldId = 42,
+    dataType = 0,
+    data = container.lastOnlineTime
   }
   return ret
 end

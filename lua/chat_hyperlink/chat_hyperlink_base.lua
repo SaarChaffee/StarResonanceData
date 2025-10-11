@@ -30,6 +30,7 @@ function ChatHyperLinkBase:ClearShareData()
   self.shareShowContent_ = ""
   self.mainChatShareContent_ = ""
   self.hudShareContent_ = ""
+  self.paramList_ = {}
 end
 
 function ChatHyperLinkBase:GetShareContent(isMainChatContent, isHudChatContent)
@@ -48,6 +49,10 @@ end
 
 function ChatHyperLinkBase:GetShareData()
   return self.shareData_
+end
+
+function ChatHyperLinkBase:GetShareParamList()
+  return self.paramList_
 end
 
 return ChatHyperLinkBase

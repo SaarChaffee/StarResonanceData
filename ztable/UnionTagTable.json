@@ -3,7 +3,7 @@
     "Id": 101,
     "Type": 1,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_06",
-    "Description": "",
+    "Description": "Morning",
     "ShowSort": 1,
     "IsHide": 0
   },
@@ -11,7 +11,7 @@
     "Id": 102,
     "Type": 1,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_05",
-    "Description": "",
+    "Description": "Daytime",
     "ShowSort": 2,
     "IsHide": 0
   },
@@ -19,7 +19,7 @@
     "Id": 103,
     "Type": 1,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_04",
-    "Description": "",
+    "Description": "Afternoon",
     "ShowSort": 3,
     "IsHide": 0
   },
@@ -27,7 +27,7 @@
     "Id": 104,
     "Type": 1,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_03",
-    "Description": "",
+    "Description": "Evening",
     "ShowSort": 4,
     "IsHide": 0
   },
@@ -35,7 +35,7 @@
     "Id": 105,
     "Type": 1,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_01",
-    "Description": "",
+    "Description": "Workday",
     "ShowSort": 5,
     "IsHide": 0
   },
@@ -43,7 +43,7 @@
     "Id": 106,
     "Type": 1,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_label_time_02",
-    "Description": "",
+    "Description": "Holiday",
     "ShowSort": 6,
     "IsHide": 0
   },
@@ -51,7 +51,7 @@
     "Id": 201,
     "Type": 2,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_2",
-    "Description": "",
+    "Description": "Adventure",
     "ShowSort": 1,
     "IsHide": 0
   },
@@ -59,7 +59,7 @@
     "Id": 202,
     "Type": 2,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_3",
-    "Description": "",
+    "Description": "Cultivate",
     "ShowSort": 2,
     "IsHide": 0
   },
@@ -67,7 +67,7 @@
     "Id": 203,
     "Type": 2,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_7",
-    "Description": "",
+    "Description": "Social",
     "ShowSort": 3,
     "IsHide": 0
   },
@@ -75,7 +75,7 @@
     "Id": 204,
     "Type": 2,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_1",
-    "Description": "",
+    "Description": "Exploration",
     "ShowSort": 4,
     "IsHide": 0
   },
@@ -83,7 +83,7 @@
     "Id": 205,
     "Type": 2,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_4",
-    "Description": "",
+    "Description": "Role-Play",
     "ShowSort": 5,
     "IsHide": 0
   },
@@ -91,7 +91,7 @@
     "Id": 206,
     "Type": 2,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_6",
-    "Description": "",
+    "Description": "Strategy",
     "ShowSort": 6,
     "IsHide": 0
   },
@@ -99,7 +99,7 @@
     "Id": 208,
     "Type": 2,
     "ShowTagRoute": "ui/atlas/label_icon/personalzone_labels_8",
-    "Description": "",
+    "Description": "Leisure",
     "ShowSort": 1,
     "IsHide": 0
   }

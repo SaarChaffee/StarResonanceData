@@ -1,7 +1,7 @@
 {
   "52001": {
     "Id": 52001,
-    "CollectionName": "",
+    "CollectionName": "Wild Common Chest",
     "ShowHudName": false,
     "Remark": "",
     "Type": 2,
@@ -113,7 +113,7 @@
   },
   "52002": {
     "Id": 52002,
-    "CollectionName": "",
+    "CollectionName": "Wild Exquisite Chest",
     "ShowHudName": false,
     "Remark": "",
     "Type": 2,
@@ -225,7 +225,7 @@
   },
   "52003": {
     "Id": 52003,
-    "CollectionName": "",
+    "CollectionName": "Wild Luxurious Chest",
     "ShowHudName": false,
     "Remark": "",
     "Type": 2,
@@ -337,7 +337,7 @@
   },
   "52004": {
     "Id": 52004,
-    "CollectionName": "",
+    "CollectionName": "Monster-guarded Chest",
     "ShowHudName": true,
     "Remark": "",
     "Type": 0,
@@ -449,7 +449,7 @@
   },
   "52005": {
     "Id": 52005,
-    "CollectionName": "",
+    "CollectionName": "Monster-guarded Chest",
     "ShowHudName": true,
     "Remark": "",
     "Type": 0,
@@ -561,7 +561,7 @@
   },
   "52011": {
     "Id": 52011,
-    "CollectionName": "",
+    "CollectionName": "Wild Luxurious Chest",
     "ShowHudName": false,
     "Remark": "空岛华丽宝箱01，难度1的空岛华丽宝箱，其中放置价值1档的空岛华丽奖励",
     "Type": 0,
@@ -673,7 +673,7 @@
   },
   "52012": {
     "Id": 52012,
-    "CollectionName": "",
+    "CollectionName": "Wild Luxurious Chest",
     "ShowHudName": false,
     "Remark": "空岛华丽宝箱02，难度2的空岛华丽宝箱，其中放置价值2档的空岛华丽奖励",
     "Type": 0,
@@ -785,7 +785,7 @@
   },
   "52013": {
     "Id": 52013,
-    "CollectionName": "",
+    "CollectionName": "Wild Luxurious Chest",
     "ShowHudName": false,
     "Remark": "空岛华丽宝箱03，难度3的空岛华丽宝箱，其中放置价值3档的空岛华丽奖励",
     "Type": 0,
@@ -897,7 +897,7 @@
   },
   "52014": {
     "Id": 52014,
-    "CollectionName": "",
+    "CollectionName": "Wild Luxurious Chest",
     "ShowHudName": false,
     "Remark": "空岛华丽宝箱04，难度4的空岛华丽宝箱，其中放置价值4档的空岛华丽奖励",
     "Type": 0,
@@ -1009,7 +1009,7 @@
   },
   "52015": {
     "Id": 52015,
-    "CollectionName": "",
+    "CollectionName": "Kanamia Camp Luxurious",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -1121,7 +1121,7 @@
   },
   "9000100": {
     "Id": 9000100,
-    "CollectionName": "",
+    "CollectionName": "Ee-chan Fireworks Chest",
     "ShowHudName": false,
     "Remark": "烟花大会特制烟花宝箱",
     "Type": 0,
@@ -1215,7 +1215,7 @@
   },
   "20000001": {
     "Id": 20000001,
-    "CollectionName": "",
+    "CollectionName": "Glowing Grass",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -1274,7 +1274,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -1307,7 +1312,7 @@
   },
   "20000004": {
     "Id": 20000004,
-    "CollectionName": "",
+    "CollectionName": "Snowflake Parsley",
     "ShowHudName": false,
     "Remark": "平原LV1草类",
     "Type": 1,
@@ -1372,7 +1377,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -1405,7 +1415,7 @@
   },
   "20000002": {
     "Id": 20000002,
-    "CollectionName": "",
+    "CollectionName": "Pink Musk",
     "ShowHudName": false,
     "Remark": "平原LV2草类",
     "Type": 1,
@@ -1470,7 +1480,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -1503,7 +1518,7 @@
   },
   "20000005": {
     "Id": 20000005,
-    "CollectionName": "",
+    "CollectionName": "Whispering Orchid",
     "ShowHudName": false,
     "Remark": "平原LV3草类",
     "Type": 1,
@@ -1568,7 +1583,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -1601,7 +1621,7 @@
   },
   "20000010": {
     "Id": 20000010,
-    "CollectionName": "",
+    "CollectionName": "Sweet Berry",
     "ShowHudName": false,
     "Remark": "平原LV1果类",
     "Type": 1,
@@ -1666,7 +1686,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -1699,7 +1724,7 @@
   },
   "20000016": {
     "Id": 20000016,
-    "CollectionName": "",
+    "CollectionName": "Umu Fruit",
     "ShowHudName": false,
     "Remark": "平原LV2果类",
     "Type": 1,
@@ -1764,7 +1789,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -1797,7 +1827,7 @@
   },
   "20000017": {
     "Id": 20000017,
-    "CollectionName": "",
+    "CollectionName": "Azure Fruit",
     "ShowHudName": false,
     "Remark": "平原LV3果类",
     "Type": 1,
@@ -1862,7 +1892,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -1895,7 +1930,7 @@
   },
   "20000006": {
     "Id": 20000006,
-    "CollectionName": "",
+    "CollectionName": "Meadow Mushroom",
     "ShowHudName": false,
     "Remark": "平原LV1菇类",
     "Type": 1,
@@ -1960,7 +1995,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -1993,7 +2033,7 @@
   },
   "20000015": {
     "Id": 20000015,
-    "CollectionName": "",
+    "CollectionName": "Glowing Mushroom",
     "ShowHudName": false,
     "Remark": "平原LV2菇类",
     "Type": 1,
@@ -2058,7 +2098,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -2091,7 +2136,7 @@
   },
   "20000008": {
     "Id": 20000008,
-    "CollectionName": "",
+    "CollectionName": "Granny Pine",
     "ShowHudName": false,
     "Remark": "平原LV3菇类",
     "Type": 1,
@@ -2156,7 +2201,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -2189,7 +2239,7 @@
   },
   "20000003": {
     "Id": 20000003,
-    "CollectionName": "",
+    "CollectionName": "Scallop",
     "ShowHudName": false,
     "Remark": "平原LV1采集",
     "Type": 1,
@@ -2250,7 +2300,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -2283,7 +2338,7 @@
   },
   "20000007": {
     "Id": 20000007,
-    "CollectionName": "",
+    "CollectionName": "‌Grey-top Flax",
     "ShowHudName": false,
     "Remark": "平原LV1采集",
     "Type": 1,
@@ -2344,7 +2399,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -2377,7 +2437,7 @@
   },
   "20000009": {
     "Id": 20000009,
-    "CollectionName": "",
+    "CollectionName": "Helmflower",
     "ShowHudName": false,
     "Remark": "平原LV1采集",
     "Type": 1,
@@ -2438,7 +2498,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -2471,7 +2536,7 @@
   },
   "20000012": {
     "Id": 20000012,
-    "CollectionName": "",
+    "CollectionName": "Firefly",
     "ShowHudName": false,
     "Remark": "平原LV1采集",
     "Type": 1,
@@ -2536,7 +2601,7 @@
   },
   "20000013": {
     "Id": 20000013,
-    "CollectionName": "",
+    "CollectionName": "Tris Sea Fish",
     "ShowHudName": false,
     "Remark": "平原LV1采集",
     "Type": 1,
@@ -2601,7 +2666,7 @@
   },
   "20000014": {
     "Id": 20000014,
-    "CollectionName": "",
+    "CollectionName": "Pale Blue Fish",
     "ShowHudName": false,
     "Remark": "平原LV1采集",
     "Type": 1,
@@ -2666,7 +2731,7 @@
   },
   "20000018": {
     "Id": 20000018,
-    "CollectionName": "",
+    "CollectionName": "Wheat Field",
     "ShowHudName": false,
     "Remark": "平原LV1采集",
     "Type": 0,
@@ -2727,7 +2792,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -2760,7 +2830,7 @@
   },
   "20000019": {
     "Id": 20000019,
-    "CollectionName": "",
+    "CollectionName": "Asteria Cotton",
     "ShowHudName": false,
     "Remark": "平原LV2采集",
     "Type": 0,
@@ -2821,7 +2891,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -2854,7 +2929,7 @@
   },
   "20000020": {
     "Id": 20000020,
-    "CollectionName": "",
+    "CollectionName": "Rainbow Herb",
     "ShowHudName": false,
     "Remark": "平原LV1采集",
     "Type": 0,
@@ -2915,7 +2990,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -2948,7 +3028,7 @@
   },
   "20000021": {
     "Id": 20000021,
-    "CollectionName": "",
+    "CollectionName": "Thin Twig",
     "ShowHudName": false,
     "Remark": "平原LV1树木",
     "Type": 0,
@@ -3009,7 +3089,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -3042,7 +3127,7 @@
   },
   "20000022": {
     "Id": 20000022,
-    "CollectionName": "",
+    "CollectionName": "Wood Branch",
     "ShowHudName": false,
     "Remark": "平原LV2树木",
     "Type": 0,
@@ -3103,7 +3188,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -3136,7 +3226,7 @@
   },
   "20000023": {
     "Id": 20000023,
-    "CollectionName": "",
+    "CollectionName": "Branch Cluster",
     "ShowHudName": false,
     "Remark": "平原LV3树木",
     "Type": 0,
@@ -3197,7 +3287,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -3230,7 +3325,7 @@
   },
   "20000101": {
     "Id": 20000101,
-    "CollectionName": "",
+    "CollectionName": "Baru Ore",
     "ShowHudName": false,
     "Remark": "平原LV1精铁矿",
     "Type": 1,
@@ -3295,7 +3390,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -3328,7 +3428,7 @@
   },
   "20000102": {
     "Id": 20000102,
-    "CollectionName": "",
+    "CollectionName": "Rich Baru Ore",
     "ShowHudName": false,
     "Remark": "平原LV2精铁矿",
     "Type": 1,
@@ -3393,7 +3493,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -3426,7 +3531,7 @@
   },
   "20000103": {
     "Id": 20000103,
-    "CollectionName": "",
+    "CollectionName": "Pure Baru Ore",
     "ShowHudName": false,
     "Remark": "平原LV3精铁矿",
     "Type": 1,
@@ -3491,7 +3596,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -3524,7 +3634,7 @@
   },
   "20000104": {
     "Id": 20000104,
-    "CollectionName": "",
+    "CollectionName": "Azte Ore",
     "ShowHudName": false,
     "Remark": "平原LV1黄铜矿",
     "Type": 1,
@@ -3589,7 +3699,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -3622,7 +3737,7 @@
   },
   "20000105": {
     "Id": 20000105,
-    "CollectionName": "",
+    "CollectionName": "Rich Azte Ore",
     "ShowHudName": false,
     "Remark": "平原LV2黄铜矿",
     "Type": 1,
@@ -3687,7 +3802,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -3720,7 +3840,7 @@
   },
   "20000106": {
     "Id": 20000106,
-    "CollectionName": "",
+    "CollectionName": "Pure Azte Ore",
     "ShowHudName": false,
     "Remark": "平原LV3黄铜矿",
     "Type": 1,
@@ -3785,7 +3905,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -3818,7 +3943,7 @@
   },
   "20000107": {
     "Id": 20000107,
-    "CollectionName": "",
+    "CollectionName": "Luna Ore",
     "ShowHudName": false,
     "Remark": "平原LV1银矿",
     "Type": 1,
@@ -3883,7 +4008,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -3916,7 +4046,7 @@
   },
   "20000108": {
     "Id": 20000108,
-    "CollectionName": "",
+    "CollectionName": "Rich Luna Ore",
     "ShowHudName": false,
     "Remark": "平原LV2银矿",
     "Type": 1,
@@ -3981,7 +4111,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4014,7 +4149,7 @@
   },
   "20000109": {
     "Id": 20000109,
-    "CollectionName": "",
+    "CollectionName": "Pure Luna Ore",
     "ShowHudName": false,
     "Remark": "平原LV3银矿",
     "Type": 1,
@@ -4079,7 +4214,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4112,7 +4252,7 @@
   },
   "20000110": {
     "Id": 20000110,
-    "CollectionName": "",
+    "CollectionName": "Stokes Mine",
     "ShowHudName": false,
     "Remark": "平原LV1闪金矿",
     "Type": 1,
@@ -4177,7 +4317,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4210,7 +4355,7 @@
   },
   "20000111": {
     "Id": 20000111,
-    "CollectionName": "",
+    "CollectionName": "Rich Stokesite Ore",
     "ShowHudName": false,
     "Remark": "平原LV2闪金矿",
     "Type": 1,
@@ -4275,7 +4420,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4308,7 +4458,7 @@
   },
   "20000112": {
     "Id": 20000112,
-    "CollectionName": "",
+    "CollectionName": "Pure Stokesite Ore",
     "ShowHudName": false,
     "Remark": "平原LV3闪金矿",
     "Type": 1,
@@ -4373,7 +4523,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4406,7 +4561,7 @@
   },
   "20000201": {
     "Id": 20000201,
-    "CollectionName": "",
+    "CollectionName": "Raw Ore of Sapphire",
     "ShowHudName": false,
     "Remark": "平原蓝宝石LV1",
     "Type": 1,
@@ -4471,7 +4626,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4504,7 +4664,7 @@
   },
   "20000202": {
     "Id": 20000202,
-    "CollectionName": "",
+    "CollectionName": "Rich Ore of Sapphire",
     "ShowHudName": false,
     "Remark": "平原蓝宝石LV2",
     "Type": 1,
@@ -4569,7 +4729,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4602,7 +4767,7 @@
   },
   "20000203": {
     "Id": 20000203,
-    "CollectionName": "",
+    "CollectionName": "Sapphire Cluster",
     "ShowHudName": false,
     "Remark": "平原蓝宝石LV3",
     "Type": 1,
@@ -4667,7 +4832,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4700,7 +4870,7 @@
   },
   "20000204": {
     "Id": 20000204,
-    "CollectionName": "",
+    "CollectionName": "Raw Ore of Ruby",
     "ShowHudName": false,
     "Remark": "平原红宝石LV1",
     "Type": 1,
@@ -4765,7 +4935,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4798,7 +4973,7 @@
   },
   "20000205": {
     "Id": 20000205,
-    "CollectionName": "",
+    "CollectionName": "Rich Ore of Ruby",
     "ShowHudName": false,
     "Remark": "平原红宝石LV2",
     "Type": 1,
@@ -4863,7 +5038,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4896,7 +5076,7 @@
   },
   "20000206": {
     "Id": 20000206,
-    "CollectionName": "",
+    "CollectionName": "Ruby Cluster",
     "ShowHudName": false,
     "Remark": "平原红宝石LV3",
     "Type": 1,
@@ -4961,7 +5141,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -4994,7 +5179,7 @@
   },
   "20000207": {
     "Id": 20000207,
-    "CollectionName": "",
+    "CollectionName": "Raw Ore of Topaz",
     "ShowHudName": false,
     "Remark": "平原黄宝石LV1",
     "Type": 1,
@@ -5059,7 +5244,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -5092,7 +5282,7 @@
   },
   "20000208": {
     "Id": 20000208,
-    "CollectionName": "",
+    "CollectionName": "Rich Ore of Topaz",
     "ShowHudName": false,
     "Remark": "平原黄宝石LV2",
     "Type": 1,
@@ -5157,7 +5347,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -5190,7 +5385,7 @@
   },
   "20000209": {
     "Id": 20000209,
-    "CollectionName": "",
+    "CollectionName": "Topaz Cluster",
     "ShowHudName": false,
     "Remark": "平原黄宝石LV3",
     "Type": 1,
@@ -5255,7 +5450,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -5288,7 +5488,7 @@
   },
   "20000210": {
     "Id": 20000210,
-    "CollectionName": "",
+    "CollectionName": "Raw Ore of Emerald",
     "ShowHudName": false,
     "Remark": "平原绿宝石LV1",
     "Type": 1,
@@ -5353,7 +5553,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -5386,7 +5591,7 @@
   },
   "20000211": {
     "Id": 20000211,
-    "CollectionName": "",
+    "CollectionName": "Rich Ore of Emerald",
     "ShowHudName": false,
     "Remark": "平原绿宝石LV2",
     "Type": 1,
@@ -5451,7 +5656,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -5484,7 +5694,7 @@
   },
   "20000212": {
     "Id": 20000212,
-    "CollectionName": "",
+    "CollectionName": "Emerald Cluster",
     "ShowHudName": false,
     "Remark": "平原绿宝石LV3",
     "Type": 1,
@@ -5549,7 +5759,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -5582,7 +5797,7 @@
   },
   "20000213": {
     "Id": 20000213,
-    "CollectionName": "",
+    "CollectionName": "Limestone",
     "ShowHudName": false,
     "Remark": "石灰岩LV1",
     "Type": 1,
@@ -5643,7 +5858,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -5676,7 +5896,7 @@
   },
   "20000214": {
     "Id": 20000214,
-    "CollectionName": "",
+    "CollectionName": "Slate",
     "ShowHudName": false,
     "Remark": "板岩LV2",
     "Type": 1,
@@ -5737,7 +5957,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -5770,7 +5995,7 @@
   },
   "20000215": {
     "Id": 20000215,
-    "CollectionName": "",
+    "CollectionName": "Granite",
     "ShowHudName": false,
     "Remark": "花岗岩LV3",
     "Type": 1,
@@ -5831,7 +6056,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -5864,7 +6094,7 @@
   },
   "20000100": {
     "Id": 20000100,
-    "CollectionName": "",
+    "CollectionName": "Andra Enigmite",
     "ShowHudName": false,
     "Remark": "平原迷石LV1",
     "Type": 1,
@@ -5925,7 +6155,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -5958,7 +6193,7 @@
   },
   "20000216": {
     "Id": 20000216,
-    "CollectionName": "",
+    "CollectionName": "Windvale Enigmite",
     "ShowHudName": false,
     "Remark": "平原迷石LV1",
     "Type": 1,
@@ -6019,7 +6254,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -6052,7 +6292,7 @@
   },
   "20000217": {
     "Id": 20000217,
-    "CollectionName": "",
+    "CollectionName": "Cobalt Enigmite",
     "ShowHudName": false,
     "Remark": "平原迷石LV1",
     "Type": 1,
@@ -6113,7 +6353,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -6146,7 +6391,7 @@
   },
   "20000218": {
     "Id": 20000218,
-    "CollectionName": "",
+    "CollectionName": "Rainbow Stone",
     "ShowHudName": false,
     "Remark": "",
     "Type": 1,
@@ -6207,7 +6452,12 @@
       ],
       [
         1,
-        0,
+        7000117,
+        7600201
+      ],
+      [
+        2,
+        7000117,
         7600201
       ]
     ],
@@ -6240,7 +6490,7 @@
   },
   "120101": {
     "Id": 120101,
-    "CollectionName": "",
+    "CollectionName": "Dragon Claw Exploration Chest",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -6352,7 +6602,7 @@
   },
   "120102": {
     "Id": 120102,
-    "CollectionName": "",
+    "CollectionName": "Guarded Luxurious Chest",
     "ShowHudName": true,
     "Remark": "",
     "Type": 0,
@@ -6464,7 +6714,7 @@
   },
   "120201": {
     "Id": 120201,
-    "CollectionName": "",
+    "CollectionName": "Dragon Claw Common Chest",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -6576,7 +6826,7 @@
   },
   "120202": {
     "Id": 120202,
-    "CollectionName": "",
+    "CollectionName": "Dragon Claw Exquisite Chest",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -6688,7 +6938,7 @@
   },
   "120203": {
     "Id": 120203,
-    "CollectionName": "",
+    "CollectionName": "Dragon Claw Luxurious Chest",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -6800,7 +7050,7 @@
   },
   "140106": {
     "Id": 140106,
-    "CollectionName": "",
+    "CollectionName": "Floating Particle",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -6869,7 +7119,7 @@
   },
   "140107": {
     "Id": 140107,
-    "CollectionName": "",
+    "CollectionName": "Floating Particle",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -6938,7 +7188,7 @@
   },
   "40001": {
     "Id": 40001,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -7045,7 +7295,7 @@
   },
   "40002": {
     "Id": 40002,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -7152,7 +7402,7 @@
   },
   "40003": {
     "Id": 40003,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -7259,7 +7509,7 @@
   },
   "40004": {
     "Id": 40004,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -7366,7 +7616,7 @@
   },
   "40005": {
     "Id": 40005,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -7473,7 +7723,7 @@
   },
   "40006": {
     "Id": 40006,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -7580,7 +7830,7 @@
   },
   "40007": {
     "Id": 40007,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -7687,7 +7937,7 @@
   },
   "40008": {
     "Id": 40008,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -7794,7 +8044,7 @@
   },
   "40009": {
     "Id": 40009,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -7901,7 +8151,7 @@
   },
   "40010": {
     "Id": 40010,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -8008,7 +8258,7 @@
   },
   "40011": {
     "Id": 40011,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -8115,7 +8365,7 @@
   },
   "40012": {
     "Id": 40012,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -8222,7 +8472,7 @@
   },
   "40013": {
     "Id": 40013,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -8329,7 +8579,7 @@
   },
   "40014": {
     "Id": 40014,
-    "CollectionName": "",
+    "CollectionName": "Boss Loot",
     "ShowHudName": false,
     "Remark": "首领战利品宝箱",
     "Type": 0,
@@ -8436,7 +8686,7 @@
   },
   "40015": {
     "Id": 40015,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -8543,7 +8793,7 @@
   },
   "40016": {
     "Id": 40016,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -8650,7 +8900,7 @@
   },
   "40017": {
     "Id": 40017,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -8757,7 +9007,7 @@
   },
   "40018": {
     "Id": 40018,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -8864,7 +9114,7 @@
   },
   "40019": {
     "Id": 40019,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -8971,7 +9221,7 @@
   },
   "40020": {
     "Id": 40020,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -9078,7 +9328,7 @@
   },
   "40021": {
     "Id": 40021,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -9185,7 +9435,7 @@
   },
   "40022": {
     "Id": 40022,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -9292,7 +9542,7 @@
   },
   "40023": {
     "Id": 40023,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -9399,7 +9649,7 @@
   },
   "40024": {
     "Id": 40024,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -9506,7 +9756,7 @@
   },
   "40025": {
     "Id": 40025,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -9613,7 +9863,7 @@
   },
   "40026": {
     "Id": 40026,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -9720,7 +9970,7 @@
   },
   "40027": {
     "Id": 40027,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -9827,7 +10077,7 @@
   },
   "40028": {
     "Id": 40028,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -9934,7 +10184,7 @@
   },
   "40029": {
     "Id": 40029,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -10041,7 +10291,7 @@
   },
   "40030": {
     "Id": 40030,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -10148,7 +10398,7 @@
   },
   "40031": {
     "Id": 40031,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -10255,7 +10505,7 @@
   },
   "40032": {
     "Id": 40032,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -10362,7 +10612,7 @@
   },
   "40033": {
     "Id": 40033,
-    "CollectionName": "",
+    "CollectionName": "Elite Loot",
     "ShowHudName": false,
     "Remark": "精英战利品宝箱",
     "Type": 0,
@@ -10469,7 +10719,7 @@
   },
   "41001": {
     "Id": 41001,
-    "CollectionName": "",
+    "CollectionName": "Special Configuration for Item Drops",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -10532,7 +10782,7 @@
   },
   "41002": {
     "Id": 41002,
-    "CollectionName": "",
+    "CollectionName": "Fishing - Fish Shadow",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -10592,7 +10842,7 @@
   },
   "41003": {
     "Id": 41003,
-    "CollectionName": "",
+    "CollectionName": "Fishing - Float",
     "ShowHudName": false,
     "Remark": "",
     "Type": 0,
@@ -10664,7 +10914,7 @@
   },
   "55000": {
     "Id": 55000,
-    "CollectionName": "",
+    "CollectionName": "Sea Lyrics Collection",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -10740,7 +10990,7 @@
   },
   "55001": {
     "Id": 55001,
-    "CollectionName": "",
+    "CollectionName": "Thoughts of the Long-Lived:<br>Some Ramblings About Life",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -10816,7 +11066,7 @@
   },
   "55002": {
     "Id": 55002,
-    "CollectionName": "",
+    "CollectionName": "The Mission of Humans",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -10892,7 +11142,7 @@
   },
   "55003": {
     "Id": 55003,
-    "CollectionName": "",
+    "CollectionName": "Asterleeds Travel Guide (I)",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -10968,7 +11218,7 @@
   },
   "55004": {
     "Id": 55004,
-    "CollectionName": "",
+    "CollectionName": "Asterleeds Travel Guide (II)",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11044,7 +11294,7 @@
   },
   "55005": {
     "Id": 55005,
-    "CollectionName": "",
+    "CollectionName": "Asterleeds Travel Guide (III)",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11120,7 +11370,7 @@
   },
   "55006": {
     "Id": 55006,
-    "CollectionName": "",
+    "CollectionName": "Gourmet Adventures at the Port",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11196,7 +11446,7 @@
   },
   "55007": {
     "Id": 55007,
-    "CollectionName": "",
+    "CollectionName": "Street Speech Collection",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11272,7 +11522,7 @@
   },
   "55008": {
     "Id": 55008,
-    "CollectionName": "",
+    "CollectionName": "When in Doubt, Test It Out!",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11348,7 +11598,7 @@
   },
   "55009": {
     "Id": 55009,
-    "CollectionName": "",
+    "CollectionName": "Bapharian Legacy Expense Receipt No. 30.472",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11424,7 +11674,7 @@
   },
   "55010": {
     "Id": 55010,
-    "CollectionName": "",
+    "CollectionName": "Annual Quest Completion Report for Pioneers",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11500,7 +11750,7 @@
   },
   "55011": {
     "Id": 55011,
-    "CollectionName": "",
+    "CollectionName": "Airona's Legend: Deluxe Illustrated Edition",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11576,7 +11826,7 @@
   },
   "55012": {
     "Id": 55012,
-    "CollectionName": "",
+    "CollectionName": "Super Mind-Blowing Little Thoughts, Article 7",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11652,7 +11902,7 @@
   },
   "55013": {
     "Id": 55013,
-    "CollectionName": "",
+    "CollectionName": "Super Mind-Blowing Little Thoughts, Article 9",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11728,7 +11978,7 @@
   },
   "55014": {
     "Id": 55014,
-    "CollectionName": "",
+    "CollectionName": "Super Mind-Blowing Little Thoughts, Article 22",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11804,7 +12054,7 @@
   },
   "55015": {
     "Id": 55015,
-    "CollectionName": "",
+    "CollectionName": "Super Mind-Blowing Little Thoughts, Article 23",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11880,7 +12130,7 @@
   },
   "55016": {
     "Id": 55016,
-    "CollectionName": "",
+    "CollectionName": "Super Mind-Blowing Little Thoughts, Article 29",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -11956,7 +12206,7 @@
   },
   "55017": {
     "Id": 55017,
-    "CollectionName": "",
+    "CollectionName": "Super Mind-Blowing Little Thoughts, Article 76",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12032,7 +12282,7 @@
   },
   "55018": {
     "Id": 55018,
-    "CollectionName": "",
+    "CollectionName": "Diary of Anger",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12108,7 +12358,7 @@
   },
   "55019": {
     "Id": 55019,
-    "CollectionName": "",
+    "CollectionName": "Atlas of Demi-Humans: Goblin Edition",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12184,7 +12434,7 @@
   },
   "55020": {
     "Id": 55020,
-    "CollectionName": "",
+    "CollectionName": "Trend Guide: Spring/Summer Combined",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12260,7 +12510,7 @@
   },
   "55021": {
     "Id": 55021,
-    "CollectionName": "",
+    "CollectionName": "Asterleeds Culinary Journey I",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12336,7 +12586,7 @@
   },
   "55022": {
     "Id": 55022,
-    "CollectionName": "",
+    "CollectionName": "Today's To-Do List",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12412,7 +12662,7 @@
   },
   "55023": {
     "Id": 55023,
-    "CollectionName": "",
+    "CollectionName": "A Stack of Love Letters",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12488,7 +12738,7 @@
   },
   "55024": {
     "Id": 55024,
-    "CollectionName": "",
+    "CollectionName": "Unfinished Letter",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12564,7 +12814,7 @@
   },
   "55025": {
     "Id": 55025,
-    "CollectionName": "",
+    "CollectionName": "Snowball Cookie Recipe by René and Amado",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12640,7 +12890,7 @@
   },
   "55026": {
     "Id": 55026,
-    "CollectionName": "",
+    "CollectionName": "Letter from Mom",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12716,7 +12966,7 @@
   },
   "55027": {
     "Id": 55027,
-    "CollectionName": "",
+    "CollectionName": "Letter from Sister",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12792,7 +13042,7 @@
   },
   "55028": {
     "Id": 55028,
-    "CollectionName": "",
+    "CollectionName": "Draft of a Reply to Mom",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12868,7 +13118,7 @@
   },
   "55029": {
     "Id": 55029,
-    "CollectionName": "",
+    "CollectionName": "Draft of a Reply to Anna",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -12944,7 +13194,7 @@
   },
   "55030": {
     "Id": 55030,
-    "CollectionName": "",
+    "CollectionName": "Tricky Problem",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13020,7 +13270,7 @@
   },
   "55037": {
     "Id": 55037,
-    "CollectionName": "",
+    "CollectionName": "\"White Wolf\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13096,7 +13346,7 @@
   },
   "55038": {
     "Id": 55038,
-    "CollectionName": "",
+    "CollectionName": "\"Kanamia Customs Study I\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13172,7 +13422,7 @@
   },
   "55039": {
     "Id": 55039,
-    "CollectionName": "",
+    "CollectionName": "Time of Forming an Alliance",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13248,7 +13498,7 @@
   },
   "55040": {
     "Id": 55040,
-    "CollectionName": "",
+    "CollectionName": "\"Kanamia Customs Study II\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13324,7 +13574,7 @@
   },
   "55041": {
     "Id": 55041,
-    "CollectionName": "",
+    "CollectionName": "\"Kanamia Customs Study III\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13400,7 +13650,7 @@
   },
   "55042": {
     "Id": 55042,
-    "CollectionName": "",
+    "CollectionName": "\"Kanamia Customs Study IV\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13476,7 +13726,7 @@
   },
   "55043": {
     "Id": 55043,
-    "CollectionName": "",
+    "CollectionName": "Jabba's Letters",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13552,7 +13802,7 @@
   },
   "55044": {
     "Id": 55044,
-    "CollectionName": "",
+    "CollectionName": "White Wolf's Departure",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13628,7 +13878,7 @@
   },
   "55045": {
     "Id": 55045,
-    "CollectionName": "",
+    "CollectionName": "Oh, Chieftain",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13704,7 +13954,7 @@
   },
   "55046": {
     "Id": 55046,
-    "CollectionName": "",
+    "CollectionName": "Mind-Blowing Thoughts, No. 77",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13780,7 +14030,7 @@
   },
   "55047": {
     "Id": 55047,
-    "CollectionName": "",
+    "CollectionName": "\"Kanamia Customs Study V\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13856,7 +14106,7 @@
   },
   "55048": {
     "Id": 55048,
-    "CollectionName": "",
+    "CollectionName": "\"Origin of the Mask\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -13932,7 +14182,7 @@
   },
   "55049": {
     "Id": 55049,
-    "CollectionName": "",
+    "CollectionName": "Something's Hiding in the Wheat Field!",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14008,7 +14258,7 @@
   },
   "55050": {
     "Id": 55050,
-    "CollectionName": "",
+    "CollectionName": "Election Campaign Investigation",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14084,7 +14334,7 @@
   },
   "55051": {
     "Id": 55051,
-    "CollectionName": "",
+    "CollectionName": "Mind-Blowing Thoughts, No. 79",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14160,7 +14410,7 @@
   },
   "55052": {
     "Id": 55052,
-    "CollectionName": "",
+    "CollectionName": "Minsterhorn Travel Guide (Draft 3)",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14236,7 +14486,7 @@
   },
   "55053": {
     "Id": 55053,
-    "CollectionName": "",
+    "CollectionName": "Kanamia Resistance",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14312,7 +14562,7 @@
   },
   "55054": {
     "Id": 55054,
-    "CollectionName": "",
+    "CollectionName": "Minsterhorn: Land of Sorrows",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14388,7 +14638,7 @@
   },
   "55055": {
     "Id": 55055,
-    "CollectionName": "",
+    "CollectionName": "\"Survivors of the Andra\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14464,7 +14714,7 @@
   },
   "55056": {
     "Id": 55056,
-    "CollectionName": "",
+    "CollectionName": "\"Pale Azure Lake\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14540,7 +14790,7 @@
   },
   "55057": {
     "Id": 55057,
-    "CollectionName": "",
+    "CollectionName": "Mind-Blowing Thoughts, No. 81",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14616,7 +14866,7 @@
   },
   "55058": {
     "Id": 55058,
-    "CollectionName": "",
+    "CollectionName": "Patrol Record, Page 1",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14692,7 +14942,7 @@
   },
   "55059": {
     "Id": 55059,
-    "CollectionName": "",
+    "CollectionName": "Patrol Record, Page 2",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14768,7 +15018,7 @@
   },
   "55060": {
     "Id": 55060,
-    "CollectionName": "",
+    "CollectionName": "\"After the Fall\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14844,7 +15094,7 @@
   },
   "55061": {
     "Id": 55061,
-    "CollectionName": "",
+    "CollectionName": "Mystery of Golem",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14920,7 +15170,7 @@
   },
   "55062": {
     "Id": 55062,
-    "CollectionName": "",
+    "CollectionName": "Mind-Blowing Thoughts, No. 86",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -14996,7 +15246,7 @@
   },
   "55063": {
     "Id": 55063,
-    "CollectionName": "",
+    "CollectionName": "An Investigation into Hero's Herb",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15072,7 +15322,7 @@
   },
   "55064": {
     "Id": 55064,
-    "CollectionName": "",
+    "CollectionName": "Lost Letters",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15148,7 +15398,7 @@
   },
   "55065": {
     "Id": 55065,
-    "CollectionName": "",
+    "CollectionName": "Maintenance Record",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15224,7 +15474,7 @@
   },
   "55066": {
     "Id": 55066,
-    "CollectionName": "",
+    "CollectionName": "The Letter with a Heart Drawing",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15300,7 +15550,7 @@
   },
   "55067": {
     "Id": 55067,
-    "CollectionName": "",
+    "CollectionName": "Facing the Enemy",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15376,7 +15626,7 @@
   },
   "55068": {
     "Id": 55068,
-    "CollectionName": "",
+    "CollectionName": "\"Conspiracy Behind the Peace Treaty\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15452,7 +15702,7 @@
   },
   "55069": {
     "Id": 55069,
-    "CollectionName": "",
+    "CollectionName": "Waterlogged Record Book",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15528,7 +15778,7 @@
   },
   "55070": {
     "Id": 55070,
-    "CollectionName": "",
+    "CollectionName": "Wild Dragon Witness Report",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15604,7 +15854,7 @@
   },
   "55071": {
     "Id": 55071,
-    "CollectionName": "",
+    "CollectionName": "Hartson's Letter to Home",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15680,7 +15930,7 @@
   },
   "55072": {
     "Id": 55072,
-    "CollectionName": "",
+    "CollectionName": "Procurement List",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15756,7 +16006,7 @@
   },
   "55073": {
     "Id": 55073,
-    "CollectionName": "",
+    "CollectionName": "\"The Dragon Hunter of Regnus\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15832,7 +16082,7 @@
   },
   "55075": {
     "Id": 55075,
-    "CollectionName": "",
+    "CollectionName": "Diary of the Nameless One",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15908,7 +16158,7 @@
   },
   "55076": {
     "Id": 55076,
-    "CollectionName": "",
+    "CollectionName": "Elders of Kanamia",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -15984,7 +16234,7 @@
   },
   "55077": {
     "Id": 55077,
-    "CollectionName": "",
+    "CollectionName": "\"Heart of the Ocean Liner\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16060,7 +16310,7 @@
   },
   "55078": {
     "Id": 55078,
-    "CollectionName": "",
+    "CollectionName": "Paper Covered in Slime",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16136,7 +16386,7 @@
   },
   "55079": {
     "Id": 55079,
-    "CollectionName": "",
+    "CollectionName": "\"Twilight Secrets\" Diamond Appraisal Certificate",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16212,7 +16462,7 @@
   },
   "55080": {
     "Id": 55080,
-    "CollectionName": "",
+    "CollectionName": "\"Sad News: I Found Ancient Treasure\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16288,7 +16538,7 @@
   },
   "55081": {
     "Id": 55081,
-    "CollectionName": "",
+    "CollectionName": "\"What to Do When You Can't Beat an Ogre?\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16364,7 +16614,7 @@
   },
   "55082": {
     "Id": 55082,
-    "CollectionName": "",
+    "CollectionName": "\"Crab Fantasia\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16440,7 +16690,7 @@
   },
   "55083": {
     "Id": 55083,
-    "CollectionName": "",
+    "CollectionName": "The Founding of Asterleeds",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16516,7 +16766,7 @@
   },
   "55085": {
     "Id": 55085,
-    "CollectionName": "",
+    "CollectionName": "\"Former Top Artisan Now Fixing Boilerst\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16592,7 +16842,7 @@
   },
   "55086": {
     "Id": 55086,
-    "CollectionName": "",
+    "CollectionName": "\"The Heiress's Engagement Is Actually About Me?!\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16668,7 +16918,7 @@
   },
   "55087": {
     "Id": 55087,
-    "CollectionName": "",
+    "CollectionName": "A Call to All Citizens",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16744,7 +16994,7 @@
   },
   "55088": {
     "Id": 55088,
-    "CollectionName": "",
+    "CollectionName": "\"The Seagull III\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16820,7 +17070,7 @@
   },
   "55089": {
     "Id": 55089,
-    "CollectionName": "",
+    "CollectionName": "\"How to Chat with a Cat I\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16896,7 +17146,7 @@
   },
   "55090": {
     "Id": 55090,
-    "CollectionName": "",
+    "CollectionName": "\"Hidden Street Investigation\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -16972,7 +17222,7 @@
   },
   "55091": {
     "Id": 55091,
-    "CollectionName": "",
+    "CollectionName": "\"The Fall of the Pirates\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17048,7 +17298,7 @@
   },
   "55092": {
     "Id": 55092,
-    "CollectionName": "",
+    "CollectionName": "\"Land of the Night\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17124,7 +17374,7 @@
   },
   "55093": {
     "Id": 55093,
-    "CollectionName": "",
+    "CollectionName": "\"Energy Division: A Different Perspective\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17200,7 +17450,7 @@
   },
   "55094": {
     "Id": 55094,
-    "CollectionName": "",
+    "CollectionName": "\"Crabs: The Hideous Sea Bugs I\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17276,7 +17526,7 @@
   },
   "55095": {
     "Id": 55095,
-    "CollectionName": "",
+    "CollectionName": "\"The Crime and Redemption Beneath the Street Lamp\" Performance Poster",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17352,7 +17602,7 @@
   },
   "55096": {
     "Id": 55096,
-    "CollectionName": "",
+    "CollectionName": "\"Laugh! Drink! Party All Night!\" Performance Poster",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17428,7 +17678,7 @@
   },
   "55097": {
     "Id": 55097,
-    "CollectionName": "",
+    "CollectionName": "\"The Nobles of Byrnhald\" Performance Poster",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17504,7 +17754,7 @@
   },
   "55098": {
     "Id": 55098,
-    "CollectionName": "",
+    "CollectionName": "\"A Night with Kleisler\" Performance Poster",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17580,7 +17830,7 @@
   },
   "55099": {
     "Id": 55099,
-    "CollectionName": "",
+    "CollectionName": "\"The Puppet with Enamel Eyes\" Performance Poster",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17656,7 +17906,7 @@
   },
   "55100": {
     "Id": 55100,
-    "CollectionName": "",
+    "CollectionName": "Mind-Blowing Thoughts, No. 89",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17732,7 +17982,7 @@
   },
   "55101": {
     "Id": 55101,
-    "CollectionName": "",
+    "CollectionName": "Mind-Blowing Thoughts, No. 90",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17808,7 +18058,7 @@
   },
   "55102": {
     "Id": 55102,
-    "CollectionName": "",
+    "CollectionName": "\"Medical Certificate\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17884,7 +18134,7 @@
   },
   "55103": {
     "Id": 55103,
-    "CollectionName": "",
+    "CollectionName": "Mind-Blowing Thoughts No. 93",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -17960,7 +18210,7 @@
   },
   "55104": {
     "Id": 55104,
-    "CollectionName": "",
+    "CollectionName": "Mind-Blowing Thoughts No. 94",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18036,7 +18286,7 @@
   },
   "55105": {
     "Id": 55105,
-    "CollectionName": "",
+    "CollectionName": "\"Shocking! Eerie Sounds from Below!\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18112,7 +18362,7 @@
   },
   "55106": {
     "Id": 55106,
-    "CollectionName": "",
+    "CollectionName": "\"Burnt IOU Note\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18188,7 +18438,7 @@
   },
   "55107": {
     "Id": 55107,
-    "CollectionName": "",
+    "CollectionName": "\"Radiant Stone Enthusiast Guide - Standard Weapons Edition\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18264,7 +18514,7 @@
   },
   "55108": {
     "Id": 55108,
-    "CollectionName": "",
+    "CollectionName": "\"Universal Combat Potion (Type III)\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18340,7 +18590,7 @@
   },
   "55109": {
     "Id": 55109,
-    "CollectionName": "",
+    "CollectionName": "\"Get-Rich-Quick in Asterleeds\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18416,7 +18666,7 @@
   },
   "55110": {
     "Id": 55110,
-    "CollectionName": "",
+    "CollectionName": "\"Candy Wrapper Chronicles\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18492,7 +18742,7 @@
   },
   "55111": {
     "Id": 55111,
-    "CollectionName": "",
+    "CollectionName": "Water-Resistant Map Lost by Someone",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18568,7 +18818,7 @@
   },
   "55112": {
     "Id": 55112,
-    "CollectionName": "",
+    "CollectionName": "\"Lerom's Ultimate Dignity Package - Death Over Dishonor\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18644,7 +18894,7 @@
   },
   "55113": {
     "Id": 55113,
-    "CollectionName": "",
+    "CollectionName": "\"Taste Revolution: Sewer Cuisine Unveiled\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18720,7 +18970,7 @@
   },
   "55114": {
     "Id": 55114,
-    "CollectionName": "",
+    "CollectionName": "\"Rusty Nails in the Bone\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18796,7 +19046,7 @@
   },
   "55115": {
     "Id": 55115,
-    "CollectionName": "",
+    "CollectionName": "Sewage-Stained Letter",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18872,7 +19122,7 @@
   },
   "55116": {
     "Id": 55116,
-    "CollectionName": "",
+    "CollectionName": "\"Duel in the Steel Cage\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -18948,7 +19198,7 @@
   },
   "55117": {
     "Id": 55117,
-    "CollectionName": "",
+    "CollectionName": "Webber Energy Network Operation Log",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19024,7 +19274,7 @@
   },
   "55118": {
     "Id": 55118,
-    "CollectionName": "",
+    "CollectionName": "\"The Unlucky Pirate\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19100,7 +19350,7 @@
   },
   "55119": {
     "Id": 55119,
-    "CollectionName": "",
+    "CollectionName": "\"Tales of the Probes\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19176,7 +19426,7 @@
   },
   "55120": {
     "Id": 55120,
-    "CollectionName": "",
+    "CollectionName": "\"The Iron Mask Incident I\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19252,7 +19502,7 @@
   },
   "55121": {
     "Id": 55121,
-    "CollectionName": "",
+    "CollectionName": "\"Crabs: The Hideous Sea Bugs II\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19328,7 +19578,7 @@
   },
   "55122": {
     "Id": 55122,
-    "CollectionName": "",
+    "CollectionName": "Mind-Blowing Thoughts No. 95",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19404,7 +19654,7 @@
   },
   "55123": {
     "Id": 55123,
-    "CollectionName": "",
+    "CollectionName": "\"Hypotheses on the Formation of Submarine Voids I\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19480,7 +19730,7 @@
   },
   "55124": {
     "Id": 55124,
-    "CollectionName": "",
+    "CollectionName": "\"Hypotheses on the Formation of Submarine Voids II\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19556,7 +19806,7 @@
   },
   "55125": {
     "Id": 55125,
-    "CollectionName": "",
+    "CollectionName": "\"Mystery of the Missing Byrnhald Envoy\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19632,7 +19882,7 @@
   },
   "55126": {
     "Id": 55126,
-    "CollectionName": "",
+    "CollectionName": "\"The Iron Mask Incident II\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19708,7 +19958,7 @@
   },
   "55127": {
     "Id": 55127,
-    "CollectionName": "",
+    "CollectionName": "Mind-Blowing Thoughts No. 115",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19784,7 +20034,7 @@
   },
   "55128": {
     "Id": 55128,
-    "CollectionName": "",
+    "CollectionName": "\"Shoemaker's Heir Returns After 30 Years Missing\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19860,7 +20110,7 @@
   },
   "55129": {
     "Id": 55129,
-    "CollectionName": "",
+    "CollectionName": "\"How to Chat with a Cat II\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -19936,7 +20186,7 @@
   },
   "55130": {
     "Id": 55130,
-    "CollectionName": "",
+    "CollectionName": "\"Asterleeds, Land of Freedom\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20012,7 +20262,7 @@
   },
   "55131": {
     "Id": 55131,
-    "CollectionName": "",
+    "CollectionName": "\"How to Chat with a Cat III\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20088,7 +20338,7 @@
   },
   "55132": {
     "Id": 55132,
-    "CollectionName": "",
+    "CollectionName": "Jenny's Mysterious Strength",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20164,7 +20414,7 @@
   },
   "55133": {
     "Id": 55133,
-    "CollectionName": "",
+    "CollectionName": "\"The Iron Mask Incident III\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20240,7 +20490,7 @@
   },
   "55134": {
     "Id": 55134,
-    "CollectionName": "",
+    "CollectionName": "Ladies",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20316,7 +20566,7 @@
   },
   "55135": {
     "Id": 55135,
-    "CollectionName": "",
+    "CollectionName": "Gents",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20392,7 +20642,7 @@
   },
   "55136": {
     "Id": 55136,
-    "CollectionName": "",
+    "CollectionName": "Awaken! Mighty Fitter!",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20468,7 +20718,7 @@
   },
   "55137": {
     "Id": 55137,
-    "CollectionName": "",
+    "CollectionName": "Hidden Homework",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20544,7 +20794,7 @@
   },
   "55138": {
     "Id": 55138,
-    "CollectionName": "",
+    "CollectionName": "\"Stay or Go: The Byrnhalds\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20620,7 +20870,7 @@
   },
   "55139": {
     "Id": 55139,
-    "CollectionName": "",
+    "CollectionName": "\"Crabs: The Hideous Sea Bugs III\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20696,7 +20946,7 @@
   },
   "55140": {
     "Id": 55140,
-    "CollectionName": "",
+    "CollectionName": "\"Shield Generator Blueprint\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20772,7 +21022,7 @@
   },
   "55141": {
     "Id": 55141,
-    "CollectionName": "",
+    "CollectionName": "\"Legacy Artisan\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20848,7 +21098,7 @@
   },
   "55142": {
     "Id": 55142,
-    "CollectionName": "",
+    "CollectionName": "\"Open Day for Artisan\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -20924,7 +21174,7 @@
   },
   "55143": {
     "Id": 55143,
-    "CollectionName": "",
+    "CollectionName": "\"Architectural Artisan\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21000,7 +21250,7 @@
   },
   "55144": {
     "Id": 55144,
-    "CollectionName": "",
+    "CollectionName": "\"Engine Artisan\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21076,7 +21326,7 @@
   },
   "55145": {
     "Id": 55145,
-    "CollectionName": "",
+    "CollectionName": "\"Forging Artisan\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21152,7 +21402,7 @@
   },
   "55146": {
     "Id": 55146,
-    "CollectionName": "",
+    "CollectionName": "\"Artisan Levels\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21228,7 +21478,7 @@
   },
   "55147": {
     "Id": 55147,
-    "CollectionName": "",
+    "CollectionName": "Experimental Model Application",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21304,7 +21554,7 @@
   },
   "55148": {
     "Id": 55148,
-    "CollectionName": "",
+    "CollectionName": "\"Where Did the Bapharian Legacy Come From?\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21380,7 +21630,7 @@
   },
   "55149": {
     "Id": 55149,
-    "CollectionName": "",
+    "CollectionName": "\"The Hidden Value of Dragonlight Core\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21456,7 +21706,7 @@
   },
   "55150": {
     "Id": 55150,
-    "CollectionName": "",
+    "CollectionName": "\"The Hermit\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21532,7 +21782,7 @@
   },
   "55151": {
     "Id": 55151,
-    "CollectionName": "",
+    "CollectionName": "\"Let's Talk About Fantasy\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21608,7 +21858,7 @@
   },
   "55152": {
     "Id": 55152,
-    "CollectionName": "",
+    "CollectionName": "\"7th Artisan Expo: Introduction\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21684,7 +21934,7 @@
   },
   "55153": {
     "Id": 55153,
-    "CollectionName": "",
+    "CollectionName": "\"Technology Advances with Every Discovery\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21760,7 +22010,7 @@
   },
   "55154": {
     "Id": 55154,
-    "CollectionName": "",
+    "CollectionName": "\"Don't Touch That! It Might Go Crazy!\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21836,7 +22086,7 @@
   },
   "55155": {
     "Id": 55155,
-    "CollectionName": "",
+    "CollectionName": "\"Energy Division\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21912,7 +22162,7 @@
   },
   "55157": {
     "Id": 55157,
-    "CollectionName": "",
+    "CollectionName": "\"Ocean Hill Immersive Theater: 127s of Legend\" Part I",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -21988,7 +22238,7 @@
   },
   "55158": {
     "Id": 55158,
-    "CollectionName": "",
+    "CollectionName": "\"The Miser\" Performance Poster",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22064,7 +22314,7 @@
   },
   "55159": {
     "Id": 55159,
-    "CollectionName": "",
+    "CollectionName": "\"Spring-Leg Jack\" Performance Poster",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22140,7 +22390,7 @@
   },
   "55160": {
     "Id": 55160,
-    "CollectionName": "",
+    "CollectionName": "\"Webber Energy Network Hazard: The Sewer Crisis\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22216,7 +22466,7 @@
   },
   "55161": {
     "Id": 55161,
-    "CollectionName": "",
+    "CollectionName": "\"The Iron Mask Incident IV\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22292,7 +22542,7 @@
   },
   "55162": {
     "Id": 55162,
-    "CollectionName": "",
+    "CollectionName": "\"Specialty Drinks of the Continent of Regnus\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22368,7 +22618,7 @@
   },
   "55163": {
     "Id": 55163,
-    "CollectionName": "",
+    "CollectionName": "A One-Day Tour of Asterleeds",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22444,7 +22694,7 @@
   },
   "55164": {
     "Id": 55164,
-    "CollectionName": "",
+    "CollectionName": "\"Ocean Hill Museum: New Exhibit Season\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22520,7 +22770,7 @@
   },
   "55165": {
     "Id": 55165,
-    "CollectionName": "",
+    "CollectionName": "\"Your Personalized Stress Management Plan\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22596,7 +22846,7 @@
   },
   "55167": {
     "Id": 55167,
-    "CollectionName": "",
+    "CollectionName": "Proposal: Add Artist & Sewer-dweller Representative Seats",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22672,7 +22922,7 @@
   },
   "55168": {
     "Id": 55168,
-    "CollectionName": "",
+    "CollectionName": "\"The Merchant Guild's Hidden Dealings\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22748,7 +22998,7 @@
   },
   "55169": {
     "Id": 55169,
-    "CollectionName": "",
+    "CollectionName": "\"Ocean Hill Immersive Theater: 127s of Legend\" Part II",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22824,7 +23074,7 @@
   },
   "55170": {
     "Id": 55170,
-    "CollectionName": "",
+    "CollectionName": "Wanted: Dr. Flame-Eye",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22900,7 +23150,7 @@
   },
   "55171": {
     "Id": 55171,
-    "CollectionName": "",
+    "CollectionName": "Wanted: Lady Penelope",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -22976,7 +23226,7 @@
   },
   "55172": {
     "Id": 55172,
-    "CollectionName": "",
+    "CollectionName": "Wanted: Iron-Lung Jayden",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23052,7 +23302,7 @@
   },
   "55173": {
     "Id": 55173,
-    "CollectionName": "",
+    "CollectionName": "\"A Civilization Built on Ruins\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23128,7 +23378,7 @@
   },
   "55174": {
     "Id": 55174,
-    "CollectionName": "",
+    "CollectionName": "Plains Hunting Regulations and Poaching Warning",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23204,7 +23454,7 @@
   },
   "55175": {
     "Id": 55175,
-    "CollectionName": "",
+    "CollectionName": "\"To the Honorable Jon Dandelion\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23280,7 +23530,7 @@
   },
   "55176": {
     "Id": 55176,
-    "CollectionName": "",
+    "CollectionName": "\"The Webber Family\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23356,7 +23606,7 @@
   },
   "55177": {
     "Id": 55177,
-    "CollectionName": "",
+    "CollectionName": "\"The Shifting Sands of Kanamia\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23432,7 +23682,7 @@
   },
   "55178": {
     "Id": 55178,
-    "CollectionName": "",
+    "CollectionName": "Person missing! The Mushroom Elder Trali appears!",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23508,7 +23758,7 @@
   },
   "55179": {
     "Id": 55179,
-    "CollectionName": "",
+    "CollectionName": "\"The Way Elders Think\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23584,7 +23834,7 @@
   },
   "55180": {
     "Id": 55180,
-    "CollectionName": "",
+    "CollectionName": "\"Tribal Oral Traditions: Elder Pine Mushroom's Teachings\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23660,7 +23910,7 @@
   },
   "55181": {
     "Id": 55181,
-    "CollectionName": "",
+    "CollectionName": "\"The Secret of the Longevity Tree\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23736,7 +23986,7 @@
   },
   "55182": {
     "Id": 55182,
-    "CollectionName": "",
+    "CollectionName": "Mounted Grand Hunt!",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23812,7 +24062,7 @@
   },
   "55183": {
     "Id": 55183,
-    "CollectionName": "",
+    "CollectionName": "Kanamia Caprahorn Race",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23888,7 +24138,7 @@
   },
   "55184": {
     "Id": 55184,
-    "CollectionName": "",
+    "CollectionName": "\"Celebration of the Fiery Moon Omens - Volume I\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -23964,7 +24214,7 @@
   },
   "55185": {
     "Id": 55185,
-    "CollectionName": "",
+    "CollectionName": "\"Celebration of the Fiery Moon Omens - Volume II\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24040,7 +24290,7 @@
   },
   "55186": {
     "Id": 55186,
-    "CollectionName": "",
+    "CollectionName": "\"A Tribe Without Currency\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24116,7 +24366,7 @@
   },
   "55187": {
     "Id": 55187,
-    "CollectionName": "",
+    "CollectionName": "\"Ritual of the Four Seasons\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24192,7 +24442,7 @@
   },
   "55188": {
     "Id": 55188,
-    "CollectionName": "",
+    "CollectionName": "\"The Tale of Kanamia's Shrimpshrooms\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24268,7 +24518,7 @@
   },
   "55189": {
     "Id": 55189,
-    "CollectionName": "",
+    "CollectionName": "\"Symbol of the Full Moon\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24344,7 +24594,7 @@
   },
   "55190": {
     "Id": 55190,
-    "CollectionName": "",
+    "CollectionName": "\"When the Lunar Harp Meets the Pigskin Drum\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24420,7 +24670,7 @@
   },
   "55191": {
     "Id": 55191,
-    "CollectionName": "",
+    "CollectionName": "Please Send Me Back!",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24496,7 +24746,7 @@
   },
   "55192": {
     "Id": 55192,
-    "CollectionName": "",
+    "CollectionName": "A Letter to Luca",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24572,7 +24822,7 @@
   },
   "55193": {
     "Id": 55193,
-    "CollectionName": "",
+    "CollectionName": "\"Song of the Outsider - Kanamia Journal\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24648,7 +24898,7 @@
   },
   "55194": {
     "Id": 55194,
-    "CollectionName": "",
+    "CollectionName": "\"Hakrei's Five Thousand Hides\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24724,7 +24974,7 @@
   },
   "55195": {
     "Id": 55195,
-    "CollectionName": "",
+    "CollectionName": "\"Book of Counsel: New Moon Scroll\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24800,7 +25050,7 @@
   },
   "55196": {
     "Id": 55196,
-    "CollectionName": "",
+    "CollectionName": "\"Book of Counsel: Sacred Spirit Scroll\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24876,7 +25126,7 @@
   },
   "55197": {
     "Id": 55197,
-    "CollectionName": "",
+    "CollectionName": "\"Book of Sin: The Transgressors I\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -24952,7 +25202,7 @@
   },
   "55198": {
     "Id": 55198,
-    "CollectionName": "",
+    "CollectionName": "\"Book of Sin: The Transgressors II\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25028,7 +25278,7 @@
   },
   "55199": {
     "Id": 55199,
-    "CollectionName": "",
+    "CollectionName": "\"Book of Sin: The Transgressors III\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25104,7 +25354,7 @@
   },
   "55200": {
     "Id": 55200,
-    "CollectionName": "",
+    "CollectionName": "\"Book of Sin: The Transgressors IV\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25180,7 +25430,7 @@
   },
   "55201": {
     "Id": 55201,
-    "CollectionName": "",
+    "CollectionName": "\"The White Wolf Mystery: An Inquiry into the Existence of Kanamia Ancestral Spirits\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25256,7 +25506,7 @@
   },
   "55202": {
     "Id": 55202,
-    "CollectionName": "",
+    "CollectionName": "\"A Study of Totem Culture in Kanamia\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25332,7 +25582,7 @@
   },
   "55203": {
     "Id": 55203,
-    "CollectionName": "",
+    "CollectionName": "\"The Seven Sacred Laws of Kanamia - Part I\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25408,7 +25658,7 @@
   },
   "55204": {
     "Id": 55204,
-    "CollectionName": "",
+    "CollectionName": "\"The Seven Sacred Laws of Kanamia - Part II\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25484,7 +25734,7 @@
   },
   "55205": {
     "Id": 55205,
-    "CollectionName": "",
+    "CollectionName": "\"The Seven Sacred Laws of Kanamia - Part III\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25560,7 +25810,7 @@
   },
   "55206": {
     "Id": 55206,
-    "CollectionName": "",
+    "CollectionName": "\"The Seven Sacred Laws of Kanamia - Part IV\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25636,7 +25886,7 @@
   },
   "55207": {
     "Id": 55207,
-    "CollectionName": "",
+    "CollectionName": "\"The Seven Sacred Laws of Kanamia - Part V\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25712,7 +25962,7 @@
   },
   "55208": {
     "Id": 55208,
-    "CollectionName": "",
+    "CollectionName": "\"The Seven Sacred Laws of Kanamia - Part VI\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25788,7 +26038,7 @@
   },
   "55209": {
     "Id": 55209,
-    "CollectionName": "",
+    "CollectionName": "\"The Seven Sacred Laws of Kanamia - Part VII\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25864,7 +26114,7 @@
   },
   "55210": {
     "Id": 55210,
-    "CollectionName": "",
+    "CollectionName": "Artisan Guild Frontier Market",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -25940,7 +26190,7 @@
   },
   "55211": {
     "Id": 55211,
-    "CollectionName": "",
+    "CollectionName": "Waters of the Forbidden Land",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26016,7 +26266,7 @@
   },
   "55212": {
     "Id": 55212,
-    "CollectionName": "",
+    "CollectionName": "\"The Kanamia White Wolf: A Hypothesis\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26092,7 +26342,7 @@
   },
   "55213": {
     "Id": 55213,
-    "CollectionName": "",
+    "CollectionName": "A Letter to Old Friend Lumia",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26168,7 +26418,7 @@
   },
   "55214": {
     "Id": 55214,
-    "CollectionName": "",
+    "CollectionName": "Aged Hide Scroll",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26244,7 +26494,7 @@
   },
   "55215": {
     "Id": 55215,
-    "CollectionName": "",
+    "CollectionName": "Lost Hide Scroll",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26320,7 +26570,7 @@
   },
   "55216": {
     "Id": 55216,
-    "CollectionName": "",
+    "CollectionName": "Strange Bark Inscription",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26396,7 +26646,7 @@
   },
   "55217": {
     "Id": 55217,
-    "CollectionName": "",
+    "CollectionName": "\"The Light of the Priest's Journey\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26472,7 +26722,7 @@
   },
   "55218": {
     "Id": 55218,
-    "CollectionName": "",
+    "CollectionName": "\"The Scavengers\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26548,7 +26798,7 @@
   },
   "55219": {
     "Id": 55219,
-    "CollectionName": "",
+    "CollectionName": "A Letter to the Chief Priest",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26624,7 +26874,7 @@
   },
   "55220": {
     "Id": 55220,
-    "CollectionName": "",
+    "CollectionName": "\"The Scavengers' Guide to 'Pointless' Survival\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26700,7 +26950,7 @@
   },
   "55221": {
     "Id": 55221,
-    "CollectionName": "",
+    "CollectionName": "The Flyer for the Spinning Rudder",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26776,7 +27026,7 @@
   },
   "55222": {
     "Id": 55222,
-    "CollectionName": "",
+    "CollectionName": "\"On the Benefits of Trading with Scavengers\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26852,7 +27102,7 @@
   },
   "55223": {
     "Id": 55223,
-    "CollectionName": "",
+    "CollectionName": "To all visitors to the ruins of Andra Landing Battle",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,
@@ -26928,7 +27178,7 @@
   },
   "55224": {
     "Id": 55224,
-    "CollectionName": "",
+    "CollectionName": "\"Peacegrass of a Foreign Land\"",
     "ShowHudName": false,
     "Remark": "可收集阅读物",
     "Type": 0,

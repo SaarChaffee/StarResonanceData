@@ -165,6 +165,9 @@ local checkNotUnlockShow = function(fashionRow, isShowAllFashion)
   if isShowAllFashion then
     return true
   end
+  if not Z.ConditionHelper.CheckCondition(fashionRow.Condition, false) then
+    return false
+  end
   if fashionRow.NotUnlock <= 0 then
     return true
   end
@@ -648,6 +651,9 @@ local checkIsFashionPreview = function(itemid)
     return false
   end
   if fashionTableRow.NotUnlock > 0 then
+    return false
+  end
+  if not Z.ConditionHelper.CheckCondition(fashionTableRow.Condition, false) then
     return false
   end
   return checkStyleVisible(fashionTableRow)

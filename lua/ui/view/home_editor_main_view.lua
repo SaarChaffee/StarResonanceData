@@ -36,6 +36,7 @@ function Home_editor_mainView:initBinders()
   self.griddingbTog_ = self.uiBinder.tog_gridding
   self.alignTog_ = self.uiBinder.tog_aligning
   self.multiSelectedTog_ = self.uiBinder.tog_multiple_choice
+  self.anim_do_ = self.uiBinder.anim_do
   self.opearCameraNode_ = self.uiBinder.node_down_left_btn
   self.upCameraBtn_ = self.uiBinder.btn_up
   self.downCameraBtn_ = self.uiBinder.btn_down
@@ -157,6 +158,7 @@ function Home_editor_mainView:OnActive()
   self.vm_.InitAlignNum()
   self:bindEvent()
   self:initBinders()
+  self:onStartAnimShow()
   self:initBtn()
   self.data_:InitTab()
   self.data_:InitCopyTab()
@@ -189,6 +191,7 @@ function Home_editor_mainView:OnActiveRigtSubView(type)
   if self.data_.IsOperationState then
     return
   end
+  self.anim_do_:Restart(Z.DOTweenAnimType.Tween_1)
   self.uiBinder.Ref:SetVisible(self.rightBtnsNode_, false)
   self.rightSubView_:Active(type, self.rightSubNode_)
   self.opearCameraNode_:SetAnchorPosition(-650, 100)
@@ -347,6 +350,27 @@ function Home_editor_mainView:cancelSelectedItem(data)
   end
 end
 
+function Home_editor_mainView:cancelSelectedUids(ids)
+  for index, id in ipairs(ids) do
+    if table.zcontains(self.data_.CurMultiSelectedEntIds, id) then
+      table.zremoveOneByValue(self.data_.CurMultiSelectedEntIds, id)
+    end
+  end
+  if #self.data_.CurMultiSelectedGroupIds == 0 and #self.data_.CurMultiSelectedEntIds == 0 then
+    self:exitOperationState()
+  else
+    self.selectedEntityIds_ = {}
+    for index, groupId in ipairs(self.data_.CurMultiSelectedGroupIds) do
+      local data = self.data_.FurnitureGroupInfo[groupId]
+      if data then
+        self.selectedEntityIds_ = table.zmerge(self.selectedEntityIds_, data.structureIds)
+      end
+    end
+    self.selectedEntityIds_ = table.zmerge(self.selectedEntityIds_, self.data_.CurMultiSelectedEntIds)
+    self:enterOperationState(self.selectedEntityIds_)
+  end
+end
+
 function Home_editor_mainView:selectedEntity(entityId, configId)
   if not self.houseData_:GetHomeCharLimit(E.HousePlayerLimitType.FurnitureEdit, Z.ContainerMgr.CharSerialize.charId) then
     Z.TipsVM.ShowTips(1044016)
@@ -394,6 +418,7 @@ function Home_editor_mainView:bindEvent()
   Z.EventMgr:Add(Z.ConstValue.Home.RefreshEditorOperation, self.onSelectedGroup, self)
   Z.EventMgr:Add(Z.ConstValue.Home.HomeEntitySelecting, self.selectedEntitys, self)
   Z.EventMgr:Add(Z.ConstValue.Home.CancelSelectedItem, self.cancelSelectedItem, self)
+  Z.EventMgr:Add(Z.ConstValue.Home.CancelSelectedUids, self.cancelSelectedUids, self)
   self.playerStateWatcher = Z.DIServiceMgr.PlayerAttrStateComponentWatcherService:OnLocalAttrStateChanged(function()
     self:updateState()
   end)
@@ -404,6 +429,7 @@ function Home_editor_mainView:isShowOperation(isShow)
 end
 
 function Home_editor_mainView:enterOperationState(entityIds, configId)
+  self.anim_do_:Restart(Z.DOTweenAnimType.Tween_0)
   self.operationSubView_:Active({entityIds = entityIds, configId = configId}, self.operationSubNode_)
 end
 
@@ -475,6 +501,10 @@ function Home_editor_mainView:loadGrid()
     ZUtil.ZExtensions.SetPos(self.gridGo_.transform, position.X, position.Y, position.Z)
     ZUtil.ZExtensions.SetScale(self.gridGo_.transform, size.X / 10, size.Z / 10, size.Y / 10)
   end
+end
+
+function Home_editor_mainView:onStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Open)
 end
 
 return Home_editor_mainView

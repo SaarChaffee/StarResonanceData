@@ -1,9 +1,9 @@
 {
   "1": {
     "Id": 1,
-    "Comment": "",
-    "UnionTitle": "",
-    "UnionComment": "",
+    "Comment": "Obtain 200 Activity Merits",
+    "UnionTitle": "Guild Merit",
+    "UnionComment": "Obtain {*val*} Activity Merits",
     "Picture": "ui/textures/union_2/union_temporary03",
     "TargetType": 1,
     "TargetId": [],
@@ -15,13 +15,13 @@
       800505
     ],
     "ChangeUnion": 0,
-    "Label": ""
+    "Label": "Daily"
   },
   "2": {
     "Id": 2,
-    "Comment": "",
-    "UnionTitle": "",
-    "UnionComment": "",
+    "Comment": "Obtain 500 Activity Merits",
+    "UnionTitle": "Guild Merit",
+    "UnionComment": "Obtain {*val*} Activity Merits",
     "Picture": "ui/textures/union_2/union_temporary02",
     "TargetType": 1,
     "TargetId": [
@@ -37,13 +37,13 @@
       800505
     ],
     "ChangeUnion": 0,
-    "Label": ""
+    "Label": "Daily"
   },
   "3": {
     "Id": 3,
-    "Comment": "",
-    "UnionTitle": "",
-    "UnionComment": "",
+    "Comment": "Check-in quest completed",
+    "UnionTitle": "Check-in",
+    "UnionComment": "Complete Check-in Quest",
     "Picture": "ui/textures/union_2/union_temporary04",
     "TargetType": 1,
     "TargetId": [
@@ -63,13 +63,13 @@
       6
     ],
     "ChangeUnion": 1,
-    "Label": ""
+    "Label": "Daily"
   },
   "4": {
     "Id": 4,
-    "Comment": "",
-    "UnionTitle": "",
-    "UnionComment": "",
+    "Comment": "Complete Cargo Quest",
+    "UnionTitle": "Guild Cargo",
+    "UnionComment": "Complete Cargo Quest",
     "Picture": "ui/textures/union_2/union_temporary05",
     "TargetType": 1,
     "TargetId": [
@@ -87,13 +87,13 @@
       42
     ],
     "ChangeUnion": 1,
-    "Label": ""
+    "Label": "Daily"
   },
   "5": {
     "Id": 5,
-    "Comment": "",
-    "UnionTitle": "",
-    "UnionComment": "",
+    "Comment": "10 members of the Guild participated in hunting",
+    "UnionTitle": "Guild Hunt",
+    "UnionComment": "{*val*} members participated",
     "Picture": "ui/textures/union_2/union_temporary07",
     "TargetType": 2,
     "TargetId": [
@@ -113,13 +113,13 @@
       500151
     ],
     "ChangeUnion": 0,
-    "Label": ""
+    "Label": "Weekly"
   },
   "6": {
     "Id": 6,
-    "Comment": "",
-    "UnionTitle": "",
-    "UnionComment": "",
+    "Comment": "30 members of the Guild participated in hunting",
+    "UnionTitle": "Guild Hunt",
+    "UnionComment": "{*val*} members participated",
     "Picture": "ui/textures/union_2/union_temporary08",
     "TargetType": 2,
     "TargetId": [
@@ -139,13 +139,13 @@
       500152
     ],
     "ChangeUnion": 0,
-    "Label": ""
+    "Label": "Weekly"
   },
   "7": {
     "Id": 7,
-    "Comment": "",
-    "UnionTitle": "",
-    "UnionComment": "",
+    "Comment": "10 members of the Guild participated in battle dance",
+    "UnionTitle": "Guild Dance",
+    "UnionComment": "{*val*} members participated",
     "Picture": "ui/textures/union_2/union_temporary09",
     "TargetType": 2,
     "TargetId": [
@@ -162,13 +162,13 @@
       900200
     ],
     "ChangeUnion": 0,
-    "Label": ""
+    "Label": "Weekly"
   },
   "8": {
     "Id": 8,
-    "Comment": "",
-    "UnionTitle": "",
-    "UnionComment": "",
+    "Comment": "30 members of the Guild participated in battle dance",
+    "UnionTitle": "Guild Dance",
+    "UnionComment": "{*val*} members participated",
     "Picture": "ui/textures/union_2/union_temporary09",
     "TargetType": 2,
     "TargetId": [
@@ -185,6 +185,6 @@
       900200
     ],
     "ChangeUnion": 0,
-    "Label": ""
+    "Label": "Weekly"
   }
 }

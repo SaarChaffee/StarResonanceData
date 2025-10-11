@@ -1,7 +1,7 @@
 {
   "40000": {
     "Id": 40000,
-    "Name": "",
+    "Name": "Central District",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -11,7 +11,7 @@
   },
   "40001": {
     "Id": 40001,
-    "Name": "",
+    "Name": "Port Town",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -21,7 +21,7 @@
   },
   "40002": {
     "Id": 40002,
-    "Name": "",
+    "Name": "Entertainment District",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -31,7 +31,7 @@
   },
   "40003": {
     "Id": 40003,
-    "Name": "",
+    "Name": "Cathedral Shrine",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -41,7 +41,7 @@
   },
   "40004": {
     "Id": 40004,
-    "Name": "",
+    "Name": "North Plaza",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -51,7 +51,7 @@
   },
   "40100": {
     "Id": 40100,
-    "Name": "",
+    "Name": "City Square Second Floor",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -61,7 +61,7 @@
   },
   "80001": {
     "Id": 80001,
-    "Name": "",
+    "Name": "Central District",
     "NamePosition": [
       0.57,
       0.46
@@ -74,7 +74,7 @@
   },
   "80002": {
     "Id": 80002,
-    "Name": "",
+    "Name": "Port Town",
     "NamePosition": [
       0.57,
       0.3
@@ -87,7 +87,7 @@
   },
   "80003": {
     "Id": 80003,
-    "Name": "",
+    "Name": "Ocean Hill",
     "NamePosition": [
       0.63,
       0.55
@@ -100,7 +100,7 @@
   },
   "80004": {
     "Id": 80004,
-    "Name": "",
+    "Name": "Asterleeds Beach",
     "NamePosition": [
       0.67,
       0.7
@@ -113,7 +113,7 @@
   },
   "80005": {
     "Id": 80005,
-    "Name": "",
+    "Name": "Entertainment District",
     "NamePosition": [
       0.46,
       0.67
@@ -126,7 +126,7 @@
   },
   "80006": {
     "Id": 80006,
-    "Name": "",
+    "Name": "Arena Town",
     "NamePosition": [
       0.296,
       0.715
@@ -139,7 +139,7 @@
   },
   "80007": {
     "Id": 80007,
-    "Name": "",
+    "Name": "Shrine Area",
     "NamePosition": [
       0.26,
       0.47
@@ -152,7 +152,7 @@
   },
   "80008": {
     "Id": 80008,
-    "Name": "",
+    "Name": "\"Unit X\" Research Facility",
     "NamePosition": [
       0.3,
       0.57
@@ -165,7 +165,7 @@
   },
   "80009": {
     "Id": 80009,
-    "Name": "",
+    "Name": "Artisan Guild",
     "NamePosition": [
       0.48,
       0.36
@@ -178,7 +178,7 @@
   },
   "80010": {
     "Id": 80010,
-    "Name": "",
+    "Name": "Central District",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -188,7 +188,7 @@
   },
   "80011": {
     "Id": 80011,
-    "Name": "",
+    "Name": "Port Town",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -198,7 +198,7 @@
   },
   "80012": {
     "Id": 80012,
-    "Name": "",
+    "Name": "Shrine Area",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -208,7 +208,7 @@
   },
   "80013": {
     "Id": 80013,
-    "Name": "",
+    "Name": "Arena Town",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -218,7 +218,7 @@
   },
   "80014": {
     "Id": 80014,
-    "Name": "",
+    "Name": "Entertainment District",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -228,7 +228,7 @@
   },
   "80015": {
     "Id": 80015,
-    "Name": "",
+    "Name": "Asterleeds Beach",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_Beach",
@@ -238,7 +238,7 @@
   },
   "80101": {
     "Id": 80101,
-    "Name": "",
+    "Name": "Pioneer Bureau 2nd Floor",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -248,7 +248,7 @@
   },
   "80102": {
     "Id": 80102,
-    "Name": "",
+    "Name": "Rooftop",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -258,7 +258,7 @@
   },
   "80201": {
     "Id": 80201,
-    "Name": "",
+    "Name": "Pioneer Bureau 3rd Floor",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Cty001_Area_General",
@@ -338,7 +338,7 @@
   },
   "80098": {
     "Id": 80098,
-    "Name": "",
+    "Name": "Asteria Plains",
     "NamePosition": [
       0.73,
       0.418
@@ -351,7 +351,7 @@
   },
   "80099": {
     "Id": 80099,
-    "Name": "",
+    "Name": "Underground District",
     "NamePosition": [
       0.4,
       0.315
@@ -404,7 +404,7 @@
   },
   "70005": {
     "Id": 70005,
-    "Name": "",
+    "Name": "Scout Lookout Post<br>Lv.1~10",
     "NamePosition": [
       0.63,
       0.34
@@ -419,7 +419,7 @@
   },
   "70006": {
     "Id": 70006,
-    "Name": "",
+    "Name": "Cliff Ruins",
     "NamePosition": [
       0.48,
       0.29
@@ -434,7 +434,7 @@
   },
   "70007": {
     "Id": 70007,
-    "Name": "",
+    "Name": "Ancient City of Vill<br>Lv.9~20",
     "NamePosition": [
       0.375,
       0.275
@@ -449,7 +449,7 @@
   },
   "70008": {
     "Id": 70008,
-    "Name": "",
+    "Name": "Statue of the Hero",
     "NamePosition": [
       0.22,
       0.33
@@ -465,7 +465,7 @@
   },
   "70009": {
     "Id": 70009,
-    "Name": "",
+    "Name": "Towering Ruin",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Area_General",
@@ -477,7 +477,7 @@
   },
   "70010": {
     "Id": 70010,
-    "Name": "",
+    "Name": "Andra Landing Battlefield<br>Lv.16~25",
     "NamePosition": [
       0.27,
       0.42
@@ -492,7 +492,7 @@
   },
   "70011": {
     "Id": 70011,
-    "Name": "",
+    "Name": "Kanamia Tribe",
     "NamePosition": [
       0.74,
       0.65
@@ -507,7 +507,7 @@
   },
   "70012": {
     "Id": 70012,
-    "Name": "",
+    "Name": "Minsterhorn",
     "NamePosition": [
       0.6,
       0.52
@@ -522,7 +522,7 @@
   },
   "70013": {
     "Id": 70013,
-    "Name": "",
+    "Name": "Old Kanamia Tribe",
     "NamePosition": [
       0.59,
       0.6
@@ -538,7 +538,7 @@
   },
   "70014": {
     "Id": 70014,
-    "Name": "",
+    "Name": "Pale Azure Lake",
     "NamePosition": [
       0.62,
       0.65
@@ -553,7 +553,7 @@
   },
   "70015": {
     "Id": 70015,
-    "Name": "",
+    "Name": "Ruins of Andra City<br>Lv.53~60",
     "NamePosition": [
       0.35,
       0.67
@@ -568,7 +568,7 @@
   },
   "70016": {
     "Id": 70016,
-    "Name": "",
+    "Name": "Muku Camp<br>Lv.39~45",
     "NamePosition": [
       0.74,
       0.5
@@ -583,7 +583,7 @@
   },
   "70017": {
     "Id": 70017,
-    "Name": "",
+    "Name": "Andra Resting Post",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Area_General",
@@ -595,7 +595,7 @@
   },
   "70018": {
     "Id": 70018,
-    "Name": "",
+    "Name": "Brigand Camp<br>Lv.29~35",
     "NamePosition": [
       0.46,
       0.54
@@ -610,7 +610,7 @@
   },
   "70019": {
     "Id": 70019,
-    "Name": "",
+    "Name": "Skyquake Fields",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Area_General",
@@ -634,7 +634,7 @@
   },
   "70021": {
     "Id": 70021,
-    "Name": "",
+    "Name": "Andra Landing Battlefield<br>Lv.16~25",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Area_General",
@@ -658,7 +658,7 @@
   },
   "70023": {
     "Id": 70023,
-    "Name": "",
+    "Name": "Kanamia Tribe",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Area_Carniman",
@@ -670,7 +670,7 @@
   },
   "70024": {
     "Id": 70024,
-    "Name": "",
+    "Name": "Muku Camp<br>Lv.39~45",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Area_General",
@@ -682,7 +682,7 @@
   },
   "70025": {
     "Id": 70025,
-    "Name": "",
+    "Name": "Scout Lookout Post<br>Lv.1~10",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Area_General",
@@ -694,7 +694,7 @@
   },
   "70026": {
     "Id": 70026,
-    "Name": "",
+    "Name": "Skyquake Fields",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Area_General",
@@ -718,7 +718,7 @@
   },
   "70028": {
     "Id": 70028,
-    "Name": "",
+    "Name": "Ancient City of Vill<br>Lv.9~20",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Area_ValeCitadel",
@@ -742,7 +742,7 @@
   },
   "70030": {
     "Id": 70030,
-    "Name": "",
+    "Name": "Ruins of Andra City<br>Lv.53~60",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Area_DuskbloodFort",
@@ -804,7 +804,7 @@
   },
   "70106": {
     "Id": 70106,
-    "Name": "",
+    "Name": "Dark Mist Fortress",
     "NamePosition": [],
     "RegionType": 1,
     "BgmEvent": "BGM_Fld001_Area_General",
@@ -814,7 +814,7 @@
   },
   "70096": {
     "Id": 70096,
-    "Name": "",
+    "Name": "Skimmer's Lair",
     "NamePosition": [
       0.315,
       0.16
@@ -827,7 +827,7 @@
   },
   "70097": {
     "Id": 70097,
-    "Name": "",
+    "Name": "Windhowl Canyon",
     "NamePosition": [
       0.855,
       0.672
@@ -840,7 +840,7 @@
   },
   "70098": {
     "Id": 70098,
-    "Name": "",
+    "Name": "Asterleeds",
     "NamePosition": [
       0.545,
       0.21
@@ -853,7 +853,7 @@
   },
   "70099": {
     "Id": 70099,
-    "Name": "",
+    "Name": "Duskdye Woods",
     "NamePosition": [
       0.52,
       0.735
@@ -866,7 +866,7 @@
   },
   "710001": {
     "Id": 710001,
-    "Name": "",
+    "Name": "Duskdye Woods <br>Lv.60",
     "NamePosition": [
       0.6,
       0.53
@@ -892,7 +892,7 @@
   },
   "710098": {
     "Id": 710098,
-    "Name": "",
+    "Name": "Everfall Forest",
     "NamePosition": [
       0.78,
       0.47
@@ -905,7 +905,7 @@
   },
   "710099": {
     "Id": 710099,
-    "Name": "",
+    "Name": "Asteria Plains",
     "NamePosition": [
       0.203,
       0.495
@@ -918,7 +918,7 @@
   },
   "720001": {
     "Id": 720001,
-    "Name": "",
+    "Name": "Everfall Forest<br>Lv.60",
     "NamePosition": [
       0.5,
       0.51
@@ -933,7 +933,7 @@
   },
   "720099": {
     "Id": 720099,
-    "Name": "",
+    "Name": "Duskdye Woods",
     "NamePosition": [
       0.165,
       0.49
@@ -946,7 +946,7 @@
   },
   "730001": {
     "Id": 730001,
-    "Name": "",
+    "Name": "Windhowl Canyon<br>Lv.46~55",
     "NamePosition": [
       0.5,
       0.38
@@ -959,7 +959,7 @@
   },
   "730002": {
     "Id": 730002,
-    "Name": "",
+    "Name": "Windhowl Canyon<br>Lv.46~55",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Dragonscar_Area_B",
@@ -969,7 +969,7 @@
   },
   "730099": {
     "Id": 730099,
-    "Name": "",
+    "Name": "Asteria Plains",
     "NamePosition": [
       0.298,
       0.14
@@ -982,7 +982,7 @@
   },
   "740001": {
     "Id": 740001,
-    "Name": "",
+    "Name": "Underground District<br>Lv.24~40",
     "NamePosition": [
       0.533,
       0.455
@@ -995,7 +995,7 @@
   },
   "740099": {
     "Id": 740099,
-    "Name": "",
+    "Name": "Asterleeds",
     "NamePosition": [
       0.226,
       0.427
@@ -1008,7 +1008,7 @@
   },
   "750001": {
     "Id": 750001,
-    "Name": "",
+    "Name": "Skimmer's Lair<br>Lv.60",
     "NamePosition": [
       0.518,
       0.509
@@ -1021,7 +1021,7 @@
   },
   "750002": {
     "Id": 750002,
-    "Name": "",
+    "Name": "Skimmer's Lair<br>Lv.60",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Underwater_Area_B",
@@ -1031,7 +1031,7 @@
   },
   "750003": {
     "Id": 750003,
-    "Name": "",
+    "Name": "Skimmer's Lair<br>Lv.60",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "BGM_Fld001_Underwater_Area_C",
@@ -1041,7 +1041,7 @@
   },
   "750098": {
     "Id": 750098,
-    "Name": "",
+    "Name": "Asteria Plains",
     "NamePosition": [
       0.785,
       0.762
@@ -1054,7 +1054,7 @@
   },
   "750099": {
     "Id": 750099,
-    "Name": "",
+    "Name": "Asteria Plains",
     "NamePosition": [
       0.772,
       0.306
@@ -1597,7 +1597,7 @@
   },
   "120500001": {
     "Id": 120500001,
-    "Name": "",
+    "Name": "Right Arm Assault Platform",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "",
@@ -1607,7 +1607,7 @@
   },
   "120500002": {
     "Id": 120500002,
-    "Name": "",
+    "Name": "Legs Assault Platform",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "",
@@ -1617,7 +1617,7 @@
   },
   "120500003": {
     "Id": 120500003,
-    "Name": "",
+    "Name": "Head Assault Platform",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "",
@@ -1627,7 +1627,7 @@
   },
   "120500004": {
     "Id": 120500004,
-    "Name": "",
+    "Name": "Cannon Fire Corridor",
     "NamePosition": [],
     "RegionType": 0,
     "BgmEvent": "",

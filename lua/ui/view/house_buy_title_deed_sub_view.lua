@@ -19,6 +19,7 @@ function House_buy_title_deed_subView:initBinders()
   self.closeBtn_ = self.uiBinder.btn
   self.buyBtn_ = self.uiBinder.btn_buy
   self.requestBtn_ = self.uiBinder.btn_request
+  self.requestNode_ = self.uiBinder.node_requisition
   self.labBtn_ = self.uiBinder.lab_btn
   self.goldIcon_ = self.uiBinder.rimg_gold
   self.houseIcon_ = self.uiBinder.rimg_icon
@@ -29,6 +30,7 @@ function House_buy_title_deed_subView:initBinders()
   self.goldNode_ = self.uiBinder.node_gold
   self.goldImg_ = self.uiBinder.img_gold
   self.askBtn_ = self.uiBinder.btn_ask
+  self.anim_do_ = self.uiBinder.anim_do
 end
 
 function House_buy_title_deed_subView:initData()
@@ -41,6 +43,7 @@ function House_buy_title_deed_subView:initUI()
   self.commonVm_.SetLabText(self.titleLab_, E.FunctionID.House)
   self.unlockLoopListView_ = loopListView.new(self, self.unlockLoopList_, conditionItem, "house_buy_conditions_item_tpl")
   self.unlockLoopListView_:Init({})
+  Z.RedPointMgr.LoadRedDotItem(E.RedType.HouseInviteRed, self, self.requestNode_)
 end
 
 function House_buy_title_deed_subView:initBtns()
@@ -55,6 +58,7 @@ function House_buy_title_deed_subView:initBtns()
     self.helpSysVM_.OpenFullScreenTipsView(40005)
   end)
   self:AddClick(self.requestBtn_, function()
+    Z.RedPointMgr.UpdateNodeCount(E.RedType.HouseInviteRed, 0)
     self.houseVm_.OpenHouseApplyView()
   end)
   self:AddClick(self.closeBtn_, function()
@@ -65,6 +69,7 @@ end
 function House_buy_title_deed_subView:OnActive()
   Z.UIMgr:SetUIViewInputIgnore(self.viewConfigKey, 4294967295, true)
   self:initBinders()
+  self:onStartAnimShow()
   self:initBtns()
   self:initData()
   self:initUI()
@@ -110,6 +115,10 @@ function House_buy_title_deed_subView:checkAllConditionMet(conditionList)
     end
   end
   return true
+end
+
+function House_buy_title_deed_subView:onStartAnimShow()
+  self.anim_do_:Restart(Z.DOTweenAnimType.Open)
 end
 
 return House_buy_title_deed_subView

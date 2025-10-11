@@ -115,6 +115,7 @@ function Weapon_develop_decompose_subView:oneKeyAddDecomposeItem()
     return
   end
   local tempDict = {}
+  local totalCount = 0
   for i, v in ipairs(dataList) do
     local config = Z.TableMgr.GetRow("ItemTableMgr", v.configId)
     if config and config.Quality <= E.ItemQuality.Purple then
@@ -125,7 +126,19 @@ function Weapon_develop_decompose_subView:oneKeyAddDecomposeItem()
           configId = v.configId,
           count = itemInfo.count
         }
-        tempDict[v.itemUuid] = decomposeData
+        totalCount = totalCount + decomposeData.count
+        if totalCount > Z.Global.SkillAoyiDecomposeLimit then
+          if decomposeData.count > 1 then
+            local tempCount = decomposeData.count - (totalCount - Z.Global.SkillAoyiDecomposeLimit)
+            if 0 < tempCount then
+              decomposeData.count = tempCount
+              tempDict[v.itemUuid] = decomposeData
+            end
+          end
+          break
+        else
+          tempDict[v.itemUuid] = decomposeData
+        end
       end
     end
   end
@@ -143,6 +156,11 @@ end
 function Weapon_develop_decompose_subView:OnSelectResonancePowerItemDecompose(isSelected, data)
   local itemsVM = Z.VMMgr.GetVM("items")
   if isSelected then
+    local totalCount = self:getDecomposeDictCount()
+    if totalCount >= Z.Global.SkillAoyiDecomposeLimit then
+      Z.TipsVM.ShowTips(150044)
+      return
+    end
     local decomposeData = self.decomposeDict_[data.itemUuid]
     if decomposeData then
       local itemInfo = itemsVM.GetItemInfobyItemId(data.itemUuid, data.configId)
@@ -171,9 +189,24 @@ function Weapon_develop_decompose_subView:OnSelectResonancePowerItemDecompose(is
   self:refreshLoopListView()
 end
 
+function Weapon_develop_decompose_subView:getDecomposeDictCount()
+  local count = 0
+  if self.decomposeDict_ ~= nil then
+    for k, v in pairs(self.decomposeDict_) do
+      count = count + v.count
+    end
+  end
+  return count
+end
+
 function Weapon_develop_decompose_subView:startDecomposeCheck()
   if next(self.decomposeDict_) == nil then
     Z.TipsVM.ShowTips(150102)
+    return
+  end
+  local totalCount = self:getDecomposeDictCount()
+  if totalCount > Z.Global.SkillAoyiDecomposeLimit then
+    Z.TipsVM.ShowTips(150045)
     return
   end
   local haveHightQuality_ = false

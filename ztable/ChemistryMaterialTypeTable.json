@@ -1,52 +1,52 @@
 {
   "1": {
     "Id": 1,
-    "Name": "",
+    "Name": "Life Skill",
     "TagColor": "#EC9700"
   },
   "2": {
     "Id": 2,
-    "Name": "",
+    "Name": "Auxiliary ingredients",
     "TagColor": "#D7AF6D"
   },
   "108": {
     "Id": 108,
-    "Name": "",
+    "Name": "Mysterious Material",
     "TagColor": "#A95DA2"
   },
   "131": {
     "Id": 131,
-    "Name": "",
+    "Name": "Monster Material",
     "TagColor": "#CDCDCA"
   },
   "132": {
     "Id": 132,
-    "Name": "",
+    "Name": "Monster Material",
     "TagColor": "#CDCDCA"
   },
   "133": {
     "Id": 133,
-    "Name": "",
+    "Name": "Monster Material",
     "TagColor": "#CDCDCA"
   },
   "134": {
     "Id": 134,
-    "Name": "",
+    "Name": "Monster Material",
     "TagColor": "#CDCDCA"
   },
   "231": {
     "Id": 231,
-    "Name": "",
+    "Name": "Potion Auxiliary Material",
     "TagColor": "#C090C0"
   },
   "232": {
     "Id": 232,
-    "Name": "",
+    "Name": "Potion Auxiliary Material",
     "TagColor": "#C090C0"
   },
   "401": {
     "Id": 401,
-    "Name": "",
+    "Name": "Materials",
     "TagColor": "#D7AF6D"
   }
 }

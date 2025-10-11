@@ -55,9 +55,17 @@ function TeamData:setAttrETeammateList()
     logError("PlayerEnt is nil")
     return
   end
-  local teammateList = ZUtil.Pool.Collections.ZList_int.Rent()
-  for _, member in pairs(self.TeamInfo.members) do
-    teammateList:Add(member.charId)
+  local teammateList = ZUtil.Pool.Collections.ZList_long.Rent()
+  local leaderId = self.TeamInfo.baseInfo.leaderId
+  if leaderId and 0 < leaderId then
+    teammateList:Add(leaderId)
+  end
+  if self.TeamInfo.members ~= nil then
+    for _, member in pairs(self.TeamInfo.members) do
+      if leaderId == nil or leaderId == 0 or member.charId ~= leaderId then
+        teammateList:Add(member.charId)
+      end
+    end
   end
   Z.EntityMgr.PlayerEnt:SetLuaAttr(Z.LocalAttr.ETeammateList, teammateList)
   teammateList:Recycle()

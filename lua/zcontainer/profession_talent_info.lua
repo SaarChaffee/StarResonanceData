@@ -23,6 +23,11 @@ local mergeDataFuncs = {
     local last = container.__data__.talentStageCfgId
     container.__data__.talentStageCfgId = br.ReadInt32(buffer)
     container.Watcher:MarkDirty("talentStageCfgId", last)
+  end,
+  [5] = function(container, buffer, watcherList)
+    local last = container.__data__.talentIlegalResetCount
+    container.__data__.talentIlegalResetCount = br.ReadInt32(buffer)
+    container.Watcher:MarkDirty("talentIlegalResetCount", last)
   end
 }
 local setForbidenMt = function(t)
@@ -60,6 +65,9 @@ local resetData = function(container, pbData)
   end
   if not pbData.talentStageCfgId then
     container.__data__.talentStageCfgId = 0
+  end
+  if not pbData.talentIlegalResetCount then
+    container.__data__.talentIlegalResetCount = 0
   end
   setForbidenMt(container)
 end
@@ -130,6 +138,11 @@ local getContainerElem = function(container)
     fieldId = 4,
     dataType = 0,
     data = container.talentStageCfgId
+  }
+  ret.talentIlegalResetCount = {
+    fieldId = 5,
+    dataType = 0,
+    data = container.talentIlegalResetCount
   }
   return ret
 end

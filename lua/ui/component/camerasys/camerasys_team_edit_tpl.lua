@@ -159,6 +159,8 @@ function CamerasysTeamEditTplItem:setNodeIsDisabled()
 end
 
 function CamerasysTeamEditTplItem:OnUnInit()
+  self.uiBinder.btn_arrow_right_bg:ClearAll()
+  self.uiBinder.btn_arrow_left_bg:ClearAll()
   Z.EventMgr:Remove(Z.ConstValue.Expression.ClickAction, self.onActionPlay, self)
   Z.EventMgr:Remove(Z.ConstValue.Camera.PlayerStateChanged, self.onPlayerStateChange, self)
   Z.EventMgr:Remove(Z.ConstValue.Camera.ActionReset, self.resetAction, self)

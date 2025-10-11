@@ -7,7 +7,7 @@ local checkValid = function(itemUuid, configId, data)
   local funcData = getItemfuncData(configId)
   local itemsVM = Z.VMMgr.GetVM("items")
   local itemCount = itemsVM.GetItemTotalCount(configId)
-  if funcData == nil or funcData.ItemBatch <= 1 or itemCount <= 1 or funcData.UseCD > 0 then
+  if funcData == nil or funcData.NotShowBtn or funcData.ItemBatch <= 1 or itemCount <= 1 or funcData.UseCD > 0 then
     return E.ItemBtnState.UnActive
   end
   local awardId = tonumber(funcData.Parameter[1])

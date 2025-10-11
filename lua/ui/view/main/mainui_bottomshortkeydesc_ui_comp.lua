@@ -26,10 +26,12 @@ end
 
 function MainUIBottomShortKeyDescUIComp:bindEvent(...)
   Z.EventMgr:Add(Z.ConstValue.SwitchFunctionChange, self.refreshBottomShortcutUI, self)
+  Z.EventMgr:Add(Z.ConstValue.LanguageChange, self.refreshBottomShortcutUI, self)
 end
 
 function MainUIBottomShortKeyDescUIComp:unBindEvents(...)
   Z.EventMgr:Remove(Z.ConstValue.SwitchFunctionChange, self.refreshBottomShortcutUI, self)
+  Z.EventMgr:Remove(Z.ConstValue.LanguageChange, self.refreshBottomShortcutUI, self)
 end
 
 function MainUIBottomShortKeyDescUIComp:refreshBottomShortcutUI()

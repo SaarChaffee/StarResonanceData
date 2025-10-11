@@ -1,7 +1,7 @@
 {
   "5110001": {
     "Id": 5110001,
-    "Name": "",
+    "Name": "Blooming Chaos",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_mlzh",
     "FantasyTips": "ui/textures/mod_tips/mod_card_wide_mlzh",
@@ -28,7 +28,7 @@
   },
   "5110002": {
     "Id": 5110002,
-    "Name": "",
+    "Name": "Sneak Attack",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_anjiang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_anjiang",
@@ -55,7 +55,7 @@
   },
   "5110003": {
     "Id": 5110003,
-    "Name": "",
+    "Name": "Will of the Muku King",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_haimuwang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_haimuwang",
@@ -84,7 +84,7 @@
   },
   "5110004": {
     "Id": 5110004,
-    "Name": "",
+    "Name": "Breath Piercing Desperation",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_bosstuxi",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_bosstuxi",
@@ -113,7 +113,7 @@
   },
   "5110005": {
     "Id": 5110005,
-    "Name": "",
+    "Name": "Orc's Outburst",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_aokebaoli",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_aokebaoli",
@@ -146,7 +146,7 @@
   },
   "5110006": {
     "Id": 5110006,
-    "Name": "",
+    "Name": "Elemental Out of Control",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_yuansubaozou",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_yuansubaozou",
@@ -177,7 +177,7 @@
   },
   "5110007": {
     "Id": 5110007,
-    "Name": "",
+    "Name": "Fall! Fall!",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_bcshirenmo",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_bcshirenmo",
@@ -206,7 +206,7 @@
   },
   "5110008": {
     "Id": 5110008,
-    "Name": "",
+    "Name": "You think you're dancing?",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_jufugbl",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_jufugbl",
@@ -235,7 +235,7 @@
   },
   "5110009": {
     "Id": 5110009,
-    "Name": "",
+    "Name": "No Mercy",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_bossdina",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_bossdina",
@@ -266,7 +266,7 @@
   },
   "5110010": {
     "Id": 5110010,
-    "Name": "",
+    "Name": "Chaotic Variations",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_bianzou",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_bianzou",
@@ -295,7 +295,7 @@
   },
   "5120001": {
     "Id": 5120001,
-    "Name": "",
+    "Name": "\"Fix, All, Mistakes\"",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_zhuzhanjixiang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_zhuzhanjixiang",
@@ -326,7 +326,7 @@
   },
   "5120002": {
     "Id": 5120002,
-    "Name": "",
+    "Name": "Day after day of waiting",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_fengche",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_fengche",
@@ -355,7 +355,7 @@
   },
   "5120003": {
     "Id": 5120003,
-    "Name": "",
+    "Name": "The unfinished journey",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_juedouqian",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_juedouqian",
@@ -384,7 +384,7 @@
   },
   "5120004": {
     "Id": 5120004,
-    "Name": "",
+    "Name": "Guarding through the years",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_tielv",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_tielv",
@@ -411,7 +411,7 @@
   },
   "5120005": {
     "Id": 5120005,
-    "Name": "",
+    "Name": "Territorial Awareness",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_chandou",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_chandou",
@@ -438,7 +438,7 @@
   },
   "5120006": {
     "Id": 5120006,
-    "Name": "",
+    "Name": "Land of Engram",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_jixiangjinjun",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_jixiangjinjun",
@@ -469,7 +469,7 @@
   },
   "5120007": {
     "Id": 5120007,
-    "Name": "",
+    "Name": "Vertical Planning Theory",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_shenji",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shenji",
@@ -500,7 +500,7 @@
   },
   "5120008": {
     "Id": 5120008,
-    "Name": "",
+    "Name": "Flexible Dodder Grass",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_gblzhiwang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_gblzhiwang",
@@ -529,7 +529,7 @@
   },
   "5120009": {
     "Id": 5120009,
-    "Name": "",
+    "Name": "Revive! Flower of Peace",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_baquanjixiang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_baquanjixiang",
@@ -560,7 +560,7 @@
   },
   "5120010": {
     "Id": 5120010,
-    "Name": "",
+    "Name": "Set off at full capacity!",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_fengzhipingzhang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_fengzhipingzhang",
@@ -589,7 +589,7 @@
   },
   "5130001": {
     "Id": 5130001,
-    "Name": "",
+    "Name": "The Proudly Standing Miracle",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_wuyinzhidu",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_wuyinzhidu",
@@ -616,7 +616,7 @@
   },
   "5130002": {
     "Id": 5130002,
-    "Name": "",
+    "Name": "Evidence of the Wind's Existence",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_shouhou",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shouhou",
@@ -641,7 +641,7 @@
   },
   "5130003": {
     "Id": 5130003,
-    "Name": "",
+    "Name": "Duel! Until the Point!",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_yuanxing",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_yuanxing",
@@ -668,7 +668,7 @@
   },
   "5130004": {
     "Id": 5130004,
-    "Name": "",
+    "Name": "Iron Law",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_shouhu",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shouhu",
@@ -701,7 +701,7 @@
   },
   "5130005": {
     "Id": 5130005,
-    "Name": "",
+    "Name": "Tremble! Tremble!",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_lingdiyishi",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_lingdiyishi",
@@ -732,7 +732,7 @@
   },
   "5130006": {
     "Id": 5130006,
-    "Name": "",
+    "Name": "March like a machine",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_xingyuanzhidi",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_xingyuanzhidi",
@@ -767,7 +767,7 @@
   },
   "5130007": {
     "Id": 5130007,
-    "Name": "",
+    "Name": "Bound to fight more courageously",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_kexuesuanfa",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_kexuesuanfa",
@@ -800,7 +800,7 @@
   },
   "5130008": {
     "Id": 5130008,
-    "Name": "",
+    "Name": "Flames, devour them!",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_tusicao",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_tusicao",
@@ -829,7 +829,7 @@
   },
   "5130009": {
     "Id": 5130009,
-    "Name": "",
+    "Name": "Unshakable steel Sigil",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_banshengzhihua",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_banshengzhihua",
@@ -860,7 +860,7 @@
   },
   "5130010": {
     "Id": 5130010,
-    "Name": "",
+    "Name": "Approach me at your own risk!",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_xiuqidi",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_xiuqidi",
@@ -885,7 +885,7 @@
   },
   "5140001": {
     "Id": 5140001,
-    "Name": "",
+    "Name": "Caprahorn's counterattack",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_jiaoyang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_jiaoyang",
@@ -912,7 +912,7 @@
   },
   "5140002": {
     "Id": 5140002,
-    "Name": "",
+    "Name": "Troublemaker!",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_lvduozhe",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_lvduozhe",
@@ -941,7 +941,7 @@
   },
   "5140003": {
     "Id": 5140003,
-    "Name": "",
+    "Name": "Recounting past glories",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_chenlungucheng",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_chenlungucheng",
@@ -970,7 +970,7 @@
   },
   "5140004": {
     "Id": 5140004,
-    "Name": "",
+    "Name": "Darkest hour",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_zhianshike",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_zhianshike",
@@ -999,7 +999,7 @@
   },
   "5140005": {
     "Id": 5140005,
-    "Name": "",
+    "Name": "Absolute defense line!",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_fangyuzhanxian",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_fangyuzhanxian",
@@ -1026,7 +1026,7 @@
   },
   "5140006": {
     "Id": 5140006,
-    "Name": "",
+    "Name": "Pure heart of protection",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_shouhuzhixin",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shouhuzhixin",
@@ -1055,7 +1055,7 @@
   },
   "5140007": {
     "Id": 5140007,
-    "Name": "",
+    "Name": "Trial of the ruins",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_linzhongyiji",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_linzhongyiji",
@@ -1084,7 +1084,7 @@
   },
   "5140008": {
     "Id": 5140008,
-    "Name": "",
+    "Name": "Ancestors above, bless my heart",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_knmbuluo",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_knmbuluo",
@@ -1111,7 +1111,7 @@
   },
   "5140009": {
     "Id": 5140009,
-    "Name": "",
+    "Name": "Well-nourished!",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_yingyangchongzu",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_yingyangchongzu",
@@ -1140,7 +1140,7 @@
   },
   "5140010": {
     "Id": 5140010,
-    "Name": "",
+    "Name": "Melody of the sky",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_cangqiong",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_cangqiong",
@@ -1169,7 +1169,7 @@
   },
   "5150001": {
     "Id": 5150001,
-    "Name": "",
+    "Name": "Commander ready to strike",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_mukebingzhang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_mukebingzhang",
@@ -1196,7 +1196,7 @@
   },
   "5150002": {
     "Id": 5150002,
-    "Name": "",
+    "Name": "Coronation of unknown power",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_weizhijiti",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_weizhijiti",
@@ -1223,7 +1223,7 @@
   },
   "5150003": {
     "Id": 5150003,
-    "Name": "",
+    "Name": "Cleric's judgment",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_shenzhizhe",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shenzhizhe",
@@ -1250,7 +1250,7 @@
   },
   "5150004": {
     "Id": 5150004,
-    "Name": "",
+    "Name": "Eye of Kanamia",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_kanimanlieren",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_kanimanlieren",
@@ -1277,7 +1277,7 @@
   },
   "5150005": {
     "Id": 5150005,
-    "Name": "",
+    "Name": "Hunting mark",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_shouliebiaoji",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shouliebiaoji",
@@ -1304,7 +1304,7 @@
   },
   "5150006": {
     "Id": 5150006,
-    "Name": "",
+    "Name": "Will Never Perish",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_yiluojijia",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_yiluojijia",
@@ -1331,7 +1331,7 @@
   },
   "5150007": {
     "Id": 5150007,
-    "Name": "",
+    "Name": "Can't Catch Me!",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_jiedao",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_jiedao",
@@ -1358,7 +1358,7 @@
   },
   "5150008": {
     "Id": 5150008,
-    "Name": "",
+    "Name": "Unsinkable Hope",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_dengta",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_dengta",
@@ -1385,7 +1385,7 @@
   },
   "5150009": {
     "Id": 5150009,
-    "Name": "",
+    "Name": "Dream Guardian Plan",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_reqiqiu",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_reqiqiu",
@@ -1412,7 +1412,7 @@
   },
   "5150010": {
     "Id": 5150010,
-    "Name": "",
+    "Name": "Silent Nourishment",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_shuihu",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shuihu",
@@ -1439,7 +1439,7 @@
   },
   "5110101": {
     "Id": 5110101,
-    "Name": "",
+    "Name": "Blooming Chaos",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_mlzh",
     "FantasyTips": "ui/textures/mod_tips/mod_card_wide_mlzh",
@@ -1466,7 +1466,7 @@
   },
   "5110102": {
     "Id": 5110102,
-    "Name": "",
+    "Name": "Sneak Attack",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_anjiang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_anjiang",
@@ -1493,7 +1493,7 @@
   },
   "5110103": {
     "Id": 5110103,
-    "Name": "",
+    "Name": "Will of the Muku King",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_haimuwang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_haimuwang",
@@ -1522,7 +1522,7 @@
   },
   "5110104": {
     "Id": 5110104,
-    "Name": "",
+    "Name": "Breath Piercing Desperation",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_bosstuxi",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_bosstuxi",
@@ -1551,7 +1551,7 @@
   },
   "5110105": {
     "Id": 5110105,
-    "Name": "",
+    "Name": "Orc's Outburst",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_aokebaoli",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_aokebaoli",
@@ -1584,7 +1584,7 @@
   },
   "5110106": {
     "Id": 5110106,
-    "Name": "",
+    "Name": "Elemental Out of Control",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_yuansubaozou",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_yuansubaozou",
@@ -1615,7 +1615,7 @@
   },
   "5110107": {
     "Id": 5110107,
-    "Name": "",
+    "Name": "Fall! Fall!",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_bcshirenmo",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_bcshirenmo",
@@ -1644,7 +1644,7 @@
   },
   "5110108": {
     "Id": 5110108,
-    "Name": "",
+    "Name": "You think you're dancing?",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_jufugbl",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_jufugbl",
@@ -1673,7 +1673,7 @@
   },
   "5110109": {
     "Id": 5110109,
-    "Name": "",
+    "Name": "No Mercy",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_bossdina",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_bossdina",
@@ -1704,7 +1704,7 @@
   },
   "5110110": {
     "Id": 5110110,
-    "Name": "",
+    "Name": "Chaotic Variations",
     "FantasyType": 1,
     "FantasyArt": "ui/textures/mod/mod_big_card_bianzou",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_bianzou",
@@ -1733,7 +1733,7 @@
   },
   "5120101": {
     "Id": 5120101,
-    "Name": "",
+    "Name": "\"Fix, All, Mistakes\"",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_zhuzhanjixiang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_zhuzhanjixiang",
@@ -1764,7 +1764,7 @@
   },
   "5120102": {
     "Id": 5120102,
-    "Name": "",
+    "Name": "Day after day of waiting",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_fengche",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_fengche",
@@ -1793,7 +1793,7 @@
   },
   "5120103": {
     "Id": 5120103,
-    "Name": "",
+    "Name": "The unfinished journey",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_juedouqian",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_juedouqian",
@@ -1822,7 +1822,7 @@
   },
   "5120104": {
     "Id": 5120104,
-    "Name": "",
+    "Name": "Guarding through the years",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_tielv",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_tielv",
@@ -1849,7 +1849,7 @@
   },
   "5120105": {
     "Id": 5120105,
-    "Name": "",
+    "Name": "Territorial Awareness",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_chandou",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_chandou",
@@ -1876,7 +1876,7 @@
   },
   "5120106": {
     "Id": 5120106,
-    "Name": "",
+    "Name": "Land of Engram",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_jixiangjinjun",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_jixiangjinjun",
@@ -1907,7 +1907,7 @@
   },
   "5120107": {
     "Id": 5120107,
-    "Name": "",
+    "Name": "Vertical Planning Theory",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_shenji",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shenji",
@@ -1938,7 +1938,7 @@
   },
   "5120108": {
     "Id": 5120108,
-    "Name": "",
+    "Name": "Flexible Dodder Grass",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_gblzhiwang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_gblzhiwang",
@@ -1967,7 +1967,7 @@
   },
   "5120109": {
     "Id": 5120109,
-    "Name": "",
+    "Name": "Revive! Flower of Peace",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_baquanjixiang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_baquanjixiang",
@@ -1998,7 +1998,7 @@
   },
   "5120110": {
     "Id": 5120110,
-    "Name": "",
+    "Name": "Set off at full capacity!",
     "FantasyType": 2,
     "FantasyArt": "ui/textures/mod/mod_big_card_fengzhipingzhang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_fengzhipingzhang",
@@ -2027,7 +2027,7 @@
   },
   "5130101": {
     "Id": 5130101,
-    "Name": "",
+    "Name": "The Proudly Standing Miracle",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_wuyinzhidu",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_wuyinzhidu",
@@ -2054,7 +2054,7 @@
   },
   "5130102": {
     "Id": 5130102,
-    "Name": "",
+    "Name": "Evidence of the Wind's Existence",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_shouhou",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shouhou",
@@ -2079,7 +2079,7 @@
   },
   "5130103": {
     "Id": 5130103,
-    "Name": "",
+    "Name": "Duel! Until the Point!",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_yuanxing",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_yuanxing",
@@ -2106,7 +2106,7 @@
   },
   "5130104": {
     "Id": 5130104,
-    "Name": "",
+    "Name": "Iron Law",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_shouhu",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shouhu",
@@ -2139,7 +2139,7 @@
   },
   "5130105": {
     "Id": 5130105,
-    "Name": "",
+    "Name": "Tremble! Tremble!",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_lingdiyishi",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_lingdiyishi",
@@ -2170,7 +2170,7 @@
   },
   "5130106": {
     "Id": 5130106,
-    "Name": "",
+    "Name": "March like a machine",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_xingyuanzhidi",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_xingyuanzhidi",
@@ -2205,7 +2205,7 @@
   },
   "5130107": {
     "Id": 5130107,
-    "Name": "",
+    "Name": "Bound to fight more courageously",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_kexuesuanfa",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_kexuesuanfa",
@@ -2238,7 +2238,7 @@
   },
   "5130108": {
     "Id": 5130108,
-    "Name": "",
+    "Name": "Flames, devour them!",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_tusicao",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_tusicao",
@@ -2267,7 +2267,7 @@
   },
   "5130109": {
     "Id": 5130109,
-    "Name": "",
+    "Name": "Unshakable steel Sigil",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_banshengzhihua",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_banshengzhihua",
@@ -2298,7 +2298,7 @@
   },
   "5130110": {
     "Id": 5130110,
-    "Name": "",
+    "Name": "Approach me at your own risk!",
     "FantasyType": 3,
     "FantasyArt": "ui/textures/mod/mod_big_card_xiuqidi",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_xiuqidi",
@@ -2323,7 +2323,7 @@
   },
   "5140101": {
     "Id": 5140101,
-    "Name": "",
+    "Name": "Caprahorn's counterattack",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_jiaoyang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_jiaoyang",
@@ -2350,7 +2350,7 @@
   },
   "5140102": {
     "Id": 5140102,
-    "Name": "",
+    "Name": "Troublemaker!",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_lvduozhe",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_lvduozhe",
@@ -2379,7 +2379,7 @@
   },
   "5140103": {
     "Id": 5140103,
-    "Name": "",
+    "Name": "Recounting past glories",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_chenlungucheng",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_chenlungucheng",
@@ -2408,7 +2408,7 @@
   },
   "5140104": {
     "Id": 5140104,
-    "Name": "",
+    "Name": "Darkest hour",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_zhianshike",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_zhianshike",
@@ -2437,7 +2437,7 @@
   },
   "5140105": {
     "Id": 5140105,
-    "Name": "",
+    "Name": "Absolute defense line!",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_fangyuzhanxian",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_fangyuzhanxian",
@@ -2464,7 +2464,7 @@
   },
   "5140106": {
     "Id": 5140106,
-    "Name": "",
+    "Name": "Pure heart of protection",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_shouhuzhixin",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shouhuzhixin",
@@ -2493,7 +2493,7 @@
   },
   "5140107": {
     "Id": 5140107,
-    "Name": "",
+    "Name": "Trial of the ruins",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_linzhongyiji",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_linzhongyiji",
@@ -2522,7 +2522,7 @@
   },
   "5140108": {
     "Id": 5140108,
-    "Name": "",
+    "Name": "Ancestors above, bless my heart",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_knmbuluo",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_knmbuluo",
@@ -2549,7 +2549,7 @@
   },
   "5140109": {
     "Id": 5140109,
-    "Name": "",
+    "Name": "Well-nourished!",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_yingyangchongzu",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_yingyangchongzu",
@@ -2578,7 +2578,7 @@
   },
   "5140110": {
     "Id": 5140110,
-    "Name": "",
+    "Name": "Melody of the sky",
     "FantasyType": 5,
     "FantasyArt": "ui/textures/mod/mod_big_card_cangqiong",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_cangqiong",
@@ -2607,7 +2607,7 @@
   },
   "5150101": {
     "Id": 5150101,
-    "Name": "",
+    "Name": "Commander ready to strike",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_mukebingzhang",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_mukebingzhang",
@@ -2634,7 +2634,7 @@
   },
   "5150102": {
     "Id": 5150102,
-    "Name": "",
+    "Name": "Coronation of unknown power",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_weizhijiti",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_weizhijiti",
@@ -2661,7 +2661,7 @@
   },
   "5150103": {
     "Id": 5150103,
-    "Name": "",
+    "Name": "Cleric's judgment",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_shenzhizhe",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shenzhizhe",
@@ -2688,7 +2688,7 @@
   },
   "5150104": {
     "Id": 5150104,
-    "Name": "",
+    "Name": "Eye of Kanamia",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_kanimanlieren",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_kanimanlieren",
@@ -2715,7 +2715,7 @@
   },
   "5150105": {
     "Id": 5150105,
-    "Name": "",
+    "Name": "Hunting mark",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_shouliebiaoji",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shouliebiaoji",
@@ -2742,7 +2742,7 @@
   },
   "5150106": {
     "Id": 5150106,
-    "Name": "",
+    "Name": "Will Never Perish",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_yiluojijia",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_yiluojijia",
@@ -2769,7 +2769,7 @@
   },
   "5150107": {
     "Id": 5150107,
-    "Name": "",
+    "Name": "Can't Catch Me!",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_jiedao",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_jiedao",
@@ -2796,7 +2796,7 @@
   },
   "5150108": {
     "Id": 5150108,
-    "Name": "",
+    "Name": "Unsinkable Hope",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_dengta",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_dengta",
@@ -2823,7 +2823,7 @@
   },
   "5150109": {
     "Id": 5150109,
-    "Name": "",
+    "Name": "Dream Guardian Plan",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_reqiqiu",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_reqiqiu",
@@ -2850,7 +2850,7 @@
   },
   "5150110": {
     "Id": 5150110,
-    "Name": "",
+    "Name": "Silent Nourishment",
     "FantasyType": 6,
     "FantasyArt": "ui/textures/mod/mod_big_card_shuihu",
     "FantasyTips": "ui/textures/mod_tips/mod_big_card_shuihu",

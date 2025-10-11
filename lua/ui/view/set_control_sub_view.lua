@@ -21,11 +21,53 @@ function Set_control_subView:OnActive()
   self.global_config_tab_[E.SettingID.HorizontalSensitivity] = Z.Global.CameraHorizontalRange
   self.global_config_tab_[E.SettingID.VerticalSensitivity] = Z.Global.CameraVerticalRange
   self:initSettingUIDict()
+  self:initDeviceToggle()
   self:setBattle()
   self:setGliding()
-  self:setCamera()
+  if Z.GameContext.IsPC then
+    self:setCamera()
+    self:setHandleCamera()
+    self.uiBinder.cont_lens_compensate.device_content.gameObject:SetActive(true)
+    self.isHandle = Z.InputMgr.InputDeviceType == Panda.ZInput.EInputDeviceType.Joystick
+    if not self.isHandle then
+      self.uiBinder.cont_lens_compensate.tog_option_pc.isOn = true
+    else
+      self.uiBinder.cont_lens_compensate.tog_option_handle.isOn = true
+    end
+    self:refreshLensCompensate(false)
+  else
+    self:setPhoneCamera()
+    self.uiBinder.cont_lens_compensate.device_content.gameObject:SetActive(false)
+  end
   self:setLensCompensate()
   self.uiBinder.cont_battle.cont_mouse_restrictions.Ref.UIComp:SetVisible(Z.GameContext.IsPC)
+  self.uiBinder.cont_lens.Go:SetActive(Z.GameContext.IsPC)
+  self.uiBinder.cont_lens_handle.Go:SetActive(Z.GameContext.IsPC)
+  self.uiBinder.cont_lens_phone.Go:SetActive(not Z.GameContext.IsPC)
+  Z.EventMgr:Add(Z.ConstValue.Device.DeviceTypeChange, self.onDeViceTypeChange, self)
+end
+
+function Set_control_subView:onDeViceTypeChange()
+end
+
+function Set_control_subView:initDeviceToggle()
+  if Z.GameContext.IsPC then
+    self:AddClick(self.uiBinder.cont_lens_compensate.tog_option_pc, function(isOn)
+      self.isHandle = not isOn
+      self:refreshLensCompensate(false)
+    end)
+    self:AddClick(self.uiBinder.cont_lens_compensate.tog_option_handle, function(isOn)
+      self.isHandle = isOn
+      self:refreshLensCompensate(false)
+    end)
+  end
+  self:AddClick(self.uiBinder.cont_lens_compensate.btn_reset, function()
+    self:OnResetBtnClick()
+  end)
+end
+
+function Set_control_subView:OnResetBtnClick()
+  self:refreshLensCompensate(true)
 end
 
 function Set_control_subView:initSettingUIDict()
@@ -53,6 +95,11 @@ function Set_control_subView:initSettingUIDict()
   self.setting2UIDict_[E.SettingID.CameraReleasingSkillAngle] = self.uiBinder.cont_lens_compensate.cont_camera_releasingskillangle
   self.setting2UIDict_[E.SettingID.CameraSeek] = self.uiBinder.cont_lens_compensate.cont_camera_seek
   self.setting2UIDict_[E.SettingID.CameraMelee] = self.uiBinder.cont_lens_compensate.cont_camera_melee
+  self.setting2UIDict_[E.SettingID.HorizontalSensitivity] = self.uiBinder.cont_lens_phone.cont_set_lens_horizontal
+  self.setting2UIDict_[E.SettingID.VerticalSensitivity] = self.uiBinder.cont_lens_phone.cont_set_lens_vertical
+  self.setting2UIDict_[E.SettingID.HorizontalSensitivityHandle] = self.uiBinder.cont_lens_handle.cont_set_lens_horizontal
+  self.setting2UIDict_[E.SettingID.VerticalSensitivityHandle] = self.uiBinder.cont_lens_handle.cont_set_lens_vertical
+  self.setting2UIDict_[E.SettingID.MouseSpeedHandle] = self.uiBinder.cont_lens_handle.cont_mouse_speed
 end
 
 function Set_control_subView:refreshAllSettingVisible()
@@ -190,6 +237,22 @@ function Set_control_subView:setBattle()
   self:AddClick(self.uiBinder.cont_battle.cont_mouse_restrictions.btn_tips, function()
     self:OpenMinTips(20020, self.uiBinder.cont_battle.cont_mouse_restrictions.btn_tips_trans)
   end)
+  if Z.GameContext.IsPC then
+    self.uiBinder.cont_battle.cont_camera_inertia.Ref.UIComp:SetVisible(false)
+  else
+    self.uiBinder.cont_battle.cont_camera_inertia.Ref.UIComp:SetVisible(true)
+  end
+  local isOpen = self.settingVM_.Get(E.SettingID.CameraInertia)
+  local switch_ = self.uiBinder.cont_battle.cont_camera_inertia.cont_switch
+  switch_.switch.IsOn = isOpen == true
+  switch_.switch:AddListener(function(isOn)
+    self.settingVM_.Set(E.SettingID.CameraInertia, isOn)
+  end)
+  local directionTip_Btn_ = self.uiBinder.cont_battle.cont_camera_inertia.btn_tips
+  local directionTip_Trans_ = self.uiBinder.cont_battle.cont_camera_inertia.btn_tips_trans
+  self:AddClick(directionTip_Btn_, function()
+    self:OpenMinTips(20023, directionTip_Trans_)
+  end)
 end
 
 function Set_control_subView:OpenMinTips(id, parent)
@@ -221,6 +284,7 @@ end
 
 function Set_control_subView:OnDeActive()
   Z.CommonTipsVM.CloseTipsTitleContent()
+  Z.EventMgr:Remove(Z.ConstValue.Device.DeviceTypeChange, self.onDeViceTypeChange, self)
 end
 
 function Set_control_subView:OnRefresh()
@@ -231,17 +295,119 @@ function Set_control_subView:setCamera()
   local hSlider = self.uiBinder.cont_lens.cont_set_lens_horizontal.slider_progress
   local hLab = self.uiBinder.cont_lens.cont_set_lens_horizontal.lab_value
   self.hSlider_ = SettingSliderItem.new()
-  self.hSlider_:Init(hSlider, hLab, E.SettingID.HorizontalSensitivity, 1, 6, nil, true)
+  self.hSlider_:Init(hSlider, hLab, E.SettingID.HorizontalSensitivity, 1, table.zcount(Z.Global.CameraHorizontalRange), nil, true)
   self.hSlider_:SetExOnEndDrag(function()
     self.settingVM_.SetCameraRotateSpeed()
   end)
   local zSlider = self.uiBinder.cont_lens.cont_set_lens_vertical.slider_progress
   local zLab = self.uiBinder.cont_lens.cont_set_lens_vertical.lab_value
   self.zSlider_ = SettingSliderItem.new()
-  self.zSlider_:Init(zSlider, zLab, E.SettingID.VerticalSensitivity, 1, 6, nil, true)
+  self.zSlider_:Init(zSlider, zLab, E.SettingID.VerticalSensitivity, 1, table.zcount(Z.Global.CameraVerticalRange), nil, true)
   self.zSlider_:SetExOnEndDrag(function()
     self.settingVM_.SetCameraRotateSpeed()
   end)
+end
+
+function Set_control_subView:setHandleCamera()
+  local hSlider = self.uiBinder.cont_lens_handle.cont_set_lens_horizontal.slider_progress
+  local hLab = self.uiBinder.cont_lens_handle.cont_set_lens_horizontal.lab_value
+  self.hHandleSlider_ = SettingSliderItem.new()
+  self.hHandleSlider_:Init(hSlider, hLab, E.SettingID.HorizontalSensitivityHandle, 1, table.zcount(Z.Global.HandleCamHorizontalRange), nil, true)
+  self.hHandleSlider_:SetExOnEndDrag(function()
+    self.settingVM_.SetHandleCameraRotateSpeed()
+  end)
+  local zSlider = self.uiBinder.cont_lens_handle.cont_set_lens_vertical.slider_progress
+  local zLab = self.uiBinder.cont_lens_handle.cont_set_lens_vertical.lab_value
+  self.zHandleSlider_ = SettingSliderItem.new()
+  self.zHandleSlider_:Init(zSlider, zLab, E.SettingID.VerticalSensitivityHandle, 1, table.zcount(Z.Global.HandleCamVerticalRange), nil, true)
+  self.zHandleSlider_:SetExOnEndDrag(function()
+    self.settingVM_.SetHandleCameraRotateSpeed()
+  end)
+  local mouseSlider = self.uiBinder.cont_lens_handle.cont_mouse_speed.slider_progress
+  local mouseLab = self.uiBinder.cont_lens_handle.cont_mouse_speed.lab_value
+  self.handleSpeedSlider_ = SettingSliderItem.new()
+  self.handleSpeedSlider_:Init(mouseSlider, mouseLab, E.SettingID.MouseSpeedHandle, 1, table.zcount(Z.Global.HandleMouseSpeedRange), nil, true)
+  self.handleSpeedSlider_:SetExOnEndDrag(function()
+    self.settingVM_.SetHandleMouseSpeed()
+  end)
+end
+
+function Set_control_subView:setPhoneCamera()
+  local hSlider = self.uiBinder.cont_lens_phone.cont_set_lens_horizontal.slider_progress
+  local hLab = self.uiBinder.cont_lens_phone.cont_set_lens_horizontal.lab_value
+  self.hSlider_ = SettingSliderItem.new()
+  self.hSlider_:Init(hSlider, hLab, E.SettingID.HorizontalSensitivity, 1, table.zcount(Z.Global.CameraHorizontalRange), nil, true)
+  self.hSlider_:SetExOnEndDrag(function()
+    self.settingVM_.SetCameraRotateSpeed()
+  end)
+  local zSlider = self.uiBinder.cont_lens_phone.cont_set_lens_vertical.slider_progress
+  local zLab = self.uiBinder.cont_lens_phone.cont_set_lens_vertical.lab_value
+  self.zSlider_ = SettingSliderItem.new()
+  self.zSlider_:Init(zSlider, zLab, E.SettingID.VerticalSensitivity, 1, table.zcount(Z.Global.CameraVerticalRange), nil, true)
+  self.zSlider_:SetExOnEndDrag(function()
+    self.settingVM_.SetCameraRotateSpeed()
+  end)
+end
+
+function Set_control_subView:refreshLensCompensate(useDefalut)
+  local trans_ = self.uiBinder.cont_lens_compensate.cont_camera_zoom_template
+  self:refreshLensCompensateItem(E.SettingID.CameraTemplate, trans_, useDefalut)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_pitching_template
+  self:refreshLensCompensateItem(E.SettingID.PitchAngleCorrection, trans_, useDefalut)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_zoom_detection
+  self:refreshLensCompensateItem(E.SettingID.BattleZoomCorrection, trans_, useDefalut)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_pitching_detection
+  self:refreshLensCompensateItem(E.SettingID.BattlePitchAngkeCorrection, trans_, useDefalut)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_translation_rotate
+  self:refreshLensCompensateItem(E.SettingID.CameraTranslationRotate, trans_, useDefalut)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_releasing_skill
+  self:refreshLensCompensateItem(E.SettingID.CameraReleasingSkill, trans_, useDefalut)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_releasingskillangle
+  self:refreshLensCompensateItem(E.SettingID.CameraReleasingSkillAngle, trans_, useDefalut)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_seek
+  self:refreshLensCompensateItem(E.SettingID.CameraSeek, trans_, useDefalut)
+  trans_ = self.uiBinder.cont_lens_compensate.cont_camera_melee
+  self:refreshLensCompensateItem(E.SettingID.CameraMelee, trans_, useDefalut)
+end
+
+function Set_control_subView:refreshLensCompensateItem(settingId_, trans_, useDefalut)
+  local settingMap = self.settingVM_.Get(settingId_)
+  if useDefalut then
+    settingMap = self.settingVM_.GetDefaultCompensateTable(settingId_)
+  end
+  local switch_ = trans_.cont_switch
+  local isOpen
+  if Z.GameContext.IsPC then
+    if not self.isHandle then
+      isOpen = settingMap[1] == 1
+    else
+      isOpen = settingMap[2] == 1
+    end
+  else
+    isOpen = settingMap[3] == 1
+  end
+  switch_.switch:SetIsOnWithoutNotify(isOpen)
+  local cameraConfigIds_ = self.settingVM_.GetLensCompensateId(settingId_)
+  if cameraConfigIds_ then
+    local settingMap = self.settingVM_.Get(settingId_)
+    if Z.GameContext.IsPC then
+      if not self.isHandle then
+        settingMap[1] = isOpen and 1 or 0
+      else
+        settingMap[2] = isOpen and 1 or 0
+      end
+    else
+      settingMap[3] = isOpen and 1 or 0
+    end
+    self.settingVM_.Set(settingId_, settingMap)
+    local switchNum_ = isOpen == true and 1 or 0
+    local opens_ = {}
+    local ids_ = cameraConfigIds_
+    for k, v in pairs(ids_) do
+      table.insert(opens_, switchNum_)
+    end
+    Z.CameraMgr:SwitchCameraTemplate(opens_, ids_, 0)
+  end
 end
 
 function Set_control_subView:setLensCompensate()
@@ -266,13 +432,33 @@ function Set_control_subView:setLensCompensate()
 end
 
 function Set_control_subView:initLensCompensateItem(settingId_, trans_, langStr_)
-  local isOpen = self.settingVM_.Get(settingId_)
+  local settingMap = self.settingVM_.Get(settingId_)
   local switch_ = trans_.cont_switch
+  local isOpen
+  if Z.GameContext.IsPC then
+    if not self.isHandle then
+      isOpen = settingMap[1] == 1
+    else
+      isOpen = settingMap[2] == 1
+    end
+  else
+    isOpen = settingMap[3] == 1
+  end
   switch_.switch.IsOn = isOpen == true
   switch_.switch:AddListener(function(isOn)
     local cameraConfigIds_ = self.settingVM_.GetLensCompensateId(settingId_)
     if cameraConfigIds_ then
-      self.settingVM_.Set(settingId_, isOn)
+      local settingMap = self.settingVM_.Get(settingId_)
+      if Z.GameContext.IsPC then
+        if not self.isHandle then
+          settingMap[1] = isOn and 1 or 0
+        else
+          settingMap[2] = isOn and 1 or 0
+        end
+      else
+        settingMap[3] = isOn and 1 or 0
+      end
+      self.settingVM_.Set(settingId_, settingMap)
       local switchNum_ = isOn == true and 1 or 0
       local opens_ = {}
       local ids_ = cameraConfigIds_

@@ -16,6 +16,9 @@ end
 function House_upgrade_popupView:OnActive()
   self.uiBinder.scenemask:SetSceneMaskByKey(self.SceneMaskKey)
   self.uiBinder.presscheck_tipspress:StartCheck()
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_eff)
+  self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.uiBinder.node_item_eff)
+  self.uiBinder.anim:PlayOnce("anim_house_upgrade_popup_open")
   if Z.IsPCUI then
     self.uiBinder.lab_click_close.text = Lang("ClickOnBlankSpaceClosePC")
   else
@@ -38,6 +41,8 @@ function House_upgrade_popupView:initViewList()
 end
 
 function House_upgrade_popupView:OnDeActive()
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_eff)
+  self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.uiBinder.node_item_eff)
   self.loopLevelListView_:UnInit()
   self.loopLevelListView_ = nil
   self.rewardListView_:UnInit()

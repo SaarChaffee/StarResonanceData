@@ -99,8 +99,10 @@ function AcquiretipItemView:refresh()
   end
   self.uiBinder.rimg_icon:SetImage(self.itemsVM_.GetItemIcon(self.itemData_.ItemConfigId))
   local text = self.itemsVM_.ApplyItemNameWithQualityTag(self.itemData_.ItemConfigId)
-  self.uiBinder.lab_name.text = text
-  self.uiBinder.lab_count.text = self.itemData_.ChangeCount
+  self.uiBinder.lab_name.text = Lang("TvAcquireItemNameWithCount", {
+    name = text,
+    count = self.itemData_.ChangeCount
+  })
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_time_limit, itemTableData.TimeType ~= 0)
   self.uiBinder.comp_rebuilder:ForceRebuildLayoutImmediate()
 end

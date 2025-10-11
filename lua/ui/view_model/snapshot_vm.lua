@@ -1,5 +1,7 @@
 local headSnapshotData = Z.DataMgr.Get("head_snapshot_data")
 local socialVM = Z.VMMgr.GetVM("social")
+local switch_vm = Z.VMMgr.GetVM("switch")
+local downloadVm = Z.VMMgr.GetVM("download")
 local gapTime = Z.Global.PostSnapshotToHttpGap
 local getServerTime = function(time)
   if gapTime == nil or gapTime <= 0 then
@@ -80,11 +82,10 @@ local upLoad = function(token)
     Z.SnapShotMgr:PostBytes(uploadParm, result.pictureId)
   end
 end
-local asyncDownLoadUrlData = function(url, charId, callFunc)
-  local request = Z.HttpRequest.Rent()
-  request.Url = url
-  request.DataType = Panda.ZGame.EHttpGetDataType.ETexture
-  Z.SnapShotMgr:Load(charId, request, callFunc)
+local asyncDownLoadUrlData = function(url, charId, socialData, type, callFunc)
+  local cancelSource = Z.CancelSource.Rent()
+  local name = downloadVm:GetFileName(charId, socialData.avatarInfo.profile.verify.version, type)
+  downloadVm:GetPicture(name, url, cancelSource:CreateToken(), callFunc, type)
 end
 local asyncDownLoadPictureByUrl = function(url)
   local request = Z.HttpRequest.Rent()
@@ -122,46 +123,47 @@ local getInternalHalfPortrait = function(charId, modelId)
   end
   return halfId.textureId
 end
-local getHttpHalfPortraitId = function(charId)
+local getHttpHalfPortraitId = function(charId, callback)
+  if not switch_vm.CheckFuncSwitch(E.FunctionID.DisplayCustomHalfBody) then
+    callback(nil)
+    return
+  end
   local oldTime = headSnapshotData:GetLastGetHalfTime(charId)
   local newTime = getServerTime(oldTime)
   if newTime ~= 0 then
     local socialData = asyncGetProfileInfo(charId)
     if socialData == nil or socialData.avatarInfo == nil or socialData.avatarInfo.halfBody == nil then
-      return nil
+      callback(nil)
     end
     local halfProfile = socialData.avatarInfo.halfBody
     local url = halfProfile.url
     local size = halfProfile.verify.size
     local version = halfProfile.verify.version
     if url == "" then
-      return nil
+      callback(nil)
+      return
     end
-    local folderName = "snapshot/" .. charId .. "/half"
-    local textureId = getFilePathTextureId(folderName, version, size)
     local matchURL = string.match(url, "^https?://[%w-_%.%?%.:/%+=&]+%.png$")
-    if textureId == 0 and matchURL then
-      textureId = asyncDownLoadPictureByUrl(url)
-      if textureId ~= nil and textureId ~= -1 then
-        if not Z.EntityMgr.PlayerEnt or charId ~= Z.EntityMgr.PlayerEnt.EntId then
-          saveTextureToLocal(folderName, version, textureId)
+    if matchURL then
+      asyncDownLoadUrlData(url, charId, socialData, E.HttpPictureDownFoldType.HalfBody, function(nativeTextureId)
+        if nativeTextureId ~= nil and nativeTextureId ~= -1 then
+          removeOldTexture(headSnapshotData:GetHalfDataInfo(charId))
+          headSnapshotData:SetHalfTime(charId, newTime)
+          headSnapshotData:SetHalfDataInfo(charId, nativeTextureId, version)
+          callback(nativeTextureId)
+        else
+          callback(nil)
         end
-        removeOldTexture(headSnapshotData:GetHalfDataInfo(charId))
-        headSnapshotData:SetHalfTime(charId, newTime)
-        headSnapshotData:SetHalfDataInfo(charId, textureId, version)
-      else
-        return nil
-      end
-    else
-      headSnapshotData:SetHalfTime(charId, newTime)
-      headSnapshotData:SetHalfDataInfo(charId, textureId, version)
+      end)
+      return
     end
-    return textureId
+    callback(nil)
+    return
   end
-  return nil
+  callback(nil)
 end
-local asyncGetHttpHalfPortraitId = function(charId)
-  return getHttpHalfPortraitId(charId), charId
+local asyncGetHttpHalfPortraitId = function(charId, callback)
+  getHttpHalfPortraitId(charId, callback)
 end
 local getInternalHeadPortrait = function(charId, modelId)
   local headInfoData = headSnapshotData:GetHeadDataInfo(charId)
@@ -185,6 +187,10 @@ local getTime = function(charId)
   return newTime
 end
 local getTextureId = function(charId, socialData, newTime, func)
+  if not switch_vm.CheckFuncSwitch(E.FunctionID.DisplayCustomHeadPhoto) then
+    func(charId, 0)
+    return nil
+  end
   headSnapshotData:SetHeadTime(charId, newTime)
   if socialData == nil or socialData.avatarInfo == nil or socialData.avatarInfo.profile == nil then
     func(charId, 0)
@@ -200,26 +206,14 @@ local getTextureId = function(charId, socialData, newTime, func)
     return nil
   end
   headSnapshotData:SetHeadTime(charId, newTime)
-  local folderName = "snapshot/" .. charId .. "/head"
-  local textureId = getFilePathTextureId(folderName, version, size)
-  if textureId == 0 then
-    local fun = function(natvieTextureId)
-      if natvieTextureId ~= nil and natvieTextureId ~= -1 then
-        if charId ~= Z.EntityMgr.PlayerEnt.EntId then
-          saveTextureToLocal(folderName, version, natvieTextureId)
-        end
-        removeOldTexture(headSnapshotData:GetHeadDataInfo(charId))
-        headSnapshotData:SetHeadDataInfo(charId, natvieTextureId)
-      else
-        return nil
-      end
-      func(charId, natvieTextureId)
+  local fun = function(natvieTextureId)
+    if natvieTextureId ~= nil and natvieTextureId ~= -1 then
+      removeOldTexture(headSnapshotData:GetHeadDataInfo(charId))
+      headSnapshotData:SetHeadDataInfo(charId, natvieTextureId)
     end
-    asyncDownLoadUrlData(url, charId, fun)
-  else
-    headSnapshotData:SetHeadDataInfo(charId, textureId)
-    func(charId, textureId)
+    func(charId, natvieTextureId)
   end
+  asyncDownLoadUrlData(url, charId, socialData, E.HttpPictureDownFoldType.Head, fun)
 end
 local asyncGetHttpPortraitIdByAvatarInfo = function(charId, socialData, callBackFunc)
   local newTime = getTime(charId)
@@ -241,16 +235,19 @@ local asyncGetHttpPortraitId = function(charId, callBackFunc)
     callBackFunc(charId, 0)
   end
 end
-local asyncGetAvatarAuditData = function(charId, token)
+local asyncGetAvatarAuditData = function(charId, token, callback)
   local pahoto = require("zproxy.photograph_proxy")
   local ret = pahoto.GetReviewAvatarInfo({charId = charId}, token)
   if ret.errCode == 0 and ret.avatarInfo and ret.avatarInfo.profile then
     local tab = {}
-    tab.textureId = asyncDownLoadPictureByUrl(ret.avatarInfo.profile.url)
     tab.auditing = ret.avatarInfo.profile.verify.ReviewStartTime
-    return tab
+    asyncDownLoadUrlData(ret.avatarInfo.profile.url, charId, ret, E.HttpPictureDownFoldType.Head, function(nativeTextureId)
+      tab.textureId = nativeTextureId
+      callback(tab)
+    end)
+    return
   end
-  return nil
+  callback(nil)
 end
 local ret = {
   AsyncGetHttpPortraitId = asyncGetHttpPortraitId,

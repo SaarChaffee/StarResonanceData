@@ -1,62 +1,62 @@
 {
   "500201": {
     "Id": 500201,
-    "Authority": ""
+    "Authority": "Modify roles"
   },
   "500202": {
     "Id": 500202,
-    "Authority": ""
+    "Authority": "Approve applications"
   },
   "500203": {
     "Id": 500203,
-    "Authority": ""
+    "Authority": "Remove"
   },
   "500204": {
     "Id": 500204,
-    "Authority": ""
+    "Authority": "Change Guild name"
   },
   "500205": {
     "Id": 500205,
-    "Authority": ""
+    "Authority": "Change Guild icon"
   },
   "500206": {
     "Id": 500206,
-    "Authority": ""
+    "Authority": "Edit Guild Notice"
   },
   "500207": {
     "Id": 500207,
-    "Authority": ""
+    "Authority": "Change positions"
   },
   "500208": {
     "Id": 500208,
-    "Authority": ""
+    "Authority": "Modify permissions"
   },
   "500209": {
     "Id": 500209,
-    "Authority": ""
+    "Authority": "Edit recruitment notes"
   },
   "500211": {
     "Id": 500211,
-    "Authority": ""
+    "Authority": "Change Guild tags"
   },
   "500212": {
     "Id": 500212,
-    "Authority": ""
+    "Authority": "Upgrade Guild buildings"
   },
   "500213": {
     "Id": 500213,
-    "Authority": ""
+    "Authority": "Set up the Boon Fountain"
   },
   "500219": {
     "Id": 500219,
-    "Authority": ""
+    "Authority": "Modify Guild cover"
   },
   "500220": {
     "Id": 500220,
-    "Authority": ""
+    "Authority": "Set up Photo Panel"
   },
   "500221": {
     "Id": 500221,
-    "Authority": ""
+    "Authority": "Set up Guild album"
   }
 }

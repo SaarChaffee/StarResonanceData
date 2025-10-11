@@ -1481,7 +1481,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5011,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0, false)
     end
   }
   self.EventItems[1633] = {
@@ -1492,7 +1492,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5011,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1, false)
     end
   }
   self.EventItems[1711] = {
@@ -1505,7 +1505,7 @@ function Scene:InitEvents()
     action = function(localSelf, layerConfigId)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/cty001_festival_001")
       Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/cty001_story_warcity")
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0, false)
       Panda.LuaAsyncBridge.SetCurWeatherTime(24)
       Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(false)
     end
@@ -1518,7 +1518,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5510,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1, false)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/cty001_story_warcity")
     end
   }
@@ -1547,7 +1547,7 @@ function Scene:InitEvents()
     layerConfigId = 5515,
     action = function(localSelf, layerConfigId)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/cty001_festival_001")
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0, false)
       Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/cty001_story_warcity")
       Panda.LuaAsyncBridge.SetCurWeatherTime(24)
       Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(false)
@@ -1561,7 +1561,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5515,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1, false)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/cty001_story_warcity")
     end
   }
@@ -1575,7 +1575,7 @@ function Scene:InitEvents()
     action = function(localSelf, layerConfigId)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/cty001_festival_001")
       Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/cty001_story_warcity")
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0, false)
       Panda.LuaAsyncBridge.SetCurWeatherTime(24)
       Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(false)
     end
@@ -1588,7 +1588,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5516,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1, false)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/cty001_story_warcity")
     end
   }
@@ -1601,7 +1601,7 @@ function Scene:InitEvents()
     layerConfigId = 5520,
     action = function(localSelf, layerConfigId)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/cty001_festival_001")
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0, false)
       Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/cty001_story_warcity")
       Panda.LuaAsyncBridge.SetCurWeatherTime(24)
       Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(false)
@@ -1615,7 +1615,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5520,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1, false)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/cty001_story_warcity")
     end
   }
@@ -1628,7 +1628,7 @@ function Scene:InitEvents()
     layerConfigId = 5525,
     action = function(localSelf, layerConfigId)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/cty001_festival_001")
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0, false)
       Panda.Streaming.StreamingManager.Instance:OpenStoryStateForLua("scenes/cty001_story_warcity")
       Panda.LuaAsyncBridge.SetCurWeatherTime(24)
       Panda.LuaAsyncBridge.SetWeatherIsUpdateFromServer(false)
@@ -1642,7 +1642,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5525,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1, false)
       Panda.Streaming.StreamingManager.Instance:CloseStoryState("scenes/cty001_story_warcity")
     end
   }
@@ -1654,7 +1654,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5526,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0, false)
       Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
         4,
         26,
@@ -1670,7 +1670,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5526,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1, false)
       Panda.ZGame.ZIgnoreMgr.Instance:ClearAllIgnoreByScene(-1, localSelf.eventId)
     end
   }
@@ -1694,7 +1694,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5530,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0, false)
       Panda.ZGame.ZIgnoreMgr.Instance:ModMultiInputIgnoreOneLayer({
         4,
         26,
@@ -1710,7 +1710,7 @@ function Scene:InitEvents()
     eventId = 1901,
     count = -1,
     action = function(localSelf)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1, false)
     end
   }
   self.EventItems[1902] = {
@@ -1745,7 +1745,7 @@ function Scene:InitEvents()
           Panda.ZGame.ZClientEntityMgr.Instance:RemoveClientEntityLua(entityData.tableUid, entityData.actorType)
         end
       end
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1, false)
     end
   }
   self.EventItems[1859] = {
@@ -2012,7 +2012,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5019,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(true, 0, false)
     end
   }
   self.EventItems[2009] = {
@@ -2023,7 +2023,7 @@ function Scene:InitEvents()
     count = -1,
     layerConfigId = 5019,
     action = function(localSelf, layerConfigId)
-      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1)
+      Panda.ZGame.ZEventParser.WeatherCtrlClient(false, -1, false)
     end
   }
   self.EventItems[2095] = {

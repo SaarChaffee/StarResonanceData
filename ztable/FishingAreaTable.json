@@ -1,7 +1,7 @@
 {
   "2200": {
     "SceneObjectId": 2200,
-    "AreaName": "",
+    "AreaName": "City Harbor",
     "FishGroup": [],
     "WaitTime": [
       7.0,
@@ -19,7 +19,7 @@
   },
   "2201": {
     "SceneObjectId": 2201,
-    "AreaName": "",
+    "AreaName": "Freshwater",
     "FishGroup": [
       1094002,
       1094003,
@@ -48,7 +48,7 @@
   },
   "2202": {
     "SceneObjectId": 2202,
-    "AreaName": "",
+    "AreaName": "Sea Water",
     "FishGroup": [
       1094009,
       1094010,

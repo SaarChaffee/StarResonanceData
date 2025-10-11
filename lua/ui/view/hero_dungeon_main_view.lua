@@ -38,7 +38,6 @@ function Hero_dungeon_mainView:ctor()
   self.itemVM_ = Z.VMMgr.GetVM("items")
   self.capabilityAssessVM_ = Z.VMMgr.GetVM("capability_assessment")
   self.competencyAssessView_ = competencyAssessView.new()
-  self.matchVm_ = Z.VMMgr.GetVM("match")
   self.matchTeamVm_ = Z.VMMgr.GetVM("match_team")
   self.matchTeamData_ = Z.DataMgr.Get("match_team_data")
   self.teamMainVm_ = Z.VMMgr.GetVM("team_main")
@@ -99,6 +98,9 @@ function Hero_dungeon_mainView:initwidgets()
   self.dropTog_ = self.firstNode_.tog_drop
   self.memberTogNode_ = self.uiBinder.node_tog
   self.digitTog_ = self.uiBinder.tog_digit
+  self.digitLab_ = self.uiBinder.lab_digit_title
+  self.digitImg_ = self.uiBinder.img_digit_off
+  self.digitEmptyBtn_ = self.uiBinder.btn_digit_empty
   self.teamTog_ = self.uiBinder.tog_team
 end
 
@@ -175,10 +177,20 @@ function Hero_dungeon_mainView:initBtns()
   end)
   self:AddClick(self.teamBtn_, function()
     local teamMainVm = Z.VMMgr.GetVM("team_main")
-    teamMainVm.EnterTeamTargetByDungeonId(self.dungeonId_)
+    teamMainVm.EnterTeamTargetByDungeonId(self.dungeonId_, self.curMasterDungeonDiff_)
   end)
   self:AddAsyncClick(self.enterBtn_, function()
-    if self.toggleIsTeam_ or self.dungeonRow_ and self.dungeonRow_.SingleModeDungeonId == 0 then
+    local hasSingle = true
+    if self.isMasterDungeon_ then
+      local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[self.dungeonId_][self.curMasterDungeonDiff_]
+      if masterChallenDungeonId then
+        local masterDungonCfg = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+        hasSingle = masterDungonCfg.SingleAiMode == 1
+      end
+    elseif self.dungeonRow_ then
+      hasSingle = self.dungeonRow_.SingleModeDungeonId ~= 0
+    end
+    if self.toggleIsTeam_ or not hasSingle then
       local func = function()
         self.vm.AsyncStartEnterDungeon(self.dungeonId_, nil, self.cancelSource, 2, nil, self.curMasterDungeonDiff_)
       end
@@ -206,6 +218,13 @@ function Hero_dungeon_mainView:initBtns()
         if data and data.SingleAiMode == 1 then
           selectType = 1
         end
+        if self.isMasterDungeon_ then
+          local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[self.dungeonId_][self.curMasterDungeonDiff_]
+          local masterDungonCfg = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+          if masterDungonCfg.SingleAiMode == 1 then
+            selectType = 1
+          end
+        end
       else
         local minCount = self.dataMgr.MinCount
         if count < minCount then
@@ -220,8 +239,10 @@ function Hero_dungeon_mainView:initBtns()
               requestParam.targetId = self.teamTargetId_
               requestParam.checkTags = {}
               requestParam.wantLeader = 1
-              self.matchVm_.AsyncBeginMatchNew(E.MatchType.Team, requestParam, false, self.cancelSource:CreateToken())
-              self.matchVm_.SetSelfMatchData(self.teamTargetId_, "targetId")
+              self.matchVm_.RequestBeginMatch(E.MatchType.Team, {
+                dungeonId = self.dungeonId_,
+                difficulty = self.curMasterDungeonDiff_
+              }, self.cancelSource:CreateToken())
             end
             self.teamMainVm_.OpenTeamMainView(self.teamTargetId_)
           end)
@@ -247,25 +268,49 @@ function Hero_dungeon_mainView:initBtns()
       Z.TipsVM.ShowTips(1000644)
       return
     end
-    self.matchVm_.RequestBeginMatch(E.MatchType.Team, self.dungeonId_, self.cancelSource:CreateToken())
+    self.matchVm_.RequestBeginMatch(E.MatchType.Team, {
+      dungeonId = self.dungeonId_,
+      difficulty = self.curMasterDungeonDiff_
+    }, self.cancelSource:CreateToken())
   end)
   self:AddAsyncClick(self.unMatchBtn, function()
     self.matchVm_.AsyncCancelMatch()
+  end)
+  self:AddClick(self.digitEmptyBtn_, function()
+    if not self.dungeonRow_ then
+      return
+    end
+    if not self.isMasterDungeon_ then
+      Z.ConditionHelper.CheckCondition(self.dungeonRow_.SingleAiCondition, true)
+    else
+      local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[self.dungeonId_][self.curMasterDungeonDiff_]
+      local masterDungonCfg = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+      Z.ConditionHelper.CheckCondition(masterDungonCfg.SingleAiCondition, true)
+    end
   end)
   self:AddClick(self.digitTog_, function(isOn)
     if not self.dungeonRow_ then
       return
     end
     if isOn then
-      if not Z.ConditionHelper.CheckCondition(self.dungeonRow_.SingleAiCondition, true) then
-        self.teamTog_.isOn = true
-        return
+      if not self.isMasterDungeon_ then
+        if not Z.ConditionHelper.CheckCondition(self.dungeonRow_.SingleAiCondition, true) then
+          self.teamTog_.isOn = true
+          return
+        end
+      else
+        local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[self.dungeonId_][self.curMasterDungeonDiff_]
+        local masterDungonCfg = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+        if not Z.ConditionHelper.CheckCondition(masterDungonCfg.SingleAiCondition, true) then
+          self.teamTog_.isOn = true
+          return
+        end
       end
       if self.toggleIsTeam_ == true then
         self.toggleIsTeam_ = false
         self:refreshShowDungeon()
       end
-      local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_)
+      local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_, self.curMasterDungeonDiff_)
       self.uiBinder.Ref:SetVisible(self.teamBtn_, not isCanMatch)
       self.uiBinder.Ref:SetVisible(self.matchBtn, isCanMatch)
       self.uiBinder.Ref:SetVisible(self.unMatchBtn, false)
@@ -281,7 +326,7 @@ function Hero_dungeon_mainView:initBtns()
         self.toggleIsTeam_ = true
         self:refreshShowDungeon()
       end
-      local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_)
+      local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_, self.curMasterDungeonDiff_)
       local isMatching = self.matchVm_.IsMatching()
       local curMatchingDungeonId = self.matchTeamData_:GetCurMatchingDungeonId()
       self.uiBinder.Ref:SetVisible(self.teamBtn_, not isCanMatch)
@@ -420,9 +465,28 @@ end
 
 function Hero_dungeon_mainView:OnDiffSelectChange(diff)
   self.curMasterDungeonDiff_ = diff
+  self.select = diff
   self:refreshRightUi()
   self:getPlayerInfo()
   self:refreshCompetencyAssess()
+  self:refreshMasterTeamBtn()
+end
+
+function Hero_dungeon_mainView:refreshMasterTeamBtn()
+  if not self.isMasterDungeon_ then
+    return
+  end
+  local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[self.dungeonId_][self.curMasterDungeonDiff_]
+  local masterDungonCfg = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+  local isHaveSingle = masterDungonCfg.SingleAiMode ~= 0
+  self.uiBinder.Ref:SetVisible(self.memberTogNode_, isHaveSingle)
+  if isHaveSingle then
+    local isShowDigitEmptyNode = not Z.ConditionHelper.CheckCondition(masterDungonCfg.SingleAiCondition)
+    self.uiBinder.Ref:SetVisible(self.digitEmptyBtn_, isShowDigitEmptyNode)
+    local alpha = isShowDigitEmptyNode and 0.5 or 1
+    self.digitLab_.alpha = alpha
+    self.digitImg_.alpha = alpha
+  end
 end
 
 function Hero_dungeon_mainView:initMasterDiffLoop()
@@ -430,12 +494,14 @@ function Hero_dungeon_mainView:initMasterDiffLoop()
   local dungeonIds = MasterChallenDungeonTableMap.DungeonId[self.dungeonId_] or {}
   self.masterDiffLoopView_:RefreshListView(dungeonIds)
   local maxDiff = self.vm.GetMasterDungeonMaxDiff(self.dungeonId_)
-  local select = maxDiff + 1
-  if maxDiff >= #dungeonIds then
-    select = #dungeonIds
+  if not self.select then
+    self.select = maxDiff + 1
+    if maxDiff >= #dungeonIds then
+      self.select = #dungeonIds
+    end
   end
-  self.masterDiffLoopView_:SetSelected(select)
-  self.masterDiffLoopView_:MovePanelToItemIndex(select - 2)
+  self.masterDiffLoopView_:SetSelected(self.select)
+  self.masterDiffLoopView_:MovePanelToItemIndex(self.select - 2)
 end
 
 function Hero_dungeon_mainView:showRandomAffix()
@@ -535,12 +601,27 @@ function Hero_dungeon_mainView:refreshShowDungeon()
     return
   end
   local isHaveSingle = self.dungeonRow_.SingleModeDungeonId ~= 0
-  self.uiBinder.Ref:SetVisible(self.memberTogNode_, isHaveSingle)
-  if not self.toggleIsTeam_ and isHaveSingle then
-    self.dungeonId_ = self.dungeonRow_.SingleModeDungeonId
-    self.showDungeonRow_ = Z.TableMgr.GetTable("DungeonsTableMgr").GetRow(self.dungeonId_)
+  local singleAiCondition = self.dungeonRow_.SingleAiCondition
+  if self.nowLevel == 3 then
+    local masterChallenDungeonId = MasterChallenDungeonTableMap.DungeonId[self.dungeonId_][self.curMasterDungeonDiff_]
+    if masterChallenDungeonId ~= nil then
+      local masterDungonCfg = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(masterChallenDungeonId)
+      isHaveSingle = masterDungonCfg.SingleAiMode == 1
+      singleAiCondition = masterDungonCfg.SingleAiCondition
+    end
   end
-  self.teamTargetId_ = self.teamMainVm_.GetTargetIdByDungeonId(self.dungeonId_)
+  self.uiBinder.Ref:SetVisible(self.memberTogNode_, isHaveSingle)
+  if isHaveSingle then
+    local isShowDigitEmptyNode = not Z.ConditionHelper.CheckCondition(singleAiCondition)
+    self.uiBinder.Ref:SetVisible(self.digitEmptyBtn_, isShowDigitEmptyNode)
+    local alpha = isShowDigitEmptyNode and 0.5 or 1
+    self.digitLab_.alpha = alpha
+    self.digitImg_.alpha = alpha
+  end
+  if not self.toggleIsTeam_ and isHaveSingle and self.nowLevel ~= 3 then
+    self.dungeonId_ = self.dungeonRow_.SingleModeDungeonId
+  end
+  self.teamTargetId_ = self.teamMainVm_.GetTargetIdByDungeonId(self.dungeonId_, self.curMasterDungeonDiff_)
   local isChallenge = self.nowLevel == 2
   if self.nowLevel == 3 then
     self.isMasterDungeon_ = true
@@ -549,6 +630,7 @@ function Hero_dungeon_mainView:refreshShowDungeon()
   else
     self.isMasterDungeon_ = false
     self.curMasterDungeonDiff_ = 0
+    self.select = nil
     self.uiBinder.Ref:SetVisible(self.uiBinder.node_difficulty, false)
     self:refreshRightUi()
     self:getPlayerInfo()
@@ -646,7 +728,7 @@ function Hero_dungeon_mainView:UnBindAllEvents()
 end
 
 function Hero_dungeon_mainView:refreshMatchStatus()
-  local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_)
+  local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_, self.curMasterDungeonDiff_)
   local isMatching = self.matchVm_.IsMatching()
   local curMatchingDungeonID = self.matchTeamData_:GetCurMatchingDungeonId()
   self.uiBinder.Ref:SetVisible(self.teamBtn_, not isCanMatch)
@@ -741,12 +823,13 @@ function Hero_dungeon_mainView:refreshRightUi()
     Z.RedPointMgr.LoadRedDotItem(E.RedType.MasterScore, self, self.uiBinder.btn_masterdungeon.transform)
   end
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_masterdungeon, self.vm.CheckAnyMasterDungeonOpen())
-  local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_)
+  local isCanMatch = self.matchTeamVm_.IsShowMatchBtn(self.dungeonId_, self.curMasterDungeonDiff_)
   local isMatching = self.matchVm_.IsMatching()
   local curMatchingDungeonID = self.matchTeamData_:GetCurMatchingDungeonId()
   self.uiBinder.Ref:SetVisible(self.teamBtn_, not isCanMatch)
   self.uiBinder.Ref:SetVisible(self.matchBtn, isCanMatch and (not isMatching or curMatchingDungeonID ~= self.dungeonId_))
   self.uiBinder.Ref:SetVisible(self.unMatchBtn, isCanMatch and isMatching and curMatchingDungeonID == self.dungeonId_)
+  self.matchBtn.IsDisabled = not self.toggleIsTeam_
 end
 
 function Hero_dungeon_mainView:beginDungeonTeamCount()

@@ -115,6 +115,15 @@ local OnCallStub = function(call)
       impl:NotifyUnionSubFuncUnlock(call, pbMsg.vRequest)
       return
     end
+    if call:GetMethodId() == 15 then
+      local pbData = call:GetCallData()
+      local pbMsg = pb.decode("zproto.UnionNtf.NotifyMemberOnline", pbData)
+      if MessageInspectBridge.InInspectState == true then
+        MessageInspectBridge.HandleReceiveMessage(504281929, 15, cJson.encode(pbMsg), pbData, true)
+      end
+      impl:NotifyMemberOnline(call, pbMsg.vRequest)
+      return
+    end
   end, function(err)
     logError([[
 error={0}

@@ -47,6 +47,9 @@ function DropDownItem:createTargetItem(isHideAll)
       if self.uiView_.targetId_ == targetId then
         self.selectedUnit = unit
         unit.Ref:SetVisible(unit.img_on, true)
+        if unit.node_adorn then
+          unit.node_adorn:Restart(Z.DOTweenAnimType.Open)
+        end
         unit.Ref:SetVisible(unit.img_off, false)
       else
         unit.Ref:SetVisible(unit.img_on, false)
@@ -122,6 +125,9 @@ function DropDownItem:createTargetItem(isHideAll)
           end
           self.uiView_:SetTargetid(targetId)
           unit.Ref:SetVisible(unit.img_on, true)
+          if unit.node_adorn then
+            unit.node_adorn:Restart(Z.DOTweenAnimType.Open)
+          end
           unit.Ref:SetVisible(unit.img_off, false)
           if self.selectedUnit then
             self.selectedUnit.Ref:SetVisible(self.selectedUnit.img_on, false)
@@ -150,6 +156,9 @@ function DropDownItem:targetItemActive(parentUnit, childTargetList)
           childUnit.lab_name2.text = childTargetName
           local isSelect = self.uiView_.targetId_ == childTargetId
           childUnit.Ref:SetVisible(childUnit.img_on, isSelect)
+          if isSelect and childUnit.node_adorn then
+            childUnit.node_adorn:Restart(Z.DOTweenAnimType.Open)
+          end
           childUnit.Ref:SetVisible(childUnit.img_off, not isSelect)
           if childUnit.lab_team1 then
             local teamTargetRow = Z.TableMgr.GetRow("TeamTargetTableMgr", childTargetId)
@@ -169,6 +178,9 @@ function DropDownItem:targetItemActive(parentUnit, childTargetList)
               return
             end
             childUnit.Ref:SetVisible(childUnit.img_on, true)
+            if childUnit.node_adorn then
+              childUnit.node_adorn:Restart(Z.DOTweenAnimType.Open)
+            end
             childUnit.Ref:SetVisible(childUnit.img_off, false)
             if self.selectedUnit then
               self.selectedUnit.Ref:SetVisible(self.selectedUnit.img_on, false)

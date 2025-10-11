@@ -19,6 +19,7 @@ local scoreFrameImage = {
 }
 
 function DungeonTime:ctor()
+  self.dungeonTimerData = Z.DataMgr.Get("dungeon_timer_data")
 end
 
 function DungeonTime:Init(view, unit, data, ignoreChange)
@@ -51,6 +52,9 @@ function DungeonTime:refresh()
   else
     self.unit_.Ref.UIComp:SetVisible(true)
   end
+  if self.data_.pauseTime == 0 then
+    self.dungeonTimerData.IsPausing = false
+  end
   self.unit_.Ref:SetVisible(self.unit_.node_timing, false)
   if self.data_.isShowScore then
     self.unit_.Ref:SetVisible(self.unit_.layout_lab, true)
@@ -60,7 +64,41 @@ function DungeonTime:refresh()
     self.unit_.Ref:SetVisible(self.unit_.node_rank, false)
   end
   self.unit_.lab_time_name.text = self.data_.timeLab or Lang("Time")
+  if self.dungeonTimerData.IsPausing then
+    local dTime = self:getShowTimeByPauseTime()
+    self.realTime_ = dTime
+    self:setTimeLab()
+    return
+  end
   self:calcTime()
+  self:setTimeLab()
+  self.unit_.lab_score.text = 0
+  self:isShowTime(true)
+  self:setTime()
+  if self.data_.isShowScore then
+    self:initScore()
+  end
+  self.unit_.Ref:SetVisible(self.unit_.node_contribution, self:checkIsWorldBoss())
+  self:refreshWorldBoss()
+  if self.data_.pauseTime > 0 then
+    self:stopTime()
+    self.dungeonTimerData.IsPausing = true
+  end
+end
+
+function DungeonTime:getShowTimeByPauseTime()
+  local deathSubTimeSecond = 0
+  if self.data_.showDead then
+    local deathSecond = Z.World:GetWorldLuaAttr(Z.PbAttrEnum("AttrDeathSubTimeSecond"))
+    if deathSecond and 0 < deathSecond.Value then
+      deathSubTimeSecond = deathSecond.Value
+    end
+  end
+  local dTime = self.data_.curPauseTimestamp - self.data_.startTime + deathSubTimeSecond
+  return dTime
+end
+
+function DungeonTime:setTimeLab()
   local defaultTime = 0
   if self.data_.showType == E.DungeonTimeShowType.num then
     defaultTime = math.floor(self.realTime_)
@@ -71,17 +109,6 @@ function DungeonTime:refresh()
     defaultTime = Z.RichTextHelper.ApplyStyleTag(defaultTime, E.TextStyleTag.TipsRed)
   end
   self.unit_.lab_time.text = defaultTime
-  self.unit_.lab_score.text = 0
-  self:isShowTime(true)
-  self:setTime()
-  if self.data_.isShowScore then
-    self:initScore()
-  end
-  self.unit_.Ref:SetVisible(self.unit_.node_contribution, self:checkIsWorldBoss())
-  self:refreshWorldBoss()
-  if 0 < self.data_.pauseTime then
-    self:stopTime()
-  end
 end
 
 function DungeonTime:initDead()

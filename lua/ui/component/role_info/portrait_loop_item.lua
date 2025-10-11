@@ -32,7 +32,7 @@ function PortraitLoopItem:setUI()
   local viewData = {
     id = self.data.Id,
     modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value,
-    charId = Z.EntityMgr.PlayerEnt.EntId,
+    charId = Z.EntityMgr.PlayerEnt.CharId,
     isShowCombinationIcon = false,
     isShowTalentIcon = false,
     token = self.parent.uiView.cancelSource:CreateToken()

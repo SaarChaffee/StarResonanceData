@@ -519,41 +519,40 @@ function Common_filter_subView:createFilterType_6()
     filterType.lab_type.text = Lang("Occupation")
     local unitPath = filterType.uiprefab_cache:GetString("item_3")
     local curProfessionId = Z.ContainerMgr.CharSerialize.professionList.curProfessionId
-    local professionList = Z.ContainerMgr.CharSerialize.professionList.professionList
-    local professIds = {}
-    for professionId, value in pairs(professionList) do
-      professIds[#professIds + 1] = professionId
+    local professionRos = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetDatas()
+    local professRows = {}
+    for index, value in pairs(professionRos) do
+      if value.IsOpen then
+        professRows[#professRows + 1] = value
+      end
     end
-    table.sort(professIds, function(left, right)
-      if left == curProfessionId then
+    table.sort(professRows, function(left, right)
+      if left.Id == curProfessionId then
         return true
-      elseif right == curProfessionId then
+      elseif right.Id == curProfessionId then
         return false
       end
-      return right < left
+      return left.Id > right.Id
     end)
-    for _, professionId in pairs(professIds) do
-      local professionRow = Z.TableMgr.GetRow("ProfessionSystemTableMgr", professionId)
-      if professionRow then
-        local name = "filter_6_" .. professionId
-        local token = self.cancelSource:CreateToken()
-        self.tokens_[name] = token
-        local unit = self:AsyncLoadUiUnit(unitPath, name, filterType.node_item, token)
-        if unit then
-          unit.lab_off.text = professionRow.Name
-          unit.Trans:SetWidth(Z.IsPCUI and 420 or 560)
-          unit.lab_on.text = professionRow.Name
-          unit.toggle:RemoveAllListeners()
-          unit.toggle.isOn = false
-          unit.toggle:AddListener(function(isOn)
-            if isOn then
-              self.filterRes_[E.CommonFilterType.UnlockProfession].value[professionId] = true
-            else
-              self.filterRes_[E.CommonFilterType.UnlockProfession].value[professionId] = nil
-            end
-          end, true)
-          self.units_[E.CommonFilterType.UnlockProfession].children[professionId] = {unit = unit, name = name}
-        end
+    for _, professionRow in pairs(professRows) do
+      local name = "filter_6_" .. professionRow.Id
+      local token = self.cancelSource:CreateToken()
+      self.tokens_[name] = token
+      local unit = self:AsyncLoadUiUnit(unitPath, name, filterType.node_item, token)
+      if unit then
+        unit.lab_off.text = professionRow.Name
+        unit.Trans:SetWidth(Z.IsPCUI and 420 or 560)
+        unit.lab_on.text = professionRow.Name
+        unit.toggle:RemoveAllListeners()
+        unit.toggle.isOn = false
+        unit.toggle:AddListener(function(isOn)
+          if isOn then
+            self.filterRes_[E.CommonFilterType.UnlockProfession].value[professionRow.Id] = true
+          else
+            self.filterRes_[E.CommonFilterType.UnlockProfession].value[professionRow.Id] = nil
+          end
+        end, true)
+        self.units_[E.CommonFilterType.UnlockProfession].children[professionRow.Id] = {unit = unit, name = name}
       end
     end
   end

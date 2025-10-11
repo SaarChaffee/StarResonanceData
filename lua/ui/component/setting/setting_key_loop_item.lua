@@ -3,136 +3,124 @@ local SettingKeyLoopItem = class("SettingKeyLoopItem", super)
 function SettingKeyLoopItem:ctor()
 end
 
-function SettingKeyLoopItem:Init(parentView, keyboardTableRow, unit)
+function SettingKeyLoopItem:Init(parentView, settingKeyCtx, unit)
   self.parentView_ = parentView
   self.uiBinder = unit
-  self.keyboardTableRow_ = keyboardTableRow
+  self.settingKeyCtx = settingKeyCtx
   self.keyVM_ = Z.VMMgr.GetVM("setting_key")
+  self.settingKeyData_ = Z.DataMgr.Get("setting_key_data")
   self:refresh()
+  Z.EventMgr:Add(Z.ConstValue.Device.DeviceTypeChange, self.onDeviceChange, self)
+end
+
+function SettingKeyLoopItem:onDeviceChange()
+  self:refreshGamePadElements()
 end
 
 function SettingKeyLoopItem:refresh()
-  self.keyId_ = self.keyboardTableRow_.Id
-  if self.keyboardTableRow_ then
-    self.uiBinder.lab_desc.text = self.keyboardTableRow_.SetDes
-  else
-    self.uiBinder.lab_desc.text = ""
-    return
-  end
-  self.isAllowChange_ = self:getKeyIsAllowSwitch()
-  self.curSlotIdx_ = 0
+  self.keyboardTableRow_ = self.settingKeyCtx.setKeyboardTableRow
+  self.uiBinder.lab_desc.text = self.settingKeyData_:GetSettingKeyDescName(self.settingKeyCtx)
+  self.isKeyboardAllowChange_ = self.keyboardTableRow_.CanChange[1] == nil or self.keyboardTableRow_.CanChange[1] == 1
+  self.isPadAllowChange = self.keyboardTableRow_.CanChange[2] == nil or self.keyboardTableRow_.CanChange[2] == 1
+  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_tips, false)
   self:refreshKeyboardElements()
+  self:refreshGamePadElements()
 end
 
 function SettingKeyLoopItem:refreshKeyboardElements()
-  self:hideElementContainers()
-  self:setActionElementMpas()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.btn_tips, false)
-  if self.showElements_ == nil then
-    logError(self.keyboardTableRow_.SetDes .. " \230\156\170\233\133\141\231\189\174ActionElementMap")
-    return
-  end
-  local keyNum = table.zcount(self.showElements_)
-  for i = 1, 2 do
-    local container = self.uiBinder["cont_key_custom" .. i]
-    if i <= keyNum then
-      self.uiBinder.Ref:SetVisible(container.Ref, true)
-      container.lab_key.text = self.keyVM_.GetKeyDes(self.showElements_[i])
-      container.Ref:SetVisible(container.img_key_bg, self.isAllowChange_)
-      self:setKeyContainerState(container, false)
-      container.btn_key:AddListener(function()
-        self:onKeyStartListerner(container, i)
-      end)
-    end
-  end
+  local keyBoardBindings = self.settingKeyCtx.keyBoardBindings
+  local keyBoardBinder = self.uiBinder.binder_keyboard
+  self:setBindingElement(keyBoardBinder, keyBoardBindings, self.isKeyboardAllowChange_)
 end
 
-function SettingKeyLoopItem:setActionElementMpas()
-  self.inputActions_ = self.keyVM_.GetActionsByKeyId(self.keyId_)
-  if self.inputActions_ == nil or #self.inputActions_ < 1 then
-    return
-  end
-  local allElements = {}
-  local keyTbl = Z.TableMgr.GetTable("SetKeyboardTableMgr")
-  local row = keyTbl.GetRow(self.keyId_)
-  if row == nil then
-    return
-  end
-  local mapId = row.MapCategoryId
-  for _, inputAction in ipairs(self.inputActions_) do
-    local element = self.keyVM_.GetFirstElementMapWithActionId(inputAction.id, mapId)
-    if element then
-      table.insert(allElements, element)
-    end
-  end
-  if allElements == nil then
-    return
-  end
-  self.showElements_ = allElements
+function SettingKeyLoopItem:refreshGamePadElements()
+  local gamePadBindings = self.settingKeyCtx.gamePadBindings
+  local gamePadBinder = self.uiBinder.binder_handle
+  self:setBindingElement(gamePadBinder, gamePadBindings, self.isPadAllowChange)
 end
 
-function SettingKeyLoopItem:hideElementContainers()
-  self.uiBinder.Ref:SetVisible(self.uiBinder.cont_key_custom1.Ref, false)
-  self.uiBinder.Ref:SetVisible(self.uiBinder.cont_key_custom2.Ref, false)
-end
-
-function SettingKeyLoopItem:setKeyContainerState(container, isInput)
-  container.Ref:SetVisible(container.node_normal, not isInput)
-  container.Ref:SetVisible(container.img_input_frame, isInput)
-end
-
-function SettingKeyLoopItem:getKeyIsAllowSwitch()
-  if self.keyboardTableRow_.ShowSwitch == 0 then
-    return true
-  end
-  return false
-end
-
-function SettingKeyLoopItem:onKeyStartListerner(container, slotIdx)
-  if not self.isAllowChange_ then
-    Z.TipsVM.ShowTipsLang(1000204)
+function SettingKeyLoopItem:setBindingElement(elementContainer, elementList, isAllowChange)
+  self:setKeyContainerState(elementContainer.btn_key_binder_1, elementList[1])
+  self:setKeyContainerState(elementContainer.btn_key_binder_2, elementList[2])
+  local elementCnt = table.zcount(elementList)
+  if elementCnt == 0 then
+    elementContainer.Ref:SetVisible(elementContainer.btn_key_input_2, false)
+    elementContainer.Ref:SetVisible(elementContainer.node_and, false)
+    elementContainer.btn_key_binder_1.btn_key.IsDisabled = true
+    elementContainer.btn_key_binder_1.lab_cur_key.text = Lang("NotSettable")
+    elementContainer.btn_key_binder_1.btn_key:AddListener(function()
+    end, true)
+  elseif elementCnt == 1 then
+    elementContainer.Ref:SetVisible(elementContainer.btn_key_input_2, false)
+    elementContainer.Ref:SetVisible(elementContainer.node_and, false)
+    elementContainer.btn_key_binder_1.btn_key.IsDisabled = not isAllowChange
+    elementContainer.btn_key_binder_1.lab_cur_key.text = self.keyVM_.GetKeyDes(elementList[1])
+    elementContainer.btn_key_binder_1.btn_key:AddListener(function()
+      self:onKeyStartListerner(isAllowChange, elementContainer.btn_key_binder_1, elementList[1])
+    end, true)
+  elseif elementCnt == 2 then
+    elementContainer.Ref:SetVisible(elementContainer.btn_key_input_2, true)
+    elementContainer.Ref:SetVisible(elementContainer.node_and, true)
+    elementContainer.btn_key_binder_1.btn_key.IsDisabled = not isAllowChange
+    elementContainer.btn_key_binder_2.btn_key.IsDisabled = not isAllowChange
+    elementContainer.btn_key_binder_1.lab_cur_key.text = self.keyVM_.GetKeyDes(elementList[1])
+    elementContainer.btn_key_binder_2.lab_cur_key.text = self.keyVM_.GetKeyDes(elementList[2])
+    elementContainer.btn_key_binder_1.btn_key:AddListener(function()
+      self:onKeyStartListerner(isAllowChange, elementContainer.btn_key_binder_1, elementList[1])
+    end, true)
+    elementContainer.btn_key_binder_2.btn_key:AddListener(function()
+      self:onKeyStartListerner(isAllowChange, elementContainer.btn_key_binder_2, elementList[2])
+    end, true)
   else
-    self.curSlotIdx_ = slotIdx
-    self.uiBinder.node_inputcheck:StartCheck()
-    self:setKeyContainerState(container, true)
-    Z.InputMgr:StartMapListening(self.inputActions_[slotIdx].id, self.showElements_[slotIdx], function(data)
-      local ret = self.keyVM_.IsPresetKey(data)
-      return ret
-    end, function(conflictActionIds)
-      if self.parentView_ ~= nil then
-        self.parentView_.ConflictActionIds = conflictActionIds
-        local ret = self.keyVM_.HandleKeyConflict(conflictActionIds)
-      else
-        logError("SettingKeyLoopItem:onKeyStartListerner parentView_ is nil")
-      end
-    end, function(actionElementMap)
-      self:onInputMappedOverCallback(actionElementMap)
-    end, function()
-      if self.parentView_ == nil then
-        return
-      end
-      self.parentView_.ConflictActionIds = nil
-      self:refreshKeyboardElements()
-    end)
+    logError("[SettingKey] too many bindings " .. self.settingKeyCtx.setKeyboardTableRow.Id)
   end
 end
 
-function SettingKeyLoopItem:onInputMappedOverCallback(actionElementMap)
+function SettingKeyLoopItem:onKeyStartListerner(isAllowChange, btn_key_binder, element)
+  if not isAllowChange then
+    Z.TipsVM.ShowTipsLang(1000204)
+    Z.InputMgr:StopListening()
+    return
+  else
+    btn_key_binder.Ref:SetVisible(btn_key_binder.lab_cur_key, false)
+    btn_key_binder.Ref:SetVisible(btn_key_binder.lab_input, true)
+    local isListening = Z.InputMgr:IsListening(self.settingKeyCtx.setKeyboardTableRow.SchemeId, element.actionId, element.groupIndex, element.bindingIndex)
+    if isListening then
+      Z.InputMgr:StopListening()
+      return
+    end
+    Z.InputMgr:StartListening(self.settingKeyCtx.setKeyboardTableRow.SchemeId, element.actionId, element.groupIndex, element.bindingIndex, function(detectedInputData)
+      return not self.keyVM_.IsPresetKey(detectedInputData)
+    end, function(conflictInfo)
+      self.keyVM_.HandleKeyConflict(conflictInfo)
+    end, function()
+      self:onInputMappedOverCallback()
+    end, function()
+      btn_key_binder.Ref:SetVisible(btn_key_binder.lab_cur_key, true)
+      btn_key_binder.Ref:SetVisible(btn_key_binder.lab_input, false)
+    end, true)
+    self:refreshKeyboardElements()
+    self:refreshGamePadElements()
+  end
+end
+
+function SettingKeyLoopItem:onInputMappedOverCallback()
   Z.TipsVM.ShowTipsLang(1000201)
-  Z.InputMgr:ReBindActionByActionElementMap(actionElementMap)
   self.parentView_:RefreshAllItem()
-  Z.EventMgr:Dispatch(Z.ConstValue.KeySettingReset, self.keyId_)
-  Z.InputMgr:Save()
+  Z.EventMgr:Dispatch(Z.ConstValue.KeyHintOpenChange)
+end
+
+function SettingKeyLoopItem:setKeyContainerState(container, element)
+  local isListening = false
+  if element ~= nil then
+    isListening = Z.InputMgr:IsListening(self.settingKeyCtx.setKeyboardTableRow.SchemeId, element.actionId, element.groupIndex, element.bindingIndex)
+  end
+  container.Ref:SetVisible(container.lab_cur_key, not isListening)
+  container.Ref:SetVisible(container.lab_input, isListening)
 end
 
 function SettingKeyLoopItem:UnInit()
-  if self.uiBinder == nil then
-    return
-  end
-  self.uiBinder.cont_key_custom1.btn_key:RemoveAllListeners()
-  self.uiBinder.cont_key_custom2.btn_key:RemoveAllListeners()
-  self.parentView_.ConflictActionIds = nil
-  self.parentView_ = nil
+  Z.EventMgr:Remove(Z.ConstValue.Device.DeviceTypeChange, self.onDeviceChange, self)
 end
 
 return SettingKeyLoopItem

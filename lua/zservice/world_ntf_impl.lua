@@ -504,6 +504,12 @@ function WorldNtfStubImpl:NotifyUserAllValidBattlePassData(call, vParam)
       dirtyTable[key] = nil
     end
   end
+  if battlePassData.CurBattlePassData.level ~= nil and curData.level ~= nil and battlePassData.CurBattlePassData.level < 2 and curData.level >= 2 then
+    Z.SDKReport.Report(Z.SDKReportEvent.BuyBattlePass)
+  end
+  if not (battlePassData.CurBattlePassData.buyNormalPas == nil or battlePassData.CurBattlePassData.buyNormalPas) and curData.buyNormalPas or battlePassData.CurBattlePassData.buyPrimePass ~= nil and not battlePassData.CurBattlePassData.buyPrimePass and curData.buyPrimePass then
+    Z.SDKReport.Report(Z.SDKReportEvent.BuyPremiumBattlePass)
+  end
   battlePassData.CurBattlePassData = curData
   Z.EventMgr:Dispatch(Z.ConstValue.BattlePassDataUpdate, dirtyTable)
 end
@@ -525,26 +531,36 @@ end
 
 function WorldNtfStubImpl:SignRewardNotify(call, vRequest)
   local themePlayData = Z.DataMgr.Get("theme_play_data")
+  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
   logGreen("SignRewardNotify = " .. table.ztostring(vRequest))
   themePlayData:ResetSignAwardData()
-  local isShowRedDot = false
-  if vRequest and #vRequest.signDays > 0 then
-    for i, v in ipairs(vRequest.signDays) do
-      themePlayData:SetSignAwardData(v, E.DrawState.CanDraw)
+  local funcIdDict = themePlayData:GetAllSignFuncId()
+  local redDotDict = {}
+  if vRequest ~= nil and vRequest.signRewardDataMap ~= nil then
+    for signType, signData in pairs(vRequest.signRewardDataMap) do
+      if signData.signDays and #signData.signDays > 0 then
+        for i, v in ipairs(signData.signDays) do
+          themePlayData:SetSignAwardData(signType, v, E.DrawState.CanDraw)
+        end
+        local funcId = funcIdDict[signType]
+        if funcId ~= nil then
+          redDotDict[funcId] = true
+        end
+      end
+      if signData.rewardDays and 0 < #signData.rewardDays then
+        for i, v in ipairs(signData.rewardDays) do
+          themePlayData:SetSignAwardData(signType, v, E.DrawState.AlreadyDraw)
+        end
+      end
     end
-    isShowRedDot = true
   end
-  if vRequest and 0 < #vRequest.rewardDays then
-    for i, v in ipairs(vRequest.rewardDays) do
-      themePlayData:SetSignAwardData(v, E.DrawState.AlreadyDraw)
+  for type, funcId in pairs(funcIdDict) do
+    local redDotId = E.ThemeActivityRedDot[funcId]
+    if redDotId ~= nil then
+      local redDotCount = gotoFuncVM.FuncIsOn(funcId, true) and redDotDict[funcId] and 1 or 0
+      Z.RedPointMgr.UpdateNodeCount(redDotId, redDotCount)
     end
   end
-  local gotoFuncVM = Z.VMMgr.GetVM("gotofunc")
-  if not gotoFuncVM.FuncIsOn(E.ThemeActivityFunctionId.Sign, true) then
-    isShowRedDot = false
-  end
-  local redDotId = E.ThemeActivityRedDot[E.ThemeActivityFunctionId.Sign]
-  Z.RedPointMgr.UpdateNodeCount(redDotId, isShowRedDot and 1 or 0)
   Z.EventMgr:Dispatch(Z.ConstValue.ThemePlay.SignActivityRefresh)
 end
 

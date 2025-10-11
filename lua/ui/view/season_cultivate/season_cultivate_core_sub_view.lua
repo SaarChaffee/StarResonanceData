@@ -269,7 +269,7 @@ function SeasonCultivateCore:resetItem()
   end
   self.itemUnit_ = {}
   local max = self.seasonCultivateVM_.GetHoleMaxLevel(E.SeasonCultivateHole.Core)
-  local current = self.seasonCultivateVM_.GetCoreNodeLevel() + 1
+  local current = self.seasonCultivateVM_.GetCoreNodeLevel()
   local hasNext = max > current
   if not hasNext then
     return

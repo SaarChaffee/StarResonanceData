@@ -57,7 +57,7 @@ function EquipRecastPopupLooItem:OnSelected(isSelected)
       self.uiView_:StartCheck()
       Z.EventMgr:Dispatch(Z.ConstValue.Equip.SelectedRecastItem, self.data_)
     end
-    if self.data_.IsEquipItem and self.uiView_:GetIsRecast() then
+    if self.data_.IsEquipItem then
       local canTrade = self.tradeVM_:CheckItemCanExchange(self.data_.Item.configId, self.data_.Item.uuid)
       if canTrade then
         local labDesc = self.uiView_:GetIsRecast() and Lang("EquipRecastCanTradeTips") or Lang("EquipCreateCanTradeTips")

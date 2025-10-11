@@ -9,7 +9,15 @@ end
 
 function Gasha_illusion_popupView:OnActive()
   self.gashaVm_ = Z.VMMgr.GetVM("gasha")
+  self.selectSub_ = nil
+  self.selectSubType_ = 0
+  self.selectWishId_ = 0
+  self.select_ = 0
+  self.wishItemCount_ = 0
   self.gashaPoolTableRow = self.viewData.gashaPoolTableRow
+  Z.CoroUtil.create_coro_xpcall(function()
+    self:initSelectSub()
+  end)()
   self:AddAsyncClick(self.uiBinder.btn_supplication, function()
     local wishId = self.gashaVm_.GetGashaPoolWishId(self.gashaPoolTableRow.Id)
     if wishId == self.selectWishId_ then
@@ -32,20 +40,13 @@ function Gasha_illusion_popupView:OnActive()
   self:AddClick(self.uiBinder.btn_close, function()
     Z.UIMgr:CloseView("gasha_illusion_popup")
   end)
-  self:AddAsyncClick(self.uiBinder.btn_left, function()
+  self:AddClick(self.uiBinder.btn_left, function()
     self:selectChange(false)
   end)
-  self:AddAsyncClick(self.uiBinder.btn_right, function()
+  self:AddClick(self.uiBinder.btn_right, function()
     self:selectChange(true)
   end)
-  for i = 1, 4 do
-    self:AddClick(self.uiBinder["btn_standee_" .. i], function()
-      self:onClickStandee(i)
-    end)
-  end
-  self.selectWishId_ = 0
-  self.select_ = 0
-  self.wishItemCount_ = 0
+  self:showStartAnim()
 end
 
 function Gasha_illusion_popupView:onSelectedPray(id)
@@ -63,10 +64,12 @@ function Gasha_illusion_popupView:onSelectedPray(id)
 end
 
 function Gasha_illusion_popupView:OnDeActive()
+  self:initEffectAndDepth()
+  self.selectSub_ = nil
+  self.selectSubType_ = 0
 end
 
 function Gasha_illusion_popupView:OnRefresh()
-  self:refreshSelectItem()
 end
 
 function Gasha_illusion_popupView:refreshSelectItem()
@@ -80,16 +83,7 @@ function Gasha_illusion_popupView:refreshSelectItem()
       break
     end
   end
-  self:setItemImg()
-end
-
-function Gasha_illusion_popupView:setItemImg()
-  if string.zisEmpty(self.gashaPoolTableRow.ResonancePrefab) then
-    return
-  end
-  local selectImgPath = string.format("%s%d", self.gashaPoolTableRow.ResonancePrefab, self.select_)
-  self.uiBinder.rimg_icon:SetImage(selectImgPath)
-  self:onSelectedPray(self.gashaPoolTableRow.WishItem[self.select_])
+  self:setItemSelected()
 end
 
 function Gasha_illusion_popupView:selectChange(add)
@@ -104,12 +98,72 @@ function Gasha_illusion_popupView:selectChange(add)
     end
     self.select_ = self.select_ - 1
   end
-  self:setItemImg()
+  self:setItemSelected()
 end
 
 function Gasha_illusion_popupView:onClickStandee(index)
   self.select_ = index
-  self:setItemImg()
+  self:setItemSelected()
+end
+
+function Gasha_illusion_popupView:showStartAnim()
+  self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+end
+
+function Gasha_illusion_popupView:initSelectSub()
+  if string.zisEmpty(self.gashaPoolTableRow.ResonancePrefab) then
+    return
+  end
+  self.selectSub_ = self:AsyncLoadUiUnit(self.gashaPoolTableRow.ResonancePrefab, "GashaSelectSub", self.uiBinder.node_illusion_sub)
+  self.selectSubType_ = string.sub(self.gashaPoolTableRow.ResonancePrefab, -1)
+  for i = 1, self.selectSubType_ do
+    self:AddClick(self.selectSub_["gasha_illusion_item_tpl_" .. i].btn_icon, function()
+      self:onClickStandee(i)
+    end)
+  end
+  self:initEffectAndDepth(true)
+  self:refreshSelectItem()
+end
+
+function Gasha_illusion_popupView:initEffectAndDepth(isAdd)
+  if isAdd then
+    self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.selectSub_.ui_depth)
+    for i = 1, self.selectSubType_ do
+      self.selectSub_.ui_depth:AddChildDepth(self.selectSub_["rimg_icon_head_" .. i])
+      self.uiBinder.Ref.UIComp.UIDepth:AddChildDepth(self.selectSub_["gasha_illusion_item_tpl_" .. i].effect_select)
+    end
+  else
+    self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.selectSub_.ui_depth)
+    for i = 1, self.selectSubType_ do
+      self.selectSub_.ui_depth:RemoveChildDepth(self.selectSub_["rimg_icon_head_" .. i])
+      self.uiBinder.Ref.UIComp.UIDepth:RemoveChildDepth(self.selectSub_["gasha_illusion_item_tpl_" .. i].effect_select)
+    end
+  end
+end
+
+function Gasha_illusion_popupView:setItemSelected()
+  local selectItem = self.selectSub_["gasha_illusion_item_tpl_" .. self.select_]
+  if not selectItem then
+    return
+  end
+  self:hideEffect()
+  selectItem.Trans:SetAsLastSibling()
+  selectItem.Ref:SetVisible(selectItem.rimg_select, true)
+  selectItem.anim_rimg_select:Restart(Z.DOTweenAnimType.Open)
+  self.selectSub_["rimg_icon_head_" .. self.select_]:SetEffectGoVisible(true)
+  self.selectSub_["gasha_illusion_item_tpl_" .. self.select_].effect_select:SetEffectGoVisible(true)
+  self.selectSub_["gasha_illusion_item_tpl_" .. self.select_].effect_select:Play()
+  self:onSelectedPray(self.gashaPoolTableRow.WishItem[self.select_])
+end
+
+function Gasha_illusion_popupView:hideEffect()
+  local selectItem
+  for i = 1, self.selectSubType_ do
+    self.selectSub_["rimg_icon_head_" .. i]:SetEffectGoVisible(false)
+    self.selectSub_["gasha_illusion_item_tpl_" .. i].effect_select:SetEffectGoVisible(false)
+    selectItem = self.selectSub_["gasha_illusion_item_tpl_" .. i]
+    selectItem.Ref:SetVisible(selectItem.rimg_select, false)
+  end
 end
 
 return Gasha_illusion_popupView

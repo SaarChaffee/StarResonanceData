@@ -42,6 +42,7 @@ enum EItemGetOptSrc {
   EItemGetOptMasterModeDungeonSeasonAward = 11242;
   EItemGetOptSrcPaymentRealCurrency = 11250;
   EItemGetOptSrcPaymentQueryCurrency = 11251;
+  EItemGetOptSrcPaymentAmountToDiamond = 11252;
   EItemGetOptSrcPersonalFriendlinessLevelAward = 11261;
   EItemGetOptSrcTotalFriendlinessLevelAward = 11262;
   EItemGetOptSrcSeasonAchievementAward = 11270;
@@ -53,6 +54,7 @@ enum EItemGetOptSrc {
   EItemInteraction = 11293;
   EItemGetOptSrcActivationTarget = 11294;
   EItemGetOptSrcTalentReset = 11295;
+  EItemGetOptSrcProfessionSkillReset = 11296;
   EItemGetOptSrcSeasonMedalNormalHoleRest = 11300;
   EItemGetOptSrcDungeonWeekTarget = 11310;
   EItemGetOptSrcUnionActiveFinishTarget = 11320;

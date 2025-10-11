@@ -295,7 +295,7 @@ end
 
 function Trialroad_mainView:checkRF(value)
   Z.CoroUtil.create_coro_xpcall(function()
-    local socialData = self.socialVm_.AsyncGetSocialData(0, Z.EntityMgr.PlayerEnt.EntId, self.cancelSource:CreateToken())
+    local socialData = self.socialVm_.AsyncGetSocialData(0, Z.EntityMgr.PlayerEnt.CharId, self.cancelSource:CreateToken())
     if socialData.userAttrData.fightPoint and socialData.userAttrData.fightPoint < value then
       self.isRFEnough_ = false
     else

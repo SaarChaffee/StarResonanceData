@@ -1,13 +1,13 @@
 {
   "100111": {
     "Id": 100111,
-    "Question": "",
+    "Question": "Let me see... What are this guy's physical characteristics!",
     "Answer": [],
-    "QuestionBubble": "",
+    "QuestionBubble": "These clues seem to point to one person...",
     "QuestionBubbleAction": 9019,
     "WrongBubble": [
-      1927558338,
-      1927558339
+      "This doesn't seem to be related to the appearance of the contact person...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -15,16 +15,16 @@
   },
   "100112": {
     "Id": 100112,
-    "Question": "",
+    "Question": "Hmm, the next step is to think about the \"contact token\" and \"identity information!\"",
     "Answer": [
       3,
       4
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "Obviously, these are the physical characteristics of the contact person, so next...",
     "QuestionBubbleAction": 9026,
     "WrongBubble": [
-      1927559427,
-      1927559428
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -32,16 +32,16 @@
   },
   "100121": {
     "Id": 100121,
-    "Question": "",
+    "Question": "Let's narrow it down further, starting with age and gender...",
     "Answer": [
       1,
       4
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "I need to extract useful information from this...",
     "QuestionBubbleAction": 9033,
     "WrongBubble": [
-      1927594275,
-      1927594276
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -49,16 +49,16 @@
   },
   "100122": {
     "Id": 100122,
-    "Question": "",
+    "Question": "If I can determine the body type and clothing...",
     "Answer": [
       5,
       6
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "It's still not enough.",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      1927595364,
-      1927595365
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -66,15 +66,15 @@
   },
   "100123": {
     "Id": 100123,
-    "Question": "",
+    "Question": "The most crucial characteristic is still missing, related to the hair!",
     "Answer": [
       2
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "The conclusion is almost here!",
     "QuestionBubbleAction": 9026,
     "WrongBubble": [
-      1927596453,
-      1927596454
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -82,15 +82,15 @@
   },
   "100311": {
     "Id": 100311,
-    "Question": "",
+    "Question": "What is special about the gloves commonly used by craftsmen?",
     "Answer": [
       7
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "I need to extract useful information from this...",
     "QuestionBubbleAction": 9033,
     "WrongBubble": [
-      1929930180,
-      1929930181
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -98,15 +98,15 @@
   },
   "100312": {
     "Id": 100312,
-    "Question": "",
+    "Question": "What is the content of the blueprint?",
     "Answer": [
       8
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "It's still not enough.",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      1929931269,
-      1929931270
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -114,15 +114,15 @@
   },
   "100313": {
     "Id": 100313,
-    "Question": "",
+    "Question": "What's unusual about the beautiful lantern?",
     "Answer": [
       9
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "The conclusion is almost here!",
     "QuestionBubbleAction": 9026,
     "WrongBubble": [
-      1929932358,
-      1929932359
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -130,15 +130,15 @@
   },
   "100411": {
     "Id": 100411,
-    "Question": "",
+    "Question": "What was Jayden going to do before he disappeared during the Asterleeds Independence War?",
     "Answer": [
       8
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "I need to extract useful information from this...",
     "QuestionBubbleAction": 9033,
     "WrongBubble": [
-      1931116101,
-      1931116102
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -146,16 +146,16 @@
   },
   "100412": {
     "Id": 100412,
-    "Question": "",
+    "Question": "What could be the content of the special operation? What was the result?",
     "Answer": [
       11,
       12
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "It's still not enough.",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      1931117190,
-      1931117191
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -163,15 +163,15 @@
   },
   "100413": {
     "Id": 100413,
-    "Question": "",
+    "Question": "It seems that the infiltration operation commander might be Jayden, so where did he go in the end?",
     "Answer": [
       3
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "The conclusion is almost here!",
     "QuestionBubbleAction": 9026,
     "WrongBubble": [
-      1931118279,
-      1931118280
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -179,15 +179,15 @@
   },
   "100511": {
     "Id": 100511,
-    "Question": "",
+    "Question": "Where might Treasure come from?",
     "Answer": [
       1
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "I need to extract useful information from this...",
     "QuestionBubbleAction": 9033,
     "WrongBubble": [
-      1932302022,
-      1932302023
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -195,15 +195,15 @@
   },
   "100512": {
     "Id": 100512,
-    "Question": "",
+    "Question": "Why does Butler Carlis dislike Treasure?",
     "Answer": [
       2
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "It's still not enough.",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      1932303111,
-      1932303112
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -211,15 +211,15 @@
   },
   "100513": {
     "Id": 100513,
-    "Question": "",
+    "Question": "What was unusual about Treasure yesterday?",
     "Answer": [
       3
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "The conclusion is almost here!",
     "QuestionBubbleAction": 9026,
     "WrongBubble": [
-      1932304200,
-      1932304201
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -227,15 +227,15 @@
   },
   "100611": {
     "Id": 100611,
-    "Question": "",
+    "Question": "From Miru & Rumi's words, we can know...",
     "Answer": [
       1
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "I need to extract useful information from this...",
     "QuestionBubbleAction": 9033,
     "WrongBubble": [
-      1933487943,
-      1933487944
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -243,16 +243,16 @@
   },
   "100612": {
     "Id": 100612,
-    "Question": "",
+    "Question": "From Spike's words, we can know...",
     "Answer": [
       2,
       3
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "It's still not enough.",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      1933489032,
-      1933489033
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -260,16 +260,16 @@
   },
   "100613": {
     "Id": 100613,
-    "Question": "",
+    "Question": "From Tina's words, we can know...",
     "Answer": [
       4,
       5
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "The conclusion is almost here!",
     "QuestionBubbleAction": 9026,
     "WrongBubble": [
-      1933490121,
-      1933490122
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -277,17 +277,17 @@
   },
   "300111": {
     "Id": 300111,
-    "Question": "",
+    "Question": "What was the environment like at the time of the incident?",
     "Answer": [
       1,
       2,
       3
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "I need to extract useful information from this...",
     "QuestionBubbleAction": 9033,
     "WrongBubble": [
-      1265098372,
-      1265098373
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -295,16 +295,16 @@
   },
   "300112": {
     "Id": 300112,
-    "Question": "",
+    "Question": "What clues were left at the scene?",
     "Answer": [
       4,
       5
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "It's still not enough.",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      1265099461,
-      1265099462
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -312,16 +312,16 @@
   },
   "300113": {
     "Id": 300113,
-    "Question": "",
+    "Question": "What did \"Ryan,\" who is repeatedly mentioned in the clues, do?",
     "Answer": [
       6,
       7
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "The conclusion is almost here!",
     "QuestionBubbleAction": 9026,
     "WrongBubble": [
-      1265100550,
-      1265100551
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -329,15 +329,15 @@
   },
   "200201": {
     "Id": 200201,
-    "Question": "",
+    "Question": "The environment when Saphir met the mysterious girl?",
     "Answer": [
       2
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "I need to extract useful information from this...",
     "QuestionBubbleAction": 9033,
     "WrongBubble": [
-      1597478339,
-      1597478340
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -345,15 +345,15 @@
   },
   "200202": {
     "Id": 200202,
-    "Question": "",
+    "Question": "Why did Saphir go blind?",
     "Answer": [
       1
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "It's still not enough.",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      1597479428,
-      1597479429
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -361,16 +361,16 @@
   },
   "200203": {
     "Id": 200203,
-    "Question": "",
+    "Question": "What are the characteristics of the mysterious girl? What did she do to Saphir?",
     "Answer": [
       3,
       4
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "The conclusion is almost here!",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      1597480517,
-      1597480518
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -378,17 +378,17 @@
   },
   "300211": {
     "Id": 300211,
-    "Question": "",
+    "Question": "Are there any notable details in the eyewitness description of Reed's disappearance?",
     "Answer": [
       1,
       2,
       3
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "I need to extract useful information from this...",
     "QuestionBubbleAction": 9033,
     "WrongBubble": [
-      1266284293,
-      1266284294
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -396,17 +396,17 @@
   },
   "300212": {
     "Id": 300212,
-    "Question": "",
+    "Question": "Are there any notable details in the eyewitness description of Greg's disappearance?",
     "Answer": [
       4,
       5,
       6
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "It's still not enough.",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      1266285382,
-      1266285383
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -414,17 +414,17 @@
   },
   "300213": {
     "Id": 300213,
-    "Question": "",
+    "Question": "Are there any notable details in the eyewitness description of Carl?",
     "Answer": [
       7,
       8,
       9
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "The conclusion is almost here!",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      1266286471,
-      1266286472
+      "Something seems off...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -432,15 +432,15 @@
   },
   "400111": {
     "Id": 400111,
-    "Question": "",
+    "Question": "What is the purpose of the Forbidden Zone?",
     "Answer": [
       1
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "It should be a place for holding some event...",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      933868389,
-      933868390
+      "No, think again...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -448,15 +448,15 @@
   },
   "400112": {
     "Id": 400112,
-    "Question": "",
+    "Question": "What is the situation of the Forbidden Zone?",
     "Answer": [
       2
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "I remember someone mentioned it, it should be...",
     "QuestionBubbleAction": 9047,
     "WrongBubble": [
-      933869478,
-      933869479
+      "No, think again...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007
@@ -464,15 +464,15 @@
   },
   "400113": {
     "Id": 400113,
-    "Question": "",
+    "Question": "What is the possible location of the Forbidden Zone?",
     "Answer": [
       3
     ],
-    "QuestionBubble": "",
+    "QuestionBubble": "If the Forbidden Zone is a place for blessings, then the clues point to this place...",
     "QuestionBubbleAction": 9033,
     "WrongBubble": [
-      933870567,
-      933870568
+      "No, think again...",
+      "Damn! No clues!"
     ],
     "WrongBubbleAction": [
       9007

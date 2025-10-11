@@ -11,7 +11,7 @@ function ToggleGroup:ctor(toggleGroup, toggleItem, data, view, bindName)
   self.toggleGroup_:Init()
 end
 
-function ToggleGroup:Init(index, clickFunc)
+function ToggleGroup:Init(index, changeFunc, clickFunc)
   if self.data_ == nil or table.zcount(self.data_) == 0 then
     logError("ToggleGroup item is empty!")
     return
@@ -30,16 +30,19 @@ function ToggleGroup:Init(index, clickFunc)
           self.toggleComponents_[i]:OnSelected(isOn)
           if isOn then
             self.index_ = i
-            clickFunc(i)
+            changeFunc(i)
           end
         end)
+        if clickFunc then
+          component:AddClickListener(clickFunc)
+        end
         table.insert(self.toggleGroupComps_, component)
       end
     end
     if self.toggleGroupComps_[index].isOn then
       self.toggleComponents_[index]:OnSelected(true)
       self.index_ = index
-      clickFunc(index)
+      changeFunc(index)
     else
       self.toggleGroupComps_[index].isOn = true
     end

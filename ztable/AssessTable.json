@@ -56929,7 +56929,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 15882,
+    "FightAttrVal": 14439,
     "AssessWeight": 100
   },
   "2998": {
@@ -57233,7 +57233,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 15962,
+    "FightAttrVal": 14511,
     "AssessWeight": 100
   },
   "3014": {
@@ -57460,7 +57460,7 @@
     "AssessId": 13,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 2629,
+    "FightAttrVal": 1928,
     "AssessWeight": 100
   },
   "3026": {
@@ -57478,7 +57478,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 2629,
+    "FightAttrVal": 1928,
     "AssessWeight": 100
   },
   "3027": {
@@ -57486,7 +57486,7 @@
     "AssessId": 13,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 616,
+    "FightAttrVal": 423,
     "AssessWeight": 100
   },
   "3028": {
@@ -57504,7 +57504,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 616,
+    "FightAttrVal": 423,
     "AssessWeight": 100
   },
   "3029": {
@@ -57537,7 +57537,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 26604,
+    "FightAttrVal": 14632,
     "AssessWeight": 100
   },
   "3030": {
@@ -57564,7 +57564,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 2026,
+    "FightAttrVal": 1621,
     "AssessWeight": 100
   },
   "3031": {
@@ -57579,7 +57579,7 @@
       123
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 6321,
+    "FightAttrVal": 6990,
     "AssessWeight": 100
   },
   "3032": {
@@ -57612,7 +57612,7 @@
       123
     ],
     "FightAttrId": 11420,
-    "FightAttrVal": 2889,
+    "FightAttrVal": 2118,
     "AssessWeight": 100
   },
   "3033": {
@@ -57630,7 +57630,7 @@
       123
     ],
     "FightAttrId": 11010,
-    "FightAttrVal": 3250,
+    "FightAttrVal": 3575,
     "AssessWeight": 100
   },
   "3034": {
@@ -57648,7 +57648,7 @@
       120
     ],
     "FightAttrId": 11020,
-    "FightAttrVal": 3250,
+    "FightAttrVal": 3575,
     "AssessWeight": 100
   },
   "3035": {
@@ -57663,7 +57663,7 @@
       117
     ],
     "FightAttrId": 11030,
-    "FightAttrVal": 3250,
+    "FightAttrVal": 3575,
     "AssessWeight": 100
   },
   "3036": {
@@ -57681,7 +57681,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 3354,
+    "FightAttrVal": 2459,
     "AssessWeight": 30
   },
   "3037": {
@@ -57702,7 +57702,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 3354,
+    "FightAttrVal": 2459,
     "AssessWeight": 30
   },
   "3038": {
@@ -57720,7 +57720,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 3354,
+    "FightAttrVal": 2459,
     "AssessWeight": 30
   },
   "3039": {
@@ -57745,7 +57745,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 3354,
+    "FightAttrVal": 2459,
     "AssessWeight": 30
   },
   "3040": {
@@ -57756,7 +57756,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 3354,
+    "FightAttrVal": 2459,
     "AssessWeight": 30
   },
   "3041": {
@@ -57764,7 +57764,7 @@
     "AssessId": 14,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 2265,
+    "FightAttrVal": 2076,
     "AssessWeight": 100
   },
   "3042": {
@@ -57782,7 +57782,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 2265,
+    "FightAttrVal": 2076,
     "AssessWeight": 100
   },
   "3043": {
@@ -57841,7 +57841,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 20152,
+    "FightAttrVal": 15502,
     "AssessWeight": 100
   },
   "3046": {
@@ -57868,7 +57868,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 2067,
+    "FightAttrVal": 1908,
     "AssessWeight": 100
   },
   "3047": {
@@ -57883,7 +57883,7 @@
       123
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 6902,
+    "FightAttrVal": 7671,
     "AssessWeight": 100
   },
   "3048": {
@@ -57916,7 +57916,7 @@
       123
     ],
     "FightAttrId": 11420,
-    "FightAttrVal": 1926,
+    "FightAttrVal": 2118,
     "AssessWeight": 100
   },
   "3049": {
@@ -57934,7 +57934,7 @@
       123
     ],
     "FightAttrId": 11010,
-    "FightAttrVal": 3520,
+    "FightAttrVal": 3872,
     "AssessWeight": 100
   },
   "3050": {
@@ -57952,7 +57952,7 @@
       120
     ],
     "FightAttrId": 11020,
-    "FightAttrVal": 3520,
+    "FightAttrVal": 3872,
     "AssessWeight": 100
   },
   "3051": {
@@ -57967,7 +57967,7 @@
       117
     ],
     "FightAttrId": 11030,
-    "FightAttrVal": 3520,
+    "FightAttrVal": 3872,
     "AssessWeight": 100
   },
   "3052": {
@@ -58094,7 +58094,7 @@
     "AssessId": 15,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 423,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3060": {
@@ -58112,7 +58112,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 423,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3061": {
@@ -58145,7 +58145,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 20152,
+    "FightAttrVal": 16277,
     "AssessWeight": 100
   },
   "3062": {
@@ -58172,7 +58172,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 2067,
+    "FightAttrVal": 1908,
     "AssessWeight": 100
   },
   "3063": {
@@ -58187,7 +58187,7 @@
       123
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 6902,
+    "FightAttrVal": 7882,
     "AssessWeight": 100
   },
   "3064": {
@@ -58220,7 +58220,7 @@
       123
     ],
     "FightAttrId": 11420,
-    "FightAttrVal": 1926,
+    "FightAttrVal": 2311,
     "AssessWeight": 100
   },
   "3065": {
@@ -58238,7 +58238,7 @@
       123
     ],
     "FightAttrId": 11010,
-    "FightAttrVal": 3520,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3066": {
@@ -58256,7 +58256,7 @@
       120
     ],
     "FightAttrId": 11020,
-    "FightAttrVal": 3520,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3067": {
@@ -58271,7 +58271,7 @@
       117
     ],
     "FightAttrId": 11030,
-    "FightAttrVal": 3520,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3068": {
@@ -58289,7 +58289,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 2605,
+    "FightAttrVal": 2977,
     "AssessWeight": 30
   },
   "3069": {
@@ -58310,7 +58310,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 2605,
+    "FightAttrVal": 2977,
     "AssessWeight": 30
   },
   "3070": {
@@ -58328,7 +58328,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 2605,
+    "FightAttrVal": 2977,
     "AssessWeight": 30
   },
   "3071": {
@@ -58353,7 +58353,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 2605,
+    "FightAttrVal": 2977,
     "AssessWeight": 30
   },
   "3072": {
@@ -58364,7 +58364,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 2605,
+    "FightAttrVal": 2977,
     "AssessWeight": 30
   },
   "3073": {
@@ -58372,7 +58372,7 @@
     "AssessId": 16,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 29,
+    "FightAttrVal": 2454,
     "AssessWeight": 100
   },
   "3074": {
@@ -58390,7 +58390,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 29,
+    "FightAttrVal": 2454,
     "AssessWeight": 100
   },
   "3075": {
@@ -58398,7 +58398,7 @@
     "AssessId": 16,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 0,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3076": {
@@ -58416,7 +58416,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 0,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3077": {
@@ -58449,7 +58449,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 48,
+    "FightAttrVal": 16277,
     "AssessWeight": 100
   },
   "3078": {
@@ -58476,7 +58476,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 107,
+    "FightAttrVal": 1908,
     "AssessWeight": 100
   },
   "3079": {
@@ -58491,7 +58491,7 @@
       123
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 2037,
+    "FightAttrVal": 7603,
     "AssessWeight": 100
   },
   "3080": {
@@ -58524,7 +58524,7 @@
       123
     ],
     "FightAttrId": 11420,
-    "FightAttrVal": 0,
+    "FightAttrVal": 2311,
     "AssessWeight": 100
   },
   "3081": {
@@ -58542,7 +58542,7 @@
       123
     ],
     "FightAttrId": 11010,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3082": {
@@ -58560,7 +58560,7 @@
       120
     ],
     "FightAttrId": 11020,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3083": {
@@ -58575,7 +58575,7 @@
       117
     ],
     "FightAttrId": 11030,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3084": {
@@ -58593,7 +58593,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 52,
+    "FightAttrVal": 2977,
     "AssessWeight": 30
   },
   "3085": {
@@ -58614,7 +58614,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 52,
+    "FightAttrVal": 2977,
     "AssessWeight": 30
   },
   "3086": {
@@ -58632,7 +58632,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 52,
+    "FightAttrVal": 2977,
     "AssessWeight": 30
   },
   "3087": {
@@ -58657,7 +58657,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 52,
+    "FightAttrVal": 2977,
     "AssessWeight": 30
   },
   "3088": {
@@ -58668,7 +58668,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 52,
+    "FightAttrVal": 2977,
     "AssessWeight": 30
   },
   "3089": {
@@ -58676,7 +58676,7 @@
     "AssessId": 17,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 31,
+    "FightAttrVal": 2601,
     "AssessWeight": 100
   },
   "3090": {
@@ -58694,7 +58694,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 31,
+    "FightAttrVal": 2601,
     "AssessWeight": 100
   },
   "3091": {
@@ -58702,7 +58702,7 @@
     "AssessId": 17,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 0,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3092": {
@@ -58720,7 +58720,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 0,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3093": {
@@ -58753,7 +58753,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 53,
+    "FightAttrVal": 17090,
     "AssessWeight": 100
   },
   "3094": {
@@ -58780,7 +58780,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 107,
+    "FightAttrVal": 1908,
     "AssessWeight": 100
   },
   "3095": {
@@ -58795,7 +58795,7 @@
       123
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 2037,
+    "FightAttrVal": 7603,
     "AssessWeight": 100
   },
   "3096": {
@@ -58828,7 +58828,7 @@
       123
     ],
     "FightAttrId": 11420,
-    "FightAttrVal": 0,
+    "FightAttrVal": 2311,
     "AssessWeight": 100
   },
   "3097": {
@@ -58846,7 +58846,7 @@
       123
     ],
     "FightAttrId": 11010,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3098": {
@@ -58864,7 +58864,7 @@
       120
     ],
     "FightAttrId": 11020,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3099": {
@@ -58879,7 +58879,7 @@
       117
     ],
     "FightAttrId": 11030,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3100": {
@@ -58897,7 +58897,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3126,
     "AssessWeight": 30
   },
   "3101": {
@@ -58918,7 +58918,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3126,
     "AssessWeight": 30
   },
   "3102": {
@@ -58936,7 +58936,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3126,
     "AssessWeight": 30
   },
   "3103": {
@@ -58961,7 +58961,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3126,
     "AssessWeight": 30
   },
   "3104": {
@@ -58972,7 +58972,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3126,
     "AssessWeight": 30
   },
   "3105": {
@@ -58980,7 +58980,7 @@
     "AssessId": 18,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 35,
+    "FightAttrVal": 2757,
     "AssessWeight": 100
   },
   "3106": {
@@ -58998,7 +58998,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 35,
+    "FightAttrVal": 2757,
     "AssessWeight": 100
   },
   "3107": {
@@ -59006,7 +59006,7 @@
     "AssessId": 18,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 0,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3108": {
@@ -59024,7 +59024,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 0,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3109": {
@@ -59057,7 +59057,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 58,
+    "FightAttrVal": 17945,
     "AssessWeight": 100
   },
   "3110": {
@@ -59084,7 +59084,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 107,
+    "FightAttrVal": 1908,
     "AssessWeight": 100
   },
   "3111": {
@@ -59099,7 +59099,7 @@
       123
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 2037,
+    "FightAttrVal": 7603,
     "AssessWeight": 100
   },
   "3112": {
@@ -59132,7 +59132,7 @@
       123
     ],
     "FightAttrId": 11420,
-    "FightAttrVal": 0,
+    "FightAttrVal": 2311,
     "AssessWeight": 100
   },
   "3113": {
@@ -59150,7 +59150,7 @@
       123
     ],
     "FightAttrId": 11010,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3114": {
@@ -59168,7 +59168,7 @@
       120
     ],
     "FightAttrId": 11020,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3115": {
@@ -59183,7 +59183,7 @@
       117
     ],
     "FightAttrId": 11030,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3116": {
@@ -59201,7 +59201,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3282,
     "AssessWeight": 30
   },
   "3117": {
@@ -59222,7 +59222,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3282,
     "AssessWeight": 30
   },
   "3118": {
@@ -59240,7 +59240,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3282,
     "AssessWeight": 30
   },
   "3119": {
@@ -59265,7 +59265,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3282,
     "AssessWeight": 30
   },
   "3120": {
@@ -59276,7 +59276,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3282,
     "AssessWeight": 30
   },
   "3121": {
@@ -59284,7 +59284,7 @@
     "AssessId": 19,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 38,
+    "FightAttrVal": 2923,
     "AssessWeight": 100
   },
   "3122": {
@@ -59302,7 +59302,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 38,
+    "FightAttrVal": 2923,
     "AssessWeight": 100
   },
   "3123": {
@@ -59310,7 +59310,7 @@
     "AssessId": 19,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 0,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3124": {
@@ -59328,7 +59328,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 0,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3125": {
@@ -59361,7 +59361,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 64,
+    "FightAttrVal": 18842,
     "AssessWeight": 100
   },
   "3126": {
@@ -59388,7 +59388,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 107,
+    "FightAttrVal": 1908,
     "AssessWeight": 100
   },
   "3127": {
@@ -59403,7 +59403,7 @@
       123
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 2037,
+    "FightAttrVal": 7603,
     "AssessWeight": 100
   },
   "3128": {
@@ -59436,7 +59436,7 @@
       123
     ],
     "FightAttrId": 11420,
-    "FightAttrVal": 0,
+    "FightAttrVal": 2311,
     "AssessWeight": 100
   },
   "3129": {
@@ -59454,7 +59454,7 @@
       123
     ],
     "FightAttrId": 11010,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3130": {
@@ -59472,7 +59472,7 @@
       120
     ],
     "FightAttrId": 11020,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3131": {
@@ -59487,7 +59487,7 @@
       117
     ],
     "FightAttrId": 11030,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3132": {
@@ -59505,7 +59505,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3446,
     "AssessWeight": 30
   },
   "3133": {
@@ -59526,7 +59526,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3446,
     "AssessWeight": 30
   },
   "3134": {
@@ -59544,7 +59544,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3446,
     "AssessWeight": 30
   },
   "3135": {
@@ -59569,7 +59569,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3446,
     "AssessWeight": 30
   },
   "3136": {
@@ -59580,7 +59580,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3446,
     "AssessWeight": 30
   },
   "3137": {
@@ -59588,7 +59588,7 @@
     "AssessId": 20,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 42,
+    "FightAttrVal": 3098,
     "AssessWeight": 100
   },
   "3138": {
@@ -59606,7 +59606,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 42,
+    "FightAttrVal": 3098,
     "AssessWeight": 100
   },
   "3139": {
@@ -59614,7 +59614,7 @@
     "AssessId": 20,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 0,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3140": {
@@ -59632,7 +59632,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 0,
+    "FightAttrVal": 462,
     "AssessWeight": 100
   },
   "3141": {
@@ -59665,7 +59665,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 71,
+    "FightAttrVal": 19784,
     "AssessWeight": 100
   },
   "3142": {
@@ -59692,7 +59692,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 107,
+    "FightAttrVal": 1908,
     "AssessWeight": 100
   },
   "3143": {
@@ -59707,7 +59707,7 @@
       123
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 2037,
+    "FightAttrVal": 7603,
     "AssessWeight": 100
   },
   "3144": {
@@ -59740,7 +59740,7 @@
       123
     ],
     "FightAttrId": 11420,
-    "FightAttrVal": 0,
+    "FightAttrVal": 2311,
     "AssessWeight": 100
   },
   "3145": {
@@ -59758,7 +59758,7 @@
       123
     ],
     "FightAttrId": 11010,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3146": {
@@ -59776,7 +59776,7 @@
       120
     ],
     "FightAttrId": 11020,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3147": {
@@ -59791,7 +59791,7 @@
       117
     ],
     "FightAttrId": 11030,
-    "FightAttrVal": 25,
+    "FightAttrVal": 4224,
     "AssessWeight": 100
   },
   "3148": {
@@ -59809,7 +59809,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3618,
     "AssessWeight": 30
   },
   "3149": {
@@ -59830,7 +59830,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3618,
     "AssessWeight": 30
   },
   "3150": {
@@ -59848,7 +59848,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3618,
     "AssessWeight": 30
   },
   "3151": {
@@ -59873,7 +59873,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3618,
     "AssessWeight": 30
   },
   "3152": {
@@ -59884,7 +59884,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 52,
+    "FightAttrVal": 3618,
     "AssessWeight": 30
   },
   "3153": {
@@ -59892,7 +59892,7 @@
     "AssessId": 102101,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 2051,
+    "FightAttrVal": 965,
     "AssessWeight": 100
   },
   "3154": {
@@ -59910,7 +59910,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 2051,
+    "FightAttrVal": 965,
     "AssessWeight": 100
   },
   "3155": {
@@ -59918,7 +59918,7 @@
     "AssessId": 102101,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 129,
+    "FightAttrVal": 118,
     "AssessWeight": 100
   },
   "3156": {
@@ -59936,7 +59936,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 129,
+    "FightAttrVal": 118,
     "AssessWeight": 100
   },
   "3157": {
@@ -59969,7 +59969,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 14794,
+    "FightAttrVal": 6424,
     "AssessWeight": 100
   },
   "3158": {
@@ -59996,7 +59996,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 1154,
+    "FightAttrVal": 888,
     "AssessWeight": 100
   },
   "3159": {
@@ -60113,7 +60113,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 1261,
+    "FightAttrVal": 1201,
     "AssessWeight": 30
   },
   "3165": {
@@ -60134,7 +60134,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 1261,
+    "FightAttrVal": 1201,
     "AssessWeight": 30
   },
   "3166": {
@@ -60152,7 +60152,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 1261,
+    "FightAttrVal": 1201,
     "AssessWeight": 30
   },
   "3167": {
@@ -60177,7 +60177,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 1261,
+    "FightAttrVal": 1201,
     "AssessWeight": 30
   },
   "3168": {
@@ -60188,7 +60188,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 1261,
+    "FightAttrVal": 1201,
     "AssessWeight": 30
   },
   "3169": {
@@ -60196,7 +60196,7 @@
     "AssessId": 102401,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 2544,
+    "FightAttrVal": 1088,
     "AssessWeight": 100
   },
   "3170": {
@@ -60214,7 +60214,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 2544,
+    "FightAttrVal": 1088,
     "AssessWeight": 100
   },
   "3171": {
@@ -60222,7 +60222,7 @@
     "AssessId": 102401,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 138,
+    "FightAttrVal": 126,
     "AssessWeight": 100
   },
   "3172": {
@@ -60240,7 +60240,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 138,
+    "FightAttrVal": 126,
     "AssessWeight": 100
   },
   "3173": {
@@ -60273,7 +60273,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 17824,
+    "FightAttrVal": 7036,
     "AssessWeight": 100
   },
   "3174": {
@@ -60300,7 +60300,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 1275,
+    "FightAttrVal": 981,
     "AssessWeight": 100
   },
   "3175": {
@@ -60417,7 +60417,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 1395,
+    "FightAttrVal": 1329,
     "AssessWeight": 30
   },
   "3181": {
@@ -60438,7 +60438,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 1395,
+    "FightAttrVal": 1329,
     "AssessWeight": 30
   },
   "3182": {
@@ -60456,7 +60456,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 1395,
+    "FightAttrVal": 1329,
     "AssessWeight": 30
   },
   "3183": {
@@ -60481,7 +60481,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 1395,
+    "FightAttrVal": 1329,
     "AssessWeight": 30
   },
   "3184": {
@@ -60492,7 +60492,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 1395,
+    "FightAttrVal": 1329,
     "AssessWeight": 30
   },
   "3185": {
@@ -60500,7 +60500,7 @@
     "AssessId": 102701,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 3055,
+    "FightAttrVal": 1188,
     "AssessWeight": 100
   },
   "3186": {
@@ -60518,7 +60518,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 3055,
+    "FightAttrVal": 1188,
     "AssessWeight": 100
   },
   "3187": {
@@ -60526,7 +60526,7 @@
     "AssessId": 102701,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 146,
+    "FightAttrVal": 133,
     "AssessWeight": 100
   },
   "3188": {
@@ -60544,7 +60544,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 146,
+    "FightAttrVal": 133,
     "AssessWeight": 100
   },
   "3189": {
@@ -60577,7 +60577,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 20607,
+    "FightAttrVal": 7395,
     "AssessWeight": 100
   },
   "3190": {
@@ -60604,7 +60604,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 1332,
+    "FightAttrVal": 1025,
     "AssessWeight": 100
   },
   "3191": {
@@ -60721,7 +60721,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 1468,
+    "FightAttrVal": 1399,
     "AssessWeight": 30
   },
   "3197": {
@@ -60742,7 +60742,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 1468,
+    "FightAttrVal": 1399,
     "AssessWeight": 30
   },
   "3198": {
@@ -60760,7 +60760,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 1468,
+    "FightAttrVal": 1399,
     "AssessWeight": 30
   },
   "3199": {
@@ -60785,7 +60785,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 1468,
+    "FightAttrVal": 1399,
     "AssessWeight": 30
   },
   "3200": {
@@ -60796,7 +60796,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 1468,
+    "FightAttrVal": 1399,
     "AssessWeight": 30
   },
   "3201": {
@@ -60804,7 +60804,7 @@
     "AssessId": 102104,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 3457,
+    "FightAttrVal": 1222,
     "AssessWeight": 100
   },
   "3202": {
@@ -60822,7 +60822,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 3457,
+    "FightAttrVal": 1222,
     "AssessWeight": 100
   },
   "3203": {
@@ -60830,7 +60830,7 @@
     "AssessId": 102104,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 225,
+    "FightAttrVal": 205,
     "AssessWeight": 100
   },
   "3204": {
@@ -60848,7 +60848,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 225,
+    "FightAttrVal": 205,
     "AssessWeight": 100
   },
   "3205": {
@@ -60881,7 +60881,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 25420,
+    "FightAttrVal": 8293,
     "AssessWeight": 100
   },
   "3206": {
@@ -60908,7 +60908,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 1332,
+    "FightAttrVal": 1025,
     "AssessWeight": 100
   },
   "3207": {
@@ -61025,7 +61025,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 1687,
+    "FightAttrVal": 1607,
     "AssessWeight": 30
   },
   "3213": {
@@ -61046,7 +61046,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 1687,
+    "FightAttrVal": 1607,
     "AssessWeight": 30
   },
   "3214": {
@@ -61064,7 +61064,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 1687,
+    "FightAttrVal": 1607,
     "AssessWeight": 30
   },
   "3215": {
@@ -61089,7 +61089,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 1687,
+    "FightAttrVal": 1607,
     "AssessWeight": 30
   },
   "3216": {
@@ -61100,7 +61100,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 1687,
+    "FightAttrVal": 1607,
     "AssessWeight": 30
   },
   "3217": {
@@ -61108,7 +61108,7 @@
     "AssessId": 102450,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 4086,
+    "FightAttrVal": 1313,
     "AssessWeight": 100
   },
   "3218": {
@@ -61126,7 +61126,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 4086,
+    "FightAttrVal": 1313,
     "AssessWeight": 100
   },
   "3219": {
@@ -61134,7 +61134,7 @@
     "AssessId": 102450,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 233,
+    "FightAttrVal": 212,
     "AssessWeight": 100
   },
   "3220": {
@@ -61152,7 +61152,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 233,
+    "FightAttrVal": 212,
     "AssessWeight": 100
   },
   "3221": {
@@ -61185,7 +61185,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 29800,
+    "FightAttrVal": 8838,
     "AssessWeight": 100
   },
   "3222": {
@@ -61212,7 +61212,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 1446,
+    "FightAttrVal": 1113,
     "AssessWeight": 100
   },
   "3223": {
@@ -61329,7 +61329,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 1808,
+    "FightAttrVal": 1722,
     "AssessWeight": 30
   },
   "3229": {
@@ -61350,7 +61350,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 1808,
+    "FightAttrVal": 1722,
     "AssessWeight": 30
   },
   "3230": {
@@ -61368,7 +61368,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 1808,
+    "FightAttrVal": 1722,
     "AssessWeight": 30
   },
   "3231": {
@@ -61393,7 +61393,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 1808,
+    "FightAttrVal": 1722,
     "AssessWeight": 30
   },
   "3232": {
@@ -61404,7 +61404,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 1808,
+    "FightAttrVal": 1722,
     "AssessWeight": 30
   },
   "3233": {
@@ -61412,7 +61412,7 @@
     "AssessId": 102720,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 4693,
+    "FightAttrVal": 1371,
     "AssessWeight": 100
   },
   "3234": {
@@ -61430,7 +61430,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 4693,
+    "FightAttrVal": 1371,
     "AssessWeight": 100
   },
   "3235": {
@@ -61438,7 +61438,7 @@
     "AssessId": 102720,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 245,
+    "FightAttrVal": 223,
     "AssessWeight": 100
   },
   "3236": {
@@ -61456,7 +61456,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 245,
+    "FightAttrVal": 223,
     "AssessWeight": 100
   },
   "3237": {
@@ -61489,7 +61489,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 33240,
+    "FightAttrVal": 8962,
     "AssessWeight": 100
   },
   "3238": {
@@ -61516,7 +61516,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 1446,
+    "FightAttrVal": 1113,
     "AssessWeight": 100
   },
   "3239": {
@@ -61633,7 +61633,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 1808,
+    "FightAttrVal": 1722,
     "AssessWeight": 30
   },
   "3245": {
@@ -61654,7 +61654,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 1808,
+    "FightAttrVal": 1722,
     "AssessWeight": 30
   },
   "3246": {
@@ -61672,7 +61672,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 1808,
+    "FightAttrVal": 1722,
     "AssessWeight": 30
   },
   "3247": {
@@ -61697,7 +61697,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 1808,
+    "FightAttrVal": 1722,
     "AssessWeight": 30
   },
   "3248": {
@@ -61708,7 +61708,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 1808,
+    "FightAttrVal": 1722,
     "AssessWeight": 30
   },
   "3249": {
@@ -61716,7 +61716,7 @@
     "AssessId": 102105,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 5426,
+    "FightAttrVal": 1441,
     "AssessWeight": 100
   },
   "3250": {
@@ -61734,7 +61734,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 5426,
+    "FightAttrVal": 1441,
     "AssessWeight": 100
   },
   "3251": {
@@ -61742,7 +61742,7 @@
     "AssessId": 102105,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 253,
+    "FightAttrVal": 230,
     "AssessWeight": 100
   },
   "3252": {
@@ -61760,7 +61760,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 253,
+    "FightAttrVal": 230,
     "AssessWeight": 100
   },
   "3253": {
@@ -61793,7 +61793,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 39551,
+    "FightAttrVal": 9694,
     "AssessWeight": 100
   },
   "3254": {
@@ -61820,7 +61820,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 1536,
+    "FightAttrVal": 1182,
     "AssessWeight": 100
   },
   "3255": {
@@ -61937,7 +61937,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 1896,
+    "FightAttrVal": 1806,
     "AssessWeight": 30
   },
   "3261": {
@@ -61958,7 +61958,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 1896,
+    "FightAttrVal": 1806,
     "AssessWeight": 30
   },
   "3262": {
@@ -61976,7 +61976,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 1896,
+    "FightAttrVal": 1806,
     "AssessWeight": 30
   },
   "3263": {
@@ -62001,7 +62001,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 1896,
+    "FightAttrVal": 1806,
     "AssessWeight": 30
   },
   "3264": {
@@ -62012,7 +62012,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 1896,
+    "FightAttrVal": 1806,
     "AssessWeight": 30
   },
   "3265": {
@@ -62020,7 +62020,7 @@
     "AssessId": 102451,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 6363,
+    "FightAttrVal": 1536,
     "AssessWeight": 100
   },
   "3266": {
@@ -62038,7 +62038,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 6363,
+    "FightAttrVal": 1536,
     "AssessWeight": 100
   },
   "3267": {
@@ -62046,7 +62046,7 @@
     "AssessId": 102451,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 260,
+    "FightAttrVal": 237,
     "AssessWeight": 100
   },
   "3268": {
@@ -62064,7 +62064,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 260,
+    "FightAttrVal": 237,
     "AssessWeight": 100
   },
   "3269": {
@@ -62097,7 +62097,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 49690,
+    "FightAttrVal": 11072,
     "AssessWeight": 100
   },
   "3270": {
@@ -62124,7 +62124,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 1716,
+    "FightAttrVal": 1320,
     "AssessWeight": 100
   },
   "3271": {
@@ -62241,7 +62241,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 2050,
+    "FightAttrVal": 1953,
     "AssessWeight": 30
   },
   "3277": {
@@ -62262,7 +62262,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 2050,
+    "FightAttrVal": 1953,
     "AssessWeight": 30
   },
   "3278": {
@@ -62280,7 +62280,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 2050,
+    "FightAttrVal": 1953,
     "AssessWeight": 30
   },
   "3279": {
@@ -62305,7 +62305,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 2050,
+    "FightAttrVal": 1953,
     "AssessWeight": 30
   },
   "3280": {
@@ -62316,7 +62316,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 2050,
+    "FightAttrVal": 1953,
     "AssessWeight": 30
   },
   "3281": {
@@ -62324,7 +62324,7 @@
     "AssessId": 102721,
     "TalentStageId": [],
     "FightAttrId": 11330,
-    "FightAttrVal": 7974,
+    "FightAttrVal": 1750,
     "AssessWeight": 100
   },
   "3282": {
@@ -62342,7 +62342,7 @@
       120
     ],
     "FightAttrId": 11340,
-    "FightAttrVal": 7974,
+    "FightAttrVal": 1750,
     "AssessWeight": 100
   },
   "3283": {
@@ -62350,7 +62350,7 @@
     "AssessId": 102721,
     "TalentStageId": [],
     "FightAttrId": 11410,
-    "FightAttrVal": 268,
+    "FightAttrVal": 244,
     "AssessWeight": 100
   },
   "3284": {
@@ -62368,7 +62368,7 @@
       120
     ],
     "FightAttrId": 11430,
-    "FightAttrVal": 268,
+    "FightAttrVal": 244,
     "AssessWeight": 100
   },
   "3285": {
@@ -62401,7 +62401,7 @@
       123
     ],
     "FightAttrId": 11040,
-    "FightAttrVal": 68971,
+    "FightAttrVal": 13971,
     "AssessWeight": 100
   },
   "3286": {
@@ -62428,7 +62428,7 @@
       120
     ],
     "FightAttrId": 11350,
-    "FightAttrVal": 2067,
+    "FightAttrVal": 1590,
     "AssessWeight": 100
   },
   "3287": {
@@ -62545,7 +62545,7 @@
       122
     ],
     "FightAttrId": 11110,
-    "FightAttrVal": 2465,
+    "FightAttrVal": 2348,
     "AssessWeight": 30
   },
   "3293": {
@@ -62566,7 +62566,7 @@
       123
     ],
     "FightAttrId": 11120,
-    "FightAttrVal": 2465,
+    "FightAttrVal": 2348,
     "AssessWeight": 30
   },
   "3294": {
@@ -62584,7 +62584,7 @@
       119
     ],
     "FightAttrId": 11130,
-    "FightAttrVal": 2465,
+    "FightAttrVal": 2348,
     "AssessWeight": 30
   },
   "3295": {
@@ -62609,7 +62609,7 @@
       123
     ],
     "FightAttrId": 11140,
-    "FightAttrVal": 2465,
+    "FightAttrVal": 2348,
     "AssessWeight": 30
   },
   "3296": {
@@ -62620,7 +62620,7 @@
       113
     ],
     "FightAttrId": 11150,
-    "FightAttrVal": 2465,
+    "FightAttrVal": 2348,
     "AssessWeight": 30
   }
 }

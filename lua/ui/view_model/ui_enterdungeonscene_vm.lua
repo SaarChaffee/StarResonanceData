@@ -518,6 +518,7 @@ local isEnterDungeon = function(levelId)
   if dungeonsTable == nil then
     return
   end
+  local questVm = Z.VMMgr.GetVM("quest")
   local isEnter = true
   for key, value in pairs(dungeonsTable.Condition) do
     local vdata = value
@@ -531,7 +532,7 @@ local isEnterDungeon = function(levelId)
         if questData then
           local param = {
             quest = {
-              name = questData.QuestName
+              name = questVm.GetQuestName(limitValue)
             }
           }
           Z.TipsVM.ShowTipsLang(1001503, param)

@@ -161,14 +161,26 @@ function World_boss_mainView:RefreshRightInfo()
   local strTable = {}
   for _, value in ipairs(startTimeList) do
     local weekStrRow = Z.Global.WeekText
-    local weekDayStr = weekStrRow[value.wday]
+    local weekDayStr = Lang(weekStrRow[value.wday])
     local hour = value.hour
     local min = value.min
     local strResult = string.format("%s %02d:%02d", weekDayStr, hour, min)
     table.insert(strTable, strResult)
   end
   local timeStr_ = table.zconcat(strTable, ",")
-  local str = timeStr_ .. Lang("WorldBossOpenTime")
+  local str = Lang("WorldBossOpenTime", {time = timeStr_})
+  local isHideUTC = false
+  if Z.SDKLogin.GetPlatform() == E.LoginPlatformType.TencentPlatform or Z.SDKLogin.GetPlatform() == E.LoginPlatformType.InnerPlatform then
+    isHideUTC = true
+  end
+  local systemTimeZone = Panda.Util.ZTimeUtils.GetClienttSystemTimeZone()
+  if Z.ServerTime.ServiceTimeZone == systemTimeZone then
+    isHideUTC = true
+  end
+  if not isHideUTC then
+    local utc = Panda.Util.ZTimeUtils.GetUTCByStamp(Z.TimeTools.Now())
+    str = str .. utc
+  end
   self.labCompanion_.text = str
   local leftTime_, beforeLeftTime = Z.TimeTools.GetLeftTimeByTimerId(timeId)
   local curLeftTime = beforeLeftTime

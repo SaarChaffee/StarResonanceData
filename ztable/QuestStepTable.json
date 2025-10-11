@@ -39061,6 +39061,204 @@
     "HideTrackBar": false,
     "TargetShareType": 0
   },
+  "1204001007": {
+    "QuestStepId": 1204001007,
+    "StepParam": [
+      [
+        208,
+        1,
+        12040,
+        336
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 1204001002,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "0",
+        "0"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "1204001002": {
+    "QuestStepId": 1204001002,
+    "StepParam": [
+      [
+        208,
+        1,
+        12040,
+        17
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 1204001003,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "1",
+        "330"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "1204001003": {
+    "QuestStepId": 1204001003,
+    "StepParam": [
+      [
+        208,
+        1,
+        12040,
+        326
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 1204001004,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "1",
+        "331"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "1204001004": {
+    "QuestStepId": 1204001004,
+    "StepParam": [
+      [
+        208,
+        1,
+        12040,
+        17
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 1204001006,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "1",
+        "330"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "1204001006": {
+    "QuestStepId": 1204001006,
+    "StepParam": [
+      [
+        208,
+        1,
+        12040,
+        326
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 1204001005,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "1",
+        "331"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "1204001005": {
+    "QuestStepId": 1204001005,
+    "StepParam": [
+      [
+        1,
+        1,
+        0,
+        12040
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 0,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "0",
+        "0"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
   "130000001": {
     "QuestStepId": 130000001,
     "StepParam": [
@@ -92701,46 +92899,12 @@
       ]
     ],
     "LuaJump": "",
-    "FailToStep": 0,
-    "CompleteToStep": 0,
-    "CompleteAllStep": [
-      30138002,
-      30138004
-    ],
-    "NpcTalkChange": [],
-    "QuestItems": [],
-    "StepTips": "",
-    "QuestClickJump": 0,
-    "StepTargetType": 1,
-    "StepTargetCondition": [],
-    "StepTargetPos": [
-      [
-        "2",
-        "18548"
-      ]
-    ],
-    "StepMainTitle": "",
-    "StepTargetInfo": [],
-    "DisableTransport": 0,
-    "FailCheck": [],
-    "HideTrackBar": false,
-    "TargetShareType": 0
-  },
-  "30138002": {
-    "QuestStepId": 30138002,
-    "StepParam": [
-      [
-        310,
-        1,
-        7,
-        23013801,
-        30013802
-      ]
-    ],
-    "LuaJump": "",
-    "FailToStep": 0,
+    "FailToStep": 30138002,
     "CompleteToStep": 30138004,
-    "CompleteAllStep": [],
+    "CompleteAllStep": [
+      30138004,
+      30138002
+    ],
     "NpcTalkChange": [],
     "QuestItems": [],
     "StepTips": "",
@@ -92853,6 +93017,40 @@
     "LuaJump": "",
     "FailToStep": 0,
     "CompleteToStep": 0,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "2",
+        "18548"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "30138002": {
+    "QuestStepId": 30138002,
+    "StepParam": [
+      [
+        310,
+        1,
+        7,
+        23013801,
+        30013802
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 30138004,
     "CompleteAllStep": [],
     "NpcTalkChange": [],
     "QuestItems": [],
@@ -122559,7 +122757,7 @@
     ],
     "LuaJump": "",
     "FailToStep": 0,
-    "CompleteToStep": 30501008,
+    "CompleteToStep": 30501009,
     "CompleteAllStep": [],
     "NpcTalkChange": [],
     "QuestItems": [],
@@ -122571,6 +122769,39 @@
       [
         "4",
         "21146"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "30501009": {
+    "QuestStepId": 30501009,
+    "StepParam": [
+      [
+        208,
+        1,
+        7,
+        22137
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 30501008,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "4",
+        "22137"
       ]
     ],
     "StepMainTitle": "",
@@ -132772,6 +133003,10 @@
       [
         "5",
         "981"
+      ],
+      [
+        "5",
+        "982"
       ]
     ],
     "StepMainTitle": "",
@@ -140828,6 +141063,145 @@
     "StepTargetType": 1,
     "StepTargetCondition": [],
     "StepTargetPos": [],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "50005001": {
+    "QuestStepId": 50005001,
+    "StepParam": [
+      [
+        109,
+        1,
+        0,
+        102101,
+        102104,
+        102105
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 0,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "0",
+        "0"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "50006001": {
+    "QuestStepId": 50006001,
+    "StepParam": [
+      [
+        109,
+        1,
+        0,
+        102401,
+        102450,
+        102451
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 0,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "0",
+        "0"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "50007001": {
+    "QuestStepId": 50007001,
+    "StepParam": [
+      [
+        109,
+        1,
+        0,
+        102701,
+        102720,
+        102721
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 0,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "0",
+        "0"
+      ]
+    ],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "50008001": {
+    "QuestStepId": 50008001,
+    "StepParam": [
+      [
+        310,
+        1,
+        8,
+        21701001,
+        50008001
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 0,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 1,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "2",
+        "4287"
+      ]
+    ],
     "StepMainTitle": "",
     "StepTargetInfo": [],
     "DisableTransport": 0,
@@ -149357,6 +149731,39 @@
     "StepTargetType": 1,
     "StepTargetCondition": [],
     "StepTargetPos": [],
+    "StepMainTitle": "",
+    "StepTargetInfo": [],
+    "DisableTransport": 0,
+    "FailCheck": [],
+    "HideTrackBar": false,
+    "TargetShareType": 0
+  },
+  "900101001": {
+    "QuestStepId": 900101001,
+    "StepParam": [
+      [
+        1,
+        1,
+        0,
+        9001
+      ]
+    ],
+    "LuaJump": "",
+    "FailToStep": 0,
+    "CompleteToStep": 0,
+    "CompleteAllStep": [],
+    "NpcTalkChange": [],
+    "QuestItems": [],
+    "StepTips": "",
+    "QuestClickJump": 0,
+    "StepTargetType": 3,
+    "StepTargetCondition": [],
+    "StepTargetPos": [
+      [
+        "0",
+        "0"
+      ]
+    ],
     "StepMainTitle": "",
     "StepTargetInfo": [],
     "DisableTransport": 0,

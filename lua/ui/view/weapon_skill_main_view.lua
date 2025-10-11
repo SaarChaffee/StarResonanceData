@@ -154,6 +154,9 @@ function Weapon_skill_mainView:initButton()
   self:AddAsyncClick(self.uiBinder.btn_viewguide, function()
     self:gotoHelpSysView()
   end)
+  self:AddAsyncClick(self.uiBinder.btn_reset, function()
+    self.weaponSkillVm_:OpenSkillResetView()
+  end)
 end
 
 function Weapon_skill_mainView:gotoHelpSysView()

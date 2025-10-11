@@ -152,11 +152,10 @@ end
 
 function ConditionHelper.checkConditionType_2(condValue)
   local questVm = Z.VMMgr.GetVM("quest")
-  local questTableRow = Z.TableMgr.GetTable("QuestTableMgr").GetRow(condValue)
   local bResult = questVm.IsQuestFinish(condValue)
   local tipsId = 1500003
   local tipsParam = {
-    val = questTableRow.QuestName
+    val = questVm.GetQuestName(condValue)
   }
   local progress = (bResult and 0 or 1) .. "/" .. 1
   return bResult, tipsId, tipsParam, progress
@@ -256,9 +255,8 @@ function ConditionHelper.checkConditionType_14(functionId)
 end
 
 function ConditionHelper.checkConditionType_17(skillId, skillLevel)
-  local weaponData = Z.DataMgr.Get("weapon_data")
   local weaponSkillVm = Z.VMMgr.GetVM("weapon_skill")
-  local curSkillLv = weaponData:GetWeaponSkillData(weaponSkillVm:GetOriginSkillId(skillId))
+  local curSkillLv = Z.VMMgr.GetVM("weapon").GetShowSkillLevel(nil, weaponSkillVm:GetOriginSkillId(skillId))
   local bResult = skillLevel <= curSkillLv
   local tipsId = 1500005
   local skillConfig = Z.TableMgr.GetTable("SkillTableMgr").GetRow(skillId)
@@ -349,13 +347,14 @@ function ConditionHelper.checkConditionType_28(questId, questStepId)
     return true, tipsId, tipsParam, "1/1"
   end
   local questTable = Z.TableMgr.GetTable("QuestTableMgr").GetRow(questId)
+  local questVm = Z.VMMgr.GetVM("quest")
   if questTable then
     local questTypeTable = Z.TableMgr.GetTable("QuestTypeTableMgr").GetRow(questTable.QuestType)
     if questTypeTable then
       local questTypeGroupTable = Z.TableMgr.GetTable("QuestTypeGroupTableMgr").GetRow(questTypeTable.QuestTypeGroupID)
       if questTypeGroupTable then
         tipsParam.groupName = questTypeGroupTable.GroupName
-        tipsParam.questName = questTable.QuestName
+        tipsParam.questName = questVm.GetQuestName(questId)
       end
     end
   end

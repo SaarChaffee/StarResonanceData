@@ -3,6 +3,7 @@ local MOD_DEFINE = require("ui.model.mod_define")
 
 function ModFabtassyDotTplItem.RefreshTpl(uibinder, isEmpty, isSuccess, level, showLevel, isNoSetSize)
   if level then
+    uibinder.Ref.UIComp:SetVisible(true)
     if isEmpty then
       uibinder.img_dot:SetImage(MOD_DEFINE.SuccessTimesIcon.LevelEmpty)
     else
@@ -21,10 +22,13 @@ function ModFabtassyDotTplItem.RefreshTpl(uibinder, isEmpty, isSuccess, level, s
   else
     uibinder.Ref:SetVisible(uibinder.lab_lv, false)
     if isSuccess then
+      uibinder.Ref.UIComp:SetVisible(true)
       uibinder.img_dot:SetImage(MOD_DEFINE.SuccessTimesIcon.Success)
     elseif isEmpty then
+      uibinder.Ref.UIComp:SetVisible(true)
       uibinder.img_dot:SetImage(MOD_DEFINE.SuccessTimesIcon.Empty)
     else
+      uibinder.Ref.UIComp:SetVisible(false)
       uibinder.img_dot:SetImage(MOD_DEFINE.SuccessTimesIcon.Failed)
     end
     if not isNoSetSize then

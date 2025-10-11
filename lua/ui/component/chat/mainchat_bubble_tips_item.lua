@@ -7,9 +7,9 @@ end
 
 function MainChatBubbleTipsItem:OnRefresh(data)
   local content = self.chatMainVm_.GetShowMsg(data)
-  local systemType = Z.ChatMsgHelper.GetSystemType(data)
-  if systemType == E.ESystemTipInfoType.ItemInfo then
-    content = string.zconcat(Lang("ChaBubbleGet"), content)
+  local type, _, _, systemContent = Z.ChatMsgHelper.GetSystemType(data)
+  if type == E.ESystemTipInfoType.ItemInfo then
+    content = Lang("ChaBubbleGet", {content = systemContent})
   end
   self.uiBinder.lab_info.text = content
   local size = self.uiBinder.lab_info:GetPreferredValues(content, 283, 16)

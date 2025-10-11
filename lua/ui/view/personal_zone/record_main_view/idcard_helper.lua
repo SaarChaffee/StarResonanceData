@@ -34,22 +34,31 @@ function IDCardHelper:setSelfIDCardImg()
       logError("PlayerEnt is nil")
       return
     end
-    local textureData = self.vm_.GetGetReviewAvatarInfo(Z.EntityMgr.PlayerEnt.EntId, self.view_.cancelSource:CreateToken())
-    if textureData and textureData.auditing == E.EPictureReviewType.EPictureReviewed then
-      self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_idcard_figure, false)
-      self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.rimg_idcard_figure, true)
-      self.container_.idcard_popup.rimg_idcard_figure:SetNativeTexture(textureData.textureId)
-    else
-      local modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
-      local path = self.snapShotVM_.GetModelHalfPortrait(modelId)
-      if path ~= nil then
-        self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_idcard_figure, true)
-        self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.rimg_idcard_figure, false)
-        self.container_.idcard_popup.img_idcard_figure:SetImage(path)
-        self.container_.idcard_popup.img_idcard_figure:SetNativeSize()
-      end
-    end
+    self.vm_.GetGetReviewAvatarInfo(Z.EntityMgr.PlayerEnt.CharId, self.view_.cancelSource, function(textureData)
+      self:getSelfIDCardImgCallback(textureData)
+    end)
   end)()
+end
+
+function IDCardHelper:getSelfIDCardImgCallback(textureData)
+  if textureData and textureData.auditing == E.EPictureReviewType.EPictureReviewed and textureData.textureId ~= -1 then
+    self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_idcard_figure, false)
+    self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.rimg_idcard_figure, true)
+    self.container_.idcard_popup.rimg_idcard_figure:SetNativeTexture(textureData.textureId)
+  else
+    self:setModelHalfImg()
+  end
+end
+
+function IDCardHelper:setModelHalfImg()
+  local modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value
+  local path = self.snapShotVM_.GetModelHalfPortrait(modelId)
+  if path ~= nil then
+    self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.img_idcard_figure, true)
+    self.container_.idcard_popup.Ref:SetVisible(self.container_.idcard_popup.rimg_idcard_figure, false)
+    self.container_.idcard_popup.img_idcard_figure:SetImage(path)
+    self.container_.idcard_popup.img_idcard_figure:SetNativeSize()
+  end
 end
 
 function IDCardHelper:setSelfPlayerInfo()
@@ -64,7 +73,10 @@ function IDCardHelper:setSelfPlayerInfo()
       end
     end
   end
-  self.container_.idcard_popup.lab_team.text = Lang("Team") .. Lang(":") .. info
+  self.container_.idcard_popup.lab_team.text = Lang("IdCardInfo", {
+    val1 = Lang("Team"),
+    val2 = info
+  })
   local playerName = ""
   local playerVM = Z.VMMgr.GetVM("player")
   if playerVM:IsNamed() then
@@ -78,14 +90,23 @@ function IDCardHelper:setSelfPlayerInfo()
   local titleId = self.personalZoneVM_.GetCurProfileImageId(DEFINE.ProfileImageType.Title)
   local titleConfig = Z.TableMgr.GetTable("ProfileImageTableMgr").GetRow(titleId)
   if titleConfig and titleConfig.Unlock ~= DEFINE.ProfileImageUnlockType.DefaultUnlock then
-    self.container_.idcard_popup.lab_gs.text = string.format("%s\239\188\154%s", Lang("PersonalzoneTitle"), titleConfig.Name)
+    self.container_.idcard_popup.lab_gs.text = Lang("IdCardInfo", {
+      val1 = Lang("PersonalzoneTitle"),
+      val2 = titleConfig.Name
+    })
   else
-    self.container_.idcard_popup.lab_gs.text = string.format("%s\239\188\154%s", Lang("PersonalzoneTitle"), Lang("None"))
+    self.container_.idcard_popup.lab_gs.text = Lang("IdCardInfo", {
+      val1 = Lang("PersonalzoneTitle"),
+      val2 = Lang("None")
+    })
   end
   local lv = Z.ContainerMgr.CharSerialize.roleLevel.level or 1
   self.container_.idcard_popup.lab_lv.text = Lang("RoleLevel", {val = lv})
   local unionName = self.unionVm_:GetPlayerUnionName()
-  self.container_.idcard_popup.lab_union.text = string.format("%s\239\188\154%s", Lang("Union"), unionName == "" and Lang("None") or unionName)
+  self.container_.idcard_popup.lab_union.text = Lang("IdCardInfo", {
+    val1 = Lang("Union"),
+    val2 = unionName == "" and Lang("None") or unionName
+  })
   local professionId = self.weaponVm_.GetCurWeapon()
   local professionSystemTableBase = Z.TableMgr.GetTable("ProfessionSystemTableMgr").GetRow(professionId)
   if professionSystemTableBase then

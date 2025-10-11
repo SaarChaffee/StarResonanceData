@@ -106,18 +106,18 @@ function PandoraService:onPandoraCreateView(go, args)
     if type(appId) == "number" then
       appId = tostring(math.floor(appId))
     end
+    local extraInfo
+    if viewInfo.extraInfo ~= nil and viewInfo.extraInfo ~= "" then
+      extraInfo = cjson.decode(viewInfo.extraInfo)
+    end
     self.pandoraData_:SetAppResource(appId, go)
     local config = PANDORA_DEFINE.APP_CONFIG[appId]
     if config and not config.IsSubView then
       local layer = config.Layer or Z.UI.ELayer.UILayerSDK
-      Z.UIRoot:SetLayerTrans(go, layer)
-      Panda.Utility.ZLayerUtils.SetLayerRecursive(go.transform, Panda.Utility.ZLayerUtils.LAYER_UI)
-      Z.UIRoot:ResetViewTrans(go)
+      local viewData = {AppId = appId, Layer = layer}
+      Z.QueueTipManager:AddQueueTipData(E.EQueueTipType.Activities, "pandora_common_popup", viewData)
     end
-    if appId == PANDORA_DEFINE.APP_ID.Announce then
-      Z.UIMgr:OpenView("pandora_announce_popup")
-    end
-    Z.EventMgr:Dispatch(PANDORA_DEFINE.EventName.ViewCreate, appId)
+    Z.EventMgr:Dispatch(PANDORA_DEFINE.EventName.ViewCreate, appId, extraInfo)
   end, function(msg)
     logError("onPandoraCreateView error : " .. msg)
   end)
@@ -134,12 +134,14 @@ function PandoraService:onPandoraCloseView(go, args)
       appId = tostring(math.floor(appId))
     end
     self.pandoraData_:SetAppResource(appId, nil)
-    if appId == PANDORA_DEFINE.APP_ID.Announce then
-      Z.UIMgr:CloseView("pandora_announce_popup")
+    local config = PANDORA_DEFINE.APP_CONFIG[appId]
+    if config and not config.IsSubView then
+      Z.UIMgr:CloseView("pandora_common_popup")
     end
     local pandoraVM = Z.VMMgr.GetVM("pandora")
     pandoraVM:CloseItemTips()
     Z.EventMgr:Dispatch(PANDORA_DEFINE.EventName.ViewDestroy, appId)
+    self:checkUnShowPopupOnActivityClose()
   end, function(msg)
     logError("onPandoraCloseView error : " .. msg)
   end)
@@ -175,10 +177,8 @@ function PandoraService:getItemIconPathByUrl(url)
     if itemIdContent and itemIdContent ~= "" then
       local itemId = tonumber(itemIdContent)
       if itemId then
-        local itemTableRow = Z.TableMgr.GetRow("ItemTableMgr", itemId)
-        if itemTableRow then
-          return itemTableRow.Icon
-        end
+        local itemVm = Z.VMMgr.GetVM("items")
+        return itemVm.GetItemIcon(itemId)
       end
     end
   end
@@ -386,9 +386,31 @@ function PandoraService:panameraCheckUnShowDataResult(messageInfo)
   end
 end
 
+function PandoraService:pandoraGetNotchHeight(messageInfo)
+  if messageInfo.appId == nil then
+    return
+  end
+  local pandoraVM = Z.VMMgr.GetVM("pandora")
+  pandoraVM:SendNotchHeight(messageInfo.appId)
+end
+
 function PandoraService:onUIShow(viewConfigKey)
-  if viewConfigKey and viewConfigKey == Z.ConstValue.MainViewName and self.pandoraData_.PopupQueryTag then
+  if viewConfigKey and viewConfigKey == Z.ConstValue.MainViewName then
+    self:checkUnShowPopupOnBackMainView()
+  end
+end
+
+function PandoraService:checkUnShowPopupOnBackMainView()
+  if self.pandoraData_.PopupQueryTag then
     self.pandoraData_.PopupQueryTag = false
+    local pandoraVM = Z.VMMgr.GetVM("pandora")
+    pandoraVM:CheckUnShowPopup()
+  end
+end
+
+function PandoraService:checkUnShowPopupOnActivityClose()
+  if self.pandoraData_.PopupQueryTagOnClose then
+    self.pandoraData_.PopupQueryTagOnClose = false
     local pandoraVM = Z.VMMgr.GetVM("pandora")
     pandoraVM:CheckUnShowPopup()
   end

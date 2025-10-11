@@ -1,8 +1,8 @@
 {
   "3": {
     "QuestId": 3,
-    "QuestName": "",
-    "QuestDetail": "",
+    "QuestName": "Explore Dark Mist Fortress",
+    "QuestDetail": "Explore Dark Mist Fortress, defeat Denvel.",
     "QuestType": 100,
     "QuestStep": 3001,
     "AwardId": 0,

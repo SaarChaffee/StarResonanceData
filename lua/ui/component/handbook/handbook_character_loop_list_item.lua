@@ -32,12 +32,16 @@ function HandbookCharacterLoopListItem:OnRefresh(data)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, self.IsSelected)
   local isNew = self.handbookVM_.IsNew(handbookDefine.HandbookType.Character, self.data)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_new, isNew)
+  self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
 end
 
-function HandbookCharacterLoopListItem:OnSelected(isSelected)
+function HandbookCharacterLoopListItem:OnSelected(isSelected, isClick)
   self.uiBinder.Ref:SetVisible(self.uiBinder.img_on, isSelected)
   if isSelected then
-    self.parent.UIView:SelectId(self.data)
+    self.parent.UIView:SelectId(self.data, isClick)
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+  else
+    self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
   end
   local isNew = self.handbookVM_.IsNew(handbookDefine.HandbookType.Character, self.data)
   if isNew then

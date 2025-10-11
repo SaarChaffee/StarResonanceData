@@ -138,6 +138,12 @@ function Mail_windowView:initFunc()
   self.mailLoopList_:Init({})
   self.mailRewardList_ = loopListView.new(self, self.uiBinder.node_reward_list, mailRewardItemLoop, "com_item_square_8", true)
   self.mailRewardList_:Init({})
+  local width = Z.IsPCUI and 176 or 372
+  local height = Z.IsPCUI and 40 or 64
+  local offest = Z.IsPCUI and 30 or 42
+  local size = self.uiBinder.lab_exceed:GetPreferredValues(Lang("MailShowTips"), width, height)
+  self.imgBgHeight_ = size.y + offest
+  self.uiBinder.img_lab_bg:SetHeight(self.imgBgHeight_)
   self.uiBinder.lab_max.text = "/" .. MailQuantityMax
 end
 
@@ -191,7 +197,25 @@ function Mail_windowView:onInitMailList()
     end
     self.MailVm_.CheckMailTimeOut()
     self:refreshMailLoopData()
+    self:checkMailTips()
   end)()
+end
+
+function Mail_windowView:checkMailTips()
+  if self.mailData_:GetIsShowMailRemindClaimTips() then
+    Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("MailGetTips"), function()
+      Z.CoroUtil.create_coro_xpcall(function()
+        self.MailVm_.GetAllMailAppendix(self.cancelSource)
+      end)()
+    end, nil, E.DlgPreferencesType.Day, E.DlgPreferencesKeyType.MailGetTips, nil, true)
+  end
+  if self.mailData_:GetIsShowMailRemindDeleteTips() then
+    Z.DialogViewDataMgr:CheckAndOpenPreferencesDialog(Lang("MailDeleteTips"), function()
+      Z.CoroUtil.create_coro_xpcall(function()
+        self.MailVm_.DeleteAllReadMail(self.cancelSource:CreateToken())
+      end)()
+    end, nil, E.DlgPreferencesType.Day, E.DlgPreferencesKeyType.MailDeleteTips, nil, true)
+  end
 end
 
 function Mail_windowView:onInitRed()
@@ -313,18 +337,9 @@ function Mail_windowView:refreshMailLoopData()
       end
     end
   end
-  local isShowBtn, isShowMail = self:refreshBtnState()
-  if isShowBtn then
-    if Z.IsPCUI then
-      self.uiBinder.loop_mail_ref:SetOffsetMin(0, 130)
-    else
-      self.uiBinder.loop_mail_ref:SetOffsetMin(0, 168)
-    end
-  elseif Z.IsPCUI then
-    self.uiBinder.loop_mail_ref:SetOffsetMin(0, 80)
-  else
-    self.uiBinder.loop_mail_ref:SetOffsetMin(0, 110)
-  end
+  local isShowMail = self:refreshBtnState()
+  local bottomOffest = Z.IsPCUI and 0 or 41
+  self.uiBinder.loop_mail_ref:SetOffsetMin(0, self.bottomHeight_ + bottomOffest)
   if isShowMail then
     self.mailLoopList_:RefreshListView(self.curList_, false)
     self.mailLoopList_:ClearAllSelect()
@@ -346,12 +361,10 @@ function Mail_windowView:refreshBtnState()
   local isShowBtn = isShowMail and self.isSystem_
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_delete_left, isShowBtn)
   self.uiBinder.Ref:SetVisible(self.uiBinder.btn_quick_pick, isShowBtn)
-  if Z.IsPCUI then
-    self.uiBinder.node_bottom:SetHeight(isShowBtn and 130 or 80)
-  else
-    self.uiBinder.node_bottom:SetHeight(isShowBtn and 158 or 100)
-  end
-  return isShowBtn, isShowMail
+  local bottomOffest = isShowBtn and (Z.IsPCUI and 70 or 80) or Z.IsPCUI and 10 or 0
+  self.bottomHeight_ = self.imgBgHeight_ + bottomOffest
+  self.uiBinder.node_bottom:SetHeight(self.bottomHeight_)
+  return isShowMail
 end
 
 function Mail_windowView:refreshRightView()

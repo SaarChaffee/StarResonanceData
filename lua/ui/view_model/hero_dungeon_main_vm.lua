@@ -441,6 +441,7 @@ local getDungeonTimerData = function(timerType)
         timerData.lookType = Z.ContainerMgr.DungeonSyncData.timerInfo.outLookType
         timerData.pauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTime
         timerData.totalPauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTotalTime
+        timerData.curPauseTimestamp = Z.ContainerMgr.DungeonSyncData.timerInfo.curPauseTimestamp
         if herdDungeonData.DunegonEndTime ~= timerData.endTime and not firstEnter then
           timerData.changeTimeNumber = -1 * dungeoncfg.DeathReleaseTime
           herdDungeonData.DunegonEndTime = timerData.endTime
@@ -459,6 +460,7 @@ local getDungeonTimerData = function(timerType)
       timerData.timeLab = Lang("DungeonShowTime")
       timerData.pauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTime
       timerData.totalPauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTotalTime
+      timerData.curPauseTimestamp = Z.ContainerMgr.DungeonSyncData.timerInfo.curPauseTimestamp
     end
     if isMasterChallengeDungeonScene() and heroDungeonCfgData then
       local direction = Z.ContainerMgr.DungeonSyncData.timerInfo.direction
@@ -495,6 +497,7 @@ local getDungeonTimerData = function(timerType)
       timerData.timeLab = Lang("DungeonShowTime")
       timerData.pauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTime
       timerData.totalPauseTime = Z.ContainerMgr.DungeonSyncData.timerInfo.pauseTotalTime
+      timerData.curPauseTimestamp = Z.ContainerMgr.DungeonSyncData.timerInfo.curPauseTimestamp
     end
   end
   return timerData
@@ -749,8 +752,16 @@ end
 local getMasterDungeonMaxDiff = function(dungeonID)
   local maxDiff = 0
   local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
+  local tmpDiff = 0
+  for index, value in ipairs(Z.GlobalDungeon.MasterDungeonUnlockLevel) do
+    local diff = tonumber(value)
+    local masterChallengeDungeonRow = Z.TableMgr.GetTable("MasterChallengeDungeonTableMgr").GetRow(dungeonID * 100 + diff)
+    if Z.ConditionHelper.CheckCondition(masterChallengeDungeonRow.Condition) and tmpDiff < diff - 1 then
+      tmpDiff = diff - 1
+    end
+  end
   if Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.masterModeDungeonInfo[seasonId] == nil then
-    return maxDiff
+    return tmpDiff
   end
   local seasonMasterDungeonInfo = Z.ContainerMgr.CharSerialize.masterModeDungeonInfo.masterModeDungeonInfo[seasonId].masterModeDiffInfo
   if seasonMasterDungeonInfo and seasonMasterDungeonInfo[dungeonID] then
@@ -759,6 +770,9 @@ local getMasterDungeonMaxDiff = function(dungeonID)
         maxDiff = diff
       end
     end
+  end
+  if tmpDiff > maxDiff then
+    maxDiff = tmpDiff
   end
   return maxDiff
 end

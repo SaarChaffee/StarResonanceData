@@ -234,7 +234,9 @@ function Map_life_profession_item_right_subView:RefreshCostInfo(config)
   if itemTableRow == nil then
     return
   end
-  self.uiBinder.rimg_gold:SetImage(itemTableRow.Icon)
+  local itemVm = Z.VMMgr.GetVM("items")
+  local itemIcon = itemVm.GetItemIcon(costItemId)
+  self.uiBinder.rimg_gold:SetImage(itemIcon)
   self.uiBinder.lab_consumption.text = Lang("CostNum", {num = costNum})
   if self.IsFree then
     self.uiBinder.lab_consumption.text = Lang("CostNum", {num = 0})

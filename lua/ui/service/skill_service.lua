@@ -10,6 +10,7 @@ function SkillService:OnInit()
   function self.onProfessionChangeFunc(container, dirtyKeys)
     if dirtyKeys.curProfessionId then
       Z.EventMgr:Dispatch(Z.ConstValue.Hero.ChangeProfession, container.professionId)
+      self.weaponData_:InitSlotSkill()
     end
     if dirtyKeys.professionList then
       for k, v in pairs(dirtyKeys.professionList) do
@@ -35,19 +36,6 @@ function SkillService:OnInit()
         end
       end
     end
-    if dirtyKeys.slotSkillInfoMap then
-      for slotId, _ in pairs(dirtyKeys.slotSkillInfoMap) do
-        local skillId = self.weaponSkillVm_:GetSkillBySlot(slotId)
-        local beforeSkillID = self.weaponData_:GetWeaponSlotSkill(slotId)
-        if beforeSkillID ~= 0 then
-          Z.EventMgr:Dispatch(Z.ConstValue.Hero.InstallSkill, beforeSkillID)
-        end
-        if skillId ~= 0 then
-          Z.EventMgr:Dispatch(Z.ConstValue.Hero.InstallSkill, skillId)
-        end
-        self.weaponData_:UpdateSlotSkill(slotId, skillId)
-      end
-    end
   end
   
   function self.onSkillChangeFunc(container, dirtyKeys)
@@ -63,6 +51,22 @@ function SkillService:OnInit()
     end
     if dirtyKeys.curSkillSkin then
       Z.EventMgr:Dispatch(Z.ConstValue.Weapon.OnWeaponSkillSkinChange)
+    end
+  end
+  
+  function self.onSlotChangeFunc(container, dirtyKeys)
+    if dirtyKeys.slots then
+      for slotId, _ in pairs(dirtyKeys.slots) do
+        local skillId = self.weaponSkillVm_:GetSkillBySlot(slotId)
+        local beforeSkillID = self.weaponData_:GetWeaponSlotSkill(slotId)
+        if beforeSkillID ~= 0 then
+          Z.EventMgr:Dispatch(Z.ConstValue.Hero.InstallSkill, beforeSkillID)
+        end
+        if skillId ~= 0 then
+          Z.EventMgr:Dispatch(Z.ConstValue.Hero.InstallSkill, skillId)
+        end
+        self.weaponData_:UpdateSlotSkill(slotId, skillId)
+      end
     end
   end
 end
@@ -91,6 +95,7 @@ function SkillService:OnLogout()
     professionInfo.Watcher:UnregWatcher(self.onProfessionSkillChangeFunc)
   end
   Z.ContainerMgr.CharSerialize.professionList.Watcher:UnregWatcher(self.onProfessionChangeFunc)
+  Z.ContainerMgr.CharSerialize.slots.Watcher:UnregWatcher(self.onSlotChangeFunc)
 end
 
 function SkillService:OnEnterScene(sceneId)
@@ -104,6 +109,7 @@ function SkillService:OnSyncAllContainerData()
     end
   end
   Z.ContainerMgr.CharSerialize.professionList.Watcher:RegWatcher(self.onProfessionChangeFunc)
+  Z.ContainerMgr.CharSerialize.slots.Watcher:RegWatcher(self.onSlotChangeFunc)
   self.weaponData_:InitSlotSkill()
 end
 

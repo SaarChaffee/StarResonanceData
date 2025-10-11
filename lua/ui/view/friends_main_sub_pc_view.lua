@@ -34,7 +34,6 @@ function Friends_main_sub_pcView:OnDeActive()
     self.chat_input_box_tpl_pc_view_:DeActive()
     self.chat_input_box_tpl_pc_view_ = nil
   end
-  self.friendMainData_:SetFriendViewOpen(false)
   self:UnBindEvents()
   Z.Voice.StopPlayback()
 end
@@ -53,7 +52,6 @@ function Friends_main_sub_pcView:initVMData()
   self.showFriendApply_ = false
   self.showGroup_ = false
   self.showChatInput_ = false
-  self.friendMainData_:SetFriendViewOpen(true)
 end
 
 function Friends_main_sub_pcView:initFunc()
@@ -272,7 +270,8 @@ function Friends_main_sub_pcView:BindEvents()
   Z.EventMgr:Add(Z.ConstValue.Friend.FriendApplicationRefresh, self.refreshFriendApplyNode, self)
   Z.EventMgr:Add(Z.ConstValue.Chat.OpenPrivateChat, self.showPrivateChat, self)
   Z.EventMgr:Add(Z.ConstValue.Chat.BubbleMsg, self.RefreshView, self)
-  Z.EventMgr:Add(Z.ConstValue.Chat.NewPrivateChatMsg, self.onReceiveNewPrivateChatMsg, self)
+  Z.EventMgr:Add(Z.ConstValue.Friend.ChatSelfSendNewMessage, self.refreshSelfSendNewMsg, self)
+  Z.EventMgr:Add(Z.ConstValue.Friend.ChatPrivateNewMessage, self.refreshPrivateSendNewMsg, self)
 end
 
 function Friends_main_sub_pcView:UnBindEvents()
@@ -282,7 +281,8 @@ function Friends_main_sub_pcView:UnBindEvents()
   Z.EventMgr:Remove(Z.ConstValue.Friend.FriendApplicationRefresh, self.refreshFriendApplyNode, self)
   Z.EventMgr:Remove(Z.ConstValue.Chat.OpenPrivateChat, self.showPrivateChat, self)
   Z.EventMgr:Remove(Z.ConstValue.Chat.BubbleMsg, self.RefreshView, self)
-  Z.EventMgr:Remove(Z.ConstValue.Chat.NewPrivateChatMsg, self.onReceiveNewPrivateChatMsg, self)
+  Z.EventMgr:Remove(Z.ConstValue.Friend.ChatSelfSendNewMessage, self.refreshSelfSendNewMsg, self)
+  Z.EventMgr:Remove(Z.ConstValue.Friend.ChatPrivateNewMessage, self.refreshPrivateSendNewMsg, self)
 end
 
 function Friends_main_sub_pcView:RefreshView()
@@ -293,11 +293,36 @@ function Friends_main_sub_pcView:RefreshView()
   end
 end
 
-function Friends_main_sub_pcView:onReceiveNewPrivateChatMsg()
+function Friends_main_sub_pcView:refreshSelfSendNewMsg(targetCharId)
+  local privateChat = self.chatMainData_:GetPrivateChatItemByCharId(targetCharId)
+  if not privateChat then
+    return
+  end
+  privateChat.maxReadMsgId = privateChat.latestMsg.msgId
+  Z.CoroUtil.create_coro_xpcall(function()
+    self.chatMainVM_.AsyncSetPrivateChatHasRead(targetCharId, privateChat.latestMsg.msgId, self.cancelSource:CreateToken())
+  end)()
+end
+
+function Friends_main_sub_pcView:refreshPrivateSendNewMsg(targetCharId)
   if self.friendMainData_:GetFriendViewType() == E.FriendViewType.Friend then
     return
   end
-  self:RefreshView()
+  if targetCharId == self.chatMainData_:GetPrivateSelectId() then
+    local privateChat = self.chatMainData_:GetPrivateChatItemByCharId(targetCharId)
+    if privateChat then
+      privateChat.maxReadMsgId = privateChat.latestMsg.msgId
+      Z.CoroUtil.create_coro_xpcall(function()
+        self.chatMainVM_.AsyncSetPrivateChatHasRead(targetCharId, privateChat.latestMsg.msgId, self.cancelSource:CreateToken())
+      end)()
+    end
+  end
+  if self.isSearching_ then
+    local list = self.chatMainVM_.GetSearchDataList(self.uiBinder.input_search.text)
+    self.loopList_:RefreshListView(list, false)
+  else
+    self.loopList_:RefreshListView(self.chatMainData_:GetPrivateChatList(), false)
+  end
 end
 
 function Friends_main_sub_pcView:refreshAsyncEmptySearch()

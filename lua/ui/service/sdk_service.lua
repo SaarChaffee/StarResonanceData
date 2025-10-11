@@ -38,8 +38,6 @@ function SDKService:APJSynvRoleInfo()
     local charLevel = Z.ContainerMgr.CharSerialize.roleLevel.level
     local serverId = Z.DataMgr.Get("server_data").NowSelectServerId
     local charId = Z.ContainerMgr.CharSerialize.charId
-    Z.SDKAPJ.SyncRoleInfo(serverId, charId, charName, charLevel)
-    Z.SDKAPJ.SetQueryProductsUrl("https://pay-query.playbpsr.com:7779/api/query/QueryProductInfo")
     self.sdkReport_ = true
   end
 end
@@ -81,8 +79,14 @@ function SDKService:evaluationSwitchHandler()
     if gotoFuncVM.CheckFuncCanUse(E.FunctionID.AppleStoreEvaluation, true) then
       sdkVM:OpenAppleStoreEvaluationPopup()
     end
-  elseif Z.SDKDevices.RuntimeOS == E.OS.Android and tonumber(Z.SDKTencent.InstallChannel) == SDK_DEFINE.SDK_CHANNEL_ID.TapTap and gotoFuncVM.CheckFuncCanUse(E.FunctionID.TapTapEvaluation, true) then
-    sdkVM:OpenTaptapEvaluationPopup()
+  elseif Z.SDKDevices.RuntimeOS == E.OS.Android then
+    if Z.SDKLogin.GetPlatform() == E.LoginPlatformType.APJPlatform then
+      if gotoFuncVM.CheckFuncCanUse(E.FunctionID.GoogleStoreEvaluation, true) then
+        sdkVM:OpenGoogleStoreEvaluationPopup()
+      end
+    elseif tonumber(Z.SDKTencent.InstallChannel) == SDK_DEFINE.SDK_CHANNEL_ID.TapTap and gotoFuncVM.CheckFuncCanUse(E.FunctionID.TapTapEvaluation, true) then
+      sdkVM:OpenTaptapEvaluationPopup()
+    end
   end
 end
 

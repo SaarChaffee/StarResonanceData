@@ -331,7 +331,7 @@ function HomeEditorVm.GetOperationHight(homeId)
       local plotTypeRow = Z.TableMgr.GetTable("PlotTypeMgr").GetRow(residentialDistrictsRow.PlotType)
       if plotTypeRow then
         minHight = housePos.Y
-        maxHight = housePos.Y + plotTypeRow.Size.Y
+        maxHight = housePos.Y + plotTypeRow.Size.Z
       end
     end
   elseif type == Z.EStageType.HomelandDungeon then

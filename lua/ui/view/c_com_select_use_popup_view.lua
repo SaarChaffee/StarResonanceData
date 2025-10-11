@@ -56,7 +56,26 @@ function C_com_select_use_popupView:OnRefresh()
   self.isRefreshUseNum_ = false
   self.uiBinder.lab_title.text = self.viewData.title and Lang(self.viewData.title) or ""
   self.uiBinder.lab_second_title.text = self.viewData.secondTitle and Lang(self.viewData.secondTitle) or ""
+  self:refreshLimitLab()
   self:initItem()
+end
+
+function C_com_select_use_popupView:refreshLimitLab()
+  self.uiBinder.Ref:SetVisible(self.uiBinder.lab_box_limit, false)
+  if self.viewData.configId then
+    local itemFunctionTableRow = Z.TableMgr.GetRow("ItemFunctionTableMgr", self.viewData.configId, true)
+    if itemFunctionTableRow and itemFunctionTableRow.CounterId ~= 0 then
+      local counterRow = Z.TableMgr.GetRow("CounterTableMgr", itemFunctionTableRow.CounterId)
+      if counterRow then
+        local timerConfigItem = Z.DIServiceMgr.ZCfgTimerService:GetZCfgTimerItem(counterRow.TimeTableId)
+        local timeType = timerConfigItem and timerConfigItem.TimerType or 0
+        self.uiBinder.Ref:SetVisible(self.uiBinder.lab_box_limit, true)
+        local limit = Z.CounterHelper.GetCounterLimitCount(itemFunctionTableRow.CounterId)
+        local residueCount = Z.CounterHelper.GetCounterResidueLimitCount(itemFunctionTableRow.CounterId, limit)
+        self.uiBinder.lab_box_limit.text = Lang("RestrictedUseOfItemsThe" .. timeType, {val1 = residueCount, val2 = limit})
+      end
+    end
+  end
 end
 
 function C_com_select_use_popupView:initItem()

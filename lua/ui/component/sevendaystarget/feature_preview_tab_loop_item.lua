@@ -45,9 +45,9 @@ function FeaturePreviewTabLoopItem:OnRecycle()
   sevendaysRed.RemoveFuncPreviewRedItem(self.data.Id, self.parentUIView)
 end
 
-function FeaturePreviewTabLoopItem:Selected(isSelected)
+function FeaturePreviewTabLoopItem:Selected(isSelected, isClick)
   if isSelected then
-    self.parentUIView:OnClickTab(self:GetCurData())
+    self.parentUIView:OnClickTab(self:GetCurData(), isClick)
   end
   self:SelectState()
 end
@@ -56,15 +56,20 @@ function FeaturePreviewTabLoopItem:SelectState()
   local isSelected = self.IsSelected
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_off, not isSelected)
   self.uiBinder.Ref:SetVisible(self.uiBinder.node_on, isSelected)
+  if isSelected then
+    self.uiBinder.anim:Restart(Z.DOTweenAnimType.Open)
+  else
+    self.uiBinder.anim:Rewind(Z.DOTweenAnimType.Open)
+  end
 end
 
-function FeaturePreviewTabLoopItem:OnSelected(isSelected)
+function FeaturePreviewTabLoopItem:OnSelected(isSelected, isClick)
   local curData = self:GetCurData()
   if curData == nil then
     return
   end
   self.data = curData
-  self:Selected(isSelected)
+  self:Selected(isSelected, isClick)
 end
 
 return FeaturePreviewTabLoopItem

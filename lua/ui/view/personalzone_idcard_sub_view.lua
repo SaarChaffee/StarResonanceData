@@ -93,7 +93,7 @@ function Personalzone_idcard_subView:refreshPlayerInfo()
     charId = self.viewData.charId,
     token = self.cancelSource:CreateToken(),
     func = function()
-      if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+      if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
         return
       end
       self.personalzoneVm_.OpenPersonalzoneRecordMain(E.FunctionID.PersonalzoneHead)
@@ -141,7 +141,7 @@ function Personalzone_idcard_subView:refreshPlayerInfo()
   if self.viewData.masterModeDungeonData ~= nil and self.heroDungeionMainVm_.CheckAnyMasterDungeonOpen() then
     self.uiBinder.Ref:SetVisible(self.uiBinder.btn_master_integral, true)
     if not self.viewData.masterModeDungeonData.isShow then
-      self.uiBinder.lab_master_integral.text = self.heroDungeionMainVm_.GetPlayerSeasonMasterDungeonScoreWithColor(self.viewData.masterModeDungeonData.score)
+      self.uiBinder.lab_master_integral.text = self.heroDungeionMainVm_.GetPlayerSeasonMasterDungeonTotalScoreWithColor(self.viewData.masterModeDungeonData.score)
       self.uiBinder.Ref:SetVisible(self.uiBinder.lab_master_integral, true)
       self.uiBinder.Ref:SetVisible(self.uiBinder.lab_master_info, false)
     else
@@ -205,7 +205,7 @@ function Personalzone_idcard_subView:refreshSubTogs()
               unit.lab_off.text = functionConfig.Name
               unit.lab_on.text = functionConfig.Name
             end
-            if subConfig.redDot and self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId then
+            if subConfig.redDot and self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId then
               Z.RedPointMgr.LoadRedDotItem(subConfig.redDot, self, unit.Trans)
             end
             table.insert(self.togs_, {
@@ -252,7 +252,7 @@ function Personalzone_idcard_subView:ChangeSubTogs(subTogs, selectFunc, editorTy
               unit.lab_off.text = functionConfig.Name
               unit.lab_on.text = functionConfig.Name
             end
-            if subConfig.redDot and self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId then
+            if subConfig.redDot and self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId then
               Z.RedPointMgr.LoadRedDotItem(subConfig.redDot, self, unit.Trans)
             end
             table.insert(self.togs_, {
@@ -432,13 +432,13 @@ function Personalzone_idcard_subView:initBtns()
     })
   end)
   self:AddClick(self.uiBinder.btn_title, function()
-    if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+    if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
       return
     end
     self.personalzoneVm_.OpenPersonalzoneRecordMain(E.FunctionID.PersonalzoneTitle)
   end)
   self:AddClick(self.uiBinder.btn_master_integral, function()
-    if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+    if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
       if not self.viewData.masterModeDungeonData.isShow then
         Z.TipsVM.ShowTips(1002109, {
           val = self.viewData.masterModeDungeonData.score
@@ -458,7 +458,7 @@ function Personalzone_idcard_subView:initBtns()
   self:AddClick(self.uiBinder.btn_member, function()
   end)
   self:AddClick(self.uiBinder.node_online_time.btn_online, function()
-    if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+    if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
       local unionTagTableMgr = Z.TableMgr.GetTable("UnionTagTableMgr")
       local onlineDay = self.viewData.onlinePeriods
       local tags = self.viewData.tags
@@ -488,7 +488,7 @@ function Personalzone_idcard_subView:initBtns()
     end
   end)
   self:AddClick(self.uiBinder.node_personality_labels.btn_active, function()
-    if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+    if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
       local unionTagTableMgr = Z.TableMgr.GetTable("UnionTagTableMgr")
       local onlineDay = self.viewData.onlinePeriods
       local tags = self.viewData.tags
@@ -595,7 +595,7 @@ function Personalzone_idcard_subView:refreshOnlineTime(onlinePeriods)
         end
       end
     end
-  elseif self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId then
+  elseif self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId then
     self.uiBinder.node_online_time.Ref:SetVisible(self.uiBinder.node_online_time.img_timer_1, true)
     self.uiBinder.node_online_time.img_timer_1:SetImage(PersonalZoneDefine.UNSHOWTAGICON)
     self.uiBinder.node_online_time.img_timer_1:SetColor(PersonalZoneDefine.OnlineTagColor[1])
@@ -631,7 +631,7 @@ function Personalzone_idcard_subView:refreshTags(tags)
         end
       end
     end
-  elseif self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId then
+  elseif self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId then
     self.uiBinder.node_personality_labels.Ref:SetVisible(self.uiBinder.node_personality_labels.img_personality_labels_1, true)
     self.uiBinder.node_personality_labels.img_personality_labels_1:SetImage(PersonalZoneDefine.UNSHOWTAGICON)
     self.uiBinder.node_personality_labels.img_personality_labels_1:SetColor(PersonalZoneDefine.OnlineTagColor[1])
@@ -639,7 +639,7 @@ function Personalzone_idcard_subView:refreshTags(tags)
 end
 
 function Personalzone_idcard_subView:refreshBtns()
-  local isSelf = self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId
+  local isSelf = self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId
   local friendMainData = Z.DataMgr.Get("friend_main_data")
   local chatMainData = Z.DataMgr.Get("chat_main_data")
   local isInBlackList = chatMainData:IsInBlack(self.viewData.charId) or isSelf
@@ -660,7 +660,7 @@ function Personalzone_idcard_subView:refreshBtns()
 end
 
 function Personalzone_idcard_subView:binderEvents()
-  if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+  if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
     return
   end
   Z.EventMgr:Add(Z.ConstValue.Player.ChangeNameResultNtf, self.onChangeNameResultNtf, self)
@@ -671,7 +671,7 @@ function Personalzone_idcard_subView:binderEvents()
 end
 
 function Personalzone_idcard_subView:unbinderEvents()
-  if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+  if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
     return
   end
   Z.EventMgr:Remove(Z.ConstValue.Player.ChangeNameResultNtf, self.onChangeNameResultNtf, self)
@@ -682,7 +682,7 @@ function Personalzone_idcard_subView:unbinderEvents()
 end
 
 function Personalzone_idcard_subView:binderRedDot()
-  if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+  if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
     return
   end
   Z.RedPointMgr.LoadRedDotItem(E.RedType.PersonalzoneHead, self, self.uiBinder.binder_head.Trans)
@@ -693,7 +693,7 @@ function Personalzone_idcard_subView:binderRedDot()
 end
 
 function Personalzone_idcard_subView:unbinderRedDot()
-  if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+  if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
     return
   end
   Z.RedPointMgr.RemoveNodeItem(E.RedType.PersonalzoneHead)
@@ -704,7 +704,7 @@ function Personalzone_idcard_subView:unbinderRedDot()
 end
 
 function Personalzone_idcard_subView:onChangeNameResultNtf(errCode)
-  if errCode == 0 and self.viewData.charId == Z.EntityMgr.PlayerEnt.EntId then
+  if errCode == 0 and self.viewData.charId == Z.EntityMgr.PlayerEnt.CharId then
     self.uiBinder.lab_name.text = Z.ContainerMgr.CharSerialize.charBase.name
   end
 end
@@ -714,10 +714,10 @@ function Personalzone_idcard_subView:onChangePortrait(avatarId, frameId)
     id = avatarId,
     headFrameId = frameId,
     modelId = Z.EntityMgr.PlayerEnt:GetLuaAttr(Z.ModelAttr.EModelID).Value,
-    charId = Z.EntityMgr.PlayerEnt.EntId,
+    charId = Z.EntityMgr.PlayerEnt.CharId,
     token = self.cancelSource:CreateToken(),
     func = function()
-      if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.EntId then
+      if self.viewData.charId ~= Z.EntityMgr.PlayerEnt.CharId then
         return
       end
       self.personalzoneVm_.OpenPersonalzoneRecordMain(E.FunctionID.PersonalzoneHead)
@@ -751,7 +751,7 @@ function Personalzone_idcard_subView:onMasterScoreShowChange(isShow)
     if not isShow then
       local seasonId = Z.VMMgr.GetVM("season").GetCurrentSeasonId()
       local score = Z.VMMgr.GetVM("hero_dungeon_main").GetPlayerSeasonMasterDungeonScore(seasonId)
-      self.uiBinder.lab_master_integral.text = self.heroDungeionMainVm_.GetPlayerSeasonMasterDungeonScoreWithColor(score)
+      self.uiBinder.lab_master_integral.text = self.heroDungeionMainVm_.GetPlayerSeasonMasterDungeonTotalScoreWithColor(score)
       self.uiBinder.Ref:SetVisible(self.uiBinder.lab_master_integral, true)
       self.uiBinder.Ref:SetVisible(self.uiBinder.lab_master_info, false)
     else

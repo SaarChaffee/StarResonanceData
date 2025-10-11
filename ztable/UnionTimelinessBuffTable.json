@@ -2,7 +2,7 @@
   "102": {
     "Id": 102,
     "Buff": 2010012,
-    "Desc": "",
+    "Desc": "Fish Meat +1 for 24h",
     "Time": 86400,
     "Icon": "ui/atlas/union/union_btn_icon",
     "UnionBankroll": []
